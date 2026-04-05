@@ -6,61 +6,62 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
-from dashboard.style import header, kpi_card, info_panel
+from dashboard.style import (
+    BTD_COLORSCALE, C_ACCENT, C_ASH, C_SO2,
+    header, info_panel, kpi_card,
+)
 from src.process.pipeline import process_ash_rgb
 from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
 
 
-ZONE_LABELS = {
-    "norte": "Norte",
-    "centro": "Centro",
-    "sur": "Sur",
-    "austral": "Austral",
-}
-
-
 def _volcano_info_card(v):
-    """Renderizar card con informacion del volcan."""
     is_priority = v.name in PRIORITY_VOLCANOES
     badge = (
-        '<span style="background:rgba(231,76,60,0.2); color:#e74c3c; '
+        '<span style="background:rgba(204,51,17,0.15); color:#CC3311; '
         'padding:2px 8px; border-radius:12px; font-size:0.7rem; '
         'font-weight:600; margin-left:8px;">PRIORITARIO</span>'
         if is_priority else ""
     )
-    ranking_text = f"#{v.ranking}" if v.ranking else "—"
-
     st.markdown(f"""
     <div class="volcano-card">
         <h3>{v.name}{badge}</h3>
         <div class="detail">
-            <b>Elevacion:</b> {v.elevation:,} m &nbsp;|&nbsp;
-            <b>Zona:</b> {ZONE_LABELS.get(v.zone, v.zone)} &nbsp;|&nbsp;
+            <b>Elevacion:</b> {v.elevation:,} m &nbsp;&middot;&nbsp;
+            <b>Zona:</b> {v.zone.title()} &nbsp;&middot;&nbsp;
             <b>Region:</b> {v.region}<br>
-            <b>Coordenadas:</b> {v.lat:.3f}°S, {abs(v.lon):.3f}°W &nbsp;|&nbsp;
-            <b>Ranking SERNAGEOMIN:</b> {ranking_text}
+            <b>Coords:</b> {v.lat:.3f}, {v.lon:.3f} &nbsp;&middot;&nbsp;
+            <b>Ranking:</b> {f'#{v.ranking}' if v.ranking else '—'}
         </div>
     </div>
     """, unsafe_allow_html=True)
 
 
+def _base_layout(title, height=580):
+    return dict(
+        title=dict(text=title, font=dict(size=13, color="#ccc")),
+        xaxis_title="Longitud", yaxis_title="Latitud",
+        height=height, template="plotly_dark",
+        yaxis=dict(scaleanchor="x", scaleratio=1),
+        margin=dict(t=40, b=35, l=50, r=20),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+    )
+
+
 def render():
     header(
         "Detalle de Volcan",
-        "Ash RGB y deteccion de ceniza centrada en un volcan especifico",
+        "Ash RGB y BTD centrado en un volcan — datos GOES-19 en tiempo casi-real",
     )
 
     # ── Selector ──
     col_sel, col_roi = st.columns([3, 1])
 
     with col_sel:
-        priority_names = [f"⭐ {v.name}" for v in CATALOG if v.name in PRIORITY_VOLCANOES]
+        priority_names = [f"★ {v.name}" for v in CATALOG if v.name in PRIORITY_VOLCANOES]
         other_names = [v.name for v in CATALOG if v.name not in PRIORITY_VOLCANOES]
         all_names = priority_names + other_names
-
         selected = st.selectbox("Seleccionar volcan", all_names, index=0)
-        # Limpiar prefijo estrella
-        clean_name = selected.replace("⭐ ", "")
+        clean_name = selected.replace("★ ", "")
 
     volcano = get_volcano(clean_name)
     if volcano is None:
@@ -70,10 +71,8 @@ def render():
     with col_roi:
         roi_size = st.slider("ROI (grados)", 0.5, 5.0, 2.0, 0.5)
 
-    # ── Info card ──
     _volcano_info_card(volcano)
 
-    # ── Bounds ──
     bounds = {
         "lat_min": volcano.lat - roi_size,
         "lat_max": volcano.lat + roi_size,
@@ -81,23 +80,19 @@ def render():
         "lon_max": volcano.lon + roi_size,
     }
 
-    # ── Botón descarga ──
-    st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:0.2rem'></div>", unsafe_allow_html=True)
     fetch = st.button(
-        f"Descargar Ash RGB para {volcano.name}",
+        f"Descargar imagen para {volcano.name}",
         type="primary",
-        use_container_width=False,
     )
 
     if not fetch:
         info_panel(
             f"Presiona el boton para descargar la imagen GOES-19 mas reciente "
-            f"centrada en <b>{volcano.name}</b> ({roi_size*2:.0f}° x {roi_size*2:.0f}°)."
-            f"<br>Se generara Ash RGB, BTD split-window y estadisticas del area."
+            f"centrada en <b>{volcano.name}</b> (ROI {roi_size*2:.0f}° x {roi_size*2:.0f}°)."
         )
         return
 
-    # ── Procesar ──
     with st.spinner(f"Descargando GOES-19 para {volcano.name}..."):
         try:
             now = datetime.now(timezone.utc)
@@ -108,27 +103,58 @@ def render():
             st.error(f"Error: {e}")
             return
 
-    st.toast(f"Procesado: {data['timestamp']}", icon="✅")
-
-    # ── KPIs ──
+    # ── Analisis ──
     btd = data["btd"]
     conf = data["ash_confidence"]
     valid_btd = btd[~np.isnan(btd)]
+    ash_px = int(np.sum(valid_btd < -1))
+    conf_hi = int(np.sum(conf == 3))
 
+    # Titulo insight
+    if conf_hi > 5:
+        insight = f"Ceniza detectada cerca de {volcano.name} — {conf_hi} pixeles confianza alta"
+    elif ash_px > 10:
+        insight = f"{ash_px} pixeles con posible ceniza en el entorno de {volcano.name}"
+    else:
+        insight = f"Sin ceniza detectada en el entorno de {volcano.name}"
+
+    st.markdown(
+        f'<div style="background:#141926; border-left:4px solid {C_SO2 if ash_px == 0 else C_ASH}; '
+        f'border-radius:0 6px 6px 0; padding:0.5rem 1rem; margin:0.6rem 0; color:#ddd; font-size:0.9rem;">'
+        f'<b>{insight}</b>'
+        f'<span style="float:right; color:#667788; font-size:0.78rem;">{data["timestamp"]}</span>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+    # ── KPIs ──
     k1, k2, k3, k4 = st.columns(4)
     with k1:
-        kpi_card(f"{np.nanmin(btd):.1f} K", "BTD minimo")
+        kpi_card(f"{np.nanmin(btd):.1f}", "BTD min (K)")
     with k2:
-        kpi_card(f"{np.nanmean(valid_btd):.1f} K", "BTD medio")
+        kpi_card(f"{np.nanmean(valid_btd):.1f}", "BTD medio (K)")
     with k3:
-        kpi_card(str(int(np.sum(valid_btd < -1))), "Pixeles ceniza")
+        kpi_card(str(ash_px), "Pixeles ceniza",
+                 delta="BTD < -1K", delta_type="negative" if ash_px > 0 else "neutral")
     with k4:
-        kpi_card(str(int(np.sum(conf == 3))), "Confianza alta")
+        kpi_card(str(conf_hi), "Confianza alta",
+                 delta_type="negative" if conf_hi > 0 else "neutral")
 
-    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
 
-    # ── Ash RGB + BTD side by side ──
+    # ── Graficos ──
     tab1, tab2 = st.tabs(["Ash RGB", "BTD Split-Window"])
+
+    volcano_marker = dict(
+        x=[volcano.lon], y=[volcano.lat],
+        mode="markers+text",
+        marker=dict(size=13, color=C_ACCENT, symbol="triangle-up",
+                    line=dict(width=2, color="white")),
+        text=[volcano.name],
+        textposition="top center",
+        textfont=dict(size=11, color="white"),
+        name=volcano.name,
+    )
 
     with tab1:
         img = (np.clip(data["ash_rgb"], 0, 1) * 255).astype(np.uint8)
@@ -140,25 +166,8 @@ def render():
             y0=float(data["lat"].max()),
             dy=-(float(data["lat"].max()) - float(data["lat"].min())) / data["ash_rgb"].shape[0],
         ))
-        fig.add_trace(go.Scatter(
-            x=[volcano.lon], y=[volcano.lat],
-            mode="markers+text",
-            marker=dict(size=14, color="#00fff7", symbol="triangle-up",
-                        line=dict(width=2, color="white")),
-            text=[volcano.name],
-            textposition="top center",
-            textfont=dict(size=12, color="white"),
-            name=volcano.name,
-        ))
-        fig.update_layout(
-            title=dict(text=f"Ash RGB — {volcano.name} — {data['timestamp']}",
-                       font=dict(size=14)),
-            xaxis_title="Longitud", yaxis_title="Latitud",
-            height=600, template="plotly_dark",
-            yaxis=dict(scaleanchor="x", scaleratio=1),
-            margin=dict(t=40, b=40, l=50, r=20),
-            paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        )
+        fig.add_trace(go.Scatter(**volcano_marker))
+        fig.update_layout(**_base_layout(f"Ash RGB — {volcano.name}"))
         st.plotly_chart(fig, use_container_width=True)
 
     with tab2:
@@ -167,26 +176,11 @@ def render():
             z=btd,
             x=np.linspace(float(data["lon"].min()), float(data["lon"].max()), btd.shape[1]),
             y=np.linspace(float(data["lat"].max()), float(data["lat"].min()), btd.shape[0]),
-            colorscale=[
-                [0.0, "#b71c1c"], [0.2, "#e53935"], [0.4, "#ffca28"],
-                [0.5, "#fafafa"], [0.6, "#81d4fa"], [0.8, "#1565c0"], [1.0, "#0d47a1"],
-            ],
+            colorscale=BTD_COLORSCALE,
             zmin=-5, zmax=5,
-            colorbar=dict(title="BTD (K)", thickness=15),
+            colorbar=dict(title="K", thickness=12, len=0.6),
         ))
-        fig2.add_trace(go.Scatter(
-            x=[volcano.lon], y=[volcano.lat],
-            mode="markers",
-            marker=dict(size=12, color="#00ff88", symbol="triangle-up",
-                        line=dict(width=2, color="#000")),
-            name=volcano.name,
-        ))
-        fig2.update_layout(
-            title=dict(text=f"BTD (11.2 - 12.3 um) — {volcano.name}",
-                       font=dict(size=14)),
-            height=600, template="plotly_dark",
-            yaxis=dict(scaleanchor="x", scaleratio=1),
-            margin=dict(t=40, b=40, l=50, r=20),
-            paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-        )
+        fig2.add_trace(go.Scatter(**volcano_marker))
+        btd_title = f"BTD — {ash_px} pixeles bajo umbral ceniza (-1K)" if ash_px else f"BTD — sin ceniza detectada"
+        fig2.update_layout(**_base_layout(btd_title))
         st.plotly_chart(fig2, use_container_width=True)

@@ -1,7 +1,7 @@
 # Data (too large for git)
 data/raw/
 data/cache/
-data/processed/*.nc
+data/processed/
 *.nc
 
 # Python

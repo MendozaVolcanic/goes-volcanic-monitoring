@@ -26,13 +26,14 @@ inject_css()
 # ── Sidebar ──────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
-        '<div style="text-align:center; padding: 1rem 0 0.5rem 0;">'
-        '<span style="font-size:2.5rem;">🌋</span><br>'
-        '<span style="font-size:1.2rem; font-weight:700; '
-        'background:linear-gradient(90deg,#ff6b6b,#ffa07a);'
+        '<div style="text-align:center; padding: 1.5rem 0 0.8rem 0;">'
+        '<div style="font-size:3rem; line-height:1;">🌋</div>'
+        '<div style="font-size:1.3rem; font-weight:800; margin-top:0.3rem; '
+        'background:linear-gradient(135deg, #CC3311, #EE7733);'
         '-webkit-background-clip:text;-webkit-text-fill-color:transparent;">'
-        "GOES Monitor</span><br>"
-        '<span style="color:#667; font-size:0.8rem;">Chile - 43 volcanes</span>'
+        "GOES Monitor</div>"
+        '<div style="color:#556677; font-size:0.75rem; margin-top:0.2rem; '
+        'letter-spacing:0.1em; text-transform:uppercase;">Chile &middot; 43 volcanes</div>'
         "</div>",
         unsafe_allow_html=True,
     )
@@ -40,7 +41,7 @@ with st.sidebar:
 
     page = st.radio(
         "Navegacion",
-        ["Mapa General", "Ash RGB Viewer", "Detalle Volcan"],
+        ["Mapa General", "Ash RGB Viewer", "Detalle Volcan", "VOLCAT (SSEC)"],
         index=0,
         label_visibility="collapsed",
     )
@@ -48,19 +49,28 @@ with st.sidebar:
     st.markdown("---")
 
     st.markdown(
-        '<div style="font-size:0.78rem; color:#556; line-height:1.8;">'
-        "<b>Satelite:</b> GOES-19 (East)<br>"
-        "<b>Fuente:</b> AWS S3<br>"
-        "<b>Resolucion IR:</b> 2 km<br>"
-        "<b>Cadencia:</b> 10 min<br>"
+        '<div style="background:rgba(17,24,34,0.5); border-radius:8px; '
+        'padding:0.8rem 1rem; font-size:0.76rem; color:#5a6a7a; line-height:2;">'
+        '<div style="font-size:0.68rem; text-transform:uppercase; letter-spacing:0.08em; '
+        'color:#445566; font-weight:700; margin-bottom:0.3rem;">Fuente de datos</div>'
+        "<b style='color:#7a8a9a;'>Satelite</b> &nbsp;GOES-19 (East)<br>"
+        "<b style='color:#7a8a9a;'>Fuente</b> &nbsp;AWS S3 (publico)<br>"
+        "<b style='color:#7a8a9a;'>Resolucion</b> &nbsp;2 km (IR)<br>"
+        "<b style='color:#7a8a9a;'>Cadencia</b> &nbsp;10 min (Full Disk)<br>"
         "</div>",
         unsafe_allow_html=True,
     )
 
     st.markdown("---")
-    st.caption(
-        "[GitHub](https://github.com/MendozaVolcanic/goes-volcanic-monitoring)"
-        " &middot; SERNAGEOMIN"
+    st.markdown(
+        '<div style="text-align:center; font-size:0.72rem; color:#445566;">'
+        '<a href="https://github.com/MendozaVolcanic/goes-volcanic-monitoring" '
+        'style="color:#667788; text-decoration:none;">GitHub</a>'
+        " &middot; SERNAGEOMIN<br>"
+        '<span style="font-size:0.65rem; color:#334455; margin-top:0.3rem; display:inline-block;">'
+        "v1.0 &middot; GOES-19 ABI L1b</span>"
+        "</div>",
+        unsafe_allow_html=True,
     )
 
 # ── Routing ──────────────────────────────────────────────────────
@@ -72,4 +82,7 @@ elif page == "Ash RGB Viewer":
     render()
 elif page == "Detalle Volcan":
     from dashboard.views.volcano_detail import render
+    render()
+elif page == "VOLCAT (SSEC)":
+    from dashboard.views.volcat_viewer import render
     render()

@@ -13,7 +13,7 @@ import numpy as np
 from src.config import CHILE_BOUNDS, PROCESSED_DIR, VOLCANIC_BANDS
 from src.fetch.goes_s3 import download_band, download_fdc, get_latest_time, open_band
 from src.process.ash_detection import compute_ash_confidence, compute_btd_split_window
-from src.process.ash_rgb import generate_ash_rgb, generate_so2_indicator
+from src.process.ash_rgb import generate_ash_rgb, generate_ash_so2_rgb, generate_so2_indicator
 from src.process.brightness_temp import rad_to_bt
 from src.process.geo import crop_to_bounds, get_lat_lon
 
@@ -106,6 +106,9 @@ def process_ash_rgb(
 
     ash_rgb = generate_ash_rgb(bt11_da, bt13_da, bt14_da, bt15_da)
 
+    logger.info("Generating Ash/SO2 RGB...")
+    ash_so2_rgb = generate_ash_so2_rgb(bt11_da, bt14_da, bt15_da)
+
     logger.info("Computing BTD and ash detection...")
     btd = compute_btd_split_window(bt14_da, bt15_da)
     confidence = compute_ash_confidence(bt11_da, bt14_da, bt15_da)
@@ -119,6 +122,14 @@ def process_ash_rgb(
         ash_path = PROCESSED_DIR / f"ash_rgb_{ts_str}.png"
         _save_image(ash_rgb, ash_path)
         paths["ash_rgb"] = str(ash_path)
+
+        ash_so2_path = PROCESSED_DIR / f"ash_so2_rgb_{ts_str}.png"
+        _save_image(ash_so2_rgb, ash_so2_path)
+        paths["ash_so2_rgb"] = str(ash_so2_path)
+
+        so2_path = PROCESSED_DIR / f"so2_{ts_str}.npz"
+        _save_array(so2.values, so2_path)
+        paths["so2"] = str(so2_path)
 
         btd_path = PROCESSED_DIR / f"btd_{ts_str}.npz"
         _save_array(btd.values, btd_path)
@@ -150,6 +161,7 @@ def process_ash_rgb(
 
     return {
         "ash_rgb": ash_rgb,
+        "ash_so2_rgb": ash_so2_rgb,
         "btd": btd.values,
         "ash_confidence": confidence.values,
         "so2": so2.values,
@@ -175,11 +187,10 @@ def get_latest_processed() -> dict | None:
 
     # Verificar que los archivos asociados existen
     result = {"meta": meta, "paths": {}, "timestamp": meta["timestamp"]}
-    for product in ["ash_rgb", "btd", "ash_confidence", "geo"]:
-        if product == "ash_rgb":
-            p = PROCESSED_DIR / f"{product}_{ts_str}.png"
-        else:
-            p = PROCESSED_DIR / f"{product}_{ts_str}.npz"
+    png_products = {"ash_rgb", "ash_so2_rgb"}
+    for product in ["ash_rgb", "ash_so2_rgb", "btd", "ash_confidence", "so2", "geo"]:
+        ext = ".png" if product in png_products else ".npz"
+        p = PROCESSED_DIR / f"{product}_{ts_str}{ext}"
         if p.exists():
             result["paths"][product] = str(p)
 
@@ -204,11 +215,18 @@ def load_processed(info: dict) -> dict:
         img = Image.open(paths["ash_rgb"])
         result["ash_rgb"] = np.array(img).astype(np.float32) / 255.0
 
+    if "ash_so2_rgb" in paths:
+        img = Image.open(paths["ash_so2_rgb"])
+        result["ash_so2_rgb"] = np.array(img).astype(np.float32) / 255.0
+
     if "btd" in paths:
         result["btd"] = np.load(paths["btd"])["data"]
 
     if "ash_confidence" in paths:
         result["ash_confidence"] = np.load(paths["ash_confidence"])["data"]
+
+    if "so2" in paths:
+        result["so2"] = np.load(paths["so2"])["data"]
 
     if "geo" in paths:
         geo = np.load(paths["geo"])

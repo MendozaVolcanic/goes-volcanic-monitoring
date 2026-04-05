@@ -118,11 +118,12 @@ def render():
     else:
         insight = f"Sin ceniza detectada en el entorno de {volcano.name}"
 
+    detail_status = "ok" if ash_px == 0 else ("alert" if conf_hi > 5 else "warn")
+    status_icon = "&#10003;" if ash_px == 0 else "&#9888;"
     st.markdown(
-        f'<div style="background:#141926; border-left:4px solid {C_SO2 if ash_px == 0 else C_ASH}; '
-        f'border-radius:0 6px 6px 0; padding:0.5rem 1rem; margin:0.6rem 0; color:#ddd; font-size:0.9rem;">'
-        f'<b>{insight}</b>'
-        f'<span style="float:right; color:#667788; font-size:0.78rem;">{data["timestamp"]}</span>'
+        f'<div class="status-banner {detail_status}">'
+        f'<b>{status_icon} {insight}</b>'
+        f'<span style="color:#556677; font-size:0.78rem;">{data["timestamp"]}</span>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -173,9 +174,9 @@ def render():
     with tab2:
         fig2 = go.Figure()
         fig2.add_trace(go.Heatmap(
-            z=btd,
+            z=btd[::-1, :],
             x=np.linspace(float(data["lon"].min()), float(data["lon"].max()), btd.shape[1]),
-            y=np.linspace(float(data["lat"].max()), float(data["lat"].min()), btd.shape[0]),
+            y=np.linspace(float(data["lat"].min()), float(data["lat"].max()), btd.shape[0]),
             colorscale=BTD_COLORSCALE,
             zmin=-5, zmax=5,
             colorbar=dict(title="K", thickness=12, len=0.6),

@@ -20,6 +20,9 @@ streamlit-folium>=0.17.0
 scipy>=1.12.0
 pyproj>=3.6.0
 
+# API clients
+requests>=2.31.0
+
 # Utilities
 pandas>=2.1.0
 Pillow>=10.0.0

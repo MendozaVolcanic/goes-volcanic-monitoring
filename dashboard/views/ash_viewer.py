@@ -8,8 +8,10 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from dashboard.style import (
-    BTD_COLORSCALE, CONF_COLORSCALE, C_ACCENT, C_ASH, C_SO2,
-    ash_legend, btd_legend, header, info_panel, kpi_card,
+    BTD_COLORSCALE, CONF_COLORSCALE, SO2_COLORSCALE,
+    C_ACCENT, C_ASH, C_SO2,
+    ash_legend, ash_so2_legend, btd_legend, so2_legend,
+    header, info_panel, kpi_card,
 )
 from src.config import CHILE_BOUNDS, VOLCANIC_ZONES
 from src.process.pipeline import get_latest_processed, load_processed, process_ash_rgb
@@ -72,10 +74,11 @@ def _fig_ash_rgb(rgb, lat, lon, insight_title, volcanoes):
 
 def _fig_btd(btd, lat, lon, insight_title, volcanoes):
     fig = go.Figure()
+    # Flip z verticalmente y usar y creciente para evitar auto-reverse de Plotly
     fig.add_trace(go.Heatmap(
-        z=btd,
+        z=btd[::-1, :],
         x=np.linspace(float(lon.min()), float(lon.max()), btd.shape[1]),
-        y=np.linspace(float(lat.max()), float(lat.min()), btd.shape[0]),
+        y=np.linspace(float(lat.min()), float(lat.max()), btd.shape[0]),
         colorscale=BTD_COLORSCALE,
         zmin=-5, zmax=5,
         colorbar=dict(title="K", thickness=12, len=0.6,
@@ -83,8 +86,6 @@ def _fig_btd(btd, lat, lon, insight_title, volcanoes):
                       ticktext=["-4", "-2", "-1", "0", "2", "4"]),
         hovertemplate="(%{x:.2f}, %{y:.2f})<br>BTD: %{z:.2f} K<extra></extra>",
     ))
-    # Linea de referencia: threshold de ceniza a -1K (anotacion directa)
-    fig.add_hline(y=None)  # no aplica a heatmap, usamos colorbar mark
     _volcano_markers(fig, lat, lon, volcanoes)
     fig.update_layout(**_base_layout(insight_title))
     return fig
@@ -93,9 +94,9 @@ def _fig_btd(btd, lat, lon, insight_title, volcanoes):
 def _fig_confidence(conf, lat, lon, insight_title, volcanoes):
     fig = go.Figure()
     fig.add_trace(go.Heatmap(
-        z=conf,
+        z=conf[::-1, :],
         x=np.linspace(float(lon.min()), float(lon.max()), conf.shape[1]),
-        y=np.linspace(float(lat.max()), float(lat.min()), conf.shape[0]),
+        y=np.linspace(float(lat.min()), float(lat.max()), conf.shape[0]),
         colorscale=CONF_COLORSCALE,
         zmin=0, zmax=3,
         colorbar=dict(
@@ -103,6 +104,28 @@ def _fig_confidence(conf, lat, lon, insight_title, volcanoes):
             tickvals=[0, 1, 2, 3],
             ticktext=["—", "Baja", "Media", "Alta"],
         ),
+    ))
+    _volcano_markers(fig, lat, lon, volcanoes)
+    fig.update_layout(**_base_layout(insight_title))
+    return fig
+
+
+def _fig_so2(so2, lat, lon, insight_title, volcanoes):
+    fig = go.Figure()
+    # Invertir SO2 para colorscale: más negativo = más SO2 = color más intenso
+    so2_display = -so2  # flip sign so higher = more SO2
+    fig.add_trace(go.Heatmap(
+        z=so2_display[::-1, :],
+        x=np.linspace(float(lon.min()), float(lon.max()), so2.shape[1]),
+        y=np.linspace(float(lat.min()), float(lat.max()), so2.shape[0]),
+        colorscale=SO2_COLORSCALE,
+        zmin=-1, zmax=8,
+        colorbar=dict(
+            title="K", thickness=12, len=0.6,
+            tickvals=[0, 3, 5, 8],
+            ticktext=["0", "-3", "-5", "-8"],
+        ),
+        hovertemplate="(%{x:.2f}, %{y:.2f})<br>SO2 index: -%{z:.1f} K<extra></extra>",
     ))
     _volcano_markers(fig, lat, lon, volcanoes)
     fig.update_layout(**_base_layout(insight_title))
@@ -191,13 +214,11 @@ def render():
     pct = f"{100*ash_px/total_px:.3f}%" if total_px else "—"
 
     # Status banner
-    status_colors = {"ok": C_SO2, "warn": "#EE7733", "alert": C_ASH}
+    status_icons = {"ok": "&#10003;", "warn": "&#9888;", "alert": "&#9888;"}
     st.markdown(
-        f'<div style="background:rgba(20,25,38,0.9); border-left:4px solid {status_colors[status]}; '
-        f'border-radius:0 6px 6px 0; padding:0.6rem 1rem; margin:0.8rem 0; '
-        f'font-size:0.95rem; color:#ddd;">'
-        f'<b>{insight_text}</b>'
-        f'<span style="float:right; color:#667788; font-size:0.8rem;">{data.get("timestamp","")}</span>'
+        f'<div class="status-banner {status}">'
+        f'<b>{status_icons[status]} {insight_text}</b>'
+        f'<span style="color:#556677; font-size:0.78rem;">{data.get("timestamp","")}</span>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -215,8 +236,17 @@ def render():
 
     st.markdown("<div style='height:0.4rem'></div>", unsafe_allow_html=True)
 
+    # ── SO2 stats ──
+    so2_arr = data.get("so2", np.array([]))
+    so2_px = 0
+    if so2_arr.size:
+        valid_so2 = ~np.isnan(so2_arr)
+        so2_px = int(np.sum(so2_arr[valid_so2] < -3.0)) if valid_so2.any() else 0
+
     # ── Tabs ──
-    tab1, tab2, tab3 = st.tabs(["Ash RGB", "BTD Split-Window", "Confianza"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "Ash RGB", "Ash/SO2 RGB", "BTD Split-Window", "SO2", "Confianza",
+    ])
 
     with tab1:
         col_img, col_leg = st.columns([5, 1.2])
@@ -231,16 +261,51 @@ def render():
             ash_legend()
 
     with tab2:
-        col_img2, col_leg2 = st.columns([5, 1.2])
-        with col_img2:
+        col_img2a, col_leg2a = st.columns([5, 1.2])
+        with col_img2a:
+            if "ash_so2_rgb" in data:
+                so2_title = (
+                    f"{so2_px} pixeles con SO2 probable (BTD < -3K)"
+                    if so2_px > 0
+                    else "Sin deteccion de SO2 — imagen Ash/SO2 RGB"
+                )
+                fig = _fig_ash_rgb(
+                    data["ash_so2_rgb"], data["lat"], data["lon"],
+                    so2_title, CATALOG,
+                )
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                info_panel("Producto Ash/SO2 RGB no disponible en cache. Descarga una imagen fresca.")
+        with col_leg2a:
+            ash_so2_legend()
+
+    with tab3:
+        col_img3, col_leg3 = st.columns([5, 1.2])
+        with col_img3:
             if btd_arr.size:
                 btd_title = f"{ash_px:,} pixeles con BTD negativo — umbral ceniza: -1 K"
                 fig = _fig_btd(btd_arr, data["lat"], data["lon"], btd_title, CATALOG)
                 st.plotly_chart(fig, use_container_width=True)
-        with col_leg2:
+        with col_leg3:
             btd_legend()
 
-    with tab3:
+    with tab4:
+        col_img4, col_leg4 = st.columns([5, 1.2])
+        with col_img4:
+            if so2_arr.size:
+                so2_map_title = (
+                    f"{so2_px} pixeles con SO2 (BTD 8.4-11.2 < -3K)"
+                    if so2_px > 0
+                    else "Sin deteccion de SO2 en la region"
+                )
+                fig = _fig_so2(so2_arr, data["lat"], data["lon"], so2_map_title, CATALOG)
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                info_panel("Datos SO2 no disponibles. Descarga una imagen fresca.")
+        with col_leg4:
+            so2_legend()
+
+    with tab5:
         if conf_arr.size:
             conf_title = (
                 f"Ceniza confirmada en {conf_high} pixeles"

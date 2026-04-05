@@ -80,8 +80,8 @@ def _build_map(volcanoes):
 
 def render():
     header(
-        "43 volcanes activos monitoreados en Chile",
-        "Red Nacional de Vigilancia Volcanica (SERNAGEOMIN) &middot; Datos GOES-19 cada 10 min",
+        "Monitoreo de 43 volcanes activos en Chile",
+        "Red Nacional de Vigilancia Volcanica &middot; SERNAGEOMIN &middot; GOES-19 Full Disk cada 10 min",
     )
 
     # ── Filtros + KPIs ──

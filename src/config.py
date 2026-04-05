@@ -42,6 +42,15 @@ ASH_RGB = {
     "blue":  {"calc": "B13",       "range": (243.6, 302.4)}, # 10.35 um (BT)
 }
 
+# ── Ash/SO2 RGB Recipe (8.5-11-12, EUMETSAT-adapted) ───────────
+# Optimizado para separar ceniza de SO2 usando 8.4 um
+# Ref: EUMETSAT Ash RGB technical guide
+ASH_SO2_RGB = {
+    "red":   {"calc": "B14 - B15", "range": (-4.0, 2.0)},   # 11.2 - 12.3 um
+    "green": {"calc": "B11 - B14", "range": (-4.0, 5.0)},   # 8.4 - 11.2 um
+    "blue":  {"calc": "B14",       "range": (243.0, 303.0)}, # 11.2 um (BT)
+}
+
 # ── BTD Split-Window thresholds ──────────────────────────────────
 # Ref: Prata (1989), GOES-R ATBD Volcanic Ash v3.0
 BTD_ASH_THRESHOLD = -1.0      # BT(11.2) - BT(12.3) < threshold → posible ceniza

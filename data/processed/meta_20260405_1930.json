@@ -1,0 +1,25 @@
+{
+  "timestamp": "2026-04-05T19:30:00+00:00",
+  "bounds": {
+    "lat_min": -56.0,
+    "lat_max": -17.5,
+    "lon_min": -76.0,
+    "lon_max": -66.0
+  },
+  "shape": [
+    1481,
+    521
+  ],
+  "bands_used": [
+    11,
+    13,
+    14,
+    15
+  ],
+  "products": [
+    "ash_rgb",
+    "btd",
+    "ash_confidence",
+    "geo"
+  ]
+}

@@ -48,11 +48,11 @@ st.sidebar.caption(
 
 # ── Pages ────────────────────────────────────────────────────────
 if page == "Mapa General":
-    from dashboard.pages.overview import render
+    from dashboard.views.overview import render
     render()
 elif page == "Ash RGB Viewer":
-    from dashboard.pages.ash_viewer import render
+    from dashboard.views.ash_viewer import render
     render()
 elif page == "Detalle Volcán":
-    from dashboard.pages.volcano_detail import render
+    from dashboard.views.volcano_detail import render
     render()

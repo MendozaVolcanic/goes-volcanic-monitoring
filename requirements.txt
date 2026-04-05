@@ -1,0 +1,25 @@
+# GOES Volcanic Monitoring Dashboard
+# Core data access
+s3fs>=2024.0.0
+xarray>=2024.0.0
+h5netcdf>=1.3.0
+netcdf4>=1.6.0
+numpy>=1.26.0
+
+# Visualization & mapping
+matplotlib>=3.8.0
+cartopy>=0.22.0
+plotly>=5.18.0
+
+# Dashboard
+streamlit>=1.30.0
+folium>=0.15.0
+streamlit-folium>=0.17.0
+
+# Processing
+scipy>=1.12.0
+pyproj>=3.6.0
+
+# Utilities
+pandas>=2.1.0
+Pillow>=10.0.0

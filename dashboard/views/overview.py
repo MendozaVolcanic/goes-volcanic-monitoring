@@ -1,122 +1,169 @@
-"""Página Overview: Mapa de Chile con 43 volcanes + estado."""
+"""Pagina Overview: Mapa de Chile con 43 volcanes."""
 
+import pandas as pd
 import streamlit as st
 import folium
+from folium.plugins import MarkerCluster
 from streamlit_folium import st_folium
 
-from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_by_zone
+from dashboard.style import header, kpi_card
+from src.volcanos import CATALOG, PRIORITY_VOLCANOES
 
 
-# Colores por zona volcánica
-ZONE_COLORS = {
-    "norte": "#e74c3c",    # rojo
-    "centro": "#f39c12",   # naranja
-    "sur": "#27ae60",      # verde
-    "austral": "#3498db",  # azul
+ZONE_LABELS = {
+    "norte": "Zona Norte",
+    "centro": "Zona Centro",
+    "sur": "Zona Sur",
+    "austral": "Zona Austral",
 }
 
-# Iconos por ranking de peligrosidad
-def _get_icon_color(v):
-    """Color del marcador según ranking SERNAGEOMIN."""
+ZONE_COLORS_HEX = {
+    "norte": "#e74c3c",
+    "centro": "#f39c12",
+    "sur": "#27ae60",
+    "austral": "#3498db",
+}
+
+
+def _marker_color(v):
     if v.name in PRIORITY_VOLCANOES:
         return "red"
-    if v.ranking > 0 and v.ranking <= 10:
+    if 0 < v.ranking <= 10:
         return "orange"
     if v.ranking > 10:
         return "blue"
     return "gray"
 
 
-def render():
-    st.title("Mapa de Volcanes Activos - Chile")
-    st.markdown(
-        "43 volcanes monitoreados por SERNAGEOMIN | "
-        "Datos GOES-19 cada 10 minutos | "
-        "Fuente: AWS S3 `noaa-goes19`"
-    )
-
-    # ── Filtros ──
-    col1, col2 = st.columns([1, 3])
-    with col1:
-        zone_filter = st.multiselect(
-            "Zona volcánica",
-            ["norte", "centro", "sur", "austral"],
-            default=["norte", "centro", "sur", "austral"],
-        )
-        show_priority = st.checkbox("Solo prioritarios", value=False)
-
-    # Filtrar volcanes
-    volcanoes = [v for v in CATALOG if v.zone in zone_filter]
-    if show_priority:
-        volcanoes = [v for v in volcanoes if v.name in PRIORITY_VOLCANOES]
-
-    # ── KPIs ──
-    with col2:
-        k1, k2, k3, k4 = st.columns(4)
-        k1.metric("Volcanes", len(volcanoes))
-        k2.metric("Zona Norte", len([v for v in volcanoes if v.zone == "norte"]))
-        k3.metric("Zona Centro-Sur", len([v for v in volcanoes if v.zone in ("centro", "sur")]))
-        k4.metric("Zona Austral", len([v for v in volcanoes if v.zone == "austral"]))
-
-    # ── Mapa ──
+def _build_map(volcanoes):
     m = folium.Map(
-        location=[-35.0, -71.0],
+        location=[-36.0, -71.5],
         zoom_start=5,
         tiles="CartoDB dark_matter",
+        control_scale=True,
     )
 
-    # Agregar volcanes
     for v in volcanoes:
+        color = _marker_color(v)
+        zone_color = ZONE_COLORS_HEX.get(v.zone, "#888")
+
         popup_html = f"""
-        <b>{v.name}</b><br>
-        Elevación: {v.elevation} m<br>
-        Región: {v.region}<br>
-        Zona: {v.zone}<br>
-        Ranking SERNAGEOMIN: {v.ranking if v.ranking > 0 else 'Sin ranking'}<br>
-        Coords: {v.lat:.2f}, {v.lon:.2f}
+        <div style="font-family:sans-serif; min-width:180px;">
+            <h4 style="margin:0 0 6px 0; color:#333;">{v.name}</h4>
+            <table style="font-size:12px; color:#555; line-height:1.6;">
+                <tr><td><b>Elevacion</b></td><td>{v.elevation:,} m</td></tr>
+                <tr><td><b>Region</b></td><td>{v.region}</td></tr>
+                <tr><td><b>Zona</b></td><td>
+                    <span style="color:{zone_color}; font-weight:600;">
+                        {ZONE_LABELS.get(v.zone, v.zone)}
+                    </span></td></tr>
+                <tr><td><b>Ranking</b></td><td>{v.ranking if v.ranking else '—'}</td></tr>
+                <tr><td><b>Coords</b></td><td>{v.lat:.3f}, {v.lon:.3f}</td></tr>
+            </table>
+        </div>
         """
-        folium.Marker(
+
+        folium.CircleMarker(
             location=[v.lat, v.lon],
+            radius=8 if v.name in PRIORITY_VOLCANOES else 5,
+            color="white",
+            weight=1,
+            fill=True,
+            fill_color=zone_color,
+            fill_opacity=0.85,
             popup=folium.Popup(popup_html, max_width=250),
-            tooltip=f"{v.name} ({v.elevation}m)",
-            icon=folium.Icon(
-                color=_get_icon_color(v),
-                icon="fire",
-                prefix="fa",
-            ),
+            tooltip=f"{v.name} ({v.elevation:,} m)",
         ).add_to(m)
 
     # Leyenda
     legend_html = """
-    <div style="position: fixed; bottom: 30px; left: 30px; z-index: 1000;
-                background: rgba(0,0,0,0.7); padding: 10px; border-radius: 5px;
-                color: white; font-size: 12px;">
-        <b>Volcanes Chile</b><br>
-        <i class="fa fa-circle" style="color:red"></i> Prioritarios (8)<br>
-        <i class="fa fa-circle" style="color:orange"></i> Ranking 1-10<br>
-        <i class="fa fa-circle" style="color:blue"></i> Ranking 11+<br>
-        <i class="fa fa-circle" style="color:gray"></i> Sin ranking
+    <div style="position:fixed; bottom:25px; left:25px; z-index:1000;
+                background:rgba(14,17,23,0.92); padding:12px 16px; border-radius:8px;
+                color:#ccc; font-size:12px; border:1px solid rgba(255,255,255,0.08);
+                backdrop-filter:blur(8px);">
+        <div style="font-weight:700; margin-bottom:6px; color:#fafafa;">Zonas Volcanicas</div>
+        <div><span style="color:#e74c3c;">&#9679;</span> Norte</div>
+        <div><span style="color:#f39c12;">&#9679;</span> Centro</div>
+        <div><span style="color:#27ae60;">&#9679;</span> Sur</div>
+        <div><span style="color:#3498db;">&#9679;</span> Austral</div>
+        <div style="margin-top:6px; border-top:1px solid rgba(255,255,255,0.1); padding-top:6px;">
+            <span style="font-size:14px;">&#9679;</span> = Prioritario
+        </div>
     </div>
     """
     m.get_root().html.add_child(folium.Element(legend_html))
 
-    st_folium(m, width=None, height=650, returned_objects=[])
+    return m
 
-    # ── Tabla de volcanes ──
-    with st.expander("Tabla completa de volcanes", expanded=False):
-        import pandas as pd
 
+def render():
+    header(
+        "Red de Volcanes Activos — Chile",
+        "43 volcanes monitoreados por SERNAGEOMIN &middot; GOES-19 cada 10 min",
+    )
+
+    # ── Filtros ──
+    col_filter, col_spacer, col_kpis = st.columns([1.2, 0.1, 3])
+
+    with col_filter:
+        zone_filter = st.multiselect(
+            "Filtrar por zona",
+            options=list(ZONE_LABELS.keys()),
+            default=list(ZONE_LABELS.keys()),
+            format_func=lambda z: ZONE_LABELS[z],
+        )
+        show_priority = st.toggle("Solo prioritarios", value=False)
+
+    volcanoes = [v for v in CATALOG if v.zone in zone_filter]
+    if show_priority:
+        volcanoes = [v for v in volcanoes if v.name in PRIORITY_VOLCANOES]
+
+    with col_kpis:
+        k1, k2, k3, k4 = st.columns(4)
+        with k1:
+            kpi_card(len(volcanoes), "Total volcanes")
+        with k2:
+            kpi_card(
+                len([v for v in volcanoes if v.zone == "norte"]),
+                "Zona Norte",
+            )
+        with k3:
+            kpi_card(
+                len([v for v in volcanoes if v.zone in ("centro", "sur")]),
+                "Centro-Sur",
+            )
+        with k4:
+            kpi_card(
+                len([v for v in volcanoes if v.zone == "austral"]),
+                "Zona Austral",
+            )
+
+    # ── Mapa ──
+    st.markdown("<div style='height:0.8rem'></div>", unsafe_allow_html=True)
+    m = _build_map(volcanoes)
+    st_folium(m, width=None, height=620, returned_objects=[])
+
+    # ── Tabla ──
+    with st.expander("Tabla completa de volcanes"):
         df = pd.DataFrame([
             {
                 "Nombre": v.name,
-                "Lat": v.lat,
-                "Lon": v.lon,
-                "Elevación (m)": v.elevation,
-                "Zona": v.zone,
-                "Región": v.region,
-                "Ranking": v.ranking if v.ranking > 0 else "-",
+                "Elevacion (m)": f"{v.elevation:,}",
+                "Zona": ZONE_LABELS.get(v.zone, v.zone),
+                "Region": v.region,
+                "Ranking": v.ranking if v.ranking else "—",
+                "Lat": f"{v.lat:.3f}",
+                "Lon": f"{v.lon:.3f}",
                 "Prioritario": "Si" if v.name in PRIORITY_VOLCANOES else "",
             }
             for v in volcanoes
         ])
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(
+            df,
+            use_container_width=True,
+            hide_index=True,
+            column_config={
+                "Prioritario": st.column_config.TextColumn(width="small"),
+                "Ranking": st.column_config.TextColumn(width="small"),
+            },
+        )

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="1800">
+    <title>GOES-19 Ceniza Volcánica — Chile</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0e17; color: #e0e0e0; min-height: 100vh; }
+
+        .header { background: linear-gradient(135deg, #1a1f2e 0%, #0d1117 100%); border-bottom: 1px solid #30363d; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .header h1 { font-size: 1.1em; color: #58a6ff; }
+        .badge { padding: 2px 8px; border-radius: 10px; font-size: 0.7em; font-weight: bold; }
+        .badge-goes { background: #d29922; color: #000; }
+        .badge-exp { background: #f0883e; color: #000; }
+        .header-meta { font-size: 0.8em; color: #8b949e; }
+
+        .info-bar { display: flex; gap: 16px; padding: 10px 20px; background: #161b22; border-bottom: 1px solid #21262d; flex-wrap: wrap; align-items: center; font-size: 0.82em; color: #8b949e; }
+        .info-item { display: flex; align-items: center; gap: 6px; }
+        .info-dot { width: 8px; height: 8px; border-radius: 50%; background: #3fb950; }
+
+        .tabs { display: flex; gap: 0; padding: 0 20px; background: #0d1117; border-bottom: 1px solid #21262d; }
+        .tab { padding: 10px 18px; font-size: 0.85em; cursor: pointer; color: #8b949e; border-bottom: 2px solid transparent; }
+        .tab:hover { color: #c9d1d9; }
+        .tab.active { color: #58a6ff; border-bottom-color: #58a6ff; }
+
+        .content { padding: 20px; }
+
+        .panel { display: none; }
+        .panel.active { display: block; }
+
+        /* Visor de imagen */
+        .img-viewer { background: #161b22; border: 1px solid #21262d; border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+        .img-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: #1c2128; border-bottom: 1px solid #21262d; }
+        .img-title { font-size: 0.88em; font-weight: 600; color: #e6edf3; }
+        .img-desc { font-size: 0.75em; color: #8b949e; }
+        .img-viewer img { width: 100%; display: block; background: #000; max-height: 70vh; object-fit: contain; cursor: zoom-in; }
+
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* Historial */
+        .history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+        .history-card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; overflow: hidden; cursor: pointer; transition: border-color 0.2s; }
+        .history-card:hover { border-color: #58a6ff; }
+        .history-card img { width: 100%; display: block; background: #000; height: 130px; object-fit: cover; }
+        .history-card .hc-label { padding: 6px 10px; font-size: 0.75em; color: #8b949e; }
+
+        /* Leyenda */
+        .leyenda-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px; }
+        .leyenda-card { background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 14px; }
+        .leyenda-card h3 { font-size: 0.88em; color: #58a6ff; margin-bottom: 10px; }
+        .leyenda-item { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 0.82em; }
+        .color-swatch { width: 36px; height: 18px; border-radius: 3px; flex-shrink: 0; }
+        .leyenda-item .desc { color: #c9d1d9; }
+        .leyenda-item .sub { color: #8b949e; font-size: 0.9em; }
+
+        .error-msg { padding: 40px; text-align: center; color: #f85149; font-size: 0.9em; }
+        .loading-msg { padding: 40px; text-align: center; color: #8b949e; }
+
+        /* Modal zoom */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.open { display: flex; }
+        .modal img { max-width: 95vw; max-height: 95vh; object-fit: contain; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 2em; cursor: pointer; color: #fff; }
+
+        @media (max-width: 700px) {
+            .two-col { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="header-left">
+        <h1>GOES-19 Ceniza Volcánica</h1>
+        <span class="badge badge-goes">GOES-19</span>
+        <span class="badge badge-exp">EXPERIMENTAL</span>
+    </div>
+    <div class="header-meta" id="header-meta">Cargando...</div>
+</div>
+
+<div class="info-bar" id="info-bar">
+    <div class="info-item"><div class="info-dot"></div><span>Satélite: GOES-19 (75.2°W)</span></div>
+    <div class="info-item"><span>Resolución: 2 km IR</span></div>
+    <div class="info-item"><span>Cadencia: 10 min | Actualización dashboard: 30 min</span></div>
+    <div class="info-item"><span>Fuente: AWS S3 noaa-goes19 (público)</span></div>
+</div>
+
+<div class="tabs">
+    <div class="tab active" onclick="cambiarTab('ultima')">Última imagen</div>
+    <div class="tab" onclick="cambiarTab('comparacion')">Ash vs SO2</div>
+    <div class="tab" onclick="cambiarTab('historial')">Historial</div>
+    <div class="tab" onclick="cambiarTab('leyenda')">Interpretación</div>
+</div>
+
+<div class="content">
+
+    <!-- Panel: Última imagen -->
+    <div class="panel active" id="panel-ultima">
+        <div id="panel-ultima-content" class="loading-msg">Cargando imágenes...</div>
+    </div>
+
+    <!-- Panel: Comparación -->
+    <div class="panel" id="panel-comparacion">
+        <div class="two-col" id="panel-comp-content">
+            <div class="loading-msg">Cargando...</div>
+        </div>
+    </div>
+
+    <!-- Panel: Historial -->
+    <div class="panel" id="panel-historial">
+        <div id="panel-hist-content" class="loading-msg">Cargando historial...</div>
+    </div>
+
+    <!-- Panel: Leyenda -->
+    <div class="panel" id="panel-leyenda">
+        <div class="leyenda-grid">
+            <div class="leyenda-card">
+                <h3>Ash RGB — Receta RAMMB/CIRA</h3>
+                <div class="leyenda-item">
+                    <div class="color-swatch" style="background:linear-gradient(to right,#e74c3c,#e74c3c)"></div>
+                    <div><div class="desc">Rojo intenso</div><div class="sub">Ceniza volcánica densa (BTD negativo)</div></div>
+                </div>
+                <div class="leyenda-item">
+                    <div class="color-swatch" style="background:linear-gradient(to right,#2ecc71,#27ae60)"></div>
+                    <div><div class="desc">Verde</div><div class="sub">Nubes meteorológicas normales</div></div>
+                </div>
+                <div class="leyenda-item">
+                    <div class="color-swatch" style="background:linear-gradient(to right,#2980b9,#1a5276)"></div>
+                    <div><div class="desc">Azul oscuro</div><div class="sub">Superficie terrestre fría</div></div>
+                </div>
+                <div class="leyenda-item">
+                    <div class="color-swatch" style="background:linear-gradient(to right,#fff,#ddd)"></div>
+                    <div><div class="desc">Blanco/gris</div><div class="sub">Nubes altas de hielo/cirros</div></div>
+                </div>
+                <p style="font-size:0.75em;color:#484f58;margin-top:10px;">Bandas: R=BT(12.3µm)-BT(11.2µm) / G=BT(11.2µm)-BT(8.4µm) / B=BT(10.35µm)<br>Ref: Prata 1989, GOES-R ATBD v3.0</p>
+            </div>
+            <div class="leyenda-card">
+                <h3>Ash/SO2 RGB — Receta EUMETSAT</h3>
+                <div class="leyenda-item">
+                    <div class="color-swatch" style="background:#e74c3c"></div>
+                    <div><div class="desc">Rojo brillante</div><div class="sub">SO2 volcánico (8.4µm absorción)</div></div>
+                </div>
+                <div class="leyenda-item">
+                    <div class="color-swatch" style="background:#8e44ad"></div>
+                    <div><div class="desc">Púrpura/magenta</div><div class="sub">Mezcla ceniza + SO2</div></div>
+                </div>
+                <div class="leyenda-item">
+                    <div class="color-swatch" style="background:#1abc9c"></div>
+                    <div><div class="desc">Verde/cian</div><div class="sub">Nubes meteorológicas</div></div>
+                </div>
+                <div class="leyenda-item">
+                    <div class="color-swatch" style="background:#f39c12"></div>
+                    <div><div class="desc">Naranja/amarillo</div><div class="sub">Superficie cálida / zona árida</div></div>
+                </div>
+                <p style="font-size:0.75em;color:#484f58;margin-top:10px;">Bandas: R=BT(11.2µm)-BT(12.3µm) / G=BT(8.4µm)-BT(11.2µm) / B=BT(11.2µm)<br>Ref: EUMETSAT Ash/SO2 Technical Guide</p>
+            </div>
+            <div class="leyenda-card">
+                <h3>Limitaciones importantes</h3>
+                <ul style="font-size:0.82em;color:#8b949e;line-height:1.7;padding-left:16px;">
+                    <li>Resolución 2 km — no detecta plumas pequeñas</li>
+                    <li>De día: interferencia solar en canales IR cortos</li>
+                    <li>Nubes meteorológicas pueden enmascarar ceniza</li>
+                    <li>Algoritmo BTD funciona mejor de noche</li>
+                    <li>Ceniza húmeda o diluida difícil de detectar</li>
+                    <li>Requiere validación con datos SERNAGEOMIN</li>
+                </ul>
+            </div>
+            <div class="leyenda-card">
+                <h3>Flujo de datos</h3>
+                <div style="font-size:0.82em;color:#8b949e;line-height:1.8;">
+                    <div>GOES-19 ABI Full Disk (10 min)</div>
+                    <div style="color:#484f58;margin-left:8px;">↓ AWS S3 noaa-goes19 (público)</div>
+                    <div style="margin-left:16px;">Bandas 11, 13, 14, 15 (NetCDF)</div>
+                    <div style="color:#484f58;margin-left:8px;">↓ Procesamiento Python</div>
+                    <div style="margin-left:16px;">Radiancia → Temperatura Brillo</div>
+                    <div style="margin-left:16px;">Recorte a Chile (-56°N a -17.5°S)</div>
+                    <div style="margin-left:16px;">Composición RGB Ash / Ash-SO2</div>
+                    <div style="color:#484f58;margin-left:8px;">↓ GitHub Actions (30 min)</div>
+                    <div style="margin-left:16px;">PNG → GitHub Pages</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal zoom -->
+<div class="modal" id="modal" onclick="cerrarModal()">
+    <span class="modal-close">&times;</span>
+    <img id="modal-img" src="" alt="">
+</div>
+
+<script>
+function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+}
+function clearEl(e) { while (e.firstChild) e.removeChild(e.firstChild); }
+
+let metaGlobal = null;
+
+function cambiarTab(nombre) {
+    document.querySelectorAll('.tab').forEach((t, i) => {
+        const nombres = ['ultima','comparacion','historial','leyenda'];
+        t.classList.toggle('active', nombres[i] === nombre);
+    });
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + nombre).classList.add('active');
+}
+
+function abrirModal(src) {
+    document.getElementById('modal-img').src = src;
+    document.getElementById('modal').classList.add('open');
+}
+function cerrarModal() {
+    document.getElementById('modal').classList.remove('open');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModal(); });
+
+function crearImgViewer(titulo, desc, src) {
+    const div = document.createElement('div');
+    div.className = 'img-viewer';
+    const hdr = document.createElement('div');
+    hdr.className = 'img-header';
+    const t = document.createElement('div');
+    t.className = 'img-title';
+    t.textContent = titulo;
+    const d = document.createElement('div');
+    d.className = 'img-desc';
+    d.textContent = desc;
+    hdr.appendChild(t);
+    hdr.appendChild(d);
+    div.appendChild(hdr);
+    const img = document.createElement('img');
+    img.src = src + '?t=' + Date.now();
+    img.alt = titulo;
+    img.addEventListener('click', () => abrirModal(img.src));
+    img.onerror = function() {
+        this.alt = 'Imagen no disponible';
+        this.style.minHeight = '200px';
+        this.style.background = '#161b22';
+    };
+    div.appendChild(img);
+    return div;
+}
+
+function renderUltima(meta) {
+    const cont = document.getElementById('panel-ultima-content');
+    clearEl(cont);
+    if (meta.error) {
+        cont.className = 'error-msg';
+        cont.textContent = 'Error en último procesamiento: ' + meta.error;
+        return;
+    }
+    cont.className = '';
+    const label = meta.label || meta.timestamp_str || '';
+    cont.appendChild(crearImgViewer('Ash RGB — ' + label,
+        'RAMMB/CIRA: ceniza volcánica aparece en rojo. Haz clic para ampliar.',
+        'goes/ash_rgb_latest.png'));
+}
+
+function renderComparacion(meta) {
+    const cont = document.getElementById('panel-comp-content');
+    clearEl(cont);
+    const label = meta.label || '';
+    cont.appendChild(crearImgViewer('Ash RGB (RAMMB/CIRA)',
+        'Ceniza → rojo | Nubes → verde', 'goes/ash_rgb_latest.png'));
+    cont.appendChild(crearImgViewer('Ash/SO2 RGB (EUMETSAT)',
+        'SO2 → rojo/magenta | Ceniza → púrpura', 'goes/ash_so2_rgb_latest.png'));
+}
+
+function renderHistorial(meta) {
+    const cont = document.getElementById('panel-hist-content');
+    clearEl(cont);
+    const hist = meta.historial || [];
+    if (hist.length === 0) {
+        cont.className = 'loading-msg';
+        cont.textContent = 'Historial vacío — se llenará con las próximas ejecuciones automáticas.';
+        return;
+    }
+    cont.className = '';
+    const grid = document.createElement('div');
+    grid.className = 'history-grid';
+    for (const h of hist) {
+        const card = document.createElement('div');
+        card.className = 'history-card';
+        const img = document.createElement('img');
+        img.src = 'goes/' + h.ash_rgb + '?t=' + Date.now();
+        img.alt = h.label;
+        img.loading = 'lazy';
+        img.addEventListener('click', () => abrirModal(img.src));
+        img.onerror = function() { this.style.background = '#1c2128'; this.style.minHeight = '130px'; };
+        card.appendChild(img);
+        const lbl = el('div', 'hc-label', h.label);
+        card.appendChild(lbl);
+        grid.appendChild(card);
+    }
+    cont.appendChild(grid);
+}
+
+async function cargar() {
+    try {
+        const resp = await fetch('goes/meta_latest.json?t=' + Date.now());
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        metaGlobal = await resp.json();
+
+        // Header
+        document.getElementById('header-meta').textContent =
+            'Última imagen: ' + (metaGlobal.label || 'N/D') + ' | ' + metaGlobal.satelite;
+
+        renderUltima(metaGlobal);
+        renderComparacion(metaGlobal);
+        renderHistorial(metaGlobal);
+
+    } catch (e) {
+        document.getElementById('header-meta').textContent = 'Sin datos disponibles';
+        const cont = document.getElementById('panel-ultima-content');
+        cont.className = 'error-msg';
+        cont.textContent =
+            'No se encontró meta_latest.json.\n\n' +
+            'Ejecuta: python goes_export.py\n\n' +
+            'O espera a que el workflow de GitHub Actions ejecute automáticamente.\n\n' +
+            'Error: ' + e.message;
+    }
+}
+
+cargar();
+</script>
+</body>
+</html>

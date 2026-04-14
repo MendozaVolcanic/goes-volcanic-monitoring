@@ -1,0 +1,112 @@
+name: GOES-19 NRT Monitor
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'  # Cada 10 min — cadencia Full Disk GOES-19
+  workflow_dispatch:         # Ejecucion manual desde GitHub
+
+permissions:
+  contents: write
+
+jobs:
+  goes-nrt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8  # Abortar si tarda mas de 8 min (evitar runs solapados)
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements_actions.txt
+
+      - name: Exportar imagenes GOES-19
+        id: export
+        run: |
+          python goes_export.py
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Actualizar STATUS
+        run: |
+          TS=$(date -u +'%Y-%m-%d %H:%M UTC')
+          python - <<'EOF'
+          import json
+          from pathlib import Path
+          from datetime import datetime, timezone
+
+          status_path = Path("STATUS.md")
+          meta_path = Path("docs/goes/meta_latest.json")
+
+          # Leer meta si existe
+          producto_ts = "—"
+          n_productos = 0
+          if meta_path.exists():
+              try:
+                  meta = json.loads(meta_path.read_text())
+                  producto_ts = meta.get("label", "—")
+                  n_productos = len(meta.get("productos", []))
+              except Exception:
+                  pass
+
+          now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+
+          status = f"""# STATUS — GOES Volcanic Monitor
+
+## Ultimo ciclo NRT
+- **Ejecutado**: {now}
+- **Imagen exportada**: {producto_ts}
+- **Productos**: {n_productos} (ash_rgb, ash_so2_rgb)
+- **Dashboard**: https://goesvolcanic.streamlit.app
+
+## Fuentes de datos activas
+| Fuente | Cadencia | Estado |
+|--------|----------|--------|
+| NOAA S3 (L1b ABI) | 10 min | Activo |
+| RealEarth SSEC | ~10 min | Activo |
+| RAMMB Slider | 10 min | Activo |
+
+## GitHub Actions
+- Cron: cada 10 minutos
+- Pipeline: descarga 4 bandas IR → Ash RGB + Ash/SO2 RGB + metadata
+- Historial: ultimas 48 imagenes (~8h) en docs/goes/history/
+
+## Arquitectura
+```
+docs/goes/ash_rgb_latest.png       ← imagen mas reciente
+docs/goes/ash_so2_rgb_latest.png
+docs/goes/meta_latest.json         ← timestamp + historial
+docs/goes/history/                 ← ultimas 48 imagenes
+```
+"""
+          status_path.write_text(status, encoding="utf-8")
+          print(f"STATUS.md actualizado: {now}")
+          EOF
+
+      - name: Commit resultados
+        run: |
+          git config user.name "GOESBot"
+          git config user.email "goes-bot@noreply"
+          git add docs/goes/ STATUS.md 2>/dev/null || true
+          if git diff --quiet --staged 2>/dev/null; then
+            echo "Sin cambios nuevos"
+          else
+            # Timestamp de la imagen en el mensaje de commit
+            TS=$(python -c "
+          import json
+          from pathlib import Path
+          m = Path('docs/goes/meta_latest.json')
+          if m.exists():
+              d = json.loads(m.read_text())
+              print(d.get('label', ''))
+          " 2>/dev/null || date -u +'%Y-%m-%d %H:%M UTC')
+            git commit -m "goes: $TS"
+            git pull origin main --rebase -X ours 2>/dev/null || true
+            git push origin main || true
+          fi

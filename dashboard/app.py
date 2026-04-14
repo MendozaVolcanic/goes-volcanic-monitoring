@@ -41,7 +41,7 @@ with st.sidebar:
 
     page = st.radio(
         "Navegacion",
-        ["Mapa General", "Ash RGB Viewer", "Detalle Volcan", "VOLCAT (SSEC)"],
+        ["Mapa General", "Ash RGB Viewer", "Detalle Volcan", "VOLCAT (SSEC)", "Animacion (RAMMB)"],
         index=0,
         label_visibility="collapsed",
     )
@@ -85,4 +85,7 @@ elif page == "Detalle Volcan":
     render()
 elif page == "VOLCAT (SSEC)":
     from dashboard.views.volcat_viewer import render
+    render()
+elif page == "Animacion (RAMMB)":
+    from dashboard.views.rammb_viewer import render
     render()

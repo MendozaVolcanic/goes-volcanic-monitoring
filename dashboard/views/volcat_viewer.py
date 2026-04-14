@@ -42,21 +42,36 @@ def _fig_ssec_image(img_rgba, bounds, title, volcanoes):
     lon_min = bounds["lon_min"]
     lon_max = bounds["lon_max"]
 
-    # Convertir RGBA a RGB (descartar alpha sobre fondo negro)
+    import base64, io
+    from PIL import Image as PILImage
+
+    # Convertir RGBA a RGB
     rgb = img_rgba[:, :, :3].copy()
     alpha = img_rgba[:, :, 3:4].astype(np.float32) / 255.0
     rgb = (rgb.astype(np.float32) * alpha).astype(np.uint8)
 
-    # Flip vertical + y0=lat_min + dy positivo (misma lógica que heatmaps)
-    rgb = rgb[::-1, :, :]
+    buf = io.BytesIO()
+    PILImage.fromarray(rgb).save(buf, format="PNG")
+    b64 = base64.b64encode(buf.getvalue()).decode()
 
-    fig.add_trace(go.Image(
-        z=rgb,
-        x0=lon_min,
-        dx=(lon_max - lon_min) / rgb.shape[1],
-        y0=lat_min,
-        dy=(lat_max - lat_min) / rgb.shape[0],
+    # Scatter invisible para fijar el dominio del eje
+    fig.add_trace(go.Scatter(
+        x=[lon_min, lon_max], y=[lat_min, lat_max],
+        mode="markers", marker=dict(opacity=0), showlegend=False,
+        hoverinfo="skip",
     ))
+
+    # Imagen georeferenciada con add_layout_image (respeta eje Y geográfico)
+    fig.add_layout_image(
+        source=f"data:image/png;base64,{b64}",
+        xref="x", yref="y",
+        x=lon_min, y=lat_max,
+        xanchor="left", yanchor="top",
+        sizex=lon_max - lon_min,
+        sizey=lat_max - lat_min,
+        sizing="stretch",
+        layer="below",
+    )
 
     # Volcano markers
     lat_arr = np.array([lat_min, lat_max])

@@ -60,15 +60,42 @@ def _base_layout(title, height=680):
 
 
 def _fig_ash_rgb(rgb, lat, lon, insight_title, volcanoes):
-    # Flip vertical: go.Image con dy negativo invierte el eje Y en Plotly.
-    # Solución: misma lógica que heatmaps — flip + y0=lat.min() + dy positivo.
-    img = (np.clip(rgb[::-1, :, :], 0, 1) * 255).astype(np.uint8)
+    import base64, io
+    from PIL import Image as PILImage
+
+    lat_min = float(lat.min())
+    lat_max = float(lat.max())
+    lon_min = float(lon.min())
+    lon_max = float(lon.max())
+
+    # Codificar como PNG base64 para add_layout_image
+    # add_layout_image respeta el eje Y geográfico correctamente
+    img_uint8 = (np.clip(rgb, 0, 1) * 255).astype(np.uint8)
+    buf = io.BytesIO()
+    PILImage.fromarray(img_uint8).save(buf, format="PNG")
+    b64 = base64.b64encode(buf.getvalue()).decode()
+
     fig = go.Figure()
-    fig.add_trace(go.Image(
-        z=img,
-        x0=float(lon.min()), dx=(float(lon.max()) - float(lon.min())) / rgb.shape[1],
-        y0=float(lat.min()), dy=(float(lat.max()) - float(lat.min())) / rgb.shape[0],
+
+    # Scatter invisible para establecer el dominio del eje
+    fig.add_trace(go.Scatter(
+        x=[lon_min, lon_max], y=[lat_min, lat_max],
+        mode="markers", marker=dict(opacity=0), showlegend=False,
+        hoverinfo="skip",
     ))
+
+    # Imagen georeferenciada: x=lon_min, y=lat_max (esquina NW), anchor top-left
+    fig.add_layout_image(
+        source=f"data:image/png;base64,{b64}",
+        xref="x", yref="y",
+        x=lon_min, y=lat_max,
+        xanchor="left", yanchor="top",
+        sizex=lon_max - lon_min,
+        sizey=lat_max - lat_min,
+        sizing="stretch",
+        layer="below",
+    )
+
     _volcano_markers(fig, lat, lon, volcanoes)
     fig.update_layout(**_base_layout(insight_title))
     return fig

@@ -2,6 +2,7 @@
 # Core data access
 s3fs>=2024.0.0
 xarray>=2024.0.0
+h5py>=3.10.0
 h5netcdf>=1.3.0
 netcdf4>=1.6.0
 numpy>=1.26.0

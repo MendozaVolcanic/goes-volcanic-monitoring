@@ -60,12 +60,14 @@ def _base_layout(title, height=680):
 
 
 def _fig_ash_rgb(rgb, lat, lon, insight_title, volcanoes):
-    img = (np.clip(rgb, 0, 1) * 255).astype(np.uint8)
+    # Flip vertical: go.Image con dy negativo invierte el eje Y en Plotly.
+    # Solución: misma lógica que heatmaps — flip + y0=lat.min() + dy positivo.
+    img = (np.clip(rgb[::-1, :, :], 0, 1) * 255).astype(np.uint8)
     fig = go.Figure()
     fig.add_trace(go.Image(
         z=img,
         x0=float(lon.min()), dx=(float(lon.max()) - float(lon.min())) / rgb.shape[1],
-        y0=float(lat.max()), dy=-(float(lat.max()) - float(lat.min())) / rgb.shape[0],
+        y0=float(lat.min()), dy=(float(lat.max()) - float(lat.min())) / rgb.shape[0],
     ))
     _volcano_markers(fig, lat, lon, volcanoes)
     fig.update_layout(**_base_layout(insight_title))

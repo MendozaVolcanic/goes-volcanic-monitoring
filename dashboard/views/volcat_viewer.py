@@ -47,12 +47,15 @@ def _fig_ssec_image(img_rgba, bounds, title, volcanoes):
     alpha = img_rgba[:, :, 3:4].astype(np.float32) / 255.0
     rgb = (rgb.astype(np.float32) * alpha).astype(np.uint8)
 
+    # Flip vertical + y0=lat_min + dy positivo (misma lógica que heatmaps)
+    rgb = rgb[::-1, :, :]
+
     fig.add_trace(go.Image(
         z=rgb,
         x0=lon_min,
         dx=(lon_max - lon_min) / rgb.shape[1],
-        y0=lat_max,
-        dy=-(lat_max - lat_min) / rgb.shape[0],
+        y0=lat_min,
+        dy=(lat_max - lat_min) / rgb.shape[0],
     ))
 
     # Volcano markers

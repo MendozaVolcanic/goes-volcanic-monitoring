@@ -1,6 +1,10 @@
 # GOES Volcanic Monitoring - Chile
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://goesvolcanic.streamlit.app)
+
 Dashboard de monitoreo volcánico en tiempo casi-real usando imágenes del satélite geoestacionario **GOES-19** (GOES-East).
+
+**Demo pública:** https://goesvolcanic.streamlit.app
 
 Genera productos **Ash RGB**, **detección de ceniza** (BTD split-window) y **SO2** para los **43 volcanes activos de Chile** monitoreados por SERNAGEOMIN.
 
@@ -52,6 +56,10 @@ rgb = generate_ash_rgb(bt11, bt13, bt14, bt15)
 ```
 
 ## Dashboard
+
+**Versión pública:** https://goesvolcanic.streamlit.app
+
+Para correr localmente:
 
 ```bash
 streamlit run dashboard/app.py

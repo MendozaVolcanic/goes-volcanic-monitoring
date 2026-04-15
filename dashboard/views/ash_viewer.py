@@ -13,6 +13,7 @@ from dashboard.style import (
     ash_legend, ash_so2_legend, btd_legend, so2_legend,
     header, info_panel, kpi_card,
 )
+from dashboard.utils import fmt_chile
 from src.config import CHILE_BOUNDS, VOLCANIC_ZONES
 from src.process.pipeline import get_latest_processed, load_processed, process_ash_rgb
 from src.volcanos import CATALOG
@@ -242,12 +243,23 @@ def render():
     conf_med = int(np.sum(conf_arr == 2)) if conf_arr.size else 0
     pct = f"{100*ash_px/total_px:.3f}%" if total_px else "—"
 
+    # Agregar hora local al timestamp
+    ts_raw = data.get("timestamp", "")
+    ts_display = ts_raw
+    try:
+        # timestamp formato ISO: 2026-04-15T14:30:00+00:00 o similar
+        dt_ts = datetime.fromisoformat(ts_raw.replace("Z", "+00:00"))
+        ch_str = fmt_chile(dt_ts)
+        ts_display = f"{dt_ts.strftime('%Y-%m-%d %H:%M UTC')}  ({ch_str} Chile)"
+    except Exception:
+        pass
+
     # Status banner
     status_icons = {"ok": "&#10003;", "warn": "&#9888;", "alert": "&#9888;"}
     st.markdown(
         f'<div class="status-banner {status}">'
         f'<b>{status_icons[status]} {insight_text}</b>'
-        f'<span style="color:#556677; font-size:0.78rem;">{data.get("timestamp","")}</span>'
+        f'<span style="color:#556677; font-size:0.78rem;">{ts_display}</span>'
         f'</div>',
         unsafe_allow_html=True,
     )

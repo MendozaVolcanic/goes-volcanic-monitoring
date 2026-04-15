@@ -14,6 +14,7 @@ from dashboard.style import (
     C_ACCENT, C_ASH, C_SO2,
     ash_legend, ash_so2_legend, header, info_panel, kpi_card,
 )
+from dashboard.utils import fmt_chile
 from src.config import CHILE_BOUNDS, VOLCANIC_ZONES
 from src.fetch.realearth_api import (
     fetch_image,
@@ -104,13 +105,22 @@ def _fig_ssec_image(img_rgba, bounds, title, volcanoes):
 
 
 def _parse_timestamp(ts_str):
-    """Convertir timestamp SSEC (YYYYMMDD.HHMMSS) a legible."""
+    """Convertir timestamp SSEC (YYYYMMDD.HHMMSS) a legible con hora local."""
     if not ts_str:
         return "—"
     try:
+        from datetime import datetime, timezone
         date_part = ts_str.split(".")[0]
         time_part = ts_str.split(".")[1] if "." in ts_str else "000000"
-        return f"{date_part[:4]}-{date_part[4:6]}-{date_part[6:8]} {time_part[:2]}:{time_part[2:4]} UTC"
+        utc_str = f"{date_part[:4]}-{date_part[4:6]}-{date_part[6:8]} {time_part[:2]}:{time_part[2:4]} UTC"
+        # Agregar hora local Chile
+        dt = datetime(
+            int(date_part[:4]), int(date_part[4:6]), int(date_part[6:8]),
+            int(time_part[:2]), int(time_part[2:4]),
+            tzinfo=timezone.utc,
+        )
+        ch_str = fmt_chile(dt)
+        return f"{utc_str}  ({ch_str} Chile)"
     except Exception:
         return ts_str
 

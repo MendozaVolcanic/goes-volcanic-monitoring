@@ -19,6 +19,7 @@ from dashboard.style import (
     C_ACCENT, C_ASH, C_SO2,
     header, info_panel, kpi_card,
 )
+from dashboard.utils import fmt_both, fmt_both_long, parse_rammb_ts
 from src.config import CHILE_BOUNDS
 from src.fetch.rammb_slider import (
     CHILE_TILE_BOUNDS, CHILE_TILES_Z2, PRODUCTS,
@@ -43,10 +44,9 @@ PRODUCT_LABELS = {
 
 
 def _ts_to_display(ts: str) -> str:
-    """Timestamp 14-dígitos → string legible."""
-    yyyy, mm, dd = ts_to_parts(ts)
-    hh, mi = ts[8:10], ts[10:12]
-    return f"{yyyy}-{mm}-{dd} {hh}:{mi} UTC"
+    """Timestamp 14-dígitos → 'YYYY-MM-DD HH:MM UTC (HH:MM CLT)'"""
+    dt = parse_rammb_ts(ts)
+    return fmt_both_long(dt)
 
 
 def _img_to_b64(arr: np.ndarray) -> str:

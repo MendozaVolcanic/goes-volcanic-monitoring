@@ -13,7 +13,7 @@ cartopy>=0.22.0
 plotly>=5.18.0
 
 # Dashboard
-streamlit>=1.30.0
+streamlit>=1.33.0   # 1.33+ requerido para @st.fragment(run_every=...)
 folium>=0.15.0
 streamlit-folium>=0.17.0
 

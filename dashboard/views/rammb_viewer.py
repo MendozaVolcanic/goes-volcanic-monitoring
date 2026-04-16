@@ -22,8 +22,8 @@ from dashboard.style import (
 from dashboard.utils import fmt_both, fmt_both_long, parse_rammb_ts
 from src.config import CHILE_BOUNDS
 from src.fetch.rammb_slider import (
-    CHILE_TILE_BOUNDS, CHILE_TILES_Z2, PRODUCTS,
-    fetch_animation_frames, get_latest_timestamps, ts_to_parts,
+    CHILE_REPROJECTED_BOUNDS, CHILE_TILE_BOUNDS, CHILE_TILES_Z2, PRODUCTS,
+    fetch_animation_frames, get_latest_timestamps, reproject_to_latlon, ts_to_parts,
 )
 from src.volcanos import CATALOG, get_priority
 
@@ -203,13 +203,17 @@ def _build_animation(frames: list[dict], bounds: dict) -> go.Figure:
 @st.cache_data(ttl=600, show_spinner=False)
 def _fetch_cached(product: str, n_frames: int) -> list[dict]:
     """Descargar frames con cache de 10 minutos."""
-    return fetch_animation_frames(
+    frames = fetch_animation_frames(
         product=product,
         n_frames=n_frames,
         zoom=2,
         tile_rows=CHILE_TILES_Z2["rows"],
         tile_cols=CHILE_TILES_Z2["cols"],
     )
+    for frame in frames:
+        frame["image"] = reproject_to_latlon(frame["image"], col_start=678, row_start=1356)
+        frame["bounds"] = CHILE_REPROJECTED_BOUNDS
+    return frames
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -325,7 +329,8 @@ def render():
         unsafe_allow_html=True,
     )
 
-    fig = _build_animation(frames, CHILE_TILE_BOUNDS)
+    bounds = frames[0].get("bounds", CHILE_TILE_BOUNDS)
+    fig = _build_animation(frames, bounds)
     st.plotly_chart(fig, use_container_width=True)
 
     # ── Nota sobre RAMMB Slider ──

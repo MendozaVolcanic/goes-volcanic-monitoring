@@ -19,9 +19,10 @@ from dashboard.utils import (
     fmt_both_long, fmt_chile, now_utc, parse_rammb_ts, utc_to_chile,
 )
 from src.fetch.rammb_slider import (
-    CHILE_TILE_BOUNDS, CHILE_TILES_Z2, PRODUCT_LABELS,
-    fetch_stitched_frame, get_latest_timestamps,
+    CHILE_REPROJECTED_BOUNDS, CHILE_TILE_BOUNDS, CHILE_TILES_Z2, PRODUCTS,
+    fetch_stitched_frame, get_latest_timestamps, reproject_to_latlon,
 )
+from src.fetch.wind_data import WIND_LEVELS, fetch_wind_grid
 from src.volcanos import CATALOG, get_priority
 
 logger = logging.getLogger(__name__)
@@ -33,17 +34,8 @@ LIVE_PRODUCTS = [
     ("jma_so2",       "SO2",        "#44dd88"),
 ]
 
-# Si RAMMB no tiene este atributo aun, definirlo aqui
-try:
-    from src.fetch.rammb_slider import PRODUCTS as _P
-    PRODUCT_LABELS = {k: v.split("(")[0].strip() for k, v in _P.items()}
-except ImportError:
-    PRODUCT_LABELS = {
-        "geocolor": "GeoColor",
-        "eumetsat_ash": "Ash RGB",
-        "jma_so2": "SO2",
-        "split_window_difference_10_3-12_3": "BTD",
-    }
+# Construir PRODUCT_LABELS desde PRODUCTS (ya importado arriba)
+PRODUCT_LABELS = {k: v.split("(")[0].strip() for k, v in PRODUCTS.items()}
 
 
 @st.cache_data(ttl=600, show_spinner=False)
@@ -61,11 +53,14 @@ def _fetch_latest_frame(product: str) -> dict | None:
     )
     if img is None:
         return None
+    # Reprojectar de geoestacionaria a lat/lon regular
+    img = reproject_to_latlon(img, col_start=678, row_start=1356)
     dt = parse_rammb_ts(ts)
     return {
         "ts": ts,
         "dt": dt,
         "image": img,
+        "bounds": CHILE_REPROJECTED_BOUNDS,
         "label_utc": dt.strftime("%Y-%m-%d %H:%M UTC"),
         "label_local": fmt_chile(dt),
     }
@@ -153,6 +148,55 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str) -> go.Figure:
     return fig
 
 
+@st.cache_data(ttl=3600, show_spinner=False)
+def _fetch_wind_cached(level: str) -> list:
+    """Obtener grilla de viento GFS (cache 1 hora)."""
+    return fetch_wind_grid(level=level)
+
+
+def _add_wind_arrows(
+    fig,
+    wind_data: list,
+    scale: float = 0.03,
+    color: str = "rgba(160,200,255,0.80)",
+    level_label: str = "500 hPa",
+) -> None:
+    """Agregar vectores de viento como flechas de anotacion Plotly.
+
+    scale: grados de desplazamiento por km/h de viento.
+           0.03 → viento de 50 km/h = flecha de 1.5 grados.
+    """
+    if not wind_data:
+        return
+
+    import plotly.graph_objects as go
+    fig.add_trace(go.Scatter(
+        x=[None], y=[None], mode="lines",
+        line=dict(color=color, width=2),
+        name=f"Viento {level_label} (GFS)",
+        showlegend=True,
+    ))
+
+    for w in wind_data:
+        lon0 = w["lon"]
+        lat0 = w["lat"]
+        lon_tip = lon0 + w["u"] * scale
+        lat_tip = lat0 + w["v"] * scale
+        fig.add_annotation(
+            x=lon_tip, y=lat_tip,
+            ax=lon0,   ay=lat0,
+            xref="x", yref="y",
+            axref="x", ayref="y",
+            arrowhead=2,
+            arrowsize=0.9,
+            arrowwidth=1.5,
+            arrowcolor=color,
+            text="",
+            showarrow=True,
+            hovertext=f"<b>{w['speed']:.0f} km/h</b> @ {w['direction']:.0f}°",
+        )
+
+
 def _reloj_chile():
     """Mostrar reloj UTC + hora Chile en tiempo real."""
     now = now_utc()
@@ -205,6 +249,13 @@ def _live_content():
 
     st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
 
+    # Controles de viento
+    show_wind = st.checkbox("Mostrar vectores de viento (GFS)", value=False, key="live_wind")
+    if show_wind:
+        wind_level = st.selectbox("Nivel", list(WIND_LEVELS.keys()), index=1, key="live_wind_level")
+    else:
+        wind_level = "500 hPa"
+
     # Tabs por producto
     tab1, tab2, tab3 = st.tabs(["🌍 GeoColor", "🌋 Ash RGB", "🟢 SO2"])
 
@@ -217,11 +268,15 @@ def _live_content():
                 st.error(f"No se pudo descargar {prod_label}. Verifica conexion.")
                 continue
 
+            bounds = frame.get("bounds", CHILE_TILE_BOUNDS)
             title = (
                 f"{prod_label} — GOES-19 · "
                 f"{frame['label_utc']}  ({frame['label_local']} Chile)"
             )
-            fig = _make_fig(frame["image"], CHILE_TILE_BOUNDS, title)
+            fig = _make_fig(frame["image"], bounds, title)
+            if show_wind:
+                wind_data = _fetch_wind_cached(WIND_LEVELS[wind_level])
+                _add_wind_arrows(fig, wind_data, level_label=wind_level)
             st.plotly_chart(fig, use_container_width=True)
 
             # Nota de producto

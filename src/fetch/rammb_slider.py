@@ -113,12 +113,121 @@ def fetch_tile(product: str, ts: str, zoom: int, row: int, col: int) -> np.ndarr
         return None
 
 
+def reproject_to_latlon(
+    img: np.ndarray,
+    col_start: int,
+    row_start: int,
+    out_bounds: dict | None = None,
+    out_size: tuple[int, int] | None = None,
+    sat_lon: float = -75.2,
+    zoom: int = 2,
+) -> np.ndarray:
+    """Reprojectar imagen de tiles RAMMB (proyección ABI geoestacionaria)
+    a una grilla lat/lon regular usando pyproj + scipy.
+
+    El mapa geoestacionario tiene distorsión no-lineal fuerte en el eje y
+    (el error en latitud llega a 23° con bounds afines). Esta función
+    corrige eso remapeando cada pixel de salida a su pixel fuente correcto.
+
+    Args:
+        img:       Imagen de tiles (H, W, 3) uint8 en proyección GOES ABI.
+        col_start: Columna inicial de los tiles en la imagen full-disk zoom-2.
+        row_start: Fila inicial de los tiles en la imagen full-disk zoom-2.
+        out_bounds: Bounds geográficos de salida {lat_min, lat_max, lon_min, lon_max}.
+                    Default: CHILE_REPROJECTED_BOUNDS.
+        out_size:  (height, width) de la imagen de salida.
+                    Default: REPROJECT_SIZE.
+        sat_lon:   Longitud del satélite en grados (GOES-19 = -75.2).
+        zoom:      Nivel de zoom RAMMB (2 para Chile).
+
+    Returns:
+        Array (out_h, out_w, 3) uint8 correctamente georeferenciado.
+    """
+    try:
+        from pyproj import Proj
+        from scipy.ndimage import map_coordinates
+    except ImportError as e:
+        logger.warning("reproject_to_latlon requiere pyproj y scipy: %s", e)
+        return img
+
+    if out_bounds is None:
+        out_bounds = CHILE_REPROJECTED_BOUNDS
+    if out_size is None:
+        out_size = REPROJECT_SIZE
+
+    # Parámetros ABI para el nivel de zoom
+    n_tiles = 2 ** zoom
+    cfac_z = 10762.0 / n_tiles    # scan angles por radián (columnas)
+    lfac_z = 10762.0 / n_tiles    # scan angles por radián (filas)
+    center  = 5423.0 / n_tiles    # pixel central (0-indexado)
+    h_m     = 35786023.0          # altura orbital sobre superficie (m)
+
+    out_h, out_w = out_size
+    lat_max = out_bounds["lat_max"]
+    lat_min = out_bounds["lat_min"]
+    lon_min = out_bounds["lon_min"]
+    lon_max = out_bounds["lon_max"]
+
+    # ── Grilla de salida en lat/lon ──────────────────────────────────────
+    # lat decreciente (N→S), lon creciente (W→E)
+    lats_out = np.linspace(lat_max, lat_min, out_h)
+    lons_out = np.linspace(lon_min, lon_max, out_w)
+    LON, LAT = np.meshgrid(lons_out, lats_out)
+
+    # ── lat/lon → metros en proyección GEOS ─────────────────────────────
+    p = Proj(proj="geos", lon_0=sat_lon, h=h_m, ellps="GRS80", sweep="x")
+    x_m_flat, y_m_flat = p(LON.ravel(), LAT.ravel())
+    x_m = np.asarray(x_m_flat, dtype=np.float64)
+    y_m = np.asarray(y_m_flat, dtype=np.float64)
+
+    # ── metros → scan angles → pixel en imagen full-disk ────────────────
+    x_rad = x_m / h_m
+    y_rad = y_m / h_m
+    pix_col_full = center + x_rad * cfac_z
+    pix_row_full = center - y_rad * lfac_z   # y positivo = Norte = filas pequeñas
+
+    # ── pixel full-disk → pixel en imagen de tiles (coords locales) ──────
+    src_col = pix_col_full - col_start
+    src_row = pix_row_full - row_start
+
+    img_h, img_w = img.shape[:2]
+
+    # Puntos fuera del disco terrestre (pyproj devuelve ~1e30) o del tile
+    valid = (
+        np.isfinite(x_m) & np.isfinite(y_m) &
+        (np.abs(x_m) < 1e10) &          # dentro del disco terrestre
+        (src_col >= 0) & (src_col < img_w) &
+        (src_row >= 0) & (src_row < img_h)
+    )
+    invalid = ~valid
+
+    # ── Interpolar cada canal ────────────────────────────────────────────
+    coords = np.array([src_row, src_col])   # shape (2, N)
+    out_img = np.zeros((out_h, out_w, 3), dtype=np.uint8)
+
+    for c in range(3):
+        vals = map_coordinates(
+            img[:, :, c].astype(np.float32),
+            coords,
+            order=1,
+            mode="constant",
+            cval=0.0,
+            prefilter=False,
+        )
+        ch = vals.reshape(out_h, out_w)
+        ch[invalid.reshape(out_h, out_w)] = 0
+        out_img[:, :, c] = np.clip(ch, 0, 255).astype(np.uint8)
+
+    return out_img
+
+
 def fetch_stitched_frame(
     product: str,
     ts: str,
     zoom: int = 2,
     tile_rows: list[int] | None = None,
     tile_cols: list[int] | None = None,
+    reproject: bool = False,
 ) -> np.ndarray | None:
     """Descargar y unir tiles en una imagen compuesta.
 
@@ -128,6 +237,7 @@ def fetch_stitched_frame(
         zoom: Nivel de zoom (0-4).
         tile_rows: Lista de filas de tiles a incluir.
         tile_cols: Lista de columnas de tiles a incluir.
+        reproject: Si True, reprojectar de geoestacionaria a lat/lon regular.
 
     Returns:
         Array numpy (H, W, 3) uint8 o None si fallan todos los tiles.
@@ -169,6 +279,11 @@ def fetch_stitched_frame(
                 x0 = j * TILE_SIZE
                 canvas[y0:y0 + TILE_SIZE, x0:x0 + TILE_SIZE] = tiles[(r, c)]
 
+    if reproject:
+        col_start = min(tile_cols) * TILE_SIZE
+        row_start = min(tile_rows) * TILE_SIZE
+        canvas = reproject_to_latlon(canvas, col_start=col_start, row_start=row_start)
+
     return canvas
 
 
@@ -178,6 +293,7 @@ def fetch_animation_frames(
     zoom: int = 2,
     tile_rows: list[int] | None = None,
     tile_cols: list[int] | None = None,
+    reproject: bool = False,
 ) -> list[dict]:
     """Descargar N frames para animación.
 
@@ -186,9 +302,10 @@ def fetch_animation_frames(
         n_frames: Número de frames (12 = 2 horas).
         zoom: Nivel de zoom.
         tile_rows / tile_cols: Tiles a incluir.
+        reproject: Si True, reprojectar cada frame a lat/lon regular.
 
     Returns:
-        Lista de dicts con 'ts', 'label', 'image' (numpy array).
+        Lista de dicts con 'ts', 'label', 'image' (numpy array), 'bounds'.
         Ordenados de más antiguo a más reciente (orden correcto para animación).
     """
     if tile_rows is None:
@@ -200,17 +317,21 @@ def fetch_animation_frames(
     if not timestamps:
         return []
 
+    bounds = CHILE_REPROJECTED_BOUNDS if reproject else CHILE_TILE_BOUNDS
+
     # Descargar frames más recientes (timestamps[0] es el más nuevo)
     frames = []
     for ts in timestamps:
-        img = fetch_stitched_frame(product, ts, zoom, tile_rows, tile_cols)
+        img = fetch_stitched_frame(product, ts, zoom, tile_rows, tile_cols, reproject=reproject)
         if img is not None:
             yyyy, mm, dd = ts_to_parts(ts)
             hh, mi = ts[8:10], ts[10:12]
+            label_suffix = " [georef]" if reproject else ""
             frames.append({
                 "ts": ts,
-                "label": f"{yyyy}-{mm}-{dd} {hh}:{mi} UTC",
+                "label": f"{yyyy}-{mm}-{dd} {hh}:{mi} UTC{label_suffix}",
                 "image": img,
+                "bounds": bounds,
             })
 
     # Invertir: del más antiguo al más reciente para animación correcta
@@ -226,3 +347,14 @@ CHILE_TILE_BOUNDS = {
     "lon_min": -85.0,
     "lon_max": -50.0,
 }
+
+# Bounds geográficos reales para la vista Chile reprojectada
+CHILE_REPROJECTED_BOUNDS = {
+    "lat_min": -57.0,
+    "lat_max": -14.0,
+    "lon_min": -82.0,
+    "lon_max": -62.0,
+}
+
+# Tamaño de salida de la imagen reprojectada (height, width)
+REPROJECT_SIZE = (800, 380)

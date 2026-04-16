@@ -156,11 +156,16 @@ def reproject_to_latlon(
         out_size = REPROJECT_SIZE
 
     # Parámetros ABI para el nivel de zoom
+    # RAMMB zoom=4 → 16 tiles × 678px = 10848px (equivale a resolución 1km ABI full disk)
+    # ABI full disk extent: ±0.151872 rad en x e y
+    # cfac = (full_disk_pixels / 2) / max_scan_angle
     n_tiles = 2 ** zoom
-    cfac_z = 10762.0 / n_tiles    # scan angles por radián (columnas)
-    lfac_z = 10762.0 / n_tiles    # scan angles por radián (filas)
-    center  = 5423.0 / n_tiles    # pixel central (0-indexado)
-    h_m     = 35786023.0          # altura orbital sobre superficie (m)
+    ABI_MAX_SCAN_ANGLE = 0.151872          # rad (semi-extent del full disk ABI)
+    full_disk_px = n_tiles * TILE_SIZE     # e.g. 4×678=2712 en zoom=2
+    center  = full_disk_px / 2.0          # pixel central del full disk en este zoom
+    cfac_z  = center / ABI_MAX_SCAN_ANGLE  # px/rad ≈ 8929 en zoom=2
+    lfac_z  = center / ABI_MAX_SCAN_ANGLE
+    h_m     = 35786023.0                   # altura orbital sobre superficie (m)
 
     out_h, out_w = out_size
     lat_max = out_bounds["lat_max"]
@@ -349,12 +354,15 @@ CHILE_TILE_BOUNDS = {
 }
 
 # Bounds geográficos reales para la vista Chile reprojectada
+# Tiles col=[1,2] zoom=2 cubren aprox. -79.5°W a -70.9°W (con cfac correcto)
+# Se usa un margen pequeño para evitar bordes negros
 CHILE_REPROJECTED_BOUNDS = {
     "lat_min": -57.0,
     "lat_max": -14.0,
-    "lon_min": -82.0,
-    "lon_max": -62.0,
+    "lon_min": -79.0,
+    "lon_max": -64.0,
 }
 
 # Tamaño de salida de la imagen reprojectada (height, width)
-REPROJECT_SIZE = (800, 380)
+# Proporcional a bounds: lat 43° × lon 15° ≈ ratio 2.87:1
+REPROJECT_SIZE = (860, 300)

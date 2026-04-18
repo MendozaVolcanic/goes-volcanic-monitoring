@@ -38,8 +38,12 @@ LIVE_PRODUCTS = [
 PRODUCT_LABELS = {k: v.split("(")[0].strip() for k, v in PRODUCTS.items()}
 
 
+# Versión de reproyección — cambiar si se modifica cfac/bounds para invalidar caché
+_REPROJECT_VERSION = "v2"
+
+
 @st.cache_data(ttl=600, show_spinner=False)
-def _fetch_latest_frame(product: str) -> dict | None:
+def _fetch_latest_frame(product: str, _v: str = _REPROJECT_VERSION) -> dict | None:
     """Descargar el frame mas reciente para un producto (cache 10 min)."""
     times = get_latest_timestamps(product, n=1)
     if not times:

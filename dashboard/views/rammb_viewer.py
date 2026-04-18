@@ -200,8 +200,12 @@ def _build_animation(frames: list[dict], bounds: dict) -> go.Figure:
     return fig
 
 
+# Versión de reproyección — cambiar si se modifica cfac/bounds para invalidar caché
+_REPROJECT_VERSION = "v2"
+
+
 @st.cache_data(ttl=600, show_spinner=False)
-def _fetch_cached(product: str, n_frames: int) -> list[dict]:
+def _fetch_cached(product: str, n_frames: int, _v: str = _REPROJECT_VERSION) -> list[dict]:
     """Descargar frames con cache de 10 minutos."""
     frames = fetch_animation_frames(
         product=product,

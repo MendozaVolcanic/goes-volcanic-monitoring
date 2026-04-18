@@ -32,6 +32,26 @@ SECTOR = "full_disk"
 TILE_SIZE = 678        # Todos los tiles son 678×678 px
 TIMEOUT = 20
 
+# RAMMB cambia de tile size en zoom>=3
+TILE_SIZE_Z3 = 512  # zoom 3 y 4 usan 512px por tile
+
+def get_tile_size(zoom: int) -> int:
+    """678px para zoom<=2, 512px para zoom>=3."""
+    return TILE_SIZE_Z3 if zoom >= 3 else TILE_SIZE
+
+# Niveles de zoom por tipo de vista
+ZOOM_CHILE  = 2   # Chile completo  (~5.1 km/px)
+ZOOM_ZONE   = 3   # Por zona        (~3.4 km/px, 4×4 tiles)
+ZOOM_VOLCAN = 4   # Volcán zoom     (~1.7 km/px, ~9-12 tiles)
+
+# Radio estándar para vista volcán
+VOLCANO_RADIUS_DEG = 1.5  # ±1.5° ~ 165 km
+
+# Tiles Chile completo a zoom=3 (calculados desde scan angles del zoom=2)
+# zoom=2 Chile: cols[1,2] rows[2,3] → scan angles x∈[-0.0759,+0.0758] y∈[0,-0.1518]
+# zoom=3 cfac=13484 center=2048: cols [2..5] rows [4..7]
+CHILE_TILES_Z3 = {"rows": [4, 5, 6, 7], "cols": [2, 3, 4, 5]}
+
 # Productos volcánicos disponibles y sus nombres para mostrar
 PRODUCTS = {
     "geocolor":    "GeoColor (color real)",
@@ -49,6 +69,65 @@ CHILE_TILES_Z2 = {"rows": [2, 3], "cols": [1, 2]}
 
 # Zoom 1 (2×2 tiles) cubre toda Sudamérica — más contexto, menor resolución
 SOUTH_AMERICA_TILES_Z1 = {"rows": [1], "cols": [0, 1]}
+
+
+def get_tiles_for_bounds(
+    bounds: dict,
+    zoom: int,
+    sat_lon: float = -75.2,
+) -> tuple[list[int], list[int]]:
+    """Calcular qué tiles RAMMB cubren los bounds lat/lon dados.
+
+    Usa la proyección GEOS para encontrar los píxeles del full-disk
+    correspondientes a las 4 esquinas del área y devuelve los tiles necesarios.
+    """
+    try:
+        from pyproj import Proj
+    except ImportError:
+        logger.warning("pyproj no disponible, usando tiles default")
+        return CHILE_TILES_Z2["rows"], CHILE_TILES_Z2["cols"]
+
+    tile_sz   = get_tile_size(zoom)
+    n_tiles   = 2 ** zoom
+    full_disk = n_tiles * tile_sz
+    center    = full_disk / 2.0
+    ABI_MAX   = 0.151872
+    cfac      = center / ABI_MAX
+    h_m       = 35786023.0
+
+    p = Proj(proj="geos", lon_0=sat_lon, h=h_m, ellps="GRS80", sweep="x")
+
+    corners = [
+        (bounds["lon_min"], bounds["lat_min"]),
+        (bounds["lon_min"], bounds["lat_max"]),
+        (bounds["lon_max"], bounds["lat_min"]),
+        (bounds["lon_max"], bounds["lat_max"]),
+    ]
+
+    tile_cols_found, tile_rows_found = [], []
+    for lon, lat in corners:
+        try:
+            x_m, y_m = p(lon, lat)
+        except Exception:
+            continue
+        if not (np.isfinite(x_m) and np.isfinite(y_m)
+                and abs(x_m) < 1e10 and abs(y_m) < 1e10):
+            continue
+        pix_col = center + (x_m / h_m) * cfac
+        pix_row = center - (y_m / h_m) * cfac
+        tc = int(max(0, min(pix_col / tile_sz, n_tiles - 1)))
+        tr = int(max(0, min(pix_row / tile_sz, n_tiles - 1)))
+        tile_cols_found.append(tc)
+        tile_rows_found.append(tr)
+
+    if not tile_cols_found:
+        return CHILE_TILES_Z2["rows"], CHILE_TILES_Z2["cols"]
+
+    return (
+        list(range(min(tile_rows_found), max(tile_rows_found) + 1)),
+        list(range(min(tile_cols_found), max(tile_cols_found) + 1)),
+    )
+
 
 _session = None
 
@@ -153,19 +232,24 @@ def reproject_to_latlon(
     if out_bounds is None:
         out_bounds = CHILE_REPROJECTED_BOUNDS
     if out_size is None:
-        out_size = REPROJECT_SIZE
+        # Auto-calcular proporcional a los bounds y al zoom
+        # zoom=2: 20px/°, zoom=3: 40px/°, zoom=4: 80px/°
+        ppd = {2: 20, 3: 40, 4: 80}.get(zoom, 20)
+        lat_span = out_bounds["lat_max"] - out_bounds["lat_min"]
+        lon_span = out_bounds["lon_max"] - out_bounds["lon_min"]
+        out_size = (max(120, int(lat_span * ppd)), max(80, int(lon_span * ppd)))
 
     # Parámetros ABI para el nivel de zoom
-    # RAMMB zoom=4 → 16 tiles × 678px = 10848px (equivale a resolución 1km ABI full disk)
-    # ABI full disk extent: ±0.151872 rad en x e y
-    # cfac = (full_disk_pixels / 2) / max_scan_angle
-    n_tiles = 2 ** zoom
-    ABI_MAX_SCAN_ANGLE = 0.151872          # rad (semi-extent del full disk ABI)
-    full_disk_px = n_tiles * TILE_SIZE     # e.g. 4×678=2712 en zoom=2
-    center  = full_disk_px / 2.0          # pixel central del full disk en este zoom
-    cfac_z  = center / ABI_MAX_SCAN_ANGLE  # px/rad ≈ 8929 en zoom=2
-    lfac_z  = center / ABI_MAX_SCAN_ANGLE
-    h_m     = 35786023.0                   # altura orbital sobre superficie (m)
+    # TILE_SIZE cambia: 678px zoom<=2, 512px zoom>=3
+    # cfac = (full_disk_pixels / 2) / ABI_max_scan_angle
+    n_tiles          = 2 ** zoom
+    tile_sz          = get_tile_size(zoom)
+    ABI_MAX_SCAN_ANGLE = 0.151872
+    full_disk_px     = n_tiles * tile_sz
+    center           = full_disk_px / 2.0
+    cfac_z           = center / ABI_MAX_SCAN_ANGLE
+    lfac_z           = cfac_z
+    h_m              = 35786023.0
 
     out_h, out_w = out_size
     lat_max = out_bounds["lat_max"]
@@ -252,10 +336,11 @@ def fetch_stitched_frame(
     if tile_cols is None:
         tile_cols = CHILE_TILES_Z2["cols"]
 
+    tile_sz = get_tile_size(zoom)
     n_rows = len(tile_rows)
     n_cols = len(tile_cols)
-    h = n_rows * TILE_SIZE
-    w = n_cols * TILE_SIZE
+    h = n_rows * tile_sz
+    w = n_cols * tile_sz
     canvas = np.zeros((h, w, 3), dtype=np.uint8)
 
     # Descargar tiles en paralelo
@@ -280,16 +365,57 @@ def fetch_stitched_frame(
     for i, r in enumerate(tile_rows):
         for j, c in enumerate(tile_cols):
             if (r, c) in tiles:
-                y0 = i * TILE_SIZE
-                x0 = j * TILE_SIZE
-                canvas[y0:y0 + TILE_SIZE, x0:x0 + TILE_SIZE] = tiles[(r, c)]
+                arr = tiles[(r, c)]
+                th, tw = arr.shape[:2]
+                y0 = i * tile_sz
+                x0 = j * tile_sz
+                canvas[y0:y0 + th, x0:x0 + tw] = arr
 
     if reproject:
-        col_start = min(tile_cols) * TILE_SIZE
-        row_start = min(tile_rows) * TILE_SIZE
+        col_start = min(tile_cols) * tile_sz
+        row_start = min(tile_rows) * tile_sz
         canvas = reproject_to_latlon(canvas, col_start=col_start, row_start=row_start)
 
     return canvas
+
+
+def fetch_frame_for_bounds(
+    product: str,
+    ts: str,
+    bounds: dict,
+    zoom: int = ZOOM_ZONE,
+    sat_lon: float = -75.2,
+) -> np.ndarray | None:
+    """Descargar y reprojectar el frame para un área geográfica específica.
+
+    Calcula automáticamente qué tiles cubren los bounds, los descarga,
+    los cose y reprojecta a lat/lon regular.
+
+    Args:
+        product: ID del producto RAMMB.
+        ts:      Timestamp 14-dígitos.
+        bounds:  {lat_min, lat_max, lon_min, lon_max}.
+        zoom:    Nivel de zoom (2=Chile, 3=zona, 4=volcán).
+
+    Returns:
+        Array (H, W, 3) uint8 georeferenciado en los bounds dados, o None.
+    """
+    tile_rows, tile_cols = get_tiles_for_bounds(bounds, zoom, sat_lon)
+    img = fetch_stitched_frame(product, ts, zoom=zoom,
+                               tile_rows=tile_rows, tile_cols=tile_cols)
+    if img is None:
+        return None
+    tile_sz   = get_tile_size(zoom)
+    col_start = min(tile_cols) * tile_sz
+    row_start = min(tile_rows) * tile_sz
+    return reproject_to_latlon(
+        img,
+        col_start=col_start,
+        row_start=row_start,
+        out_bounds=bounds,
+        sat_lon=sat_lon,
+        zoom=zoom,
+    )
 
 
 def fetch_animation_frames(

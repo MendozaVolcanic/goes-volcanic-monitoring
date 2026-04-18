@@ -18,12 +18,15 @@ from dashboard.style import C_ACCENT, header, info_panel, kpi_card
 from dashboard.utils import (
     fmt_both_long, fmt_chile, now_utc, parse_rammb_ts, utc_to_chile,
 )
+from src.config import VOLCANIC_ZONES
 from src.fetch.rammb_slider import (
     CHILE_REPROJECTED_BOUNDS, CHILE_TILE_BOUNDS, CHILE_TILES_Z2, PRODUCTS,
-    fetch_stitched_frame, get_latest_timestamps, reproject_to_latlon,
+    fetch_stitched_frame, fetch_frame_for_bounds,
+    get_latest_timestamps, reproject_to_latlon,
+    ZOOM_ZONE, ZOOM_VOLCAN, VOLCANO_RADIUS_DEG,
 )
 from src.fetch.wind_data import WIND_LEVELS, fetch_wind_grid
-from src.volcanos import CATALOG, get_priority
+from src.volcanos import CATALOG, get_priority, get_volcano, PRIORITY_VOLCANOES
 
 logger = logging.getLogger(__name__)
 
@@ -88,6 +91,50 @@ def _fetch_latest_frame(product: str) -> dict | None:
     return _fetch_frame_for_ts(product, ts)
 
 
+ZONE_LABELS = {
+    "norte":   "Zona Norte",
+    "centro":  "Zona Centro",
+    "sur":     "Zona Sur",
+    "austral": "Zona Austral",
+}
+
+ZONE_COLORS = {
+    "norte":   "#CC3311",
+    "centro":  "#EE7733",
+    "sur":     "#009988",
+    "austral": "#0077BB",
+}
+
+
+@st.cache_data(ttl=7200, show_spinner=False)
+def _fetch_zone_frame(
+    product: str, ts: str, zone_key: str,
+    _v: str = _REPROJECT_VERSION,
+) -> np.ndarray | None:
+    """Descargar frame para una zona volcánica a zoom=3 (cache 2h por ts+zona)."""
+    bounds = VOLCANIC_ZONES[zone_key]
+    return fetch_frame_for_bounds(product, ts, bounds, zoom=ZOOM_ZONE)
+
+
+@st.cache_data(ttl=7200, show_spinner=False)
+def _fetch_volcano_frame(
+    product: str, ts: str, volcano_name: str,
+    radius: float = VOLCANO_RADIUS_DEG,
+    _v: str = _REPROJECT_VERSION,
+) -> np.ndarray | None:
+    """Descargar frame centrado en un volcán a zoom=4 (cache 2h por ts+volcán)."""
+    v = get_volcano(volcano_name)
+    if v is None:
+        return None
+    bounds = {
+        "lat_min": v.lat - radius,
+        "lat_max": v.lat + radius,
+        "lon_min": v.lon - radius,
+        "lon_max": v.lon + radius,
+    }
+    return fetch_frame_for_bounds(product, ts, bounds, zoom=ZOOM_VOLCAN)
+
+
 @st.cache_data(ttl=90, show_spinner=False)
 def _fetch_latest_ts_all() -> dict:
     """Obtener timestamps mas recientes de todos los productos (cache 90s)."""
@@ -106,7 +153,7 @@ def _fetch_latest_ts_all() -> dict:
     return result
 
 
-def _make_fig(img: np.ndarray, bounds: dict, title: str) -> go.Figure:
+def _make_fig(img: np.ndarray, bounds: dict, title: str, highlight_volcano=None) -> go.Figure:
     """Crear figura Plotly con imagen georeferenciada y volcanes."""
     import base64, io
     from PIL import Image as PILImage
@@ -153,6 +200,21 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str) -> go.Figure:
             textfont=dict(size=8, color="rgba(255,255,255,0.75)"),
             name="Volcanes",
             hovertext=[f"<b>{v.name}</b><br>{v.elevation:,} m" for v in vis],
+            hoverinfo="text", showlegend=False,
+        ))
+
+    # Marcador resaltado para volcán seleccionado (vista zoom)
+    if highlight_volcano is not None:
+        fig.add_trace(go.Scatter(
+            x=[highlight_volcano.lon], y=[highlight_volcano.lat],
+            mode="markers+text",
+            marker=dict(size=14, color="#ff4444", symbol="triangle-up",
+                        line=dict(width=2, color="white")),
+            text=[highlight_volcano.name],
+            textposition="top center",
+            textfont=dict(size=10, color="white", family="Arial Black"),
+            name=highlight_volcano.name,
+            hovertext=f"<b>{highlight_volcano.name}</b><br>{highlight_volcano.elevation:,} m",
             hoverinfo="text", showlegend=False,
         ))
 
@@ -304,8 +366,11 @@ def _live_content():
     else:
         wind_level = "500 hPa"
 
-    # ── Tabs por producto ──────────────────────────────────────────────────
-    tab1, tab2, tab3 = st.tabs(["🌍 GeoColor", "🌋 Ash RGB", "🟢 SO2"])
+    # ── Tabs ──────────────────────────────────────────────────────────────
+    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+        "🌍 GeoColor", "🌋 Ash RGB", "🟢 SO2",
+        "🗺️ Por Zonas", "🔬 Volcán",
+    ])
 
     notas = {
         "geocolor":    "Color real mejorado (dia). Ideal para ver columnas eruptivas y plumas.",
@@ -346,6 +411,121 @@ def _live_content():
                 f'</div>',
                 unsafe_allow_html=True,
             )
+
+    # ── Tab 4: Por Zonas ──────────────────────────────────────────────────
+    with tab4:
+        prod_zona = st.selectbox(
+            "Producto", ["geocolor", "eumetsat_ash", "jma_so2"],
+            format_func=lambda k: PRODUCT_LABELS.get(k, k),
+            key="zona_product",
+        )
+        ts_zona = _get_latest_ts(prod_zona)
+
+        if ts_zona is None:
+            st.error("No se pudo obtener timestamp. Verifica conexion.")
+        else:
+            st.markdown(
+                f'<div style="font-size:0.75rem; color:#556677; margin-bottom:0.5rem;">'
+                f'Scan: <b style="color:#99aabb;">{ts_zona[8:10]}:{ts_zona[10:12]} UTC</b>'
+                f' · Zoom=3 (~3.4 km/px) · Descarga en paralelo</div>',
+                unsafe_allow_html=True,
+            )
+            # 2×2 grid: Norte/Centro arriba, Sur/Austral abajo
+            row1_col1, row1_col2 = st.columns(2)
+            row2_col1, row2_col2 = st.columns(2)
+            zone_cols = {
+                "norte":   row1_col1,
+                "centro":  row1_col2,
+                "sur":     row2_col1,
+                "austral": row2_col2,
+            }
+            for zone_key, col in zone_cols.items():
+                with col:
+                    with st.spinner(f"{ZONE_LABELS[zone_key]}..."):
+                        img_zona = _fetch_zone_frame(prod_zona, ts_zona, zone_key)
+                    if img_zona is None:
+                        st.error(f"Sin datos para {ZONE_LABELS[zone_key]}")
+                        continue
+                    zone_bounds = VOLCANIC_ZONES[zone_key]
+                    zone_title = (
+                        f'<b style="color:{ZONE_COLORS[zone_key]};">'
+                        f'{ZONE_LABELS[zone_key]}</b>'
+                    )
+                    st.markdown(zone_title, unsafe_allow_html=True)
+                    fig_z = _make_fig(
+                        img_zona, zone_bounds,
+                        f"{ZONE_LABELS[zone_key]} · {prod_zona} · zoom=3",
+                    )
+                    fig_z.update_layout(height=420)
+                    st.plotly_chart(fig_z, use_container_width=True)
+
+    # ── Tab 5: Volcán zoom=4 ───────────────────────────────────────────────
+    with tab5:
+        col_vsel, col_vprod, col_vrad = st.columns([2, 1.2, 1])
+        with col_vsel:
+            priority_names = [v.name for v in CATALOG if v.name in
+                              [p for p in PRIORITY_VOLCANOES]]
+            other_names    = [v.name for v in CATALOG if v.name not in priority_names]
+            volc_options   = (
+                [f"★ {n}" for n in priority_names] + other_names
+            )
+            sel_raw = st.selectbox("Volcán", volc_options, index=0, key="volc_sel")
+            sel_name = sel_raw.replace("★ ", "")
+        with col_vprod:
+            prod_volc = st.selectbox(
+                "Producto", ["geocolor", "eumetsat_ash", "jma_so2"],
+                format_func=lambda k: PRODUCT_LABELS.get(k, k),
+                key="volc_product",
+            )
+        with col_vrad:
+            radius = st.slider("Radio (°)", 0.5, 3.0, VOLCANO_RADIUS_DEG, 0.5,
+                               key="volc_radius",
+                               help="±radio en grados lat/lon (~111 km por grado)")
+
+        ts_volc = _get_latest_ts(prod_volc)
+        volcano = get_volcano(sel_name)
+
+        if volcano is None:
+            st.error(f"Volcán '{sel_name}' no encontrado en el catálogo.")
+        elif ts_volc is None:
+            st.error("No se pudo obtener timestamp.")
+        else:
+            volc_bounds = {
+                "lat_min": volcano.lat - radius,
+                "lat_max": volcano.lat + radius,
+                "lon_min": volcano.lon - radius,
+                "lon_max": volcano.lon + radius,
+            }
+            st.markdown(
+                f'<div style="font-size:0.78rem; color:#556677; margin-bottom:0.3rem;">'
+                f'<b style="color:#e6edf3;">{volcano.name}</b> · '
+                f'{volcano.lat:.2f}°, {volcano.lon:.2f}° · '
+                f'{volcano.elevation:,} m · '
+                f'Scan: <b style="color:#99aabb;">{ts_volc[8:10]}:{ts_volc[10:12]} UTC</b> · '
+                f'Zoom=4 (~1.7 km/px)</div>',
+                unsafe_allow_html=True,
+            )
+            with st.spinner(
+                f"Cargando zoom=4 para {volcano.name} "
+                f"({ts_volc[8:10]}:{ts_volc[10:12]} UTC)..."
+            ):
+                img_volc = _fetch_volcano_frame(
+                    prod_volc, ts_volc, sel_name, radius,
+                )
+            if img_volc is None:
+                st.error(
+                    "No se pudieron descargar los tiles para este volcán. "
+                    "Puede que el área esté fuera del disco visible de GOES-19."
+                )
+            else:
+                fig_v = _make_fig(
+                    img_volc, volc_bounds,
+                    f"{volcano.name} · {prod_volc} · zoom=4 · "
+                    f"±{radius}° ({radius*111:.0f} km)",
+                    highlight_volcano=volcano,
+                )
+                fig_v.update_layout(height=600)
+                st.plotly_chart(fig_v, use_container_width=True)
 
     st.markdown(
         '<div style="font-size:0.72rem; color:#334455; margin-top:1rem; '

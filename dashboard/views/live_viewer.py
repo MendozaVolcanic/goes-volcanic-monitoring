@@ -42,13 +42,24 @@ PRODUCT_LABELS = {k: v.split("(")[0].strip() for k, v in PRODUCTS.items()}
 _REPROJECT_VERSION = "v2"
 
 
-@st.cache_data(ttl=600, show_spinner=False)
-def _fetch_latest_frame(product: str, _v: str = _REPROJECT_VERSION) -> dict | None:
-    """Descargar el frame mas reciente para un producto (cache 10 min)."""
+@st.cache_data(ttl=90, show_spinner=False)
+def _get_latest_ts(product: str) -> str | None:
+    """Consultar el timestamp del scan mas reciente (cache 90s — liviano).
+
+    Cache corto porque solo llama a un JSON pequeño en RAMMB.
+    El resultado cambia cada ~10 minutos cuando GOES publica un nuevo scan.
+    """
     times = get_latest_timestamps(product, n=1)
-    if not times:
-        return None
-    ts = times[0]
+    return times[0] if times else None
+
+
+@st.cache_data(ttl=7200, show_spinner=False)
+def _fetch_frame_for_ts(product: str, ts: str, _v: str = _REPROJECT_VERSION) -> dict | None:
+    """Descargar y reprojectar un scan especifico (cache 2h por timestamp).
+
+    La clave incluye el timestamp → cada nuevo scan tiene su propia entrada.
+    Un scan ya procesado nunca se re-descarga aunque el usuario refresque.
+    """
     img = fetch_stitched_frame(
         product, ts,
         zoom=2,
@@ -57,7 +68,6 @@ def _fetch_latest_frame(product: str, _v: str = _REPROJECT_VERSION) -> dict | No
     )
     if img is None:
         return None
-    # Reprojectar de geoestacionaria a lat/lon regular
     img = reproject_to_latlon(img, col_start=678, row_start=1356)
     dt = parse_rammb_ts(ts)
     return {
@@ -70,16 +80,24 @@ def _fetch_latest_frame(product: str, _v: str = _REPROJECT_VERSION) -> dict | No
     }
 
 
-@st.cache_data(ttl=60, show_spinner=False)
+def _fetch_latest_frame(product: str) -> dict | None:
+    """Obtener el frame mas reciente: primero el ts (cache 90s), luego la imagen (cache 2h)."""
+    ts = _get_latest_ts(product)
+    if not ts:
+        return None
+    return _fetch_frame_for_ts(product, ts)
+
+
+@st.cache_data(ttl=90, show_spinner=False)
 def _fetch_latest_ts_all() -> dict:
-    """Obtener timestamps mas recientes de todos los productos (cache 1 min)."""
+    """Obtener timestamps mas recientes de todos los productos (cache 90s)."""
     result = {}
     for prod, _, _ in LIVE_PRODUCTS:
-        times = get_latest_timestamps(prod, n=1)
-        if times:
-            dt = parse_rammb_ts(times[0])
+        ts = _get_latest_ts(prod)
+        if ts:
+            dt = parse_rammb_ts(ts)
             result[prod] = {
-                "ts": times[0],
+                "ts": ts,
                 "utc": dt.strftime("%H:%M UTC"),
                 "local": fmt_chile(dt),
             }
@@ -224,16 +242,29 @@ def _reloj_chile():
 
 @st.fragment(run_every="10m")
 def _live_content():
-    """Contenido principal — se refresca automaticamente cada 10 min."""
+    """Contenido principal — se refresca automaticamente cada 10 min.
 
-    # Reloj + estado de timestamps
-    col_clock, col_status = st.columns([1, 2])
+    Logica de cache en dos capas:
+      1. _get_latest_ts(product)     TTL=90s  → consulta liviana del timestamp
+      2. _fetch_frame_for_ts(p, ts)  TTL=2h   → descarga pesada, clave = timestamp
+    El fragment re-corre cada 10 min, detecta el nuevo ts y descarga solo si cambio.
+    """
+
+    # ── Fila superior: reloj · estado · botón refresh ─────────────────────
+    col_clock, col_status, col_btn = st.columns([1, 2, 0.6])
+
     with col_clock:
         _reloj_chile()
+
     with col_status:
         ts_all = _fetch_latest_ts_all()
-        status_html = '<div style="padding:0.5rem 0.8rem; background:rgba(17,24,34,0.6); border-radius:8px; border:1px solid rgba(100,120,140,0.2);">'
-        status_html += '<div style="font-size:0.68rem; color:#556677; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.4rem;">Ultima imagen disponible · RAMMB/CIRA</div>'
+        status_html = (
+            '<div style="padding:0.5rem 0.8rem; background:rgba(17,24,34,0.6); '
+            'border-radius:8px; border:1px solid rgba(100,120,140,0.2);">'
+            '<div style="font-size:0.68rem; color:#556677; text-transform:uppercase; '
+            'letter-spacing:0.08em; margin-bottom:0.4rem;">'
+            'Ultimo scan disponible · RAMMB/CIRA</div>'
+        )
         for prod, label, color in LIVE_PRODUCTS:
             info = ts_all.get(prod)
             if info:
@@ -247,29 +278,55 @@ def _live_content():
                     f'</div>'
                 )
             else:
-                status_html += f'<div style="font-size:0.82rem; color:#445566;"><b>{label}</b> — no disponible</div>'
+                status_html += (
+                    f'<div style="font-size:0.82rem; color:#445566;">'
+                    f'<b>{label}</b> — no disponible</div>'
+                )
         status_html += '</div>'
         st.markdown(status_html, unsafe_allow_html=True)
 
+    with col_btn:
+        st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+        if st.button("🔄 Actualizar", use_container_width=True, key="live_refresh_btn",
+                     help="Consultar RAMMB ahora mismo e cargar el scan mas reciente"):
+            # Invalidar solo el cache liviano de timestamps.
+            # Los frames ya descargados (cache 2h por ts) se conservan.
+            _get_latest_ts.clear()
+            _fetch_latest_ts_all.clear()
+            st.rerun(scope="fragment")
+
     st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
 
-    # Controles de viento
+    # ── Controles de viento ────────────────────────────────────────────────
     show_wind = st.checkbox("Mostrar vectores de viento (GFS)", value=False, key="live_wind")
     if show_wind:
         wind_level = st.selectbox("Nivel", list(WIND_LEVELS.keys()), index=1, key="live_wind_level")
     else:
         wind_level = "500 hPa"
 
-    # Tabs por producto
+    # ── Tabs por producto ──────────────────────────────────────────────────
     tab1, tab2, tab3 = st.tabs(["🌍 GeoColor", "🌋 Ash RGB", "🟢 SO2"])
+
+    notas = {
+        "geocolor":    "Color real mejorado (dia). Ideal para ver columnas eruptivas y plumas.",
+        "eumetsat_ash":"Ash RGB (EUMETSAT): ceniza = rojo/magenta, nubes = cyan/blanco.",
+        "jma_so2":     "Indicador SO2 (JMA): nube de dioxido de azufre = verde brillante.",
+    }
 
     for tab, (prod_id, prod_label, _) in zip([tab1, tab2, tab3], LIVE_PRODUCTS):
         with tab:
-            with st.spinner(f"Cargando ultimo scan {prod_label}..."):
-                frame = _fetch_latest_frame(prod_id)
+            # Paso 1 — timestamp (liviano, cache 90s)
+            ts = _get_latest_ts(prod_id)
+            if ts is None:
+                st.error(f"No se pudo obtener timestamp de {prod_label}. Verifica conexion.")
+                continue
+
+            # Paso 2 — imagen (pesado, cache 2h por timestamp)
+            with st.spinner(f"Cargando {prod_label} · {ts[8:10]}:{ts[10:12]} UTC..."):
+                frame = _fetch_frame_for_ts(prod_id, ts)
 
             if frame is None:
-                st.error(f"No se pudo descargar {prod_label}. Verifica conexion.")
+                st.error(f"No se pudo descargar {prod_label}.")
                 continue
 
             bounds = frame.get("bounds", CHILE_TILE_BOUNDS)
@@ -283,12 +340,6 @@ def _live_content():
                 _add_wind_arrows(fig, wind_data, level_label=wind_level)
             st.plotly_chart(fig, use_container_width=True)
 
-            # Nota de producto
-            notas = {
-                "geocolor": "Color real mejorado (dia). Ideal para ver columnas eruptivas y plumas.",
-                "eumetsat_ash": "Ash RGB (EUMETSAT): ceniza = rojo/magenta, nubes = cyan/blanco.",
-                "jma_so2": "Indicador SO2 (JMA): nube de dioxido de azufre = verde brillante.",
-            }
             st.markdown(
                 f'<div style="font-size:0.75rem; color:#445566; margin-top:0.3rem;">'
                 f'{notas.get(prod_id, "")}'
@@ -299,7 +350,7 @@ def _live_content():
     st.markdown(
         '<div style="font-size:0.72rem; color:#334455; margin-top:1rem; '
         'border-top:1px solid rgba(100,120,140,0.1); padding-top:0.5rem;">'
-        'Auto-refresh cada 10 min · '
+        'Auto-refresh cada 10 min · Boton 🔄 para forzar actualizacion inmediata · '
         'Fuente: <a href="https://slider.cira.colostate.edu" target="_blank" '
         'style="color:#556677;">RAMMB/CIRA Slider</a> (Colorado State University)'
         '</div>',

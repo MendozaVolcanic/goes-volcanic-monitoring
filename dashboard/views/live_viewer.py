@@ -360,7 +360,7 @@ def _live_content():
             # Los frames ya descargados (cache 2h por ts) se conservan.
             _get_latest_ts.clear()
             _fetch_latest_ts_all.clear()
-            st.rerun(scope="fragment")
+            st.rerun()
 
     st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
 
@@ -417,52 +417,63 @@ def _live_content():
                 unsafe_allow_html=True,
             )
 
-    # ── Tab 4: Por Zonas ──────────────────────────────────────────────────
+    # ── Tab 4: Por Zonas (lazy: solo carga al presionar boton) ────────────
     with tab4:
         prod_zona = st.selectbox(
             "Producto", ["geocolor", "eumetsat_ash", "jma_so2"],
             format_func=lambda k: PRODUCT_LABELS.get(k, k),
             key="zona_product",
         )
-        ts_zona = _get_latest_ts(prod_zona)
-
-        if ts_zona is None:
-            st.error("No se pudo obtener timestamp. Verifica conexion.")
-        else:
-            st.markdown(
-                f'<div style="font-size:0.75rem; color:#556677; margin-bottom:0.5rem;">'
-                f'Scan: <b style="color:#99aabb;">{ts_zona[8:10]}:{ts_zona[10:12]} UTC</b>'
-                f' · Zoom=3 (~3.4 km/px) · Descarga en paralelo</div>',
-                unsafe_allow_html=True,
+        # Lazy loading: evita descargar 4 reproyecciones en cada auto-refresh
+        # (Streamlit ejecuta el codigo de TODOS los tabs, esten visibles o no).
+        cargar_zonas = st.button(
+            "Cargar 4 zonas volcanicas (zoom=3)",
+            key="btn_cargar_zonas", type="primary",
+        )
+        if not cargar_zonas and not st.session_state.get("zonas_cargadas"):
+            st.info(
+                "Presiona el boton para descargar las 4 zonas volcanicas "
+                "(Norte, Centro, Sur, Austral) a zoom=3."
             )
-            # 2×2 grid: Norte/Centro arriba, Sur/Austral abajo
-            row1_col1, row1_col2 = st.columns(2)
-            row2_col1, row2_col2 = st.columns(2)
-            zone_cols = {
-                "norte":   row1_col1,
-                "centro":  row1_col2,
-                "sur":     row2_col1,
-                "austral": row2_col2,
-            }
-            for zone_key, col in zone_cols.items():
-                with col:
-                    with st.spinner(f"{ZONE_LABELS[zone_key]}..."):
-                        img_zona = _fetch_zone_frame(prod_zona, ts_zona, zone_key)
-                    if img_zona is None:
-                        st.error(f"Sin datos para {ZONE_LABELS[zone_key]}")
-                        continue
-                    zone_bounds = VOLCANIC_ZONES[zone_key]
-                    zone_title = (
-                        f'<b style="color:{ZONE_COLORS[zone_key]};">'
-                        f'{ZONE_LABELS[zone_key]}</b>'
-                    )
-                    st.markdown(zone_title, unsafe_allow_html=True)
-                    fig_z = _make_fig(
-                        img_zona, zone_bounds,
-                        f"{ZONE_LABELS[zone_key]} · {prod_zona} · zoom=3",
-                    )
-                    fig_z.update_layout(height=420)
-                    st.plotly_chart(fig_z, use_container_width=True)
+        else:
+            st.session_state["zonas_cargadas"] = True
+            ts_zona = _get_latest_ts(prod_zona)
+            if ts_zona is None:
+                st.error("No se pudo obtener timestamp. Verifica conexion.")
+            else:
+                st.markdown(
+                    f'<div style="font-size:0.75rem; color:#556677; margin-bottom:0.5rem;">'
+                    f'Scan: <b style="color:#99aabb;">{ts_zona[8:10]}:{ts_zona[10:12]} UTC</b>'
+                    f' · Zoom=3 (~3.4 km/px) · Descarga en paralelo</div>',
+                    unsafe_allow_html=True,
+                )
+                row1_col1, row1_col2 = st.columns(2)
+                row2_col1, row2_col2 = st.columns(2)
+                zone_cols = {
+                    "norte":   row1_col1,
+                    "centro":  row1_col2,
+                    "sur":     row2_col1,
+                    "austral": row2_col2,
+                }
+                for zone_key, col in zone_cols.items():
+                    with col:
+                        with st.spinner(f"{ZONE_LABELS[zone_key]}..."):
+                            img_zona = _fetch_zone_frame(prod_zona, ts_zona, zone_key)
+                        if img_zona is None:
+                            st.error(f"Sin datos para {ZONE_LABELS[zone_key]}")
+                            continue
+                        zone_bounds = VOLCANIC_ZONES[zone_key]
+                        zone_title = (
+                            f'<b style="color:{ZONE_COLORS[zone_key]};">'
+                            f'{ZONE_LABELS[zone_key]}</b>'
+                        )
+                        st.markdown(zone_title, unsafe_allow_html=True)
+                        fig_z = _make_fig(
+                            img_zona, zone_bounds,
+                            f"{ZONE_LABELS[zone_key]} · {prod_zona} · zoom=3",
+                        )
+                        fig_z.update_layout(height=420)
+                        st.plotly_chart(fig_z, use_container_width=True)
 
     # ── Tab 5: Volcán zoom=4 ───────────────────────────────────────────────
     with tab5:
@@ -487,50 +498,62 @@ def _live_content():
                                key="volc_radius",
                                help="±radio en grados lat/lon (~111 km por grado)")
 
-        ts_volc = _get_latest_ts(prod_volc)
-        volcano = get_volcano(sel_name)
-
-        if volcano is None:
-            st.error(f"Volcán '{sel_name}' no encontrado en el catálogo.")
-        elif ts_volc is None:
-            st.error("No se pudo obtener timestamp.")
-        else:
-            volc_bounds = {
-                "lat_min": volcano.lat - radius,
-                "lat_max": volcano.lat + radius,
-                "lon_min": volcano.lon - radius,
-                "lon_max": volcano.lon + radius,
-            }
-            st.markdown(
-                f'<div style="font-size:0.78rem; color:#556677; margin-bottom:0.3rem;">'
-                f'<b style="color:#e6edf3;">{volcano.name}</b> · '
-                f'{volcano.lat:.2f}°, {volcano.lon:.2f}° · '
-                f'{volcano.elevation:,} m · '
-                f'Scan: <b style="color:#99aabb;">{ts_volc[8:10]}:{ts_volc[10:12]} UTC</b> · '
-                f'Zoom=4 (~1.7 km/px)</div>',
-                unsafe_allow_html=True,
+        # Lazy loading: zoom=4 descarga 9-16 tiles, solo bajo demanda
+        cargar_volc = st.button(
+            f"Cargar zoom=4 para volcan seleccionado",
+            key="btn_cargar_volc", type="primary",
+        )
+        if not cargar_volc and not st.session_state.get("volc_cargado"):
+            st.info(
+                "Presiona el boton para descargar la vista zoom=4 "
+                "(~1.7 km/px) del volcan seleccionado."
             )
-            with st.spinner(
-                f"Cargando zoom=4 para {volcano.name} "
-                f"({ts_volc[8:10]}:{ts_volc[10:12]} UTC)..."
-            ):
-                img_volc = _fetch_volcano_frame(
-                    prod_volc, ts_volc, sel_name, radius,
-                )
-            if img_volc is None:
-                st.error(
-                    "No se pudieron descargar los tiles para este volcán. "
-                    "Puede que el área esté fuera del disco visible de GOES-19."
-                )
+        else:
+            st.session_state["volc_cargado"] = True
+            ts_volc = _get_latest_ts(prod_volc)
+            volcano = get_volcano(sel_name)
+
+            if volcano is None:
+                st.error(f"Volcan '{sel_name}' no encontrado en el catalogo.")
+            elif ts_volc is None:
+                st.error("No se pudo obtener timestamp.")
             else:
-                fig_v = _make_fig(
-                    img_volc, volc_bounds,
-                    f"{volcano.name} · {prod_volc} · zoom=4 · "
-                    f"±{radius}° ({radius*111:.0f} km)",
-                    highlight_volcano=volcano,
+                volc_bounds = {
+                    "lat_min": volcano.lat - radius,
+                    "lat_max": volcano.lat + radius,
+                    "lon_min": volcano.lon - radius,
+                    "lon_max": volcano.lon + radius,
+                }
+                st.markdown(
+                    f'<div style="font-size:0.78rem; color:#556677; margin-bottom:0.3rem;">'
+                    f'<b style="color:#e6edf3;">{volcano.name}</b> · '
+                    f'{volcano.lat:.2f}°, {volcano.lon:.2f}° · '
+                    f'{volcano.elevation:,} m · '
+                    f'Scan: <b style="color:#99aabb;">{ts_volc[8:10]}:{ts_volc[10:12]} UTC</b> · '
+                    f'Zoom=4 (~1.7 km/px)</div>',
+                    unsafe_allow_html=True,
                 )
-                fig_v.update_layout(height=600)
-                st.plotly_chart(fig_v, use_container_width=True)
+                with st.spinner(
+                    f"Cargando zoom=4 para {volcano.name} "
+                    f"({ts_volc[8:10]}:{ts_volc[10:12]} UTC)..."
+                ):
+                    img_volc = _fetch_volcano_frame(
+                        prod_volc, ts_volc, sel_name, radius,
+                    )
+                if img_volc is None:
+                    st.error(
+                        "No se pudieron descargar los tiles para este volcan. "
+                        "Puede que el area este fuera del disco visible de GOES-19."
+                    )
+                else:
+                    fig_v = _make_fig(
+                        img_volc, volc_bounds,
+                        f"{volcano.name} · {prod_volc} · zoom=4 · "
+                        f"±{radius}° ({radius*111:.0f} km)",
+                        highlight_volcano=volcano,
+                    )
+                    fig_v.update_layout(height=600)
+                    st.plotly_chart(fig_v, use_container_width=True)
 
     st.markdown(
         '<div style="font-size:0.72rem; color:#334455; margin-top:1rem; '

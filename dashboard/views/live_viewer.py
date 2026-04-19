@@ -137,14 +137,19 @@ def _fetch_volcano_frame(
 
 @st.cache_data(ttl=90, show_spinner=False)
 def _fetch_latest_ts_all() -> dict:
-    """Obtener timestamps mas recientes de todos los productos (cache 90s)."""
+    """Obtener timestamps mas recientes de todos los productos (cache 90s).
+
+    Llama get_latest_timestamps directamente (NO via _get_latest_ts) para
+    evitar llamadas anidadas entre funciones @st.cache_data, que Streamlit
+    no soporta y causa 'Error running app' en Streamlit Cloud.
+    """
     result = {}
     for prod, _, _ in LIVE_PRODUCTS:
-        ts = _get_latest_ts(prod)
-        if ts:
-            dt = parse_rammb_ts(ts)
+        times = get_latest_timestamps(prod, n=1)
+        if times:
+            dt = parse_rammb_ts(times[0])
             result[prod] = {
-                "ts": ts,
+                "ts": times[0],
                 "utc": dt.strftime("%H:%M UTC"),
                 "local": fmt_chile(dt),
             }

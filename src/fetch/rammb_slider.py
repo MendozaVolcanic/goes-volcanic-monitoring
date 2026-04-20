@@ -200,6 +200,7 @@ def reproject_to_latlon(
     out_size: tuple[int, int] | None = None,
     sat_lon: float = -75.2,
     zoom: int = 2,
+    tile_sz: int | None = None,
 ) -> np.ndarray:
     """Reprojectar imagen de tiles RAMMB (proyección ABI geoestacionaria)
     a una grilla lat/lon regular usando pyproj + scipy.
@@ -240,10 +241,11 @@ def reproject_to_latlon(
         out_size = (max(120, int(lat_span * ppd)), max(80, int(lon_span * ppd)))
 
     # Parámetros ABI para el nivel de zoom
-    # TILE_SIZE cambia: 678px zoom<=2, 512px zoom>=3
+    # tile_sz puede pasarse explicito (detectado del tile real) o inferirse del zoom.
     # cfac = (full_disk_pixels / 2) / ABI_max_scan_angle
     n_tiles          = 2 ** zoom
-    tile_sz          = get_tile_size(zoom)
+    if tile_sz is None:
+        tile_sz      = get_tile_size(zoom)
     ABI_MAX_SCAN_ANGLE = 0.151872
     full_disk_px     = n_tiles * tile_sz
     center           = full_disk_px / 2.0
@@ -336,14 +338,10 @@ def fetch_stitched_frame(
     if tile_cols is None:
         tile_cols = CHILE_TILES_Z2["cols"]
 
-    tile_sz = get_tile_size(zoom)
     n_rows = len(tile_rows)
     n_cols = len(tile_cols)
-    h = n_rows * tile_sz
-    w = n_cols * tile_sz
-    canvas = np.zeros((h, w, 3), dtype=np.uint8)
 
-    # Descargar tiles en paralelo
+    # Descargar tiles en paralelo PRIMERO (asi detectamos tile_sz real)
     coords = [(r, c) for r in tile_rows for c in tile_cols]
     tiles: dict[tuple, np.ndarray] = {}
 
@@ -361,7 +359,16 @@ def fetch_stitched_frame(
     if not tiles:
         return None
 
-    # Ubicar tiles en el canvas
+    # Detectar tile_sz real del primer tile descargado (RAMMB puede devolver
+    # 512 o 678 dependiendo del producto/zoom — no hardcodear).
+    sample = next(iter(tiles.values()))
+    tile_sz = int(sample.shape[0])
+
+    h = n_rows * tile_sz
+    w = n_cols * tile_sz
+    canvas = np.zeros((h, w, 3), dtype=np.uint8)
+
+    # Ubicar tiles en el canvas (con safety si algun tile tiene tamano distinto)
     for i, r in enumerate(tile_rows):
         for j, c in enumerate(tile_cols):
             if (r, c) in tiles:
@@ -369,12 +376,17 @@ def fetch_stitched_frame(
                 th, tw = arr.shape[:2]
                 y0 = i * tile_sz
                 x0 = j * tile_sz
-                canvas[y0:y0 + th, x0:x0 + tw] = arr
+                ch = min(th, tile_sz)
+                cw = min(tw, tile_sz)
+                canvas[y0:y0 + ch, x0:x0 + cw] = arr[:ch, :cw]
 
     if reproject:
         col_start = min(tile_cols) * tile_sz
         row_start = min(tile_rows) * tile_sz
-        canvas = reproject_to_latlon(canvas, col_start=col_start, row_start=row_start)
+        canvas = reproject_to_latlon(
+            canvas, col_start=col_start, row_start=row_start,
+            zoom=zoom, tile_sz=tile_sz,
+        )
 
     return canvas
 
@@ -405,7 +417,9 @@ def fetch_frame_for_bounds(
                                tile_rows=tile_rows, tile_cols=tile_cols)
     if img is None:
         return None
-    tile_sz   = get_tile_size(zoom)
+    # Inferir tile_sz real a partir del canvas devuelto (tiles pudieron ser
+    # 512 o 678 segun producto, no asumirlo por zoom).
+    tile_sz   = int(img.shape[0] // len(tile_rows))
     col_start = min(tile_cols) * tile_sz
     row_start = min(tile_rows) * tile_sz
     return reproject_to_latlon(
@@ -415,6 +429,7 @@ def fetch_frame_for_bounds(
         out_bounds=bounds,
         sat_lon=sat_lon,
         zoom=zoom,
+        tile_sz=tile_sz,
     )
 
 

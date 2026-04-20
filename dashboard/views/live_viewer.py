@@ -45,12 +45,13 @@ PRODUCT_LABELS = {k: v.split("(")[0].strip() for k, v in PRODUCTS.items()}
 _REPROJECT_VERSION = "v2"
 
 
-@st.cache_data(ttl=90, show_spinner=False)
+@st.cache_data(ttl=30, show_spinner=False)
 def _get_latest_ts(product: str) -> str | None:
-    """Consultar el timestamp del scan mas reciente (cache 90s — liviano).
+    """Consultar el timestamp del scan mas reciente (cache 30s — liviano).
 
-    Cache corto porque solo llama a un JSON pequeño en RAMMB.
-    El resultado cambia cada ~10 minutos cuando GOES publica un nuevo scan.
+    TTL corto para detectar el nuevo scan rapido (RAMMB publica 3-5 min
+    despues del fin del scan de GOES-19; latencia de deteccion ≤ 30s + 60s
+    del fragment = max ~90s desde que aparece).
     """
     times = get_latest_timestamps(product, n=1)
     return times[0] if times else None
@@ -135,7 +136,7 @@ def _fetch_volcano_frame(
     return fetch_frame_for_bounds(product, ts, bounds, zoom=ZOOM_VOLCAN)
 
 
-@st.cache_data(ttl=90, show_spinner=False)
+@st.cache_data(ttl=30, show_spinner=False)
 def _fetch_latest_ts_all() -> dict:
     """Obtener timestamps mas recientes de todos los productos (cache 90s).
 
@@ -307,14 +308,19 @@ def _reloj_chile():
     )
 
 
-@st.fragment(run_every="10m")
+@st.fragment(run_every="60s")
 def _live_content():
-    """Contenido principal — se refresca automaticamente cada 10 min.
+    """Contenido principal — se refresca automaticamente cada 60s.
 
-    Logica de cache en dos capas:
-      1. _get_latest_ts(product)     TTL=90s  → consulta liviana del timestamp
+    Logica:
+      - run_every=60s: barato (consulta ts via cache TTL=30s).
+      - Si ts no cambio, el cache devuelve el frame sin re-descarga.
+      - Si ts cambio (nuevo scan en RAMMB), descarga el nuevo frame.
+    Latencia de deteccion del nuevo scan: <= 90s desde que aparece en RAMMB.
+
+    Cache en dos capas:
+      1. _get_latest_ts(product)     TTL=30s  → consulta liviana del timestamp
       2. _fetch_frame_for_ts(p, ts)  TTL=2h   → descarga pesada, clave = timestamp
-    El fragment re-corre cada 10 min, detecta el nuevo ts y descarga solo si cambio.
     """
 
     # ── Fila superior: reloj · estado · botón refresh ─────────────────────
@@ -362,21 +368,79 @@ def _live_content():
             _fetch_latest_ts_all.clear()
             st.rerun()
 
-    # Indicador visible de auto-refresh activo
+    # ── Indicador de auto-refresh con contador regresivo ──────────────────
+    # Calcula el proximo scan esperado: ultimo ts + 10 min + ~4 min latencia RAMMB.
+    # El JS en el browser decrementa un contador cada segundo sin re-run del server.
     from datetime import timedelta as _td
-    now_utc_dt = datetime.now(timezone.utc)
-    st.markdown(
-        f'<div style="font-size:0.82rem; color:#7a8a9a; margin-top:0.3rem; '
-        f'padding:0.35rem 0.7rem; background:rgba(17,24,34,0.35); '
-        f'border-radius:6px; display:inline-block;">'
-        f'<span style="color:#3fb950;">●</span> Auto-refresh activo · '
-        f'<b style="color:#c0ccd8;">cada 10 min</b> · '
-        f'ultima consulta: <span style="font-family:monospace; color:#99aabb;">'
-        f'{now_utc_dt.strftime("%H:%M:%S")} UTC</span>'
-        f'</div>',
-        unsafe_allow_html=True,
+    import streamlit.components.v1 as _stc
+
+    _ref_ts = None
+    for _p in LIVE_PRODUCTS:
+        _t = ts_all.get(_p[0])
+        if _t:
+            _ref_ts = _t["ts"]
+            break
+
+    if _ref_ts:
+        _dt_last = parse_rammb_ts(_ref_ts)
+        # GOES-19 Full Disk: scan cada 10 min. RAMMB publica ~4 min despues.
+        _dt_next = _dt_last + _td(minutes=10) + _td(minutes=4)
+        _target_iso = _dt_next.strftime("%Y-%m-%dT%H:%M:%SZ")
+        _last_iso   = _dt_last.strftime("%H:%M UTC")
+    else:
+        _target_iso = ""
+        _last_iso   = "—"
+
+    _stc.html(
+        f"""
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                    font-size:0.88rem; color:#99aabb; padding:0.5rem 0.9rem;
+                    background:rgba(17,24,34,0.5);
+                    border-radius:8px; border:1px solid rgba(74,158,255,0.2);
+                    display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap;">
+          <span>
+            <span style="color:#3fb950; font-size:1rem;">●</span>
+            <b style="color:#c0ccd8;">Auto-refresh cada 60 s</b>
+          </span>
+          <span style="color:#556677;">|</span>
+          <span>Ultimo scan: <b style="color:#e6edf3; font-family:monospace;">
+            {_last_iso}</b></span>
+          <span style="color:#556677;">|</span>
+          <span>Proximo estimado en
+            <b id="cd_next" style="color:#4a9eff; font-family:monospace;
+                                    font-size:1.05rem; padding-left:0.3rem;">
+              --:--
+            </b>
+          </span>
+        </div>
+        <script>
+          (function() {{
+            const target = new Date("{_target_iso}");
+            const el = document.getElementById("cd_next");
+            if (!el || isNaN(target.getTime())) return;
+            function tick() {{
+              const now = new Date();
+              let diff = Math.floor((target - now) / 1000);
+              if (diff <= 0) {{
+                const wait = -diff;
+                const m = Math.floor(wait / 60);
+                const s = wait % 60;
+                el.textContent = "esperando... (+" + m + "m " +
+                                 String(s).padStart(2,"0") + "s)";
+                el.style.color = "#d29922";
+                return;
+              }}
+              const m = Math.floor(diff / 60);
+              const s = diff % 60;
+              el.textContent = m + "m " + String(s).padStart(2,"0") + "s";
+            }}
+            tick();
+            setInterval(tick, 1000);
+          }})();
+        </script>
+        """,
+        height=55,
     )
-    st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
 
     # ── Controles de viento ────────────────────────────────────────────────
     show_wind = st.checkbox("Mostrar vectores de viento (GFS)", value=False, key="live_wind")

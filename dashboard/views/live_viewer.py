@@ -362,6 +362,20 @@ def _live_content():
             _fetch_latest_ts_all.clear()
             st.rerun()
 
+    # Indicador visible de auto-refresh activo
+    from datetime import timedelta as _td
+    now_utc_dt = datetime.now(timezone.utc)
+    st.markdown(
+        f'<div style="font-size:0.82rem; color:#7a8a9a; margin-top:0.3rem; '
+        f'padding:0.35rem 0.7rem; background:rgba(17,24,34,0.35); '
+        f'border-radius:6px; display:inline-block;">'
+        f'<span style="color:#3fb950;">●</span> Auto-refresh activo · '
+        f'<b style="color:#c0ccd8;">cada 10 min</b> · '
+        f'ultima consulta: <span style="font-family:monospace; color:#99aabb;">'
+        f'{now_utc_dt.strftime("%H:%M:%S")} UTC</span>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
     st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
 
     # ── Controles de viento ────────────────────────────────────────────────
@@ -442,9 +456,13 @@ def _live_content():
                 st.error("No se pudo obtener timestamp. Verifica conexion.")
             else:
                 st.markdown(
-                    f'<div style="font-size:0.75rem; color:#556677; margin-bottom:0.5rem;">'
-                    f'Scan: <b style="color:#99aabb;">{ts_zona[8:10]}:{ts_zona[10:12]} UTC</b>'
-                    f' · Zoom=3 (~3.4 km/px) · Descarga en paralelo</div>',
+                    f'<div style="font-size:1.05rem; color:#c0ccd8; margin-bottom:0.6rem; '
+                    f'padding:0.4rem 0.7rem; background:rgba(17,24,34,0.5); '
+                    f'border-radius:6px; border-left:3px solid #4a9eff;">'
+                    f'Scan: <b style="color:#e6edf3; font-family:monospace; font-size:1.15rem;">'
+                    f'{ts_zona[8:10]}:{ts_zona[10:12]} UTC</b>'
+                    f'<span style="color:#667788; font-size:0.82rem; margin-left:0.7rem;">'
+                    f'· Zoom=3 (~3.4 km/px) · Descarga en paralelo</span></div>',
                     unsafe_allow_html=True,
                 )
                 row1_col1, row1_col2 = st.columns(2)
@@ -472,7 +490,7 @@ def _live_content():
                             img_zona, zone_bounds,
                             f"{ZONE_LABELS[zone_key]} · {prod_zona} · zoom=3",
                         )
-                        fig_z.update_layout(height=420)
+                        fig_z.update_layout(height=640)
                         st.plotly_chart(fig_z, use_container_width=True)
 
     # ── Tab 5: Volcán zoom=4 ───────────────────────────────────────────────
@@ -525,12 +543,17 @@ def _live_content():
                     "lon_max": volcano.lon + radius,
                 }
                 st.markdown(
-                    f'<div style="font-size:0.78rem; color:#556677; margin-bottom:0.3rem;">'
-                    f'<b style="color:#e6edf3;">{volcano.name}</b> · '
+                    f'<div style="font-size:1.05rem; color:#c0ccd8; margin-bottom:0.6rem; '
+                    f'padding:0.4rem 0.7rem; background:rgba(17,24,34,0.5); '
+                    f'border-radius:6px; border-left:3px solid #CC3311;">'
+                    f'<b style="color:#e6edf3; font-size:1.15rem;">{volcano.name}</b>'
+                    f'<span style="color:#99aabb; margin-left:0.6rem;">'
                     f'{volcano.lat:.2f}°, {volcano.lon:.2f}° · '
-                    f'{volcano.elevation:,} m · '
-                    f'Scan: <b style="color:#99aabb;">{ts_volc[8:10]}:{ts_volc[10:12]} UTC</b> · '
-                    f'Zoom=4 (~1.7 km/px)</div>',
+                    f'{volcano.elevation:,} m</span><br>'
+                    f'Scan: <b style="color:#e6edf3; font-family:monospace; font-size:1.15rem;">'
+                    f'{ts_volc[8:10]}:{ts_volc[10:12]} UTC</b>'
+                    f'<span style="color:#667788; font-size:0.82rem; margin-left:0.7rem;">'
+                    f'· Zoom=4 (~1.7 km/px)</span></div>',
                     unsafe_allow_html=True,
                 )
                 with st.spinner(

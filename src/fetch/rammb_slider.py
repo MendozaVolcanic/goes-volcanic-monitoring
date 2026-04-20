@@ -234,8 +234,12 @@ def reproject_to_latlon(
         out_bounds = CHILE_REPROJECTED_BOUNDS
     if out_size is None:
         # Auto-calcular proporcional a los bounds y al zoom
-        # zoom=2: 20px/°, zoom=3: 40px/°, zoom=4: 80px/°
-        ppd = {2: 20, 3: 40, 4: 80}.get(zoom, 20)
+        # zoom=2: 25 px/°, zoom=3: 60 px/°, zoom=4: 110 px/°
+        # Valores elegidos para saturar la resolucion nativa del tile sin
+        # interpolacion gratuita. A zoom=3 (~3.4 km/px en ecuador) y chile
+        # austral con coseno(lat)~0.7, el limite fisico es ~46 px/°; subimos
+        # a 60 para cubrir lat media y mejorar legibilidad del plot.
+        ppd = {2: 25, 3: 60, 4: 110}.get(zoom, 25)
         lat_span = out_bounds["lat_max"] - out_bounds["lat_min"]
         lon_span = out_bounds["lon_max"] - out_bounds["lon_min"]
         out_size = (max(120, int(lat_span * ppd)), max(80, int(lon_span * ppd)))

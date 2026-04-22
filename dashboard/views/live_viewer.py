@@ -517,6 +517,158 @@ def _live_content():
         "jma_so2":     "Indicador SO2 (JMA): nube de dioxido de azufre = verde brillante.",
     }
 
+    # Leyendas de interpretacion por producto (ash / so2).
+    # Ver CLAUDE.md: receta RAMMB/CIRA + Prata (1989) para Ash RGB,
+    # canal 8.4 um (B09) para indicador SO2 (JMA).
+    LEYENDAS_HTML = {
+        "eumetsat_ash": """
+        <details style="margin-top:0.4rem; background:rgba(17,24,34,0.55);
+                        border:1px solid rgba(255,102,68,0.3); border-radius:8px;
+                        padding:0.5rem 0.8rem;">
+          <summary style="cursor:pointer; font-weight:700; color:#ff8866;
+                          font-size:0.88rem;">
+            Como leer Ash RGB — que colores indican ceniza
+          </summary>
+          <div style="font-size:0.82rem; color:#c0ccd8; line-height:1.7;
+                      margin-top:0.5rem;">
+            <b style="color:#ff8866;">Receta RGB (EUMETSAT/RAMMB)</b><br>
+            R = BT(12.3) - BT(11.2) &nbsp;·&nbsp;
+            G = BT(11.2) - BT(8.6) &nbsp;·&nbsp;
+            B = BT(11.2)
+            <table style="width:100%; margin-top:0.6rem; border-collapse:collapse;
+                          font-size:0.8rem;">
+              <tr style="background:rgba(255,255,255,0.04);">
+                <th style="text-align:left; padding:0.3rem 0.5rem;">Color</th>
+                <th style="text-align:left; padding:0.3rem 0.5rem;">Interpretacion</th>
+              </tr>
+              <tr>
+                <td style="padding:0.25rem 0.5rem;
+                           color:#ff4466; font-weight:700;">Rojo / magenta</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  <b>Ceniza volcanica</b> (BTD 11-12 &lt; 0, firma Prata).
+                  Tambien polvo del desierto.
+                </td>
+              </tr>
+              <tr style="background:rgba(255,255,255,0.02);">
+                <td style="padding:0.25rem 0.5rem;
+                           color:#ffaa33; font-weight:700;">Naranja / amarillo</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  Ceniza mezclada con gas/SO2 o nubes delgadas frias.
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:0.25rem 0.5rem;
+                           color:#3fb950; font-weight:700;">Verde</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  <b>SO2</b> (absorcion fuerte a 8.6 um baja G).
+                </td>
+              </tr>
+              <tr style="background:rgba(255,255,255,0.02);">
+                <td style="padding:0.25rem 0.5rem;
+                           color:#4a9eff; font-weight:700;">Cyan / celeste</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  Nubes de hielo (cirrus, topes de convectivas).
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:0.25rem 0.5rem;
+                           color:#e6edf3; font-weight:700;">Blanco</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  Nubes espesas frias (cumulonimbos).
+                </td>
+              </tr>
+              <tr style="background:rgba(255,255,255,0.02);">
+                <td style="padding:0.25rem 0.5rem;
+                           color:#667788; font-weight:700;">Negro / gris oscuro</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  Superficie caliente sin nubes (noche despejada).
+                </td>
+              </tr>
+            </table>
+            <div style="margin-top:0.6rem; font-size:0.76rem; color:#8899aa;
+                        border-top:1px solid rgba(255,255,255,0.08);
+                        padding-top:0.4rem;">
+              <b style="color:#ffaa66;">Tip operativo:</b>
+              busca <i>manchas rojo/magenta en movimiento</i> saliendo de un volcan
+              conocido. Si la mancha persiste en varios scans consecutivos y se
+              desplaza con el viento, es ceniza real. Nubes finas de cirrus
+              tambien pueden verse rojizas cerca de amanecer/atardecer — siempre
+              cruzar con GeoColor y hot spots FDCF.
+            </div>
+          </div>
+        </details>
+        """,
+        "jma_so2": """
+        <details style="margin-top:0.4rem; background:rgba(17,24,34,0.55);
+                        border:1px solid rgba(68,221,136,0.3); border-radius:8px;
+                        padding:0.5rem 0.8rem;">
+          <summary style="cursor:pointer; font-weight:700; color:#44dd88;
+                          font-size:0.88rem;">
+            Como leer SO2 (JMA) — que colores indican dioxido de azufre
+          </summary>
+          <div style="font-size:0.82rem; color:#c0ccd8; line-height:1.7;
+                      margin-top:0.5rem;">
+            <b style="color:#44dd88;">Receta JMA (basada en canal 7.3 y 8.4 um)</b><br>
+            El SO2 absorbe fuertemente a 8.6 um. El producto resalta la
+            diferencia BT(7.3) - BT(8.6) y BT(8.6) - BT(11.2).
+            <table style="width:100%; margin-top:0.6rem; border-collapse:collapse;
+                          font-size:0.8rem;">
+              <tr style="background:rgba(255,255,255,0.04);">
+                <th style="text-align:left; padding:0.3rem 0.5rem;">Color</th>
+                <th style="text-align:left; padding:0.3rem 0.5rem;">Interpretacion</th>
+              </tr>
+              <tr>
+                <td style="padding:0.25rem 0.5rem;
+                           color:#3fe08f; font-weight:700;">Verde intenso</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  <b>Nube de SO2 densa</b> (firma clara).
+                  Tipico de erupciones explosivas y desgasificacion activa.
+                </td>
+              </tr>
+              <tr style="background:rgba(255,255,255,0.02);">
+                <td style="padding:0.25rem 0.5rem;
+                           color:#aaff55; font-weight:700;">Verde amarillento</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  SO2 mezclado con ceniza o cenizas con azufre.
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:0.25rem 0.5rem;
+                           color:#ff4466; font-weight:700;">Rojo / rosado</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  <b>Ceniza</b> (misma firma termica que Ash RGB).
+                </td>
+              </tr>
+              <tr style="background:rgba(255,255,255,0.02);">
+                <td style="padding:0.25rem 0.5rem;
+                           color:#4a9eff; font-weight:700;">Azul / cyan</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  Nubes meteorologicas (hielo, agua).
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:0.25rem 0.5rem;
+                           color:#667788; font-weight:700;">Gris / marron</td>
+                <td style="padding:0.25rem 0.5rem;">
+                  Superficie sin senal volcanica.
+                </td>
+              </tr>
+            </table>
+            <div style="margin-top:0.6rem; font-size:0.76rem; color:#8899aa;
+                        border-top:1px solid rgba(255,255,255,0.08);
+                        padding-top:0.4rem;">
+              <b style="color:#55ddaa;">Tip operativo:</b>
+              el SO2 es mas <i>persistente</i> que la ceniza (vida media en
+              troposfera ~2-4 dias vs ceniza que cae en horas). Una pluma
+              verde sin rojo suele ser desgasificacion pasiva (fumarolas activas).
+              Verde + rojo juntos = erupcion explosiva reciente. Verifica
+              concentraciones reales con TROPOMI/Sentinel-5P (UV, mas sensible).
+            </div>
+          </div>
+        </details>
+        """,
+    }
+
     for tab, (prod_id, prod_label, _) in zip([tab1, tab2, tab3], LIVE_PRODUCTS):
         with tab:
             # Paso 1 — timestamp (liviano, cache 90s)
@@ -559,6 +711,10 @@ def _live_content():
                 f'</div>',
                 unsafe_allow_html=True,
             )
+
+            # Leyenda interpretativa (solo Ash RGB y SO2 — GeoColor es color real).
+            if prod_id in LEYENDAS_HTML:
+                st.markdown(LEYENDAS_HTML[prod_id], unsafe_allow_html=True)
 
     # ── Tab 4: Por Zonas (lazy: solo carga al presionar boton) ────────────
     with tab4:

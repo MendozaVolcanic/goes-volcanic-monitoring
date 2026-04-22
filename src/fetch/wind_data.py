@@ -30,13 +30,15 @@ TIMEOUT = 12
 WIND_LATS = [-17, -21, -25, -29, -33, -37, -41, -45, -49, -53]
 WIND_LONS = [-79, -75, -71, -67, -63]
 
-# Niveles de presion disponibles
+# Niveles de presion disponibles.
+# Open-Meteo cambio la convencion en 2025: ahora usa "wind_speed_<N>hPa"
+# (antes "windspeed_<N>hpa"). El formato viejo devuelve HTTP 400.
 WIND_LEVELS = {
-    "300 hPa": "300hpa",   # ~9 km — plumas altas (erupciones explosivas)
-    "500 hPa": "500hpa",   # ~5.5 km — circulacion media (mas comun)
-    "850 hPa": "850hpa",   # ~1.5 km — capa limite / plumas bajas
+    "300 hPa": "300hPa",   # ~9 km — plumas altas (erupciones explosivas)
+    "500 hPa": "500hPa",   # ~5.5 km — circulacion media (mas comun)
+    "850 hPa": "850hPa",   # ~1.5 km — capa limite / plumas bajas
 }
-DEFAULT_LEVEL = "500hpa"
+DEFAULT_LEVEL = "500hPa"
 
 
 def fetch_wind_point(lat: float, lon: float, level: str = DEFAULT_LEVEL) -> dict | None:
@@ -53,7 +55,7 @@ def fetch_wind_point(lat: float, lon: float, level: str = DEFAULT_LEVEL) -> dict
     params = {
         "latitude":     lat,
         "longitude":    lon,
-        "hourly":       f"windspeed_{level},winddirection_{level}",
+        "hourly":       f"wind_speed_{level},wind_direction_{level}",
         "forecast_days": 1,
         "models":       "gfs_seamless",
         "timezone":     "UTC",
@@ -66,8 +68,8 @@ def fetch_wind_point(lat: float, lon: float, level: str = DEFAULT_LEVEL) -> dict
         hourly = data.get("hourly", {})
 
         now_hour = datetime.now(timezone.utc).hour
-        speed     = hourly.get(f"windspeed_{level}", [None] * 24)[now_hour]
-        direction = hourly.get(f"winddirection_{level}", [None] * 24)[now_hour]
+        speed     = hourly.get(f"wind_speed_{level}", [None] * 24)[now_hour]
+        direction = hourly.get(f"wind_direction_{level}", [None] * 24)[now_hour]
 
         if speed is None or direction is None:
             return None

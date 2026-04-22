@@ -260,23 +260,31 @@ def _fetch_wind_cached(level: str) -> list:
 def _add_wind_arrows(
     fig,
     wind_data: list,
-    scale: float = 0.03,
-    color: str = "rgba(160,200,255,0.80)",
+    scale: float = 0.05,
+    color: str = "rgba(255,230,80,0.95)",
     level_label: str = "500 hPa",
 ) -> None:
     """Agregar vectores de viento como flechas de anotacion Plotly.
 
     scale: grados de desplazamiento por km/h de viento.
-           0.03 → viento de 50 km/h = flecha de 1.5 grados.
+           0.05 → viento de 50 km/h = flecha de 2.5 grados (muy visible).
+    color: amarillo brillante para contraste sobre Ash RGB / GeoColor.
     """
     if not wind_data:
         return
 
     import plotly.graph_objects as go
+    # Marcador de inicio de cada vector (punto amarillo pequeno)
     fig.add_trace(go.Scatter(
-        x=[None], y=[None], mode="lines",
-        line=dict(color=color, width=2),
+        x=[w["lon"] for w in wind_data],
+        y=[w["lat"] for w in wind_data],
+        mode="markers",
+        marker=dict(size=5, color=color,
+                    line=dict(width=1, color="rgba(0,0,0,0.6)")),
         name=f"Viento {level_label} (GFS)",
+        hovertext=[f"<b>{w['speed']:.0f} km/h</b> @ {w['direction']:.0f}°"
+                   for w in wind_data],
+        hoverinfo="text",
         showlegend=True,
     ))
 
@@ -290,12 +298,14 @@ def _add_wind_arrows(
             ax=lon0,   ay=lat0,
             xref="x", yref="y",
             axref="x", ayref="y",
-            arrowhead=2,
-            arrowsize=0.9,
-            arrowwidth=1.5,
+            arrowhead=3,
+            arrowsize=1.3,
+            arrowwidth=2.5,
             arrowcolor=color,
             text="",
             showarrow=True,
+            standoff=0,
+            startstandoff=0,
             hovertext=f"<b>{w['speed']:.0f} km/h</b> @ {w['direction']:.0f}°",
         )
 
@@ -485,9 +495,9 @@ def _live_content():
     # Son aproximadas — la altura real a cada nivel de presion varia con
     # temperatura y latitud (±200-500 m), pero sirve como guia operativa.
     WIND_ALTITUDES = {
-        "300 hPa": "≈ 9.2 km · plumas altas (erupciones explosivas)",
-        "500 hPa": "≈ 5.5 km · circulacion media (mas usado)",
-        "850 hPa": "≈ 1.5 km · capa limite / plumas bajas",
+        "300 hPa": "≈ 9.2 km",
+        "500 hPa": "≈ 5.5 km",
+        "850 hPa": "≈ 1.5 km",
     }
     show_wind = st.checkbox("Mostrar vectores de viento (GFS)", value=False, key="live_wind")
     if show_wind:
@@ -693,7 +703,17 @@ def _live_content():
             fig = _make_fig(frame["image"], bounds, title)
             if show_wind:
                 wind_data = _fetch_wind_cached(WIND_LEVELS[wind_level])
-                _add_wind_arrows(fig, wind_data, level_label=wind_level)
+                if wind_data:
+                    _add_wind_arrows(fig, wind_data, level_label=wind_level)
+                    st.caption(
+                        f"🌬 {len(wind_data)} vectores de viento GFS a {wind_level} "
+                        f"(flechas amarillas; largo ∝ velocidad)"
+                    )
+                else:
+                    st.warning(
+                        f"No se pudieron obtener vectores de viento a {wind_level}. "
+                        "Open-Meteo puede estar caido o el nivel no disponible."
+                    )
             # Forzar rango y altura grande para maxima visibilidad
             fig.update_layout(
                 height=820,

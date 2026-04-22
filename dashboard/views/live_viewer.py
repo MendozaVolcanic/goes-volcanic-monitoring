@@ -122,18 +122,31 @@ def _fetch_volcano_frame(
     product: str, ts: str, volcano_name: str,
     radius: float = VOLCANO_RADIUS_DEG,
     _v: str = _REPROJECT_VERSION,
-) -> np.ndarray | None:
-    """Descargar frame centrado en un volcán a zoom=4 (cache 2h por ts+volcán)."""
+) -> tuple[np.ndarray | None, int]:
+    """Descargar frame centrado en un volcan (zoom=4 con fallback a zoom=3).
+
+    Returns:
+        (img, zoom_usado). Si falla todo, (None, 0).
+    """
     v = get_volcano(volcano_name)
     if v is None:
-        return None
+        return None, 0
     bounds = {
         "lat_min": v.lat - radius,
         "lat_max": v.lat + radius,
         "lon_min": v.lon - radius,
         "lon_max": v.lon + radius,
     }
-    return fetch_frame_for_bounds(product, ts, bounds, zoom=ZOOM_VOLCAN)
+    # Intento 1: zoom=4 (~1.7 km/px). RAMMB no siempre tiene zoom=4 para
+    # todos los productos/timestamps — puede tardar mas en publicarse.
+    img = fetch_frame_for_bounds(product, ts, bounds, zoom=ZOOM_VOLCAN)
+    if img is not None:
+        return img, ZOOM_VOLCAN
+    # Intento 2: fallback a zoom=3 (~3.4 km/px), siempre disponible.
+    img = fetch_frame_for_bounds(product, ts, bounds, zoom=ZOOM_ZONE)
+    if img is not None:
+        return img, ZOOM_ZONE
+    return None, 0
 
 
 @st.cache_data(ttl=30, show_spinner=False)
@@ -391,22 +404,35 @@ def _live_content():
         _target_iso = ""
         _last_iso   = "—"
 
+    # Epoch (ms) en que el servidor ejecuto este fragment — base para el
+    # contador de "proximo chequeo" (60s despues).
+    _now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+
     _stc.html(
         f"""
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
                     font-size:0.88rem; color:#99aabb; padding:0.5rem 0.9rem;
                     background:rgba(17,24,34,0.5);
                     border-radius:8px; border:1px solid rgba(74,158,255,0.2);
-                    display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap;">
+                    display:flex; align-items:center; gap:1.1rem; flex-wrap:wrap;">
           <span>
             <span style="color:#3fb950; font-size:1rem;">●</span>
-            <b style="color:#c0ccd8;">Auto-refresh cada 60 s</b>
+            <b style="color:#c0ccd8;">Auto-refresh</b>
           </span>
           <span style="color:#556677;">|</span>
-          <span>Ultimo scan: <b style="color:#e6edf3; font-family:monospace;">
-            {_last_iso}</b></span>
+          <span>Proximo chequeo al servidor en
+            <b id="cd_poll" style="color:#3fb950; font-family:monospace;
+                                    font-size:1.05rem; padding-left:0.3rem;">
+              --
+            </b>
+          </span>
           <span style="color:#556677;">|</span>
-          <span>Proximo estimado en
+          <span title="Timestamp que GOES-19 grabo en el nombre del archivo de RAMMB (inicio del scan). NO es la hora en que lo vimos nosotros.">
+            Hora del scan (RAMMB):
+            <b style="color:#e6edf3; font-family:monospace;">{_last_iso}</b>
+          </span>
+          <span style="color:#556677;">|</span>
+          <span>Proximo scan estimado en
             <b id="cd_next" style="color:#4a9eff; font-family:monospace;
                                     font-size:1.05rem; padding-left:0.3rem;">
               --:--
@@ -415,27 +441,39 @@ def _live_content():
         </div>
         <script>
           (function() {{
+            // Contador 1: polling al servidor (60s)
+            const pollStart = {_now_ms};
+            const elPoll = document.getElementById("cd_poll");
+            function tickPoll() {{
+              if (!elPoll) return;
+              const elapsed = Math.floor((Date.now() - pollStart) / 1000);
+              const left = Math.max(0, 60 - elapsed);
+              elPoll.textContent = left + " s";
+              if (left <= 5) elPoll.style.color = "#d29922";
+            }}
+
+            // Contador 2: proximo scan de GOES-19 en RAMMB
             const target = new Date("{_target_iso}");
-            const el = document.getElementById("cd_next");
-            if (!el || isNaN(target.getTime())) return;
-            function tick() {{
-              const now = new Date();
-              let diff = Math.floor((target - now) / 1000);
+            const elNext = document.getElementById("cd_next");
+            function tickNext() {{
+              if (!elNext || isNaN(target.getTime())) return;
+              let diff = Math.floor((target - new Date()) / 1000);
               if (diff <= 0) {{
                 const wait = -diff;
                 const m = Math.floor(wait / 60);
                 const s = wait % 60;
-                el.textContent = "esperando... (+" + m + "m " +
-                                 String(s).padStart(2,"0") + "s)";
-                el.style.color = "#d29922";
+                elNext.textContent = "esperando... (+" + m + "m " +
+                                     String(s).padStart(2,"0") + "s)";
+                elNext.style.color = "#d29922";
                 return;
               }}
               const m = Math.floor(diff / 60);
               const s = diff % 60;
-              el.textContent = m + "m " + String(s).padStart(2,"0") + "s";
+              elNext.textContent = m + "m " + String(s).padStart(2,"0") + "s";
             }}
-            tick();
-            setInterval(tick, 1000);
+
+            tickPoll(); tickNext();
+            setInterval(function() {{ tickPoll(); tickNext(); }}, 1000);
           }})();
         </script>
         """,
@@ -443,9 +481,27 @@ def _live_content():
     )
 
     # ── Controles de viento ────────────────────────────────────────────────
+    # Alturas estandar ISA (Standard Atmosphere) para referencia.
+    # Son aproximadas — la altura real a cada nivel de presion varia con
+    # temperatura y latitud (±200-500 m), pero sirve como guia operativa.
+    WIND_ALTITUDES = {
+        "300 hPa": "≈ 9.2 km · plumas altas (erupciones explosivas)",
+        "500 hPa": "≈ 5.5 km · circulacion media (mas usado)",
+        "850 hPa": "≈ 1.5 km · capa limite / plumas bajas",
+    }
     show_wind = st.checkbox("Mostrar vectores de viento (GFS)", value=False, key="live_wind")
     if show_wind:
-        wind_level = st.selectbox("Nivel", list(WIND_LEVELS.keys()), index=1, key="live_wind_level")
+        wind_level = st.selectbox(
+            "Nivel de presion",
+            list(WIND_LEVELS.keys()),
+            index=1,
+            key="live_wind_level",
+            format_func=lambda k: f"{k}  —  {WIND_ALTITUDES.get(k, '')}",
+            help=(
+                "La altura es aproximada (atmosfera estandar ISA). "
+                "Varia ±200-500 m segun temperatura y latitud."
+            ),
+        )
     else:
         wind_level = "500 hPa"
 
@@ -486,6 +542,15 @@ def _live_content():
             if show_wind:
                 wind_data = _fetch_wind_cached(WIND_LEVELS[wind_level])
                 _add_wind_arrows(fig, wind_data, level_label=wind_level)
+            # Forzar rango y altura grande para maxima visibilidad
+            fig.update_layout(
+                height=820,
+                xaxis=dict(range=[bounds["lon_min"], bounds["lon_max"]],
+                           autorange=False),
+                yaxis=dict(range=[bounds["lat_min"], bounds["lat_max"]],
+                           autorange=False, scaleanchor="x", scaleratio=1),
+                margin=dict(t=40, b=35, l=45, r=15),
+            )
             st.plotly_chart(fig, use_container_width=True)
 
             st.markdown(
@@ -606,40 +671,45 @@ def _live_content():
                     "lon_min": volcano.lon - radius,
                     "lon_max": volcano.lon + radius,
                 }
-                st.markdown(
-                    f'<div style="font-size:1.05rem; color:#c0ccd8; margin-bottom:0.6rem; '
-                    f'padding:0.4rem 0.7rem; background:rgba(17,24,34,0.5); '
-                    f'border-radius:6px; border-left:3px solid #CC3311;">'
-                    f'<b style="color:#e6edf3; font-size:1.15rem;">{volcano.name}</b>'
-                    f'<span style="color:#99aabb; margin-left:0.6rem;">'
-                    f'{volcano.lat:.2f}°, {volcano.lon:.2f}° · '
-                    f'{volcano.elevation:,} m</span><br>'
-                    f'Scan: <b style="color:#e6edf3; font-family:monospace; font-size:1.15rem;">'
-                    f'{ts_volc[8:10]}:{ts_volc[10:12]} UTC</b>'
-                    f'<span style="color:#667788; font-size:0.82rem; margin-left:0.7rem;">'
-                    f'· Zoom=4 (~1.7 km/px)</span></div>',
-                    unsafe_allow_html=True,
-                )
                 with st.spinner(
-                    f"Cargando zoom=4 para {volcano.name} "
+                    f"Cargando para {volcano.name} "
                     f"({ts_volc[8:10]}:{ts_volc[10:12]} UTC)..."
                 ):
-                    img_volc = _fetch_volcano_frame(
+                    img_volc, zoom_used = _fetch_volcano_frame(
                         prod_volc, ts_volc, sel_name, radius,
                     )
-                if img_volc is None:
+
+                if img_volc is None or zoom_used == 0:
                     st.error(
-                        "No se pudieron descargar los tiles para este volcan. "
-                        "Puede que el area este fuera del disco visible de GOES-19."
+                        f"RAMMB no tiene tiles de **{prod_volc}** ni en zoom=4 "
+                        f"ni en zoom=3 para el scan {ts_volc[8:10]}:{ts_volc[10:12]} UTC. "
+                        "Prueba con otro producto o espera el siguiente scan."
                     )
                 else:
+                    km_per_px = 1.7 if zoom_used == ZOOM_VOLCAN else 3.4
+                    zoom_label = (f"Zoom=4 (~1.7 km/px)" if zoom_used == ZOOM_VOLCAN
+                                  else f"Zoom=3 (~3.4 km/px, zoom 4 no disponible)")
+                    st.markdown(
+                        f'<div style="font-size:1.05rem; color:#c0ccd8; margin-bottom:0.6rem; '
+                        f'padding:0.4rem 0.7rem; background:rgba(17,24,34,0.5); '
+                        f'border-radius:6px; border-left:3px solid #CC3311;">'
+                        f'<b style="color:#e6edf3; font-size:1.15rem;">{volcano.name}</b>'
+                        f'<span style="color:#99aabb; margin-left:0.6rem;">'
+                        f'{volcano.lat:.2f}°, {volcano.lon:.2f}° · '
+                        f'{volcano.elevation:,} m</span><br>'
+                        f'Scan: <b style="color:#e6edf3; font-family:monospace; font-size:1.15rem;">'
+                        f'{ts_volc[8:10]}:{ts_volc[10:12]} UTC</b>'
+                        f'<span style="color:#667788; font-size:0.82rem; margin-left:0.7rem;">'
+                        f'· {zoom_label}</span></div>',
+                        unsafe_allow_html=True,
+                    )
                     fig_v = _make_fig(
                         img_volc, volc_bounds,
-                        f"{volcano.name} · {prod_volc} · zoom=4 · "
+                        f"{volcano.name} · {prod_volc} · "
                         f"±{radius}° ({radius*111:.0f} km)",
                         highlight_volcano=volcano,
                     )
-                    fig_v.update_layout(height=600)
+                    fig_v.update_layout(height=700)
                     st.plotly_chart(fig_v, use_container_width=True)
 
     st.markdown(

@@ -5,7 +5,7 @@ import streamlit as st
 import folium
 from streamlit_folium import st_folium
 
-from dashboard.style import ZONE_HEX, header, kpi_card
+from dashboard.style import ZONE_HEX, header, kpi_card, refresh_info_badge
 from src.volcanos import CATALOG, PRIORITY_VOLCANOES
 
 
@@ -83,6 +83,8 @@ def render():
         "Monitoreo de 43 volcanes activos en Chile",
         "Red Nacional de Vigilancia Volcanica &middot; SERNAGEOMIN &middot; GOES-19 Full Disk cada 10 min",
     )
+
+    refresh_info_badge(context="general")
 
     # ── Filtros + KPIs ──
     col_f, _, col_k = st.columns([1.2, 0.1, 3])

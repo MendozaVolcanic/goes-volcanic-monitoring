@@ -367,6 +367,66 @@ def info_panel(text: str):
     st.markdown(f'<div class="info-panel">{text}</div>', unsafe_allow_html=True)
 
 
+def refresh_info_badge(context: str = "general"):
+    """Badge/expander global que explica cadencia de actualizacion.
+
+    Debe ir visible en todas las vistas para que el usuario entienda
+    cuanto tarda entre scan y scan y por que.
+
+    context: "live" = auto-refresh cada 60s.
+             "general" = cada vez que se carga la vista.
+             "animation" = al recargar el animador.
+    """
+    # Resumen corto en badge inline
+    resumen = {
+        "live":      ("60 s", "#3fb950", "Polling al servidor cada 60 s; imagen nueva aparece ~3-5 min despues del fin del scan de GOES-19 (ciclo real: 10 min)."),
+        "general":   ("manual", "#4a9eff", "Esta vista carga al abrirla o presionar ↻. GOES-19 publica un scan nuevo cada 10 min + ~3-5 min de latencia RAMMB."),
+        "animation": ("por ejecucion", "#d29922", "Genera una animacion con los N ultimos frames disponibles. Reejecuta para traer el frame mas reciente."),
+    }
+    label, color, detail = resumen.get(context, resumen["general"])
+    st.markdown(
+        f'<div style="display:flex; gap:0.6rem; align-items:center; '
+        f'background:rgba(17,24,34,0.55); padding:0.45rem 0.8rem; '
+        f'border-radius:8px; border:1px solid rgba(100,120,140,0.22); '
+        f'font-size:0.82rem; margin-bottom:0.7rem;">'
+        f'<span style="color:{color}; font-weight:700;">↻ Actualizacion:</span>'
+        f'<b style="color:#e6edf3;">{label}</b>'
+        f'<span style="color:#99aabb;"> · </span>'
+        f'<span style="color:#99aabb;">{detail}</span>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+    # Detalle tecnico completo en expander
+    with st.expander("Como se actualizan los datos (detalle)"):
+        st.markdown("""
+**Cadena de actualizacion GOES-19 → RAMMB → Dashboard:**
+
+| Paso | Tiempo | Detalle |
+|------|--------|---------|
+| 1. Scan GOES-19 Full Disk | **10 min** | ABI realiza un barrido completo del disco cada 10 min |
+| 2. Procesamiento NOAA | ~1-2 min | L1b radiance calibrada sube a AWS S3 |
+| 3. RAMMB/CIRA stitching | ~2-3 min | CIRA genera tiles del Slider con los RGB compuestos |
+| 4. Polling del dashboard | ≤ 60 s (En Vivo) | Consulta `latest_times.json` de RAMMB |
+| 5. Descarga + reproyeccion | 5-20 s | Tiles → mosaico → lat/lon WGS84 |
+
+**Latencia total desde el fenomeno hasta verlo aca:**
+- **Mejor caso:** ~4 min (si el fenomeno ocurre justo al inicio de un scan)
+- **Peor caso:** ~14-15 min (si ocurre justo despues del scan anterior)
+- **Tipico:** ~8-10 min
+
+**Diferencia entre vistas:**
+- **En Vivo** &mdash; auto-refresh 60 s, detecta nuevo scan en <= 90 s.
+- **Mapa General, Ash Viewer, Detalle Volcan, VOLCAT, Animacion** &mdash; cargan al abrir la vista o recargar manualmente. El backend cachea frames 2 horas (evita re-descargar).
+
+**Como forzar actualizacion inmediata:**
+- Boton **🔄 Actualizar** (En Vivo)
+- Presionar **R** en el navegador (todas las vistas)
+- Cambiar producto/volcan (invalida la cache de esa seleccion).
+
+**Fuente:** [RAMMB/CIRA SLIDER](https://slider.cira.colostate.edu) &middot; Colorado State University.
+        """)
+
+
 def ash_legend():
     """Leyenda Ash RGB con colores calibrados."""
     items = [

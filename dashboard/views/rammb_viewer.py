@@ -17,7 +17,7 @@ from PIL import Image as PILImage
 
 from dashboard.style import (
     C_ACCENT, C_ASH, C_SO2,
-    header, info_panel, kpi_card,
+    header, info_panel, kpi_card, refresh_info_badge,
 )
 from dashboard.utils import fmt_both, fmt_both_long, parse_rammb_ts
 from src.config import CHILE_BOUNDS
@@ -232,6 +232,8 @@ def render():
         "Animacion RAMMB/CIRA — GOES-19 en tiempo real",
         "Loop animado de los ultimos scans &middot; slider.cira.colostate.edu &middot; Full Disk cada 10 min",
     )
+
+    refresh_info_badge(context="animation")
 
     # ── Controles ──
     c1, c2, c3 = st.columns([1.5, 1.2, 1])

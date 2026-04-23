@@ -12,7 +12,7 @@ import streamlit as st
 
 from dashboard.style import (
     C_ACCENT, C_ASH, C_SO2,
-    ash_legend, ash_so2_legend, header, info_panel, kpi_card,
+    ash_legend, ash_so2_legend, header, info_panel, kpi_card, refresh_info_badge,
 )
 from dashboard.utils import fmt_chile
 from src.config import CHILE_BOUNDS, VOLCANIC_ZONES
@@ -130,6 +130,8 @@ def render():
         "VOLCAT — Productos SSEC/CIMSS",
         "Imagenes pre-procesadas por la Universidad de Wisconsin via RealEarth API &middot; GOES-19",
     )
+
+    refresh_info_badge(context="general")
 
     # ── Controles ──
     c1, c2 = st.columns([1.5, 1])

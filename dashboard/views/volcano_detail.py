@@ -8,7 +8,7 @@ import streamlit as st
 
 from dashboard.style import (
     BTD_COLORSCALE, C_ACCENT, C_ASH, C_SO2,
-    header, info_panel, kpi_card,
+    header, info_panel, kpi_card, refresh_info_badge,
 )
 from src.process.pipeline import process_ash_rgb
 from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
@@ -52,6 +52,8 @@ def render():
         "Detalle de Volcan",
         "Ash RGB y BTD centrado en un volcan — datos GOES-19 en tiempo casi-real",
     )
+
+    refresh_info_badge(context="general")
 
     # ── Selector ──
     col_sel, col_roi = st.columns([3, 1])

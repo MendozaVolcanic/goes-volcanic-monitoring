@@ -14,7 +14,7 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
-from dashboard.style import C_ACCENT, header, info_panel, kpi_card
+from dashboard.style import C_ACCENT, header, info_panel, kpi_card, refresh_info_badge
 from dashboard.utils import (
     fmt_both_long, fmt_chile, now_utc, parse_rammb_ts, utc_to_chile,
 )
@@ -861,6 +861,10 @@ def _live_content():
                         fig_z.update_layout(height=640)
                         st.plotly_chart(fig_z, use_container_width=True)
 
+                # Leyenda interpretativa debajo del grid 2x2.
+                if prod_zona in LEYENDAS_HTML:
+                    st.markdown(LEYENDAS_HTML[prod_zona], unsafe_allow_html=True)
+
     # ── Tab 5: Volcán zoom=4 ───────────────────────────────────────────────
     with tab5:
         col_vsel, col_vprod, col_vrad = st.columns([2, 1.2, 1])
@@ -949,8 +953,39 @@ def _live_content():
                         highlight_volcano=volcano,
                         volc_layer=volc_layer,
                     )
+
+                    # Viento sobre la vista del volcan (grilla 3x3 local).
+                    # La grilla global de Chile no cubre Hawai/Mexico y ademas
+                    # queda espaciada a escala de volcan → mini-grilla centrada.
+                    if show_wind:
+                        from src.fetch.wind_data import fetch_wind_grid as _fwg
+                        vlats = [volcano.lat - radius*0.6,
+                                 volcano.lat,
+                                 volcano.lat + radius*0.6]
+                        vlons = [volcano.lon - radius*0.6,
+                                 volcano.lon,
+                                 volcano.lon + radius*0.6]
+                        wind_v = _fwg(vlats, vlons, level=WIND_LEVELS[wind_level])
+                        if wind_v:
+                            # Scale mas chico para grillas densas localmente
+                            _add_wind_arrows(fig_v, wind_v, scale=0.02,
+                                             level_label=wind_level)
+                            st.caption(
+                                f"🌬 {len(wind_v)} vectores GFS @ {wind_level} "
+                                f"(grilla 3×3 local, scale 0.02°/(km/h))"
+                            )
+                        else:
+                            st.warning(
+                                f"No se pudo obtener viento a {wind_level} para "
+                                f"la posicion del volcan."
+                            )
+
                     fig_v.update_layout(height=700)
                     st.plotly_chart(fig_v, use_container_width=True)
+
+                    # Leyenda interpretativa tambien en vista por volcan.
+                    if prod_volc in LEYENDAS_HTML:
+                        st.markdown(LEYENDAS_HTML[prod_volc], unsafe_allow_html=True)
 
     st.markdown(
         '<div style="font-size:0.72rem; color:#334455; margin-top:1rem; '
@@ -976,6 +1011,8 @@ def render():
         '</div>',
         unsafe_allow_html=True,
     )
+
+    refresh_info_badge(context="live")
 
     st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
 

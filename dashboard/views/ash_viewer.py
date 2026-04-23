@@ -11,7 +11,7 @@ from dashboard.style import (
     BTD_COLORSCALE, CONF_COLORSCALE, SO2_COLORSCALE,
     C_ACCENT, C_ASH, C_SO2,
     ash_legend, ash_so2_legend, btd_legend, so2_legend,
-    header, info_panel, kpi_card,
+    header, info_panel, kpi_card, refresh_info_badge,
 )
 from dashboard.utils import fmt_chile
 from src.config import CHILE_BOUNDS, VOLCANIC_ZONES
@@ -183,6 +183,8 @@ def render():
         "Ash RGB Viewer",
         "Deteccion de ceniza volcanica y SO2 desde GOES-19 (bandas 11, 13, 14, 15)",
     )
+
+    refresh_info_badge(context="general")
 
     # ── Controles ──
     c1, c2, c3 = st.columns([1.5, 1, 1])

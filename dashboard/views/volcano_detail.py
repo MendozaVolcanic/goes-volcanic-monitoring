@@ -10,8 +10,25 @@ from dashboard.style import (
     BTD_COLORSCALE, C_ACCENT, C_ASH, C_SO2,
     header, info_panel, kpi_card, refresh_info_badge,
 )
+from src.fetch.volcat_api import get_sector_for_volcano, volcat_latest
 from src.process.pipeline import process_ash_rgb
 from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
+
+
+@st.cache_data(ttl=300, show_spinner=False)
+def _volcat_cached(sector: str, instr: str, image_type: str):
+    return volcat_latest(sector, instr=instr, image_type=image_type)
+
+
+def _parse_volcat_dt(dt_str: str) -> str:
+    """'2026-04-23_12-50-30' -> '2026-04-23 12:50:30 UTC'."""
+    if not dt_str:
+        return "—"
+    try:
+        d, t = dt_str.split("_")
+        return f"{d} {t.replace('-', ':')} UTC"
+    except Exception:
+        return dt_str
 
 
 def _volcano_info_card(v):
@@ -146,7 +163,7 @@ def render():
     st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
 
     # ── Graficos ──
-    tab1, tab2 = st.tabs(["Ash RGB", "BTD Split-Window"])
+    tab1, tab2, tab3 = st.tabs(["Ash RGB", "BTD Split-Window", "Altura VOLCAT"])
 
     volcano_marker = dict(
         x=[volcano.lon], y=[volcano.lat],
@@ -187,3 +204,86 @@ def render():
         btd_title = f"BTD — {ash_px} pixeles bajo umbral ceniza (-1K)" if ash_px else f"BTD — sin ceniza detectada"
         fig2.update_layout(**_base_layout(btd_title))
         st.plotly_chart(fig2, use_container_width=True)
+
+    with tab3:
+        # ── Altura VOLCAT (CIMSS/SSEC) ──
+        mapping = get_sector_for_volcano(volcano.name)
+        if mapping is None:
+            info_panel(
+                f"<b>Sin sector VOLCAT mapeado para {volcano.name}.</b><br>"
+                "VOLCAT opera por sectores pre-definidos. Ver "
+                "<code>docs/altura_pluma/sectores_VOLCAT_chile.md</code>."
+            )
+        else:
+            sector, instr = mapping
+
+            col_prod, col_info = st.columns([1, 2])
+            with col_prod:
+                product = st.selectbox(
+                    "Producto VOLCAT",
+                    ["Ash_Height", "Ash_Loading", "Ash_Probability", "Ash_Reff"],
+                    index=0,
+                    key=f"volcat_prod_{volcano.name}",
+                )
+            with col_info:
+                st.markdown(
+                    f"<div style='padding-top:1.7rem; color:#889;'>"
+                    f"Sector: <b>{sector}</b> &middot; Instr: <b>{instr}</b> "
+                    f"&middot; Fuente: CIMSS/SSEC VOLCAT"
+                    f"</div>",
+                    unsafe_allow_html=True,
+                )
+
+            with st.spinner(f"Consultando VOLCAT ({sector} / {product})..."):
+                vinfo = _volcat_cached(sector, instr, product)
+
+            if vinfo is None:
+                st.error(
+                    "No se pudo obtener el frame VOLCAT. "
+                    "El API puede estar caido o el sector no tener datos recientes."
+                )
+            else:
+                ts_human = _parse_volcat_dt(vinfo["datetime"])
+                st.markdown(
+                    f'<div class="status-banner ok">'
+                    f'<b>&#10003; Frame VOLCAT disponible</b>'
+                    f'<span style="color:#556677; font-size:0.78rem;">{ts_human}</span>'
+                    f'</div>',
+                    unsafe_allow_html=True,
+                )
+
+                col_img, col_leg = st.columns([4, 1])
+                with col_img:
+                    st.image(
+                        vinfo["image_url"],
+                        caption=f"{product} — {sector} ({ts_human})",
+                        use_container_width=True,
+                    )
+                with col_leg:
+                    st.markdown("**Leyenda**")
+                    st.image(vinfo["legend_url"], use_container_width=True)
+                    st.markdown(
+                        f"<div style='font-size:0.72rem; color:#889; margin-top:0.5rem;'>"
+                        f"<a href='{vinfo['image_url']}' target='_blank' "
+                        f"style='color:#4a9eff;'>Abrir PNG original</a><br>"
+                        f"<a href='https://volcano.ssec.wisc.edu/imagery/view/'"
+                        f"#sector:{sector}::instr:{instr}::sat:all::image_type:{product}::endtime:latest::daterange:2880' "
+                        f"target='_blank' style='color:#4a9eff;'>Ver en VOLCAT viewer</a>"
+                        f"</div>",
+                        unsafe_allow_html=True,
+                    )
+
+                info_panel(
+                    "<b>Como leer este producto</b><br>"
+                    f"<code>{product}</code> es generado por VOLCAT (CIMSS/SSEC) "
+                    "mediante retrieval radiativo simultaneo de altura, masa, "
+                    "emisividad y radio efectivo a partir de bandas IR de GOES-19 ABI.<br>"
+                    "&middot; <b>Ash_Height</b>: altitud del tope de pluma en km "
+                    "(RMSE ~2 km). Color frio = alto, calido = bajo.<br>"
+                    "&middot; <b>Ash_Loading</b>: masa columnar de ceniza en g/m&#178;.<br>"
+                    "&middot; <b>Ash_Probability</b>: confianza de deteccion (0-1).<br>"
+                    "&middot; <b>Ash_Reff</b>: radio efectivo de particula en micras.<br><br>"
+                    "<b>Limites:</b> subestima altura en plumas semi-transparentes. "
+                    "Cruzar con camaras terrestres SERNAGEOMIN cuando haya evento."
+                )
+

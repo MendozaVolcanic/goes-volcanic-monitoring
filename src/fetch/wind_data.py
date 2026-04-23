@@ -87,8 +87,32 @@ def fetch_wind_point(lat: float, lon: float, level: str = DEFAULT_LEVEL) -> dict
             "v":         v_kmh,
         }
     except Exception as e:
-        logger.debug("OpenMeteo (%s, %s) lvl=%s: %s", lat, lon, level, e)
+        logger.warning("OpenMeteo (%s, %s) lvl=%s: %s", lat, lon, level, e)
         return None
+
+
+def fetch_wind_diagnostic(level: str = DEFAULT_LEVEL) -> dict:
+    """Devolver info diagnostica cuando fetch_wind_grid devuelve [].
+
+    Returns dict con status_code y error del API si hubo fallo, o 'ok'.
+    """
+    try:
+        r = requests.get(OPENMETEO_URL, params={
+            "latitude":        -33,
+            "longitude":       -71,
+            "hourly":          f"wind_speed_{level},wind_direction_{level}",
+            "forecast_days":   1,
+            "models":          "gfs_seamless",
+            "timezone":        "UTC",
+            "wind_speed_unit": "kmh",
+        }, timeout=TIMEOUT)
+        return {
+            "status":   r.status_code,
+            "ok":       r.status_code == 200,
+            "response": r.text[:300] if r.status_code != 200 else "ok",
+        }
+    except Exception as e:
+        return {"status": 0, "ok": False, "response": f"Exception: {e}"}
 
 
 def fetch_wind_grid(

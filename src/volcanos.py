@@ -70,6 +70,11 @@ CATALOG = [
     Volcano("Mentolat", -44.70, -73.08, 1660, "Aysén", "austral", 0),
     Volcano("Hudson", -45.90, -72.97, 1905, "Aysén", "austral", 3),
     Volcano("Lautaro", -49.02, -73.55, 3607, "Magallanes", "austral", 24),
+
+    # ── TEMPORALES para testing de productos ceniza/SO2 ──
+    # (volcanes activos fuera de Chile — eliminar cuando ya no se necesiten)
+    Volcano("Kīlauea (Hawái)", 19.42, -155.29, 1247, "Hawaii USA", "test", 0),
+    Volcano("Popocatépetl (México)", 19.02, -98.62, 5426, "México", "test", 0),
 ]
 
 # Volcanes prioritarios (matching VRP Chile + alta actividad reciente)

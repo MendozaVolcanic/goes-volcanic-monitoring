@@ -25,7 +25,7 @@ from src.fetch.rammb_slider import (
     get_latest_timestamps, reproject_to_latlon,
     ZOOM_ZONE, ZOOM_VOLCAN, VOLCANO_RADIUS_DEG,
 )
-from src.fetch.wind_data import WIND_LEVELS, fetch_wind_grid
+from src.fetch.wind_data import WIND_LEVELS, fetch_wind_grid, fetch_wind_diagnostic
 from src.volcanos import CATALOG, get_priority, get_volcano, PRIORITY_VOLCANOES
 
 logger = logging.getLogger(__name__)
@@ -172,8 +172,12 @@ def _fetch_latest_ts_all() -> dict:
     return result
 
 
-def _make_fig(img: np.ndarray, bounds: dict, title: str, highlight_volcano=None) -> go.Figure:
-    """Crear figura Plotly con imagen georeferenciada y volcanes."""
+def _make_fig(img: np.ndarray, bounds: dict, title: str,
+              highlight_volcano=None, volc_layer: str = "Prioritarios (8)") -> go.Figure:
+    """Crear figura Plotly con imagen georeferenciada y volcanes.
+
+    volc_layer: "Prioritarios (8)" | "Todos (43+)" | "Ninguno".
+    """
     import base64, io
     from PIL import Image as PILImage
 
@@ -186,12 +190,18 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str, highlight_volcano=None)
     PILImage.fromarray(img).save(buf, format="PNG")
     b64 = base64.b64encode(buf.getvalue()).decode()
 
-    # Volcanes visibles en el area
-    vis = [v for v in get_priority()
-           if lat_min <= v.lat <= lat_max and lon_min <= v.lon <= lon_max]
-    if not vis:
+    # Volcanes visibles en el area segun el layer elegido
+    if volc_layer == "Ninguno":
+        vis = []
+    elif volc_layer == "Todos (43+)":
         vis = [v for v in CATALOG
-               if lat_min <= v.lat <= lat_max and lon_min <= v.lon <= lon_max][:15]
+               if lat_min <= v.lat <= lat_max and lon_min <= v.lon <= lon_max]
+    else:  # Prioritarios (8)
+        vis = [v for v in get_priority()
+               if lat_min <= v.lat <= lat_max and lon_min <= v.lon <= lon_max]
+        if not vis:
+            vis = [v for v in CATALOG
+                   if lat_min <= v.lat <= lat_max and lon_min <= v.lon <= lon_max][:15]
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -499,21 +509,47 @@ def _live_content():
         "500 hPa": "≈ 5.5 km",
         "850 hPa": "≈ 1.5 km",
     }
-    show_wind = st.checkbox("Mostrar vectores de viento (GFS)", value=False, key="live_wind")
-    if show_wind:
-        wind_level = st.selectbox(
-            "Nivel de presion",
-            list(WIND_LEVELS.keys()),
-            index=1,
-            key="live_wind_level",
-            format_func=lambda k: f"{k}  —  {WIND_ALTITUDES.get(k, '')}",
+    col_w1, col_w2, col_w3 = st.columns([1.3, 1.3, 0.7])
+    with col_w1:
+        show_wind = st.checkbox("Mostrar vectores de viento (GFS)",
+                                value=False, key="live_wind")
+    with col_w2:
+        if show_wind:
+            wind_level = st.selectbox(
+                "Nivel de presion",
+                list(WIND_LEVELS.keys()),
+                index=1,
+                key="live_wind_level",
+                format_func=lambda k: f"{k}  —  {WIND_ALTITUDES.get(k, '')}",
+                help=(
+                    "La altura es aproximada (atmosfera estandar ISA). "
+                    "Varia ±200-500 m segun temperatura y latitud."
+                ),
+            )
+        else:
+            wind_level = "500 hPa"
+    with col_w3:
+        if show_wind:
+            st.markdown("<div style='height:1.8rem'></div>", unsafe_allow_html=True)
+            if st.button("🔄 Viento", key="retry_wind",
+                         help="Limpiar cache y volver a pedir a Open-Meteo"):
+                _fetch_wind_cached.clear()
+                st.rerun()
+
+    # Layer activable: volcanes sobre los mapas
+    col_vl1, col_vl2 = st.columns([1.3, 2.7])
+    with col_vl1:
+        volc_layer = st.radio(
+            "Volcanes en el mapa",
+            ["Prioritarios (8)", "Todos (43+)", "Ninguno"],
+            index=0, horizontal=False, key="live_volc_layer",
             help=(
-                "La altura es aproximada (atmosfera estandar ISA). "
-                "Varia ±200-500 m segun temperatura y latitud."
+                "Los puntos de volcanes vienen del catalogo de SERNAGEOMIN "
+                "(Red Nacional de Vigilancia Volcanica, 43 volcanes). "
+                "Prioritarios = ranking alto + actividad reciente. "
+                "Codigo: src/volcanos.py"
             ),
         )
-    else:
-        wind_level = "500 hPa"
 
     # ── Tabs ──────────────────────────────────────────────────────────────
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
@@ -605,6 +641,18 @@ def _live_content():
               tambien pueden verse rojizas cerca de amanecer/atardecer — siempre
               cruzar con GeoColor y hot spots FDCF.
             </div>
+            <div style="margin-top:0.5rem; font-size:0.72rem; color:#667788;
+                        line-height:1.6;">
+              <b style="color:#8899aa;">Fuentes:</b><br>
+              &bull; <a href="https://resources.eumetrain.org/rgb_quick_guides/quick_guides/VolcanicAshRGB.pdf"
+                       target="_blank" style="color:#4a9eff;">EUMETRAIN Volcanic Ash RGB Quick Guide (PDF)</a><br>
+              &bull; <a href="https://rammb.cira.colostate.edu/training/visit/quick_guides/QuickGuide_GOESR_AshRGB_final.pdf"
+                       target="_blank" style="color:#4a9eff;">RAMMB/CIRA GOES-R Ash RGB Quick Guide (PDF)</a><br>
+              &bull; <a href="https://www.nature.com/articles/340691a0"
+                       target="_blank" style="color:#4a9eff;">Prata 1989, Nature 340:691 — BTD 11-12 µm split-window</a><br>
+              &bull; <a href="https://user.eumetsat.int/resources/user-guides/dust-rgb-quick-guide"
+                       target="_blank" style="color:#4a9eff;">EUMETSAT Dust/Ash RGB User Guide</a>
+            </div>
           </div>
         </details>
         """,
@@ -674,6 +722,18 @@ def _live_content():
               Verde + rojo juntos = erupcion explosiva reciente. Verifica
               concentraciones reales con TROPOMI/Sentinel-5P (UV, mas sensible).
             </div>
+            <div style="margin-top:0.5rem; font-size:0.72rem; color:#667788;
+                        line-height:1.6;">
+              <b style="color:#8899aa;">Fuentes:</b><br>
+              &bull; <a href="https://www.data.jma.go.jp/mscweb/data/monitoring/gms_rgb_en.html"
+                       target="_blank" style="color:#4a9eff;">JMA RGB Training — Himawari SO2 Product</a><br>
+              &bull; <a href="https://rammb.cira.colostate.edu/training/visit/quick_guides/Quick_Guide_SO2_RGB.pdf"
+                       target="_blank" style="color:#4a9eff;">RAMMB/CIRA SO2 RGB Quick Guide (PDF)</a><br>
+              &bull; <a href="https://slider.cira.colostate.edu"
+                       target="_blank" style="color:#4a9eff;">RAMMB/CIRA SLIDER (fuente de las imagenes)</a><br>
+              &bull; <a href="https://sentinel.esa.int/web/sentinel/user-guides/sentinel-5p-tropomi"
+                       target="_blank" style="color:#4a9eff;">TROPOMI/Sentinel-5P — validacion UV independiente</a>
+            </div>
           </div>
         </details>
         """,
@@ -700,7 +760,7 @@ def _live_content():
                 f"{prod_label} — GOES-19 · "
                 f"{frame['label_utc']}  ({frame['label_local']} Chile)"
             )
-            fig = _make_fig(frame["image"], bounds, title)
+            fig = _make_fig(frame["image"], bounds, title, volc_layer=volc_layer)
             if show_wind:
                 wind_data = _fetch_wind_cached(WIND_LEVELS[wind_level])
                 if wind_data:
@@ -710,9 +770,11 @@ def _live_content():
                         f"(flechas amarillas; largo ∝ velocidad)"
                     )
                 else:
+                    diag = fetch_wind_diagnostic(WIND_LEVELS[wind_level])
                     st.warning(
                         f"No se pudieron obtener vectores de viento a {wind_level}. "
-                        "Open-Meteo puede estar caido o el nivel no disponible."
+                        f"Open-Meteo status={diag['status']}. "
+                        f"Respuesta: {diag['response'][:200]}"
                     )
             # Forzar rango y altura grande para maxima visibilidad
             fig.update_layout(
@@ -794,6 +856,7 @@ def _live_content():
                         fig_z = _make_fig(
                             img_zona, zone_bounds,
                             f"{ZONE_LABELS[zone_key]} · {prod_zona} · zoom=3",
+                            volc_layer=volc_layer,
                         )
                         fig_z.update_layout(height=640)
                         st.plotly_chart(fig_z, use_container_width=True)
@@ -884,6 +947,7 @@ def _live_content():
                         f"{volcano.name} · {prod_volc} · "
                         f"±{radius}° ({radius*111:.0f} km)",
                         highlight_volcano=volcano,
+                        volc_layer=volc_layer,
                     )
                     fig_v.update_layout(height=700)
                     st.plotly_chart(fig_v, use_container_width=True)

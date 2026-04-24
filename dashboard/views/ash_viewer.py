@@ -38,8 +38,8 @@ def _volcano_markers(fig, lat, lon, volcanoes):
     fig.add_trace(go.Scatter(
         x=[v.lon for v in vis], y=[v.lat for v in vis],
         mode="markers+text",
-        marker=dict(size=6, color=C_ACCENT, symbol="triangle-up",
-                    line=dict(width=0.8, color="white")),
+        marker=dict(size=4, color=C_ACCENT, symbol="triangle-up",
+                    line=dict(width=0.6, color="white")),
         text=[v.name for v in vis],
         textposition="top center",
         textfont=dict(size=8, color="rgba(255,255,255,0.7)"),

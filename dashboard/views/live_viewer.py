@@ -222,13 +222,20 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str,
         fig.add_trace(go.Scatter(
             x=[v.lon for v in vis], y=[v.lat for v in vis],
             mode="markers+text",
-            marker=dict(size=6, color=C_ACCENT, symbol="triangle-up",
-                        line=dict(width=1, color="white")),
+            marker=dict(size=4, color=C_ACCENT, symbol="triangle-up",
+                        line=dict(width=0.6, color="white")),
             text=[v.name for v in vis],
             textposition="top center",
-            textfont=dict(size=8, color="rgba(255,255,255,0.75)"),
+            textfont=dict(size=7, color="rgba(255,255,255,0.75)"),
             name="Volcanes",
-            hovertext=[f"<b>{v.name}</b><br>{v.elevation:,} m" for v in vis],
+            hovertext=[
+                f"<b>{v.name}</b><br>{v.elevation:,} m<br>"
+                f"<span style='color:#aaa; font-size:10px;'>"
+                f"Triangulo = coord. real (WGS84). El pico puede verse "
+                f"desplazado ~1-3 km en la imagen por paralaje GOES-19 "
+                f"(mayor para volcanes altos).</span>"
+                for v in vis
+            ],
             hoverinfo="text", showlegend=False,
         ))
 
@@ -543,8 +550,10 @@ def _live_content():
             help=(
                 "Los puntos de volcanes vienen del catalogo de SERNAGEOMIN "
                 "(Red Nacional de Vigilancia Volcanica, 43 volcanes). "
-                "Prioritarios = ranking alto + actividad reciente. "
-                "Codigo: src/volcanos.py"
+                "Prioritarios = ranking alto + actividad reciente.\n\n"
+                "El triangulo marca la coordenada REAL (WGS84). En la imagen "
+                "el pico puede verse desplazado 1-3 km por paralaje de "
+                "GOES-19 (mayor para volcanes altos como Lascar, Parinacota)."
             ),
         )
 

@@ -83,7 +83,7 @@ def _fig_ssec_image(img_rgba, bounds, title, volcanoes):
         fig.add_trace(go.Scatter(
             x=[v.lon for v in vis], y=[v.lat for v in vis],
             mode="markers+text",
-            marker=dict(size=6, color=C_ACCENT, symbol="triangle-up",
+            marker=dict(size=4, color=C_ACCENT, symbol="triangle-up",
                         line=dict(width=0.8, color="white")),
             text=[v.name for v in vis],
             textposition="top center",

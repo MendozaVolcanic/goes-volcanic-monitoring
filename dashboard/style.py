@@ -68,14 +68,18 @@ CUSTOM_CSS = """
 /* ── Header ── */
 .main-header {
     background: linear-gradient(135deg, #0f1520 0%, #161d2e 50%, #1a1225 100%);
-    padding: 1.8rem 2.2rem;
-    border-radius: 12px;
-    margin-bottom: 1.8rem;
+    padding: 0.85rem 1.4rem;
+    border-radius: 10px;
+    margin-bottom: 0.9rem;
     border: 1px solid rgba(204,51,17,0.15);
-    border-left: 5px solid #CC3311;
+    border-left: 4px solid #CC3311;
     box-shadow: 0 4px 24px rgba(204,51,17,0.08), 0 1px 3px rgba(0,0,0,0.3);
     position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
 }
 .main-header::before {
     content: "";
@@ -87,16 +91,32 @@ CUSTOM_CSS = """
 }
 .main-header h1 {
     margin: 0;
-    font-size: 1.7rem;
+    font-size: 1.25rem;
     color: #f5f5f7;
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
 }
 .main-header p {
-    margin: 0.5rem 0 0 0;
+    margin: 0;
     color: #778899;
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     letter-spacing: 0.01em;
+}
+
+/* ── Widget labels compactos ── */
+.stCheckbox label p,
+.stRadio label p {
+    font-size: 0.8rem !important;
+}
+.stRadio [role="radiogroup"] label p {
+    font-size: 0.8rem !important;
+}
+div[data-testid="stWidgetLabel"] p {
+    font-size: 0.78rem !important;
+}
+.streamlit-expanderHeader,
+details summary {
+    font-size: 0.82rem !important;
 }
 
 /* ── KPI Cards ── */
@@ -338,7 +358,10 @@ def inject_css():
 
 
 def header(title: str, subtitle: str = ""):
-    sub_html = f"<p>{subtitle}</p>" if subtitle else ""
+    sub_html = (
+        f'<span style="color:#445566; font-size:0.9rem;">·</span>'
+        f'<p>{subtitle}</p>'
+    ) if subtitle else ""
     st.markdown(
         f'<div class="main-header"><h1>{title}</h1>{sub_html}</div>',
         unsafe_allow_html=True,

@@ -327,15 +327,15 @@ def _reloj_chile():
     ch_str = fmt_chile(now)
     date_str = now.strftime("%d %b %Y")
     st.markdown(
-        f'<div style="text-align:center; padding:0.6rem; '
-        f'background:rgba(17,24,34,0.6); border-radius:8px; '
-        f'border:1px solid rgba(100,120,140,0.2);">'
-        f'<div style="font-size:0.68rem; color:#556677; text-transform:uppercase; '
+        f'<div style="text-align:center; padding:0.35rem 0.5rem; '
+        f'background:rgba(17,24,34,0.6); border-radius:6px; '
+        f'border:1px solid rgba(100,120,140,0.2); line-height:1.2;">'
+        f'<div style="font-size:0.62rem; color:#556677; text-transform:uppercase; '
         f'letter-spacing:0.1em;">{date_str}</div>'
-        f'<div style="font-size:1.6rem; font-weight:700; color:#e8eaf0; '
-        f'font-family:monospace; letter-spacing:0.05em;">{utc_str}</div>'
-        f'<div style="font-size:1rem; color:#99aabb; font-family:monospace;">'
-        f'{ch_str} <span style="color:#445566; font-size:0.75rem;">Chile</span></div>'
+        f'<div style="font-size:1.25rem; font-weight:700; color:#e8eaf0; '
+        f'font-family:monospace; letter-spacing:0.04em;">{utc_str}</div>'
+        f'<div style="font-size:0.82rem; color:#99aabb; font-family:monospace;">'
+        f'{ch_str} <span style="color:#445566; font-size:0.7rem;">Chile</span></div>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -365,27 +365,27 @@ def _live_content():
     with col_status:
         ts_all = _fetch_latest_ts_all()
         status_html = (
-            '<div style="padding:0.5rem 0.8rem; background:rgba(17,24,34,0.6); '
-            'border-radius:8px; border:1px solid rgba(100,120,140,0.2);">'
-            '<div style="font-size:0.68rem; color:#556677; text-transform:uppercase; '
-            'letter-spacing:0.08em; margin-bottom:0.4rem;">'
-            'Ultimo scan disponible · RAMMB/CIRA</div>'
+            '<div style="padding:0.35rem 0.7rem; background:rgba(17,24,34,0.6); '
+            'border-radius:6px; border:1px solid rgba(100,120,140,0.2);">'
+            '<div style="font-size:0.62rem; color:#556677; text-transform:uppercase; '
+            'letter-spacing:0.08em; margin-bottom:0.15rem;">'
+            'Ultimo scan · RAMMB/CIRA</div>'
         )
         for prod, label, color in LIVE_PRODUCTS:
             info = ts_all.get(prod)
             if info:
                 status_html += (
-                    f'<div style="font-size:0.82rem; line-height:1.9;">'
+                    f'<div style="font-size:0.78rem; line-height:1.45;">'
                     f'<span style="color:{color}; font-weight:700;">■</span> '
                     f'<b style="color:#c0ccd8;">{label}</b> '
                     f'<span style="color:#99aabb; font-family:monospace;">{info["utc"]}</span>'
-                    f'<span style="color:#5a6a7a; font-size:0.75rem; margin-left:0.5rem;">'
+                    f'<span style="color:#5a6a7a; font-size:0.72rem; margin-left:0.4rem;">'
                     f'({info["local"]} Chile)</span>'
                     f'</div>'
                 )
             else:
                 status_html += (
-                    f'<div style="font-size:0.82rem; color:#445566;">'
+                    f'<div style="font-size:0.78rem; color:#445566; line-height:1.45;">'
                     f'<b>{label}</b> — no disponible</div>'
                 )
         status_html += '</div>'
@@ -431,10 +431,10 @@ def _live_content():
     _stc.html(
         f"""
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-                    font-size:0.88rem; color:#99aabb; padding:0.5rem 0.9rem;
+                    font-size:0.8rem; color:#99aabb; padding:0.3rem 0.8rem;
                     background:rgba(17,24,34,0.5);
-                    border-radius:8px; border:1px solid rgba(74,158,255,0.2);
-                    display:flex; align-items:center; gap:1.1rem; flex-wrap:wrap;">
+                    border-radius:6px; border:1px solid rgba(74,158,255,0.2);
+                    display:flex; align-items:center; gap:0.9rem; flex-wrap:wrap;">
           <span>
             <span style="color:#3fb950; font-size:1rem;">●</span>
             <b style="color:#c0ccd8;">Auto-refresh</b>
@@ -497,7 +497,7 @@ def _live_content():
           }})();
         </script>
         """,
-        height=55,
+        height=42,
     )
 
     # ── Controles de viento ────────────────────────────────────────────────
@@ -509,18 +509,19 @@ def _live_content():
         "500 hPa": "≈ 5.5 km",
         "850 hPa": "≈ 1.5 km",
     }
-    col_w1, col_w2, col_w3 = st.columns([1.3, 1.3, 0.7])
+    col_w1, col_w2, col_w3, col_vl = st.columns([1.2, 1.2, 0.5, 2.3])
     with col_w1:
-        show_wind = st.checkbox("Mostrar vectores de viento (GFS)",
+        show_wind = st.checkbox("Vectores de viento (GFS)",
                                 value=False, key="live_wind")
     with col_w2:
         if show_wind:
             wind_level = st.selectbox(
-                "Nivel de presion",
+                "Nivel",
                 list(WIND_LEVELS.keys()),
                 index=1,
                 key="live_wind_level",
                 format_func=lambda k: f"{k}  —  {WIND_ALTITUDES.get(k, '')}",
+                label_visibility="collapsed",
                 help=(
                     "La altura es aproximada (atmosfera estandar ISA). "
                     "Varia ±200-500 m segun temperatura y latitud."
@@ -530,19 +531,15 @@ def _live_content():
             wind_level = "500 hPa"
     with col_w3:
         if show_wind:
-            st.markdown("<div style='height:1.8rem'></div>", unsafe_allow_html=True)
-            if st.button("🔄 Viento", key="retry_wind",
+            if st.button("🔄", key="retry_wind",
                          help="Limpiar cache y volver a pedir a Open-Meteo"):
                 _fetch_wind_cached.clear()
                 st.rerun()
-
-    # Layer activable: volcanes sobre los mapas
-    col_vl1, col_vl2 = st.columns([1.3, 2.7])
-    with col_vl1:
+    with col_vl:
         volc_layer = st.radio(
             "Volcanes en el mapa",
             ["Prioritarios (8)", "Todos (43+)", "Ninguno"],
-            index=0, horizontal=False, key="live_volc_layer",
+            index=0, horizontal=True, key="live_volc_layer",
             help=(
                 "Los puntos de volcanes vienen del catalogo de SERNAGEOMIN "
                 "(Red Nacional de Vigilancia Volcanica, 43 volcanes). "
@@ -1004,16 +1001,21 @@ def render():
         "Ultimo scan disponible · Auto-refresh 10 min · RAMMB/CIRA Slider",
     )
 
+    # Banner + badge combinados en un solo bloque compacto
     st.markdown(
-        '<div class="status-banner ok">'
-        '<b>&#128994; En vivo — se actualiza automaticamente cada 10 minutos</b>'
-        '<span style="color:#556677; font-size:0.78rem;">slider.cira.colostate.edu · GOES-19 Full Disk</span>'
+        '<div style="display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;'
+        ' padding:0.45rem 0.8rem; background:rgba(22,34,28,0.55);'
+        ' border-left:3px solid #3fb950; border-radius:6px; margin-bottom:0.4rem;">'
+        '<span style="color:#3fb950; font-weight:700; font-size:0.88rem;">'
+        '&#9679; En vivo</span>'
+        '<span style="color:#7a8a99; font-size:0.8rem;">auto-refresh 10 min</span>'
+        '<span style="color:#445566;">·</span>'
+        '<span style="color:#7a8a99; font-size:0.78rem;">'
+        'slider.cira.colostate.edu · GOES-19 Full Disk</span>'
         '</div>',
         unsafe_allow_html=True,
     )
 
     refresh_info_badge(context="live")
-
-    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
 
     _live_content()

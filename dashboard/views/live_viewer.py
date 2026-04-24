@@ -848,10 +848,20 @@ def _live_content():
                     "sur":     row2_col1,
                     "austral": row2_col2,
                 }
+                # Descarga paralela de las 4 zonas (4x mas rapido que secuencial).
+                # Si ya estan en cache, los .result() vuelven instantaneo.
+                from concurrent.futures import ThreadPoolExecutor
+                with st.spinner("Descargando 4 zonas en paralelo..."):
+                    with ThreadPoolExecutor(max_workers=4) as ex:
+                        futures = {
+                            zk: ex.submit(_fetch_zone_frame, prod_zona, ts_zona, zk)
+                            for zk in zone_cols
+                        }
+                        zone_imgs = {zk: f.result() for zk, f in futures.items()}
+
                 for zone_key, col in zone_cols.items():
                     with col:
-                        with st.spinner(f"{ZONE_LABELS[zone_key]}..."):
-                            img_zona = _fetch_zone_frame(prod_zona, ts_zona, zone_key)
+                        img_zona = zone_imgs[zone_key]
                         if img_zona is None:
                             st.error(f"Sin datos para {ZONE_LABELS[zone_key]}")
                             continue

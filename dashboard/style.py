@@ -114,9 +114,24 @@ CUSTOM_CSS = """
 div[data-testid="stWidgetLabel"] p {
     font-size: 0.78rem !important;
 }
+/* Expander — cubrir varias versiones de Streamlit */
+details[data-testid="stExpander"] summary,
+details[data-testid="stExpander"] summary p,
+details[data-testid="stExpander"] summary span,
+div[data-testid="stExpander"] summary,
+div[data-testid="stExpander"] summary p,
+[data-testid="stExpanderToggleIcon"] + * ,
 .streamlit-expanderHeader,
-details summary {
-    font-size: 0.82rem !important;
+.streamlit-expanderHeader p,
+details summary,
+details summary p {
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+}
+details[data-testid="stExpander"] summary {
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
+    min-height: 0 !important;
 }
 
 /* ── KPI Cards ── */

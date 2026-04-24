@@ -45,13 +45,17 @@ PRODUCT_LABELS = {k: v.split("(")[0].strip() for k, v in PRODUCTS.items()}
 _REPROJECT_VERSION = "v2"
 
 
-@st.cache_data(ttl=30, show_spinner=False)
+@st.cache_data(ttl=15, show_spinner=False)
 def _get_latest_ts(product: str) -> str | None:
-    """Consultar el timestamp del scan mas reciente (cache 30s — liviano).
+    """Consultar el timestamp del scan mas reciente (cache 15s — liviano).
 
-    TTL corto para detectar el nuevo scan rapido (RAMMB publica 3-5 min
-    despues del fin del scan de GOES-19; latencia de deteccion ≤ 30s + 60s
-    del fragment = max ~90s desde que aparece).
+    TTL corto para detectar el nuevo scan rapido. RAMMB publica 3-5 min
+    despues del fin del scan de GOES-19. Con fragment cada 60s y cache 15s,
+    la latencia de deteccion tras publicacion es ≤ 60s en el peor caso.
+
+    El JSON de latest_times.json (~1 KB) trae cache-buster en la URL asi
+    que cada miss va directo al origen — evita que un CDN/proxy intermedio
+    nos sirva una version stale.
     """
     times = get_latest_timestamps(product, n=1)
     return times[0] if times else None
@@ -149,15 +153,22 @@ def _fetch_volcano_frame(
     return None, 0
 
 
-@st.cache_data(ttl=30, show_spinner=False)
+@st.cache_data(ttl=15, show_spinner=False)
 def _fetch_latest_ts_all() -> dict:
-    """Obtener timestamps mas recientes de todos los productos (cache 90s).
+    """Obtener timestamps mas recientes de todos los productos (cache 15s).
 
     Llama get_latest_timestamps directamente (NO via _get_latest_ts) para
     evitar llamadas anidadas entre funciones @st.cache_data, que Streamlit
     no soporta y causa 'Error running app' en Streamlit Cloud.
+
+    Retorna tambien "polled_at" — el epoch UTC en el que esta consulta
+    efectivamente llego a RAMMB. Esto permite distinguir "no hay scan nuevo
+    porque RAMMB no publico" vs "no hay scan nuevo porque estamos sirviendo
+    cache viejo". El campo queda dentro del dict cacheado, asi que refleja
+    la ultima consulta REAL al origen (no el tiempo de ejecucion actual).
     """
-    result = {}
+    import time as _t
+    result = {"_polled_at": _t.time()}
     for prod, _, _ in LIVE_PRODUCTS:
         times = get_latest_timestamps(prod, n=1)
         if times:
@@ -202,6 +213,11 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str,
         if not vis:
             vis = [v for v in CATALOG
                    if lat_min <= v.lat <= lat_max and lon_min <= v.lon <= lon_max][:15]
+
+    # Si hay un volcan resaltado (vista zoom), excluirlo de la lista general
+    # para evitar marcador + etiqueta duplicados.
+    if highlight_volcano is not None:
+        vis = [v for v in vis if v.name != highlight_volcano.name]
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -371,12 +387,27 @@ def _live_content():
 
     with col_status:
         ts_all = _fetch_latest_ts_all()
+        # "polled_at" = cuando la llamada a RAMMB efectivamente salio al
+        # origen. Lo guardamos dentro del dict cacheado, asi que puede ser
+        # de hace varios segundos si estamos leyendo del cache.
+        import time as _time_mod
+        _polled_at = ts_all.get("_polled_at", _time_mod.time())
+        _age = int(_time_mod.time() - _polled_at)
+        _polled_dt = datetime.fromtimestamp(_polled_at, tz=timezone.utc)
+        _polled_utc = _polled_dt.strftime("%H:%M:%S UTC")
+        _polled_cl  = fmt_chile(_polled_dt)
+
         status_html = (
             '<div style="padding:0.35rem 0.7rem; background:rgba(17,24,34,0.6); '
             'border-radius:6px; border:1px solid rgba(100,120,140,0.2);">'
             '<div style="font-size:0.62rem; color:#556677; text-transform:uppercase; '
-            'letter-spacing:0.08em; margin-bottom:0.15rem;">'
-            'Ultimo scan · RAMMB/CIRA</div>'
+            'letter-spacing:0.08em; margin-bottom:0.15rem; '
+            'display:flex; justify-content:space-between; align-items:center;">'
+            '<span>Ultimo scan · RAMMB/CIRA</span>'
+            f'<span title="Hora en la que nuestro servidor le pregunto a RAMMB por el ultimo scan. Si ves un scan viejo pero esta consulta es reciente, RAMMB aun no publico el nuevo." '
+            f'style="color:#667788; text-transform:none; font-size:0.66rem;">'
+            f'consulta: {_polled_utc} ({_polled_cl} CL) · hace {_age}s</span>'
+            '</div>'
         )
         for prod, label, color in LIVE_PRODUCTS:
             info = ts_all.get(prod)

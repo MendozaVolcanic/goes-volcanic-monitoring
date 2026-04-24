@@ -150,10 +150,21 @@ def get_latest_timestamps(product: str, n: int = 24) -> list[str]:
     Returns:
         Lista de timestamps como strings (14 dígitos: YYYYMMDDHHmmss),
         ordenados de más reciente a más antiguo.
+
+    Notas:
+      - Agregamos un cache-buster ?_=<epoch> para evitar que un CDN/proxy
+        intermedio (o el cache del cliente requests) nos sirva una version
+        antigua de latest_times.json. El JSON en si es pequeño (~1 KB) pero
+        si queda cacheado arriba, no veriamos el scan nuevo aunque exista.
+      - Ademas mandamos headers Cache-Control/Pragma por si algun proxy
+        respeta header en lugar de query-string.
     """
-    url = f"{BASE_URL}/data/json/{SATELLITE}/{SECTOR}/{product}/latest_times.json"
+    import time as _t
+    url = (f"{BASE_URL}/data/json/{SATELLITE}/{SECTOR}/{product}"
+           f"/latest_times.json?_={int(_t.time())}")
+    headers = {"Cache-Control": "no-cache", "Pragma": "no-cache"}
     try:
-        resp = _get_session().get(url, timeout=TIMEOUT)
+        resp = _get_session().get(url, timeout=TIMEOUT, headers=headers)
         resp.raise_for_status()
         data = resp.json()
         times = [str(t) for t in data.get("timestamps_int", [])]

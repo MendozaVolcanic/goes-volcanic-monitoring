@@ -31,3 +31,7 @@ Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
+
+# Local settings & logs
+.claude/
+Logs pruebas/

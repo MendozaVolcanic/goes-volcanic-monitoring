@@ -399,32 +399,53 @@ def refresh_info_badge(context: str = "general"):
     # Detalle tecnico completo en expander
     with st.expander("Como se actualizan los datos (detalle)"):
         st.markdown("""
-**Cadena de actualizacion GOES-19 → RAMMB → Dashboard:**
+<div style="font-size:0.78rem; line-height:1.55; color:#c0ccd8;">
 
-| Paso | Tiempo | Detalle |
-|------|--------|---------|
-| 1. Scan GOES-19 Full Disk | **10 min** | ABI realiza un barrido completo del disco cada 10 min |
-| 2. Procesamiento NOAA | ~1-2 min | L1b radiance calibrada sube a AWS S3 |
-| 3. RAMMB/CIRA stitching | ~2-3 min | CIRA genera tiles del Slider con los RGB compuestos |
-| 4. Polling del dashboard | ≤ 60 s (En Vivo) | Consulta `latest_times.json` de RAMMB |
-| 5. Descarga + reproyeccion | 5-20 s | Tiles → mosaico → lat/lon WGS84 |
+<b>Cuanto tarda una imagen nueva en aparecer aca</b>
 
-**Latencia total desde el fenomeno hasta verlo aca:**
-- **Mejor caso:** ~4 min (si el fenomeno ocurre justo al inicio de un scan)
-- **Peor caso:** ~14-15 min (si ocurre justo despues del scan anterior)
-- **Tipico:** ~8-10 min
+<table style="width:100%; font-size:0.78rem; border-collapse:collapse;">
+<tr style="color:#8899aa;">
+  <th style="text-align:left; padding:2px 6px;">Paso</th>
+  <th style="text-align:left; padding:2px 6px;">Tiempo</th>
+  <th style="text-align:left; padding:2px 6px;">Que pasa</th>
+</tr>
+<tr><td style="padding:2px 6px;">1. Scan del satelite</td>
+    <td style="padding:2px 6px;"><b>10 min</b></td>
+    <td style="padding:2px 6px;">GOES-19 barre el disco completo cada 10 min</td></tr>
+<tr><td style="padding:2px 6px;">2. Calibracion NOAA</td>
+    <td style="padding:2px 6px;">1-2 min</td>
+    <td style="padding:2px 6px;">NOAA publica el dato bruto en la nube (AWS)</td></tr>
+<tr><td style="padding:2px 6px;">3. Generacion imagen</td>
+    <td style="padding:2px 6px;">2-3 min</td>
+    <td style="padding:2px 6px;">RAMMB/CIRA arma los mosaicos RGB que consumimos</td></tr>
+<tr><td style="padding:2px 6px;">4. El dashboard chequea</td>
+    <td style="padding:2px 6px;">≤ 60 s</td>
+    <td style="padding:2px 6px;">Cada minuto preguntamos si hay imagen nueva</td></tr>
+<tr><td style="padding:2px 6px;">5. Descarga + dibujo</td>
+    <td style="padding:2px 6px;">5-20 s</td>
+    <td style="padding:2px 6px;">Bajamos los mosaicos y los reproyectamos al mapa</td></tr>
+</table>
 
-**Diferencia entre vistas:**
-- **En Vivo** &mdash; auto-refresh 60 s, detecta nuevo scan en <= 90 s.
-- **Mapa General, Ash Viewer, Detalle Volcan, VOLCAT, Animacion** &mdash; cargan al abrir la vista o recargar manualmente. El backend cachea frames 2 horas (evita re-descargar).
+<b>Tiempo total entre el fenomeno y verlo aca:</b>
+tipico <b>8-10 min</b>, minimo ~4 min, maximo ~15 min
+(depende de si la erupcion ocurre justo antes o justo despues de un scan).
 
-**Como forzar actualizacion inmediata:**
-- Boton **🔄 Actualizar** (En Vivo)
-- Presionar **R** en el navegador (todas las vistas)
-- Cambiar producto/volcan (invalida la cache de esa seleccion).
+<b>En que vistas aplica el auto-refresh:</b><br>
+&bull; <b>En Vivo</b>: auto-refresh de 60 s. Detecta la imagen nueva solo.<br>
+&bull; Resto de vistas (Ash Viewer, Por Volcan, VOLCAT, Animacion):
+  cargan al abrir la vista o al presionar un boton. El backend guarda
+  las imagenes 2 h en cache para no re-descargar.
 
-**Fuente:** [RAMMB/CIRA SLIDER](https://slider.cira.colostate.edu) &middot; Colorado State University.
-        """)
+<b>Como forzar una recarga inmediata:</b><br>
+&bull; Boton <b>↻ Actualizar</b> en En Vivo<br>
+&bull; Tecla <b>R</b> en el navegador (cualquier vista)<br>
+&bull; Cambiar el producto o el volcan seleccionado
+
+<b>Fuente:</b> <a href="https://slider.cira.colostate.edu" target="_blank"
+style="color:#4a9eff;">RAMMB/CIRA SLIDER</a> — Colorado State University.
+
+</div>
+        """, unsafe_allow_html=True)
 
 
 def ash_legend():

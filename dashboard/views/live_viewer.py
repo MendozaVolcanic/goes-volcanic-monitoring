@@ -270,14 +270,14 @@ def _fetch_wind_cached(level: str) -> list:
 def _add_wind_arrows(
     fig,
     wind_data: list,
-    scale: float = 0.05,
+    scale: float = 0.03,
     color: str = "rgba(255,230,80,0.95)",
     level_label: str = "500 hPa",
 ) -> None:
     """Agregar vectores de viento como flechas de anotacion Plotly.
 
     scale: grados de desplazamiento por km/h de viento.
-           0.05 → viento de 50 km/h = flecha de 2.5 grados (muy visible).
+           0.03 → viento de 50 km/h = flecha de 1.5 grados.
     color: amarillo brillante para contraste sobre Ash RGB / GeoColor.
     """
     if not wind_data:
@@ -289,8 +289,8 @@ def _add_wind_arrows(
         x=[w["lon"] for w in wind_data],
         y=[w["lat"] for w in wind_data],
         mode="markers",
-        marker=dict(size=5, color=color,
-                    line=dict(width=1, color="rgba(0,0,0,0.6)")),
+        marker=dict(size=3, color=color,
+                    line=dict(width=0.6, color="rgba(0,0,0,0.6)")),
         name=f"Viento {level_label} (GFS)",
         hovertext=[f"<b>{w['speed']:.0f} km/h</b> @ {w['direction']:.0f}°"
                    for w in wind_data],
@@ -309,8 +309,8 @@ def _add_wind_arrows(
             xref="x", yref="y",
             axref="x", ayref="y",
             arrowhead=3,
-            arrowsize=1.3,
-            arrowwidth=2.5,
+            arrowsize=1.0,
+            arrowwidth=1.6,
             arrowcolor=color,
             text="",
             showarrow=True,
@@ -549,9 +549,10 @@ def _live_content():
         )
 
     # ── Tabs ──────────────────────────────────────────────────────────────
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
-        "🌍 GeoColor", "🌋 Ash RGB", "🟢 SO2",
-        "🗺️ Por Zonas", "🔬 Volcán",
+    tab_nacional, tab4, tab5 = st.tabs([
+        "🌎 Nacional (GeoColor · Ash · SO2)",
+        "🗺️ Por Zona Volcánica",
+        "🔬 Volcán",
     ])
 
     notas = {
@@ -736,89 +737,90 @@ def _live_content():
         """,
     }
 
-    for tab, (prod_id, prod_label, _) in zip([tab1, tab2, tab3], LIVE_PRODUCTS):
-        with tab:
-            # Paso 1 — timestamp (liviano, cache 90s)
-            ts = _get_latest_ts(prod_id)
-            if ts is None:
-                st.error(f"No se pudo obtener timestamp de {prod_label}. Verifica conexion.")
-                continue
+    # ── Tab nacional: los 3 productos apilados ────────────────────────────
+    with tab_nacional:
+        # Sub-pestanas internas para cada producto (misma altura que antes,
+        # pero agrupadas bajo un solo boton).
+        sub_geo, sub_ash, sub_so2 = st.tabs(["🌍 GeoColor", "🌋 Ash RGB", "🟢 SO2"])
+        sub_tabs = {"geocolor": sub_geo, "eumetsat_ash": sub_ash, "jma_so2": sub_so2}
 
-            # Paso 2 — imagen (pesado, cache 2h por timestamp)
-            with st.spinner(f"Cargando {prod_label} · {ts[8:10]}:{ts[10:12]} UTC..."):
-                frame = _fetch_frame_for_ts(prod_id, ts)
+        # Descargar viento una sola vez (compartido por los 3 productos).
+        wind_data_cached = None
+        wind_error = None
+        if show_wind:
+            wind_data_cached = _fetch_wind_cached(WIND_LEVELS[wind_level])
+            if not wind_data_cached:
+                wind_error = fetch_wind_diagnostic(WIND_LEVELS[wind_level])
 
-            if frame is None:
-                st.error(f"No se pudo descargar {prod_label}.")
-                continue
+        for prod_id, prod_label, _ in LIVE_PRODUCTS:
+            with sub_tabs[prod_id]:
+                # Paso 1 — timestamp (liviano, cache 90s)
+                ts = _get_latest_ts(prod_id)
+                if ts is None:
+                    st.error(f"No se pudo obtener timestamp de {prod_label}.")
+                    continue
 
-            bounds = frame.get("bounds", CHILE_TILE_BOUNDS)
-            title = (
-                f"{prod_label} — GOES-19 · "
-                f"{frame['label_utc']}  ({frame['label_local']} Chile)"
-            )
-            fig = _make_fig(frame["image"], bounds, title, volc_layer=volc_layer)
-            if show_wind:
-                wind_data = _fetch_wind_cached(WIND_LEVELS[wind_level])
-                if wind_data:
-                    _add_wind_arrows(fig, wind_data, level_label=wind_level)
-                    st.caption(
-                        f"🌬 {len(wind_data)} vectores de viento GFS a {wind_level} "
-                        f"(flechas amarillas; largo ∝ velocidad)"
-                    )
-                else:
-                    diag = fetch_wind_diagnostic(WIND_LEVELS[wind_level])
-                    st.warning(
-                        f"No se pudieron obtener vectores de viento a {wind_level}. "
-                        f"Open-Meteo status={diag['status']}. "
-                        f"Respuesta: {diag['response'][:200]}"
-                    )
-            # Forzar rango y altura grande para maxima visibilidad
-            fig.update_layout(
-                height=820,
-                xaxis=dict(range=[bounds["lon_min"], bounds["lon_max"]],
-                           autorange=False),
-                yaxis=dict(range=[bounds["lat_min"], bounds["lat_max"]],
-                           autorange=False, scaleanchor="x", scaleratio=1),
-                margin=dict(t=40, b=35, l=45, r=15),
-            )
-            st.plotly_chart(fig, use_container_width=True)
+                # Paso 2 — imagen (pesado, cache 2h por timestamp)
+                with st.spinner(f"Cargando {prod_label} · {ts[8:10]}:{ts[10:12]} UTC..."):
+                    frame = _fetch_frame_for_ts(prod_id, ts)
 
-            st.markdown(
-                f'<div style="font-size:0.75rem; color:#445566; margin-top:0.3rem;">'
-                f'{notas.get(prod_id, "")}'
-                f'</div>',
-                unsafe_allow_html=True,
-            )
+                if frame is None:
+                    st.error(f"No se pudo descargar {prod_label}.")
+                    continue
 
-            # Leyenda interpretativa (solo Ash RGB y SO2 — GeoColor es color real).
-            if prod_id in LEYENDAS_HTML:
-                st.markdown(LEYENDAS_HTML[prod_id], unsafe_allow_html=True)
+                bounds = frame.get("bounds", CHILE_TILE_BOUNDS)
+                title = (
+                    f"{prod_label} — GOES-19 · "
+                    f"{frame['label_utc']}  ({frame['label_local']} Chile)"
+                )
+                fig = _make_fig(frame["image"], bounds, title, volc_layer=volc_layer)
+                if show_wind:
+                    if wind_data_cached:
+                        _add_wind_arrows(fig, wind_data_cached, level_label=wind_level)
+                        st.caption(
+                            f"🌬 {len(wind_data_cached)} vectores de viento GFS a {wind_level} "
+                            f"(flechas amarillas; largo ∝ velocidad)"
+                        )
+                    elif wind_error:
+                        st.warning(
+                            f"No se pudieron obtener vectores de viento a {wind_level}. "
+                            f"Open-Meteo status={wind_error['status']}. "
+                            f"Respuesta: {wind_error['response'][:200]}"
+                        )
 
-    # ── Tab 4: Por Zonas (lazy: solo carga al presionar boton) ────────────
+                fig.update_layout(
+                    height=820,
+                    xaxis=dict(range=[bounds["lon_min"], bounds["lon_max"]],
+                               autorange=False),
+                    yaxis=dict(range=[bounds["lat_min"], bounds["lat_max"]],
+                               autorange=False, scaleanchor="x", scaleratio=1),
+                    margin=dict(t=40, b=35, l=45, r=15),
+                )
+                st.plotly_chart(fig, use_container_width=True)
+
+                st.markdown(
+                    f'<div style="font-size:0.75rem; color:#445566; margin-top:0.3rem;">'
+                    f'{notas.get(prod_id, "")}'
+                    f'</div>',
+                    unsafe_allow_html=True,
+                )
+
+                # Leyenda interpretativa (solo Ash RGB y SO2).
+                if prod_id in LEYENDAS_HTML:
+                    st.markdown(LEYENDAS_HTML[prod_id], unsafe_allow_html=True)
+
+    # ── Tab 4: Por Zona Volcánica (auto-carga las 4 zonas) ────────────────
     with tab4:
         prod_zona = st.selectbox(
             "Producto", ["geocolor", "eumetsat_ash", "jma_so2"],
             format_func=lambda k: PRODUCT_LABELS.get(k, k),
             key="zona_product",
         )
-        # Lazy loading: evita descargar 4 reproyecciones en cada auto-refresh
-        # (Streamlit ejecuta el codigo de TODOS los tabs, esten visibles o no).
-        cargar_zonas = st.button(
-            "Cargar 4 zonas volcanicas (zoom=3)",
-            key="btn_cargar_zonas", type="primary",
-        )
-        if not cargar_zonas and not st.session_state.get("zonas_cargadas"):
-            st.info(
-                "Presiona el boton para descargar las 4 zonas volcanicas "
-                "(Norte, Centro, Sur, Austral) a zoom=3."
-            )
+        ts_zona = _get_latest_ts(prod_zona)
+        if ts_zona is None:
+            st.error("No se pudo obtener timestamp. Verifica conexion.")
         else:
-            st.session_state["zonas_cargadas"] = True
-            ts_zona = _get_latest_ts(prod_zona)
-            if ts_zona is None:
-                st.error("No se pudo obtener timestamp. Verifica conexion.")
-            else:
+            if True:
                 st.markdown(
                     f'<div style="font-size:1.05rem; color:#c0ccd8; margin-bottom:0.6rem; '
                     f'padding:0.4rem 0.7rem; background:rgba(17,24,34,0.5); '
@@ -965,11 +967,11 @@ def _live_content():
                         wind_v = _fwg(vlats, vlons, level=WIND_LEVELS[wind_level])
                         if wind_v:
                             # Scale mas chico para grillas densas localmente
-                            _add_wind_arrows(fig_v, wind_v, scale=0.02,
+                            _add_wind_arrows(fig_v, wind_v, scale=0.012,
                                              level_label=wind_level)
                             st.caption(
                                 f"🌬 {len(wind_v)} vectores GFS @ {wind_level} "
-                                f"(grilla 3×3 local, scale 0.02°/(km/h))"
+                                f"(grilla 3×3 local)"
                             )
                         else:
                             st.warning(

@@ -41,3 +41,23 @@ hot spots y color real para 43 volcanes chilenos.
 ## Testing
 - Verificar contra eventos conocidos: Calbuco 2015, Puyehue 2011
 - Siempre verificar geolocalización con volcanes de coordenadas conocidas
+
+## Mantener INTEGRATION.md actualizado
+
+Este proyecto tiene un archivo `INTEGRATION.md` en la raíz que documenta sus
+puntos de integración con otros proyectos volcanológicos (VRP, Lightning,
+VolcPlume, Valles, etc).
+
+**Actualizá `INTEGRATION.md` cuando**:
+- Agregues un producto nuevo (página, fetcher, formato de export).
+- Cambie una API que consumimos (RAMMB, NOAA S3, VOLCAT, Open-Meteo).
+- Cambie el stack mayor (deps nuevas, deploy, frontend).
+- Hagas un release significativo.
+
+**Cómo**:
+- Editar `INTEGRATION.md`, actualizar `last_updated` en el frontmatter.
+- (Opcional) desde `Integracion_Plataformas/` correr `python scripts/sync.py`
+  para reflejar el cambio en el hub central.
+
+El sync NO es bloqueante — si te olvidás, otra persona lo corre después y todo
+funciona. Pero mantenerlo al día evita que la doc derive del código.

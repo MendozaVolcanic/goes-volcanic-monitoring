@@ -134,6 +134,80 @@ def _build_gif(frames: list[dict], duration_ms: int = 700) -> bytes:
     return buf.getvalue()
 
 
+def _build_mp4(frames: list[dict], fps: float = 1.5) -> bytes:
+    """Construir MP4 H.264 a partir de los frames (con timestamp impreso).
+
+    H.264 + yuv420p es el codec mas compatible (PowerPoint, navegadores,
+    mac/windows/linux, Quicktime). Mucho mas liviano que GIF (~20-50% del
+    tamano) y mejor calidad.
+
+    Requiere imageio-ffmpeg (trae binario static).
+
+    fps por defecto 1.5 (cada scan dura ~0.66s en el video). Subir a 4-6 fps
+    para playback mas rapido.
+    """
+    try:
+        import imageio.v2 as iio
+    except Exception as e:
+        logger.error("imageio no disponible: %s", e)
+        return b""
+
+    pil_frames = [_annotated_pil(f["image"], f["label"]) for f in frames]
+    if not pil_frames:
+        return b""
+
+    # H.264 requiere dimensiones PARES. Padear si es necesario.
+    arrs = []
+    for pf in pil_frames:
+        a = np.asarray(pf)
+        h, w = a.shape[:2]
+        new_h = h + (h % 2)
+        new_w = w + (w % 2)
+        if (new_h, new_w) != (h, w):
+            padded = np.zeros((new_h, new_w, 3), dtype=a.dtype)
+            padded[:h, :w] = a
+            a = padded
+        arrs.append(a)
+
+    # imageio escribe a archivo — usamos un tempfile y leemos los bytes.
+    import tempfile
+    import os
+    tmp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as tmp:
+            tmp_path = tmp.name
+        # macro_block_size=1 evita que imageio fuerce dimension multiplo de 16
+        # (tendria que padear de mas y la imagen quedaria con borde negro grande).
+        # quality=8 es calidad alta sin ser absurda en tamano.
+        writer = iio.get_writer(
+            tmp_path,
+            format="FFMPEG",
+            mode="I",
+            fps=fps,
+            codec="libx264",
+            quality=8,
+            pixelformat="yuv420p",
+            macro_block_size=1,
+            ffmpeg_log_level="error",
+        )
+        try:
+            for arr in arrs:
+                writer.append_data(arr)
+        finally:
+            writer.close()
+        with open(tmp_path, "rb") as f:
+            return f.read()
+    except Exception as e:
+        logger.exception("Error construyendo MP4: %s", e)
+        return b""
+    finally:
+        if tmp_path and os.path.exists(tmp_path):
+            try:
+                os.unlink(tmp_path)
+            except OSError:
+                pass
+
+
 def _build_zip_frames(frames: list[dict], product_label: str,
                       scope_label: str) -> bytes:
     """ZIP con (1) PNGs originales sin overlay, (2) manifest.csv con metadata."""
@@ -572,8 +646,10 @@ def render():
     with st.expander("⬇ Descargar animacion / frames", expanded=False):
         st.markdown(
             '<div style="font-size:0.78rem; color:#8899aa; margin-bottom:0.5rem;">'
-            'Generar el archivo toma 5-15 s la primera vez (queda cacheado en sesion). '
-            '<b>GIF</b>: animacion con timestamp impreso, ideal para reportes/PDF. '
+            'Generar el archivo toma 5-20 s la primera vez (queda cacheado en sesion). '
+            '<b>MP4 (H.264)</b>: video estandar, mejor calidad, ~3-5x mas chico que GIF, '
+            'compatible con PowerPoint/navegadores. '
+            '<b>GIF</b>: imagen animada, ideal para mail/Slack/PDF (loop infinito). '
             '<b>ZIP</b>: PNGs originales sin overlay + <code>manifest.csv</code> con bounds, '
             'pensado para reanalisis en QGIS o Python.'
             '</div>',
@@ -593,9 +669,59 @@ def render():
         ts_last  = frames[-1]["ts"][:12]
         base_name = f"goes19_{prod_slug}_{scope_slug}_{ts_first}_{ts_last}"
 
-        col_g, col_z, col_info = st.columns([1, 1, 1.5])
+        # FPS selector compartido (afecta solo MP4; el GIF mantiene 700ms/frame).
+        fps = st.slider(
+            "FPS del video MP4 (frames por segundo)",
+            min_value=1.0, max_value=8.0, value=1.5, step=0.5,
+            key="anim_fps",
+            help=(
+                "Velocidad de reproduccion del MP4. 1.5 fps = cada scan "
+                "(10 min reales) dura ~0.66s en el video. "
+                "Subir a 4-6 fps para playback mas rapido."
+            ),
+        )
+
+        col_m, col_g, col_z = st.columns(3)
+
+        with col_m:
+            st.markdown(
+                '<div style="font-size:0.78rem; color:#c0ccd8; '
+                'font-weight:700; margin-bottom:0.2rem;">MP4 (recomendado)</div>',
+                unsafe_allow_html=True,
+            )
+            # Re-generar si cambia FPS — usamos fps en la session_state key
+            if st.button("Generar MP4", key="gen_mp4",
+                         use_container_width=True):
+                with st.spinner("Construyendo MP4 (H.264)..."):
+                    mp4_bytes = _build_mp4(frames, fps=fps)
+                    if mp4_bytes:
+                        st.session_state["_mp4_bytes"] = mp4_bytes
+                        st.session_state["_mp4_name"] = (
+                            f"{base_name}_{fps:.1f}fps.mp4"
+                        )
+                    else:
+                        st.error(
+                            "No se pudo generar MP4. Si esto pasa en Streamlit "
+                            "Cloud, revisar que imageio-ffmpeg este instalado. "
+                            "Mientras tanto podes usar el GIF."
+                        )
+            if "_mp4_bytes" in st.session_state and st.session_state["_mp4_bytes"]:
+                size_mb = len(st.session_state["_mp4_bytes"]) / 1024 / 1024
+                st.download_button(
+                    f"⬇ {st.session_state['_mp4_name']} ({size_mb:.1f} MB)",
+                    data=st.session_state["_mp4_bytes"],
+                    file_name=st.session_state["_mp4_name"],
+                    mime="video/mp4",
+                    key="dl_mp4",
+                    use_container_width=True,
+                )
 
         with col_g:
+            st.markdown(
+                '<div style="font-size:0.78rem; color:#c0ccd8; '
+                'font-weight:700; margin-bottom:0.2rem;">GIF</div>',
+                unsafe_allow_html=True,
+            )
             if st.button("Generar GIF", key="gen_gif",
                          use_container_width=True):
                 with st.spinner("Construyendo GIF..."):
@@ -613,7 +739,12 @@ def render():
                 )
 
         with col_z:
-            if st.button("Generar ZIP de frames", key="gen_zip",
+            st.markdown(
+                '<div style="font-size:0.78rem; color:#c0ccd8; '
+                'font-weight:700; margin-bottom:0.2rem;">ZIP de frames</div>',
+                unsafe_allow_html=True,
+            )
+            if st.button("Generar ZIP", key="gen_zip",
                          use_container_width=True):
                 with st.spinner("Construyendo ZIP..."):
                     st.session_state["_zip_bytes"] = _build_zip_frames(
@@ -631,17 +762,17 @@ def render():
                     use_container_width=True,
                 )
 
-        with col_info:
-            st.markdown(
-                '<div style="font-size:0.72rem; color:#667788; line-height:1.5; '
-                'padding-top:0.3rem;">'
-                f'<b>{len(frames)} frames</b> &middot; '
-                f'{PRODUCT_LABELS[sel["product"]]}<br>'
-                f'<b>Scope:</b> {scope_label}<br>'
-                f'<b>UTC:</b> {ts_first} → {ts_last}'
-                '</div>',
-                unsafe_allow_html=True,
-            )
+        st.markdown(
+            '<div style="font-size:0.72rem; color:#667788; line-height:1.5; '
+            'margin-top:0.5rem; border-top:1px solid rgba(100,120,140,0.15); '
+            'padding-top:0.4rem;">'
+            f'<b>{len(frames)} frames</b> &middot; '
+            f'{PRODUCT_LABELS[sel["product"]]} &middot; '
+            f'<b>Scope:</b> {scope_label} &middot; '
+            f'<b>UTC:</b> {ts_first} → {ts_last}'
+            '</div>',
+            unsafe_allow_html=True,
+        )
 
     st.markdown(
         '<div style="font-size:0.72rem; color:#445566; margin-top:0.5rem;">'

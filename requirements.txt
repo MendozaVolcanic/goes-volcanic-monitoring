@@ -27,3 +27,8 @@ requests>=2.31.0
 # Utilities
 pandas>=2.1.0
 Pillow>=10.0.0
+
+# Video export (MP4 H.264) — imageio-ffmpeg trae binario ffmpeg incluido
+# asi no requiere ffmpeg de sistema en Streamlit Cloud.
+imageio>=2.34.0
+imageio-ffmpeg>=0.4.9

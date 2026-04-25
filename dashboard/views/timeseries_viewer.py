@@ -25,7 +25,7 @@ from dashboard.utils import fmt_chile, parse_rammb_ts
 from src.fetch.timeseries import (
     METRIC_LABEL, fetch_volcano_timeseries,
 )
-from src.fetch.rammb_slider import ZOOM_VOLCAN, ZOOM_ZONE
+from src.fetch.rammb_slider import ZOOM_VOLCAN, ZOOM_ZONE, fetch_frame_for_bounds
 from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
 
 logger = logging.getLogger(__name__)
@@ -66,6 +66,75 @@ def _cached_series(
         {"ts": p.ts, "dt": p.dt, "metric": p.metric, "available": p.available}
         for p in pts
     ]
+
+
+@st.cache_data(ttl=1200, show_spinner=False)
+def _cached_frame(
+    product: str, ts: str, lat: float, lon: float, radius_deg: float, zoom: int,
+) -> np.ndarray | None:
+    """Frame por (producto, ts, vbox, zoom) — para thumbnails de pico/último.
+
+    Cache 20 min. Se llama solo 2 veces por sesión (peak + latest), barato.
+    """
+    bounds = {
+        "lat_min": lat - radius_deg, "lat_max": lat + radius_deg,
+        "lon_min": lon - radius_deg, "lon_max": lon + radius_deg,
+    }
+    return fetch_frame_for_bounds(product, ts, bounds, zoom=zoom)
+
+
+def _thumb_with_marker(
+    img: np.ndarray, vlat: float, vlon: float, bounds: dict,
+    label: str = "", peak: bool = False,
+) -> bytes:
+    """Anotar imagen con marcador del volcán + label en banda inferior.
+
+    Retorna PNG bytes listo para st.image. Si peak=True, banda inferior roja.
+    """
+    from PIL import Image, ImageDraw, ImageFont
+    import io as _io
+
+    pil = Image.fromarray(img).convert("RGB")
+    w, h = pil.size
+
+    # Marcador del volcán: convertir lat/lon a (x, y) en la imagen.
+    fx = (vlon - bounds["lon_min"]) / (bounds["lon_max"] - bounds["lon_min"])
+    fy = 1.0 - (vlat - bounds["lat_min"]) / (bounds["lat_max"] - bounds["lat_min"])
+    cx, cy = int(fx * w), int(fy * h)
+
+    draw = ImageDraw.Draw(pil)
+    # Triangulo rojo invertido apuntando al volcan
+    s = max(8, w // 50)
+    tri = [(cx, cy - s), (cx - s, cy + s // 2), (cx + s, cy + s // 2)]
+    draw.polygon(tri, fill=(255, 60, 60), outline=(255, 255, 255))
+    # Cruz central pequeña en el vertice del triangulo (la coordenada exacta)
+    draw.line([(cx - 3, cy), (cx + 3, cy)], fill=(255, 255, 255), width=1)
+    draw.line([(cx, cy - 3), (cx, cy + 3)], fill=(255, 255, 255), width=1)
+
+    if label:
+        try:
+            fs = max(11, int(w * 0.025))
+            font = ImageFont.truetype("DejaVuSans-Bold.ttf", fs)
+        except Exception:
+            try:
+                font = ImageFont.truetype("arial.ttf", fs)
+            except Exception:
+                font = ImageFont.load_default()
+        pad = 5
+        bbox = draw.textbbox((0, 0), label, font=font)
+        band_h = (bbox[3] - bbox[1]) + pad * 2
+        # Banda al pie con color segun pico/normal
+        col = (180, 50, 50, 200) if peak else (0, 0, 0, 200)
+        overlay = Image.new("RGBA", pil.size, (0, 0, 0, 0))
+        ovd = ImageDraw.Draw(overlay)
+        ovd.rectangle([0, h - band_h, w, h], fill=col)
+        pil = Image.alpha_composite(pil.convert("RGBA"), overlay).convert("RGB")
+        draw = ImageDraw.Draw(pil)
+        draw.text((pad, h - band_h + pad), label, fill=(255, 255, 255), font=font)
+
+    buf = _io.BytesIO()
+    pil.save(buf, format="PNG", optimize=True)
+    return buf.getvalue()
 
 
 def _plot_series(
@@ -287,11 +356,89 @@ def render():
             span_h = (t_last - t_first).total_seconds() / 3600
             kpi_card(f"{span_h:.1f} h", "Ventana real")
 
-    st.markdown("<div style='height:0.4rem'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:0.2rem'></div>", unsafe_allow_html=True)
 
     # ── Plot ──
     fig = _plot_series(points, product, volc_name)
     st.plotly_chart(fig, use_container_width=True)
+
+    # ── Thumbnails contextuales: PICO + ÚLTIMO ──
+    # El plot dice "cuánta señal hay"; estas imágenes dicen "DÓNDE está".
+    # Triángulo rojo = posición exacta del volcán (WGS84). Banda inferior
+    # roja indica el frame del pico (máximo de la serie).
+    valid_pts = [p for p in points if p["available"]]
+    if valid_pts and len(valid_pts) >= 2:
+        v_obj = get_volcano(volc_name)
+        if v_obj is not None:
+            ys = [p["metric"] for p in valid_pts]
+            peak_idx = ys.index(max(ys))
+            peak_pt = valid_pts[peak_idx]
+            last_pt = valid_pts[-1]
+
+            # Bounds del bbox usado para extraer la métrica
+            bds = {
+                "lat_min": v_obj.lat - cur["radius"],
+                "lat_max": v_obj.lat + cur["radius"],
+                "lon_min": v_obj.lon - cur["radius"],
+                "lon_max": v_obj.lon + cur["radius"],
+            }
+
+            st.markdown(
+                '<div style="font-size:0.78rem; color:#8899aa; '
+                'margin:0.4rem 0 0.2rem 0;">'
+                '<b style="color:#c0ccd8;">¿Dónde está la señal?</b> '
+                'El triángulo rojo marca la coordenada del volcán. '
+                'La banda inferior roja indica el frame del pico de la serie '
+                '(qué se vio en el momento del máximo).'
+                '</div>',
+                unsafe_allow_html=True,
+            )
+
+            t_col1, t_col2 = st.columns(2)
+
+            with st.spinner("Cargando imágenes contextuales (pico + último)..."):
+                peak_img = _cached_frame(
+                    product, peak_pt["ts"], v_obj.lat, v_obj.lon,
+                    cur["radius"], ZOOM_ZONE,
+                )
+                last_img = _cached_frame(
+                    product, last_pt["ts"], v_obj.lat, v_obj.lon,
+                    cur["radius"], ZOOM_ZONE,
+                )
+
+            with t_col1:
+                if peak_img is not None:
+                    label = (
+                        f"PICO · {peak_pt['dt'].strftime('%Y-%m-%d %H:%M UTC')} "
+                        f"({fmt_chile(peak_pt['dt'])} CL) · {peak_pt['metric']:.2f}%"
+                    )
+                    png = _thumb_with_marker(
+                        peak_img, v_obj.lat, v_obj.lon, bds, label, peak=True,
+                    )
+                    st.image(
+                        png,
+                        caption=f"Frame en el pico de la serie — {volc_name}",
+                        use_container_width=True,
+                    )
+                else:
+                    st.warning("No se pudo cargar el frame del pico.")
+
+            with t_col2:
+                if last_img is not None:
+                    label = (
+                        f"ÚLTIMO · {last_pt['dt'].strftime('%Y-%m-%d %H:%M UTC')} "
+                        f"({fmt_chile(last_pt['dt'])} CL) · {last_pt['metric']:.2f}%"
+                    )
+                    png = _thumb_with_marker(
+                        last_img, v_obj.lat, v_obj.lon, bds, label, peak=False,
+                    )
+                    st.image(
+                        png,
+                        caption=f"Último frame disponible — {volc_name}",
+                        use_container_width=True,
+                    )
+                else:
+                    st.warning("No se pudo cargar el último frame.")
 
     # ── Tabla descargable ──
     df = pd.DataFrame([

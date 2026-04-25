@@ -443,8 +443,8 @@ def render():
     )
     refresh_info_badge(context="animation")
 
-    # ── Controles ─────────────────────────────────────────────────────────
-    c1, c2, c3 = st.columns([1.5, 1.2, 1])
+    # ── Controles (compactado: 1 fila con Producto + Duracion + Cobertura + Boton) ─
+    c1, c2, c3, c4 = st.columns([1.2, 1.2, 1.8, 0.95])
     with c1:
         product = st.selectbox(
             "Producto",
@@ -454,21 +454,20 @@ def render():
         )
     with c2:
         duration_label = st.selectbox(
-            "Duracion del loop",
+            "Duracion",
             options=list(FRAME_OPTIONS.keys()),
             index=1, key="rammb_duration",
         )
     with c3:
+        scope = st.radio(
+            "Cobertura",
+            ["Nacional (Chile)", "Por zona volcanica", "Por volcan"],
+            index=0, horizontal=True, key="anim_scope",
+        )
+    with c4:
         st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
         fetch_btn = st.button("Cargar animacion", type="primary",
                               use_container_width=True)
-
-    # Scope selector (Nacional / Zona / Volcan)
-    scope = st.radio(
-        "Cobertura",
-        ["Nacional (Chile)", "Por zona volcanica", "Por volcan"],
-        index=0, horizontal=True, key="anim_scope",
-    )
 
     zone_key = None
     volc_name = None

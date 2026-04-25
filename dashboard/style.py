@@ -70,33 +70,33 @@ CUSTOM_CSS = """
    pone 1rem entre cada widget que se acumula en paginas largas */
 div[data-testid="stVerticalBlock"] > div { gap: 0.55rem !important; }
 
-/* ── Header ── (compactado: padding/font reducidos ~30%) */
+/* ── Header ── (super-compacto: ~50% menos altura que original) */
 .main-header {
     background: linear-gradient(135deg, #0f1520 0%, #161d2e 50%, #1a1225 100%);
-    padding: 0.5rem 1.1rem;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: 6px;
+    margin-bottom: 0.35rem;
     border: 1px solid rgba(204,51,17,0.15);
     border-left: 3px solid #CC3311;
-    box-shadow: 0 2px 12px rgba(204,51,17,0.06), 0 1px 3px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 10px rgba(204,51,17,0.05), 0 1px 2px rgba(0,0,0,0.25);
     position: relative;
     overflow: hidden;
     display: flex;
     align-items: baseline;
-    gap: 0.8rem;
+    gap: 0.7rem;
     flex-wrap: wrap;
 }
 .main-header::before {
     content: "";
     position: absolute;
     top: 0; right: 0;
-    width: 160px; height: 100%;
+    width: 140px; height: 100%;
     background: radial-gradient(ellipse at top right, rgba(204,51,17,0.06) 0%, transparent 70%);
     pointer-events: none;
 }
 .main-header h1 {
     margin: 0;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     color: #f5f5f7;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -104,7 +104,7 @@ div[data-testid="stVerticalBlock"] > div { gap: 0.55rem !important; }
 .main-header p {
     margin: 0;
     color: #778899;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     letter-spacing: 0.01em;
 }
 
@@ -139,39 +139,39 @@ details[data-testid="stExpander"] summary {
     min-height: 0 !important;
 }
 
-/* ── KPI Cards ── (compactado: ~50% menos altura) */
+/* ── KPI Cards ── (super-compactado: ~65% menos altura que original) */
 .kpi-card {
     background: linear-gradient(180deg, #111822 0%, #0e1319 100%);
     border: 1px solid rgba(255,255,255,0.05);
-    border-radius: 8px;
-    padding: 0.5rem 0.7rem;
+    border-radius: 7px;
+    padding: 0.35rem 0.6rem;
     text-align: center;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.22);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.18);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .kpi-card:hover {
     transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(0,0,0,0.32);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.28);
 }
 .kpi-value {
-    font-size: 1.35rem;
+    font-size: 1.1rem;
     font-weight: 900;
     color: #f0f2f5;
-    line-height: 1.05;
+    line-height: 1.0;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.02em;
 }
 .kpi-label {
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     color: #5a6a7a;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-top: 0.18rem;
+    letter-spacing: 0.05em;
+    margin-top: 0.1rem;
     font-weight: 500;
 }
 .kpi-delta {
-    font-size: 0.68rem;
-    margin-top: 0.1rem;
+    font-size: 0.62rem;
+    margin-top: 0.05rem;
     font-weight: 700;
     letter-spacing: 0.02em;
 }
@@ -208,17 +208,17 @@ details[data-testid="stExpander"] summary {
     50% { box-shadow: 0 0 12px 2px rgba(204,51,17,0.15); }
 }
 
-/* ── Info panel ── (compactado) */
+/* ── Info panel ── (super-compacto) */
 .info-panel {
     background: linear-gradient(135deg, #111822 0%, #0e1319 100%);
     border-left: 3px solid #0077BB;
-    border-radius: 0 8px 8px 0;
-    padding: 0.7rem 1rem;
-    margin: 0.4rem 0;
-    font-size: 0.82rem;
+    border-radius: 0 7px 7px 0;
+    padding: 0.5rem 0.85rem;
+    margin: 0.3rem 0;
+    font-size: 0.78rem;
     color: #99aabb;
-    line-height: 1.5;
-    box-shadow: 0 1px 6px rgba(0,0,0,0.18);
+    line-height: 1.45;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.16);
 }
 
 /* ── Volcano card ── (compactado) */

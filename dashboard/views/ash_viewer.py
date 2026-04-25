@@ -193,7 +193,7 @@ def render():
     with c2:
         use_cached = st.checkbox("Usar cache", value=True)
     with c3:
-        st.markdown("<div style='height:1.6rem'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
         fetch_new = st.button("Descargar imagen fresca", type="primary",
                               use_container_width=True)
 

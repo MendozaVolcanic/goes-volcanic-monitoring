@@ -198,7 +198,7 @@ def render():
             index=2, key="ts_window",
         )
     with c4:
-        st.markdown("<div style='height:1.6rem'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
         fetch = st.button("Calcular", type="primary",
                           use_container_width=True)
 

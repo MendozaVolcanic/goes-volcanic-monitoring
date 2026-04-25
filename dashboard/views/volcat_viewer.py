@@ -113,16 +113,92 @@ def _fig_ssec_image(img_rgba, bounds, title, volcanoes):
 
 # ── VOLCAT portal: productos por sector (Ash Height, Loading, Probability, Reff) ──
 
+# Cada producto tiene 4 campos:
+#   label_es: nombre en dropdown (con unidad)
+#   short:    descripcion corta (1 linea, para badge debajo del selector)
+#   icon:     icono visual para cheat-sheet
+#   long:     panel interpretativo extendido (Markdown) usado en expander
 VOLCAT_PRODUCTS = {
-    "Ash_Height":      ("Altura de pluma (km AMSL)",
-                        "Pavolonis 2010/2013 — optimal estimation 3-canal IR. ±1-2 km en plumas opacas."),
-    "Ash_Loading":     ("Carga columnar (g/m²)",
-                        "Masa columnar de ceniza. Útil para tasa de emisión y dispersión."),
-    "Ash_Probability": ("Probabilidad de ceniza (%)",
-                        "Confianza de la detección de pluma vs cirrus / dust / nubes."),
-    "Ash_Reff":        ("Radio efectivo (μm)",
-                        "Tamaño de partícula efectivo. Indica grano grueso (>10 μm) vs fino (<5 μm)."),
+    "Ash_Height": {
+        "label_es": "Altura de pluma (km AMSL)",
+        "short":    "Altura del tope de la pluma sobre el nivel del mar. Más alto = más energético.",
+        "icon":     "⬆",
+        "long":     """
+- **Unidad**: km sobre el nivel del mar (AMSL).
+- **Algoritmo**: Pavolonis et al. 2013 — ajuste simultáneo de
+  temperatura del tope, espesor óptico y radio efectivo contra
+  forward model RTM. Tc → altura usando perfil GFS de temperatura.
+- **Precisión**: ±1-2 km en plumas opacas, ±3-4 km en plumas
+  delgadas (τ<0.5) o sobre cirrus.
+- **Limitación**: si pluma transparente al IR, subestima. Si hay
+  nube meteo debajo, también subestima. Cruzar con Ash RGB.
+""",
+    },
+    "Ash_Loading": {
+        "label_es": "Carga columnar (g/m²)",
+        "short":    "Cuántos gramos de ceniza por m² hay en la columna. Más alto = pluma más densa.",
+        "icon":     "⚖",
+        "long":     """
+- **Unidad**: g/m² (carga columnar de masa de ceniza).
+- **Uso**: integrar sobre área de pluma → tonelaje total.
+  Combinado con velocidad → tasa de emisión (MER, kg/s).
+- **Limitación**: solo cuantificable cuando hay detección estable
+  y τ moderado (0.3-2). Plumas opacas saturan; delgadas tienen
+  ruido alto.
+""",
+    },
+    "Ash_Probability": {
+        "label_es": "Probabilidad de ceniza (%)",
+        "short":    "Confianza de que el píxel sea ceniza real (no cirrus/polvo). Filtro recomendado: >60%.",
+        "icon":     "✓",
+        "long":     """
+- **Unidad**: 0-100%.
+- **Uso**: confianza de que el píxel contiene ceniza volcánica
+  vs cirrus / dust del desierto / nube de hielo.
+- **Tip operativo**: usar como filtro sobre Ash_Height y
+  Ash_Loading. Solo confiar en valores con probability > 60-70%.
+""",
+    },
+    "Ash_Reff": {
+        "label_es": "Radio efectivo (μm)",
+        "short":    "Tamaño típico de partícula. <5 μm = fino (transporte largo). >10 μm = grueso (cae cerca).",
+        "icon":     "●",
+        "long":     """
+- **Unidad**: μm (radio efectivo de partícula).
+- **Uso**: indicador del modo de eyección. Finas (Reff < 5 μm)
+  → eyección violenta + transporte largo. Gruesas (Reff > 10 μm)
+  → eyección débil o cerca del cráter.
+- **Limitación**: requiere asunción de composición (silicato).
+  Basáltica vs riolítica tienen propiedades ópticas distintas.
+""",
+    },
 }
+
+
+def _volcat_cheatsheet_html() -> str:
+    """Mini cheat-sheet de los 4 productos VOLCAT como chips visuales.
+
+    Pensado para ir arriba del selector — el usuario ve los 4 productos
+    de un vistazo antes de elegir.
+    """
+    chips = []
+    for k, p in VOLCAT_PRODUCTS.items():
+        chips.append(
+            f'<div style="background:rgba(17,24,34,0.55); '
+            f'border:1px solid rgba(100,120,140,0.2); '
+            f'border-radius:6px; padding:0.35rem 0.6rem; '
+            f'font-size:0.72rem; line-height:1.35; flex:1; min-width:160px;">'
+            f'<div style="color:#c0ccd8; font-weight:700; margin-bottom:0.1rem;">'
+            f'<span style="color:#4a9eff;">{p["icon"]}</span> '
+            f'{p["label_es"]}'
+            f'</div>'
+            f'<div style="color:#7a8a99; font-size:0.7rem;">{p["short"]}</div>'
+            f'</div>'
+        )
+    return (
+        '<div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin:0.3rem 0 0.5rem 0;">'
+        + "".join(chips) + '</div>'
+    )
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -166,15 +242,17 @@ def _render_height_section(key_suffix: str = "tab") -> None:
     pantalla inicial (cuando no se hizo fetch — porque la altura no requiere
     descarga pesada).
     """
+    # Bajada compacta — solo lo esencial, fuentes en expander al final.
     st.markdown(
-        '<div style="font-size:0.85rem; color:#c0ccd8; margin-bottom:0.6rem;">'
-        'Productos cuantitativos de <b>VOLCAT</b> (Volcanic Cloud Analysis Toolkit) '
-        'pre-procesados por SSEC/CIMSS. Algoritmo: optimal estimation 3-canal IR '
-        '(Pavolonis et al. 2013, JGR Atmos). Cadencia 10 min ABI + refuerzo MODIS/VIIRS.<br>'
-        '<i>Fuente:</i> https://volcano.ssec.wisc.edu/imagery/'
+        '<div style="font-size:0.78rem; color:#8899aa; margin-bottom:0.2rem;">'
+        '<b style="color:#c0ccd8;">VOLCAT</b> · SSEC/CIMSS · Pavolonis 2013 '
+        '(optimal estimation 3-canal IR) · cadencia 10 min ABI + refuerzo MODIS/VIIRS'
         '</div>',
         unsafe_allow_html=True,
     )
+
+    # Cheat-sheet con los 4 productos antes del selector — ayuda a elegir.
+    st.markdown(_volcat_cheatsheet_html(), unsafe_allow_html=True)
 
     priority_names = [v.name for v in CATALOG if v.name in PRIORITY_VOLCANOES
                       and v.name in VOLCANO_TO_SECTOR]
@@ -184,16 +262,39 @@ def _render_height_section(key_suffix: str = "tab") -> None:
 
     cv1, cv2 = st.columns([1.5, 1.5])
     with cv1:
-        sel_raw = st.selectbox("Volcán", volc_options, index=0,
-                               key=f"volcat_height_volcano_{key_suffix}")
+        sel_raw = st.selectbox(
+            "Volcán", volc_options, index=0,
+            key=f"volcat_height_volcano_{key_suffix}",
+            help="★ = volcán prioritario (con sector dedicado en VOLCAT)",
+        )
         volc_name_h = sel_raw.replace("★ ", "")
     with cv2:
+        # Tooltip ampliado en el selectbox + descripción inline debajo.
+        help_text = "\n".join(
+            f"• {p['icon']} {p['label_es']}: {p['short']}"
+            for p in VOLCAT_PRODUCTS.values()
+        )
         prod_h = st.selectbox(
             "Producto VOLCAT",
             list(VOLCAT_PRODUCTS.keys()),
-            format_func=lambda k: VOLCAT_PRODUCTS[k][0],
+            format_func=lambda k: VOLCAT_PRODUCTS[k]["label_es"],
             index=0, key=f"volcat_height_product_{key_suffix}",
+            help=help_text,
         )
+
+    # Descripción visible del producto seleccionado (inline, destacado).
+    sel_meta = VOLCAT_PRODUCTS[prod_h]
+    st.markdown(
+        f'<div style="background:rgba(74,158,255,0.08); '
+        f'border-left:3px solid #4a9eff; padding:0.4rem 0.7rem; '
+        f'border-radius:0 6px 6px 0; margin:0.3rem 0; '
+        f'font-size:0.78rem; line-height:1.45;">'
+        f'<span style="color:#4a9eff; font-weight:700;">'
+        f'{sel_meta["icon"]} {sel_meta["label_es"]}</span> '
+        f'<span style="color:#aabbc8;">— {sel_meta["short"]}</span>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
 
     sector_info = get_sector_for_volcano(volc_name_h)
     if not sector_info:
@@ -239,7 +340,7 @@ def _render_height_section(key_suffix: str = "tab") -> None:
             st.image(
                 img_bytes,
                 caption=(
-                    f"{VOLCAT_PRODUCTS[prod_h][0]} — "
+                    f"{sel_meta['label_es']} — "
                     f"{volc_name_h} ({sector.replace('_', ' ')}) — {ts_h}"
                 ),
                 use_container_width=True,
@@ -260,60 +361,19 @@ def _render_height_section(key_suffix: str = "tab") -> None:
             st.caption(f"URL: {meta.get('image_url', '?')}")
 
     with col_lg:
-        st.markdown("<b style='font-size:0.85rem;'>Colorbar</b>",
+        st.markdown("<b style='font-size:0.78rem; color:#8899aa;'>Colorbar</b>",
                     unsafe_allow_html=True)
         leg_bytes = _volcat_image_bytes(meta["legend_url"])
         if leg_bytes:
             st.image(leg_bytes, use_container_width=True)
         else:
             st.caption("(sin leyenda)")
-        st.markdown(
-            f'<div style="font-size:0.74rem; color:#8899aa; '
-            f'margin-top:0.5rem; line-height:1.4;">'
-            f'<b>{VOLCAT_PRODUCTS[prod_h][0]}</b><br>'
-            f'{VOLCAT_PRODUCTS[prod_h][1]}'
-            f'</div>',
-            unsafe_allow_html=True,
-        )
 
-    with st.expander("Cómo leer este producto", expanded=False):
-        if prod_h == "Ash_Height":
-            st.markdown("""
-            - **Unidad**: km sobre el nivel del mar (AMSL).
-            - **Algoritmo**: Pavolonis et al. 2013 — ajuste simultáneo de
-              temperatura del tope, espesor óptico y radio efectivo contra
-              forward model RTM. Tc → altura usando perfil GFS de temperatura.
-            - **Precisión**: ±1-2 km en plumas opacas, ±3-4 km en plumas
-              delgadas (τ<0.5) o sobre cirrus.
-            - **Limitación**: si pluma transparente al IR, subestima. Si hay
-              nube meteo debajo, también subestima. Cruzar con Ash RGB.
-            """)
-        elif prod_h == "Ash_Loading":
-            st.markdown("""
-            - **Unidad**: g/m² (carga columnar de masa de ceniza).
-            - **Uso**: integrar sobre área de pluma → tonelaje total.
-              Combinado con velocidad → tasa de emisión (MER, kg/s).
-            - **Limitación**: solo cuantificable cuando hay detección estable
-              y τ moderado (0.3-2). Plumas opacas saturan; delgadas tienen
-              ruido alto.
-            """)
-        elif prod_h == "Ash_Probability":
-            st.markdown("""
-            - **Unidad**: 0-100%.
-            - **Uso**: confianza de que el píxel contiene ceniza volcánica
-              vs cirrus / dust del desierto / nube de hielo.
-            - **Tip operativo**: usar como filtro sobre Ash_Height y
-              Ash_Loading. Solo confiar en valores con probability > 60-70%.
-            """)
-        elif prod_h == "Ash_Reff":
-            st.markdown("""
-            - **Unidad**: μm (radio efectivo de partícula).
-            - **Uso**: indicador del modo de eyección. Finas (Reff < 5 μm)
-              → eyección violenta + transporte largo. Gruesas (Reff > 10 μm)
-              → eyección débil o cerca del cráter.
-            - **Limitación**: requiere asunción de composición (silicato).
-              Basáltica vs riolítica tienen propiedades ópticas distintas.
-            """)
+    # Panel interpretativo: usa el campo "long" de cada producto.
+    with st.expander(
+        f"Cómo leer {sel_meta['label_es']} (detalle técnico)", expanded=False,
+    ):
+        st.markdown(sel_meta["long"])
 
     st.markdown(
         f'<div style="font-size:0.72rem; color:#445566; margin-top:0.7rem;">'
@@ -362,7 +422,7 @@ def render():
         zone_key = st.selectbox("Region", list(ZONE_OPTIONS.keys()), index=0,
                                 key="volcat_zone")
     with c2:
-        st.markdown("<div style='height:1.6rem'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
         fetch = st.button("Obtener imagenes SSEC", type="primary",
                           use_container_width=True)
 
@@ -445,7 +505,7 @@ def render():
                  delta="global" if vaa_count > 0 else "",
                  delta_type="negative" if vaa_count > 0 else "neutral")
 
-    st.markdown("<div style='height:0.4rem'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:0.2rem'></div>", unsafe_allow_html=True)
 
     # ── Tabs ──
     tab1, tab2, tab_height, tab3 = st.tabs([

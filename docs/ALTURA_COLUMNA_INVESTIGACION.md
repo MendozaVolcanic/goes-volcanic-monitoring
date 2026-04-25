@@ -194,6 +194,33 @@ VAACs Buenos Aires URL: https://www.smn.gob.ar/vaac/buenosaires/inicio.php
 
 Validar contra eventos conocidos antes de operacionalizar.
 
+### Fase 3.5 — Decisiones técnicas precocinadas (sesión 2026-04-25, diferida)
+
+Cuando se retome Wen-Rose, arrancar por estos puntos ya razonados:
+
+**Orden de implementación (por qué)**: empezar por `gfs_profile.py` porque define la unidad de salida (sin T(z) no hay mapeo Tc→altura) y es lo más liviano de validar contra radiosonda Puerto Montt.
+
+**Stack de fetching**:
+- GFS T(z): NOMADS HTTP con byte-range GRIB2 (no herbie — agrega ~50 MB cfgrib+eccodes y Streamlit Cloud está apretado). Cache `@st.cache_data(ttl=3600)` por (lat, lon, ciclo_GFS). ~200 KB por perfil.
+- Tsfc: GOES LST L2 (`ABI-L2-LSTC`) primario, GFS `tmpsfc` fallback cuando hay nubes met debajo (LST mete NaN). Flag de calidad en el output.
+
+**Módulos previstos (~820 LOC total)**:
+| Módulo | LOC |
+|---|---|
+| `src/fetch/gfs_profile.py` | ~150 |
+| `src/fetch/goes_lst.py` | ~120 |
+| `src/retrieval/wen_rose.py` | ~300 |
+| `src/retrieval/validation.py` | ~100 |
+| `tests/test_wen_rose.py` | ~150 |
+
+**Parámetros físicos**:
+- β = 0.9 fijo (silicato ácido típico Chile: andesita-dacita). No exponer en UI sin Reff retrieval — variarlo sin contexto es engañoso.
+- Inversión térmica → tomar altura **superior** (pluma sobre PBL), warning si Δh > 2 km.
+
+**Validación**: Calbuco 22-abr-2015 21:04 UTC (~21 km confirmado). En esa época era GOES-13, no GOES-19 → adaptar lector S3 al bucket `noaa-goes13`.
+
+**UI**: sub-tab dentro de VOLCAT con label "Fallback Wen-Rose (independiente)", NO tab nueva. Deja claro que es plan B y no compite visualmente con el primario.
+
 ### Fase 4 — Largo plazo
 
 Integrar altura H₀ con SO2 TROPOMI y forecast FALL3D para producto unificado tipo VAAC nacional. Esto cae en el proyecto `Pronostico_Cenizas/` ya scaffoldeado.

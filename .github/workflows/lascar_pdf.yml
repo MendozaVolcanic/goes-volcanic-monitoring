@@ -1,0 +1,45 @@
+name: Reporte diario Lascar PDF
+
+on:
+  schedule:
+    # 11:00 UTC = 08:00 hora Chile estandar — antes del turno
+    - cron: '0 11 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-pdf:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements_actions.txt
+
+      - name: Generar PDF Lascar
+        run: python scripts/generate_lascar_report.py
+
+      - name: Commit PDF al repo
+        run: |
+          git config user.name "GOESBot"
+          git config user.email "goes-bot@noreply"
+          git add reports/ 2>/dev/null || true
+          if git diff --quiet --staged 2>/dev/null; then
+            echo "Sin PDF nuevo (probablemente ya generado hoy)"
+          else
+            DATE=$(date -u +'%Y-%m-%d')
+            git commit -m "lascar: reporte diario $DATE"
+            git pull origin main --rebase -X ours 2>/dev/null || true
+            git push origin main || true
+          fi

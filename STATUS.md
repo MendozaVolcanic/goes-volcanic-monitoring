@@ -1,7 +1,11 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-04-25
-**Último commit relevante:** `1fc74f0` — "Sub-tabs por producto en Zona/Volcan + thumbnails en Series + mas compact"
+**Última actualización:** 2026-04-25 (sesión 2)
+**Último commit relevante:** `90f9253` — "Tier 5: tests para Planck/geo/smoke + CI workflow"
+
+> **Nota:** existe también `STATUS_NRT.md` auto-generado por el workflow `goes.yml`
+> cada 10 min con el estado del último ciclo NRT. Este archivo (STATUS.md) es el
+> roadmap curado por humanos.
 **Deploy en producción:** https://goesvolcanic.streamlit.app
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 
@@ -28,12 +32,16 @@
 | Descarga MP4 (H.264) + GIF + ZIP de animaciones | `dashboard/views/rammb_viewer.py` | `8e9b0b2` |
 | Investigación VOLCAT vs Wen-Rose (decisión: VOLCAT primario) | `docs/ALTURA_COLUMNA_INVESTIGACION.md` | `ac7292b` |
 | Adopción del sistema sync con Integracion_Plataformas | `INTEGRATION.md` + `CLAUDE.md` | `64f0fc0` |
+| **Tier 5 — Tests Planck/geo/smoke + CI workflow** (37/37 pasan) | `tests/test_brightness_temp.py`, `test_geo.py`, `test_smoke.py`, `.github/workflows/tests.yml` | `90f9253` |
+| **PDF diario Láscar** (cron 11 UTC, output a `reports/lascar/`) | `scripts/generate_lascar_report.py`, `.github/workflows/lascar_pdf.yml` | (este commit) |
+| Fix: bot NRT escribe a `STATUS_NRT.md`, no pisa más este archivo | `.github/workflows/goes.yml` | (este commit) |
+| Decisiones técnicas Wen-Rose (Fase 3.5) guardadas para retomar | `docs/ALTURA_COLUMNA_INVESTIGACION.md` | (este commit) |
 
 ## 🟡 Pendiente — siguiente sesión
 
 ### Tier 2 (acordado, alto valor)
 
-1. **🎯 PRÓXIMO ACORDADO: Estimación de altura de columna Wen-Rose 1994 (Fase 3)**
+1. **Estimación de altura de columna Wen-Rose 1994 (Fase 3)** — DIFERIDO
    - Solo como **fallback** y reanálisis histórico (Calbuco 2015, Hudson 2011, Chaitén 2008).
    - VOLCAT cubre Fase 1 (ya hecho).
    - ~600-800 LOC + validación contra eventos conocidos.
@@ -42,11 +50,15 @@
 
 2. **TROPOMI/Sentinel-5P SO2** → cubierto por proyecto **VolcPlume-v1** (no implementar acá, integrar después desde `Integracion_Plataformas/`).
 
-3. **Comparación lado a lado** de 2 timestamps con sliders independientes.
+3. **🎯 PRÓXIMO ACORDADO: Comparación lado a lado** de 2 timestamps con sliders independientes.
 
-4. **Reporte PDF diario automatizado** por volcán prioritario (GitHub Actions).
+4. ~~**Reporte PDF diario automatizado**~~ — ✅ HECHO solo para Láscar. Pendiente extender a otros volcanes prioritarios si se valida en operación.
 
 5. **Integración con VRP Chile / Lightning-v1** → trabajar desde `Integracion_Plataformas/propuestas/` (ver `goes_lightning/` ya scaffoldeado).
+
+### Tier 3 (UX polish) — acordado para próximas sesiones
+
+### Tier 4 (institucional) — acordado para próximas sesiones
 
 ### Tier 3 (UX polish, no urgente)
 
@@ -63,9 +75,10 @@
 
 ### Tier 5 (robustez técnica)
 
-- Tests para matemática geo (`reproject_to_latlon`, parallax, Planck).
-- CI smoke test (que `render()` no tire excepciones).
-- Logging persistente en S3.
+- ✅ Tests para Planck (`brightness_temp`), geo (`get_lat_lon`, `crop_to_bounds`).
+- ✅ CI smoke test (importa todas las views/fetchers/processors sin crash).
+- ⏳ Tests para `reproject_to_latlon` y parallax — pendiente.
+- ⏳ Logging persistente en S3 — pendiente.
 
 ---
 

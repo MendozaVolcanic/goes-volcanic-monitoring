@@ -33,7 +33,10 @@ jobs:
           echo "exit_code=$?" >> $GITHUB_OUTPUT
         continue-on-error: true
 
-      - name: Actualizar STATUS
+      - name: Actualizar STATUS_NRT
+        # IMPORTANTE: este step escribe STATUS_NRT.md (estado del bot NRT),
+        # NO STATUS.md (curado por humanos con backlog de tiers). Si volves
+        # a apuntar a STATUS.md vas a pisar el roadmap en cada ciclo.
         run: |
           TS=$(date -u +'%Y-%m-%d %H:%M UTC')
           python - <<'EOF'
@@ -41,7 +44,7 @@ jobs:
           from pathlib import Path
           from datetime import datetime, timezone
 
-          status_path = Path("STATUS.md")
+          status_path = Path("STATUS_NRT.md")
           meta_path = Path("docs/goes/meta_latest.json")
 
           # Leer meta si existe
@@ -57,7 +60,11 @@ jobs:
 
           now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-          status = f"""# STATUS — GOES Volcanic Monitor
+          status = f"""# STATUS NRT — GOES Volcanic Monitor (auto-generado)
+
+> Este archivo lo escribe el workflow `goes.yml` cada 10 min con el estado
+> del ultimo ciclo NRT. Para el roadmap y backlog de features ver
+> [`STATUS.md`](STATUS.md) (curado por humanos).
 
 ## Ultimo ciclo NRT
 - **Ejecutado**: {now}
@@ -93,7 +100,7 @@ docs/goes/history/                 ← ultimas 48 imagenes
         run: |
           git config user.name "GOESBot"
           git config user.email "goes-bot@noreply"
-          git add docs/goes/ STATUS.md 2>/dev/null || true
+          git add docs/goes/ STATUS_NRT.md 2>/dev/null || true
           if git diff --quiet --staged 2>/dev/null; then
             echo "Sin cambios nuevos"
           else

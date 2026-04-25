@@ -271,14 +271,16 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str,
             hoverinfo="text", showlegend=False,
         ))
 
+    # Mapas grandes — el contenido es el mapa, no metadata. Margenes
+    # chicos para aprovechar pantalla. Altura default 760 (era 640).
     fig.update_layout(
         title=dict(text=title, font=dict(size=12, color="#99aabb")),
         xaxis_title="Longitud", yaxis_title="Latitud",
-        height=640, template="plotly_dark",
+        height=760, template="plotly_dark",
         yaxis=dict(scaleanchor="x", scaleratio=1,
                    range=[lat_min - 0.5, lat_max + 0.5]),
         xaxis=dict(range=[lon_min - 0.5, lon_max + 0.5]),
-        margin=dict(t=40, b=40, l=50, r=20),
+        margin=dict(t=30, b=30, l=40, r=15),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
     )
@@ -1161,7 +1163,19 @@ def _live_content():
                                     scan_label=(_hs_ts_z[11:16] + " UTC"
                                                 if _hs_ts_z else None),
                                 )
-                        fig_z.update_layout(height=640)
+                        # Viento: el bug era que solo se aplicaba en Volcan,
+                        # no en Zona. Filtrar por bbox de la zona y agregar.
+                        if show_wind and wind_data_cached:
+                            _wind_z = [w for w in wind_data_cached
+                                       if zone_bounds["lat_min"] <= w["lat"] <= zone_bounds["lat_max"]
+                                       and zone_bounds["lon_min"] <= w["lon"] <= zone_bounds["lon_max"]]
+                            if _wind_z:
+                                _add_wind_arrows(fig_z, _wind_z, level_label=wind_level)
+                        # Mapas mas grandes: 640 -> 760 px y margenes mas chicos
+                        fig_z.update_layout(
+                            height=760,
+                            margin=dict(l=10, r=10, t=30, b=10),
+                        )
                         st.plotly_chart(fig_z, use_container_width=True)
 
                         # Descarga PNG + GeoTIFF por zona
@@ -1324,7 +1338,10 @@ def _live_content():
                                     f"la posicion del volcan."
                                 )
 
-                        fig_v.update_layout(height=700)
+                        fig_v.update_layout(
+                            height=820,
+                            margin=dict(l=10, r=10, t=30, b=10),
+                        )
                         st.plotly_chart(fig_v, use_container_width=True)
 
                         # Descarga PNG + GeoTIFF
@@ -1377,26 +1394,16 @@ def render():
         """,
         unsafe_allow_html=True,
     )
+    # Header: titulo y subtitulo compactos. Removido "Auto-refresh 10 min" del
+    # subtitulo — la info de refresh esta en la badge live (con countdown
+    # real cada segundo). Tampoco mostramos el banner verde redundante.
     header(
         "En Vivo — GOES-19 Tiempo Real",
-        "Ultimo scan disponible · Auto-refresh 10 min · RAMMB/CIRA Slider",
+        "slider.cira.colostate.edu · GOES-19 Full Disk · RAMMB/CIRA",
     )
 
-    # Banner + badge combinados en un solo bloque compacto
-    st.markdown(
-        '<div style="display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;'
-        ' padding:0.45rem 0.8rem; background:rgba(22,34,28,0.55);'
-        ' border-left:3px solid #3fb950; border-radius:6px; margin-bottom:0.4rem;">'
-        '<span style="color:#3fb950; font-weight:700; font-size:0.88rem;">'
-        '&#9679; En vivo</span>'
-        '<span style="color:#7a8a99; font-size:0.8rem;">auto-refresh 10 min</span>'
-        '<span style="color:#445566;">·</span>'
-        '<span style="color:#7a8a99; font-size:0.78rem;">'
-        'slider.cira.colostate.edu · GOES-19 Full Disk</span>'
-        '</div>',
-        unsafe_allow_html=True,
-    )
-
-    refresh_info_badge(context="live")
-
+    # refresh_info_badge mostraba badge "↻ por sesion · Tip..." + expander
+    # "Como se actualizan los datos". El badge era redundante con la badge
+    # live (Auto-refresh + countdown). El expander de detalle se mantiene
+    # adentro de _live_content para quien quiera mas info.
     _live_content()

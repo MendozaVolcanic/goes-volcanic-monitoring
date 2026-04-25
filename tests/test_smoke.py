@@ -26,6 +26,8 @@ VIEWS = [
     "dashboard.views.rammb_viewer",
     "dashboard.views.timeseries_viewer",
     "dashboard.views.modo_guardia",
+    "dashboard.views.modo_guardia_volcan",
+    "dashboard.views.mosaico_chile",
 ]
 
 FETCHERS = [

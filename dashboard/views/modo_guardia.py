@@ -1,8 +1,10 @@
 """Modo Guardia: vista full-screen para sala de operaciones SERNAGEOMIN.
 
-Diseno: una pantalla, un proposito. Ash RGB Chile + hot spots overlay +
-serie de tiempo del volcan prioritario activo. Auto-refresh 60s — si hay
-scan nuevo en RAMMB, se ve sin tocar nada.
+FILOSOFIA: Mostrar imagen lo mas limpia posible. NO inventar metricas
+automaticas — el experto aplica su criterio sobre el dato crudo. Esto
+sigue la linea de NASA Worldview, RAMMB Slider, Himawari Realtime.
+
+Auto-refresh 60s — si hay scan nuevo en RAMMB, se ve sin tocar nada.
 
 NO toca las vistas existentes. Tab independiente para validar antes de
 mover features a las views principales.
@@ -12,9 +14,10 @@ Decisiones:
   Solo re-renderiza imagen si cambio. RAMMB cadencia real es 10 min asi
   que mas frecuente seria gastar requests sin info nueva.
 - Volcan default Villarrica (mas activo historicamente). Selector para
-  cambiar manual si turno detecta actividad en otro lado.
-- Layout grande, contraste alto, font grande — pensado para verse desde
-  el otro lado de la sala.
+  cambiar manual.
+- KPIs: solo datos validados externamente (edad de scan, hot spots
+  NOAA FDCF). NO calculamos % de ceniza propio — la receta EUMETSAT
+  RGB tiene falsos positivos enormes con cirros y nieve sobre Andes.
 """
 
 import logging
@@ -30,14 +33,12 @@ from src.fetch.rammb_slider import (
     CHILE_REPROJECTED_BOUNDS, CHILE_TILES_Z2,
     fetch_stitched_frame, get_latest_timestamps, reproject_to_latlon,
 )
-from src.fetch.timeseries import fetch_volcano_timeseries
 from src.volcanos import PRIORITY_VOLCANOES, get_volcano
 
 logger = logging.getLogger(__name__)
 
 REFRESH_SECONDS = 60
 DEFAULT_VOLCANO = "Villarrica"
-TIMESERIES_HOURS = 6  # ventana de la serie en la pantalla
 
 
 # ── Cache helpers ────────────────────────────────────────────────────
@@ -82,23 +83,33 @@ def _hotspots_chile() -> tuple[list[HotSpot], datetime | None]:
         return [], None
 
 
-@st.cache_data(ttl=600, show_spinner=False)
-def _volcano_series(volcan: str) -> list:
-    """Serie 6h ash% para el volcan seleccionado. Cache 10 min."""
-    v = get_volcano(volcan)
-    if v is None:
-        return []
-    n_frames = TIMESERIES_HOURS * 6  # 6 scans/h
-    try:
-        return fetch_volcano_timeseries(
-            v.lat, v.lon, "eumetsat_ash", n_frames=n_frames,
-        )
-    except Exception as e:
-        logger.warning("series %s fallo: %s", volcan, e)
-        return []
+def _nearest_hotspot(hotspots: list[HotSpot], lat: float, lon: float
+                     ) -> tuple[HotSpot | None, float]:
+    """Hotspot mas cercano al volcan + distancia en km. Devuelve (None, inf) si lista vacia."""
+    if not hotspots:
+        return None, float("inf")
+    best, best_d = None, float("inf")
+    for h in hotspots:
+        dlat = (h.lat - lat) * 111.0
+        dlon = (h.lon - lon) * 111.0 * float(np.cos(np.radians(lat)))
+        d = float(np.hypot(dlat, dlon))
+        if d < best_d:
+            best, best_d = h, d
+    return best, best_d
 
 
-# ── Render principal ─────────────────────────────────────────────────
+# ── Render ───────────────────────────────────────────────────────────
+
+def _array_to_data_url(arr: np.ndarray) -> str:
+    """numpy uint8 (H,W,3) -> data URL para Plotly layout_image."""
+    import base64
+    import io
+    from PIL import Image
+    img = Image.fromarray(arr.astype(np.uint8))
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+
 
 def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name: str):
     """Imshow Ash RGB Chile con triangulos de hotspots + marcador del volcan."""
@@ -113,7 +124,6 @@ def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name:
         sizey=b["lat_max"] - b["lat_min"],
         sizing="stretch", layer="below", opacity=1.0,
     )
-    # Marcador volcan seleccionado
     v = get_volcano(volcan_name)
     if v is not None:
         fig.add_trace(go.Scatter(
@@ -124,7 +134,6 @@ def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name:
             textfont=dict(size=14, color="#00ffff"), name=volcan_name,
             hovertemplate=f"<b>{volcan_name}</b><br>Lat {v.lat}<br>Lon {v.lon}<extra></extra>",
         ))
-    # Hot spots
     if hotspots:
         lats = [h.lat for h in hotspots]
         lons = [h.lon for h in hotspots]
@@ -134,7 +143,7 @@ def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name:
             x=lons, y=lats, mode="markers",
             marker=dict(symbol="diamond", size=12, color="#ff3300",
                         line=dict(color="white", width=1)),
-            text=temps, hoverinfo="text", name=f"Hot spots ({len(hotspots)})",
+            text=temps, hoverinfo="text", name=f"Hot spots NOAA ({len(hotspots)})",
         ))
 
     fig.update_xaxes(range=[b["lon_min"], b["lon_max"]],
@@ -142,50 +151,11 @@ def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name:
     fig.update_yaxes(range=[b["lat_min"], b["lat_max"]],
                      showgrid=False, title="", scaleanchor="x", scaleratio=1)
     fig.update_layout(
-        height=620, margin=dict(l=0, r=0, t=10, b=0),
+        height=680, margin=dict(l=0, r=0, t=10, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
         font=dict(color="#e0e0e0", size=13),
         legend=dict(bgcolor="rgba(10,14,20,0.7)", bordercolor="#334",
                     borderwidth=1, x=0.02, y=0.02),
-    )
-    return fig
-
-
-def _array_to_data_url(arr: np.ndarray) -> str:
-    """numpy uint8 (H,W,3) -> data URL para Plotly layout_image."""
-    import base64
-    import io
-    from PIL import Image
-    img = Image.fromarray(arr.astype(np.uint8))
-    buf = io.BytesIO()
-    img.save(buf, format="PNG")
-    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
-
-
-def _render_timeseries(points: list, volcan: str):
-    """Plot lineal % ash en ventana TIMESERIES_HOURS."""
-    avail = [p for p in points if p.available]
-    fig = go.Figure()
-    if avail:
-        xs = [p.dt for p in avail]
-        ys = [p.metric * 100 for p in avail]
-        fig.add_trace(go.Scatter(
-            x=xs, y=ys, mode="lines+markers",
-            line=dict(color="#ff6644", width=2),
-            marker=dict(size=5, color="#ff6644"),
-            fill="tozeroy", fillcolor="rgba(255,102,68,0.18)",
-            hovertemplate="%{x|%H:%M UTC}<br>%{y:.1f}%<extra></extra>",
-        ))
-    fig.update_layout(
-        title=dict(
-            text=f"<b>{volcan}</b> — % píxeles con firma de ceniza ({TIMESERIES_HOURS}h)",
-            font=dict(size=15, color="#e0e0e0"),
-        ),
-        height=240, margin=dict(l=50, r=20, t=40, b=40),
-        paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
-        font=dict(color="#e0e0e0"),
-        xaxis=dict(title="UTC", gridcolor="#223"),
-        yaxis=dict(title="% pixeles", gridcolor="#223", rangemode="tozero"),
     )
     return fig
 
@@ -199,61 +169,70 @@ def _live_panel(volcan_name: str):
         return
 
     frame = _ash_chile_frame(ts)
-    hotspots, hs_dt = _hotspots_chile()
-    series = _volcano_series(volcan_name)
+    hotspots, _hs_dt = _hotspots_chile()
+    v = get_volcano(volcan_name)
 
     now = datetime.now(timezone.utc)
 
-    # ── Header KPIs grandes ──
+    # ── Header KPIs (todos basados en datos validados externamente) ──
     c1, c2, c3, c4 = st.columns(4)
+
+    # KPI 1: edad del ultimo scan
     if frame is not None:
-        scan_dt = frame["dt"]
-        scan_age_min = (now - scan_dt).total_seconds() / 60
+        scan_age_min = (now - frame["dt"]).total_seconds() / 60
         scan_color = "#44dd88" if scan_age_min < 15 else "#ffaa44" if scan_age_min < 30 else "#ff4444"
+        scan_label = f"hace {int(scan_age_min)} min"
     else:
-        scan_age_min = -1
         scan_color = "#888"
+        scan_label = "sin datos"
     with c1:
         st.markdown(
             f"<div style='background:#0f1418; border-left:4px solid {scan_color}; "
             f"padding:0.8rem 1rem; border-radius:4px;'>"
             f"<div style='font-size:0.7rem; color:#7a8a9a; text-transform:uppercase; "
-            f"letter-spacing:0.1em;'>Ultimo scan</div>"
+            f"letter-spacing:0.1em;'>Ultimo scan GOES-19</div>"
             f"<div style='font-size:1.6rem; font-weight:700; color:{scan_color};'>"
-            f"{'hace ' + str(int(scan_age_min)) + ' min' if scan_age_min >= 0 else 'sin datos'}"
-            f"</div></div>",
+            f"{scan_label}</div></div>",
             unsafe_allow_html=True,
         )
+
+    # KPI 2: hot spots Chile (producto NOAA FDCF, validado)
+    n_hs = len(hotspots)
+    hs_color = "#ff4444" if n_hs > 0 else "#44dd88"
     with c2:
-        n_hs = len(hotspots)
-        hs_color = "#ff4444" if n_hs > 0 else "#44dd88"
         st.markdown(
             f"<div style='background:#0f1418; border-left:4px solid {hs_color}; "
             f"padding:0.8rem 1rem; border-radius:4px;'>"
             f"<div style='font-size:0.7rem; color:#7a8a9a; text-transform:uppercase; "
-            f"letter-spacing:0.1em;'>Hot spots Chile</div>"
-            f"<div style='font-size:1.6rem; font-weight:700; color:{hs_color};'>{n_hs}</div>"
-            f"</div>",
+            f"letter-spacing:0.1em;'>Hot spots Chile (NOAA FDCF)</div>"
+            f"<div style='font-size:1.6rem; font-weight:700; color:{hs_color};'>"
+            f"{n_hs}</div></div>",
             unsafe_allow_html=True,
         )
+
+    # KPI 3: distancia al hot spot mas cercano del volcan seleccionado
+    nearest_hs, dist_km = _nearest_hotspot(hotspots, v.lat, v.lon) if v else (None, float("inf"))
+    if nearest_hs is not None and dist_km < 100:
+        nh_color = "#ff4444" if dist_km < 10 else "#ffaa44" if dist_km < 30 else "#44dd88"
+        nh_label = f"{dist_km:.0f} km"
+        nh_sub = f"T={nearest_hs.temp_k:.0f}K, FRP {nearest_hs.frp_mw:.1f}MW"
+    else:
+        nh_color = "#44dd88"
+        nh_label = "sin hotspots"
+        nh_sub = "≤100 km del volcán"
     with c3:
-        avail = [p for p in series if p.available]
-        if avail:
-            current = avail[-1].metric * 100
-            peak = max(p.metric for p in avail) * 100
-            ash_color = "#ff4444" if current > 5 else "#ffaa44" if current > 1 else "#44dd88"
-        else:
-            current, peak, ash_color = 0, 0, "#888"
         st.markdown(
-            f"<div style='background:#0f1418; border-left:4px solid {ash_color}; "
+            f"<div style='background:#0f1418; border-left:4px solid {nh_color}; "
             f"padding:0.8rem 1rem; border-radius:4px;'>"
             f"<div style='font-size:0.7rem; color:#7a8a9a; text-transform:uppercase; "
-            f"letter-spacing:0.1em;'>{volcan_name} ash %</div>"
-            f"<div style='font-size:1.6rem; font-weight:700; color:{ash_color};'>"
-            f"{current:.1f}% <span style='font-size:0.9rem; color:#556;'>"
-            f"(pico {peak:.1f}%)</span></div></div>",
+            f"letter-spacing:0.1em;'>{volcan_name} — hot spot mas cercano</div>"
+            f"<div style='font-size:1.6rem; font-weight:700; color:{nh_color};'>"
+            f"{nh_label}</div>"
+            f"<div style='font-size:0.7rem; color:#556;'>{nh_sub}</div></div>",
             unsafe_allow_html=True,
         )
+
+    # KPI 4: hora UTC / Chile
     with c4:
         st.markdown(
             f"<div style='background:#0f1418; border-left:4px solid #4a9eff; "
@@ -276,26 +255,20 @@ def _live_panel(volcan_name: str):
     else:
         st.warning("Imagen Ash RGB no disponible en este ciclo.")
 
-    # ── Serie de tiempo ──
-    st.plotly_chart(
-        _render_timeseries(series, volcan_name),
-        use_container_width=True,
-        config={"displayModeBar": False},
-    )
-
-    # ── Footer info refresco ──
+    # ── Footer info ──
     st.markdown(
         f"<div style='text-align:right; color:#445566; font-size:0.75rem; "
-        f"margin-top:0.5rem;'>Auto-refresh cada {REFRESH_SECONDS}s · "
-        f"GOES-19 cadencia real 10 min · "
-        f"render @ {now.strftime('%H:%M:%S')} UTC</div>",
+        f"margin-top:0.5rem;'>"
+        f"Auto-refresh cada {REFRESH_SECONDS}s · GOES-19 cadencia real 10 min · "
+        f"render @ {now.strftime('%H:%M:%S')} UTC<br>"
+        f"<i>Imagenes Ash RGB y hot spots NOAA FDCF — sin metricas automaticas. "
+        f"La interpretacion queda al criterio del experto.</i></div>",
         unsafe_allow_html=True,
     )
 
 
 def render():
     """Entry point para app.py."""
-    # CSS especifico modo guardia: compacta header, esconde menu hamburguesa
     st.markdown(
         """
         <style>
@@ -316,7 +289,6 @@ def render():
         unsafe_allow_html=True,
     )
 
-    # Selector volcan (fuera del fragment para que no se resetee con el refresh)
     cols = st.columns([3, 1])
     with cols[1]:
         volcan = st.selectbox(

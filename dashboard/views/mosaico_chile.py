@@ -28,9 +28,9 @@ PRODUCT = "eumetsat_ash"
 
 
 @st.cache_data(ttl=30, show_spinner=False)
-def _latest_ts() -> str | None:
-    times = get_latest_timestamps(PRODUCT, n=1)
-    return times[0] if times else None
+def _recent_timestamps(n: int = 3) -> list[str]:
+    """Ultimos N timestamps. Cache 30s. Usados con fallback en cadena."""
+    return get_latest_timestamps(PRODUCT, n=n)
 
 
 @st.cache_data(ttl=7200, show_spinner=False)
@@ -44,6 +44,21 @@ def _volcano_frame(ts: str, lat: float, lon: float) -> np.ndarray | None:
     except Exception as e:
         logger.warning("frame %s fallo: %s", ts, e)
         return None
+
+
+def _volcano_frame_with_fallback(timestamps: list[str], lat: float, lon: float
+                                  ) -> tuple[np.ndarray | None, str | None]:
+    """Prueba el ts mas reciente; si no carga, baja al previo. Hasta 3 intentos.
+
+    RAMMB a veces tarda en publicar tiles para zoom=4 ash en algunos sectores
+    aunque ya tenga el latest_times.json apuntando al nuevo scan. Probar el
+    scan previo es muy barato (cache hit despues del primer volcan que lo use).
+    """
+    for ts in timestamps:
+        img = _volcano_frame(ts, lat, lon)
+        if img is not None:
+            return img, ts
+    return None, None
 
 
 def _array_to_data_url(arr: np.ndarray) -> str:
@@ -97,12 +112,13 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str):
 
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
 def _live_panel():
-    ts = _latest_ts()
+    timestamps = _recent_timestamps(n=3)
     now = datetime.now(timezone.utc)
-    if not ts:
+    if not timestamps:
         st.error("RAMMB no respondio. Reintentando en 60s…")
         return
 
+    ts = timestamps[0]
     try:
         scan_dt = parse_rammb_ts(ts)
         age_min = int((now - scan_dt).total_seconds() / 60)
@@ -121,6 +137,7 @@ def _live_panel():
     )
 
     # Grid 2 filas x 4 columnas
+    fallback_count = 0
     rows = [PRIORITY_VOLCANOES[:4], PRIORITY_VOLCANOES[4:8]]
     for row_volcanos in rows:
         cols = st.columns(4)
@@ -128,13 +145,21 @@ def _live_panel():
             v = get_volcano(name)
             if v is None:
                 continue
-            img = _volcano_frame(ts, v.lat, v.lon)
+            img, used_ts = _volcano_frame_with_fallback(timestamps, v.lat, v.lon)
+            if used_ts and used_ts != ts:
+                fallback_count += 1
             with cols[i]:
                 st.plotly_chart(
                     _render_mini(img, v.lat, v.lon, name),
                     use_container_width=True,
                     config={"displayModeBar": False},
                 )
+
+    if fallback_count > 0:
+        st.caption(
+            f"ℹ {fallback_count} volcán(es) usaron scan previo "
+            f"(RAMMB todavía no publicó tile para el último scan)."
+        )
 
     st.markdown(
         "<div style='text-align:center; color:#445566; font-size:0.75rem; "

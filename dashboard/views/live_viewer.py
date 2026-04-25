@@ -730,56 +730,52 @@ def _live_content():
         "500 hPa": "≈ 5.5 km",
         "850 hPa": "≈ 1.5 km",
     }
-    col_w1, col_w2, col_w3, col_hs, col_vl = st.columns([1.2, 1.2, 0.5, 1.4, 2.0])
+    # Toolbar compacto en una sola linea: viento (toggle+nivel+retry),
+    # hot spots, volcanes. Reduce ~1 fila de altura vs el layout anterior.
+    col_w1, col_w2, col_hs, col_vl = st.columns([1.0, 1.4, 1.2, 2.4])
     with col_w1:
-        show_wind = st.checkbox("Vectores de viento (GFS)",
-                                value=False, key="live_wind")
-    with col_hs:
-        show_hotspots = st.checkbox(
-            "Hot spots NOAA FDCF",
-            value=False, key="live_hotspots",
-            help=(
-                "Muestra puntos calientes detectados por el algoritmo NOAA "
-                "FDCF (Fire/Hot spot Characterization). Producto L2 ABI, "
-                "cada 10 min. Sirve para incendios forestales y flujos de "
-                "lava expuestos. Erupciones explosivas con cenizas frías "
-                "pueden NO disparar hot spots — cruzar con Ash RGB."
-            ),
-        )
+        show_wind = st.toggle("💨 Viento (GFS)",
+                              value=False, key="live_wind",
+                              help="Vectores de viento GFS via Open-Meteo.")
     with col_w2:
         if show_wind:
-            wind_level = st.selectbox(
-                "Nivel",
-                list(WIND_LEVELS.keys()),
-                index=1,
-                key="live_wind_level",
-                format_func=lambda k: f"{k}  —  {WIND_ALTITUDES.get(k, '')}",
-                label_visibility="collapsed",
-                help=(
-                    "La altura es aproximada (atmosfera estandar ISA). "
-                    "Varia ±200-500 m segun temperatura y latitud."
-                ),
-            )
+            sub_a, sub_b = st.columns([4, 1])
+            with sub_a:
+                wind_level = st.selectbox(
+                    "Nivel",
+                    list(WIND_LEVELS.keys()),
+                    index=1,
+                    key="live_wind_level",
+                    format_func=lambda k: f"{k} — {WIND_ALTITUDES.get(k, '')}",
+                    label_visibility="collapsed",
+                )
+            with sub_b:
+                if st.button("🔄", key="retry_wind",
+                             help="Limpiar cache y volver a pedir"):
+                    _fetch_wind_cached.clear()
+                    st.rerun()
         else:
             wind_level = "500 hPa"
-    with col_w3:
-        if show_wind:
-            if st.button("🔄", key="retry_wind",
-                         help="Limpiar cache y volver a pedir a Open-Meteo"):
-                _fetch_wind_cached.clear()
-                st.rerun()
+    with col_hs:
+        show_hotspots = st.toggle(
+            "🔥 Hot spots FDCF",
+            value=False, key="live_hotspots",
+            help=(
+                "Puntos calientes NOAA FDCF (L2 ABI, cada 10 min). "
+                "Erupciones con cenizas frías pueden NO disparar hot spots — "
+                "cruzar con Ash RGB."
+            ),
+        )
     with col_vl:
         volc_layer = st.radio(
-            "Volcanes en el mapa",
+            "Volcanes",
             ["Prioritarios (8)", "Todos (43+)", "Ninguno"],
             index=0, horizontal=True, key="live_volc_layer",
+            label_visibility="collapsed",
             help=(
-                "Los puntos de volcanes vienen del catalogo de SERNAGEOMIN "
-                "(Red Nacional de Vigilancia Volcanica, 43 volcanes). "
-                "Prioritarios = ranking alto + actividad reciente.\n\n"
-                "El triangulo marca la coordenada REAL (WGS84). En la imagen "
-                "el pico puede verse desplazado 1-3 km por paralaje de "
-                "GOES-19 (mayor para volcanes altos como Lascar, Parinacota)."
+                "Catálogo SERNAGEOMIN. El triángulo marca coord real WGS84. "
+                "Paralaje GOES-19 puede desplazar el pico 1-3 km al este "
+                "(mayor para volcanes altos)."
             ),
         )
 
@@ -1370,6 +1366,17 @@ def _live_content():
 
 
 def render():
+    # CSS para compactar top — el header de Streamlit y el padding superior
+    # comen mucho espacio vertical y empujan el toolbar fuera de la vista.
+    st.markdown(
+        """
+        <style>
+          [data-testid="stHeader"] { background: rgba(0,0,0,0); height: 0; }
+          .block-container { padding-top: 0.6rem !important; }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
     header(
         "En Vivo — GOES-19 Tiempo Real",
         "Ultimo scan disponible · Auto-refresh 10 min · RAMMB/CIRA Slider",

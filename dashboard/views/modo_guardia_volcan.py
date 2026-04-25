@@ -62,9 +62,9 @@ RING_RADII_KM = [5, 10, 25, 50]
 # ── Cache helpers ────────────────────────────────────────────────────
 
 @st.cache_data(ttl=30, show_spinner=False)
-def _latest_ts(product: str) -> str | None:
-    times = get_latest_timestamps(product, n=1)
-    return times[0] if times else None
+def _recent_timestamps(product: str, n: int = 3) -> list[str]:
+    """Ultimos N timestamps para fallback si el mas reciente no tiene tile."""
+    return get_latest_timestamps(product, n=n)
 
 
 @st.cache_data(ttl=7200, show_spinner=False)
@@ -77,6 +77,23 @@ def _frame(product: str, ts: str, lat_min: float, lat_max: float,
     except Exception as e:
         logger.warning("frame %s %s fallo: %s", product, ts, e)
         return None
+
+
+def _frame_with_fallback(product: str, timestamps: list[str],
+                          lat_min: float, lat_max: float,
+                          lon_min: float, lon_max: float
+                          ) -> tuple[np.ndarray | None, str | None]:
+    """Prueba el ts mas reciente; si no carga, baja al previo. Hasta len(ts) intentos.
+
+    Mismo patron que en mosaico_chile.py — RAMMB a veces tarda en publicar
+    tiles para zoom=4 en algunos productos aunque latest_times.json ya
+    apunte al nuevo scan.
+    """
+    for ts in timestamps:
+        img = _frame(product, ts, lat_min, lat_max, lon_min, lon_max)
+        if img is not None:
+            return img, ts
+    return None, None
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -230,10 +247,15 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
                 hoverinfo="skip", showlegend=False,
             ))
 
+    # scaleratio = 1/cos(lat) hace que 1 km en x = 1 km en y en pixeles,
+    # por lo que un circulo geometrico (en km) se ve como circulo visual.
+    # Sin esto los anillos aparecen aplastados como ovalos.
+    cos_lat = max(0.1, float(np.cos(np.radians(volcan_lat))))
     fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
                      showgrid=False, visible=False)
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
-                     showgrid=False, visible=False, scaleanchor="x", scaleratio=1)
+                     showgrid=False, visible=False,
+                     scaleanchor="x", scaleratio=1.0 / cos_lat)
     fig.update_layout(
         title=dict(text=product_label, font=dict(size=13, color="#e0e0e0"), x=0.02),
         height=380, margin=dict(l=0, r=0, t=30, b=0),
@@ -250,6 +272,29 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
 
 # ── Captura PNG ──────────────────────────────────────────────────────
 
+def _load_font(size: int):
+    """Carga una fuente con cobertura Unicode (acentos, ñ).
+
+    Prueba varios paths comunes en Linux (Streamlit Cloud) y Windows.
+    DejaVuSans tiene cobertura Unicode amplia y viene en casi cualquier
+    sistema; arial.ttf solo en Windows. Fallback a default si todo falla.
+    """
+    from PIL import ImageFont
+    candidates = [
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",   # Streamlit Cloud
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "DejaVuSans.ttf",
+        "C:/Windows/Fonts/arial.ttf",
+        "arial.ttf",
+    ]
+    for path in candidates:
+        try:
+            return ImageFont.truetype(path, size)
+        except Exception:
+            continue
+    return ImageFont.load_default()
+
+
 def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
                        elevation: int, region: str,
                        product_imgs: list[tuple[str, np.ndarray | None, str]],
@@ -258,21 +303,19 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
     """Compone una imagen A4-landscape con los 3 productos + header.
 
     No usa kaleido (evitamos dep ~80MB). Hace composite directo con PIL.
+    Las imagenes de cada producto llenan el panel (no thumbnail tiny).
     """
-    from PIL import Image, ImageDraw, ImageFont
+    from PIL import Image, ImageDraw
 
-    # Lienzo: 1800x1200 px (A4 landscape ~150 DPI)
+    # Lienzo: 1800x1200 px (~A4 landscape 150 DPI)
     W, H = 1800, 1200
     canvas = Image.new("RGB", (W, H), color=(10, 14, 20))
     draw = ImageDraw.Draw(canvas)
 
-    try:
-        f_title = ImageFont.truetype("arial.ttf", 38)
-        f_sub = ImageFont.truetype("arial.ttf", 22)
-        f_small = ImageFont.truetype("arial.ttf", 18)
-        f_label = ImageFont.truetype("arial.ttf", 24)
-    except Exception:
-        f_title = f_sub = f_small = f_label = ImageFont.load_default()
+    f_title = _load_font(38)
+    f_sub = _load_font(22)
+    f_small = _load_font(18)
+    f_label = _load_font(24)
 
     # Header
     draw.text((40, 30), volcan_name, fill=(255, 102, 68), font=f_title)
@@ -280,15 +323,14 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
               f"{region} · {volcan_lat:.3f}°, {volcan_lon:.3f}° · "
               f"elev {elevation} m",
               fill=(180, 180, 200), font=f_sub)
-    chile_now = generated_utc.astimezone()  # sera UTC en CI; en local usa TZ
     draw.text((40, 115),
               f"Captura UTC: {generated_utc.strftime('%Y-%m-%d %H:%M:%S')} · "
               f"Hot spots NOAA en bbox: {hotspots_count}",
               fill=(150, 160, 180), font=f_small)
 
     # Viento (esquina derecha)
-    wind_x = W - 480
-    draw.text((wind_x, 30), "Viento GFS sobre el crater",
+    wind_x = W - 520
+    draw.text((wind_x, 30), "Viento GFS sobre el cráter",
               fill=(220, 220, 220), font=f_sub)
     y = 65
     if wind_data:
@@ -302,32 +344,49 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
             draw.text((wind_x, y), txt, fill=color, font=f_small)
             y += 28
     else:
-        draw.text((wind_x, y), "(no se solicito viento)",
+        draw.text((wind_x, y), "(viento no solicitado — activá toggle 💨)",
                   fill=(120, 120, 140), font=f_small)
 
-    # 3 productos en grilla horizontal — 580x600 cada uno
-    panel_w, panel_h = 560, 700
-    x0 = 40
+    # 3 productos — calcular anchos para que llenen 95% del lienzo
+    margin_x = 40
+    gap = 25
+    panel_w = (W - 2 * margin_x - 2 * gap) // 3   # ~573 px
+    panel_h = 880
+    x0 = margin_x
     y0 = 200
+
+    # Area util para la imagen dentro del panel (despues del header del panel)
+    inner_pad = 10
+    label_h = 70  # header del panel (label + ts_label)
+    img_box_w = panel_w - 2 * inner_pad
+    img_box_h = panel_h - label_h - inner_pad
+
     for i, (label, img_arr, ts_label) in enumerate(product_imgs):
-        x = x0 + i * (panel_w + 30)
+        x = x0 + i * (panel_w + gap)
         # Fondo del panel
         draw.rectangle([x, y0, x + panel_w, y0 + panel_h],
-                       outline=(50, 60, 80), width=2)
-        # Label
-        draw.text((x + 10, y0 + 8), label, fill=(255, 102, 68), font=f_label)
-        draw.text((x + 10, y0 + 42), ts_label, fill=(140, 150, 170), font=f_small)
-        # Imagen redimensionada
+                       fill=(15, 20, 28), outline=(50, 60, 80), width=2)
+        # Header del panel
+        draw.text((x + inner_pad, y0 + 8), label,
+                  fill=(255, 102, 68), font=f_label)
+        draw.text((x + inner_pad, y0 + 42), ts_label,
+                  fill=(140, 150, 170), font=f_small)
+        # Imagen llenando area util preservando aspect ratio
         if img_arr is not None:
             img = Image.fromarray(img_arr.astype(np.uint8))
-            img.thumbnail((panel_w - 20, panel_h - 90), Image.LANCZOS)
             iw, ih = img.size
-            ix = x + (panel_w - iw) // 2
-            iy = y0 + 78 + (panel_h - 90 - ih) // 2
+            scale = min(img_box_w / iw, img_box_h / ih)
+            new_w = max(1, int(iw * scale))
+            new_h = max(1, int(ih * scale))
+            img = img.resize((new_w, new_h), Image.LANCZOS)
+            ix = x + inner_pad + (img_box_w - new_w) // 2
+            iy = y0 + label_h + (img_box_h - new_h) // 2
             canvas.paste(img, (ix, iy))
         else:
-            draw.text((x + panel_w // 2 - 80, y0 + panel_h // 2),
-                      "sin imagen", fill=(120, 120, 140), font=f_label)
+            txt = "sin imagen disponible"
+            tw = draw.textlength(txt, font=f_label)
+            draw.text((x + (panel_w - tw) // 2, y0 + panel_h // 2),
+                      txt, fill=(120, 120, 140), font=f_label)
 
     # Footer
     draw.text((40, H - 50),
@@ -335,7 +394,7 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
               "SERNAGEOMIN · goesvolcanic.streamlit.app",
               fill=(100, 110, 130), font=f_small)
     draw.text((40, H - 25),
-              "Imagen sin metricas automaticas. La interpretacion queda al experto.",
+              "Imagen sin métricas automáticas. La interpretación queda al experto.",
               fill=(100, 110, 130), font=f_small)
 
     out = io.BytesIO()
@@ -390,23 +449,29 @@ def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
         unsafe_allow_html=True,
     )
 
-    # Bajar los 3 productos (cache 2h por ts)
+    # Bajar los 3 productos (cache 2h por ts) con fallback a ts previos
     captured = []   # (label, img, ts_label) para captura
     cols = st.columns(3)
     for i, (prod_id, label, recipe) in enumerate(PRODUCTS):
-        ts = _latest_ts(prod_id)
+        timestamps = _recent_timestamps(prod_id, n=3)
         img = None
         ts_label = "—"
-        if ts:
-            img = _frame(prod_id, ts,
-                         bounds["lat_min"], bounds["lat_max"],
-                         bounds["lon_min"], bounds["lon_max"])
-            try:
-                ts_dt = parse_rammb_ts(ts)
-                age = int((now - ts_dt).total_seconds() / 60)
-                ts_label = f"{ts_dt.strftime('%H:%M UTC')} (hace {age} min)"
-            except Exception:
-                ts_label = ts
+        used_ts = None
+        if timestamps:
+            img, used_ts = _frame_with_fallback(
+                prod_id, timestamps,
+                bounds["lat_min"], bounds["lat_max"],
+                bounds["lon_min"], bounds["lon_max"],
+            )
+            if used_ts:
+                try:
+                    ts_dt = parse_rammb_ts(used_ts)
+                    age = int((now - ts_dt).total_seconds() / 60)
+                    ts_label = f"{ts_dt.strftime('%H:%M UTC')} (hace {age} min)"
+                    if used_ts != timestamps[0]:
+                        ts_label += " ⚠ scan previo"
+                except Exception:
+                    ts_label = used_ts
 
         captured.append((label, img, ts_label))
 

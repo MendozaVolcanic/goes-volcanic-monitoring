@@ -1,0 +1,42 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'dashboard/**'
+      - 'tests/**'
+      - 'requirements.txt'
+      - '.github/workflows/tests.yml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependencias runtime + pytest
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-xdist
+
+      - name: Run tests
+        run: pytest tests/ -v --tb=short -n auto
+
+      - name: Smoke check — dashboard.app importable
+        # Streamlit hace warnings al importar fuera de runtime pero no debe crashear.
+        # Si esto falla, el deploy a Streamlit Cloud queda con pantalla en blanco.
+        run: python -c "import dashboard.style; import dashboard.utils; print('OK')"

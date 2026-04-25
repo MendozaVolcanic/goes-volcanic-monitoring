@@ -34,7 +34,10 @@ def test_volcano_catalog():
     """Verificar catálogo de volcanes."""
     from src.volcanos import CATALOG, get_volcano, get_by_zone, get_priority
 
-    assert len(CATALOG) == 43
+    # Al menos 43 volcanes chilenos. Pueden agregarse sentinels zone='test'
+    # (e.g. Kilauea Hawai) sin romper este test.
+    chilean = [v for v in CATALOG if v.zone != "test"]
+    assert len(chilean) >= 43
 
     # Verificar volcán conocido
     villarrica = get_volcano("Villarrica")
@@ -76,7 +79,10 @@ def test_chile_bounds():
     from src.config import CHILE_BOUNDS
     from src.volcanos import CATALOG
 
+    # Solo volcanes chilenos — sentinels zone='test' (Kilauea Hawai) quedan fuera
     for v in CATALOG:
+        if v.zone == "test":
+            continue
         assert CHILE_BOUNDS["lat_min"] <= v.lat <= CHILE_BOUNDS["lat_max"], \
             f"{v.name} lat {v.lat} fuera de bounds"
         assert CHILE_BOUNDS["lon_min"] <= v.lon <= CHILE_BOUNDS["lon_max"], \

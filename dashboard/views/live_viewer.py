@@ -26,6 +26,7 @@ from src.fetch.rammb_slider import (
     ZOOM_ZONE, ZOOM_VOLCAN, VOLCANO_RADIUS_DEG,
 )
 from src.fetch.wind_data import WIND_LEVELS, fetch_wind_grid, fetch_wind_diagnostic
+from src.fetch.goes_fdcf import fetch_latest_hotspots, HotSpot
 from src.volcanos import CATALOG, get_priority, get_volcano, PRIORITY_VOLCANOES
 
 logger = logging.getLogger(__name__)
@@ -347,10 +348,129 @@ def _png_download_button(arr: np.ndarray, filename: str, label_overlay: str,
     )
 
 
+def _download_buttons(arr: np.ndarray, bounds: dict, base_filename: str,
+                      label_overlay: str, prod_label: str, key_prefix: str) -> None:
+    """Pareja de botones PNG + GeoTIFF en columnas.
+
+    PNG: visualizacion (con timestamp impreso en banda inferior, ideal para
+    informes / mail).
+    GeoTIFF: archivo georeferenciado para QGIS / analisis posterior. CRS
+    EPSG:4326, 3 bandas RGB, sin overlay de texto.
+    """
+    if arr is None:
+        return
+    from src.export.geotiff import build_geotiff_bytes
+
+    col_png, col_tif = st.columns(2)
+    with col_png:
+        _png_download_button(
+            arr,
+            filename=f"{base_filename}.png",
+            label_overlay=label_overlay,
+            button_label=f"PNG · {prod_label}",
+            key=f"{key_prefix}_png",
+        )
+    with col_tif:
+        try:
+            tif_bytes = build_geotiff_bytes(
+                arr, bounds, description=label_overlay,
+            )
+        except Exception as e:
+            logger.warning("GeoTIFF build failed: %s", e)
+            tif_bytes = b""
+        if tif_bytes:
+            size_mb = len(tif_bytes) / 1024 / 1024
+            st.download_button(
+                f"⬇ GeoTIFF · {prod_label} ({size_mb:.1f} MB)",
+                data=tif_bytes,
+                file_name=f"{base_filename}.tif",
+                mime="image/tiff",
+                key=f"{key_prefix}_tif",
+                use_container_width=True,
+                help=(
+                    "Imagen georeferenciada (EPSG:4326, RGB). Abre directo en "
+                    "QGIS, ArcGIS o cualquier viewer GIS. Conserva las "
+                    "coordenadas exactas de cada pixel."
+                ),
+            )
+
+
 @st.cache_data(ttl=3600, show_spinner=False)
 def _fetch_wind_cached(level: str) -> list:
     """Obtener grilla de viento GFS (cache 1 hora)."""
     return fetch_wind_grid(level=level)
+
+
+@st.cache_data(ttl=300, show_spinner=False)
+def _fetch_hotspots_cached(
+    lat_min: float, lat_max: float, lon_min: float, lon_max: float,
+) -> tuple[list[dict], str | None]:
+    """Hot spots FDCF NOAA en bbox (cache 5 min — el scan tambien dura 10).
+
+    Retorna lista de dicts (no HotSpot dataclass) para que sean cacheables
+    por Streamlit. Tambien el timestamp del scan como string ISO.
+    """
+    bounds = {"lat_min": lat_min, "lat_max": lat_max,
+              "lon_min": lon_min, "lon_max": lon_max}
+    hotspots, scan_dt = fetch_latest_hotspots(bounds=bounds, hours_back=2)
+    ts_str = scan_dt.isoformat() if scan_dt else None
+    return [h.to_dict() for h in hotspots], ts_str
+
+
+def _add_hotspots(fig, hotspots: list[dict], scan_label: str | None = None) -> None:
+    """Agregar hot spots NOAA FDCF como scatter sobre el plot.
+
+    Color por confianza:
+      high  → rojo intenso (#ff2244)
+      saturated → naranja (#ff8800) — pixel saturado, FRP probable underestimado
+      low   → amarillo claro (#ffcc44)
+
+    Tamaño ∝ log(FRP) — los focos mas intensos se ven mas grandes.
+    """
+    if not hotspots:
+        return
+
+    color_map = {
+        "high": "#ff2244",
+        "saturated": "#ff8800",
+        "low": "#ffcc44",
+        "unknown": "#aa6688",
+    }
+
+    import math
+    sizes = [
+        max(8, min(28, 8 + 4 * math.log10(max(h.get("frp_mw", 1.0), 1.0))))
+        for h in hotspots
+    ]
+    colors = [color_map.get(h.get("confidence", "unknown"), "#aa6688")
+              for h in hotspots]
+
+    label_suffix = f" · scan {scan_label}" if scan_label else ""
+    hover = [
+        f"<b>Hot spot NOAA FDCF</b>{label_suffix}<br>"
+        f"FRP: <b>{h.get('frp_mw', 0):.1f} MW</b><br>"
+        f"T: {h.get('temp_k', 0):.1f} K<br>"
+        f"Area sub-pixel: {h.get('area_km2', 0):.2f} km²<br>"
+        f"Coord: {h.get('lat', 0):.3f}°, {h.get('lon', 0):.3f}°<br>"
+        f"<i>Confianza: {h.get('confidence', '?')}</i>"
+        for h in hotspots
+    ]
+
+    fig.add_trace(go.Scatter(
+        x=[h["lon"] for h in hotspots],
+        y=[h["lat"] for h in hotspots],
+        mode="markers",
+        marker=dict(
+            size=sizes,
+            color=colors,
+            symbol="circle",
+            line=dict(width=1.2, color="white"),
+            opacity=0.9,
+        ),
+        name="Hot spots NOAA FDCF",
+        hovertext=hover, hoverinfo="text",
+        showlegend=True,
+    ))
 
 
 def _add_wind_arrows(
@@ -610,10 +730,22 @@ def _live_content():
         "500 hPa": "≈ 5.5 km",
         "850 hPa": "≈ 1.5 km",
     }
-    col_w1, col_w2, col_w3, col_vl = st.columns([1.2, 1.2, 0.5, 2.3])
+    col_w1, col_w2, col_w3, col_hs, col_vl = st.columns([1.2, 1.2, 0.5, 1.4, 2.0])
     with col_w1:
         show_wind = st.checkbox("Vectores de viento (GFS)",
                                 value=False, key="live_wind")
+    with col_hs:
+        show_hotspots = st.checkbox(
+            "Hot spots NOAA FDCF",
+            value=False, key="live_hotspots",
+            help=(
+                "Muestra puntos calientes detectados por el algoritmo NOAA "
+                "FDCF (Fire/Hot spot Characterization). Producto L2 ABI, "
+                "cada 10 min. Sirve para incendios forestales y flujos de "
+                "lava expuestos. Erupciones explosivas con cenizas frías "
+                "pueden NO disparar hot spots — cruzar con Ash RGB."
+            ),
+        )
     with col_w2:
         if show_wind:
             wind_level = st.selectbox(
@@ -855,6 +987,30 @@ def _live_content():
             if not wind_data_cached:
                 wind_error = fetch_wind_diagnostic(WIND_LEVELS[wind_level])
 
+        # Hot spots NOAA FDCF — compartidos por los 3 productos en vista Nacional.
+        # Bbox: el de la imagen reprojectada (CHILE_REPROJECTED_BOUNDS).
+        hotspots_nacional = []
+        hotspots_scan_ts = None
+        if show_hotspots:
+            with st.spinner("Cargando hot spots NOAA FDCF..."):
+                _b = CHILE_REPROJECTED_BOUNDS
+                hotspots_nacional, hotspots_scan_ts = _fetch_hotspots_cached(
+                    _b["lat_min"], _b["lat_max"], _b["lon_min"], _b["lon_max"],
+                )
+            _ts_short = (hotspots_scan_ts[11:16] + " UTC"
+                         if hotspots_scan_ts else "—")
+            if hotspots_nacional:
+                st.caption(
+                    f"🔥 {len(hotspots_nacional)} hot spot(s) NOAA FDCF detectado(s) "
+                    f"en Chile (scan {_ts_short}). Mas info en hover de cada punto."
+                )
+            else:
+                st.caption(
+                    f"🔥 Sin hot spots FDCF en Chile en este scan ({_ts_short}). "
+                    "Es lo normal: el algoritmo solo detecta superficies muy "
+                    "calientes (lava expuesta, incendios, no cenizas frías)."
+                )
+
         for prod_id, prod_label, _ in LIVE_PRODUCTS:
             with sub_tabs[prod_id]:
                 # Paso 1 — timestamp (liviano, cache 90s)
@@ -890,6 +1046,12 @@ def _live_content():
                             f"Open-Meteo status={wind_error['status']}. "
                             f"Respuesta: {wind_error['response'][:200]}"
                         )
+                if show_hotspots and hotspots_nacional:
+                    _add_hotspots(
+                        fig, hotspots_nacional,
+                        scan_label=(hotspots_scan_ts[11:16] + " UTC"
+                                    if hotspots_scan_ts else None),
+                    )
 
                 fig.update_layout(
                     height=820,
@@ -901,17 +1063,18 @@ def _live_content():
                 )
                 st.plotly_chart(fig, use_container_width=True)
 
-                # Boton de descarga del PNG (con timestamp impreso).
+                # Botones de descarga (PNG con timestamp + GeoTIFF georeferenciado)
                 _dl_label = (
                     f"GOES-19 {prod_label} - Chile - "
                     f"{frame['label_utc']} ({frame['label_local']} CL)"
                 )
-                _png_download_button(
+                _download_buttons(
                     frame["image"],
-                    filename=f"goes19_{prod_id}_chile_{ts}.png",
+                    bounds=bounds,
+                    base_filename=f"goes19_{prod_id}_chile_{ts}",
                     label_overlay=_dl_label,
-                    button_label=f"Descargar {prod_label} (PNG)",
-                    key=f"dl_nacional_{prod_id}",
+                    prod_label=prod_label,
+                    key_prefix=f"dl_nacional_{prod_id}",
                 )
 
                 st.markdown(
@@ -983,10 +1146,21 @@ def _live_content():
                             f"{ZONE_LABELS[zone_key]} · {prod_zona} · zoom=3",
                             volc_layer=volc_layer,
                         )
+                        if show_hotspots:
+                            _hs_zona, _hs_ts_z = _fetch_hotspots_cached(
+                                zone_bounds["lat_min"], zone_bounds["lat_max"],
+                                zone_bounds["lon_min"], zone_bounds["lon_max"],
+                            )
+                            if _hs_zona:
+                                _add_hotspots(
+                                    fig_z, _hs_zona,
+                                    scan_label=(_hs_ts_z[11:16] + " UTC"
+                                                if _hs_ts_z else None),
+                                )
                         fig_z.update_layout(height=640)
                         st.plotly_chart(fig_z, use_container_width=True)
 
-                        # Descarga PNG por zona
+                        # Descarga PNG + GeoTIFF por zona
                         _dt_zona = parse_rammb_ts(ts_zona)
                         _zona_label = (
                             f"GOES-19 {PRODUCT_LABELS.get(prod_zona, prod_zona)} - "
@@ -994,13 +1168,14 @@ def _live_content():
                             f"{_dt_zona.strftime('%Y-%m-%d %H:%M UTC')}"
                             f" ({fmt_chile(_dt_zona)} CL)"
                         )
-                        _png_download_button(
+                        _download_buttons(
                             img_zona,
-                            filename=(f"goes19_{prod_zona}_{zone_key}_"
-                                      f"{ts_zona}.png"),
+                            bounds=zone_bounds,
+                            base_filename=(f"goes19_{prod_zona}_{zone_key}_"
+                                           f"{ts_zona}"),
                             label_overlay=_zona_label,
-                            button_label=f"Descargar {ZONE_LABELS[zone_key]} (PNG)",
-                            key=f"dl_zona_{zone_key}_{prod_zona}",
+                            prod_label=ZONE_LABELS[zone_key],
+                            key_prefix=f"dl_zona_{zone_key}_{prod_zona}",
                         )
 
                 # Leyenda interpretativa debajo del grid 2x2.
@@ -1096,6 +1271,26 @@ def _live_content():
                         volc_layer=volc_layer,
                     )
 
+                    # Hot spots NOAA FDCF en zoom de volcan
+                    if show_hotspots:
+                        _hs_volc, _hs_ts_v = _fetch_hotspots_cached(
+                            volc_bounds["lat_min"], volc_bounds["lat_max"],
+                            volc_bounds["lon_min"], volc_bounds["lon_max"],
+                        )
+                        if _hs_volc:
+                            _add_hotspots(
+                                fig_v, _hs_volc,
+                                scan_label=(_hs_ts_v[11:16] + " UTC"
+                                            if _hs_ts_v else None),
+                            )
+                            st.caption(
+                                f"🔥 {len(_hs_volc)} hot spot(s) cerca de "
+                                f"{volcano.name}. Distancia mínima al vent: "
+                                + (
+                                    f"{min(((h['lat']-volcano.lat)**2 + (h['lon']-volcano.lon)**2)**0.5 * 111 for h in _hs_volc):.1f} km"
+                                )
+                            )
+
                     # Viento sobre la vista del volcan (grilla 3x3 local).
                     # La grilla global de Chile no cubre Hawai/Mexico y ademas
                     # queda espaciada a escala de volcan → mini-grilla centrada.
@@ -1125,7 +1320,7 @@ def _live_content():
                     fig_v.update_layout(height=700)
                     st.plotly_chart(fig_v, use_container_width=True)
 
-                    # Descarga PNG del zoom del volcan
+                    # Descarga PNG + GeoTIFF del zoom del volcan
                     _dt_volc = parse_rammb_ts(ts_volc)
                     _volc_label = (
                         f"GOES-19 {PRODUCT_LABELS.get(prod_volc, prod_volc)} - "
@@ -1138,13 +1333,14 @@ def _live_content():
                                   .replace("á","a").replace("é","e")
                                   .replace("í","i").replace("ó","o")
                                   .replace("ú","u").replace("ñ","n"))
-                    _png_download_button(
+                    _download_buttons(
                         img_volc,
-                        filename=(f"goes19_{prod_volc}_{_safe_volc}_"
-                                  f"{ts_volc}_z{zoom_used}.png"),
+                        bounds=volc_bounds,
+                        base_filename=(f"goes19_{prod_volc}_{_safe_volc}_"
+                                       f"{ts_volc}_z{zoom_used}"),
                         label_overlay=_volc_label,
-                        button_label=f"Descargar {volcano.name} (PNG)",
-                        key=f"dl_volc_{_safe_volc}_{prod_volc}",
+                        prod_label=volcano.name,
+                        key_prefix=f"dl_volc_{_safe_volc}_{prod_volc}",
                     )
 
                     # Leyenda interpretativa tambien en vista por volcan.

@@ -2,6 +2,7 @@
 slug: goes
 title: GOES Volcanic Monitoring
 last_updated: 2026-04-25
+last_commit: 1fc74f0
 status: producción
 tier: 1
 deploy_url: "https://goesvolcanic.streamlit.app"
@@ -57,13 +58,17 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
 
 ## Vistas del dashboard
 
-1. **🔴 En Vivo** — último scan, auto-refresh 60s. Sub-vistas: Nacional / Por Zona Volcánica / Por Volcán. Toggles: viento GFS, hot spots FDCF.
-2. **Mapa General** — overview con todos los volcanes
-3. **Ash RGB Viewer** — versión propia desde L1b
-4. **Detalle Volcán** — vista detallada con 3 productos + altura VOLCAT
-5. **VOLCAT (SSEC)** — Ash RGB / SO2 RGB pre-procesados + 📏 **Altura de pluma** + VAA
+1. **🔴 En Vivo** — último scan, auto-refresh 60s. Tres tabs principales:
+   - **Nacional**: sub-tabs GeoColor / Ash RGB / SO2 (3 productos lado a lado).
+   - **Por Zona Volcánica**: sub-tabs por producto, cada uno mostrando grid 4-zonas (Norte/Centro/Sur/Austral) en paralelo.
+   - **Volcán**: selector + botón Cargar + sub-tabs por producto (zoom=4).
+   - Toggles globales: viento GFS, hot spots FDCF.
+2. **Mapa General** — overview con todos los volcanes.
+3. **Ash RGB Viewer** — versión propia desde L1b.
+4. **Detalle Volcán** — vista detallada con 3 productos + altura VOLCAT.
+5. **VOLCAT (SSEC)** — Ash RGB / SO2 RGB pre-procesados + 📏 **Altura de pluma** (4 productos VOLCAT con cheat-sheet visual) + VAA.
 6. **Animación (RAMMB)** — loops 1-3h con scope Nacional/Zona/Volcán. Export GIF/MP4/ZIP.
-7. **📈 Series de tiempo** — tendencia por volcán con KPIs de tendencia
+7. **📈 Series de tiempo** — tendencia por volcán con KPIs + **thumbnails contextuales** (PICO + ÚLTIMO con triángulo rojo en el volcán).
 
 ## Volcanes monitoreados
 

@@ -25,6 +25,7 @@ VIEWS = [
     "dashboard.views.volcat_viewer",
     "dashboard.views.rammb_viewer",
     "dashboard.views.timeseries_viewer",
+    "dashboard.views.modo_guardia",
 ]
 
 FETCHERS = [

@@ -246,6 +246,28 @@ def render():
     )
     refresh_info_badge(context="general")
 
+    # ── Aviso de NO confiabilidad de la métrica automática ──
+    # La fracción "% píxeles con firma de ceniza" se calcula contando
+    # píxeles con perfil RGB tipo ceniza en la receta EUMETSAT. Esa receta
+    # confunde ceniza con cirros finos, nieve fresca sobre Andes, sombras
+    # de nubes altas, polvo desértico y calima costera. En Chile invierno
+    # los falsos positivos pueden ser >30% sin evento volcánico real.
+    # Se deja la vista para tendencia visual solo — un experto debe cruzar
+    # con el imagen Ash RGB cruda en En Vivo o Modo Guardia antes de
+    # interpretar.
+    st.warning(
+        "**⚠ Métrica no validada — usar con criterio.** "
+        "El '% píxeles con firma de ceniza' usa la receta RGB EUMETSAT que "
+        "confunde ceniza con cirros, nieve sobre Andes, sombras y polvo. "
+        "Falsos positivos típicos en Chile invierno: 30-60%. "
+        "**Esta serie sirve para detectar CAMBIOS bruscos** (saltos súbitos), "
+        "no para magnitud absoluta. Antes de actuar, verificar el frame "
+        "Ash RGB en **En Vivo** o **Modo Guardia**, y cruzar con hot spots "
+        "NOAA FDCF (producto validado). Trabajamos en sumar filtros (cirros, "
+        "albedo) y/o reemplazar por métricas validadas (e.g. detección "
+        "tri-espectral Pavolonis 2013, ya disponible en VOLCAT)."
+    )
+
     # ── Controles ──
     c1, c2, c3, c4 = st.columns([1.6, 1.4, 1.2, 0.8])
     with c1:

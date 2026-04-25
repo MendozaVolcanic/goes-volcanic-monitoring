@@ -41,6 +41,9 @@
 | **Tier 3 #1.5 — Modo Guardia Volcán** (zoom volcán, 3 productos lado a lado) | `dashboard/views/modo_guardia_volcan.py` | `bbd25a7` |
 | **Tier 3 #1.7 — Mosaico Chile** (grid 4×2 los 8 prioritarios) | `dashboard/views/mosaico_chile.py` | `bbd25a7` |
 | Scaffold proyecto **Sat_Tracker** (afuera de este repo, en `Volcanologia/Sat_Tracker/`) | README + INTEGRATION + docs/SATELLITES | (no en este repo) |
+| **Restructuración**: 10 → 7 tabs. Detalle Volcán eliminado. Modo Guardia / Volcán / Mosaico fusionadas en una tab con 3 sub-tabs. | `app.py`, `modo_guardia.py` | (este commit) |
+| **Warning Series de Tiempo**: aviso visible sobre falsos positivos del % ash | `timeseries_viewer.py` | (este commit) |
+| Mapas al máximo en Modo Guardia (900/620/420 px) | `modo_guardia.py`, `modo_guardia_volcan.py`, `mosaico_chile.py` | `0c91c3b` |
 
 ## 🟡 Pendiente — siguiente sesión
 

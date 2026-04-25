@@ -267,28 +267,8 @@ def _live_panel(volcan_name: str):
     )
 
 
-def render():
-    """Entry point para app.py."""
-    st.markdown(
-        """
-        <style>
-          [data-testid="stHeader"] { background: rgba(0,0,0,0); height: 0; }
-          .block-container { padding-top: 1rem !important; padding-bottom: 1rem !important; }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.markdown(
-        "<div style='display:flex; align-items:center; justify-content:space-between; "
-        "padding-bottom:0.6rem; border-bottom:2px solid #223;'>"
-        "<div style='font-size:1.6rem; font-weight:800; color:#ff6644;'>"
-        "🛡 MODO GUARDIA</div>"
-        "<div style='font-size:0.85rem; color:#7a8a9a;'>"
-        "Sala de operaciones · GOES-19 · Chile</div></div>",
-        unsafe_allow_html=True,
-    )
-
+def _chile_subtab():
+    """Sub-tab Chile: el live panel original con selector de volcan."""
     cols = st.columns([3, 1])
     with cols[1]:
         volcan = st.selectbox(
@@ -297,6 +277,89 @@ def render():
             index=PRIORITY_VOLCANOES.index(DEFAULT_VOLCANO)
             if DEFAULT_VOLCANO in PRIORITY_VOLCANOES else 0,
             label_visibility="collapsed",
+            key="mg_chile_selector",
         )
-
     _live_panel(volcan)
+
+
+def _mosaico_subtab():
+    """Sub-tab Mosaico: 8 prioritarios en grid 4x2."""
+    from dashboard.views.mosaico_chile import _live_panel as mosaico_panel
+    mosaico_panel()
+
+
+def _volcan_subtab():
+    """Sub-tab Volcan: zoom volcan con 3 productos + viento + anillos + captura."""
+    from dashboard.views.modo_guardia_volcan import _live_panel as volcan_panel
+    # Toolbar
+    cols = st.columns([2, 1, 1, 1, 1])
+    with cols[0]:
+        volcan = st.selectbox(
+            "Volcan",
+            options=PRIORITY_VOLCANOES,
+            index=PRIORITY_VOLCANOES.index(DEFAULT_VOLCANO)
+            if DEFAULT_VOLCANO in PRIORITY_VOLCANOES else 0,
+            label_visibility="collapsed",
+            key="mg_volcan_selector",
+        )
+    with cols[1]:
+        show_wind = st.toggle(
+            "💨 Viento", value=False, key="mg_wind",
+            help="Vectores GFS en 300/500/850 hPa sobre el crater. Cache 1h.",
+        )
+    with cols[2]:
+        show_rings = st.toggle(
+            "⊙ Anillos", value=False, key="mg_rings",
+            help="Anillos de distancia 5/10/25/50 km desde el crater.",
+        )
+    with cols[3]:
+        enable_capture = st.toggle(
+            "📸 Captura", value=False, key="mg_capture",
+            help="Boton de descarga PNG del momento actual.",
+        )
+    with cols[4]:
+        st.markdown(
+            "<div style='font-size:0.7rem; color:#556; padding-top:0.5rem;'>"
+            "Refresh 60s</div>",
+            unsafe_allow_html=True,
+        )
+    volcan_panel(volcan, show_wind, show_rings, enable_capture)
+
+
+def render():
+    """Entry point para app.py — Modo Guardia unificado con 3 sub-tabs.
+
+    Fusion de las 3 vistas guardia previas (Chile / Mosaico / Volcan)
+    en una sola tab con sub-tabs internos. Reduce ruido en el sidebar
+    y agrupa logicamente las vistas operacionales sin metricas.
+    """
+    st.markdown(
+        """
+        <style>
+          [data-testid="stHeader"] { background: rgba(0,0,0,0); height: 0; }
+          .block-container { padding-top: 0.6rem !important; padding-bottom: 1rem !important; }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<div style='display:flex; align-items:center; justify-content:space-between; "
+        "padding-bottom:0.4rem; border-bottom:2px solid #223; margin-bottom:0.6rem;'>"
+        "<div style='font-size:1.6rem; font-weight:800; color:#ff6644;'>"
+        "🛡 MODO GUARDIA</div>"
+        "<div style='font-size:0.85rem; color:#7a8a9a;'>"
+        "Sala de operaciones · GOES-19 · Sin métricas automáticas</div></div>",
+        unsafe_allow_html=True,
+    )
+
+    sub_chile, sub_mosaico, sub_volcan = st.tabs([
+        "🌎 Chile (vista nacional)",
+        "🗺 Mosaico 8 prioritarios",
+        "🔬 Volcán (3 productos)",
+    ])
+    with sub_chile:
+        _chile_subtab()
+    with sub_mosaico:
+        _mosaico_subtab()
+    with sub_volcan:
+        _volcan_subtab()

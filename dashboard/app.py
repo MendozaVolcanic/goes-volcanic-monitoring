@@ -41,10 +41,9 @@ with st.sidebar:
 
     page = st.radio(
         "Navegacion",
-        ["🔴 En Vivo", "🛡 Modo Guardia", "🛡 Modo Guardia Volcan",
-         "🗺 Mosaico Chile", "Mapa General", "Ash RGB Viewer",
-         "Detalle Volcan", "VOLCAT (SSEC)", "Animacion (RAMMB)",
-         "📈 Series de tiempo"],
+        ["🔴 En Vivo", "🛡 Modo Guardia", "Mapa General",
+         "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
+         "Animacion (RAMMB)", "📈 Series de tiempo"],
         index=0,
         label_visibility="collapsed",
     )
@@ -83,20 +82,11 @@ if page == "🔴 En Vivo":
 elif page == "🛡 Modo Guardia":
     from dashboard.views.modo_guardia import render
     render()
-elif page == "🛡 Modo Guardia Volcan":
-    from dashboard.views.modo_guardia_volcan import render
-    render()
-elif page == "🗺 Mosaico Chile":
-    from dashboard.views.mosaico_chile import render
-    render()
 elif page == "Mapa General":
     from dashboard.views.overview import render
     render()
-elif page == "Ash RGB Viewer":
+elif page == "Ash RGB Viewer (L1b + BTD)":
     from dashboard.views.ash_viewer import render
-    render()
-elif page == "Detalle Volcan":
-    from dashboard.views.volcano_detail import render
     render()
 elif page == "VOLCAT (SSEC)":
     from dashboard.views.volcat_viewer import render

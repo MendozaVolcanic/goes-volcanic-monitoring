@@ -21,11 +21,12 @@ VIEWS = [
     "dashboard.views.live_viewer",
     "dashboard.views.overview",
     "dashboard.views.ash_viewer",
-    "dashboard.views.volcano_detail",
     "dashboard.views.volcat_viewer",
     "dashboard.views.rammb_viewer",
     "dashboard.views.timeseries_viewer",
     "dashboard.views.modo_guardia",
+    # modo_guardia_volcan y mosaico_chile son submodulos privados:
+    # ya no se invocan como tabs sueltas, se llaman desde modo_guardia
     "dashboard.views.modo_guardia_volcan",
     "dashboard.views.mosaico_chile",
 ]

@@ -35,7 +35,12 @@
 | **Tier 5 — Tests Planck/geo/smoke + CI workflow** (37/37 pasan) | `tests/test_brightness_temp.py`, `test_geo.py`, `test_smoke.py`, `.github/workflows/tests.yml` | `90f9253` |
 | **PDF diario Láscar** (cron 11 UTC, output a `reports/lascar/`) | `scripts/generate_lascar_report.py`, `.github/workflows/lascar_pdf.yml` | (este commit) |
 | Fix: bot NRT escribe a `STATUS_NRT.md`, no pisa más este archivo | `.github/workflows/goes.yml` | (este commit) |
-| Decisiones técnicas Wen-Rose (Fase 3.5) guardadas para retomar | `docs/ALTURA_COLUMNA_INVESTIGACION.md` | (este commit) |
+| Decisiones técnicas Wen-Rose (Fase 3.5) guardadas para retomar | `docs/ALTURA_COLUMNA_INVESTIGACION.md` | `303ef26` |
+| **Tier 3 #1 — Modo Guardia** (vista full-screen Chile + KPIs neutros) | `dashboard/views/modo_guardia.py` | `cf838ca` |
+| **Cambio de filosofía: NO métricas automáticas** (ash% inventado eliminado, dashboard muestra el dato crudo) | `modo_guardia.py` | `bbd25a7` |
+| **Tier 3 #1.5 — Modo Guardia Volcán** (zoom volcán, 3 productos lado a lado) | `dashboard/views/modo_guardia_volcan.py` | `bbd25a7` |
+| **Tier 3 #1.7 — Mosaico Chile** (grid 4×2 los 8 prioritarios) | `dashboard/views/mosaico_chile.py` | `bbd25a7` |
+| Scaffold proyecto **Sat_Tracker** (afuera de este repo, en `Volcanologia/Sat_Tracker/`) | README + INTEGRATION + docs/SATELLITES | (no en este repo) |
 
 ## 🟡 Pendiente — siguiente sesión
 
@@ -50,7 +55,26 @@
 
 2. **TROPOMI/Sentinel-5P SO2** → cubierto por proyecto **VolcPlume-v1** (no implementar acá, integrar después desde `Integracion_Plataformas/`).
 
-3. **🎯 PRÓXIMO ACORDADO: Comparación lado a lado** de 2 timestamps con sliders independientes.
+3. **Comparación lado a lado** de 2 timestamps con sliders independientes — diferido (entra en bloque B abajo).
+
+### 🎯 Próxima sesión acordada — Bloque B (filosofía expert-driven)
+
+Siguiendo el cambio de filosofía adoptado en sesión 2 (no métricas automáticas, mostrar dato crudo):
+
+- **#6 Viento GFS overlay** sobre el cráter (vectores 300/500/850 hPa). Infra parcial en `wind_data.py`.
+- **#7 Anillos de distancia** 5/10/25/50 km sobre el cráter (calibra el ojo).
+- **#8 Captura PNG con anotación** (botón "guardar este momento" para reportes/Slack).
+
+### Próxima a la siguiente — Bloque C
+
+- **#4 Loop animado continuo** 12 frames últimas 2h por volcán.
+- **#5 Comparador antes/después** split screen 2 timestamps.
+- **#9 BTD raw heatmap dedicado** (necesita L1b S3, paleta divergente).
+- **#12 Comparación contra baseline limpio** (imagen actual vs típica del mismo volcán hace 7 días).
+
+### Tier 4 (institucional, requiere persistencia)
+
+- **#11 Bookmarks de eventos** — guardar momentos clave con etiqueta (necesita decidir SQLite/Supabase/GitHub commit-back).
 
 4. ~~**Reporte PDF diario automatizado**~~ — ✅ HECHO solo para Láscar. Pendiente extender a otros volcanes prioritarios si se valida en operación.
 

@@ -98,7 +98,7 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str):
                      showgrid=False, visible=False, scaleanchor="x", scaleratio=1)
     fig.update_layout(
         title=dict(text=f"<b>{name}</b>", font=dict(size=12, color="#e0e0e0"), x=0.02),
-        height=260, margin=dict(l=0, r=0, t=25, b=0),
+        height=420, margin=dict(l=0, r=0, t=25, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
     )
     if img is None:

@@ -258,7 +258,7 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
                      scaleanchor="x", scaleratio=1.0 / cos_lat)
     fig.update_layout(
         title=dict(text=product_label, font=dict(size=13, color="#e0e0e0"), x=0.02),
-        height=380, margin=dict(l=0, r=0, t=30, b=0),
+        height=620, margin=dict(l=0, r=0, t=28, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
     )
     if img is None:

@@ -151,7 +151,7 @@ def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name:
     fig.update_yaxes(range=[b["lat_min"], b["lat_max"]],
                      showgrid=False, title="", scaleanchor="x", scaleratio=1)
     fig.update_layout(
-        height=680, margin=dict(l=0, r=0, t=10, b=0),
+        height=900, margin=dict(l=0, r=0, t=5, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
         font=dict(color="#e0e0e0", size=13),
         legend=dict(bgcolor="rgba(10,14,20,0.7)", bordercolor="#334",

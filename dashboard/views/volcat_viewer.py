@@ -1,7 +1,11 @@
-"""Pagina VOLCAT: productos pre-procesados por SSEC/CIMSS via RealEarth API.
+"""Pagina VOLCAT: productos pre-procesados por SSEC/CIMSS.
 
-Muestra Ash RGB y SO2 RGB generados por SSEC para GOES-19,
-y Volcanic Ash Advisories (VAA) como overlay.
+Dos APIs distintas:
+- RealEarth API (https://realearth.ssec.wisc.edu): Ash RGB + SO2 RGB Full Disk +
+  Volcanic Ash Advisories como overlay.
+- VOLCAT portal API (https://volcano.ssec.wisc.edu/imagery): productos
+  cuantitativos por sector — Ash Height (km), Ash Loading (g/m²), Ash
+  Probability, Ash Reff (radio efectivo de partícula).
 """
 
 import logging
@@ -21,7 +25,10 @@ from src.fetch.realearth_api import (
     fetch_vaa_geojson,
     get_latest_time,
 )
-from src.volcanos import CATALOG
+from src.fetch.volcat_api import (
+    VOLCANO_TO_SECTOR, get_sector_for_volcano, volcat_latest,
+)
+from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
 
 logger = logging.getLogger(__name__)
 
@@ -104,6 +111,222 @@ def _fig_ssec_image(img_rgba, bounds, title, volcanoes):
     return fig
 
 
+# ── VOLCAT portal: productos por sector (Ash Height, Loading, Probability, Reff) ──
+
+VOLCAT_PRODUCTS = {
+    "Ash_Height":      ("Altura de pluma (km AMSL)",
+                        "Pavolonis 2010/2013 — optimal estimation 3-canal IR. ±1-2 km en plumas opacas."),
+    "Ash_Loading":     ("Carga columnar (g/m²)",
+                        "Masa columnar de ceniza. Útil para tasa de emisión y dispersión."),
+    "Ash_Probability": ("Probabilidad de ceniza (%)",
+                        "Confianza de la detección de pluma vs cirrus / dust / nubes."),
+    "Ash_Reff":        ("Radio efectivo (μm)",
+                        "Tamaño de partícula efectivo. Indica grano grueso (>10 μm) vs fino (<5 μm)."),
+}
+
+
+@st.cache_data(ttl=300, show_spinner=False)
+def _volcat_latest_cached(sector: str, instr: str, image_type: str) -> dict | None:
+    """Cache 5 min — el VOLCAT publica cada 10 min con scan ABI."""
+    return volcat_latest(sector, instr=instr, image_type=image_type)
+
+
+@st.cache_data(ttl=600, show_spinner=False)
+def _volcat_image_bytes(image_url: str) -> bytes:
+    """Descargar PNG raw del VOLCAT (cache 10 min por URL — la URL incluye timestamp)."""
+    import requests
+    try:
+        r = requests.get(image_url, timeout=30)
+        r.raise_for_status()
+        return r.content
+    except Exception as e:
+        logger.warning("Error bajando %s: %s", image_url, e)
+        return b""
+
+
+def _parse_volcat_dt(s: str | None) -> str:
+    """'2026-04-25_17-20-30' -> '2026-04-25 17:20 UTC (...CL)'."""
+    if not s:
+        return "—"
+    try:
+        from datetime import datetime, timezone
+        d, t = s.split("_")
+        hh, mm, ss = t.split("-")
+        dt = datetime(*map(int, d.split("-")), int(hh), int(mm), int(ss),
+                      tzinfo=timezone.utc)
+        return f"{dt.strftime('%Y-%m-%d %H:%M UTC')} ({fmt_chile(dt)} Chile)"
+    except Exception:
+        return s
+
+
+def _render_height_section(key_suffix: str = "tab") -> None:
+    """Render del bloque Altura/Loading/Probability/Reff.
+
+    Reutilizado en la tab dedicada (cuando se hizo fetch del RGB) y en la
+    pantalla inicial (cuando no se hizo fetch — porque la altura no requiere
+    descarga pesada).
+    """
+    st.markdown(
+        '<div style="font-size:0.85rem; color:#c0ccd8; margin-bottom:0.6rem;">'
+        'Productos cuantitativos de <b>VOLCAT</b> (Volcanic Cloud Analysis Toolkit) '
+        'pre-procesados por SSEC/CIMSS. Algoritmo: optimal estimation 3-canal IR '
+        '(Pavolonis et al. 2013, JGR Atmos). Cadencia 10 min ABI + refuerzo MODIS/VIIRS.<br>'
+        '<i>Fuente:</i> https://volcano.ssec.wisc.edu/imagery/'
+        '</div>',
+        unsafe_allow_html=True,
+    )
+
+    priority_names = [v.name for v in CATALOG if v.name in PRIORITY_VOLCANOES
+                      and v.name in VOLCANO_TO_SECTOR]
+    other_names    = [v.name for v in CATALOG if v.name in VOLCANO_TO_SECTOR
+                      and v.name not in priority_names]
+    volc_options   = [f"★ {n}" for n in priority_names] + other_names
+
+    cv1, cv2 = st.columns([1.5, 1.5])
+    with cv1:
+        sel_raw = st.selectbox("Volcán", volc_options, index=0,
+                               key=f"volcat_height_volcano_{key_suffix}")
+        volc_name_h = sel_raw.replace("★ ", "")
+    with cv2:
+        prod_h = st.selectbox(
+            "Producto VOLCAT",
+            list(VOLCAT_PRODUCTS.keys()),
+            format_func=lambda k: VOLCAT_PRODUCTS[k][0],
+            index=0, key=f"volcat_height_product_{key_suffix}",
+        )
+
+    sector_info = get_sector_for_volcano(volc_name_h)
+    if not sector_info:
+        st.error(
+            f"El volcán '{volc_name_h}' no tiene sector VOLCAT mapeado todavía. "
+            "Avisame para agregarlo a `src/fetch/volcat_api.py::VOLCANO_TO_SECTOR`."
+        )
+        return
+
+    sector, instr = sector_info
+    with st.spinner(
+        f"Consultando VOLCAT para {volc_name_h} (sector {sector}, {prod_h})..."
+    ):
+        meta = _volcat_latest_cached(sector, instr, prod_h)
+
+    if meta is None:
+        st.warning(
+            f"VOLCAT no devolvió frames recientes para sector "
+            f"**{sector}** producto **{prod_h}** instr **{instr}**. "
+            "Posibles causas: scan ABI atrasado, sector con cobertura "
+            "intermitente, o el producto solo está disponible cuando "
+            "VOLCAT detecta una pluma activa (Ash_Loading/Reff suelen "
+            "ser nulos sin erupción). Probá Ash_Probability como "
+            "indicador siempre disponible."
+        )
+        return
+
+    ts_h = _parse_volcat_dt(meta.get("datetime"))
+    kh1, kh2, kh3 = st.columns(3)
+    with kh1:
+        kpi_card(volc_name_h, "Volcán")
+    with kh2:
+        kpi_card(sector.replace("_", " "), "Sector VOLCAT")
+    with kh3:
+        short_ts = meta.get("datetime", "—").split("_")[-1].replace("-", ":")
+        kpi_card(short_ts[:5] + " UTC" if len(short_ts) >= 5 else "—",
+                 "Hora del scan")
+
+    col_im, col_lg = st.columns([4, 1.4])
+    with col_im:
+        img_bytes = _volcat_image_bytes(meta["image_url"])
+        if img_bytes:
+            st.image(
+                img_bytes,
+                caption=(
+                    f"{VOLCAT_PRODUCTS[prod_h][0]} — "
+                    f"{volc_name_h} ({sector.replace('_', ' ')}) — {ts_h}"
+                ),
+                use_container_width=True,
+            )
+            st.download_button(
+                f"⬇ Descargar PNG VOLCAT ({len(img_bytes)//1024} KB)",
+                data=img_bytes,
+                file_name=(
+                    f"volcat_{prod_h.lower()}_{sector.lower()}_"
+                    f"{(meta.get('datetime') or 'latest').replace(':', '-')}.png"
+                ),
+                mime="image/png",
+                key=f"dl_volcat_height_{prod_h}_{sector}_{key_suffix}",
+                use_container_width=True,
+            )
+        else:
+            st.error("No se pudo descargar la imagen.")
+            st.caption(f"URL: {meta.get('image_url', '?')}")
+
+    with col_lg:
+        st.markdown("<b style='font-size:0.85rem;'>Colorbar</b>",
+                    unsafe_allow_html=True)
+        leg_bytes = _volcat_image_bytes(meta["legend_url"])
+        if leg_bytes:
+            st.image(leg_bytes, use_container_width=True)
+        else:
+            st.caption("(sin leyenda)")
+        st.markdown(
+            f'<div style="font-size:0.74rem; color:#8899aa; '
+            f'margin-top:0.5rem; line-height:1.4;">'
+            f'<b>{VOLCAT_PRODUCTS[prod_h][0]}</b><br>'
+            f'{VOLCAT_PRODUCTS[prod_h][1]}'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+
+    with st.expander("Cómo leer este producto", expanded=False):
+        if prod_h == "Ash_Height":
+            st.markdown("""
+            - **Unidad**: km sobre el nivel del mar (AMSL).
+            - **Algoritmo**: Pavolonis et al. 2013 — ajuste simultáneo de
+              temperatura del tope, espesor óptico y radio efectivo contra
+              forward model RTM. Tc → altura usando perfil GFS de temperatura.
+            - **Precisión**: ±1-2 km en plumas opacas, ±3-4 km en plumas
+              delgadas (τ<0.5) o sobre cirrus.
+            - **Limitación**: si pluma transparente al IR, subestima. Si hay
+              nube meteo debajo, también subestima. Cruzar con Ash RGB.
+            """)
+        elif prod_h == "Ash_Loading":
+            st.markdown("""
+            - **Unidad**: g/m² (carga columnar de masa de ceniza).
+            - **Uso**: integrar sobre área de pluma → tonelaje total.
+              Combinado con velocidad → tasa de emisión (MER, kg/s).
+            - **Limitación**: solo cuantificable cuando hay detección estable
+              y τ moderado (0.3-2). Plumas opacas saturan; delgadas tienen
+              ruido alto.
+            """)
+        elif prod_h == "Ash_Probability":
+            st.markdown("""
+            - **Unidad**: 0-100%.
+            - **Uso**: confianza de que el píxel contiene ceniza volcánica
+              vs cirrus / dust del desierto / nube de hielo.
+            - **Tip operativo**: usar como filtro sobre Ash_Height y
+              Ash_Loading. Solo confiar en valores con probability > 60-70%.
+            """)
+        elif prod_h == "Ash_Reff":
+            st.markdown("""
+            - **Unidad**: μm (radio efectivo de partícula).
+            - **Uso**: indicador del modo de eyección. Finas (Reff < 5 μm)
+              → eyección violenta + transporte largo. Gruesas (Reff > 10 μm)
+              → eyección débil o cerca del cráter.
+            - **Limitación**: requiere asunción de composición (silicato).
+              Basáltica vs riolítica tienen propiedades ópticas distintas.
+            """)
+
+    st.markdown(
+        f'<div style="font-size:0.72rem; color:#445566; margin-top:0.7rem;">'
+        f'Ver en el portal SSEC: '
+        f'<a href="https://volcano.ssec.wisc.edu/imagery/view/'
+        f'#sector:{sector}::instr:{instr}::sat:all'
+        f'::image_type:{prod_h}::endtime:latest::daterange:2880" '
+        f'target="_blank" style="color:#667788;">abrir en VOLCAT viewer →</a>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+
 def _parse_timestamp(ts_str):
     """Convertir timestamp SSEC (YYYYMMDD.HHMMSS) a legible con hora local."""
     if not ts_str:
@@ -146,18 +369,21 @@ def render():
     bounds = ZONE_OPTIONS[zone_key]
 
     if not fetch:
-        # Show info + latest timestamps
+        # Mostrar info panel + tab de Altura (que es independiente del fetch
+        # pesado de RGB Full Disk).
         col_info, col_ts = st.columns([2, 1])
         with col_info:
             info_panel(
-                "<b>Productos VOLCAT via RealEarth API</b><br><br>"
-                "Esta pagina muestra imagenes Ash RGB y SO2 RGB generadas directamente "
-                "por SSEC/CIMSS (Universidad de Wisconsin), los creadores del sistema VOLCAT.<br><br>"
-                "A diferencia de nuestros productos propios (pagina Ash RGB Viewer), estas "
-                "imagenes son procesadas por SSEC con algoritmos avanzados de calibracion "
-                "y composicion de color optimizados.<br><br>"
-                "<b>Fuente:</b> RealEarth API (publico, sin autenticacion)<br>"
-                "<b>Retencion:</b> ~28 dias en el portal"
+                "<b>Productos VOLCAT via SSEC/CIMSS</b><br><br>"
+                "<b>Ash RGB / SO2 RGB</b> (Full Disk via RealEarth API): "
+                "apretá <i>Obtener imagenes SSEC</i> arriba para descargarlas. "
+                "Pesado, ~10s.<br><br>"
+                "<b>Altura de pluma / Loading / Probability / Reff</b> "
+                "(VOLCAT portal por sector): <b>disponible directo abajo</b>, "
+                "no necesita el botón. Algoritmo Pavolonis 2013 "
+                "(optimal estimation), ±1-2 km de error en plumas opacas.<br><br>"
+                "<b>Fuente:</b> RealEarth + VOLCAT portal (publico, sin auth)<br>"
+                "<b>Retencion:</b> ~28 dias"
             )
         with col_ts:
             ash_ts = get_latest_time("ash_rgb")
@@ -171,6 +397,14 @@ def render():
                 f'</div></div>',
                 unsafe_allow_html=True,
             )
+
+        # Tab Altura (independiente — no requiere fetch pesado)
+        st.markdown("---")
+        st.markdown(
+            "### 📏 Altura de pluma VOLCAT (disponible siempre)",
+            unsafe_allow_html=True,
+        )
+        _render_height_section(key_suffix="standalone")
         return
 
     # ── Fetch images ──
@@ -214,7 +448,12 @@ def render():
     st.markdown("<div style='height:0.4rem'></div>", unsafe_allow_html=True)
 
     # ── Tabs ──
-    tab1, tab2, tab3 = st.tabs(["Ash RGB (SSEC)", "SO2 RGB (SSEC)", "VAA Advisories"])
+    tab1, tab2, tab_height, tab3 = st.tabs([
+        "Ash RGB (SSEC)",
+        "SO2 RGB (SSEC)",
+        "📏 Altura de pluma (VOLCAT)",
+        "VAA Advisories",
+    ])
 
     def _ssec_png_download(img_rgba, filename: str, button_label: str, key: str):
         """Boton de descarga para imagen SSEC (RGBA -> PNG con alpha aplicado)."""
@@ -277,6 +516,10 @@ def render():
                 st.error("No se pudo descargar la imagen SO2 RGB de SSEC")
         with col_leg2:
             ash_so2_legend()
+
+    # ── TAB: Altura de pluma VOLCAT (Pavolonis 2013, ±1-2 km) ──
+    with tab_height:
+        _render_height_section(key_suffix="tab")
 
     with tab3:
         if vaa and vaa.get("features"):

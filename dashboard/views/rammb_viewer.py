@@ -9,12 +9,13 @@ Fuente: slider.cira.colostate.edu (CIRA/CSU + NOAA/RAMMB).
 import base64
 import io
 import logging
+import zipfile
 from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
-from PIL import Image as PILImage
+from PIL import Image as PILImage, ImageDraw, ImageFont
 
 from dashboard.style import (
     C_ACCENT, C_ASH, C_SO2,
@@ -63,6 +64,113 @@ def _img_to_b64(arr: np.ndarray) -> str:
     buf = io.BytesIO()
     PILImage.fromarray(arr).save(buf, format="PNG")
     return base64.b64encode(buf.getvalue()).decode()
+
+
+def _annotated_pil(arr: np.ndarray, label: str, max_width: int = 1200) -> PILImage.Image:
+    """Convertir frame numpy a PIL con timestamp + branding sobre-impreso.
+
+    Reduce ancho a max_width para que el GIF no quede gigante. Mantiene
+    aspect ratio. Fontsize escala con el ancho final.
+    """
+    img = PILImage.fromarray(arr).convert("RGB")
+    if img.width > max_width:
+        scale = max_width / img.width
+        new_size = (max_width, int(img.height * scale))
+        img = img.resize(new_size, PILImage.LANCZOS)
+
+    draw = ImageDraw.Draw(img)
+    # Tamano de fuente proporcional al ancho. ~2.2% del ancho es legible.
+    fs = max(12, int(img.width * 0.022))
+    try:
+        # Fuente truetype no esta garantizada en Streamlit Cloud. Fallback.
+        font = ImageFont.truetype("DejaVuSans-Bold.ttf", fs)
+    except Exception:
+        try:
+            font = ImageFont.truetype("arial.ttf", fs)
+        except Exception:
+            font = ImageFont.load_default()
+
+    # Banner negro semi-transparente abajo con el label
+    pad = max(6, fs // 3)
+    bbox = draw.textbbox((0, 0), label, font=font)
+    text_h = bbox[3] - bbox[1]
+    band_h = text_h + pad * 2
+    y0 = img.height - band_h
+    # Cinta negra
+    overlay = PILImage.new("RGBA", img.size, (0, 0, 0, 0))
+    odraw = ImageDraw.Draw(overlay)
+    odraw.rectangle([0, y0, img.width, img.height], fill=(0, 0, 0, 180))
+    img = PILImage.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
+    draw = ImageDraw.Draw(img)
+    draw.text((pad, y0 + pad), label, fill=(255, 255, 255), font=font)
+
+    # Branding arriba a la derecha (chiquito)
+    brand = "GOES-19 / RAMMB-CIRA"
+    bbbox = draw.textbbox((0, 0), brand, font=font)
+    bw = bbbox[2] - bbbox[0]
+    draw.text((img.width - bw - pad, pad), brand,
+              fill=(180, 200, 220), font=font)
+    return img
+
+
+def _build_gif(frames: list[dict], duration_ms: int = 700) -> bytes:
+    """Construir GIF animado a partir de los frames.
+
+    Cada frame trae timestamp + marca sobre-impresa. Loop infinito.
+    """
+    pil_frames = [_annotated_pil(f["image"], f["label"]) for f in frames]
+    if not pil_frames:
+        return b""
+    buf = io.BytesIO()
+    pil_frames[0].save(
+        buf, format="GIF",
+        save_all=True,
+        append_images=pil_frames[1:],
+        duration=duration_ms,
+        loop=0,             # 0 = loop infinito
+        optimize=True,
+        disposal=2,
+    )
+    return buf.getvalue()
+
+
+def _build_zip_frames(frames: list[dict], product_label: str,
+                      scope_label: str) -> bytes:
+    """ZIP con (1) PNGs originales sin overlay, (2) manifest.csv con metadata."""
+    if not frames:
+        return b""
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as zf:
+        # Manifest CSV
+        lines = ["frame,timestamp_utc,filename,lat_min,lat_max,lon_min,lon_max"]
+        for i, f in enumerate(frames):
+            ts = f["ts"]
+            fn = f"frame_{i:02d}_{ts}.png"
+            b = f["bounds"]
+            lines.append(
+                f"{i},{ts},{fn},"
+                f"{b['lat_min']:.4f},{b['lat_max']:.4f},"
+                f"{b['lon_min']:.4f},{b['lon_max']:.4f}"
+            )
+            # PNG sin overlay (mas util para reanalisis en QGIS/python)
+            img_buf = io.BytesIO()
+            PILImage.fromarray(f["image"]).save(img_buf, format="PNG")
+            zf.writestr(fn, img_buf.getvalue())
+        zf.writestr("manifest.csv", "\n".join(lines))
+        # README breve
+        readme = (
+            f"GOES-19 animation export\n"
+            f"========================\n"
+            f"Product : {product_label}\n"
+            f"Scope   : {scope_label}\n"
+            f"Frames  : {len(frames)}\n"
+            f"Span    : {frames[0]['ts']} -> {frames[-1]['ts']} (UTC)\n\n"
+            f"Source: RAMMB/CIRA Slider (slider.cira.colostate.edu)\n"
+            f"Each PNG es la imagen reprojectada a lat/lon regular.\n"
+            f"Bounds geograficos por frame en manifest.csv.\n"
+        )
+        zf.writestr("README.txt", readme)
+    return buf.getvalue()
 
 
 def _volcano_scatter(bounds: dict, highlight=None) -> go.Scatter:
@@ -451,6 +559,89 @@ def render():
     bounds = frames[0]["bounds"]
     fig = _build_animation(frames, bounds, height=height)
     st.plotly_chart(fig, use_container_width=True)
+
+    # ── Descargas ─────────────────────────────────────────────────────────
+    # Generamos los binarios solo on-demand (lazy) via expander para no
+    # consumir CPU/memoria en cada rerun de Streamlit. Una animacion GIF de
+    # 12 frames ~5-15 MB, un ZIP de PNGs originales ~10-30 MB.
+    st.markdown(
+        '<div style="height:0.4rem; border-top:1px solid rgba(100,120,140,0.15); '
+        'margin-top:0.6rem; padding-top:0.4rem;"></div>',
+        unsafe_allow_html=True,
+    )
+    with st.expander("⬇ Descargar animacion / frames", expanded=False):
+        st.markdown(
+            '<div style="font-size:0.78rem; color:#8899aa; margin-bottom:0.5rem;">'
+            'Generar el archivo toma 5-15 s la primera vez (queda cacheado en sesion). '
+            '<b>GIF</b>: animacion con timestamp impreso, ideal para reportes/PDF. '
+            '<b>ZIP</b>: PNGs originales sin overlay + <code>manifest.csv</code> con bounds, '
+            'pensado para reanalisis en QGIS o Python.'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+
+        # Slug para el nombre de archivo (UTC del primer y ultimo frame)
+        prod_slug = sel["product"].replace("_", "-")
+        scope_slug = (
+            scope_label.lower()
+            .replace(" ", "-").replace("(", "").replace(")", "")
+            .replace("±", "r").replace(",", "").replace("°", "deg")
+            .replace("á", "a").replace("é", "e").replace("í", "i")
+            .replace("ó", "o").replace("ú", "u").replace("ñ", "n")
+        )
+        ts_first = frames[0]["ts"][:12]
+        ts_last  = frames[-1]["ts"][:12]
+        base_name = f"goes19_{prod_slug}_{scope_slug}_{ts_first}_{ts_last}"
+
+        col_g, col_z, col_info = st.columns([1, 1, 1.5])
+
+        with col_g:
+            if st.button("Generar GIF", key="gen_gif",
+                         use_container_width=True):
+                with st.spinner("Construyendo GIF..."):
+                    st.session_state["_gif_bytes"] = _build_gif(frames)
+                    st.session_state["_gif_name"] = f"{base_name}.gif"
+            if "_gif_bytes" in st.session_state and st.session_state["_gif_bytes"]:
+                size_mb = len(st.session_state["_gif_bytes"]) / 1024 / 1024
+                st.download_button(
+                    f"⬇ {st.session_state['_gif_name']} ({size_mb:.1f} MB)",
+                    data=st.session_state["_gif_bytes"],
+                    file_name=st.session_state["_gif_name"],
+                    mime="image/gif",
+                    key="dl_gif",
+                    use_container_width=True,
+                )
+
+        with col_z:
+            if st.button("Generar ZIP de frames", key="gen_zip",
+                         use_container_width=True):
+                with st.spinner("Construyendo ZIP..."):
+                    st.session_state["_zip_bytes"] = _build_zip_frames(
+                        frames, PRODUCT_LABELS[sel["product"]], scope_label,
+                    )
+                    st.session_state["_zip_name"] = f"{base_name}.zip"
+            if "_zip_bytes" in st.session_state and st.session_state["_zip_bytes"]:
+                size_mb = len(st.session_state["_zip_bytes"]) / 1024 / 1024
+                st.download_button(
+                    f"⬇ {st.session_state['_zip_name']} ({size_mb:.1f} MB)",
+                    data=st.session_state["_zip_bytes"],
+                    file_name=st.session_state["_zip_name"],
+                    mime="application/zip",
+                    key="dl_zip",
+                    use_container_width=True,
+                )
+
+        with col_info:
+            st.markdown(
+                '<div style="font-size:0.72rem; color:#667788; line-height:1.5; '
+                'padding-top:0.3rem;">'
+                f'<b>{len(frames)} frames</b> &middot; '
+                f'{PRODUCT_LABELS[sel["product"]]}<br>'
+                f'<b>Scope:</b> {scope_label}<br>'
+                f'<b>UTC:</b> {ts_first} → {ts_last}'
+                '</div>',
+                unsafe_allow_html=True,
+            )
 
     st.markdown(
         '<div style="font-size:0.72rem; color:#445566; margin-top:0.5rem;">'

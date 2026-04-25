@@ -216,6 +216,26 @@ def render():
     # ── Tabs ──
     tab1, tab2, tab3 = st.tabs(["Ash RGB (SSEC)", "SO2 RGB (SSEC)", "VAA Advisories"])
 
+    def _ssec_png_download(img_rgba, filename: str, button_label: str, key: str):
+        """Boton de descarga para imagen SSEC (RGBA -> PNG con alpha aplicado)."""
+        if img_rgba is None:
+            return
+        import io as _io
+        from PIL import Image as _PIL
+        rgb = img_rgba[:, :, :3].copy()
+        alpha = img_rgba[:, :, 3:4].astype(np.float32) / 255.0
+        rgb = (rgb.astype(np.float32) * alpha).astype(np.uint8)
+        buf = _io.BytesIO()
+        _PIL.fromarray(rgb).save(buf, format="PNG", optimize=True)
+        png = buf.getvalue()
+        size_kb = len(png) / 1024
+        size_str = f"{size_kb/1024:.1f} MB" if size_kb >= 1024 else f"{size_kb:.0f} KB"
+        st.download_button(
+            f"⬇ {button_label} ({size_str})",
+            data=png, file_name=filename, mime="image/png",
+            key=key, use_container_width=True,
+        )
+
     with tab1:
         col_img, col_leg = st.columns([5, 1.2])
         with col_img:
@@ -226,6 +246,12 @@ def render():
                     CATALOG,
                 )
                 st.plotly_chart(fig, use_container_width=True)
+                _ssec_png_download(
+                    ash_img,
+                    filename=f"volcat_ssec_ash_rgb_{ash_ts or 'latest'}.png",
+                    button_label="Descargar Ash RGB SSEC (PNG)",
+                    key="dl_volcat_ash",
+                )
             else:
                 st.error("No se pudo descargar la imagen Ash RGB de SSEC")
         with col_leg:
@@ -241,6 +267,12 @@ def render():
                     CATALOG,
                 )
                 st.plotly_chart(fig, use_container_width=True)
+                _ssec_png_download(
+                    so2_img,
+                    filename=f"volcat_ssec_so2_rgb_{so2_ts or 'latest'}.png",
+                    button_label="Descargar SO2 RGB SSEC (PNG)",
+                    key="dl_volcat_so2",
+                )
             else:
                 st.error("No se pudo descargar la imagen SO2 RGB de SSEC")
         with col_leg2:

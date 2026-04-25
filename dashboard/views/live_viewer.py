@@ -284,6 +284,69 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str,
     return fig
 
 
+def _img_to_png_bytes(arr: np.ndarray, label: str | None = None) -> bytes:
+    """numpy array -> PNG bytes (con label opcional sobre-impreso al pie).
+
+    Usado por los botones de descarga. label deberia ser el timestamp UTC + scope
+    para que el archivo descargado sea autoexplicativo (no perdes el contexto
+    si solo guardaste el PNG).
+    """
+    import io as _io
+    from PIL import Image as _PIL, ImageDraw as _ID, ImageFont as _IF
+
+    img = _PIL.fromarray(arr).convert("RGB")
+    if label:
+        # Cinta inferior con timestamp
+        draw = _ID.Draw(img)
+        fs = max(11, int(img.width * 0.018))
+        try:
+            font = _IF.truetype("DejaVuSans-Bold.ttf", fs)
+        except Exception:
+            try:
+                font = _IF.truetype("arial.ttf", fs)
+            except Exception:
+                font = _IF.load_default()
+        bbox = draw.textbbox((0, 0), label, font=font)
+        th = bbox[3] - bbox[1]
+        pad = max(5, fs // 3)
+        band_h = th + pad * 2
+        y0 = img.height - band_h
+        overlay = _PIL.new("RGBA", img.size, (0, 0, 0, 0))
+        odraw = _ID.Draw(overlay)
+        odraw.rectangle([0, y0, img.width, img.height], fill=(0, 0, 0, 180))
+        img = _PIL.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
+        draw = _ID.Draw(img)
+        draw.text((pad, y0 + pad), label, fill=(255, 255, 255), font=font)
+        # Marca arriba-derecha
+        brand = "GOES-19 / RAMMB-CIRA"
+        bb = draw.textbbox((0, 0), brand, font=font)
+        bw = bb[2] - bb[0]
+        draw.text((img.width - bw - pad, pad), brand,
+                  fill=(180, 200, 220), font=font)
+
+    buf = _io.BytesIO()
+    img.save(buf, format="PNG", optimize=True)
+    return buf.getvalue()
+
+
+def _png_download_button(arr: np.ndarray, filename: str, label_overlay: str,
+                         button_label: str, key: str) -> None:
+    """Boton de descarga compacto para un frame estatico."""
+    if arr is None:
+        return
+    png = _img_to_png_bytes(arr, label_overlay)
+    size_kb = len(png) / 1024
+    size_str = f"{size_kb/1024:.1f} MB" if size_kb >= 1024 else f"{size_kb:.0f} KB"
+    st.download_button(
+        f"⬇ {button_label} ({size_str})",
+        data=png,
+        file_name=filename,
+        mime="image/png",
+        key=key,
+        use_container_width=True,
+    )
+
+
 @st.cache_data(ttl=3600, show_spinner=False)
 def _fetch_wind_cached(level: str) -> list:
     """Obtener grilla de viento GFS (cache 1 hora)."""
@@ -838,6 +901,19 @@ def _live_content():
                 )
                 st.plotly_chart(fig, use_container_width=True)
 
+                # Boton de descarga del PNG (con timestamp impreso).
+                _dl_label = (
+                    f"GOES-19 {prod_label} - Chile - "
+                    f"{frame['label_utc']} ({frame['label_local']} CL)"
+                )
+                _png_download_button(
+                    frame["image"],
+                    filename=f"goes19_{prod_id}_chile_{ts}.png",
+                    label_overlay=_dl_label,
+                    button_label=f"Descargar {prod_label} (PNG)",
+                    key=f"dl_nacional_{prod_id}",
+                )
+
                 st.markdown(
                     f'<div style="font-size:0.75rem; color:#445566; margin-top:0.3rem;">'
                     f'{notas.get(prod_id, "")}'
@@ -909,6 +985,23 @@ def _live_content():
                         )
                         fig_z.update_layout(height=640)
                         st.plotly_chart(fig_z, use_container_width=True)
+
+                        # Descarga PNG por zona
+                        _dt_zona = parse_rammb_ts(ts_zona)
+                        _zona_label = (
+                            f"GOES-19 {PRODUCT_LABELS.get(prod_zona, prod_zona)} - "
+                            f"{ZONE_LABELS[zone_key]} - "
+                            f"{_dt_zona.strftime('%Y-%m-%d %H:%M UTC')}"
+                            f" ({fmt_chile(_dt_zona)} CL)"
+                        )
+                        _png_download_button(
+                            img_zona,
+                            filename=(f"goes19_{prod_zona}_{zone_key}_"
+                                      f"{ts_zona}.png"),
+                            label_overlay=_zona_label,
+                            button_label=f"Descargar {ZONE_LABELS[zone_key]} (PNG)",
+                            key=f"dl_zona_{zone_key}_{prod_zona}",
+                        )
 
                 # Leyenda interpretativa debajo del grid 2x2.
                 if prod_zona in LEYENDAS_HTML:
@@ -1031,6 +1124,28 @@ def _live_content():
 
                     fig_v.update_layout(height=700)
                     st.plotly_chart(fig_v, use_container_width=True)
+
+                    # Descarga PNG del zoom del volcan
+                    _dt_volc = parse_rammb_ts(ts_volc)
+                    _volc_label = (
+                        f"GOES-19 {PRODUCT_LABELS.get(prod_volc, prod_volc)} - "
+                        f"{volcano.name} (+/-{radius} deg) - "
+                        f"{_dt_volc.strftime('%Y-%m-%d %H:%M UTC')}"
+                        f" ({fmt_chile(_dt_volc)} CL)"
+                    )
+                    _safe_volc = (volcano.name.lower()
+                                  .replace(" ", "-").replace(",", "")
+                                  .replace("á","a").replace("é","e")
+                                  .replace("í","i").replace("ó","o")
+                                  .replace("ú","u").replace("ñ","n"))
+                    _png_download_button(
+                        img_volc,
+                        filename=(f"goes19_{prod_volc}_{_safe_volc}_"
+                                  f"{ts_volc}_z{zoom_used}.png"),
+                        label_overlay=_volc_label,
+                        button_label=f"Descargar {volcano.name} (PNG)",
+                        key=f"dl_volc_{_safe_volc}_{prod_volc}",
+                    )
 
                     # Leyenda interpretativa tambien en vista por volcan.
                     if prod_volc in LEYENDAS_HTML:

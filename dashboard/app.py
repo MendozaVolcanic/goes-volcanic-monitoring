@@ -41,8 +41,8 @@ with st.sidebar:
 
     page = st.radio(
         "Navegacion",
-        ["🔴 En Vivo", "🛡 Modo Guardia", "Mapa General",
-         "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
+        ["🔴 En Vivo", "🛡 Modo Guardia", "🔀 Comparador",
+         "Mapa General", "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
          "Animacion (RAMMB)", "📈 Series de tiempo"],
         index=0,
         label_visibility="collapsed",
@@ -81,6 +81,9 @@ if page == "🔴 En Vivo":
     render()
 elif page == "🛡 Modo Guardia":
     from dashboard.views.modo_guardia import render
+    render()
+elif page == "🔀 Comparador":
+    from dashboard.views.comparador import render
     render()
 elif page == "Mapa General":
     from dashboard.views.overview import render

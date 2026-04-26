@@ -29,6 +29,7 @@ VIEWS = [
     # ya no se invocan como tabs sueltas, se llaman desde modo_guardia
     "dashboard.views.modo_guardia_volcan",
     "dashboard.views.mosaico_chile",
+    "dashboard.views.comparador",
 ]
 
 FETCHERS = [

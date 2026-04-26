@@ -31,6 +31,7 @@ VIEWS = [
     "dashboard.views.mosaico_chile",
     "dashboard.views.comparador",
     "dashboard.views.loop_volcan",
+    "dashboard.views.replay_calbuco",
 ]
 
 FETCHERS = [

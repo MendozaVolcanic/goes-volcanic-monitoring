@@ -42,6 +42,7 @@ with st.sidebar:
     page = st.radio(
         "Navegacion",
         ["🔴 En Vivo", "🛡 Modo Guardia", "🔀 Comparador",
+         "🔁 Replay Calbuco 2015",
          "Mapa General", "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
          "Animacion (RAMMB)", "📈 Series de tiempo"],
         index=0,
@@ -84,6 +85,9 @@ elif page == "🛡 Modo Guardia":
     render()
 elif page == "🔀 Comparador":
     from dashboard.views.comparador import render
+    render()
+elif page == "🔁 Replay Calbuco 2015":
+    from dashboard.views.replay_calbuco import render
     render()
 elif page == "Mapa General":
     from dashboard.views.overview import render

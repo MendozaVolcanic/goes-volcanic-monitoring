@@ -29,6 +29,7 @@ from src.fetch.rammb_slider import (
     fetch_animation_frames, fetch_frame_for_bounds,
     get_latest_timestamps, reproject_to_latlon, ts_to_parts,
 )
+from src.fetch.wind_data import fetch_wind_point
 from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_priority, get_volcano
 
 logger = logging.getLogger(__name__)
@@ -272,8 +273,78 @@ def _volcano_scatter(bounds: dict, highlight=None) -> go.Scatter:
     )
 
 
-def _build_animation(frames: list[dict], bounds: dict, height: int = 700) -> go.Figure:
-    """Construir figura Plotly animada con los frames (mas antiguo -> mas reciente)."""
+@st.cache_data(ttl=3600, show_spinner=False)
+def _wind_for_volcano(lat: float, lon: float) -> dict[str, dict]:
+    """Viento GFS en 3 niveles para el centro del volcan. Cache 1h."""
+    out = {}
+    for level_id in ("300hPa", "500hPa", "850hPa"):
+        w = fetch_wind_point(lat, lon, level=level_id)
+        if w is not None:
+            out[level_id] = w
+    return out
+
+
+def _wind_arrow_traces(center_lat: float, center_lon: float,
+                        wind_data: dict, bounds: dict) -> list:
+    """Crea traces de viento para overlayar en una animacion estatica.
+
+    Las flechas se renderizan UNA vez (no cambian con los frames porque
+    GFS se actualiza cada 6h y la animacion suele ser <3h).
+    """
+    if not wind_data:
+        return []
+    LEVEL_VIZ = [
+        ("300hPa", "300 hPa", "#ff4444"),
+        ("500hPa", "500 hPa", "#ffaa44"),
+        ("850hPa", "850 hPa", "#44dd88"),
+    ]
+    traces = []
+    # Escala: longitud proporcional a la velocidad (saturada en 100 km/h)
+    bbox_w = bounds["lon_max"] - bounds["lon_min"]
+    arrow_len_deg = bbox_w * 0.18
+    cos_lat = max(0.1, float(np.cos(np.radians(center_lat))))
+    for level_id, label, color in LEVEL_VIZ:
+        w = wind_data.get(level_id)
+        if w is None:
+            continue
+        speed = float(np.hypot(w["u"], w["v"]))
+        if speed < 1e-3:
+            continue
+        ux = w["u"] / speed
+        vy = w["v"] / speed
+        scale = arrow_len_deg * min(speed / 50.0, 2.0)
+        lon_end = center_lon + ux * scale / cos_lat
+        lat_end = center_lat + vy * scale
+        # Linea cuerpo
+        traces.append(go.Scatter(
+            x=[center_lon, lon_end], y=[center_lat, lat_end],
+            mode="lines",
+            line=dict(color=color, width=3),
+            name=f"{label} {speed:.0f} km/h",
+            hovertemplate=(
+                f"<b>{label}</b><br>"
+                f"{w['speed']:.0f} km/h desde {w['direction']:.0f}°<extra></extra>"
+            ),
+        ))
+        # Punta
+        traces.append(go.Scatter(
+            x=[lon_end], y=[lat_end], mode="markers",
+            marker=dict(symbol="arrow", size=14, color=color,
+                        angle=float(np.degrees(np.arctan2(w["u"], w["v"]))),
+                        line=dict(color="white", width=1)),
+            hoverinfo="skip", showlegend=False,
+        ))
+    return traces
+
+
+def _build_animation(frames: list[dict], bounds: dict, height: int = 700,
+                      wind_data: dict | None = None,
+                      wind_center: tuple[float, float] | None = None) -> go.Figure:
+    """Construir figura Plotly animada con los frames (mas antiguo -> mas reciente).
+
+    Si se pasa wind_data + wind_center, agrega flechas de viento (300/500/850 hPa)
+    como traces estaticos visibles en todos los frames de la animacion.
+    """
     lat_min = bounds["lat_min"]
     lat_max = bounds["lat_max"]
     lon_min = bounds["lon_min"]
@@ -287,6 +358,11 @@ def _build_animation(frames: list[dict], bounds: dict, height: int = 700) -> go.
     ]
     if volc_scatter is not None:
         base_traces.append(volc_scatter)
+    # Viento overlay (estatico — visible en todos los frames)
+    if wind_data and wind_center:
+        base_traces.extend(_wind_arrow_traces(
+            wind_center[0], wind_center[1], wind_data, bounds,
+        ))
 
     plotly_frames = []
     for i, f in enumerate(frames):
@@ -444,6 +520,17 @@ def render():
     refresh_info_badge(context="animation")
 
     # ── Controles (compactado: 1 fila con Producto + Duracion + Cobertura + Boton) ─
+    # Wind overlay toggle — fuera del session_state de fetch para que cambiar
+    # el toggle solo redibuje la figura sin re-bajar frames.
+    wind_col, _spacer = st.columns([1, 5])
+    with wind_col:
+        show_wind = st.toggle(
+            "💨 Viento overlay (GFS)",
+            value=False, key="anim_wind_overlay",
+            help="Vectores GFS 300/500/850 hPa sobre el centro del bbox. "
+                 "Util para predecir hacia donde irá la pluma. "
+                 "Cache 1h (GFS publica c/6h).",
+        )
     c1, c2, c3, c4 = st.columns([1.2, 1.2, 1.8, 0.95])
     with c1:
         product = st.selectbox(
@@ -630,7 +717,16 @@ def render():
     )
 
     bounds = frames[0]["bounds"]
-    fig = _build_animation(frames, bounds, height=height)
+    # Si toggle viento esta on, fetch en el centro del bbox
+    wind_data = None
+    wind_center = None
+    if st.session_state.get("anim_wind_overlay", False):
+        cx = (bounds["lon_min"] + bounds["lon_max"]) / 2
+        cy = (bounds["lat_min"] + bounds["lat_max"]) / 2
+        wind_data = _wind_for_volcano(cy, cx)
+        wind_center = (cy, cx)
+    fig = _build_animation(frames, bounds, height=height,
+                           wind_data=wind_data, wind_center=wind_center)
     st.plotly_chart(fig, use_container_width=True)
 
     # ── Descargas ─────────────────────────────────────────────────────────

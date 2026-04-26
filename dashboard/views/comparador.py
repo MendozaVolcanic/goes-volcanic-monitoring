@@ -19,7 +19,7 @@ Uso:
 """
 
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import numpy as np
 import plotly.graph_objects as go
@@ -353,6 +353,128 @@ def _mode_dos_volcanes(now: datetime):
     )
 
 
+def _build_target_ts_window(target_dt: datetime, window_hours: int = 2) -> list[str]:
+    """Genera timestamps cada 10 min en una ventana de ±window_hours alrededor
+    del target_dt. Usado para baseline historico — RAMMB conserva ~28 dias.
+    """
+    target_dt = target_dt.replace(second=0, microsecond=0)
+    target_dt = target_dt.replace(minute=(target_dt.minute // 10) * 10)
+    timestamps = []
+    for delta_min in range(-window_hours * 60, window_hours * 60 + 1, 10):
+        ts_dt = target_dt + timedelta(minutes=delta_min)
+        timestamps.append(ts_dt.strftime("%Y%m%d%H%M%S"))
+    # Ordenar por proximidad al target (mas cercano primero)
+    timestamps.sort(key=lambda s: abs(int(s) - int(target_dt.strftime("%Y%m%d%H%M%S"))))
+    return timestamps
+
+
+def _mode_baseline(now: datetime):
+    """Imagen actual vs imagen de hace N dias (default 7) — mismo volcan,
+    mismo producto, misma hora del dia.
+
+    Asume que 'hace N dias' es relativamente 'limpio' (sin actividad nueva).
+    El experto compara estado actual vs lo normal del volcan a esa hora.
+    """
+    cols = st.columns([1.5, 1, 1])
+    with cols[0]:
+        volcan_name = st.selectbox(
+            "Volcán",
+            options=PRIORITY_VOLCANOES,
+            index=0, key="comp_base_volcan",
+        )
+    with cols[1]:
+        product = st.selectbox(
+            "Producto",
+            options=list(PRODUCT_OPTIONS.keys()),
+            format_func=lambda k: PRODUCT_OPTIONS[k],
+            index=0, key="comp_base_prod",
+        )
+    with cols[2]:
+        days_ago = st.selectbox(
+            "Baseline",
+            options=[1, 3, 7, 14, 21],
+            format_func=lambda d: f"hace {d} día{'s' if d != 1 else ''}",
+            index=2, key="comp_base_days",
+        )
+
+    v = get_volcano(volcan_name)
+    if v is None:
+        st.error("Volcán no encontrado.")
+        return
+
+    # Frame actual (latest disponible)
+    timestamps_now = _list_timestamps(product, n=5)
+    if not timestamps_now:
+        st.error("No hay timestamps recientes disponibles.")
+        return
+    img_now, used_ts_now, zoom_now = _frame_robust(
+        product, timestamps_now[0], timestamps_now, v.lat, v.lon,
+    )
+
+    # Frame baseline: mismo wallclock, hace N dias, ventana ±2h
+    target_dt = now - timedelta(days=days_ago)
+    target_ts = target_dt.replace(second=0, microsecond=0)
+    target_ts = target_ts.replace(minute=(target_ts.minute // 10) * 10)
+    target_ts_str = target_ts.strftime("%Y%m%d%H%M%S")
+    baseline_window = _build_target_ts_window(target_dt, window_hours=2)
+    img_base, used_ts_base, zoom_base = _frame_robust(
+        product, target_ts_str, baseline_window, v.lat, v.lon,
+    )
+
+    if img_now is None and img_base is None:
+        st.error(
+            "No se pudieron bajar ni el frame actual ni el de baseline. "
+            "RAMMB retiene ~28 días de historia — más allá no hay tiles."
+        )
+        return
+
+    # Labels
+    def _label(ts: str | None, fallback_target: str) -> str:
+        if ts is None:
+            return "—"
+        try:
+            dt = parse_rammb_ts(ts)
+            return dt.strftime("%d-%b %H:%M UTC")
+        except Exception:
+            return ts
+
+    delta_label = ""
+    if used_ts_base and used_ts_base != target_ts_str:
+        try:
+            actual_base_dt = parse_rammb_ts(used_ts_base)
+            delta_min = abs(int((actual_base_dt - target_dt).total_seconds() / 60))
+            if delta_min > 10:
+                delta_label = f" (ts cercano, ±{delta_min} min)"
+        except Exception:
+            pass
+
+    c1, c2 = st.columns(2)
+    with c1:
+        st.plotly_chart(
+            _plot_frame(img_base, v.lat, v.lon, v.name,
+                        f"📅 BASELINE · hace {days_ago}d · {_label(used_ts_base, target_ts_str)}{delta_label}",
+                        height=620),
+            use_container_width=True,
+            config={"displayModeBar": False},
+        )
+    with c2:
+        st.plotly_chart(
+            _plot_frame(img_now, v.lat, v.lon, v.name,
+                        f"⏩ AHORA · {_label(used_ts_now, timestamps_now[0])}",
+                        height=620),
+            use_container_width=True,
+            config={"displayModeBar": False},
+        )
+
+    st.info(
+        "ℹ La 'baseline' es la imagen del mismo volcán a la **misma hora del día** "
+        f"hace {days_ago} día(s). Asumimos que ese día NO había actividad anómala — "
+        "si la había, esta vista no sirve. Útil para detectar **cambios respecto a "
+        "lo típico** (cobertura nubosa habitual, sombra de Andes, etc.). "
+        "RAMMB retiene ~28 días, baselines más viejas no estarán disponibles."
+    )
+
+
 def _mode_diff_temporal(now: datetime):
     """Mismo volcan, sustraccion |img(t2) - img(t1)|."""
     cols = st.columns([1.4, 1, 1, 1])
@@ -483,6 +605,7 @@ def render():
         "⏱ Antes / Después",
         "🌋 2 Volcanes",
         "🔥 Diff Temporal",
+        "📅 vs Baseline",
     ])
     with mode_tabs[0]:
         _mode_antes_despues(now)
@@ -490,3 +613,5 @@ def render():
         _mode_dos_volcanes(now)
     with mode_tabs[2]:
         _mode_diff_temporal(now)
+    with mode_tabs[3]:
+        _mode_baseline(now)

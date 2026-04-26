@@ -30,6 +30,7 @@ VIEWS = [
     "dashboard.views.modo_guardia_volcan",
     "dashboard.views.mosaico_chile",
     "dashboard.views.comparador",
+    "dashboard.views.loop_volcan",
 ]
 
 FETCHERS = [

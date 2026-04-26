@@ -352,10 +352,11 @@ def render():
         unsafe_allow_html=True,
     )
 
-    sub_chile, sub_mosaico, sub_volcan = st.tabs([
+    sub_chile, sub_mosaico, sub_volcan, sub_loop = st.tabs([
         "🌎 Chile (vista nacional)",
         "🗺 Mosaico 8 prioritarios",
         "🔬 Volcán (3 productos)",
+        "🎞 Loop 2h",
     ])
     with sub_chile:
         _chile_subtab()
@@ -363,3 +364,6 @@ def render():
         _mosaico_subtab()
     with sub_volcan:
         _volcan_subtab()
+    with sub_loop:
+        from dashboard.views.loop_volcan import render_subtab as loop_panel
+        loop_panel()

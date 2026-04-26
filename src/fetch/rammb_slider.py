@@ -448,6 +448,50 @@ def fetch_frame_for_bounds(
     )
 
 
+def fetch_frame_robust(
+    product: str,
+    timestamps: list[str],
+    bounds: dict,
+    zoom_preferred: int = ZOOM_VOLCAN,
+    zoom_fallback: int = ZOOM_ZONE,
+    sat_lon: float = -75.2,
+) -> tuple[np.ndarray | None, str | None, int]:
+    """Fetch con fallback de timestamps Y de zoom.
+
+    RAMMB intermitentemente falla en zoom=4 para algunos productos
+    (eumetsat_ash, jma_so2). Esta funcion:
+      1. Prueba cada ts en `timestamps` con `zoom_preferred`. Si carga, usa eso.
+      2. Si NINGUN ts cargo en zoom_preferred, prueba con zoom_fallback
+         (los mismos ts en orden).
+      3. Si tampoco hay, devuelve (None, None, 0).
+
+    Devuelve (img, ts_usado, zoom_usado). zoom_usado=0 si fallo todo.
+
+    Cualquier llamador debe usar esta funcion en vez de fetch_frame_for_bounds
+    cuando quiera robustez frente a fallas RAMMB.
+    """
+    # Intento 1: zoom preferido
+    for ts in timestamps:
+        try:
+            img = fetch_frame_for_bounds(product, ts, bounds,
+                                         zoom=zoom_preferred, sat_lon=sat_lon)
+            if img is not None:
+                return img, ts, zoom_preferred
+        except Exception:
+            continue
+    # Intento 2: zoom fallback
+    if zoom_fallback != zoom_preferred:
+        for ts in timestamps:
+            try:
+                img = fetch_frame_for_bounds(product, ts, bounds,
+                                             zoom=zoom_fallback, sat_lon=sat_lon)
+                if img is not None:
+                    return img, ts, zoom_fallback
+            except Exception:
+                continue
+    return None, None, 0
+
+
 def fetch_animation_frames(
     product: str,
     n_frames: int = 12,

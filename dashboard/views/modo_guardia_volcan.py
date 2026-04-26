@@ -31,7 +31,8 @@ import streamlit as st
 from dashboard.utils import fmt_chile, parse_rammb_ts
 from src.fetch.goes_fdcf import HotSpot, fetch_latest_hotspots
 from src.fetch.rammb_slider import (
-    fetch_frame_for_bounds, get_latest_timestamps, ZOOM_VOLCAN,
+    fetch_frame_for_bounds, fetch_frame_robust,
+    get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
 )
 from src.fetch.wind_data import fetch_wind_point
 from src.volcanos import PRIORITY_VOLCANOES, get_volcano
@@ -82,18 +83,19 @@ def _frame(product: str, ts: str, lat_min: float, lat_max: float,
 def _frame_with_fallback(product: str, timestamps: list[str],
                           lat_min: float, lat_max: float,
                           lon_min: float, lon_max: float
-                          ) -> tuple[np.ndarray | None, str | None]:
-    """Prueba el ts mas reciente; si no carga, baja al previo. Hasta len(ts) intentos.
+                          ) -> tuple[np.ndarray | None, str | None, int]:
+    """Fallback de ts + fallback de zoom (zoom=4 -> zoom=3).
 
-    Mismo patron que en mosaico_chile.py — RAMMB a veces tarda en publicar
-    tiles para zoom=4 en algunos productos aunque latest_times.json ya
-    apunte al nuevo scan.
+    RAMMB intermitentemente no sirve eumetsat_ash / jma_so2 en zoom=4.
+    Esta funcion delega en fetch_frame_robust que cubre los 2 fallbacks.
+    Devuelve (img, ts_usado, zoom_usado). zoom=0 si todo fallo.
     """
-    for ts in timestamps:
-        img = _frame(product, ts, lat_min, lat_max, lon_min, lon_max)
-        if img is not None:
-            return img, ts
-    return None, None
+    bounds = {"lat_min": lat_min, "lat_max": lat_max,
+              "lon_min": lon_min, "lon_max": lon_max}
+    return fetch_frame_robust(
+        product, timestamps, bounds,
+        zoom_preferred=ZOOM_VOLCAN, zoom_fallback=ZOOM_ZONE,
+    )
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -458,7 +460,7 @@ def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
         ts_label = "—"
         used_ts = None
         if timestamps:
-            img, used_ts = _frame_with_fallback(
+            img, used_ts, used_zoom = _frame_with_fallback(
                 prod_id, timestamps,
                 bounds["lat_min"], bounds["lat_max"],
                 bounds["lon_min"], bounds["lon_max"],
@@ -468,8 +470,13 @@ def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
                     ts_dt = parse_rammb_ts(used_ts)
                     age = int((now - ts_dt).total_seconds() / 60)
                     ts_label = f"{ts_dt.strftime('%H:%M UTC')} (hace {age} min)"
+                    flags = []
                     if used_ts != timestamps[0]:
-                        ts_label += " ⚠ scan previo"
+                        flags.append("scan previo")
+                    if used_zoom == ZOOM_ZONE:
+                        flags.append(f"zoom {ZOOM_ZONE} (~3.4 km/px)")
+                    if flags:
+                        ts_label += " ⚠ " + ", ".join(flags)
                 except Exception:
                     ts_label = used_ts
 

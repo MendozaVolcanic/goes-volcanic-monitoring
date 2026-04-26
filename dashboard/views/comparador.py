@@ -27,7 +27,8 @@ import streamlit as st
 
 from dashboard.utils import fmt_chile, parse_rammb_ts
 from src.fetch.rammb_slider import (
-    fetch_frame_for_bounds, get_latest_timestamps, ZOOM_VOLCAN,
+    fetch_frame_for_bounds, fetch_frame_robust,
+    get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
 )
 from src.volcanos import PRIORITY_VOLCANOES, get_volcano
 
@@ -51,17 +52,36 @@ def _list_timestamps(product: str, n: int = N_TIMESTAMPS) -> list[str]:
     return get_latest_timestamps(product, n=n)
 
 
-@st.cache_data(ttl=7200, show_spinner=False)
-def _frame(product: str, ts: str, lat: float, lon: float) -> np.ndarray | None:
+def _frame_robust(product: str, ts_target: str, all_timestamps: list[str],
+                  lat: float, lon: float
+                  ) -> tuple[np.ndarray | None, str | None, int]:
+    """Busca el frame para `ts_target`. Si falla, prueba ts adyacentes y zoom=3.
+
+    El comparador requiere un timestamp especifico (no el mas reciente),
+    pero queremos robustez: si el ts pedido no tiene tile, probamos
+    ±2 timestamps cerca del pedido. Y zoom=3 si zoom=4 no carga.
+    """
+    # Construir lista priorizando el ts pedido, luego sus vecinos cronologicos
+    if ts_target not in all_timestamps:
+        ordered_ts = [ts_target] + all_timestamps
+    else:
+        idx = all_timestamps.index(ts_target)
+        # ts pedido + vecinos: -1, +1, -2, +2
+        nearby = [ts_target]
+        for delta in (-1, 1, -2, 2):
+            j = idx + delta
+            if 0 <= j < len(all_timestamps):
+                nearby.append(all_timestamps[j])
+        ordered_ts = nearby
+
     bounds = {
         "lat_min": lat - RADIUS_DEG, "lat_max": lat + RADIUS_DEG,
         "lon_min": lon - RADIUS_DEG, "lon_max": lon + RADIUS_DEG,
     }
-    try:
-        return fetch_frame_for_bounds(product, ts, bounds, zoom=ZOOM_VOLCAN)
-    except Exception as e:
-        logger.warning("frame %s %s fallo: %s", product, ts, e)
-        return None
+    return fetch_frame_robust(
+        product, ordered_ts, bounds,
+        zoom_preferred=ZOOM_VOLCAN, zoom_fallback=ZOOM_ZONE,
+    )
 
 
 # ── Helpers viz ──────────────────────────────────────────────────────
@@ -216,14 +236,24 @@ def _mode_antes_despues(now: datetime):
 
     ts_a = timestamps_chrono[idx_a]
     ts_b = timestamps_chrono[idx_b]
-    img_a = _frame(product, ts_a, v.lat, v.lon)
-    img_b = _frame(product, ts_b, v.lat, v.lon)
+    all_ts = timestamps  # original API order (most-recent first)
+    img_a, used_ts_a, zoom_a = _frame_robust(product, ts_a, all_ts, v.lat, v.lon)
+    img_b, used_ts_b, zoom_b = _frame_robust(product, ts_b, all_ts, v.lat, v.lon)
+
+    def _flag(used_ts, target_ts, used_zoom):
+        flags = []
+        if used_ts and used_ts != target_ts:
+            flags.append("ts cercano")
+        if used_zoom == ZOOM_ZONE:
+            flags.append("zoom 3")
+        return " ⚠ " + ", ".join(flags) if flags else ""
 
     c1, c2 = st.columns(2)
     with c1:
         st.plotly_chart(
             _plot_frame(img_a, v.lat, v.lon, v.name,
-                        f"⏪ ANTES · {_ts_format(ts_a)} · {_ts_age_label(ts_a, now)}",
+                        f"⏪ ANTES · {_ts_format(ts_a)} · {_ts_age_label(ts_a, now)}"
+                        + _flag(used_ts_a, ts_a, zoom_a),
                         height=620),
             use_container_width=True,
             config={"displayModeBar": False},
@@ -231,7 +261,8 @@ def _mode_antes_despues(now: datetime):
     with c2:
         st.plotly_chart(
             _plot_frame(img_b, v.lat, v.lon, v.name,
-                        f"⏩ DESPUÉS · {_ts_format(ts_b)} · {_ts_age_label(ts_b, now)}",
+                        f"⏩ DESPUÉS · {_ts_format(ts_b)} · {_ts_age_label(ts_b, now)}"
+                        + _flag(used_ts_b, ts_b, zoom_b),
                         height=620),
             use_container_width=True,
             config={"displayModeBar": False},
@@ -291,8 +322,9 @@ def _mode_dos_volcanes(now: datetime):
         st.error("Volcán no encontrado.")
         return
 
-    img1 = _frame(product, ts, vo1.lat, vo1.lon)
-    img2 = _frame(product, ts, vo2.lat, vo2.lon)
+    all_ts = timestamps
+    img1, _, _ = _frame_robust(product, ts, all_ts, vo1.lat, vo1.lon)
+    img2, _, _ = _frame_robust(product, ts, all_ts, vo2.lat, vo2.lon)
 
     c1, c2 = st.columns(2)
     with c1:
@@ -364,11 +396,13 @@ def _mode_diff_temporal(now: datetime):
 
     ts_a = timestamps_chrono[idx_a]
     ts_b = timestamps_chrono[idx_b]
-    img_a = _frame(product, ts_a, v.lat, v.lon)
-    img_b = _frame(product, ts_b, v.lat, v.lon)
+    all_ts = timestamps
+    img_a, _, _ = _frame_robust(product, ts_a, all_ts, v.lat, v.lon)
+    img_b, _, _ = _frame_robust(product, ts_b, all_ts, v.lat, v.lon)
 
     if img_a is None or img_b is None:
-        st.error("No se pudo bajar uno de los frames. Probá otro timestamp.")
+        st.error("No se pudo bajar uno de los frames (ni en zoom 3 con ts vecinos). "
+                 "Probá otro producto o timestamp.")
         return
 
     diff = _compute_diff(img_a, img_b)

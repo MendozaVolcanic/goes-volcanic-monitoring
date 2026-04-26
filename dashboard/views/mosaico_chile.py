@@ -16,7 +16,7 @@ import streamlit as st
 
 from dashboard.utils import fmt_chile, parse_rammb_ts
 from src.fetch.rammb_slider import (
-    fetch_frame_for_bounds, get_latest_timestamps, ZOOM_VOLCAN,
+    fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
 )
 from src.volcanos import PRIORITY_VOLCANOES, get_volcano
 
@@ -24,41 +24,36 @@ logger = logging.getLogger(__name__)
 
 REFRESH_SECONDS = 60
 RADIUS_DEG = 0.35
-PRODUCT = "eumetsat_ash"
+
+PRODUCT_OPTIONS = {
+    "eumetsat_ash": "Ash RGB",
+    "geocolor": "GeoColor",
+    "jma_so2": "SO2 RGB",
+}
 
 
 @st.cache_data(ttl=30, show_spinner=False)
-def _recent_timestamps(n: int = 3) -> list[str]:
-    """Ultimos N timestamps. Cache 30s. Usados con fallback en cadena."""
-    return get_latest_timestamps(PRODUCT, n=n)
+def _recent_timestamps(product: str, n: int = 5) -> list[str]:
+    """Ultimos N timestamps. Cache 30s."""
+    return get_latest_timestamps(product, n=n)
 
 
-@st.cache_data(ttl=7200, show_spinner=False)
-def _volcano_frame(ts: str, lat: float, lon: float) -> np.ndarray | None:
+def _volcano_frame_with_fallback(product: str, timestamps: list[str],
+                                  lat: float, lon: float
+                                  ) -> tuple[np.ndarray | None, str | None, int]:
+    """Fallback de ts + zoom: zoom=4 -> zoom=3 si zoom=4 falla.
+
+    RAMMB intermitentemente no sirve algunos productos en zoom=4.
+    Devuelve (img, ts_usado, zoom_usado). zoom=0 si todo fallo.
+    """
     bounds = {
         "lat_min": lat - RADIUS_DEG, "lat_max": lat + RADIUS_DEG,
         "lon_min": lon - RADIUS_DEG, "lon_max": lon + RADIUS_DEG,
     }
-    try:
-        return fetch_frame_for_bounds(PRODUCT, ts, bounds, zoom=ZOOM_VOLCAN)
-    except Exception as e:
-        logger.warning("frame %s fallo: %s", ts, e)
-        return None
-
-
-def _volcano_frame_with_fallback(timestamps: list[str], lat: float, lon: float
-                                  ) -> tuple[np.ndarray | None, str | None]:
-    """Prueba el ts mas reciente; si no carga, baja al previo. Hasta 3 intentos.
-
-    RAMMB a veces tarda en publicar tiles para zoom=4 ash en algunos sectores
-    aunque ya tenga el latest_times.json apuntando al nuevo scan. Probar el
-    scan previo es muy barato (cache hit despues del primer volcan que lo use).
-    """
-    for ts in timestamps:
-        img = _volcano_frame(ts, lat, lon)
-        if img is not None:
-            return img, ts
-    return None, None
+    return fetch_frame_robust(
+        product, timestamps, bounds,
+        zoom_preferred=ZOOM_VOLCAN, zoom_fallback=ZOOM_ZONE,
+    )
 
 
 def _array_to_data_url(arr: np.ndarray) -> str:
@@ -111,11 +106,12 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str):
 
 
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
-def _live_panel():
-    timestamps = _recent_timestamps(n=3)
+def _grid_fragment(product: str):
+    """Solo el grid se auto-refresca cada 60s. El selector queda afuera."""
+    timestamps = _recent_timestamps(product, n=5)
     now = datetime.now(timezone.utc)
     if not timestamps:
-        st.error("RAMMB no respondio. Reintentando en 60s…")
+        st.error("RAMMB no respondió. Reintentá en unos segundos.")
         return
 
     ts = timestamps[0]
@@ -130,14 +126,16 @@ def _live_panel():
         f"<div style='background:#0f1418; border-left:4px solid #ff6644; "
         f"padding:0.6rem 1rem; border-radius:4px; margin-bottom:0.8rem; "
         f"display:flex; justify-content:space-between; align-items:center;'>"
-        f"<div style='color:#e0e0e0;'>Ash RGB · 8 volcanes prioritarios</div>"
+        f"<div style='color:#e0e0e0;'>{PRODUCT_OPTIONS[product]} · "
+        f"8 volcanes prioritarios</div>"
         f"<div style='color:#9aaabb; font-size:0.85rem;'>Scan {scan_label} · "
         f"render {now.strftime('%H:%M:%S')} UTC</div></div>",
         unsafe_allow_html=True,
     )
 
     # Grid 2 filas x 4 columnas
-    fallback_count = 0
+    fallback_ts = 0
+    fallback_zoom = 0
     rows = [PRIORITY_VOLCANOES[:4], PRIORITY_VOLCANOES[4:8]]
     for row_volcanos in rows:
         cols = st.columns(4)
@@ -145,9 +143,13 @@ def _live_panel():
             v = get_volcano(name)
             if v is None:
                 continue
-            img, used_ts = _volcano_frame_with_fallback(timestamps, v.lat, v.lon)
+            img, used_ts, used_zoom = _volcano_frame_with_fallback(
+                product, timestamps, v.lat, v.lon,
+            )
             if used_ts and used_ts != ts:
-                fallback_count += 1
+                fallback_ts += 1
+            if used_zoom == ZOOM_ZONE:
+                fallback_zoom += 1
             with cols[i]:
                 st.plotly_chart(
                     _render_mini(img, v.lat, v.lon, name),
@@ -155,17 +157,29 @@ def _live_panel():
                     config={"displayModeBar": False},
                 )
 
-    if fallback_count > 0:
-        st.caption(
-            f"ℹ {fallback_count} volcán(es) usaron scan previo "
-            f"(RAMMB todavía no publicó tile para el último scan)."
-        )
+    notes = []
+    if fallback_ts:
+        notes.append(f"{fallback_ts} con scan previo")
+    if fallback_zoom:
+        notes.append(f"{fallback_zoom} en zoom 3 (RAMMB no sirvió zoom 4)")
+    if notes:
+        st.caption("ℹ " + " · ".join(notes))
 
+
+def _live_panel():
+    """Selector de producto + grid con auto-refresh."""
+    product = st.selectbox(
+        "Producto",
+        options=list(PRODUCT_OPTIONS.keys()),
+        format_func=lambda k: PRODUCT_OPTIONS[k],
+        index=0, key="mosaico_product",
+    )
+    _grid_fragment(product)
     st.markdown(
         "<div style='text-align:center; color:#445566; font-size:0.75rem; "
         "margin-top:0.8rem; padding-top:0.5rem; border-top:1px solid #223;'>"
         "<i>Sin metricas automaticas. Si algo llama la atencion en una "
-        "miniatura, ir a 'Modo Guardia VOLCAN' para ver con detalle.</i></div>",
+        "miniatura, ir a 'Modo Guardia → Volcán' para ver con detalle.</i></div>",
         unsafe_allow_html=True,
     )
 

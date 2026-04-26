@@ -732,26 +732,30 @@ def _live_content():
         "500 hPa": "≈ 5.5 km",
         "850 hPa": "≈ 1.5 km",
     }
-    # Toolbar compacto en una sola linea: viento (toggle+nivel+retry),
-    # hot spots, volcanes. Reduce ~1 fila de altura vs el layout anterior.
-    col_w1, col_w2, col_hs, col_vl = st.columns([1.0, 1.4, 1.2, 2.4])
+    # Toolbar compacto. Se ensancha la columna del nivel de viento para que
+    # el texto "300 hPa — ≈ 9.2 km" entre completo, y el boton de retry
+    # alineado con su selector via gap entre sub-columnas.
+    col_w1, col_w2, col_hs, col_vl = st.columns([0.9, 1.9, 1.2, 2.2])
     with col_w1:
         show_wind = st.toggle("💨 Viento (GFS)",
                               value=False, key="live_wind",
                               help="Vectores de viento GFS via Open-Meteo.")
     with col_w2:
         if show_wind:
-            sub_a, sub_b = st.columns([4, 1])
+            sub_a, sub_b = st.columns([5, 1])
             with sub_a:
                 wind_level = st.selectbox(
                     "Nivel",
                     list(WIND_LEVELS.keys()),
                     index=1,
                     key="live_wind_level",
-                    format_func=lambda k: f"{k} — {WIND_ALTITUDES.get(k, '')}",
+                    format_func=lambda k: f"{k} · {WIND_ALTITUDES.get(k, '')}",
                     label_visibility="collapsed",
                 )
             with sub_b:
+                # Espaciador top para alinear vertical con selectbox
+                st.markdown("<div style='height:0.15rem'></div>",
+                            unsafe_allow_html=True)
                 if st.button("🔄", key="retry_wind",
                              help="Limpiar cache y volver a pedir"):
                     _fetch_wind_cached.clear()

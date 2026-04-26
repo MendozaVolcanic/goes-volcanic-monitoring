@@ -32,6 +32,8 @@ VIEWS = [
     "dashboard.views.comparador",
     "dashboard.views.loop_volcan",
     "dashboard.views.replay_calbuco",
+    "dashboard.views.modo_evento",
+    "dashboard.views.heatmap_actividad",
 ]
 
 FETCHERS = [

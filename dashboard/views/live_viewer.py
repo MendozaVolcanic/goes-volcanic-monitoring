@@ -550,6 +550,74 @@ def _reloj_chile():
 
 
 @st.fragment(run_every="60s")
+def _health_banner(ts_all: dict):
+    """Banner ancho con codigo de color segun edad del scan mas reciente.
+
+    ✅ verde (<15 min): sistema operativo, GOES + RAMMB OK
+    ⚠ amarillo (15-30 min): latencia elevada, probablemente RAMMB lento
+    ❌ rojo (>30 min): datos atrasados, RAMMB caido o hueco en publicacion
+
+    El user veia 30+ min a veces — este banner explicita la causa
+    (es RAMMB, no nosotros) sin que tenga que adivinar.
+    """
+    # Encontrar el scan mas reciente entre los 3 productos
+    most_recent_dt = None
+    for prod, _label, _c in LIVE_PRODUCTS:
+        info = ts_all.get(prod)
+        if info and info.get("ts"):
+            try:
+                dt = parse_rammb_ts(info["ts"])
+                if most_recent_dt is None or dt > most_recent_dt:
+                    most_recent_dt = dt
+            except Exception:
+                pass
+
+    now = datetime.now(timezone.utc)
+    if most_recent_dt is None:
+        color = "#ff4444"
+        bg = "rgba(255,68,68,0.12)"
+        icon = "❌"
+        msg = "Sin datos de RAMMB. Reintentando."
+        sub = ""
+    else:
+        age_min = int((now - most_recent_dt).total_seconds() / 60)
+        if age_min < 15:
+            color = "#3fb950"; bg = "rgba(63,185,80,0.10)"; icon = "✅"
+            msg = "Sistema operativo"
+            sub = f"Último scan hace {age_min} min · todo en orden"
+        elif age_min < 30:
+            color = "#d29922"; bg = "rgba(210,153,34,0.12)"; icon = "⚠"
+            msg = "Latencia elevada"
+            sub = (f"Último scan hace {age_min} min · "
+                   "RAMMB/CIRA está lento. No es problema nuestro — "
+                   "esperá el próximo ciclo.")
+        else:
+            color = "#ff4444"; bg = "rgba(255,68,68,0.12)"; icon = "❌"
+            msg = "Datos atrasados"
+            sub = (f"Último scan hace {age_min} min · "
+                   "RAMMB/CIRA aparentemente caído o con hueco en publicación. "
+                   "Cruzar con: status.cira.colostate.edu o usar VOLCAT (SSEC).")
+
+    # Edad del polling propio (cuando NUESTRO servidor consulto RAMMB)
+    import time as _time_mod
+    _polled_at = ts_all.get("_polled_at", _time_mod.time())
+    _polling_age = int(_time_mod.time() - _polled_at)
+    if _polling_age > 120:
+        sub += f" · ⚠ Tu sesión consultó RAMMB hace {_polling_age}s — Streamlit Cloud puede estar dormido"
+
+    st.markdown(
+        f"<div style='background:{bg}; border-left:4px solid {color}; "
+        f"padding:0.6rem 0.95rem; border-radius:6px; margin-bottom:0.6rem;'>"
+        f"<div style='display:flex; align-items:center; gap:0.7rem;'>"
+        f"<span style='font-size:1.4rem;'>{icon}</span>"
+        f"<div style='flex:1;'>"
+        f"<div style='color:{color}; font-weight:700; font-size:1.0rem;'>{msg}</div>"
+        f"<div style='color:#9aaabb; font-size:0.78rem;'>{sub}</div>"
+        f"</div></div></div>",
+        unsafe_allow_html=True,
+    )
+
+
 def _live_content():
     """Contenido principal — se refresca automaticamente cada 60s.
 
@@ -564,6 +632,10 @@ def _live_content():
       2. _fetch_frame_for_ts(p, ts)  TTL=2h   → descarga pesada, clave = timestamp
     """
 
+    # ── Health banner (ancho completo, color-coded segun edad de scan) ────
+    ts_all = _fetch_latest_ts_all()
+    _health_banner(ts_all)
+
     # ── Fila superior: reloj · estado · botón refresh ─────────────────────
     col_clock, col_status, col_btn = st.columns([1, 2, 0.6])
 
@@ -571,7 +643,6 @@ def _live_content():
         _reloj_chile()
 
     with col_status:
-        ts_all = _fetch_latest_ts_all()
         # "polled_at" = cuando la llamada a RAMMB efectivamente salio al
         # origen. Lo guardamos dentro del dict cacheado, asi que puede ser
         # de hace varios segundos si estamos leyendo del cache.

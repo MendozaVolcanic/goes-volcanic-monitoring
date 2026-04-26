@@ -39,15 +39,44 @@ with st.sidebar:
     )
     st.markdown("---")
 
+    # ── Permalinks: leer ?vista= de la URL ───────────────────────
+    # Mapa: query param 'vista' -> entry visible en el sidebar.
+    # Permite compartir https://...?vista=guardia&volcan=Lascar
+    PAGE_OPTIONS = [
+        "🔴 En Vivo", "🛡 Modo Guardia", "🔀 Comparador",
+        "🚨 Modo Evento", "📅 Heatmap actividad",
+        "🔁 Replay Calbuco 2015",
+        "Mapa General", "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
+        "Animacion (RAMMB)", "📈 Series de tiempo",
+    ]
+    PAGE_SLUGS = {
+        "live": "🔴 En Vivo", "guardia": "🛡 Modo Guardia",
+        "comparador": "🔀 Comparador", "evento": "🚨 Modo Evento",
+        "heatmap": "📅 Heatmap actividad",
+        "calbuco": "🔁 Replay Calbuco 2015",
+        "mapa": "Mapa General", "ash": "Ash RGB Viewer (L1b + BTD)",
+        "volcat": "VOLCAT (SSEC)", "animacion": "Animacion (RAMMB)",
+        "series": "📈 Series de tiempo",
+    }
+    qp = st.query_params
+    initial_idx = 0
+    if "vista" in qp:
+        slug = qp["vista"].lower()
+        if slug in PAGE_SLUGS and PAGE_SLUGS[slug] in PAGE_OPTIONS:
+            initial_idx = PAGE_OPTIONS.index(PAGE_SLUGS[slug])
+
     page = st.radio(
         "Navegacion",
-        ["🔴 En Vivo", "🛡 Modo Guardia", "🔀 Comparador",
-         "🔁 Replay Calbuco 2015",
-         "Mapa General", "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
-         "Animacion (RAMMB)", "📈 Series de tiempo"],
-        index=0,
+        PAGE_OPTIONS,
+        index=initial_idx,
         label_visibility="collapsed",
+        key="nav_page",
     )
+
+    # Escribir el slug actual a la URL (los demas params se preservan)
+    _slug_for_page = next((s for s, p in PAGE_SLUGS.items() if p == page), None)
+    if _slug_for_page and qp.get("vista") != _slug_for_page:
+        st.query_params["vista"] = _slug_for_page
 
     st.markdown("---")
 
@@ -85,6 +114,12 @@ elif page == "🛡 Modo Guardia":
     render()
 elif page == "🔀 Comparador":
     from dashboard.views.comparador import render
+    render()
+elif page == "🚨 Modo Evento":
+    from dashboard.views.modo_evento import render
+    render()
+elif page == "📅 Heatmap actividad":
+    from dashboard.views.heatmap_actividad import render
     render()
 elif page == "🔁 Replay Calbuco 2015":
     from dashboard.views.replay_calbuco import render

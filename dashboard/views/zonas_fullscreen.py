@@ -35,12 +35,14 @@ from src.volcanos import CATALOG
 logger = logging.getLogger(__name__)
 
 REFRESH_SECONDS = 60
+ROTATION_SECONDS = 10
 
 PRODUCT_OPTIONS = {
     "eumetsat_ash": "Ash RGB",
     "geocolor": "GeoColor",
     "jma_so2": "SO2 RGB",
 }
+PRODUCT_LIST = list(PRODUCT_OPTIONS.keys())
 
 ZONE_LABELS = {
     "norte":   "Zona Norte",
@@ -151,6 +153,45 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
     return fig
 
 
+@st.fragment(run_every=f"{ROTATION_SECONDS}s")
+def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
+                            layout: str = "1x4", height: int = 820,
+                            session_key: str = "zonas_rot_idx"):
+    """Auto-rotate productos cada 10s en loop: GeoColor -> Ash -> SO2 -> ...
+
+    Pensado para sala de operaciones con UN solo monitor — muestra los 3
+    productos secuencialmente, sin que el operador tenga que tocar nada.
+
+    El indice del producto vive en st.session_state. Cada vez que el
+    fragment se re-ejecuta (cada ROTATION_SECONDS=10s), avanza el indice.
+    """
+    if session_key not in st.session_state:
+        st.session_state[session_key] = 0
+    idx = st.session_state[session_key] % len(PRODUCT_LIST)
+    current = PRODUCT_LIST[idx]
+    next_idx = (idx + 1) % len(PRODUCT_LIST)
+    next_product = PRODUCT_LIST[next_idx]
+
+    # Banner de rotacion arriba (fuera del grid render)
+    st.markdown(
+        f"<div style='background:linear-gradient(90deg, rgba(204,51,17,0.2), "
+        f"rgba(238,119,51,0.2)); border-left:4px solid #ff6644; "
+        f"padding:0.5rem 0.9rem; border-radius:4px; margin-bottom:0.4rem; "
+        f"display:flex; justify-content:space-between; align-items:center; "
+        f"font-size:0.9rem;'>"
+        f"<span style='color:#ff6644; font-weight:700;'>"
+        f"🔄 ROTANDO PRODUCTOS · cada {ROTATION_SECONDS}s</span>"
+        f"<span style='color:#e0e0e0;'>Mostrando: <b>{PRODUCT_OPTIONS[current]}</b> "
+        f"→ próximo: {PRODUCT_OPTIONS[next_product]}</span></div>",
+        unsafe_allow_html=True,
+    )
+
+    # Avanzar indice para la proxima ejecucion del fragment
+    st.session_state[session_key] = next_idx
+
+    _render_4_zonas_inner(current, show_volcanoes, show_hotspots, layout, height)
+
+
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
 def _grid_4_zonas(product: str, show_volcanoes: bool, show_hotspots: bool,
                   layout: str = "2x2", height: int = 720):
@@ -158,9 +199,17 @@ def _grid_4_zonas(product: str, show_volcanoes: bool, show_hotspots: bool,
 
     layout:
         '2x2'  — 2 filas de 2 columnas (default, balanceado)
-        '1x4'  — 1 fila de 4 columnas (monitor 24/7 horizontal,
-                 más zonas visibles en paralelo)
+        '1x4'  — 1 fila de 4 columnas (monitor 24/7 horizontal)
     height: altura en px de cada plot.
+    """
+    _render_4_zonas_inner(product, show_volcanoes, show_hotspots, layout, height)
+
+
+def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: bool,
+                           layout: str, height: int):
+    """Logica compartida entre _grid_4_zonas y _rotating_grid_4_zonas.
+
+    Sin @st.fragment para que pueda invocarse desde ambos wrappers.
     """
     timestamps = _recent_ts(product, n=3)
     if not timestamps:
@@ -255,22 +304,36 @@ def render():
     )
 
     # Header compacto + selectores en 1 linea
-    cols = st.columns([2.0, 1.4, 1.4, 1.2, 1.2])
+    cols = st.columns([1.6, 1.2, 1.0, 1.2, 1.0, 1.0])
     with cols[0]:
         st.markdown(
-            "<div style='font-size:1.3rem; font-weight:800; color:#ff6644; "
-            "padding-top:0.3rem;'>🗺 4 ZONAS — FULL SCREEN</div>",
+            "<div style='font-size:1.2rem; font-weight:800; color:#ff6644; "
+            "padding-top:0.3rem;'>🗺 4 ZONAS</div>",
             unsafe_allow_html=True,
         )
     with cols[1]:
-        product = st.selectbox(
-            "Producto",
-            options=list(PRODUCT_OPTIONS.keys()),
-            format_func=lambda k: PRODUCT_OPTIONS[k],
-            index=0, key="zonas_product",
-            label_visibility="collapsed",
+        rotate = st.toggle(
+            "🔄 Auto-rotate (10s)", value=False, key="zonas_rotate",
+            help=f"Cicla productos GeoColor → Ash → SO2 → ... cada "
+                 f"{ROTATION_SECONDS}s. Ideal para 1 monitor en sala.",
         )
     with cols[2]:
+        if not rotate:
+            product = st.selectbox(
+                "Producto",
+                options=list(PRODUCT_OPTIONS.keys()),
+                format_func=lambda k: PRODUCT_OPTIONS[k],
+                index=0, key="zonas_product",
+                label_visibility="collapsed",
+            )
+        else:
+            product = "eumetsat_ash"  # ignorado en modo rotate
+            st.markdown(
+                "<div style='color:#888; padding-top:0.5rem; font-size:0.8rem;'>"
+                "(rotando)</div>",
+                unsafe_allow_html=True,
+            )
+    with cols[3]:
         layout_label = st.radio(
             "Layout",
             ["1×4 (TV)", "2×2"],
@@ -278,16 +341,21 @@ def render():
             horizontal=True,
             label_visibility="collapsed",
         )
-    with cols[3]:
+    with cols[4]:
         show_volcanoes = st.toggle(
             "🔺 Volcanes", value=True, key="zonas_volc",
         )
-    with cols[4]:
+    with cols[5]:
         show_hotspots = st.toggle(
             "🔥 Hot spots", value=True, key="zonas_hs",
         )
 
     layout_key = "1x4" if layout_label.startswith("1×4") else "2x2"
     height = 820 if layout_key == "1x4" else 720
-    _grid_4_zonas(product, show_volcanoes, show_hotspots,
-                  layout=layout_key, height=height)
+    if rotate:
+        _rotating_grid_4_zonas(show_volcanoes, show_hotspots,
+                                layout=layout_key, height=height,
+                                session_key="zonas_rot_idx_main")
+    else:
+        _grid_4_zonas(product, show_volcanoes, show_hotspots,
+                      layout=layout_key, height=height)

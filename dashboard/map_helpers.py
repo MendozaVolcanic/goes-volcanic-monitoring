@@ -12,6 +12,24 @@ por si otro proyecto del ecosistema lo necesita.
 import plotly.graph_objects as go
 
 
+def _interp_segments(pts: list[tuple[float, float]], n_extra: int = 2
+                      ) -> list[tuple[float, float]]:
+    """Linea mas suave: agrega `n_extra` puntos interpolados entre
+    cada par consecutivo. Para n_extra=2 triplica la densidad."""
+    out = []
+    for i in range(len(pts) - 1):
+        a, b = pts[i], pts[i + 1]
+        out.append(a)
+        for k in range(1, n_extra + 1):
+            t = k / (n_extra + 1)
+            out.append((
+                a[0] + t * (b[0] - a[0]),
+                a[1] + t * (b[1] - a[1]),
+            ))
+    out.append(pts[-1])
+    return out
+
+
 # Costa Pacífica (oeste) — Arica → Cabo de Hornos
 _COAST = [
     (-17.50, -70.40), (-18.20, -70.34), (-18.50, -70.32), (-19.00, -70.30),
@@ -50,17 +68,22 @@ _BORDER = [
 
 
 def add_chile_border(fig: go.Figure, color: str = "rgba(255,255,255,0.65)",
-                     width: float = 1.4, dash: str = "solid") -> go.Figure:
+                     width: float = 1.4, dash: str = "solid",
+                     smooth: bool = True) -> go.Figure:
     """Agrega el contorno de Chile (costa + frontera Andina) como 2 lineas.
 
-    Dos traces independientes que NO se conectan entre si — evita el "salto"
-    diagonal del poligono cerrado anterior.
+    smooth=True (default): interpola 2 puntos extra entre cada par para
+    suavizar los segmentos rectos y evitar look "jagged" en mapas
+    grandes. Triplica la densidad: ~60 -> ~180 puntos por linea.
     """
-    coast_lons = [pt[1] for pt in _COAST]
-    coast_lats = [pt[0] for pt in _COAST]
-    border_lons = [pt[1] for pt in _BORDER]
-    border_lats = [pt[0] for pt in _BORDER]
-    line_style = dict(color=color, width=width, dash=dash)
+    coast = _interp_segments(_COAST, n_extra=2) if smooth else _COAST
+    border = _interp_segments(_BORDER, n_extra=2) if smooth else _BORDER
+    coast_lons = [pt[1] for pt in coast]
+    coast_lats = [pt[0] for pt in coast]
+    border_lons = [pt[1] for pt in border]
+    border_lats = [pt[0] for pt in border]
+    line_style = dict(color=color, width=width, dash=dash, shape="spline",
+                      smoothing=0.5)
     fig.add_trace(go.Scatter(
         x=coast_lons, y=coast_lats, mode="lines",
         line=line_style,

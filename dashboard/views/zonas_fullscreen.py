@@ -152,7 +152,16 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
 
 
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
-def _grid_4_zonas(product: str, show_volcanoes: bool, show_hotspots: bool):
+def _grid_4_zonas(product: str, show_volcanoes: bool, show_hotspots: bool,
+                  layout: str = "2x2", height: int = 720):
+    """Renderiza las 4 zonas en grilla.
+
+    layout:
+        '2x2'  — 2 filas de 2 columnas (default, balanceado)
+        '1x4'  — 1 fila de 4 columnas (monitor 24/7 horizontal,
+                 más zonas visibles en paralelo)
+    height: altura en px de cada plot.
+    """
     timestamps = _recent_ts(product, n=3)
     if not timestamps:
         st.error("RAMMB no respondió.")
@@ -188,11 +197,17 @@ def _grid_4_zonas(product: str, show_volcanoes: bool, show_hotspots: bool):
         unsafe_allow_html=True,
     )
 
-    # Grid 2x2
+    # Layout configurable
+    if layout == "1x4":
+        rows_zones = [["norte", "centro", "sur", "austral"]]
+        n_cols = 4
+    else:  # default 2x2
+        rows_zones = [["norte", "centro"], ["sur", "austral"]]
+        n_cols = 2
+
     fallback_count = 0
-    rows_zones = [["norte", "centro"], ["sur", "austral"]]
     for row_zones in rows_zones:
-        cols = st.columns(2)
+        cols = st.columns(n_cols)
         for i, zone_key in enumerate(row_zones):
             bounds = VOLCANIC_ZONES[zone_key]
             img, used_ts, used_zoom = fetch_frame_robust(
@@ -215,7 +230,7 @@ def _grid_4_zonas(product: str, show_volcanoes: bool, show_hotspots: bool):
             with cols[i]:
                 st.plotly_chart(
                     _zone_fig(img, zone_key, label, hotspots,
-                              height=720, show_volcanoes=show_volcanoes),
+                              height=height, show_volcanoes=show_volcanoes),
                     use_container_width=True,
                     config={"displayModeBar": False},
                 )
@@ -240,7 +255,7 @@ def render():
     )
 
     # Header compacto + selectores en 1 linea
-    cols = st.columns([2.5, 1.4, 1.4, 1.4])
+    cols = st.columns([2.0, 1.4, 1.4, 1.2, 1.2])
     with cols[0]:
         st.markdown(
             "<div style='font-size:1.3rem; font-weight:800; color:#ff6644; "
@@ -256,14 +271,23 @@ def render():
             label_visibility="collapsed",
         )
     with cols[2]:
-        show_volcanoes = st.toggle(
-            "🔺 Volcanes", value=True, key="zonas_volc",
-            help="Mostrar todos los volcanes del catálogo en cada zona",
+        layout_label = st.radio(
+            "Layout",
+            ["1×4 (TV)", "2×2"],
+            index=0, key="zonas_layout",
+            horizontal=True,
+            label_visibility="collapsed",
         )
     with cols[3]:
+        show_volcanoes = st.toggle(
+            "🔺 Volcanes", value=True, key="zonas_volc",
+        )
+    with cols[4]:
         show_hotspots = st.toggle(
             "🔥 Hot spots", value=True, key="zonas_hs",
-            help="Hot spots NOAA FDCF detectados en la última hora",
         )
 
-    _grid_4_zonas(product, show_volcanoes, show_hotspots)
+    layout_key = "1x4" if layout_label.startswith("1×4") else "2x2"
+    height = 820 if layout_key == "1x4" else 720
+    _grid_4_zonas(product, show_volcanoes, show_hotspots,
+                  layout=layout_key, height=height)

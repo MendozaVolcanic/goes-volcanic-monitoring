@@ -293,10 +293,10 @@ def _mosaico_subtab():
 
 
 def _zonas_subtab():
-    """Sub-tab Por Zona Volcánica: las 4 zonas en grilla 2x2."""
+    """Sub-tab Por Zona Volcánica: las 4 zonas. Layout configurable."""
     from dashboard.views.zonas_fullscreen import _grid_4_zonas, PRODUCT_OPTIONS
 
-    cols = st.columns([1, 1, 1, 2])
+    cols = st.columns([1, 1, 1, 1, 1])
     with cols[0]:
         product = st.selectbox(
             "Producto",
@@ -305,10 +305,30 @@ def _zonas_subtab():
             index=0, key="mg_zonas_product",
         )
     with cols[1]:
-        show_volc = st.toggle("🔺 Volcanes", value=True, key="mg_zonas_volc")
+        layout = st.radio(
+            "Layout",
+            ["1×4 (TV monitor)", "2×2 (estandar)"],
+            index=0, key="mg_zonas_layout",
+            horizontal=False,
+            label_visibility="collapsed",
+            help="1×4 horizontal pensado para monitor 24/7 wide. "
+                 "2×2 mejor para pantallas estándar.",
+        )
     with cols[2]:
+        show_volc = st.toggle("🔺 Volcanes", value=True, key="mg_zonas_volc")
+    with cols[3]:
         show_hs = st.toggle("🔥 Hot spots", value=True, key="mg_zonas_hs")
-    _grid_4_zonas(product, show_volc, show_hs)
+    with cols[4]:
+        st.markdown(
+            "<div style='font-size:0.7rem; color:#556; padding-top:0.5rem;'>"
+            "💡 ?fullscreen=1<br>+ TV monitor</div>",
+            unsafe_allow_html=True,
+        )
+    layout_key = "1x4" if layout.startswith("1×4") else "2x2"
+    # Altura mas grande en 1x4 horizontal porque cada zona tiene menos
+    # ancho — necesita compensar verticalmente. En 2x2 720 esta bien.
+    height = 820 if layout_key == "1x4" else 720
+    _grid_4_zonas(product, show_volc, show_hs, layout=layout_key, height=height)
 
 
 def _volcan_subtab():

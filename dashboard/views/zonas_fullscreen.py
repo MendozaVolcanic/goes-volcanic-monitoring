@@ -98,7 +98,7 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
             sizing="stretch", layer="below",
         )
 
-    # Volcanes en la zona como triangulos
+    # Volcanes en la zona como triangulos + labels
     if show_volcanoes:
         zone_volcs = [v for v in CATALOG
                       if bounds["lat_min"] <= v.lat <= bounds["lat_max"]
@@ -108,10 +108,13 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
             fig.add_trace(go.Scatter(
                 x=[v.lon for v in zone_volcs],
                 y=[v.lat for v in zone_volcs],
-                mode="markers",
+                mode="markers+text",
                 marker=dict(symbol="triangle-up", size=10, color="#00ffff",
                             line=dict(color="white", width=1)),
-                text=[f"<b>{v.name}</b><br>{v.elevation:,} m" for v in zone_volcs],
+                text=[v.name for v in zone_volcs],
+                textposition="middle right",
+                textfont=dict(size=9, color="rgba(255,255,255,0.85)"),
+                hovertext=[f"<b>{v.name}</b><br>{v.elevation:,} m" for v in zone_volcs],
                 hoverinfo="text", showlegend=False,
             ))
 
@@ -156,14 +159,14 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
 @st.fragment(run_every=f"{ROTATION_SECONDS}s")
 def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
                             layout: str = "1x4", height: int = 820,
-                            session_key: str = "zonas_rot_idx"):
+                            session_key: str = "zonas_rot_idx",
+                            chrome: bool = True):
     """Auto-rotate productos cada 10s en loop: GeoColor -> Ash -> SO2 -> ...
 
-    Pensado para sala de operaciones con UN solo monitor — muestra los 3
-    productos secuencialmente, sin que el operador tenga que tocar nada.
+    chrome=True: muestra banner "ROTANDO PRODUCTOS" arriba.
+    chrome=False: solo las imágenes, sin banner — modo TV puro.
 
-    El indice del producto vive en st.session_state. Cada vez que el
-    fragment se re-ejecuta (cada ROTATION_SECONDS=10s), avanza el indice.
+    El indice del producto vive en st.session_state.
     """
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
@@ -172,24 +175,33 @@ def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
     next_idx = (idx + 1) % len(PRODUCT_LIST)
     next_product = PRODUCT_LIST[next_idx]
 
-    # Banner de rotacion arriba (fuera del grid render)
-    st.markdown(
-        f"<div style='background:linear-gradient(90deg, rgba(204,51,17,0.2), "
-        f"rgba(238,119,51,0.2)); border-left:4px solid #ff6644; "
-        f"padding:0.5rem 0.9rem; border-radius:4px; margin-bottom:0.4rem; "
-        f"display:flex; justify-content:space-between; align-items:center; "
-        f"font-size:0.9rem;'>"
-        f"<span style='color:#ff6644; font-weight:700;'>"
-        f"🔄 ROTANDO PRODUCTOS · cada {ROTATION_SECONDS}s</span>"
-        f"<span style='color:#e0e0e0;'>Mostrando: <b>{PRODUCT_OPTIONS[current]}</b> "
-        f"→ próximo: {PRODUCT_OPTIONS[next_product]}</span></div>",
-        unsafe_allow_html=True,
-    )
+    if chrome:
+        # Banner de rotacion arriba
+        st.markdown(
+            f"<div style='background:linear-gradient(90deg, rgba(204,51,17,0.2), "
+            f"rgba(238,119,51,0.2)); border-left:4px solid #ff6644; "
+            f"padding:0.5rem 0.9rem; border-radius:4px; margin-bottom:0.4rem; "
+            f"display:flex; justify-content:space-between; align-items:center; "
+            f"font-size:0.9rem;'>"
+            f"<span style='color:#ff6644; font-weight:700;'>"
+            f"🔄 ROTANDO PRODUCTOS · cada {ROTATION_SECONDS}s</span>"
+            f"<span style='color:#e0e0e0;'>Mostrando: <b>{PRODUCT_OPTIONS[current]}</b> "
+            f"→ próximo: {PRODUCT_OPTIONS[next_product]}</span></div>",
+            unsafe_allow_html=True,
+        )
+    else:
+        # Modo TV puro: solo etiqueta minimalista flotante en esquina
+        st.markdown(
+            f"<div style='position:fixed; top:8px; left:8px; z-index:1000; "
+            f"background:rgba(0,0,0,0.55); color:#ff6644; padding:4px 10px; "
+            f"border-radius:4px; font-size:0.78rem; font-weight:700;'>"
+            f"🔄 {PRODUCT_OPTIONS[current]}</div>",
+            unsafe_allow_html=True,
+        )
 
-    # Avanzar indice para la proxima ejecucion del fragment
     st.session_state[session_key] = next_idx
-
-    _render_4_zonas_inner(current, show_volcanoes, show_hotspots, layout, height)
+    _render_4_zonas_inner(current, show_volcanoes, show_hotspots, layout, height,
+                          minimal=not chrome)
 
 
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
@@ -206,10 +218,10 @@ def _grid_4_zonas(product: str, show_volcanoes: bool, show_hotspots: bool,
 
 
 def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: bool,
-                           layout: str, height: int):
+                           layout: str, height: int, minimal: bool = False):
     """Logica compartida entre _grid_4_zonas y _rotating_grid_4_zonas.
 
-    Sin @st.fragment para que pueda invocarse desde ambos wrappers.
+    minimal=True: oculta banner status arriba (modo TV puro).
     """
     timestamps = _recent_ts(product, n=3)
     if not timestamps:
@@ -235,16 +247,17 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
     else:
         bnr_color = "#ff4444"; bnr_msg = f"Scan hace {age_min} min · datos atrasados"
 
-    st.markdown(
-        f"<div style='background:#0f1418; border-left:4px solid {bnr_color}; "
-        f"padding:0.4rem 0.8rem; border-radius:4px; margin-bottom:0.4rem; "
-        f"display:flex; justify-content:space-between;'>"
-        f"<span style='color:#e0e0e0;'>{PRODUCT_OPTIONS[product]} · "
-        f"4 zonas en paralelo</span>"
-        f"<span style='color:{bnr_color}; font-weight:600;'>{bnr_msg}</span>"
-        f"</div>",
-        unsafe_allow_html=True,
-    )
+    if not minimal:
+        st.markdown(
+            f"<div style='background:#0f1418; border-left:4px solid {bnr_color}; "
+            f"padding:0.4rem 0.8rem; border-radius:4px; margin-bottom:0.4rem; "
+            f"display:flex; justify-content:space-between;'>"
+            f"<span style='color:#e0e0e0;'>{PRODUCT_OPTIONS[product]} · "
+            f"4 zonas en paralelo</span>"
+            f"<span style='color:{bnr_color}; font-weight:600;'>{bnr_msg}</span>"
+            f"</div>",
+            unsafe_allow_html=True,
+        )
 
     # Layout configurable
     if layout == "1x4":

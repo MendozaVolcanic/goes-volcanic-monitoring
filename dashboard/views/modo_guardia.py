@@ -293,30 +293,43 @@ def _mosaico_subtab():
 
 
 def _zonas_subtab():
-    """Sub-tab Por Zona Volcánica: las 4 zonas. Layout configurable + auto-rotate."""
+    """Sub-tab Por Zona Volcánica: las 4 zonas. Auto-rotate = TV puro sin chrome."""
     from dashboard.views.zonas_fullscreen import (
         _grid_4_zonas, _rotating_grid_4_zonas, PRODUCT_OPTIONS, ROTATION_SECONDS,
     )
 
-    cols = st.columns([1.2, 1.0, 1.2, 1.0, 1.0])
+    # Toggle rotate primero. Cuando ON, ocultamos el resto de la toolbar
+    # para que solo se vean las imagenes (modo TV puro).
+    rotate = st.toggle(
+        "🔄 Auto-rotate (10s) — modo TV puro: oculta toolbar, solo imágenes",
+        value=False, key="mg_zonas_rotate",
+        help=f"Cicla GeoColor → Ash → SO2 cada {ROTATION_SECONDS}s. "
+             "Combinar con ?fullscreen=1 para TV 24/7.",
+    )
+
+    if rotate:
+        # MODO TV PURO: defaults sensatos, sin toolbar
+        # Volcanes ON pero sin nombres (queda muy limpio el layout)
+        # Hot spots ON, layout 1x4, height grande
+        _rotating_grid_4_zonas(
+            show_volcanoes=True, show_hotspots=True,
+            layout="1x4", height=900,
+            session_key="mg_zonas_rot_idx",
+            chrome=False,  # solo etiqueta minimal flotante
+        )
+        return
+
+    # Modo normal con toolbar completa
+    cols = st.columns([1.0, 1.2, 1.0, 1.0])
     with cols[0]:
-        rotate = st.toggle(
-            "🔄 Auto-rotate", value=False, key="mg_zonas_rotate",
-            help=f"Cicla productos GeoColor → Ash → SO2 cada "
-                 f"{ROTATION_SECONDS}s. Ideal para 1 monitor.",
+        product = st.selectbox(
+            "Producto",
+            options=list(PRODUCT_OPTIONS.keys()),
+            format_func=lambda k: PRODUCT_OPTIONS[k],
+            index=0, key="mg_zonas_product",
+            label_visibility="collapsed",
         )
     with cols[1]:
-        if not rotate:
-            product = st.selectbox(
-                "Producto",
-                options=list(PRODUCT_OPTIONS.keys()),
-                format_func=lambda k: PRODUCT_OPTIONS[k],
-                index=0, key="mg_zonas_product",
-                label_visibility="collapsed",
-            )
-        else:
-            product = "eumetsat_ash"
-    with cols[2]:
         layout = st.radio(
             "Layout",
             ["1×4 (TV)", "2×2"],
@@ -324,19 +337,15 @@ def _zonas_subtab():
             horizontal=True,
             label_visibility="collapsed",
         )
-    with cols[3]:
+    with cols[2]:
         show_volc = st.toggle("🔺 Volcanes", value=True, key="mg_zonas_volc")
-    with cols[4]:
+    with cols[3]:
         show_hs = st.toggle("🔥 Hot spots", value=True, key="mg_zonas_hs")
 
     layout_key = "1x4" if layout.startswith("1×4") else "2x2"
     height = 820 if layout_key == "1x4" else 720
-    if rotate:
-        _rotating_grid_4_zonas(show_volc, show_hs, layout=layout_key,
-                                height=height, session_key="mg_zonas_rot_idx")
-    else:
-        _grid_4_zonas(product, show_volc, show_hs,
-                      layout=layout_key, height=height)
+    _grid_4_zonas(product, show_volc, show_hs,
+                  layout=layout_key, height=height)
 
 
 def _volcan_subtab():

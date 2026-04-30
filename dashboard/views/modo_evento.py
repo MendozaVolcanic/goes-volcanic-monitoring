@@ -34,6 +34,16 @@ REFRESH_SECONDS = 60
 RADIUS_DEG = 0.4
 EVENT_BBOX_KM = 50  # radio para hot spots considerados del evento
 
+# Anillos de distancia para estimar largo de pluma
+RING_RADII_KM = [5, 10, 25, 50, 100]
+
+# Niveles de viento para overlay (mismos que modo_guardia_volcan)
+WIND_LEVELS_VIZ = [
+    ("300hPa", "300 hPa (~9 km)", "#ff4444"),
+    ("500hPa", "500 hPa (~5.5 km)", "#ffaa44"),
+    ("850hPa", "850 hPa (~1.5 km)", "#44dd88"),
+]
+
 PRODUCTS_GRID = [
     ("eumetsat_ash", "🌋 Ash RGB", "#ff6644"),
     ("geocolor", "🌍 GeoColor", "#4a9eff"),
@@ -87,8 +97,29 @@ def _array_to_data_url(arr: np.ndarray) -> str:
     return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
+def _circle_points(lat0: float, lon0: float, radius_km: float, n: int = 64):
+    theta = np.linspace(0, 2 * np.pi, n)
+    dlat = (radius_km / 111.0) * np.cos(theta)
+    dlon = (radius_km / (111.0 * float(np.cos(np.radians(lat0))))) * np.sin(theta)
+    return (lat0 + dlat).tolist(), (lon0 + dlon).tolist()
+
+
+def _wind_arrow_endpoints(lat0: float, lon0: float, u_kmh: float, v_kmh: float,
+                          arrow_len_deg: float = 0.18):
+    speed = float(np.hypot(u_kmh, v_kmh))
+    if speed < 1e-3:
+        return [lon0, lon0], [lat0, lat0]
+    ux = u_kmh / speed
+    vy = v_kmh / speed
+    scale = arrow_len_deg * min(speed / 50.0, 2.0)
+    lon_end = lon0 + ux * scale / float(np.cos(np.radians(lat0)))
+    lat_end = lat0 + vy * scale
+    return [lon0, lon_end], [lat0, lat_end]
+
+
 def _ash_fig(img: np.ndarray | None, lat: float, lon: float, label: str,
-             height: int = 580):
+             height: int = 580, show_rings: bool = False,
+             wind_data: dict | None = None):
     fig = go.Figure()
     bounds = {
         "lat_min": lat - RADIUS_DEG, "lat_max": lat + RADIUS_DEG,
@@ -102,6 +133,47 @@ def _ash_fig(img: np.ndarray | None, lat: float, lon: float, label: str,
             sizex=2 * RADIUS_DEG, sizey=2 * RADIUS_DEG,
             sizing="stretch", layer="below",
         )
+
+    # Anillos de distancia (debajo de marcadores y vientos)
+    if show_rings:
+        for r_km in RING_RADII_KM:
+            lats, lons = _circle_points(lat, lon, r_km)
+            fig.add_trace(go.Scatter(
+                x=lons, y=lats, mode="lines",
+                line=dict(color="rgba(255,255,255,0.4)", width=1, dash="dot"),
+                hoverinfo="skip", showlegend=False,
+            ))
+            fig.add_annotation(
+                x=lons[16], y=lats[16],
+                text=f"{r_km} km", showarrow=False,
+                font=dict(color="rgba(255,255,255,0.7)", size=9),
+                bgcolor="rgba(10,14,20,0.6)", borderpad=2,
+            )
+
+    # Viento (vectores) si pidieron
+    if wind_data:
+        for level_id, _label, color in WIND_LEVELS_VIZ:
+            w = wind_data.get(level_id)
+            if w is None:
+                continue
+            xs, ys = _wind_arrow_endpoints(lat, lon, w["u"], w["v"])
+            fig.add_trace(go.Scatter(
+                x=xs, y=ys, mode="lines",
+                line=dict(color=color, width=3),
+                hovertemplate=(
+                    f"<b>{level_id}</b><br>"
+                    f"{w['speed']:.0f} km/h desde {w['direction']:.0f}°<extra></extra>"
+                ),
+                showlegend=False,
+            ))
+            fig.add_trace(go.Scatter(
+                x=[xs[1]], y=[ys[1]], mode="markers",
+                marker=dict(symbol="arrow", size=14, color=color,
+                            angle=float(np.degrees(np.arctan2(w["u"], w["v"]))),
+                            line=dict(color="white", width=1)),
+                hoverinfo="skip", showlegend=False,
+            ))
+
     fig.add_trace(go.Scatter(
         x=[lon], y=[lat], mode="markers",
         marker=dict(symbol="triangle-up", size=18, color="#00ffff",
@@ -127,7 +199,8 @@ def _ash_fig(img: np.ndarray | None, lat: float, lon: float, label: str,
 
 
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
-def _live_panel(volcan_name: str):
+def _live_panel(volcan_name: str, show_rings: bool = True,
+                show_wind: bool = False):
     v = get_volcano(volcan_name)
     if v is None:
         st.error(f"Volcán '{volcan_name}' no encontrado.")
@@ -179,7 +252,8 @@ def _live_panel(volcan_name: str):
 
     # Bajar datos
     hotspots_with_d, hs_dt = _hotspots_volcan(v.lat, v.lon)
-    wind = _wind_volcan(v.lat, v.lon)
+    # Solo bajar viento si el toggle esta on (cache 1h asi que no cuesta)
+    wind = _wind_volcan(v.lat, v.lon) if show_wind else {}
 
     # KPI row
     k1, k2, k3, k4 = st.columns(4)
@@ -265,10 +339,13 @@ def _live_panel(volcan_name: str):
                     ts_label += " ⚠z3"
             except Exception:
                 ts_label = used_ts
+        # Wind overlay solo en Ash RGB (panel principal); rings en los 3
+        wind_for_panel = wind if (prod_id == "eumetsat_ash" and show_wind) else None
         with cols[i]:
             st.plotly_chart(
                 _ash_fig(img, v.lat, v.lon,
-                         f"{label} · {ts_label}", height=460),
+                         f"{label} · {ts_label}", height=460,
+                         show_rings=show_rings, wind_data=wind_for_panel),
                 use_container_width=True,
                 config={"displayModeBar": False},
             )
@@ -329,7 +406,7 @@ def render():
     if initial not in PRIORITY_VOLCANOES:
         initial = "Villarrica"
 
-    cols = st.columns([2, 1])
+    cols = st.columns([2, 1, 1, 1])
     with cols[0]:
         volcan = st.selectbox(
             "Volcán en evento",
@@ -338,9 +415,24 @@ def render():
             key="evento_volcan",
         )
     with cols[1]:
+        show_rings = st.toggle(
+            "⊙ Anillos",
+            value=True,  # ON por default — util para medir largo de pluma
+            key="evento_rings",
+            help=f"Anillos de distancia {RING_RADII_KM} km. "
+                 "Útil para estimar largo de pluma volcánica visible.",
+        )
+    with cols[2]:
+        show_wind = st.toggle(
+            "💨 Viento",
+            value=False,
+            key="evento_wind",
+            help="Vectores GFS en 300/500/850 hPa sobre el cráter.",
+        )
+    with cols[3]:
         st.markdown(
             "<div style='font-size:0.72rem; color:#556; padding-top:0.6rem;'>"
-            "Auto-refresh 60s · KPIs + 3 productos + hotspots</div>",
+            "Refresh 60s</div>",
             unsafe_allow_html=True,
         )
 
@@ -348,4 +440,4 @@ def render():
     if qp.get("volcan") != volcan:
         st.query_params["volcan"] = volcan
 
-    _live_panel(volcan)
+    _live_panel(volcan, show_rings=show_rings, show_wind=show_wind)

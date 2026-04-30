@@ -43,7 +43,8 @@ with st.sidebar:
     # Mapa: query param 'vista' -> entry visible en el sidebar.
     # Permite compartir https://...?vista=guardia&volcan=Lascar
     PAGE_OPTIONS = [
-        "🔴 En Vivo", "🛡 Modo Guardia", "🔀 Comparador",
+        "🔴 En Vivo", "🛡 Modo Guardia", "🗺 4 Zonas Full Screen",
+        "🔀 Comparador",
         "🚨 Modo Evento", "📅 Heatmap actividad",
         "🔁 Replay Calbuco 2015",
         "Mapa General", "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
@@ -51,6 +52,7 @@ with st.sidebar:
     ]
     PAGE_SLUGS = {
         "live": "🔴 En Vivo", "guardia": "🛡 Modo Guardia",
+        "zonas": "🗺 4 Zonas Full Screen",
         "comparador": "🔀 Comparador", "evento": "🚨 Modo Evento",
         "heatmap": "📅 Heatmap actividad",
         "calbuco": "🔁 Replay Calbuco 2015",
@@ -111,6 +113,9 @@ if page == "🔴 En Vivo":
     render()
 elif page == "🛡 Modo Guardia":
     from dashboard.views.modo_guardia import render
+    render()
+elif page == "🗺 4 Zonas Full Screen":
+    from dashboard.views.zonas_fullscreen import render
     render()
 elif page == "🔀 Comparador":
     from dashboard.views.comparador import render

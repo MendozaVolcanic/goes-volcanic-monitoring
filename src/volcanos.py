@@ -36,6 +36,13 @@ CATALOG = [
     Volcano("Láscar", -23.37, -67.73, 5592, "Antofagasta", "norte", 4),
     Volcano("Lastarria", -25.17, -68.50, 5697, "Atacama", "norte", 0),
     Volcano("Ojos del Salado", -27.12, -68.54, 6893, "Atacama", "norte", 0),
+    # Andes Centrales — frontera Chile/Argentina (RNVV monitorea todos)
+    Volcano("Tupungatito", -33.40, -69.80, 5640, "Metropolitana", "centro", 0),
+    Volcano("Tupungato", -33.36, -69.77, 6570, "Metropolitana", "centro", 0),
+    Volcano("Marmolejo", -33.73, -69.88, 6108, "Metropolitana", "centro", 0),
+    Volcano("San José", -33.78, -69.90, 5856, "Metropolitana", "centro", 0),
+    Volcano("Maipo", -34.16, -69.83, 5264, "Metropolitana", "centro", 0),
+    Volcano("Tinguiririca", -34.81, -70.35, 4280, "O'Higgins", "centro", 0),
     Volcano("Nevado de Longaví", -36.19, -71.16, 3242, "Maule", "centro", 19),
 
     # ── Zona Central-Sur (ZVS) ──

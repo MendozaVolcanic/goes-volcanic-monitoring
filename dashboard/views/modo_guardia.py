@@ -293,33 +293,30 @@ def _mosaico_subtab():
 
 
 def _zonas_subtab():
-    """Sub-tab Por Zona Volcánica: las 4 zonas. Auto-rotate = TV puro sin chrome."""
+    """Sub-tab Por Zona Volcánica: las 4 zonas. Boton TV puro = sin chrome."""
     from dashboard.views.zonas_fullscreen import (
         _grid_4_zonas, _rotating_grid_4_zonas, PRODUCT_OPTIONS, ROTATION_SECONDS,
     )
 
-    # Toggle rotate primero. Cuando ON, ocultamos el resto de la toolbar
-    # para que solo se vean las imagenes (modo TV puro).
-    rotate = st.toggle(
-        "🔄 Auto-rotate (10s) — modo TV puro: oculta toolbar, solo imágenes",
-        value=False, key="mg_zonas_rotate",
-        help=f"Cicla GeoColor → Ash → SO2 cada {ROTATION_SECONDS}s. "
-             "Combinar con ?fullscreen=1 para TV 24/7.",
+    # Boton de "Activar TV puro" — navega a ?tv=1 que oculta TODO el chrome
+    # (header modo guardia + sub-tabs + toolbar). Solo se ven las imagenes.
+    st.markdown(
+        '<a href="?vista=guardia&fullscreen=1&tv=1" target="_self" '
+        'style="display:inline-block; '
+        'background:linear-gradient(135deg, #CC3311, #EE7733); '
+        'color:white; padding:0.5rem 1rem; border-radius:6px; '
+        'text-decoration:none; font-weight:700; font-size:0.9rem; '
+        'margin-bottom:0.6rem;">'
+        '🖥 Activar TV puro (rotando productos cada 10s)</a>',
+        unsafe_allow_html=True,
+    )
+    st.caption(
+        "TV puro = solo los 4 mapas a pantalla completa rotando productos. "
+        "Sin header, sin sub-tabs, sin toolbar. Pensado para monitor 24/7. "
+        "Botón ✖ arriba a la derecha para salir."
     )
 
-    if rotate:
-        # MODO TV PURO: defaults sensatos, sin toolbar
-        # Volcanes ON pero sin nombres (queda muy limpio el layout)
-        # Hot spots ON, layout 1x4, height grande
-        _rotating_grid_4_zonas(
-            show_volcanoes=True, show_hotspots=True,
-            layout="1x4", height=900,
-            session_key="mg_zonas_rot_idx",
-            chrome=False,  # solo etiqueta minimal flotante
-        )
-        return
-
-    # Modo normal con toolbar completa
+    # Modo normal con toolbar completa (no TV puro)
     cols = st.columns([1.0, 1.2, 1.0, 1.0])
     with cols[0]:
         product = st.selectbox(
@@ -388,12 +385,32 @@ def _volcan_subtab():
 
 
 def render():
-    """Entry point para app.py — Modo Guardia unificado con 3 sub-tabs.
+    """Entry point para app.py — Modo Guardia unificado con sub-tabs.
 
-    Fusion de las 3 vistas guardia previas (Chile / Mosaico / Volcan)
-    en una sola tab con sub-tabs internos. Reduce ruido en el sidebar
-    y agrupa logicamente las vistas operacionales sin metricas.
+    Modo especial TV puro (?tv=1): cuando esta activo, se SKIPEA el
+    header de modo guardia y los st.tabs. Solo se renderiza el grid
+    rotante de 4 zonas a pantalla completa — pensado para sala 24/7.
     """
+    # Modo TV puro: solo las imagenes rotando, sin chrome alguno
+    tv_mode = st.query_params.get("tv") == "1"
+    if tv_mode:
+        from dashboard.views.zonas_fullscreen import _rotating_grid_4_zonas
+        # Boton para salir del modo TV (esquina sup. derecha)
+        st.markdown(
+            '<a href="?vista=guardia" target="_self" '
+            'style="position:fixed; top:8px; right:130px; z-index:1000; '
+            'background:rgba(0,0,0,0.55); color:#ff6644; padding:6px 12px; '
+            'border-radius:4px; text-decoration:none; font-size:0.78rem; '
+            'border:1px solid #ff6644;">✖ Salir TV puro</a>',
+            unsafe_allow_html=True,
+        )
+        _rotating_grid_4_zonas(
+            show_volcanoes=True, show_hotspots=True,
+            layout="1x4", height=900,
+            session_key="tv_zonas_rot_idx", chrome=False,
+        )
+        return
+
     st.markdown(
         """
         <style>

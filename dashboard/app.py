@@ -44,11 +44,12 @@ if _fullscreen:
         """,
         unsafe_allow_html=True,
     )
-    # Boton flotante para salir del modo fullscreen
+    # Boton flotante para salir del modo fullscreen — esquina IZQUIERDA
+    # (la derecha la usan dev tools del navegador)
     st.markdown(
         '<a href="?fullscreen=0" target="_self" '
-        'style="position:fixed; top:8px; right:14px; z-index:9999; '
-        'background:rgba(0,0,0,0.6); color:#ff6644; padding:6px 12px; '
+        'style="position:fixed; top:8px; left:140px; z-index:9999; '
+        'background:rgba(0,0,0,0.65); color:#ff6644; padding:6px 12px; '
         'border-radius:6px; text-decoration:none; font-size:0.78rem; '
         'border:1px solid #ff6644;">✖ Salir fullscreen</a>',
         unsafe_allow_html=True,

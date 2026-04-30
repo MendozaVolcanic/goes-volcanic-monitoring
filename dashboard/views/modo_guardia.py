@@ -289,6 +289,17 @@ def _chile_subtab():
 def _mosaico_subtab():
     """Sub-tab Mosaico: 8 prioritarios en grid 4x2."""
     from dashboard.views.mosaico_chile import _live_panel as mosaico_panel
+    # Boton TV puro mosaico
+    st.markdown(
+        '<a href="?vista=guardia&fullscreen=1&tv=mosaico" target="_self" '
+        'style="display:inline-block; '
+        'background:linear-gradient(135deg, #CC3311, #EE7733); '
+        'color:white; padding:0.5rem 1rem; border-radius:6px; '
+        'text-decoration:none; font-weight:700; font-size:0.9rem; '
+        'margin-bottom:0.6rem;">'
+        '🖥 Activar TV puro · Mosaico (rotando productos cada 10s)</a>',
+        unsafe_allow_html=True,
+    )
     mosaico_panel()
 
 
@@ -359,6 +370,18 @@ def _volcan_subtab():
             label_visibility="collapsed",
             key="mg_volcan_selector",
         )
+    # Boton TV puro volcan (lleva el volcan seleccionado en URL)
+    st.markdown(
+        f'<a href="?vista=guardia&fullscreen=1&tv=volcan&volcan={volcan}" '
+        f'target="_self" '
+        f'style="display:inline-block; '
+        f'background:linear-gradient(135deg, #CC3311, #EE7733); '
+        f'color:white; padding:0.4rem 0.9rem; border-radius:6px; '
+        f'text-decoration:none; font-weight:700; font-size:0.85rem; '
+        f'margin-bottom:0.4rem;">'
+        f'🖥 Activar TV puro · {volcan} (3 productos)</a>',
+        unsafe_allow_html=True,
+    )
     with cols[1]:
         show_wind = st.toggle(
             "💨 Viento", value=False, key="mg_wind",
@@ -387,29 +410,44 @@ def _volcan_subtab():
 def render():
     """Entry point para app.py — Modo Guardia unificado con sub-tabs.
 
-    Modo especial TV puro (?tv=1): cuando esta activo, se SKIPEA el
-    header de modo guardia y los st.tabs. Solo se renderiza el grid
-    rotante de 4 zonas a pantalla completa — pensado para sala 24/7.
+    Modo especial TV puro: se SKIPEA el header de modo guardia y los
+    st.tabs. Solo se renderiza el grid elegido a pantalla completa.
+
+    URL params:
+      ?tv=1       o ?tv=zonas    -> 4 zonas rotando productos (default)
+      ?tv=mosaico                -> 8 prioritarios rotando productos + anillos
+      ?tv=volcan&volcan=X        -> 1 volcan con 3 productos (sin rotacion,
+                                    los 3 productos ya estan lado a lado)
     """
-    # Modo TV puro: solo las imagenes rotando, sin chrome alguno
-    tv_mode = st.query_params.get("tv") == "1"
+    tv_mode = st.query_params.get("tv", "")
     if tv_mode:
-        from dashboard.views.zonas_fullscreen import _rotating_grid_4_zonas
-        # Boton para salir del modo TV (esquina sup. derecha)
+        # Boton "Salir TV puro" en esquina sup. IZQUIERDA (right tapaba dev tools)
         st.markdown(
-            '<a href="?vista=guardia" target="_self" '
-            'style="position:fixed; top:8px; right:130px; z-index:1000; '
-            'background:rgba(0,0,0,0.55); color:#ff6644; padding:6px 12px; '
+            '<a href="?vista=guardia&fullscreen=0&tv=" target="_self" '
+            'style="position:fixed; top:8px; left:8px; z-index:1000; '
+            'background:rgba(0,0,0,0.65); color:#ff6644; padding:6px 12px; '
             'border-radius:4px; text-decoration:none; font-size:0.78rem; '
             'border:1px solid #ff6644;">✖ Salir TV puro</a>',
             unsafe_allow_html=True,
         )
-        _rotating_grid_4_zonas(
-            show_volcanoes=True, show_hotspots=True,
-            layout="1x4", height=900,
-            session_key="tv_zonas_rot_idx", chrome=False,
-        )
-        return
+        if tv_mode == "mosaico":
+            from dashboard.views.mosaico_chile import _grid_fragment_tv
+            _grid_fragment_tv()
+            return
+        elif tv_mode == "volcan":
+            from dashboard.views.modo_guardia_volcan import _live_panel as volcan_panel
+            volcan_name = st.query_params.get("volcan", "Villarrica")
+            volcan_panel(volcan_name, show_wind=False, show_rings=True,
+                         enable_capture=False)
+            return
+        else:  # default = zonas
+            from dashboard.views.zonas_fullscreen import _rotating_grid_4_zonas
+            _rotating_grid_4_zonas(
+                show_volcanoes=True, show_hotspots=True,
+                layout="1x4", height=900,
+                session_key="tv_zonas_rot_idx", chrome=False,
+            )
+            return
 
     st.markdown(
         """

@@ -23,7 +23,9 @@ from src.volcanos import PRIORITY_VOLCANOES, get_volcano
 logger = logging.getLogger(__name__)
 
 REFRESH_SECONDS = 60
+ROTATION_SECONDS = 10
 RADIUS_DEG = 0.35
+PRODUCT_LIST_TV = ["geocolor", "eumetsat_ash", "jma_so2"]
 
 PRODUCT_OPTIONS = {
     "eumetsat_ash": "Ash RGB",
@@ -66,7 +68,18 @@ def _array_to_data_url(arr: np.ndarray) -> str:
     return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
-def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str):
+RING_RADII_KM = [5, 10, 25, 50]
+
+
+def _circle_points(lat0: float, lon0: float, radius_km: float, n: int = 48):
+    theta = np.linspace(0, 2 * np.pi, n)
+    dlat = (radius_km / 111.0) * np.cos(theta)
+    dlon = (radius_km / (111.0 * float(np.cos(np.radians(lat0))))) * np.sin(theta)
+    return (lat0 + dlat).tolist(), (lon0 + dlon).tolist()
+
+
+def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
+                 height: int = 420, show_rings: bool = False):
     fig = go.Figure()
     bounds = {
         "lat_min": lat - RADIUS_DEG, "lat_max": lat + RADIUS_DEG,
@@ -80,6 +93,15 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str):
             sizex=2 * RADIUS_DEG, sizey=2 * RADIUS_DEG,
             sizing="stretch", layer="below",
         )
+    # Anillos de distancia (debajo del marcador)
+    if show_rings:
+        for r_km in RING_RADII_KM:
+            lats, lons = _circle_points(lat, lon, r_km)
+            fig.add_trace(go.Scatter(
+                x=lons, y=lats, mode="lines",
+                line=dict(color="rgba(255,255,255,0.35)", width=0.8, dash="dot"),
+                hoverinfo="skip", showlegend=False,
+            ))
     fig.add_trace(go.Scatter(
         x=[lon], y=[lat], mode="markers",
         marker=dict(symbol="triangle-up", size=12, color="#00ffff",
@@ -87,13 +109,15 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str):
         hovertemplate=f"<b>{name}</b><extra></extra>",
         showlegend=False,
     ))
+    cos_lat = max(0.1, float(np.cos(np.radians(lat))))
     fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
                      showgrid=False, visible=False)
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
-                     showgrid=False, visible=False, scaleanchor="x", scaleratio=1)
+                     showgrid=False, visible=False,
+                     scaleanchor="x", scaleratio=1.0 / cos_lat)
     fig.update_layout(
         title=dict(text=f"<b>{name}</b>", font=dict(size=12, color="#e0e0e0"), x=0.02),
-        height=420, margin=dict(l=0, r=0, t=25, b=0),
+        height=height, margin=dict(l=0, r=0, t=25, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
     )
     if img is None:
@@ -152,7 +176,7 @@ def _grid_fragment(product: str):
                 fallback_zoom += 1
             with cols[i]:
                 st.plotly_chart(
-                    _render_mini(img, v.lat, v.lon, name),
+                    _render_mini(img, v.lat, v.lon, name, show_rings=True),
                     use_container_width=True,
                     config={"displayModeBar": False},
                 )
@@ -164,6 +188,57 @@ def _grid_fragment(product: str):
         notes.append(f"{fallback_zoom} en zoom 3 (RAMMB no sirvió zoom 4)")
     if notes:
         st.caption("ℹ " + " · ".join(notes))
+
+
+@st.fragment(run_every=f"{ROTATION_SECONDS}s")
+def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
+    """Modo TV puro: 8 prioritarios en grid 4x2, paneles grandes,
+    rotando productos GeoColor -> Ash -> SO2 cada 10s, con anillos.
+
+    Sin chrome (toolbar, banner status). Solo etiqueta minimal flotante.
+    """
+    import io
+    import base64
+    if session_key not in st.session_state:
+        st.session_state[session_key] = 0
+    idx = st.session_state[session_key] % len(PRODUCT_LIST_TV)
+    current = PRODUCT_LIST_TV[idx]
+    next_idx = (idx + 1) % len(PRODUCT_LIST_TV)
+    st.session_state[session_key] = next_idx
+
+    # Etiqueta minimal arriba del grid
+    st.markdown(
+        f"<div style='display:inline-block; "
+        f"background:rgba(0,0,0,0.55); color:#ff6644; padding:4px 10px; "
+        f"border-radius:4px; font-size:0.78rem; font-weight:700; "
+        f"margin-bottom:0.3rem;'>"
+        f"🔄 Mosaico 8 prioritarios · {PRODUCT_OPTIONS[current]}</div>",
+        unsafe_allow_html=True,
+    )
+
+    timestamps = _recent_timestamps(current, n=5)
+    if not timestamps:
+        st.error("RAMMB no respondió.")
+        return
+
+    # Grid 2 filas x 4 columnas, paneles grandes (450 px)
+    rows = [PRIORITY_VOLCANOES[:4], PRIORITY_VOLCANOES[4:8]]
+    for row_volcanos in rows:
+        cols = st.columns(4)
+        for i, name in enumerate(row_volcanos):
+            v = get_volcano(name)
+            if v is None:
+                continue
+            img, _, _ = _volcano_frame_with_fallback(
+                current, timestamps, v.lat, v.lon,
+            )
+            with cols[i]:
+                st.plotly_chart(
+                    _render_mini(img, v.lat, v.lon, name,
+                                 height=450, show_rings=True),
+                    use_container_width=True,
+                    config={"displayModeBar": False},
+                )
 
 
 def _live_panel():

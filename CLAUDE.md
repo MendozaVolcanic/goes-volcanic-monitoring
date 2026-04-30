@@ -38,8 +38,31 @@ hot spots y color real para 43 volcanes chilenos.
 - BTD ash threshold: < -1.0 K (Prata 1989)
 - SO2 indicator threshold: < -3 K
 
+## Filosofía operacional
+- **NO inventar métricas automáticas** sobre Ash RGB color: cirros y nieve dan falsos positivos 30-60% en Chile invierno. Para `% ash` usar `_ash_red_fraction_v2` (filtra cirros + nieve). Para magnitud absoluta cuantitativa usar VOLCAT (Pavolonis 2013).
+- Métricas validadas externas a privilegiar: hot spots NOAA FDCF, altura VOLCAT.
+- `STATUS.md` es curado por humanos; `STATUS_NRT.md` lo regenera el bot cada 10 min — NO mezclar.
+
+## Patrones de código
+- **Auto-refresh**: `@st.fragment(run_every="60s")` para panel; selectores VAN AFUERA del fragment para preservar estado entre reruns.
+- **Sidebar routing + permalinks**: `PAGE_OPTIONS` list + `PAGE_SLUGS` dict en `dashboard/app.py`. URL `?vista=<slug>` setea inicial, escribe el slug al cambiar.
+- **Modo fullscreen global**: `?fullscreen=1` oculta sidebar via CSS, padding 0.4rem, max-width 100%.
+- **RAMMB resiliente**: `fetch_frame_robust(product, timestamps, bounds, zoom_preferred, zoom_fallback)` en `src/fetch/rammb_slider.py` — RAMMB falla intermitente en `eumetsat_ash`/`jma_so2` zoom=4. Devuelve `(img, ts_usado, zoom_usado)`.
+
+## Gotchas conocidos
+- **Streamlit Cloud import errors**: `from src.X import Y` desde módulos en `dashboard/` puede romperse por cache stale entre deploys (aunque funcione local). Fix: inline el dato en `dashboard/` o usar lazy import dentro de funciones.
+- **Plotly scaleratio en lat/lon**: con `scaleratio=1` los círculos geográficos se ven como óvalos. Usar `scaleratio = 1/cos(lat)` para 1 km vertical = 1 km horizontal visual.
+- **Título Plotly largo achica el plot**: wrappea a 2 líneas si pasa de ~30 chars. Usar `title=""` y poner el label en `st.markdown` arriba del plot.
+- **Calbuco 2015 NO sirve para test de plataforma**: RAMMB no archiva GOES-13. Usar eventos recientes (Sangay, Reventador, Sabancaya) del archive GOES-19 ~28 días.
+
+## Comandos comunes
+- `python -m pytest tests/ -q` — 44 tests (smoke imports, Planck round-trip, geo subsatélite)
+- Workflow `goes.yml` corre cada 10 min, escribe `STATUS_NRT.md` (NO `STATUS.md`)
+- Workflow `hotspots_daily.yml` corre 02:00 UTC, regenera `data/hotspots_daily.json` para Heatmap
+- Workflow `lascar_pdf.yml` corre 11:00 UTC, genera reporte PDF en `reports/lascar/`
+
 ## Testing
-- Verificar contra eventos conocidos: Calbuco 2015, Puyehue 2011
+- Verificar contra eventos conocidos: Calbuco 2015 (sólo para Wen-Rose con L1b GOES-13, no RAMMB), Puyehue 2011
 - Siempre verificar geolocalización con volcanes de coordenadas conocidas
 
 ## Mantener INTEGRATION.md actualizado

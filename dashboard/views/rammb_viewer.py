@@ -710,9 +710,10 @@ def render():
 
     st.markdown(
         '<div style="font-size:0.78rem; color:#556677; margin:0.3rem 0 0.5rem 0;">'
-        'Presiona <b>▶ Play</b> para ver la animacion. Slider inferior '
-        '(UTC) navega frame a frame. Cada etiqueta del titulo muestra UTC + hora Chile.'
-        '</div>',
+        'Controles: presioná <b>▶ Play</b> arriba a la izquierda del plot · '
+        'slider inferior (UTC) para navegar frame por frame · '
+        '<i>atajos de teclado pendientes — sesión dedicada futura</i> '
+        '(refactor de la animación a Streamlit-state, ~300 LOC)</div>',
         unsafe_allow_html=True,
     )
 

@@ -1,0 +1,45 @@
+name: Hot spots daily build
+
+on:
+  schedule:
+    # 02:00 UTC diario — captura las ultimas 24h de hot spots
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements_actions.txt
+
+      - name: Build hotspots_daily.json
+        run: python scripts/build_hotspots_daily.py
+
+      - name: Commit JSON
+        run: |
+          git config user.name "GOESBot"
+          git config user.email "goes-bot@noreply"
+          git add data/hotspots_daily.json 2>/dev/null || true
+          if git diff --quiet --staged 2>/dev/null; then
+            echo "Sin cambios"
+          else
+            DATE=$(date -u +'%Y-%m-%d')
+            git commit -m "hotspots: rolling daily count $DATE"
+            git pull origin main --rebase -X ours 2>/dev/null || true
+            git push origin main || true
+          fi

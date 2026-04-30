@@ -11,8 +11,10 @@ pre-cocinado en GitHub Actions.
 Usar como termómetro visual de "qué se está moviendo en Chile".
 """
 
+import json
 import logging
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 import numpy as np
 import plotly.graph_objects as go
@@ -26,6 +28,18 @@ logger = logging.getLogger(__name__)
 
 LOOKBACK_DAYS = 7
 RADIUS_KM = 50
+HISTORIC_PATH = Path(__file__).parent.parent.parent / "data" / "hotspots_daily.json"
+
+
+def _load_historic() -> dict:
+    """Lee hotspots_daily.json (pre-cocinado por GitHub Action)."""
+    if not HISTORIC_PATH.exists():
+        return {}
+    try:
+        return json.loads(HISTORIC_PATH.read_text()).get("days", {})
+    except Exception as e:
+        logger.warning("hotspots_daily.json corrupto: %s", e)
+        return {}
 
 
 @st.cache_data(ttl=600, show_spinner="Calculando hot spots última hora…")
@@ -102,15 +116,19 @@ def render():
 
     today = datetime.now(timezone.utc)
 
-    # MVP: solo el día actual con datos reales; los días anteriores son placeholders
-    # que indican "datos pendientes" (necesitan backfill).
+    # Hoy: datos reales calculados live. Dias previos: del archivo historico
+    # pre-cocinado por GitHub Action (.github/workflows/hotspots_daily.yml).
     counts_today = _count_hotspots_per_volcano(_hotspots_today())
+    historic = _load_historic()
 
-    # Para días anteriores: 0 (placeholder honest, no inventado)
     counts_by_day = []
     for i in range(LOOKBACK_DAYS):
+        day = today - timedelta(days=i)
+        day_key = day.strftime("%Y-%m-%d")
         if i == 0:
             counts_by_day.insert(0, counts_today)
+        elif day_key in historic:
+            counts_by_day.insert(0, historic[day_key])
         else:
             counts_by_day.insert(0, {})  # placeholder vacio
 
@@ -130,14 +148,19 @@ def render():
             f"{len(PRIORITY_VOLCANOES)} volcanes prioritarios. Calma operacional."
         )
 
-    st.warning(
-        "**MVP — solo día actual con datos reales.** Los 6 días anteriores "
-        "aparecen vacíos porque escanear el archivo NOAA FDCF S3 de cada día "
-        "(~144 archivos × 7 = 1000 fetches) es lento desde el dashboard. "
-        "Para versión histórica completa, agendar un **GitHub Action diario** "
-        "que pre-cocine los conteos y los guarde en `data/hotspots_daily.json`. "
-        "Sesión futura — ~3-4 h de trabajo."
-    )
+    historic_days = sum(1 for c in counts_by_day[:-1] if c)
+    if historic_days > 0:
+        st.success(
+            f"📊 Histórico: {historic_days}/{LOOKBACK_DAYS - 1} días cargados "
+            f"desde `data/hotspots_daily.json` (pre-cocinado por GitHub Action diario)."
+        )
+    else:
+        st.info(
+            "📊 Días anteriores aparecen vacíos hasta que el GitHub Action "
+            "diario (`.github/workflows/hotspots_daily.yml`) corra al menos "
+            "una vez. La primera corrida es a las 02:00 UTC del día siguiente "
+            "al deploy."
+        )
 
     # Tabla de detalles del día
     if counts_today:

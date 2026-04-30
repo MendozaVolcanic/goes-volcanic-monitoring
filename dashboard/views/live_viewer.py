@@ -14,6 +14,7 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
+from dashboard.map_helpers import add_chile_border
 from dashboard.style import C_ACCENT, header, info_panel, kpi_card, refresh_info_badge
 from dashboard.utils import (
     fmt_both_long, fmt_chile, now_utc, parse_rammb_ts, utc_to_chile,
@@ -270,6 +271,10 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str,
             hovertext=f"<b>{highlight_volcano.name}</b><br>{highlight_volcano.elevation:,} m",
             hoverinfo="text", showlegend=False,
         ))
+
+    # Frontera de Chile — overlay en todos los mapas para referencia
+    # geografica clara (linea blanca semi-transparente).
+    add_chile_border(fig)
 
     # Mapas grandes — el contenido es el mapa, no metadata. Margenes
     # chicos para aprovechar pantalla. Altura default 760 (era 640).

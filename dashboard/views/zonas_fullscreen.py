@@ -23,6 +23,7 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
+from dashboard.map_helpers import add_chile_border
 from dashboard.utils import fmt_chile, parse_rammb_ts
 from src.config import VOLCANIC_ZONES
 from src.fetch.goes_fdcf import HotSpot, fetch_latest_hotspots
@@ -124,6 +125,9 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
                         line=dict(color="white", width=1)),
             text=labels_hs, hoverinfo="text", showlegend=False,
         ))
+
+    # Frontera de Chile (overlay)
+    add_chile_border(fig)
 
     # Aspect ratio correcto en km (mismo fix que modo_guardia_volcan)
     cos_lat = max(0.1, float(np.cos(np.radians(

@@ -27,6 +27,7 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
+from dashboard.map_helpers import add_chile_border
 from dashboard.utils import fmt_chile, parse_rammb_ts
 from src.fetch.goes_fdcf import HotSpot, fetch_latest_hotspots
 from src.fetch.rammb_slider import (
@@ -145,6 +146,9 @@ def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name:
                         line=dict(color="white", width=1)),
             text=temps, hoverinfo="text", name=f"Hot spots NOAA ({len(hotspots)})",
         ))
+
+    # Frontera de Chile (overlay en blanco semi-transparente)
+    add_chile_border(fig)
 
     fig.update_xaxes(range=[b["lon_min"], b["lon_max"]],
                      showgrid=False, title="")
@@ -288,6 +292,25 @@ def _mosaico_subtab():
     mosaico_panel()
 
 
+def _zonas_subtab():
+    """Sub-tab Por Zona Volcánica: las 4 zonas en grilla 2x2."""
+    from dashboard.views.zonas_fullscreen import _grid_4_zonas, PRODUCT_OPTIONS
+
+    cols = st.columns([1, 1, 1, 2])
+    with cols[0]:
+        product = st.selectbox(
+            "Producto",
+            options=list(PRODUCT_OPTIONS.keys()),
+            format_func=lambda k: PRODUCT_OPTIONS[k],
+            index=0, key="mg_zonas_product",
+        )
+    with cols[1]:
+        show_volc = st.toggle("🔺 Volcanes", value=True, key="mg_zonas_volc")
+    with cols[2]:
+        show_hs = st.toggle("🔥 Hot spots", value=True, key="mg_zonas_hs")
+    _grid_4_zonas(product, show_volc, show_hs)
+
+
 def _volcan_subtab():
     """Sub-tab Volcan: zoom volcan con 3 productos + viento + anillos + captura."""
     from dashboard.views.modo_guardia_volcan import _live_panel as volcan_panel
@@ -309,8 +332,9 @@ def _volcan_subtab():
         )
     with cols[2]:
         show_rings = st.toggle(
-            "⊙ Anillos", value=False, key="mg_rings",
-            help="Anillos de distancia 5/10/25/50 km desde el crater.",
+            "⊙ Anillos", value=True, key="mg_rings",
+            help="Anillos de distancia 5/10/25/50 km desde el crater. "
+                 "Útil para medir largo de pluma volcánica.",
         )
     with cols[3]:
         enable_capture = st.toggle(
@@ -352,14 +376,17 @@ def render():
         unsafe_allow_html=True,
     )
 
-    sub_chile, sub_mosaico, sub_volcan, sub_loop = st.tabs([
+    sub_chile, sub_zonas, sub_mosaico, sub_volcan, sub_loop = st.tabs([
         "🌎 Chile (vista nacional)",
+        "🗺 Por Zona Volcánica",
         "🗺 Mosaico 8 prioritarios",
         "🔬 Volcán (3 productos)",
         "🎞 Loop 2h",
     ])
     with sub_chile:
         _chile_subtab()
+    with sub_zonas:
+        _zonas_subtab()
     with sub_mosaico:
         _mosaico_subtab()
     with sub_volcan:

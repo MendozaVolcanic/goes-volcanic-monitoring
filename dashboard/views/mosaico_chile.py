@@ -206,14 +206,13 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
     next_idx = (idx + 1) % len(PRODUCT_LIST_TV)
     st.session_state[session_key] = next_idx
 
-    # Etiqueta minimal arriba del grid
-    st.markdown(
-        f"<div style='display:inline-block; "
-        f"background:rgba(0,0,0,0.55); color:#ff6644; padding:4px 10px; "
-        f"border-radius:4px; font-size:0.78rem; font-weight:700; "
-        f"margin-bottom:0.3rem;'>"
-        f"🔄 Mosaico 8 prioritarios · {PRODUCT_OPTIONS[current]}</div>",
-        unsafe_allow_html=True,
+    # Leyenda compacta interpretativa en el espacio negro superior.
+    # Cambia con el producto rotante.
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(
+        current,
+        extra_left=(f"<span style='color:#ff6644; font-weight:700; "
+                    f"margin-right:0.2rem;'>🔄 Mosaico 8 ·</span>"),
     )
 
     timestamps = _recent_timestamps(current, n=5)

@@ -176,7 +176,7 @@ def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
     next_product = PRODUCT_LIST[next_idx]
 
     if chrome:
-        # Banner de rotacion arriba
+        # Banner de rotacion arriba (modo normal con toolbar)
         st.markdown(
             f"<div style='background:linear-gradient(90deg, rgba(204,51,17,0.2), "
             f"rgba(238,119,51,0.2)); border-left:4px solid #ff6644; "
@@ -190,15 +190,13 @@ def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
             unsafe_allow_html=True,
         )
     else:
-        # Modo TV puro: etiqueta minimalista en flujo normal (sin position
-        # fixed, que rompe en algunos navegadores en Streamlit Cloud).
-        st.markdown(
-            f"<div style='display:inline-block; "
-            f"background:rgba(0,0,0,0.55); color:#ff6644; padding:4px 10px; "
-            f"border-radius:4px; font-size:0.78rem; font-weight:700; "
-            f"margin-bottom:0.3rem;'>"
-            f"🔄 {PRODUCT_OPTIONS[current]}</div>",
-            unsafe_allow_html=True,
+        # Modo TV puro: leyenda compacta interpretativa que cambia con el
+        # producto. Aprovecha el espacio negro superior.
+        from dashboard.map_helpers import render_compact_legend
+        render_compact_legend(
+            current,
+            extra_left=(f"<span style='color:#ff6644; font-weight:700; "
+                        f"margin-right:0.2rem;'>🔄</span>"),
         )
 
     st.session_state[session_key] = next_idx

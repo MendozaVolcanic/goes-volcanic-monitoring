@@ -86,6 +86,77 @@ _BORDER = [
 ]
 
 
+# Leyendas inline compactas para los 3 productos (modo TV).
+# Se renderizan como una sola fila horizontal — caben en el espacio
+# negro de la parte superior sin alterar las proporciones del grid.
+_LEGEND_ITEMS = {
+    "eumetsat_ash": [
+        ("#ff3344", "Ceniza"),
+        ("#bbff44", "Cirros / nubes altas"),
+        ("#ee9944", "Mezcla ceniza+SO2"),
+        ("#88aacc", "Superficie"),
+        ("#445566", "Nubes met."),
+    ],
+    "jma_so2": [
+        ("#44dd66", "SO2"),
+        ("#bbff44", "Cirros"),
+        ("#dd4488", "Ash + SO2"),
+        ("#88aacc", "Superficie"),
+        ("#445566", "Nubes met."),
+    ],
+    "geocolor": [
+        ("#ffffff", "Nubes / nieve"),
+        ("#88bb44", "Vegetación"),
+        ("#aa8855", "Suelo desnudo"),
+        ("#3344aa", "Agua / océano"),
+        ("#222244", "Noche (IR)"),
+    ],
+}
+
+_PRODUCT_LABELS_TV = {
+    "eumetsat_ash": "Ash RGB · EUMETSAT B15-B14 / B14-B11 / B13",
+    "jma_so2": "SO2 RGB · JMA B07-B09 / B09-B11",
+    "geocolor": "GeoColor · Visible mejorado (CIRA)",
+}
+
+
+def render_compact_legend(product: str, extra_left: str = "",
+                          height_px: int = 36) -> None:
+    """Renderiza una leyenda compacta horizontal para el modo TV.
+
+    Aprovecha el espacio negro arriba de los mapas con swatches +
+    labels cortos. Cambia segun el producto actual (Ash / SO2 / GeoColor).
+
+    `extra_left`: HTML opcional para agregar a la izquierda (ej. el
+    marcador '🔄 Mosaico ·' que ya existe).
+    """
+    import streamlit as st
+    items = _LEGEND_ITEMS.get(product, [])
+    label = _PRODUCT_LABELS_TV.get(product, product)
+    html = (
+        f'<div style="display:flex; gap:0.8rem; align-items:center; '
+        f'background:rgba(0,0,0,0.65); padding:6px 14px; border-radius:4px; '
+        f'margin-bottom:0.3rem; height:{height_px}px; '
+        f'font-size:0.76rem; color:#e0e0e0; flex-wrap:wrap;">'
+    )
+    if extra_left:
+        html += extra_left
+    html += (
+        f'<span style="color:#ff6644; font-weight:700; '
+        f'border-right:1px solid #334; padding-right:0.7rem; '
+        f'margin-right:0.2rem;">{label}</span>'
+    )
+    for color, txt in items:
+        html += (
+            f'<span style="display:flex; align-items:center; gap:4px;">'
+            f'<span style="display:inline-block; width:11px; height:11px; '
+            f'background:{color}; border:1px solid rgba(255,255,255,0.3); '
+            f'border-radius:2px;"></span>{txt}</span>'
+        )
+    html += '</div>'
+    st.markdown(html, unsafe_allow_html=True)
+
+
 def add_chile_border(fig: go.Figure, color: str = "rgba(255,255,255,0.65)",
                      width: float = 1.4, dash: str = "solid",
                      smooth: bool = True) -> go.Figure:

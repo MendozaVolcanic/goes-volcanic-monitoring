@@ -436,7 +436,14 @@ def render():
             return
         elif tv_mode == "volcan":
             from dashboard.views.modo_guardia_volcan import _live_panel as volcan_panel
+            from dashboard.map_helpers import render_compact_legend
             volcan_name = st.query_params.get("volcan", "Villarrica")
+            # Leyenda combinada: muestra los 3 productos uno al lado del otro
+            # en una sola fila — coincide con el grid de 3 columnas debajo.
+            cols = st.columns(3)
+            for col, prod in zip(cols, ["eumetsat_ash", "geocolor", "jma_so2"]):
+                with col:
+                    render_compact_legend(prod, height_px=34)
             volcan_panel(volcan_name, show_wind=False, show_rings=True,
                          enable_capture=False)
             return

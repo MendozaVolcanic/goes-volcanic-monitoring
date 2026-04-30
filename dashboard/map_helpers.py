@@ -101,8 +101,10 @@ def add_chile_border(fig: go.Figure, color: str = "rgba(255,255,255,0.65)",
     coast_lats = [pt[0] for pt in coast]
     border_lons = [pt[1] for pt in border]
     border_lats = [pt[0] for pt in border]
-    line_style = dict(color=color, width=width, dash=dash, shape="spline",
-                      smoothing=0.5)
+    # NOTA: shape='spline' rompe en algunas versiones Plotly/Streamlit Cloud.
+    # Usamos shape='linear' (default) — la densidad de puntos ya da curvas
+    # visualmente suaves sin necesidad de spline.
+    line_style = dict(color=color, width=width, dash=dash)
     fig.add_trace(go.Scatter(
         x=coast_lons, y=coast_lats, mode="lines",
         line=line_style,

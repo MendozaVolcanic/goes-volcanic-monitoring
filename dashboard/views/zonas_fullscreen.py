@@ -190,11 +190,13 @@ def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
             unsafe_allow_html=True,
         )
     else:
-        # Modo TV puro: solo etiqueta minimalista flotante en esquina
+        # Modo TV puro: etiqueta minimalista en flujo normal (sin position
+        # fixed, que rompe en algunos navegadores en Streamlit Cloud).
         st.markdown(
-            f"<div style='position:fixed; top:8px; left:8px; z-index:1000; "
+            f"<div style='display:inline-block; "
             f"background:rgba(0,0,0,0.55); color:#ff6644; padding:4px 10px; "
-            f"border-radius:4px; font-size:0.78rem; font-weight:700;'>"
+            f"border-radius:4px; font-size:0.78rem; font-weight:700; "
+            f"margin-bottom:0.3rem;'>"
             f"🔄 {PRODUCT_OPTIONS[current]}</div>",
             unsafe_allow_html=True,
         )

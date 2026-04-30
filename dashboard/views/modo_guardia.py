@@ -418,13 +418,17 @@ def render():
     """
     tv_mode = st.query_params.get("tv", "")
     if tv_mode:
-        # Boton "Salir TV puro" en esquina sup. IZQUIERDA (right tapaba dev tools)
+        # Boton "Salir TV puro" en esquina sup. IZQUIERDA.
+        # Usamos onclick con window.top.location explicito porque
+        # target='_top' con URLs relativas falla en Streamlit Cloud iframe.
         st.markdown(
-            '<a href="?vista=guardia&fullscreen=0&tv=" target="_top" '
+            '<a href="#" '
+            'onclick="window.top.location.search=\'?vista=guardia\'; return false;" '
             'style="position:fixed; top:8px; left:8px; z-index:1000; '
             'background:rgba(0,0,0,0.65); color:#ff6644; padding:6px 12px; '
             'border-radius:4px; text-decoration:none; font-size:0.78rem; '
-            'border:1px solid #ff6644;">✖ Salir TV puro</a>',
+            'border:1px solid #ff6644; cursor:pointer;">'
+            '✖ Salir TV puro</a>',
             unsafe_allow_html=True,
         )
         if tv_mode == "mosaico":

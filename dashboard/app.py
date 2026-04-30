@@ -44,14 +44,20 @@ if _fullscreen:
         """,
         unsafe_allow_html=True,
     )
-    # Boton flotante para salir del modo fullscreen — esquina IZQUIERDA
-    # (la derecha la usan dev tools del navegador)
+    # Boton flotante para salir del modo fullscreen — esquina IZQUIERDA.
+    # onclick con window.top.location explicito (target='_top' con URL
+    # relativa no funciona en iframe de Streamlit Cloud).
+    # Preservamos otros query params (vista, tv) y solo quitamos fullscreen.
     st.markdown(
-        '<a href="?fullscreen=0" target="_top" '
+        '<a href="#" '
+        'onclick="var p=new URLSearchParams(window.top.location.search);'
+        "p.delete('fullscreen');"
+        'window.top.location.search=p.toString(); return false;" '
         'style="position:fixed; top:8px; left:140px; z-index:9999; '
         'background:rgba(0,0,0,0.65); color:#ff6644; padding:6px 12px; '
         'border-radius:6px; text-decoration:none; font-size:0.78rem; '
-        'border:1px solid #ff6644;">✖ Salir fullscreen</a>',
+        'border:1px solid #ff6644; cursor:pointer;">'
+        '✖ Salir fullscreen</a>',
         unsafe_allow_html=True,
     )
 

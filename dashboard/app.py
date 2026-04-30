@@ -14,18 +14,20 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 from dashboard.style import inject_css
 
-# Determinar estado inicial del sidebar segun ?fullscreen=1 en URL
-_qp_init = st.query_params
-_fullscreen = _qp_init.get("fullscreen") == "1"
-
+# IMPORTANTE: st.set_page_config debe ser la PRIMERA llamada Streamlit.
+# NO podemos llamar st.query_params antes — eso crashea con
+# "set_page_config must be the first Streamlit command".
 st.set_page_config(
     page_title="GOES Volcanic Monitor - Chile",
     page_icon="🌋",
     layout="wide",
-    initial_sidebar_state="collapsed" if _fullscreen else "expanded",
+    initial_sidebar_state="expanded",  # CSS lo oculta si ?fullscreen=1
 )
 
 inject_css()
+
+# Ahora SI podemos leer query params
+_fullscreen = st.query_params.get("fullscreen") == "1"
 
 # CSS extra cuando fullscreen=1: oculta sidebar completamente y maximiza area
 if _fullscreen:

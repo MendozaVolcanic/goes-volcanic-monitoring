@@ -286,20 +286,28 @@ def _chile_subtab():
     _live_panel(volcan)
 
 
+def _activate_tv(tv_value: str, **extra):
+    """Setea query_params para entrar en modo TV puro y rerun.
+
+    Mas confiable que <a target='_top'> con URLs relativas dentro del
+    iframe sandbox de Streamlit Cloud.
+    """
+    st.query_params["vista"] = "guardia"
+    st.query_params["fullscreen"] = "1"
+    st.query_params["tv"] = tv_value
+    for k, v in extra.items():
+        st.query_params[k] = v
+    st.rerun()
+
+
 def _mosaico_subtab():
     """Sub-tab Mosaico: 8 prioritarios en grid 4x2."""
     from dashboard.views.mosaico_chile import _live_panel as mosaico_panel
-    # Boton TV puro mosaico
-    st.markdown(
-        '<a href="?vista=guardia&fullscreen=1&tv=mosaico" target="_top" '
-        'style="display:inline-block; '
-        'background:linear-gradient(135deg, #CC3311, #EE7733); '
-        'color:white; padding:0.5rem 1rem; border-radius:6px; '
-        'text-decoration:none; font-weight:700; font-size:0.9rem; '
-        'margin-bottom:0.6rem;">'
-        '🖥 Activar TV puro · Mosaico (rotando productos cada 10s)</a>',
-        unsafe_allow_html=True,
-    )
+    if st.button(
+        "🖥 Activar TV puro · Mosaico (rotando productos cada 10s)",
+        key="btn_tv_mosaico", type="primary", use_container_width=False,
+    ):
+        _activate_tv("mosaico")
     mosaico_panel()
 
 
@@ -309,22 +317,17 @@ def _zonas_subtab():
         _grid_4_zonas, _rotating_grid_4_zonas, PRODUCT_OPTIONS, ROTATION_SECONDS,
     )
 
-    # Boton de "Activar TV puro" — navega a ?tv=1 que oculta TODO el chrome
-    # (header modo guardia + sub-tabs + toolbar). Solo se ven las imagenes.
-    st.markdown(
-        '<a href="?vista=guardia&fullscreen=1&tv=1" target="_top" '
-        'style="display:inline-block; '
-        'background:linear-gradient(135deg, #CC3311, #EE7733); '
-        'color:white; padding:0.5rem 1rem; border-radius:6px; '
-        'text-decoration:none; font-weight:700; font-size:0.9rem; '
-        'margin-bottom:0.6rem;">'
-        '🖥 Activar TV puro (rotando productos cada 10s)</a>',
-        unsafe_allow_html=True,
-    )
+    # Boton activar TV puro — st.button con callback (mas confiable que <a>
+    # con URLs relativas dentro del iframe sandbox de Streamlit Cloud)
+    if st.button(
+        "🖥 Activar TV puro (4 zonas, rotando productos cada 10s)",
+        key="btn_tv_zonas", type="primary", use_container_width=False,
+    ):
+        _activate_tv("1")
     st.caption(
         "TV puro = solo los 4 mapas a pantalla completa rotando productos. "
         "Sin header, sin sub-tabs, sin toolbar. Pensado para monitor 24/7. "
-        "Botón ✖ arriba a la derecha para salir."
+        "Botón ✖ arriba a la izquierda para salir."
     )
 
     # Modo normal con toolbar completa (no TV puro)
@@ -370,18 +373,12 @@ def _volcan_subtab():
             label_visibility="collapsed",
             key="mg_volcan_selector",
         )
-    # Boton TV puro volcan (lleva el volcan seleccionado en URL)
-    st.markdown(
-        f'<a href="?vista=guardia&fullscreen=1&tv=volcan&volcan={volcan}" '
-        f'target="_top" '
-        f'style="display:inline-block; '
-        f'background:linear-gradient(135deg, #CC3311, #EE7733); '
-        f'color:white; padding:0.4rem 0.9rem; border-radius:6px; '
-        f'text-decoration:none; font-weight:700; font-size:0.85rem; '
-        f'margin-bottom:0.4rem;">'
-        f'🖥 Activar TV puro · {volcan} (3 productos)</a>',
-        unsafe_allow_html=True,
-    )
+    # Boton TV puro volcan (lleva el volcan seleccionado en query_params)
+    if st.button(
+        f"🖥 Activar TV puro · {volcan} (3 productos)",
+        key="btn_tv_volcan", type="primary", use_container_width=False,
+    ):
+        _activate_tv("volcan", volcan=volcan)
     with cols[1]:
         show_wind = st.toggle(
             "💨 Viento", value=False, key="mg_wind",

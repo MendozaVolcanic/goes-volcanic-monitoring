@@ -291,7 +291,7 @@ def _mosaico_subtab():
     from dashboard.views.mosaico_chile import _live_panel as mosaico_panel
     # Boton TV puro mosaico
     st.markdown(
-        '<a href="?vista=guardia&fullscreen=1&tv=mosaico" target="_self" '
+        '<a href="?vista=guardia&fullscreen=1&tv=mosaico" target="_top" '
         'style="display:inline-block; '
         'background:linear-gradient(135deg, #CC3311, #EE7733); '
         'color:white; padding:0.5rem 1rem; border-radius:6px; '
@@ -312,7 +312,7 @@ def _zonas_subtab():
     # Boton de "Activar TV puro" — navega a ?tv=1 que oculta TODO el chrome
     # (header modo guardia + sub-tabs + toolbar). Solo se ven las imagenes.
     st.markdown(
-        '<a href="?vista=guardia&fullscreen=1&tv=1" target="_self" '
+        '<a href="?vista=guardia&fullscreen=1&tv=1" target="_top" '
         'style="display:inline-block; '
         'background:linear-gradient(135deg, #CC3311, #EE7733); '
         'color:white; padding:0.5rem 1rem; border-radius:6px; '
@@ -373,7 +373,7 @@ def _volcan_subtab():
     # Boton TV puro volcan (lleva el volcan seleccionado en URL)
     st.markdown(
         f'<a href="?vista=guardia&fullscreen=1&tv=volcan&volcan={volcan}" '
-        f'target="_self" '
+        f'target="_top" '
         f'style="display:inline-block; '
         f'background:linear-gradient(135deg, #CC3311, #EE7733); '
         f'color:white; padding:0.4rem 0.9rem; border-radius:6px; '
@@ -423,7 +423,7 @@ def render():
     if tv_mode:
         # Boton "Salir TV puro" en esquina sup. IZQUIERDA (right tapaba dev tools)
         st.markdown(
-            '<a href="?vista=guardia&fullscreen=0&tv=" target="_self" '
+            '<a href="?vista=guardia&fullscreen=0&tv=" target="_top" '
             'style="position:fixed; top:8px; left:8px; z-index:1000; '
             'background:rgba(0,0,0,0.65); color:#ff6644; padding:6px 12px; '
             'border-radius:4px; text-decoration:none; font-size:0.78rem; '

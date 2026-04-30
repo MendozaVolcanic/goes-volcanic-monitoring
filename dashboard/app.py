@@ -47,7 +47,7 @@ if _fullscreen:
     # Boton flotante para salir del modo fullscreen — esquina IZQUIERDA
     # (la derecha la usan dev tools del navegador)
     st.markdown(
-        '<a href="?fullscreen=0" target="_self" '
+        '<a href="?fullscreen=0" target="_top" '
         'style="position:fixed; top:8px; left:140px; z-index:9999; '
         'background:rgba(0,0,0,0.65); color:#ff6644; padding:6px 12px; '
         'border-radius:6px; text-decoration:none; font-size:0.78rem; '
@@ -115,7 +115,7 @@ with st.sidebar:
     # ── Modo Fullscreen ──────────────────────────────────────────
     st.markdown("---")
     fs_link = (
-        f'<a href="?vista={_slug_for_page}&fullscreen=1" target="_self" '
+        f'<a href="?vista={_slug_for_page}&fullscreen=1" target="_top" '
         f'style="display:block; text-align:center; '
         f'background:linear-gradient(135deg, #CC3311, #EE7733); '
         f'color:white; padding:0.55rem 0.8rem; border-radius:6px; '

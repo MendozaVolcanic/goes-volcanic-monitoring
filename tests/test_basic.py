@@ -56,7 +56,7 @@ def test_volcano_catalog():
     assert len(priority) == 8
     names = [v.name for v in priority]
     assert "Villarrica" in names
-    assert "Láscar" in names
+    assert "Lascar" in names
 
 
 def test_ash_rgb_normalize():

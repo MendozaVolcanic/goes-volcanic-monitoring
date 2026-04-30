@@ -14,14 +14,43 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import streamlit as st
 from dashboard.style import inject_css
 
+# Determinar estado inicial del sidebar segun ?fullscreen=1 en URL
+_qp_init = st.query_params
+_fullscreen = _qp_init.get("fullscreen") == "1"
+
 st.set_page_config(
     page_title="GOES Volcanic Monitor - Chile",
     page_icon="🌋",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed" if _fullscreen else "expanded",
 )
 
 inject_css()
+
+# CSS extra cuando fullscreen=1: oculta sidebar completamente y maximiza area
+if _fullscreen:
+    st.markdown(
+        """
+        <style>
+          [data-testid="stSidebar"] { display: none !important; }
+          [data-testid="stHeader"] { background: rgba(0,0,0,0); height: 0; }
+          .block-container {
+            padding: 0.4rem !important;
+            max-width: 100% !important;
+          }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+    # Boton flotante para salir del modo fullscreen
+    st.markdown(
+        '<a href="?fullscreen=0" target="_self" '
+        'style="position:fixed; top:8px; right:14px; z-index:9999; '
+        'background:rgba(0,0,0,0.6); color:#ff6644; padding:6px 12px; '
+        'border-radius:6px; text-decoration:none; font-size:0.78rem; '
+        'border:1px solid #ff6644;">✖ Salir fullscreen</a>',
+        unsafe_allow_html=True,
+    )
 
 # ── Sidebar ──────────────────────────────────────────────────────
 with st.sidebar:
@@ -46,8 +75,8 @@ with st.sidebar:
         "🔴 En Vivo", "🛡 Modo Guardia", "🗺 4 Zonas Full Screen",
         "🔀 Comparador",
         "🚨 Modo Evento", "📅 Heatmap actividad",
-        "🔁 Replay Calbuco 2015",
-        "Mapa General", "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
+        "🔁 Replay reciente",
+        "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
         "Animacion (RAMMB)", "📈 Series de tiempo",
     ]
     PAGE_SLUGS = {
@@ -55,8 +84,8 @@ with st.sidebar:
         "zonas": "🗺 4 Zonas Full Screen",
         "comparador": "🔀 Comparador", "evento": "🚨 Modo Evento",
         "heatmap": "📅 Heatmap actividad",
-        "calbuco": "🔁 Replay Calbuco 2015",
-        "mapa": "Mapa General", "ash": "Ash RGB Viewer (L1b + BTD)",
+        "replay": "🔁 Replay reciente",
+        "ash": "Ash RGB Viewer (L1b + BTD)",
         "volcat": "VOLCAT (SSEC)", "animacion": "Animacion (RAMMB)",
         "series": "📈 Series de tiempo",
     }
@@ -79,6 +108,21 @@ with st.sidebar:
     _slug_for_page = next((s for s, p in PAGE_SLUGS.items() if p == page), None)
     if _slug_for_page and qp.get("vista") != _slug_for_page:
         st.query_params["vista"] = _slug_for_page
+
+    # ── Modo Fullscreen ──────────────────────────────────────────
+    st.markdown("---")
+    fs_link = (
+        f'<a href="?vista={_slug_for_page}&fullscreen=1" target="_self" '
+        f'style="display:block; text-align:center; '
+        f'background:linear-gradient(135deg, #CC3311, #EE7733); '
+        f'color:white; padding:0.55rem 0.8rem; border-radius:6px; '
+        f'text-decoration:none; font-weight:700; font-size:0.85rem;">'
+        f'🖥 Modo Pantalla Completa</a>'
+        if _slug_for_page else ""
+    )
+    st.markdown(fs_link, unsafe_allow_html=True)
+    st.caption("Oculta este menú y maximiza el área del mapa. "
+               "Botón ✖ arriba a la derecha para salir.")
 
     st.markdown("---")
 
@@ -126,11 +170,8 @@ elif page == "🚨 Modo Evento":
 elif page == "📅 Heatmap actividad":
     from dashboard.views.heatmap_actividad import render
     render()
-elif page == "🔁 Replay Calbuco 2015":
-    from dashboard.views.replay_calbuco import render
-    render()
-elif page == "Mapa General":
-    from dashboard.views.overview import render
+elif page == "🔁 Replay reciente":
+    from dashboard.views.replay_reciente import render
     render()
 elif page == "Ash RGB Viewer (L1b + BTD)":
     from dashboard.views.ash_viewer import render

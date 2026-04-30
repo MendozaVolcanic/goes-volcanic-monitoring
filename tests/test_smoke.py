@@ -19,7 +19,6 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 VIEWS = [
     "dashboard.views.live_viewer",
-    "dashboard.views.overview",
     "dashboard.views.ash_viewer",
     "dashboard.views.volcat_viewer",
     "dashboard.views.rammb_viewer",
@@ -31,7 +30,7 @@ VIEWS = [
     "dashboard.views.mosaico_chile",
     "dashboard.views.comparador",
     "dashboard.views.loop_volcan",
-    "dashboard.views.replay_calbuco",
+    "dashboard.views.replay_reciente",
     "dashboard.views.modo_evento",
     "dashboard.views.heatmap_actividad",
     "dashboard.views.zonas_fullscreen",

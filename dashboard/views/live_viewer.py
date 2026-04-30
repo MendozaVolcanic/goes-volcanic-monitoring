@@ -1222,9 +1222,12 @@ def _live_content():
                             f'{ZONE_LABELS[zone_key]}</b>'
                         )
                         st.markdown(zone_title, unsafe_allow_html=True)
+                        # Sin titulo en el plot (la zona ya aparece en el
+                        # markdown de arriba). Esto evita que titulos largos
+                        # tipo 'eumetsat_ash' wrappen y achiquen el plot
+                        # respecto a 'geocolor' (titulo corto).
                         fig_z = _make_fig(
-                            img_zona, zone_bounds,
-                            f"{ZONE_LABELS[zone_key]} · {prod_zona} · zoom=3",
+                            img_zona, zone_bounds, "",
                             volc_layer=volc_layer,
                         )
                         if show_hotspots:

@@ -588,8 +588,21 @@ def render():
                 border-radius: 4px !important;
               }
               [data-testid="stHorizontalBlock"] {
-                gap: 0.4rem !important;
-                margin-bottom: 0.2rem !important;
+                gap: 0.15rem !important;
+                margin-bottom: 0 !important;
+              }
+              /* Colapsa gap entre filas verticales — clave para grids 4x2 */
+              [data-testid="stVerticalBlock"] {
+                gap: 0.15rem !important;
+              }
+              /* Plotly chart container sin padding */
+              [data-testid="stPlotlyChart"] {
+                margin: 0 !important;
+                padding: 0 !important;
+              }
+              /* Element container compacto */
+              .element-container {
+                margin-bottom: 0 !important;
               }
             </style>
             """,

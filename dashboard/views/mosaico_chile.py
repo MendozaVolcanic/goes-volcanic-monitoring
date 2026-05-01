@@ -144,9 +144,16 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
                      showgrid=False, visible=False,
                      scaleanchor="x", scaleratio=1.0 / cos_lat)
+    # Title NO va en plotly (eats ~25px). El nombre del volcan se renderiza
+    # como overlay sobre la esquina sup-izq de la imagen para densidad maxima.
+    fig.add_annotation(
+        x=0.02, y=0.98, xref="paper", yref="paper",
+        text=f"<b>{name}</b>", showarrow=False,
+        font=dict(size=12, color="#ffffff"),
+        bgcolor="rgba(0,0,0,0.55)", borderpad=3, xanchor="left", yanchor="top",
+    )
     fig.update_layout(
-        title=dict(text=f"<b>{name}</b>", font=dict(size=12, color="#e0e0e0"), x=0.02),
-        height=height, margin=dict(l=0, r=0, t=25, b=0),
+        height=height, margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
     )
     if img is None:
@@ -269,7 +276,7 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
             with cols[i]:
                 st.plotly_chart(
                     _render_mini(img, v.lat, v.lon, name,
-                                 height=450, show_rings=True),
+                                 height=500, show_rings=True),
                     use_container_width=True,
                     config={"displayModeBar": False},
                 )

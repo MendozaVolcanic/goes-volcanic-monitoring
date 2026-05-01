@@ -354,19 +354,23 @@ def _rotating_chile_tv(volcan_name: str, show_rings: bool = True,
     current = CHILE_PRODUCT_LIST[idx]
     st.session_state[session_key] = (idx + 1) % len(CHILE_PRODUCT_LIST)
 
-    from dashboard.map_helpers import render_compact_legend
+    ts = _latest_ts(current)
+    frame = _chile_frame(current, ts) if ts else None
+    hotspots, _ = _hotspots_chile()
+
+    from dashboard.map_helpers import render_compact_legend, render_scan_status_badge
     render_compact_legend(
         current,
         extra_left=("<span style='color:#ff6644; font-weight:700; "
                     "margin-right:0.4rem;'>🔄</span>"),
+        extra_right=render_scan_status_badge(
+            frame["dt"] if frame else None, ROTATION_SECONDS,
+        ),
     )
 
-    ts = _latest_ts(current)
     if not ts:
         st.error("RAMMB no respondió.")
         return
-    frame = _chile_frame(current, ts)
-    hotspots, _ = _hotspots_chile()
     if frame is None:
         st.warning(f"Imagen {CHILE_PRODUCT_OPTIONS[current]} no disponible.")
         return
@@ -611,14 +615,24 @@ def render():
             return
         elif tv_mode == "volcan":
             from dashboard.views.modo_guardia_volcan import _live_panel as volcan_panel
-            from dashboard.map_helpers import render_compact_legend
+            from dashboard.map_helpers import render_compact_legend, render_scan_status_badge
             volcan_name = st.query_params.get("volcan", "Villarrica")
             # Leyenda combinada: muestra los 3 productos uno al lado del otro
             # en una sola fila — coincide con el grid de 3 columnas debajo.
+            # En el ultimo (jma_so2) inyectamos el badge scan-status para
+            # que aparezca a la derecha sin pisar las leyendas.
             cols = st.columns(3)
-            for col, prod in zip(cols, ["eumetsat_ash", "geocolor", "jma_so2"]):
+            ts = _latest_ts("eumetsat_ash")
+            scan_dt = parse_rammb_ts(ts) if ts else None
+            for i, (col, prod) in enumerate(zip(cols,
+                    ["eumetsat_ash", "geocolor", "jma_so2"])):
                 with col:
-                    render_compact_legend(prod, height_px=34)
+                    render_compact_legend(
+                        prod, height_px=34,
+                        extra_right=render_scan_status_badge(
+                            scan_dt, REFRESH_SECONDS,
+                        ) if i == 2 else "",
+                    )
             volcan_panel(volcan_name, show_wind=False, show_rings=True,
                          enable_capture=False)
             return

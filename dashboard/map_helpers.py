@@ -120,7 +120,59 @@ _PRODUCT_LABELS_TV = {
 }
 
 
+def render_scan_status_badge(scan_dt, refresh_seconds: int,
+                              now=None) -> str:
+    """HTML compacto con hora del scan + edad + cadencia de refresh.
+
+    Devuelve un fragment HTML para insertar en otros banners (no usa
+    st.markdown directamente). Pensado para Modo Sala: el operador ve
+    de un vistazo cuán fresca es la imagen y cuándo viene la próxima
+    actualizacion.
+
+    Args:
+        scan_dt:          datetime UTC del scan satelital (puede ser None).
+        refresh_seconds:  cadencia del fragment (10 = TV rotando,
+                          60 = panel normal).
+        now:              datetime UTC actual (default = now()).
+    """
+    from datetime import datetime, timezone
+    if now is None:
+        now = datetime.now(timezone.utc)
+    if scan_dt is None:
+        return (
+            '<span style="color:#888; font-size:0.78rem;">'
+            f'Sin scan · refresh cada {refresh_seconds}s</span>'
+        )
+    age_min = int((now - scan_dt).total_seconds() / 60)
+    if age_min < 15:
+        c = "#3fb950"
+    elif age_min < 30:
+        c = "#d29922"
+    else:
+        c = "#ff4444"
+    # Hora local Chile aprox = UTC-3 (CLST) o UTC-4 (CLT).
+    # Usamos zoneinfo para que sea correcto segun horario verano/invierno.
+    try:
+        from zoneinfo import ZoneInfo
+        scan_clt = scan_dt.astimezone(ZoneInfo("America/Santiago"))
+        clt_str = scan_clt.strftime("%H:%M CLT")
+    except Exception:
+        clt_str = ""
+    return (
+        f'<span style="font-size:0.78rem; color:#cdd; '
+        f'display:flex; gap:0.6rem; align-items:center;">'
+        f'<span><b style="color:#aabbcc;">Scan:</b> '
+        f'{scan_dt.strftime("%H:%M UTC")}'
+        f'{(" · " + clt_str) if clt_str else ""}</span>'
+        f'<span style="color:{c}; font-weight:700;">·  hace {age_min} min</span>'
+        f'<span style="color:#778; border-left:1px solid #334; '
+        f'padding-left:0.6rem;">↻ refresh cada {refresh_seconds}s</span>'
+        f'</span>'
+    )
+
+
 def render_compact_legend(product: str, extra_left: str = "",
+                          extra_right: str = "",
                           height_px: int = 36) -> None:
     """Renderiza una leyenda compacta horizontal para el modo TV.
 
@@ -152,6 +204,11 @@ def render_compact_legend(product: str, extra_left: str = "",
             f'<span style="display:inline-block; width:11px; height:11px; '
             f'background:{color}; border:1px solid rgba(255,255,255,0.3); '
             f'border-radius:2px;"></span>{txt}</span>'
+        )
+    if extra_right:
+        html += (
+            f'<span style="margin-left:auto; padding-left:0.8rem;">'
+            f'{extra_right}</span>'
         )
     html += '</div>'
     st.markdown(html, unsafe_allow_html=True)

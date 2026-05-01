@@ -238,16 +238,19 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
     next_idx = (idx + 1) % len(PRODUCT_LIST_TV)
     st.session_state[session_key] = next_idx
 
+    timestamps = _recent_timestamps(current, n=5)
+    scan_dt = parse_rammb_ts(timestamps[0]) if timestamps else None
+
     # Leyenda compacta interpretativa en el espacio negro superior.
-    # Cambia con el producto rotante.
-    from dashboard.map_helpers import render_compact_legend
+    # Cambia con el producto rotante. Status badge a la derecha con scan + refresh.
+    from dashboard.map_helpers import render_compact_legend, render_scan_status_badge
     render_compact_legend(
         current,
         extra_left=(f"<span style='color:#ff6644; font-weight:700; "
                     f"margin-right:0.2rem;'>🔄 Mosaico 8 ·</span>"),
+        extra_right=render_scan_status_badge(scan_dt, ROTATION_SECONDS),
     )
 
-    timestamps = _recent_timestamps(current, n=5)
     if not timestamps:
         st.error("RAMMB no respondió.")
         return

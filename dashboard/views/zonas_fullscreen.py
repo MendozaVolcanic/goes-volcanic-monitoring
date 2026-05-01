@@ -191,12 +191,16 @@ def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
         )
     else:
         # Modo TV puro: leyenda compacta interpretativa que cambia con el
-        # producto. Aprovecha el espacio negro superior.
-        from dashboard.map_helpers import render_compact_legend
+        # producto. Aprovecha el espacio negro superior. Status badge a
+        # la derecha con scan + refresh.
+        from dashboard.map_helpers import render_compact_legend, render_scan_status_badge
+        ts_for_status = _recent_ts(current, n=1)
+        scan_dt_status = parse_rammb_ts(ts_for_status[0]) if ts_for_status else None
         render_compact_legend(
             current,
             extra_left=(f"<span style='color:#ff6644; font-weight:700; "
                         f"margin-right:0.2rem;'>🔄</span>"),
+            extra_right=render_scan_status_badge(scan_dt_status, ROTATION_SECONDS),
         )
 
     st.session_state[session_key] = next_idx

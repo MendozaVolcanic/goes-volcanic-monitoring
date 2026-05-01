@@ -29,10 +29,9 @@ from src.fetch.rammb_slider import (
     fetch_animation_frames, fetch_frame_for_bounds,
     get_latest_timestamps, reproject_to_latlon, ts_to_parts,
 )
-from src.fetch.animation_cache import (
-    cache_status, fetch_cached_frames, fetch_manifest,
-    scope_id_nacional, scope_id_volcan, scope_id_zona,
-)
+# NOTA: src.fetch.animation_cache se importa LAZY dentro de _fetch_via_cache
+# y _scope_id_from_bounds_key. Importarlo top-level activa el gotcha
+# "KeyError: 'dashboard.style'" en Streamlit Cloud entre deploys (ver CLAUDE.md).
 from src.fetch.wind_data import fetch_wind_point
 from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_priority, get_volcano
 
@@ -480,6 +479,8 @@ def _fetch_via_cache(scope_id: str, product: str, n_frames: int,
                           "all_ts": [ts, ...]}
     o None si el scope no esta en el cache (caer a flujo legacy).
     """
+    # Lazy import (gotcha Streamlit Cloud — ver CLAUDE.md).
+    from src.fetch.animation_cache import fetch_cached_frames, fetch_manifest
     manifest = fetch_manifest()
     if manifest is None:
         return None
@@ -564,6 +565,8 @@ def _scope_id_from_bounds_key(bounds_key: str) -> str | None:
     a zoom 4, "vz3:<volcan>" para volcan con fallback a zoom 3. Solo los
     primeros dos formatos tienen cache pre-bajado (zona y volcan@zoom4).
     """
+    # Lazy import (gotcha Streamlit Cloud — ver CLAUDE.md).
+    from src.fetch.animation_cache import scope_id_volcan, scope_id_zona
     if bounds_key.startswith("z:"):
         return scope_id_zona(bounds_key[2:])
     if bounds_key.startswith("v:"):

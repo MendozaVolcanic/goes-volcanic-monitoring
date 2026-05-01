@@ -24,7 +24,12 @@ logger = logging.getLogger(__name__)
 
 REFRESH_SECONDS = 60
 ROTATION_SECONDS = 10
-RADIUS_DEG = 0.35
+# Radio del bbox por volcan en el mosaico. 0.5° (~55 km lado-medio) maximiza
+# pixeles reales RAMMB zoom=4 por miniatura sin perder identificacion del crater.
+# Antes era 0.35° (~38 km) -> mas zoom perceptual pero solo ~22x22 px reales
+# que se estiraban a 420 px de pantalla (upscale 19x, look pixelado).
+# 0.5° -> ~32x32 px reales, upscale 13x, mejor balance contexto/detalle.
+RADIUS_DEG = 0.5
 PRODUCT_LIST_TV = ["geocolor", "eumetsat_ash", "jma_so2"]
 
 PRODUCT_OPTIONS = {

@@ -418,19 +418,17 @@ def render():
     """
     tv_mode = st.query_params.get("tv", "")
     if tv_mode:
-        # Boton "Salir TV puro" en esquina sup. IZQUIERDA.
-        # Usamos onclick con window.top.location explicito porque
-        # target='_top' con URLs relativas falla en Streamlit Cloud iframe.
-        st.markdown(
-            '<a href="#" '
-            'onclick="window.top.location.search=\'?vista=guardia\'; return false;" '
-            'style="position:fixed; top:8px; left:8px; z-index:1000; '
-            'background:rgba(0,0,0,0.65); color:#ff6644; padding:6px 12px; '
-            'border-radius:4px; text-decoration:none; font-size:0.78rem; '
-            'border:1px solid #ff6644; cursor:pointer;">'
-            '✖ Salir TV puro</a>',
-            unsafe_allow_html=True,
-        )
+        # Boton SALIR TV puro — st.button nativo (no <a>) porque dentro
+        # del iframe cross-origin de Streamlit Cloud NI target='_top' NI
+        # window.top.location funcionan. st.button con callback siempre
+        # funciona. No es floating pero esta en la primera fila del view.
+        c_exit, c_spacer = st.columns([1, 9])
+        with c_exit:
+            if st.button("✖ Salir TV puro", key="btn_exit_tv",
+                         use_container_width=True):
+                st.query_params.clear()
+                st.query_params["vista"] = "guardia"
+                st.rerun()
         if tv_mode == "mosaico":
             from dashboard.views.mosaico_chile import _grid_fragment_tv
             _grid_fragment_tv()

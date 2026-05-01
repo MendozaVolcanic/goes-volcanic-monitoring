@@ -74,7 +74,7 @@ SOUTH_AMERICA_TILES_Z1 = {"rows": [1], "cols": [0, 1]}
 def get_tiles_for_bounds(
     bounds: dict,
     zoom: int,
-    sat_lon: float = -75.2,
+    sat_lon: float = -75.0,
 ) -> tuple[list[int], list[int]]:
     """Calcular qué tiles RAMMB cubren los bounds lat/lon dados.
 
@@ -209,7 +209,7 @@ def reproject_to_latlon(
     row_start: int,
     out_bounds: dict | None = None,
     out_size: tuple[int, int] | None = None,
-    sat_lon: float = -75.2,
+    sat_lon: float = -75.0,
     zoom: int = 2,
     tile_sz: int | None = None,
 ) -> np.ndarray:
@@ -228,7 +228,11 @@ def reproject_to_latlon(
                     Default: CHILE_REPROJECTED_BOUNDS.
         out_size:  (height, width) de la imagen de salida.
                     Default: REPROJECT_SIZE.
-        sat_lon:   Longitud del satélite en grados (GOES-19 = -75.2).
+        sat_lon:   Longitud del satélite en grados. GOES-19 (GOES-East
+                   operacional desde Apr 2025) está en -75.0°. El valor
+                   viejo -75.2 era de GOES-16 y producía offset de ~17 km
+                   al sur de Chile. Validado contra L1b oficial NOAA y
+                   tests/test_geo.py.
         zoom:      Nivel de zoom RAMMB (2 para Chile).
 
     Returns:
@@ -411,7 +415,7 @@ def fetch_frame_for_bounds(
     ts: str,
     bounds: dict,
     zoom: int = ZOOM_ZONE,
-    sat_lon: float = -75.2,
+    sat_lon: float = -75.0,
 ) -> np.ndarray | None:
     """Descargar y reprojectar el frame para un área geográfica específica.
 
@@ -454,7 +458,7 @@ def fetch_frame_robust(
     bounds: dict,
     zoom_preferred: int = ZOOM_VOLCAN,
     zoom_fallback: int = ZOOM_ZONE,
-    sat_lon: float = -75.2,
+    sat_lon: float = -75.0,
 ) -> tuple[np.ndarray | None, str | None, int]:
     """Fetch con fallback de timestamps Y de zoom.
 

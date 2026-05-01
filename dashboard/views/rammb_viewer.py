@@ -453,7 +453,8 @@ def _build_animation(frames: list[dict], bounds: dict, height: int = 700,
 
 
 # Versión de reproyección — cambiar si se modifica cfac/bounds para invalidar caché
-_REPROJECT_VERSION = "v2"
+# v3 (2026-05-01): fix sat_lon GOES-19 -75.2 -> -75.0 (offset ~17 km al sur).
+_REPROJECT_VERSION = "v3"
 
 
 # ── Cache + delta-fetch helper ────────────────────────────────────────────

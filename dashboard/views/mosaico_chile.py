@@ -89,17 +89,26 @@ def _circle_points(lat0: float, lon0: float, radius_km: float, n: int = 48):
 
 
 def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
-                 height: int = 420, show_rings: bool = False):
+                 height: int = 420, show_rings: bool = False,
+                 target_width_px: int | None = None):
     """Mini-plot cuadrado con bbox compensado por latitud.
 
-    Antes el bbox era ±RADIUS_DEG en ambas dimensiones; con
-    `scaleratio=1/cos_lat` los volcanes a alta latitud (Villarrica -39°)
-    quedaban con padding lateral mientras los de baja latitud (Lascar -23°)
-    llenaban toda la caja. Fix: expandir el rango de lon por 1/cos_lat
-    para que la imagen visible sea siempre ~cuadrada en pantalla.
+    `height` se usa solo si `target_width_px=None`. Si se pasa width,
+    el height se calcula como `width * cos_lat` para que el plot llene
+    el container sin barras negras arriba/abajo (porque scaleanchor
+    requiere proporcion exacta entre x e y en pantalla).
     """
     fig = go.Figure()
     cos_lat = max(0.1, float(np.cos(np.radians(lat))))
+    # Si nos pasaron target_width_px, derivamos height para que el plot
+    # llene el container sin espacio negro. Asumimos que los anillos
+    # circulares deben verse circulares (scaleanchor activo).
+    if target_width_px is not None:
+        # cos_lat ratio: la imagen es lon_span (en grados) = 2R/cos_lat
+        # y lat_span = 2R. Para verse cuadrada en km en pantalla:
+        # height/width = lat_span/lon_span * cos_lat = cos_lat^2.
+        # Empiricamente cos_lat (sin cuadrado) da mejor llenado.
+        height = max(200, int(target_width_px * cos_lat))
     # span en km equivalente: RADIUS_DEG * 111 km. Lon en grados se expande
     # por 1/cos_lat para preservar el mismo span en km horizontal.
     half_lat = RADIUS_DEG
@@ -144,13 +153,18 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
                      showgrid=False, visible=False,
                      scaleanchor="x", scaleratio=1.0 / cos_lat)
-    # Title NO va en plotly (eats ~25px). El nombre del volcan se renderiza
-    # como overlay sobre la esquina sup-izq de la imagen para densidad maxima.
+    # Nombre del volcan: annotation EN COORDENADAS DE DATOS (no paper).
+    # Si fuera paper, scaleanchor empuja el text al espacio negro afuera
+    # de la imagen. En coords de datos, queda siempre adentro del bbox
+    # visible — esquina sup-izq de la imagen real.
     fig.add_annotation(
-        x=0.02, y=0.98, xref="paper", yref="paper",
+        x=bounds["lon_min"], y=bounds["lat_max"],
+        xref="x", yref="y",
         text=f"<b>{name}</b>", showarrow=False,
         font=dict(size=12, color="#ffffff"),
-        bgcolor="rgba(0,0,0,0.55)", borderpad=3, xanchor="left", yanchor="top",
+        bgcolor="rgba(0,0,0,0.65)", borderpad=3,
+        xanchor="left", yanchor="top",
+        xshift=4, yshift=-4,
     )
     fig.update_layout(
         height=height, margin=dict(l=0, r=0, t=0, b=0),
@@ -276,7 +290,7 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
             with cols[i]:
                 st.plotly_chart(
                     _render_mini(img, v.lat, v.lon, name,
-                                 height=500, show_rings=True),
+                                 target_width_px=460, show_rings=True),
                     use_container_width=True,
                     config={"displayModeBar": False},
                 )

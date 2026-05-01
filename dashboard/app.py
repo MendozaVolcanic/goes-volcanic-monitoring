@@ -158,6 +158,32 @@ with st.sidebar:
     )
 
     st.markdown("---")
+    with st.expander("📋 Por hacer", expanded=False):
+        st.markdown(
+            "<div style='font-size:0.74rem; color:#7a8a9a; line-height:1.5;'>"
+            "<b style='color:#aabbcc;'>Mirror en otro proveedor</b> "
+            "<span style='color:#556677;'>(prioridad alta)</span><br>"
+            "Levantar copia del dashboard en HuggingFace Spaces o Render para "
+            "redundancia. Si Streamlit Cloud cae, el mirror sigue. Ambos se "
+            "actualizan solos desde el mismo repo. Costo: $0 en HF Spaces "
+            "(16 GB RAM, 2 vCPU, free).<br>"
+            "<i style='color:#556677;'>Por que un mirror funciona: corre en "
+            "otra maquina, otro OS, version de Python que vos elegis. Bugs "
+            "de infra de Streamlit Cloud (como el race condition de Python "
+            "3.14 que causo los crashes de mayo 2026) no afectan el mirror.</i>"
+            "<br><br>"
+            "<b style='color:#aabbcc;'>Otras ideas</b><br>"
+            "&bull; Auto-spawn del cron de animation_cache cuando GOES "
+            "publica nuevo scan (en vez de cada hora fija).<br>"
+            "&bull; Alertas Telegram/email cuando hot spot supera umbral.<br>"
+            "&bull; Export PDF de Modo Evento con un click.<br>"
+            "&bull; Mirror del dataset en S3 propio (independencia total de "
+            "RAMMB)."
+            "</div>",
+            unsafe_allow_html=True,
+        )
+
+    st.markdown("---")
     st.markdown(
         '<div style="text-align:center; font-size:0.72rem; color:#445566;">'
         '<a href="https://github.com/MendozaVolcanic/goes-volcanic-monitoring" '

@@ -39,6 +39,7 @@ from src.volcanos import PRIORITY_VOLCANOES, get_volcano
 logger = logging.getLogger(__name__)
 
 REFRESH_SECONDS = 60
+ROTATION_SECONDS = 10
 DEFAULT_VOLCANO = "Villarrica"
 
 # Productos disponibles en sub-tab Chile (mismo set que sub-tab Zonas).
@@ -47,6 +48,7 @@ CHILE_PRODUCT_OPTIONS = {
     "geocolor": "GeoColor",
     "jma_so2": "SO2 RGB",
 }
+CHILE_PRODUCT_LIST = list(CHILE_PRODUCT_OPTIONS.keys())
 
 
 # ── Cache helpers ────────────────────────────────────────────────────
@@ -338,9 +340,47 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
     )
 
 
+@st.fragment(run_every=f"{ROTATION_SECONDS}s")
+def _rotating_chile_tv(volcan_name: str, show_rings: bool = True,
+                        session_key: str = "tv_chile_rot_idx"):
+    """Modo Sala Chile: rota productos cada 10s sobre Chile completo.
+
+    chrome=False: solo el mapa, sin banners (TV puro). Leyenda compacta
+    arriba que cambia con el producto.
+    """
+    if session_key not in st.session_state:
+        st.session_state[session_key] = 0
+    idx = st.session_state[session_key] % len(CHILE_PRODUCT_LIST)
+    current = CHILE_PRODUCT_LIST[idx]
+    st.session_state[session_key] = (idx + 1) % len(CHILE_PRODUCT_LIST)
+
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(
+        current,
+        extra_left=("<span style='color:#ff6644; font-weight:700; "
+                    "margin-right:0.4rem;'>🔄</span>"),
+    )
+
+    ts = _latest_ts(current)
+    if not ts:
+        st.error("RAMMB no respondió.")
+        return
+    frame = _chile_frame(current, ts)
+    hotspots, _ = _hotspots_chile()
+    if frame is None:
+        st.warning(f"Imagen {CHILE_PRODUCT_OPTIONS[current]} no disponible.")
+        return
+    fig = _render_chile_with_hotspots(frame, hotspots, volcan_name, current,
+                                       show_rings=show_rings)
+    # Modo Sala: usar todo el alto disponible
+    fig.update_layout(height=920, margin=dict(l=0, r=0, t=2, b=0))
+    st.plotly_chart(fig, use_container_width=True,
+                    config={"displayModeBar": False})
+
+
 def _chile_subtab():
-    """Sub-tab Chile: live panel con selector volcan + producto + anillos."""
-    cols = st.columns([1.6, 1.0, 1.0, 1.0])
+    """Sub-tab Chile: live panel con selector volcan + producto + anillos + boton sala."""
+    cols = st.columns([1.6, 1.0, 1.0, 1.5])
     with cols[0]:
         volcan = st.selectbox(
             "Volcan a monitorear",
@@ -365,11 +405,10 @@ def _chile_subtab():
                  "Util para medir largo de pluma en escala continental.",
         )
     with cols[3]:
-        st.markdown(
-            "<div style='font-size:0.7rem; color:#556; padding-top:0.5rem;'>"
-            "Refresh 60s · Hot spots size = FRP</div>",
-            unsafe_allow_html=True,
-        )
+        if st.button("🖥 Modo Sala · Chile (rotando productos)",
+                     key="btn_sala_chile", type="primary",
+                     use_container_width=True):
+            _activate_tv("chile", volcan=volcan)
     _live_panel(volcan, product=product, show_rings=show_rings)
 
 
@@ -391,7 +430,7 @@ def _mosaico_subtab():
     """Sub-tab Mosaico: 8 prioritarios en grid 4x2."""
     from dashboard.views.mosaico_chile import _live_panel as mosaico_panel
     if st.button(
-        "🖥 Activar TV puro · Mosaico (rotando productos cada 10s)",
+        "🖥 Modo Sala · Mosaico (rotando productos cada 10s)",
         key="btn_tv_mosaico", type="primary", use_container_width=False,
     ):
         _activate_tv("mosaico")
@@ -407,12 +446,12 @@ def _zonas_subtab():
     # Boton activar TV puro — st.button con callback (mas confiable que <a>
     # con URLs relativas dentro del iframe sandbox de Streamlit Cloud)
     if st.button(
-        "🖥 Activar TV puro (4 zonas, rotando productos cada 10s)",
+        "🖥 Modo Sala (4 zonas, rotando productos cada 10s)",
         key="btn_tv_zonas", type="primary", use_container_width=False,
     ):
         _activate_tv("1")
     st.caption(
-        "TV puro = solo los 4 mapas a pantalla completa rotando productos. "
+        "Modo Sala = solo los 4 mapas a pantalla completa rotando productos. "
         "Sin header, sin sub-tabs, sin toolbar. Pensado para monitor 24/7. "
         "Botón ✖ arriba a la izquierda para salir."
     )
@@ -482,7 +521,7 @@ def _volcan_subtab():
         )
     # Boton TV puro volcan (lleva el volcan seleccionado en query_params)
     if st.button(
-        f"🖥 Activar TV puro · {volcan} (3 productos)",
+        f"🖥 Modo Sala · {volcan} (3 productos)",
         key="btn_tv_volcan", type="primary", use_container_width=False,
     ):
         _activate_tv("volcan", volcan=volcan)
@@ -519,6 +558,8 @@ def render():
 
     URL params:
       ?tv=1       o ?tv=zonas    -> 4 zonas rotando productos (default)
+      ?tv=chile&volcan=X         -> Chile completo rotando productos + anillos
+                                    alrededor del volcan seleccionado
       ?tv=mosaico                -> 8 prioritarios rotando productos + anillos
       ?tv=volcan&volcan=X        -> 1 volcan con 3 productos (sin rotacion,
                                     los 3 productos ya estan lado a lado)
@@ -560,7 +601,11 @@ def render():
                 st.query_params.clear()
                 st.query_params["vista"] = "guardia"
                 st.rerun()
-        if tv_mode == "mosaico":
+        if tv_mode == "chile":
+            volcan_name = st.query_params.get("volcan", DEFAULT_VOLCANO)
+            _rotating_chile_tv(volcan_name, show_rings=True)
+            return
+        elif tv_mode == "mosaico":
             from dashboard.views.mosaico_chile import _grid_fragment_tv
             _grid_fragment_tv()
             return

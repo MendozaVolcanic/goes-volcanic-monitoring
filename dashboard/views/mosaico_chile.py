@@ -52,10 +52,15 @@ def _volcano_frame_with_fallback(product: str, timestamps: list[str],
 
     RAMMB intermitentemente no sirve algunos productos en zoom=4.
     Devuelve (img, ts_usado, zoom_usado). zoom=0 si todo fallo.
+
+    Bbox asimetrico (lon expandido por 1/cos_lat) para que la imagen
+    descargada cubra una region cuadrada en km — coincide con el plot.
     """
+    cos_lat = max(0.1, float(np.cos(np.radians(lat))))
+    half_lon = RADIUS_DEG / cos_lat
     bounds = {
         "lat_min": lat - RADIUS_DEG, "lat_max": lat + RADIUS_DEG,
-        "lon_min": lon - RADIUS_DEG, "lon_max": lon + RADIUS_DEG,
+        "lon_min": lon - half_lon, "lon_max": lon + half_lon,
     }
     return fetch_frame_robust(
         product, timestamps, bounds,
@@ -85,20 +90,33 @@ def _circle_points(lat0: float, lon0: float, radius_km: float, n: int = 48):
 
 def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
                  height: int = 420, show_rings: bool = False):
+    """Mini-plot cuadrado con bbox compensado por latitud.
+
+    Antes el bbox era ±RADIUS_DEG en ambas dimensiones; con
+    `scaleratio=1/cos_lat` los volcanes a alta latitud (Villarrica -39°)
+    quedaban con padding lateral mientras los de baja latitud (Lascar -23°)
+    llenaban toda la caja. Fix: expandir el rango de lon por 1/cos_lat
+    para que la imagen visible sea siempre ~cuadrada en pantalla.
+    """
     fig = go.Figure()
+    cos_lat = max(0.1, float(np.cos(np.radians(lat))))
+    # span en km equivalente: RADIUS_DEG * 111 km. Lon en grados se expande
+    # por 1/cos_lat para preservar el mismo span en km horizontal.
+    half_lat = RADIUS_DEG
+    half_lon = RADIUS_DEG / cos_lat
     bounds = {
-        "lat_min": lat - RADIUS_DEG, "lat_max": lat + RADIUS_DEG,
-        "lon_min": lon - RADIUS_DEG, "lon_max": lon + RADIUS_DEG,
+        "lat_min": lat - half_lat, "lat_max": lat + half_lat,
+        "lon_min": lon - half_lon, "lon_max": lon + half_lon,
     }
     if img is not None:
         fig.add_layout_image(
             source=_array_to_data_url(img),
             xref="x", yref="y",
             x=bounds["lon_min"], y=bounds["lat_max"],
-            sizex=2 * RADIUS_DEG, sizey=2 * RADIUS_DEG,
+            sizex=2 * half_lon, sizey=2 * half_lat,
             sizing="stretch", layer="below",
         )
-    # Anillos de distancia (debajo del marcador)
+    # Anillos de distancia (debajo del marcador) + label de km
     if show_rings:
         for r_km in RING_RADII_KM:
             lats, lons = _circle_points(lat, lon, r_km)
@@ -107,6 +125,13 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
                 line=dict(color="rgba(255,255,255,0.35)", width=0.8, dash="dot"),
                 hoverinfo="skip", showlegend=False,
             ))
+            # Label "{r_km} km" justo arriba del cruce norte de cada anillo
+            fig.add_annotation(
+                x=lon, y=lat + (r_km / 111.0),
+                text=f"{r_km}", showarrow=False,
+                font=dict(size=8, color="rgba(255,255,255,0.75)"),
+                bgcolor="rgba(0,0,0,0.55)", borderpad=1,
+            )
     fig.add_trace(go.Scatter(
         x=[lon], y=[lat], mode="markers",
         marker=dict(symbol="triangle-up", size=12, color="#00ffff",
@@ -114,7 +139,6 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
         hovertemplate=f"<b>{name}</b><extra></extra>",
         showlegend=False,
     ))
-    cos_lat = max(0.1, float(np.cos(np.radians(lat))))
     fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
                      showgrid=False, visible=False)
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
@@ -151,12 +175,15 @@ def _grid_fragment(product: str):
     except Exception:
         scan_label = ts
 
+    rings_str = " / ".join(str(r) for r in RING_RADII_KM)
     st.markdown(
         f"<div style='background:#0f1418; border-left:4px solid #ff6644; "
         f"padding:0.6rem 1rem; border-radius:4px; margin-bottom:0.8rem; "
         f"display:flex; justify-content:space-between; align-items:center;'>"
         f"<div style='color:#e0e0e0;'>{PRODUCT_OPTIONS[product]} · "
-        f"8 volcanes prioritarios</div>"
+        f"8 volcanes prioritarios &middot; "
+        f"<span style='color:#9aaabb; font-size:0.85rem;'>"
+        f"⊙ anillos {rings_str} km desde el crater</span></div>"
         f"<div style='color:#9aaabb; font-size:0.85rem;'>Scan {scan_label} · "
         f"render {now.strftime('%H:%M:%S')} UTC</div></div>",
         unsafe_allow_html=True,

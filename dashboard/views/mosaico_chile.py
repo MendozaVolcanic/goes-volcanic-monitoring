@@ -90,7 +90,8 @@ def _circle_points(lat0: float, lon0: float, radius_km: float, n: int = 48):
 
 def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
                  height: int = 420, show_rings: bool = False,
-                 target_width_px: int | None = None):
+                 target_width_px: int | None = None,
+                 zoom_used: int | None = None):
     """Mini-plot cuadrado con bbox compensado por latitud.
 
     `height` se usa solo si `target_width_px=None`. Si se pasa width,
@@ -167,6 +168,21 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
         xanchor="left", yanchor="top",
         xshift=4, yshift=-4,
     )
+    # Badge de zoom usado (esquina inferior derecha). Verde z=4 (max),
+    # naranja z=3 (fallback — RAMMB no sirvio zoom 4 para este producto).
+    if zoom_used is not None and zoom_used > 0:
+        zoom_color = "#3fb950" if zoom_used >= 4 else "#ff9933"
+        zoom_kmpx = {4: "1.7", 3: "3.4", 2: "6.8"}.get(zoom_used, "?")
+        fig.add_annotation(
+            x=bounds["lon_max"], y=bounds["lat_min"],
+            xref="x", yref="y",
+            text=f"z={zoom_used} · {zoom_kmpx}km/px",
+            showarrow=False,
+            font=dict(size=9, color=zoom_color),
+            bgcolor="rgba(0,0,0,0.7)", borderpad=2,
+            xanchor="right", yanchor="bottom",
+            xshift=-3, yshift=3,
+        )
     fig.update_layout(
         height=height, margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
@@ -231,7 +247,8 @@ def _grid_fragment(product: str):
             with cols[i]:
                 st.plotly_chart(
                     _render_mini(img, v.lat, v.lon, name,
-                                 target_width_px=380, show_rings=True),
+                                 target_width_px=380, show_rings=True,
+                                 zoom_used=used_zoom),
                     use_container_width=True,
                     config={"displayModeBar": False},
                 )
@@ -286,13 +303,14 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
             v = get_volcano(name)
             if v is None:
                 continue
-            img, _, _ = _volcano_frame_with_fallback(
+            img, _, used_zoom = _volcano_frame_with_fallback(
                 current, timestamps, v.lat, v.lon,
             )
             with cols[i]:
                 st.plotly_chart(
                     _render_mini(img, v.lat, v.lon, name,
-                                 target_width_px=460, show_rings=True),
+                                 target_width_px=460, show_rings=True,
+                                 zoom_used=used_zoom),
                     use_container_width=True,
                     config={"displayModeBar": False},
                 )

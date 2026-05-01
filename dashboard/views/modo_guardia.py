@@ -591,37 +591,33 @@ def render():
                 gap: 0.1rem !important;
                 margin-bottom: 0 !important;
                 margin-top: 0 !important;
-                padding: 0 !important;
               }
               /* Colapsa gap entre filas verticales — clave para grids 4x2 */
               [data-testid="stVerticalBlock"] {
                 gap: 0.1rem !important;
-                padding: 0 !important;
               }
               /* Plotly chart container sin padding */
               [data-testid="stPlotlyChart"] {
                 margin: 0 !important;
                 padding: 0 !important;
               }
-              /* Element container compacto — padding 0 y sin margin */
-              .element-container, [data-testid="element-container"],
+              /* Element container compacto. NO usamos min-height:0 ni
+                 quitamos padding total porque colapsa contenedores de
+                 botones y los hace inclickeables. Solo bajamos margin. */
               [data-testid="stElementContainer"] {
-                margin: 0 !important;
-                padding: 0 !important;
-                min-height: 0 !important;
-              }
-              /* Wrapper interno de columnas (el div que contiene cada plot) */
-              [data-testid="stColumn"], [data-testid="column"] {
-                padding: 0 !important;
-                gap: 0 !important;
-              }
-              /* Block container general */
-              .block-container > div {
-                gap: 0.1rem !important;
+                margin-bottom: 0.1rem !important;
               }
               /* iframe de plotly sin border */
               iframe[title="streamlit_plotly"] {
                 margin: 0 !important;
+              }
+              /* Botones en TV mode: garantizar clickeable y por encima */
+              [data-testid="stButton"] {
+                position: relative !important;
+                z-index: 999 !important;
+              }
+              [data-testid="stButton"] > button {
+                pointer-events: auto !important;
               }
             </style>
             """,

@@ -58,6 +58,15 @@ if _fullscreen:
                 min-height: unset !important;
                 height: 26px !important;
               }
+              /* Garantizar que el boton de salir quede por encima del
+                 contenido y siempre clickeable en cualquier vista */
+              [data-testid="stButton"] {
+                position: relative !important;
+                z-index: 9999 !important;
+              }
+              [data-testid="stButton"] > button {
+                pointer-events: auto !important;
+              }
             </style>
             """,
             unsafe_allow_html=True,

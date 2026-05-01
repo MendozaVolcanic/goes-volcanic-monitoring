@@ -682,6 +682,12 @@ def render():
         <style>
           [data-testid="stHeader"] { background: rgba(0,0,0,0); height: 0; }
           .block-container { padding-top: 0.6rem !important; padding-bottom: 1rem !important; }
+          /* Optimizacion de gaps en sub-tabs (no solo TV).
+             Levemente menos agresivo que TV para preservar legibilidad
+             del header/toolbar pero sin desperdicio entre filas de grid. */
+          [data-testid="stHorizontalBlock"] { gap: 0.3rem !important; }
+          [data-testid="stPlotlyChart"] { margin: 0 !important; padding: 0 !important; }
+          [data-testid="stElementContainer"] { margin-bottom: 0.2rem !important; }
         </style>
         """,
         unsafe_allow_html=True,

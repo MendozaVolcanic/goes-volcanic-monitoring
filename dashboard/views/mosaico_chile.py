@@ -101,14 +101,15 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
     fig = go.Figure()
     cos_lat = max(0.1, float(np.cos(np.radians(lat))))
     # Si nos pasaron target_width_px, derivamos height para que el plot
-    # llene el container sin espacio negro. Asumimos que los anillos
-    # circulares deben verse circulares (scaleanchor activo).
+    # llene el container sin espacio negro. Usamos un cos_lat MEDIANO
+    # (no el del volcan especifico) porque sino las miniaturas de
+    # diferente latitud quedan con altura distinta y desalinean el grid.
+    # 0.78 = mediana de los 8 priority volcanos (~lat -38°).
+    # Lascar (lat -23, cos=0.92) tendra pequena banda lateral pero el
+    # grid queda alineado fila a fila.
     if target_width_px is not None:
-        # cos_lat ratio: la imagen es lon_span (en grados) = 2R/cos_lat
-        # y lat_span = 2R. Para verse cuadrada en km en pantalla:
-        # height/width = lat_span/lon_span * cos_lat = cos_lat^2.
-        # Empiricamente cos_lat (sin cuadrado) da mejor llenado.
-        height = max(200, int(target_width_px * cos_lat))
+        MEDIAN_COS_LAT_PRIORITY = 0.78
+        height = max(200, int(target_width_px * MEDIAN_COS_LAT_PRIORITY))
     # span en km equivalente: RADIUS_DEG * 111 km. Lon en grados se expande
     # por 1/cos_lat para preservar el mismo span en km horizontal.
     half_lat = RADIUS_DEG
@@ -229,7 +230,8 @@ def _grid_fragment(product: str):
                 fallback_zoom += 1
             with cols[i]:
                 st.plotly_chart(
-                    _render_mini(img, v.lat, v.lon, name, show_rings=True),
+                    _render_mini(img, v.lat, v.lon, name,
+                                 target_width_px=380, show_rings=True),
                     use_container_width=True,
                     config={"displayModeBar": False},
                 )

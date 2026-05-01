@@ -143,10 +143,20 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
                      showgrid=False, visible=False,
                      scaleanchor="x", scaleratio=1.0 / cos_lat)
+    # Title como annotation EN COORDS DE DATOS para no perder pixeles
+    # arriba del plot. Igual estrategia que mosaico — scaleanchor empuja
+    # paper-anchored al espacio negro afuera.
+    fig.add_annotation(
+        x=bounds["lon_min"], y=bounds["lat_max"],
+        xref="x", yref="y",
+        text=f"<b>{label}</b>", showarrow=False,
+        font=dict(size=14, color=ZONE_COLORS[zone_key]),
+        bgcolor="rgba(0,0,0,0.65)", borderpad=4,
+        xanchor="left", yanchor="top",
+        xshift=4, yshift=-4,
+    )
     fig.update_layout(
-        title=dict(text=label, font=dict(size=14, color=ZONE_COLORS[zone_key]),
-                   x=0.02),
-        height=height, margin=dict(l=0, r=0, t=32, b=0),
+        height=height, margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
     )
     if img is None:

@@ -418,13 +418,37 @@ def render():
     """
     tv_mode = st.query_params.get("tv", "")
     if tv_mode:
-        # Boton SALIR TV puro — st.button nativo (no <a>) porque dentro
-        # del iframe cross-origin de Streamlit Cloud NI target='_top' NI
-        # window.top.location funcionan. st.button con callback siempre
-        # funciona. No es floating pero esta en la primera fila del view.
-        c_exit, c_spacer = st.columns([1, 9])
+        # CSS para compactar el boton de salir + eliminar padding
+        # excedente (espacio negro arriba que reportaba el user).
+        st.markdown(
+            """
+            <style>
+              .block-container {
+                padding-top: 0.2rem !important;
+                padding-bottom: 0.2rem !important;
+              }
+              [data-testid="stButton"] > button {
+                padding: 0.15rem 0.6rem !important;
+                font-size: 0.72rem !important;
+                min-height: unset !important;
+                height: 26px !important;
+                line-height: 1 !important;
+                border-radius: 4px !important;
+              }
+              [data-testid="stHorizontalBlock"] {
+                gap: 0.4rem !important;
+                margin-bottom: 0.2rem !important;
+              }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+        # Single boton compacto "✖ Salir" que limpia TV + fullscreen
+        # (vuelve a Modo Guardia normal de un solo click).
+        c_exit, c_spacer = st.columns([1, 14])
         with c_exit:
-            if st.button("✖ Salir TV puro", key="btn_exit_tv",
+            if st.button("✖ Salir", key="btn_exit_tv",
+                         help="Salir del modo TV puro y fullscreen",
                          use_container_width=True):
                 st.query_params.clear()
                 st.query_params["vista"] = "guardia"

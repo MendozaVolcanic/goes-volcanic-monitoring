@@ -44,17 +44,31 @@ if _fullscreen:
         """,
         unsafe_allow_html=True,
     )
-    # Boton SALIR fullscreen — st.button nativo. Las versiones HTML con
-    # target='_top' o window.top.location no funcionan dentro del iframe
-    # cross-origin de Streamlit Cloud. st.button con callback siempre
-    # funciona. Va en una columna pequena al inicio de la vista.
-    c_exit_fs, c_rest_fs = st.columns([1, 9])
-    with c_exit_fs:
-        if st.button("✖ Salir fullscreen", key="btn_exit_fs",
-                     use_container_width=True):
-            if "fullscreen" in st.query_params:
-                del st.query_params["fullscreen"]
-            st.rerun()
+    # Boton SALIR fullscreen — solo se muestra si NO estamos tambien en
+    # modo TV puro (en TV puro hay un boton unico "✖ Salir" que limpia
+    # ambos params, asi evitamos mostrar 2 botones de salir apilados).
+    _tv_active = st.query_params.get("tv", "") in ("1", "mosaico", "volcan")
+    if not _tv_active:
+        st.markdown(
+            """
+            <style>
+              [data-testid="stButton"] > button[kind="secondary"] {
+                padding: 0.15rem 0.6rem !important;
+                font-size: 0.72rem !important;
+                min-height: unset !important;
+                height: 26px !important;
+              }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+        c_exit_fs, c_rest_fs = st.columns([1, 14])
+        with c_exit_fs:
+            if st.button("✖ Salir fullscreen", key="btn_exit_fs",
+                         use_container_width=True):
+                if "fullscreen" in st.query_params:
+                    del st.query_params["fullscreen"]
+                st.rerun()
 
 # ── Sidebar ──────────────────────────────────────────────────────
 with st.sidebar:

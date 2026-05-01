@@ -41,24 +41,28 @@ logger = logging.getLogger(__name__)
 REFRESH_SECONDS = 60
 DEFAULT_VOLCANO = "Villarrica"
 
+# Productos disponibles en sub-tab Chile (mismo set que sub-tab Zonas).
+CHILE_PRODUCT_OPTIONS = {
+    "eumetsat_ash": "Ash RGB",
+    "geocolor": "GeoColor",
+    "jma_so2": "SO2 RGB",
+}
+
 
 # ── Cache helpers ────────────────────────────────────────────────────
 
 @st.cache_data(ttl=30, show_spinner=False)
-def _latest_ts() -> str | None:
-    """Timestamp mas reciente Ash RGB. Cache 30s — liviano (~1 KB JSON)."""
-    times = get_latest_timestamps("eumetsat_ash", n=1)
+def _latest_ts(product: str = "eumetsat_ash") -> str | None:
+    """Timestamp mas reciente para el producto. Cache 30s (~1 KB JSON)."""
+    times = get_latest_timestamps(product, n=1)
     return times[0] if times else None
 
 
 @st.cache_data(ttl=7200, show_spinner=False)
-def _ash_chile_frame(ts: str) -> dict | None:
-    """Frame Chile completo Ash RGB para un timestamp dado.
-
-    Cache 2h por ts: una vez bajado un scan no se vuelve a pedir nunca.
-    """
+def _chile_frame(product: str, ts: str) -> dict | None:
+    """Frame Chile completo para producto+ts. Cache 2h: scan no se re-baja."""
     img = fetch_stitched_frame(
-        "eumetsat_ash", ts, zoom=2,
+        product, ts, zoom=2,
         tile_rows=CHILE_TILES_Z2["rows"], tile_cols=CHILE_TILES_Z2["cols"],
     )
     if img is None:
@@ -112,8 +116,42 @@ def _array_to_data_url(arr: np.ndarray) -> str:
     return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
-def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name: str):
-    """Imshow Ash RGB Chile con triangulos de hotspots + marcador del volcan."""
+def _hotspot_marker_size(frp_mw: float) -> float:
+    """Tamano de marker proporcional a FRP. Min 8 (FRP=0), max ~24 (FRP>=200 MW).
+
+    Escala raiz cuadrada para que un FRP de 50 MW destaque vs 5 MW sin que
+    100 MW se salga de pantalla. Validado contra eventos Sangay/Reventador.
+    """
+    return float(8 + min(16, np.sqrt(max(0.0, frp_mw)) * 1.6))
+
+
+def _add_distance_rings(fig, lat: float, lon: float,
+                        radii_km: tuple[int, ...] = (5, 10, 25, 50)) -> None:
+    """Dibuja anillos de distancia alrededor de (lat, lon). Util para medir
+    largo de pluma y dispersion. Compensa estiramiento longitudinal.
+    """
+    cos_lat = max(0.1, float(np.cos(np.radians(lat))))
+    theta = np.linspace(0, 2 * np.pi, 60)
+    for r_km in radii_km:
+        dlat = (r_km / 111.0) * np.sin(theta)
+        dlon = (r_km / 111.0 / cos_lat) * np.cos(theta)
+        fig.add_trace(go.Scatter(
+            x=lon + dlon, y=lat + dlat, mode="lines",
+            line=dict(color="rgba(0,255,255,0.35)", width=1, dash="dot"),
+            hoverinfo="skip", showlegend=False,
+        ))
+        # Label de la distancia arriba del anillo (norte del crater)
+        fig.add_annotation(
+            x=lon, y=lat + (r_km / 111.0), text=f"{r_km} km",
+            showarrow=False, font=dict(size=9, color="rgba(0,255,255,0.6)"),
+            bgcolor="rgba(0,0,0,0.4)", borderpad=1,
+        )
+
+
+def _render_chile_with_hotspots(frame: dict, hotspots: list[HotSpot],
+                                 volcan_name: str, product: str,
+                                 show_rings: bool = False):
+    """Imshow Chile producto + hot spots (size por FRP) + marker volcan + rings."""
     img = frame["image"]
     b = frame["bounds"]
     fig = go.Figure()
@@ -127,6 +165,8 @@ def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name:
     )
     v = get_volcano(volcan_name)
     if v is not None:
+        if show_rings:
+            _add_distance_rings(fig, v.lat, v.lon)
         fig.add_trace(go.Scatter(
             x=[v.lon], y=[v.lat], mode="markers+text",
             marker=dict(symbol="triangle-up", size=18, color="#00ffff",
@@ -138,13 +178,15 @@ def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name:
     if hotspots:
         lats = [h.lat for h in hotspots]
         lons = [h.lon for h in hotspots]
-        temps = [f"{h.temp_k:.0f} K, FRP {h.frp_mw:.1f} MW ({h.confidence})"
+        sizes = [_hotspot_marker_size(h.frp_mw) for h in hotspots]
+        temps = [f"{h.temp_k:.0f} K · FRP {h.frp_mw:.1f} MW ({h.confidence})"
                  for h in hotspots]
         fig.add_trace(go.Scatter(
             x=lons, y=lats, mode="markers",
-            marker=dict(symbol="diamond", size=12, color="#ff3300",
+            marker=dict(symbol="diamond", size=sizes, color="#ff3300",
                         line=dict(color="white", width=1)),
-            text=temps, hoverinfo="text", name=f"Hot spots NOAA ({len(hotspots)})",
+            text=temps, hoverinfo="text",
+            name=f"Hot spots NOAA ({len(hotspots)}) — size = FRP",
         ))
 
     # Frontera de Chile (overlay en blanco semi-transparente)
@@ -165,18 +207,41 @@ def _render_ash_with_hotspots(frame: dict, hotspots: list[HotSpot], volcan_name:
 
 
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
-def _live_panel(volcan_name: str):
+def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
+                show_rings: bool = False):
     """Fragment con auto-refresh — solo este bloque se re-renderiza cada 60s."""
-    ts = _latest_ts()
+    ts = _latest_ts(product)
     if not ts:
         st.error("RAMMB no respondio. Reintentando en 60s…")
         return
 
-    frame = _ash_chile_frame(ts)
+    frame = _chile_frame(product, ts)
     hotspots, _hs_dt = _hotspots_chile()
     v = get_volcano(volcan_name)
 
     now = datetime.now(timezone.utc)
+
+    # ── Status banner global con edad de scan ──
+    if frame is not None:
+        age_min = int((now - frame["dt"]).total_seconds() / 60)
+        if age_min < 15:
+            bnr_color, bnr_msg = "#3fb950", f"Scan hace {age_min} min · OK"
+        elif age_min < 30:
+            bnr_color, bnr_msg = "#d29922", f"Scan hace {age_min} min · RAMMB lento"
+        else:
+            bnr_color, bnr_msg = "#ff4444", f"Scan hace {age_min} min · datos atrasados"
+    else:
+        bnr_color, bnr_msg = "#888", "Sin scan disponible"
+    st.markdown(
+        f"<div style='background:#0f1418; border-left:4px solid {bnr_color}; "
+        f"padding:0.4rem 0.8rem; border-radius:4px; margin-bottom:0.4rem; "
+        f"display:flex; justify-content:space-between;'>"
+        f"<span style='color:#e0e0e0;'>{CHILE_PRODUCT_OPTIONS.get(product, product)} · "
+        f"Chile completo · seguimiento {volcan_name}</span>"
+        f"<span style='color:{bnr_color}; font-weight:600;'>{bnr_msg}</span>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
 
     # ── Header KPIs (todos basados en datos validados externamente) ──
     c1, c2, c3, c4 = st.columns(4)
@@ -249,15 +314,17 @@ def _live_panel(volcan_name: str):
             unsafe_allow_html=True,
         )
 
-    # ── Mapa principal Ash + hotspots ──
+    # ── Mapa principal Chile + hotspots ──
     if frame is not None:
         st.plotly_chart(
-            _render_ash_with_hotspots(frame, hotspots, volcan_name),
+            _render_chile_with_hotspots(frame, hotspots, volcan_name, product,
+                                         show_rings=show_rings),
             use_container_width=True,
             config={"displayModeBar": False},
         )
     else:
-        st.warning("Imagen Ash RGB no disponible en este ciclo.")
+        st.warning(f"Imagen {CHILE_PRODUCT_OPTIONS.get(product, product)} "
+                    "no disponible en este ciclo.")
 
     # ── Footer info ──
     st.markdown(
@@ -272,9 +339,9 @@ def _live_panel(volcan_name: str):
 
 
 def _chile_subtab():
-    """Sub-tab Chile: el live panel original con selector de volcan."""
-    cols = st.columns([3, 1])
-    with cols[1]:
+    """Sub-tab Chile: live panel con selector volcan + producto + anillos."""
+    cols = st.columns([1.6, 1.0, 1.0, 1.0])
+    with cols[0]:
         volcan = st.selectbox(
             "Volcan a monitorear",
             options=PRIORITY_VOLCANOES,
@@ -283,7 +350,27 @@ def _chile_subtab():
             label_visibility="collapsed",
             key="mg_chile_selector",
         )
-    _live_panel(volcan)
+    with cols[1]:
+        product = st.selectbox(
+            "Producto",
+            options=list(CHILE_PRODUCT_OPTIONS.keys()),
+            format_func=lambda k: CHILE_PRODUCT_OPTIONS[k],
+            index=0, key="mg_chile_product",
+            label_visibility="collapsed",
+        )
+    with cols[2]:
+        show_rings = st.toggle(
+            "⊙ Anillos", value=False, key="mg_chile_rings",
+            help="Anillos 5/10/25/50 km alrededor del volcan seleccionado. "
+                 "Util para medir largo de pluma en escala continental.",
+        )
+    with cols[3]:
+        st.markdown(
+            "<div style='font-size:0.7rem; color:#556; padding-top:0.5rem;'>"
+            "Refresh 60s · Hot spots size = FRP</div>",
+            unsafe_allow_html=True,
+        )
+    _live_panel(volcan, product=product, show_rings=show_rings)
 
 
 def _activate_tv(tv_value: str, **extra):
@@ -331,16 +418,31 @@ def _zonas_subtab():
     )
 
     # Modo normal con toolbar completa (no TV puro)
-    cols = st.columns([1.0, 1.2, 1.0, 1.0])
+    cols = st.columns([1.2, 1.0, 1.2, 1.0, 1.0])
     with cols[0]:
-        product = st.selectbox(
-            "Producto",
-            options=list(PRODUCT_OPTIONS.keys()),
-            format_func=lambda k: PRODUCT_OPTIONS[k],
-            index=0, key="mg_zonas_product",
-            label_visibility="collapsed",
+        rotate = st.toggle(
+            f"🔄 Auto-rotate ({ROTATION_SECONDS}s)", value=False, key="mg_zonas_rotate",
+            help="Cicla GeoColor → Ash → SO2 cada 10s. Util para preview "
+                 "de lo que se vera en el monitor de sala antes de mandarlo "
+                 "a TV puro.",
         )
     with cols[1]:
+        if not rotate:
+            product = st.selectbox(
+                "Producto",
+                options=list(PRODUCT_OPTIONS.keys()),
+                format_func=lambda k: PRODUCT_OPTIONS[k],
+                index=0, key="mg_zonas_product",
+                label_visibility="collapsed",
+            )
+        else:
+            product = "eumetsat_ash"  # ignorado en rotate
+            st.markdown(
+                "<div style='color:#888; padding-top:0.5rem; font-size:0.8rem;'>"
+                "(rotando)</div>",
+                unsafe_allow_html=True,
+            )
+    with cols[2]:
         layout = st.radio(
             "Layout",
             ["1×4 (TV)", "2×2"],
@@ -348,15 +450,20 @@ def _zonas_subtab():
             horizontal=True,
             label_visibility="collapsed",
         )
-    with cols[2]:
-        show_volc = st.toggle("🔺 Volcanes", value=True, key="mg_zonas_volc")
     with cols[3]:
+        show_volc = st.toggle("🔺 Volcanes", value=True, key="mg_zonas_volc")
+    with cols[4]:
         show_hs = st.toggle("🔥 Hot spots", value=True, key="mg_zonas_hs")
 
     layout_key = "1x4" if layout.startswith("1×4") else "2x2"
     height = 820 if layout_key == "1x4" else 720
-    _grid_4_zonas(product, show_volc, show_hs,
-                  layout=layout_key, height=height)
+    if rotate:
+        _rotating_grid_4_zonas(show_volc, show_hs,
+                                layout=layout_key, height=height,
+                                session_key="mg_zonas_rot_idx")
+    else:
+        _grid_4_zonas(product, show_volc, show_hs,
+                      layout=layout_key, height=height)
 
 
 def _volcan_subtab():

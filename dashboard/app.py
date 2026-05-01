@@ -89,8 +89,12 @@ with st.sidebar:
     # ── Permalinks: leer ?vista= de la URL ───────────────────────
     # Mapa: query param 'vista' -> entry visible en el sidebar.
     # Permite compartir https://...?vista=guardia&volcan=Lascar
+    # NOTA: '4 Zonas Full Screen' eliminada del menu — su funcionalidad
+    # vive embebida en Modo Guardia → sub-tab 'Por Zona Volcánica' (mismo
+    # codigo en zonas_fullscreen.py, que Guardia importa). Slug 'zonas'
+    # se redirige a guardia abajo para no romper bookmarks.
     PAGE_OPTIONS = [
-        "🔴 En Vivo", "🛡 Modo Guardia", "🗺 4 Zonas Full Screen",
+        "🔴 En Vivo", "🛡 Modo Guardia",
         "🔀 Comparador",
         "🚨 Modo Evento", "📅 Heatmap actividad",
         "🔁 Replay reciente",
@@ -99,7 +103,6 @@ with st.sidebar:
     ]
     PAGE_SLUGS = {
         "live": "🔴 En Vivo", "guardia": "🛡 Modo Guardia",
-        "zonas": "🗺 4 Zonas Full Screen",
         "comparador": "🔀 Comparador", "evento": "🚨 Modo Evento",
         "heatmap": "📅 Heatmap actividad",
         "replay": "🔁 Replay reciente",
@@ -108,6 +111,10 @@ with st.sidebar:
         "series": "📈 Series de tiempo",
     }
     qp = st.query_params
+    # Compat: bookmarks viejos a ?vista=zonas → redirigir a guardia
+    if qp.get("vista") == "zonas":
+        st.query_params["vista"] = "guardia"
+        qp = st.query_params
     initial_idx = 0
     if "vista" in qp:
         slug = qp["vista"].lower()
@@ -201,9 +208,6 @@ if page == "🔴 En Vivo":
     render()
 elif page == "🛡 Modo Guardia":
     from dashboard.views.modo_guardia import render
-    render()
-elif page == "🗺 4 Zonas Full Screen":
-    from dashboard.views.zonas_fullscreen import render
     render()
 elif page == "🔀 Comparador":
     from dashboard.views.comparador import render

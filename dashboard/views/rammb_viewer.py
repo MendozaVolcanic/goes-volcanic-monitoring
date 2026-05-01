@@ -29,6 +29,10 @@ from src.fetch.rammb_slider import (
     fetch_animation_frames, fetch_frame_for_bounds,
     get_latest_timestamps, reproject_to_latlon, ts_to_parts,
 )
+from src.fetch.animation_cache import (
+    cache_status, fetch_cached_frames, fetch_manifest,
+    scope_id_nacional, scope_id_volcan, scope_id_zona,
+)
 from src.fetch.wind_data import fetch_wind_point
 from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_priority, get_volcano
 
@@ -453,10 +457,95 @@ def _build_animation(frames: list[dict], bounds: dict, height: int = 700,
 _REPROJECT_VERSION = "v2"
 
 
+# ── Cache + delta-fetch helper ────────────────────────────────────────────
+# Combina frames pre-bajados por el GH Action (release `animations-rolling`)
+# con los ultimos N que el cron todavia no pesco. Reduce latencia de 60-120s
+# a ~10s para los scopes pre-bajados (Nacional, 4 zonas, 8 prioritarios).
+# Si no hay manifest o el scope no esta cacheado, devuelve None y el llamador
+# debe caer al flujo on-demand puro.
+
+@st.cache_data(ttl=300, show_spinner=False)
+def _fetch_via_cache(scope_id: str, product: str, n_frames: int,
+                     _v: str = _REPROJECT_VERSION) -> list[dict] | None:
+    """Bajar N frames combinando cache de release + delta de RAMMB.
+
+    1. Lee manifest del release.
+    2. Pide latest N timestamps a RAMMB.
+    3. Descarga del CDN los que estan cacheados (rapido, paralelo).
+    4. Devuelve lista de (ts, image_array). Los faltantes se delegan al
+       caller para que use el fetcher on-demand especifico (que ya conoce
+       bounds/zoom/reproyeccion correctos para el scope).
+
+    Devuelve estructura: {"cached": {ts: arr}, "missing": [ts, ...],
+                          "all_ts": [ts, ...]}
+    o None si el scope no esta en el cache (caer a flujo legacy).
+    """
+    manifest = fetch_manifest()
+    if manifest is None:
+        return None
+    cached_ts_list = manifest.get("scopes", {}).get(scope_id, {}).get(product, [])
+    if not cached_ts_list:
+        return None
+    cached_set = set(cached_ts_list)
+
+    latest = get_latest_timestamps(product, n=n_frames)
+    if not latest:
+        return None
+
+    to_fetch_from_cache = [ts for ts in latest if ts in cached_set]
+    missing = [ts for ts in latest if ts not in cached_set]
+
+    cached_frames = fetch_cached_frames(scope_id, product, to_fetch_from_cache)
+    return {"cached": cached_frames, "missing": missing, "all_ts": sorted(latest)}
+
+
+def _assemble_frames(cache_result: dict, missing_loader,
+                     bounds_for_label: dict) -> list[dict]:
+    """Une frames cacheados + frames bajados on-demand en lista ordenada.
+
+    `missing_loader(ts) -> np.ndarray | None` baja un frame nuevo de RAMMB
+    con los bounds/zoom apropiados para el scope.
+    """
+    out: list[dict] = []
+    cached = cache_result["cached"]
+    for ts in cache_result["all_ts"]:
+        if ts in cached:
+            arr = cached[ts]
+        else:
+            arr = missing_loader(ts)
+            if arr is None:
+                continue
+        out.append({
+            "ts": ts,
+            "label": _frame_label(ts),
+            "image": arr,
+            "bounds": bounds_for_label,
+        })
+    return out
+
+
 @st.cache_data(ttl=600, show_spinner=False)
 def _fetch_chile_frames(product: str, n_frames: int,
                         _v: str = _REPROJECT_VERSION) -> list[dict]:
-    """Animacion Chile completo (zoom=2 reprojectado)."""
+    """Animacion Chile completo (zoom=2 reprojectado).
+
+    Intenta cache + delta primero; si no hay cache cae al flujo completo.
+    """
+    sid = scope_id_nacional()
+    cache_result = _fetch_via_cache(sid, product, n_frames)
+    if cache_result is not None:
+        def _on_demand(ts: str):
+            img = fetch_frame_for_bounds(
+                product, ts, CHILE_REPROJECTED_BOUNDS, zoom=2,
+            )
+            # fetch_frame_for_bounds ya reproyecta → no aplicar de nuevo.
+            return img
+        frames = _assemble_frames(cache_result, _on_demand, CHILE_REPROJECTED_BOUNDS)
+        if frames:
+            return frames
+        # cache vacio raro -> caer abajo
+
+    # Flujo legacy (sin cache)
     frames = fetch_animation_frames(
         product=product, n_frames=n_frames, zoom=2,
         tile_rows=CHILE_TILES_Z2["rows"], tile_cols=CHILE_TILES_Z2["cols"],
@@ -468,6 +557,21 @@ def _fetch_chile_frames(product: str, n_frames: int,
     return frames
 
 
+def _scope_id_from_bounds_key(bounds_key: str) -> str | None:
+    """Mapear bounds_key del viewer a scope_id del cache.
+
+    Convencion: el viewer pasa "z:<zone>" para zona, "v:<volcan>" para volcan
+    a zoom 4, "vz3:<volcan>" para volcan con fallback a zoom 3. Solo los
+    primeros dos formatos tienen cache pre-bajado (zona y volcan@zoom4).
+    """
+    if bounds_key.startswith("z:"):
+        return scope_id_zona(bounds_key[2:])
+    if bounds_key.startswith("v:"):
+        return scope_id_volcan(bounds_key[2:])
+    # vz3: y otros -> sin cache
+    return None
+
+
 @st.cache_data(ttl=600, show_spinner=False)
 def _fetch_bounds_frames(product: str, n_frames: int, zoom: int,
                          bounds_key: str, bounds_tuple: tuple,
@@ -475,16 +579,30 @@ def _fetch_bounds_frames(product: str, n_frames: int, zoom: int,
     """Animacion generica para un bbox arbitrario (zona o volcan).
 
     bounds_key/bounds_tuple son redundantes solo para hacer la key hashable.
+    Si el scope esta pre-bajado, usa cache + delta-fetch (rapido). Si no,
+    cae al flujo on-demand puro.
     """
     bounds = {
         "lat_min": bounds_tuple[0], "lat_max": bounds_tuple[1],
         "lon_min": bounds_tuple[2], "lon_max": bounds_tuple[3],
     }
+
+    # Intento cache + delta
+    scope_id = _scope_id_from_bounds_key(bounds_key)
+    if scope_id is not None:
+        cache_result = _fetch_via_cache(scope_id, product, n_frames)
+        if cache_result is not None:
+            def _on_demand(ts: str):
+                return fetch_frame_for_bounds(product, ts, bounds, zoom=zoom)
+            frames = _assemble_frames(cache_result, _on_demand, bounds)
+            if frames:
+                return frames
+
+    # Flujo legacy: descarga paralela de todos los frames.
     timestamps = get_latest_timestamps(product, n=n_frames)
     if not timestamps:
         return []
-    # Descarga paralela de los N frames (cada uno stitchea varios tiles).
-    # Speedup ~N/4 para N frames, limitado por max_workers.
+
     def _one(ts):
         img = fetch_frame_for_bounds(product, ts, bounds, zoom=zoom)
         return ts, img
@@ -501,7 +619,6 @@ def _fetch_bounds_frames(product: str, n_frames: int, zoom: int,
             "image": img,
             "bounds": bounds,
         })
-    # Mas antiguo -> mas reciente
     out.sort(key=lambda f: f["ts"])
     return out
 
@@ -595,6 +712,17 @@ def render():
                 "<b>Ash RGB</b>: deteccion de ceniza (dia y noche). Ceniza = rojo/magenta.<br>"
                 "<b>SO2</b>: dioxido de azufre = verde brillante.<br>"
                 "<b>BTD</b>: diferencia termica split-window, mas sensible a ceniza fina."
+                "<br><br>"
+                "<b>&#9889; Como funciona la velocidad</b><br>"
+                "Un proceso automatico (GitHub Actions) corre cada hora y pre-descarga "
+                "los ultimos 12h de frames para los escopos mas usados "
+                "(Nacional, las 4 zonas, y los 8 volcanes prioritarios marcados con &#9733;). "
+                "Cuando pedis una animacion de esos escopos, el dashboard usa esos frames "
+                "cacheados y solo baja de RAMMB los <b>ultimos ~6 frames</b> que el cron "
+                "todavia no pesco (los del ultima hora). Resultado: <b>~10 segundos</b> "
+                "en vez de 60-120s, y siempre con los frames mas recientes incluidos.<br>"
+                "Para volcanes no prioritarios o radios distintos del default, se baja "
+                "todo on-demand (lento, ~60-120s)."
             )
         with col_ts:
             st.markdown(
@@ -637,7 +765,7 @@ def render():
             bt = (zb["lat_min"], zb["lat_max"], zb["lon_min"], zb["lon_max"])
             with st.spinner(f"Descargando {sel['n']} scans de {ZONE_LABELS[zk]}..."):
                 frames = _fetch_bounds_frames(
-                    sel["product"], sel["n"], ZOOM_ZONE, zk, bt,
+                    sel["product"], sel["n"], ZOOM_ZONE, f"z:{zk}", bt,
                 )
             scope_label = ZONE_LABELS[zk]
             height = 640

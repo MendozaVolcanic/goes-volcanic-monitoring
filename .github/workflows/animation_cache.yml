@@ -1,0 +1,73 @@
+name: Animation cache build
+
+# Pre-buildea frames de animacion (Nacional + 4 zonas + 8 volcanes prioritarios
+# x 3 productos) y los publica en el release `animations-rolling`. El dashboard
+# los usa como base y solo baja de RAMMB los frames mas recientes que el cron
+# todavia no pesco. Ver `src/fetch/animation_cache.py` para detalles.
+
+on:
+  schedule:
+    # Cada hora en punto. Cadencia GOES = 10 min, asi que en el peor caso el
+    # dashboard tiene que delta-fetch ~6 frames.
+    - cron: '7 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # necesario para crear/actualizar releases
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements_actions.txt
+
+      - name: Build cache de animaciones
+        run: python scripts/build_animation_cache.py
+
+      - name: Listar contenido generado
+        run: |
+          ls -lh out_animation_cache/ | head -20
+          echo "---"
+          echo "Total assets: $(ls out_animation_cache/ | wc -l)"
+          echo "Total size: $(du -sh out_animation_cache/ | cut -f1)"
+
+      - name: Publicar en release rolling
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          TAG="animations-rolling"
+
+          # Crear release si no existe (idempotente).
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Creando release $TAG..."
+            gh release create "$TAG" \
+              --title "Animation cache (rolling)" \
+              --notes "Cache rolling de frames de animacion. Actualizado por animation_cache.yml cada hora. NO descargar manualmente — los assets cambian sin previo aviso." \
+              --prerelease
+          fi
+
+          # Borrar todos los assets actuales (snapshot completo cada vez).
+          # `gh release delete-asset` falla si no existe -> ignorar errores.
+          echo "Borrando assets viejos..."
+          gh release view "$TAG" --json assets --jq '.assets[].name' \
+            | while read -r asset; do
+                gh release delete-asset "$TAG" "$asset" --yes 2>/dev/null || true
+              done
+
+          # Subir todos los nuevos. `--clobber` por si quedo algun residuo.
+          echo "Subiendo $(ls out_animation_cache/ | wc -l) archivos nuevos..."
+          gh release upload "$TAG" out_animation_cache/* --clobber
+          echo "Listo."

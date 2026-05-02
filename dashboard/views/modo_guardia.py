@@ -623,16 +623,16 @@ def render():
             """,
             unsafe_allow_html=True,
         )
-        # Single boton compacto "✖ Salir" que limpia TV + fullscreen
-        # (vuelve a Modo Guardia normal de un solo click).
+        # Boton "✖ Salir" como link (NO st.button) porque st.button choca
+        # con el fragment auto-rerun cada 10s — el click se pierde mientras
+        # el fragment esta en medio de su ciclo. st.link_button es un anchor
+        # HTML que navega via URL, sin necesidad de rerun de Streamlit, por
+        # lo tanto no compite con el scheduling de fragments.
         c_exit, c_spacer = st.columns([1, 14])
         with c_exit:
-            if st.button("✖ Salir", key="btn_exit_tv",
-                         help="Salir del modo TV puro y fullscreen",
-                         use_container_width=True):
-                st.query_params.clear()
-                st.query_params["vista"] = "guardia"
-                st.rerun()
+            st.link_button("✖ Salir", url="?vista=guardia", type="primary",
+                           help="Salir del modo Sala y volver a Modo Guardia",
+                           use_container_width=True)
         if tv_mode == "chile":
             volcan_name = st.query_params.get("volcan", DEFAULT_VOLCANO)
             _rotating_chile_tv(volcan_name, show_rings=True)

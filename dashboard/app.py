@@ -71,13 +71,17 @@ if _fullscreen:
             """,
             unsafe_allow_html=True,
         )
+        # Salir fullscreen via link (anchor HTML) en vez de st.button para
+        # evitar conflictos con fragments de auto-refresh (mismo motivo
+        # que el boton ✖ Salir TV en modo_guardia.py).
+        # Construir URL preservando el resto de query params salvo fullscreen.
+        _qp_keep = {k: v for k, v in st.query_params.items() if k != "fullscreen"}
+        _qs = "&".join(f"{k}={v}" for k, v in _qp_keep.items())
+        _url_no_fs = ("?" + _qs) if _qs else "/"
         c_exit_fs, c_rest_fs = st.columns([1, 14])
         with c_exit_fs:
-            if st.button("✖ Salir fullscreen", key="btn_exit_fs",
-                         use_container_width=True):
-                if "fullscreen" in st.query_params:
-                    del st.query_params["fullscreen"]
-                st.rerun()
+            st.link_button("✖ Salir fullscreen", url=_url_no_fs,
+                           use_container_width=True)
 
 # ── Sidebar ──────────────────────────────────────────────────────
 with st.sidebar:

@@ -110,7 +110,7 @@ with st.sidebar:
         "🔴 En Vivo", "🛡 Modo Guardia",
         "🔀 Comparador",
         "🚨 Modo Evento", "📅 Heatmap actividad",
-        "🔁 Replay reciente",
+        "🔁 Replay reciente", "📅 Backfill historico",
         "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
         "Animacion (RAMMB)", "📈 Series de tiempo",
     ]
@@ -119,6 +119,7 @@ with st.sidebar:
         "comparador": "🔀 Comparador", "evento": "🚨 Modo Evento",
         "heatmap": "📅 Heatmap actividad",
         "replay": "🔁 Replay reciente",
+        "backfill": "📅 Backfill historico",
         "ash": "Ash RGB Viewer (L1b + BTD)",
         "volcat": "VOLCAT (SSEC)", "animacion": "Animacion (RAMMB)",
         "series": "📈 Series de tiempo",
@@ -233,6 +234,9 @@ elif page == "📅 Heatmap actividad":
     render()
 elif page == "🔁 Replay reciente":
     from dashboard.views.replay_reciente import render
+    render()
+elif page == "📅 Backfill historico":
+    from dashboard.views.backfill_viewer import render
     render()
 elif page == "Ash RGB Viewer (L1b + BTD)":
     from dashboard.views.ash_viewer import render

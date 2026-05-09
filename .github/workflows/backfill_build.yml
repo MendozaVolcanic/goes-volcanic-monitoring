@@ -1,0 +1,104 @@
+name: Backfill historico build
+
+# Manual trigger: corre `scripts/build_backfill.py` con parametros del usuario
+# y publica el resultado como release `backfill-<DATE>-<VOLCAN>`. Permite
+# revisar eventos historicos (RAMMB archive ~360 dias) en la vista
+# "📅 Backfill historico" del dashboard.
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Fecha (YYYY-MM-DD)'
+        required: true
+        default: '2026-02-08'
+      start:
+        description: 'Hora inicio UTC (HH:MM)'
+        required: true
+        default: '10:36'
+      end:
+        description: 'Hora fin UTC (HH:MM)'
+        required: true
+        default: '19:00'
+      volcan:
+        description: 'Nombre del volcan (debe matchear CATALOG)'
+        required: true
+        default: 'Lascar'
+      zone:
+        description: 'Zona (norte/centro/sur/austral). Vacio para skip.'
+        required: false
+        default: 'norte'
+      include_volcat:
+        description: 'Intentar VOLCAT (puede fallar si no esta en archive SSEC)'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements_actions.txt
+
+      - name: Build backfill
+        run: |
+          set -e
+          ARGS=(
+            "--date" "${{ inputs.date }}"
+            "--start" "${{ inputs.start }}"
+            "--end" "${{ inputs.end }}"
+            "--volcan" "${{ inputs.volcan }}"
+          )
+          if [ -n "${{ inputs.zone }}" ]; then
+            ARGS+=("--zone" "${{ inputs.zone }}")
+          fi
+          if [ "${{ inputs.include_volcat }}" = "true" ]; then
+            ARGS+=("--include-volcat")
+          fi
+          python scripts/build_backfill.py "${ARGS[@]}"
+
+      - name: Listar contenido
+        run: |
+          ls out_backfill/ | head -20
+          echo "---"
+          echo "Total assets: $(ls out_backfill/ | wc -l)"
+          echo "Total size: $(du -sh out_backfill/ | cut -f1)"
+
+      - name: Publicar al release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          # Slug del volcan para el tag (lowercase, alfanumerico)
+          VOLC_SLUG=$(echo "${{ inputs.volcan }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/_/g')
+          TAG="backfill-${{ inputs.date }}-${VOLC_SLUG}"
+          TITLE="Backfill ${{ inputs.volcan }} ${{ inputs.date }} ${{ inputs.start }}-${{ inputs.end }} UTC"
+
+          # Crear o actualizar release
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --title "$TITLE" \
+              --notes "Backfill auto-generado por workflow para ${{ inputs.volcan }} ${{ inputs.date }}. Lee desde dashboard view 'Backfill historico'."
+          fi
+
+          # Borrar assets viejos (snapshot completo cada vez)
+          gh release view "$TAG" --json assets --jq '.assets[].name' \
+            | while read -r asset; do
+                gh release delete-asset "$TAG" "$asset" --yes 2>/dev/null || true
+              done
+
+          gh release upload "$TAG" out_backfill/* --clobber
+          echo "Listo. Tag: $TAG"

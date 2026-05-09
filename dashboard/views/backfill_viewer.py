@@ -1,0 +1,298 @@
+"""Backfill historico — visualizacion de eventos pasados con todos los productos.
+
+Lee de un GitHub Release `backfill-<DATE>-<VOLCAN>` generado por
+`scripts/build_backfill.py`. Cada release contiene PNGs por
+(timestamp, producto, scope) + manifest.json.
+
+Caso de uso: revisar Lascar 8-feb-2026 entre 10:36 y 19:00 UTC con
+GeoColor, Ash RGB, SO2, BTD, hotspots y VOLCAT en grilla por timestamp.
+
+Para crear un nuevo backfill: correr el script localmente (~5 min) o
+via GitHub Action workflow_dispatch, y subir el contenido de
+`out_backfill/` al release con tag `backfill-<DATE>-<VOLCAN>`.
+"""
+
+from __future__ import annotations
+
+import io
+import json
+import logging
+from datetime import datetime
+from typing import Optional
+
+import numpy as np
+import plotly.graph_objects as go
+import requests
+import streamlit as st
+from PIL import Image
+
+from dashboard.style import header
+
+logger = logging.getLogger(__name__)
+
+# Lista de releases disponibles. Para agregar uno nuevo, sumar tag al dict.
+# El default abajo apunta al primer test (Lascar 8-feb-2026).
+AVAILABLE_BACKFILLS = {
+    "Lascar 8-feb-2026 (10:36-19:00 UTC)": "backfill-2026-02-08-lascar",
+}
+
+CDN_OWNER = "MendozaVolcanic"
+CDN_REPO = "goes-volcanic-monitoring"
+
+PRODUCT_LABELS = {
+    "geocolor": "GeoColor",
+    "eumetsat_ash": "Ash RGB",
+    "jma_so2": "SO2 RGB",
+    "split_window_difference_10_3-12_3": "BTD (split-window)",
+    "volcat": "VOLCAT (SSEC)",
+}
+
+# Tabla de info por producto — lo que el usuario puede esperar ver
+PRODUCT_INFO = {
+    "geocolor": "Color real mejorado. Solo dia. Util para ver pluma visible y contexto.",
+    "eumetsat_ash": "Detecta ceniza. Pluma de ceniza = rojo/magenta. Dia y noche.",
+    "jma_so2": "Pluma de SO2 = verde brillante. Indica desgasificacion fresca.",
+    "split_window_difference_10_3-12_3": "Diferencia termica BT11-BT12. Negativo = ceniza fina (Prata 1989).",
+    "volcat": "Producto NOAA/SSEC con altura de pluma cuantitativa (km AMSL).",
+}
+
+
+def _release_url(tag: str, asset: str) -> str:
+    return (f"https://github.com/{CDN_OWNER}/{CDN_REPO}"
+            f"/releases/download/{tag}/{asset}")
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def _fetch_manifest(tag: str) -> dict | None:
+    try:
+        r = requests.get(_release_url(tag, "manifest.json"), timeout=15)
+        if r.status_code != 200:
+            return None
+        return r.json()
+    except Exception as e:
+        logger.warning("manifest %s: %s", tag, e)
+        return None
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def _fetch_png(tag: str, asset: str) -> np.ndarray | None:
+    try:
+        r = requests.get(_release_url(tag, asset), timeout=20)
+        if r.status_code != 200:
+            return None
+        img = Image.open(io.BytesIO(r.content)).convert("RGB")
+        return np.array(img)
+    except Exception as e:
+        logger.warning("png %s: %s", asset, e)
+        return None
+
+
+def _array_to_data_url(arr: np.ndarray) -> str:
+    import base64
+    img = Image.fromarray(arr)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+def _ts_to_label(ts: str) -> str:
+    """'20260208104021' -> '2026-02-08 10:40:21 UTC'."""
+    try:
+        dt = datetime.strptime(ts, "%Y%m%d%H%M%S")
+        return dt.strftime("%Y-%m-%d %H:%M:%S UTC")
+    except Exception:
+        return ts
+
+
+def _render_product_panel(arr: np.ndarray | None, bounds: dict,
+                           label: str, height: int = 360) -> go.Figure:
+    fig = go.Figure()
+    if arr is not None:
+        fig.add_layout_image(
+            source=_array_to_data_url(arr),
+            xref="x", yref="y",
+            x=bounds["lon_min"], y=bounds["lat_max"],
+            sizex=bounds["lon_max"] - bounds["lon_min"],
+            sizey=bounds["lat_max"] - bounds["lat_min"],
+            sizing="stretch", layer="below",
+        )
+    cos_lat = max(0.1, float(np.cos(np.radians(
+        (bounds["lat_min"] + bounds["lat_max"]) / 2
+    ))))
+    fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
+                     showgrid=False, visible=False)
+    fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
+                     showgrid=False, visible=False,
+                     scaleanchor="x", scaleratio=1.0 / cos_lat)
+    # Title como overlay para no perder pixeles arriba
+    fig.add_annotation(
+        x=bounds["lon_min"], y=bounds["lat_max"],
+        xref="x", yref="y",
+        text=f"<b>{label}</b>", showarrow=False,
+        font=dict(size=12, color="#ffffff"),
+        bgcolor="rgba(0,0,0,0.65)", borderpad=3,
+        xanchor="left", yanchor="top",
+        xshift=4, yshift=-4,
+    )
+    fig.update_layout(
+        height=height, margin=dict(l=0, r=0, t=0, b=0),
+        paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
+    )
+    if arr is None:
+        fig.add_annotation(
+            text="sin datos", xref="paper", yref="paper",
+            x=0.5, y=0.5, showarrow=False, font=dict(color="#556", size=12),
+        )
+    return fig
+
+
+def render():
+    header(
+        "📅 Backfill historico — eventos pasados",
+        "Revision dia/hora de productos GOES-19 sobre eventos volcanicos archivados",
+    )
+
+    # ── Selector de evento ────────────────────────────────────────────
+    cols = st.columns([2, 1])
+    with cols[0]:
+        sel_label = st.selectbox(
+            "Evento", list(AVAILABLE_BACKFILLS.keys()),
+            index=0, key="bf_event",
+        )
+        tag = AVAILABLE_BACKFILLS[sel_label]
+
+    with cols[1]:
+        st.markdown(
+            f"<div style='font-size:0.78rem; color:#7a8a9a; padding-top:0.5rem;'>"
+            f"Release: <code>{tag}</code></div>",
+            unsafe_allow_html=True,
+        )
+
+    manifest = _fetch_manifest(tag)
+    if manifest is None:
+        st.error(
+            f"No pude leer el manifest de `{tag}`. Posibles causas:\n"
+            "- El release no existe todavia (correr `scripts/build_backfill.py` y "
+            "subir contenido de `out_backfill/` al release con ese tag).\n"
+            "- Conectividad con GitHub Releases."
+        )
+        st.code(
+            f"# Para crear el release:\n"
+            f"python scripts/build_backfill.py --date 2026-02-08 "
+            f"--start 10:36 --end 19:00 --volcan Lascar --zone norte "
+            f"--include-volcat\n"
+            f"gh release create {tag} --title '{sel_label}' --notes 'Backfill auto'\n"
+            f"gh release upload {tag} out_backfill/*",
+            language="bash",
+        )
+        return
+
+    # ── Info del evento ───────────────────────────────────────────────
+    n_ts = len(manifest.get("timestamps_target", []))
+    scopes = list(manifest.get("scopes", {}).keys())
+    st.markdown(
+        f"<div style='background:#0f1418; border-left:4px solid #ff6644; "
+        f"padding:0.6rem 1rem; border-radius:4px; margin-bottom:0.8rem;'>"
+        f"<b>{manifest['volcan']}</b> &middot; {manifest['date']} "
+        f"&middot; {manifest['start']}-{manifest['end']} UTC<br>"
+        f"<span style='font-size:0.85rem; color:#aabbcc;'>"
+        f"{n_ts} timestamps cada 10 min &middot; {len(scopes)} scopes "
+        f"({', '.join(scopes)})</span></div>",
+        unsafe_allow_html=True,
+    )
+
+    # ── Selector de scope (volcan vs zona) ────────────────────────────
+    scope_labels = {sid: sid.replace("__", " · ").replace("_", " ").title()
+                    for sid in scopes}
+    sel_scope = st.radio(
+        "Vista", scopes, format_func=lambda s: scope_labels[s],
+        index=0, horizontal=True, key="bf_scope",
+    )
+    scope_data = manifest["scopes"][sel_scope]
+    bounds = scope_data["bounds"]
+
+    # ── Slider de timestamp ───────────────────────────────────────────
+    timestamps = manifest["timestamps_target"]
+    st.markdown(
+        "<div style='font-size:0.85rem; color:#aabbcc; margin-top:0.4rem;'>"
+        "Slider de timestamp — desliza para ver la evolucion temporal:"
+        "</div>",
+        unsafe_allow_html=True,
+    )
+    idx = st.slider(
+        "ts_idx", 0, len(timestamps) - 1, 0, 1,
+        format="%d", label_visibility="collapsed", key="bf_ts_idx",
+    )
+    ts = timestamps[idx]
+    st.markdown(
+        f"<div style='font-size:0.95rem; color:#e0e0e0; margin-bottom:0.4rem;'>"
+        f"<b>Timestamp {idx + 1}/{len(timestamps)}:</b> {_ts_to_label(ts)}"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+    # ── Productos a mostrar ───────────────────────────────────────────
+    products_in_manifest = manifest.get("products_rammb", [])
+    show_products = st.multiselect(
+        "Productos a mostrar",
+        products_in_manifest + ["volcat"],
+        default=products_in_manifest + ["volcat"],
+        format_func=lambda p: PRODUCT_LABELS.get(p, p),
+        key="bf_products",
+    )
+
+    if not show_products:
+        st.info("Selecciona al menos un producto.")
+        return
+
+    # ── Grid de productos ─────────────────────────────────────────────
+    n_products = len(show_products)
+    cols_per_row = min(3, n_products)
+    n_rows = (n_products + cols_per_row - 1) // cols_per_row
+
+    # Pre-fetch en paralelo no es trivial con st.cache_data. Cargamos
+    # serial pero las fetch siguientes (al cambiar slider) se cachean.
+    for r in range(n_rows):
+        cols = st.columns(cols_per_row)
+        for c in range(cols_per_row):
+            i = r * cols_per_row + c
+            if i >= n_products:
+                break
+            prod = show_products[i]
+            with cols[c]:
+                # Resolver el filename del PNG segun producto
+                if prod == "volcat":
+                    asset = f"{sel_scope}__volcat__{ts}.png"
+                else:
+                    asset = f"{sel_scope}__{prod}__{ts}.png"
+                arr = _fetch_png(tag, asset)
+                label = PRODUCT_LABELS.get(prod, prod)
+                fig = _render_product_panel(arr, bounds, label, height=360)
+                st.plotly_chart(fig, use_container_width=True,
+                                config={"displayModeBar": False})
+
+    # ── Panel info ────────────────────────────────────────────────────
+    with st.expander("ℹ Que muestra cada producto"):
+        for p in show_products:
+            st.markdown(
+                f"**{PRODUCT_LABELS.get(p, p)}**: "
+                f"{PRODUCT_INFO.get(p, 'Sin descripcion.')}"
+            )
+
+    # ── Workflow info ─────────────────────────────────────────────────
+    with st.expander("⚙ Crear backfill de otra fecha"):
+        st.markdown(
+            "Para revisar otro evento historico, corre el script de backfill "
+            "(o lanza el GitHub Action workflow_dispatch correspondiente) y "
+            "sube el resultado a un nuevo release. Despues agrega el tag al "
+            "diccionario `AVAILABLE_BACKFILLS` en este archivo:\n\n"
+            "```bash\n"
+            "python scripts/build_backfill.py \\\n"
+            "    --date 2026-XX-XX --start HH:MM --end HH:MM \\\n"
+            "    --volcan Villarrica --zone sur \\\n"
+            "    --include-volcat\n"
+            "gh release create backfill-2026-XX-XX-villarrica \\\n"
+            "    --title 'Villarrica YYYY-MM-DD' --notes 'Backfill manual'\n"
+            "gh release upload backfill-2026-XX-XX-villarrica out_backfill/*\n"
+            "```"
+        )

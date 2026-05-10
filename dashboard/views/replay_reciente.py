@@ -56,7 +56,8 @@ PRODUCTS = {
     "jma_so2": "SO2 RGB",
 }
 
-RADIUS_DEG = 0.4
+# Centralizado en src/config — antes RADIUS_DEG = 0.4 hardcoded.
+from src.config import REPLAY_RADIUS_DEG as RADIUS_DEG  # noqa: E402
 
 
 @st.cache_data(ttl=300, show_spinner=False)

@@ -17,6 +17,20 @@ GOES_SATELLITE = 19          # GOES-East (cubre Sudamérica)
 GOES_BUCKET = f"noaa-goes{GOES_SATELLITE}"
 S3_REGION = "us-east-1"
 
+# Subsatellite point de GOES-19 (GOES-East operacional desde Apr 2025).
+# Validado contra L1b oficial NOAA. El valor anterior -75.2 era de GOES-16
+# y producía offset de ~17 km al sur de Chile en los mapas (bug histórico
+# arreglado mayo 2026). Cualquier llamada a pyproj GEOS debe usar este valor.
+GOES19_SAT_LON = -75.0
+
+# ── Bboxes default por scope (centralizados para que un cambio aplique
+# consistentemente a todos los pipelines). Antes estaban dispersos en
+# rammb_slider, mosaico_chile, replay_reciente, hires_pipeline. ────────
+VOLCANO_RADIUS_DEG_FULL = 1.5      # Vista volcán amplia (rammb_viewer)
+MOSAICO_RADIUS_DEG = 0.5           # Mosaico Modo Guardia (~55 km)
+HIRES_RADIUS_DEG = 0.5             # Hi-res NOAA por volcán
+REPLAY_RADIUS_DEG = 0.4            # Replay reciente
+
 # Productos que usamos
 PRODUCTS = {
     "L1b_rad": "ABI-L1b-RadF",     # Radiancias Full Disk (para Ash RGB custom)

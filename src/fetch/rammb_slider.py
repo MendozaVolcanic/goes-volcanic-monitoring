@@ -44,8 +44,10 @@ ZOOM_CHILE  = 2   # Chile completo  (~5.1 km/px)
 ZOOM_ZONE   = 3   # Por zona        (~3.4 km/px, 4×4 tiles)
 ZOOM_VOLCAN = 4   # Volcán zoom     (~1.7 km/px, ~9-12 tiles)
 
-# Radio estándar para vista volcán
-VOLCANO_RADIUS_DEG = 1.5  # ±1.5° ~ 165 km
+# Radio estándar para vista volcán. Re-export desde src.config.
+# El valor canónico vive en src/config.py para que mosaico, hires y otros
+# pipelines refieran al mismo numero (cambio una vez, aplica a todos).
+from src.config import VOLCANO_RADIUS_DEG_FULL as VOLCANO_RADIUS_DEG  # noqa: E402,F401
 
 # Tiles Chile completo a zoom=3 (calculados desde scan angles del zoom=2)
 # zoom=2 Chile: cols[1,2] rows[2,3] → scan angles x∈[-0.0759,+0.0758] y∈[0,-0.1518]

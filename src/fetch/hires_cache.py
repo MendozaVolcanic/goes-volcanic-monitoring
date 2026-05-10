@@ -37,15 +37,9 @@ MANIFEST_MONO_URL = f"{CDN_BASE}/manifest_mono.json" # mode=mono_05km
 TIMEOUT = 12
 
 
-_session: requests.Session | None = None
+# Session HTTP compartida — definicion en src/fetch/_http_session
+from src.fetch._http_session import get_session as _get_session
 
-
-def _get_session() -> requests.Session:
-    global _session
-    if _session is None:
-        _session = requests.Session()
-        _session.headers.update({"User-Agent": "GOES-VolcanicMonitor/1.0"})
-    return _session
 
 
 def _slugify(name: str) -> str:

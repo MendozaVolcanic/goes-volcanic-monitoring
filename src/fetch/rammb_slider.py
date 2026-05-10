@@ -129,15 +129,9 @@ def get_tiles_for_bounds(
     )
 
 
-_session = None
+# Session HTTP compartida — definicion en src/fetch/_http_session
+from src.fetch._http_session import get_session as _get_session
 
-
-def _get_session():
-    global _session
-    if _session is None:
-        _session = requests.Session()
-        _session.headers.update({"User-Agent": "GOES-VolcanicMonitor/1.0"})
-    return _session
 
 
 def get_latest_timestamps(product: str, n: int = 24) -> list[str]:

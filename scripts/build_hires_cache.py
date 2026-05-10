@@ -1,0 +1,116 @@
+"""Build hi-res visible cache: 8 priority volcanoes desde NOAA L1b.
+
+Genera composites a 1 km/px (banda 2 a 0.5 km/px downsampleada 2x para
+alinear con bandas 1+3 a 1 km/px). Aun asi son 1.7x mejor que RAMMB
+zoom 4 efectivo.
+
+Cron sugerido: cada 30 min (cron '17,47 * * * *').
+
+Salida: out_hires/<volcan_slug>__hires__<ts>.png + manifest.json.
+Despues sube como assets a release rolling `hires-rolling`.
+
+Cada miniatura ~150-300 KB PNG -> 8 scopes × 1 timestamp = ~2 MB por run.
+Rolling 12h × 24 runs = ~50 MB. Cabe holgado.
+"""
+
+from __future__ import annotations
+
+import io
+import json
+import logging
+import sys
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from PIL import Image
+
+from src.fetch.goes_s3 import get_latest_time
+from src.process.hires_pipeline import build_hires_for_scopes
+from src.volcanos import get_priority
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+log = logging.getLogger("hires_cache")
+
+OUT_DIR = ROOT / "out_hires"
+RADIUS_DEG = 0.5  # ±55 km bbox por volcan
+
+
+def _save_png(arr, path: Path) -> int:
+    img = Image.fromarray(arr)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG", optimize=False, compress_level=6)
+    data = buf.getvalue()
+    path.write_bytes(data)
+    return len(data)
+
+
+def main() -> int:
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    # Limpiar — cada build es snapshot completo
+    for p in OUT_DIR.glob("*"):
+        p.unlink()
+
+    # 1. Determinar el scan mas reciente disponible en S3
+    dt = get_latest_time()
+    if dt is None:
+        # Fallback: ahora -1h (S3 publica con ~3-5 min latencia)
+        dt = datetime.now(timezone.utc) - timedelta(minutes=15)
+        log.warning("get_latest_time fallo, usando %s", dt)
+    else:
+        log.info("Scan mas reciente disponible S3: %s", dt.isoformat())
+
+    # 2. Construir scopes para los 8 prioritarios
+    priority = get_priority()
+    if len(priority) != 8:
+        log.warning("Esperaba 8 prioritarios, hay %d", len(priority))
+    scopes = {
+        "".join(c if c.isalnum() else "_" for c in v.name.lower()):
+            {"lat": v.lat, "lon": v.lon, "name": v.name}
+        for v in priority
+    }
+
+    # 3. Build
+    log.info("Procesando hi-res para %d scopes...", len(scopes))
+    results = build_hires_for_scopes(dt, scopes, radius_deg=RADIUS_DEG)
+
+    # 4. Guardar
+    ts_str = dt.strftime("%Y%m%d%H%M%S")
+    available = []
+    total_bytes = 0
+    for sid, arr in results.items():
+        if arr is None:
+            log.warning("[%s] sin imagen, skipping", sid)
+            continue
+        fname = f"{sid}__hires__{ts_str}.png"
+        nb = _save_png(arr, OUT_DIR / fname)
+        total_bytes += nb
+        available.append(sid)
+
+    # 5. Manifest
+    manifest = {
+        "generated_utc": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),
+        "scan_ts": ts_str,
+        "scan_dt_iso": dt.isoformat(),
+        "radius_deg": RADIUS_DEG,
+        "scopes": {
+            sid: {
+                "lat": scopes[sid]["lat"],
+                "lon": scopes[sid]["lon"],
+                "name": scopes[sid]["name"],
+                "available": sid in available,
+            }
+            for sid in scopes
+        },
+    }
+    (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2))
+
+    log.info("DONE. %d/%d scopes OK, %.1f MB total",
+             len(available), len(scopes), total_bytes / 1e6)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

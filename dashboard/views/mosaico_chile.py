@@ -168,17 +168,26 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
         xanchor="left", yanchor="top",
         xshift=4, yshift=-4,
     )
-    # Badge de zoom usado (esquina inferior derecha). Verde z=4 (max),
-    # naranja z=3 (fallback — RAMMB no sirvio zoom 4 para este producto).
-    if zoom_used is not None and zoom_used > 0:
-        zoom_color = "#3fb950" if zoom_used >= 4 else "#ff9933"
-        zoom_kmpx = {4: "1.7", 3: "3.4", 2: "6.8"}.get(zoom_used, "?")
+    # Badge de zoom usado (esquina inferior derecha):
+    #   -1 = hi-res NOAA (azul), 4 = RAMMB max (verde),
+    #   3 = RAMMB fallback (naranja).
+    if zoom_used is not None and zoom_used != 0:
+        if zoom_used == -1:
+            badge_color = "#33aaff"
+            badge_text = "HI-RES NOAA · 1km/px"
+        elif zoom_used >= 4:
+            badge_color = "#3fb950"
+            badge_text = f"z={zoom_used} · 1.7km/px"
+        else:
+            badge_color = "#ff9933"
+            kmpx = {3: "3.4", 2: "6.8"}.get(zoom_used, "?")
+            badge_text = f"z={zoom_used} · {kmpx}km/px"
         fig.add_annotation(
             x=bounds["lon_max"], y=bounds["lat_min"],
             xref="x", yref="y",
-            text=f"z={zoom_used} · {zoom_kmpx}km/px",
+            text=badge_text,
             showarrow=False,
-            font=dict(size=9, color=zoom_color),
+            font=dict(size=9, color=badge_color),
             bgcolor="rgba(0,0,0,0.7)", borderpad=2,
             xanchor="right", yanchor="bottom",
             xshift=-3, yshift=3,
@@ -196,8 +205,15 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
     return fig
 
 
+@st.cache_data(ttl=120, show_spinner=False)
+def _hires_for_volcano_cached(volcano_name: str):
+    """Wrapper cacheado del fetch hi-res. Cache 2 min para no spamear."""
+    from src.fetch.hires_cache import fetch_hires_for_volcano
+    return fetch_hires_for_volcano(volcano_name)
+
+
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
-def _grid_fragment(product: str):
+def _grid_fragment(product: str, use_hires: bool = False):
     """Solo el grid se auto-refresca cada 60s. El selector queda afuera."""
     timestamps = _recent_timestamps(product, n=5)
     now = datetime.now(timezone.utc)
@@ -230,6 +246,8 @@ def _grid_fragment(product: str):
     # Grid 2 filas x 4 columnas
     fallback_ts = 0
     fallback_zoom = 0
+    hires_used = 0
+    hires_fallback = 0
     rows = [PRIORITY_VOLCANOES[:4], PRIORITY_VOLCANOES[4:8]]
     for row_volcanos in rows:
         cols = st.columns(4)
@@ -237,13 +255,29 @@ def _grid_fragment(product: str):
             v = get_volcano(name)
             if v is None:
                 continue
-            img, used_ts, used_zoom = _volcano_frame_with_fallback(
-                product, timestamps, v.lat, v.lon,
-            )
-            if used_ts and used_ts != ts:
-                fallback_ts += 1
-            if used_zoom == ZOOM_ZONE:
-                fallback_zoom += 1
+
+            # Intento hi-res primero si toggle activo
+            img = None
+            used_zoom = 0  # 0 = hi-res no, sino RAMMB zoom
+            label_extra = ""
+            if use_hires:
+                hires_arr, hires_info = _hires_for_volcano_cached(name)
+                if hires_arr is not None:
+                    img = hires_arr
+                    used_zoom = -1  # codigo especial = hi-res
+                    hires_used += 1
+                else:
+                    hires_fallback += 1
+
+            # Fallback a RAMMB si no hi-res
+            if img is None:
+                img, used_ts, used_zoom = _volcano_frame_with_fallback(
+                    product, timestamps, v.lat, v.lon,
+                )
+                if used_ts and used_ts != ts:
+                    fallback_ts += 1
+                if used_zoom == ZOOM_ZONE:
+                    fallback_zoom += 1
             with cols[i]:
                 st.plotly_chart(
                     _render_mini(img, v.lat, v.lon, name,
@@ -252,6 +286,10 @@ def _grid_fragment(product: str):
                     use_container_width=True,
                     config={"displayModeBar": False},
                 )
+
+    if use_hires and hires_used:
+        st.caption(f"🔬 Hi-res NOAA activo · {hires_used}/8 usaron hi-res, "
+                   f"{hires_fallback}/8 fallback a RAMMB")
 
     notes = []
     if fallback_ts:
@@ -318,13 +356,29 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
 
 def _live_panel():
     """Selector de producto + grid con auto-refresh."""
-    product = st.selectbox(
-        "Producto",
-        options=list(PRODUCT_OPTIONS.keys()),
-        format_func=lambda k: PRODUCT_OPTIONS[k],
-        index=0, key="mosaico_product",
-    )
-    _grid_fragment(product)
+    cols_top = st.columns([2, 2, 3])
+    with cols_top[0]:
+        product = st.selectbox(
+            "Producto",
+            options=list(PRODUCT_OPTIONS.keys()),
+            format_func=lambda k: PRODUCT_OPTIONS[k],
+            index=0, key="mosaico_product",
+        )
+    with cols_top[1]:
+        use_hires = st.toggle(
+            "🔬 Hi-res NOAA (1 km/px)", value=False, key="mosaico_hires",
+            help="Usa imagenes visibles 0.5km/px desde NOAA L1b (downsampleadas "
+                 "a 1km/px para alinear). 1.7x mejor que RAMMB zoom 4. Day = "
+                 "TrueColor, Night = IR pseudo-color. Requiere que el cron "
+                 "hires_visible_cache haya corrido en los ultimos 30 min.",
+        )
+    with cols_top[2]:
+        if use_hires:
+            st.caption(
+                "ℹ Hi-res override esta activo — el selector de producto se "
+                "ignora (hi-res = TrueColor o IR pseudo-color)."
+            )
+    _grid_fragment(product, use_hires=use_hires)
     st.markdown(
         "<div style='text-align:center; color:#445566; font-size:0.75rem; "
         "margin-top:0.8rem; padding-top:0.5rem; border-top:1px solid #223;'>"

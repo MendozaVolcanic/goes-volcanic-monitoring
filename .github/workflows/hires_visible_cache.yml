@@ -1,0 +1,70 @@
+name: Hi-res visible cache build
+
+# Pre-procesa banda visible 0.5 km/px desde NOAA L1b para los 8 volcanes
+# prioritarios y publica como release rolling `hires-rolling`. Resolucion
+# efectiva ~1 km/px (banda 2 downsampleada para alinear con bandas 1+3).
+#
+# Day/night switch automatico:
+#   - Sun >= 5° elevacion: TrueColor RGB visible
+#   - Sun < 5°:           Pseudo-color desde banda 13 IR window
+#
+# Ver src/process/hires_pipeline.py para la receta.
+
+on:
+  schedule:
+    # Cada 30 min en :17 y :47 (offset para no chocar con animation_cache :07)
+    - cron: '17,47 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements_actions.txt
+
+      - name: Build cache hi-res
+        run: python scripts/build_hires_cache.py
+
+      - name: Listar contenido
+        run: |
+          ls -lh out_hires/ | head -15
+          echo "---"
+          echo "Total assets: $(ls out_hires/ | wc -l)"
+          echo "Total size: $(du -sh out_hires/ | cut -f1)"
+
+      - name: Publicar al release rolling
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          TAG="hires-rolling"
+
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" \
+              --title "Hi-res visible cache (rolling)" \
+              --notes "Cache rolling de imagenes visibles 1 km/px para los 8 volcanes prioritarios. Actualizado por hires_visible_cache.yml cada 30 min. Day = TrueColor, Night = IR pseudo-color." \
+              --prerelease
+          fi
+
+          gh release view "$TAG" --json assets --jq '.assets[].name' \
+            | while read -r asset; do
+                gh release delete-asset "$TAG" "$asset" --yes 2>/dev/null || true
+              done
+
+          gh release upload "$TAG" out_hires/* --clobber
+          echo "Listo. Tag: $TAG"

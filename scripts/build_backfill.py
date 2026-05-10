@@ -177,9 +177,25 @@ def _build_hotspots(timestamps: list[str], scopes: dict[str, dict],
     return available
 
 
+def _save_png_rgba(arr: np.ndarray, path: Path) -> int:
+    """Guardar como PNG RGBA preservando transparencia."""
+    img = Image.fromarray(arr, mode="RGBA")
+    buf = io.BytesIO()
+    img.save(buf, format="PNG", optimize=False, compress_level=6)
+    data = buf.getvalue()
+    path.write_bytes(data)
+    return len(data)
+
+
 def _build_volcat(timestamps: list[str], scopes: dict[str, dict],
                   out_dir: Path) -> dict[str, list[str]]:
-    """Intenta bajar VOLCAT via RealEarth para cada (ts, scope)."""
+    """Intenta bajar VOLCAT via RealEarth para cada (ts, scope).
+
+    Guarda como PNG RGBA preservando alpha — los pixels sin ceniza
+    son transparentes (alpha=0). La vista compone sobre GeoColor para
+    que se vea: VOLCAT solo es util como overlay, no como imagen
+    standalone (sino los pixels sin ceniza salen negros).
+    """
     from src.fetch.realearth_api import fetch_image
     available: dict[str, list[str]] = {sid: [] for sid in scopes}
     for ts in timestamps:
@@ -191,11 +207,13 @@ def _build_volcat(timestamps: list[str], scopes: dict[str, dict],
                                   width=600, height=600, time=re_time)
                 if arr is None:
                     continue
-                # arr es RGBA, convertir a RGB
-                if arr.shape[-1] == 4:
-                    arr = arr[..., :3]
+                # Asegurar RGBA y guardar con alpha
+                if arr.shape[-1] == 3:
+                    # Si vino RGB, agregar alpha=255
+                    a = np.full((*arr.shape[:2], 1), 255, dtype=arr.dtype)
+                    arr = np.concatenate([arr, a], axis=-1)
                 fname = f"{sid}__volcat__{ts}.png"
-                _save_png(arr, out_dir / fname)
+                _save_png_rgba(arr, out_dir / fname)
                 available[sid].append(ts)
             except Exception as e:
                 log.warning("volcat %s %s: %s", sid, ts, e)

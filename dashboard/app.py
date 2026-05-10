@@ -149,17 +149,18 @@ with st.sidebar:
         st.query_params["vista"] = _slug_for_page
 
     # ── Modo Fullscreen ──────────────────────────────────────────
+    # st.link_button (anchor HTML interno de Streamlit) en vez de
+    # <a target="_top"> manual: el iframe sandbox de Streamlit Cloud
+    # bloquea target="_top" en muchos casos, dejando el boton
+    # inclickeable. link_button funciona porque Streamlit lo renderiza
+    # con la logica de navegacion correcta para su iframe.
     st.markdown("---")
-    fs_link = (
-        f'<a href="?vista={_slug_for_page}&fullscreen=1" target="_top" '
-        f'style="display:block; text-align:center; '
-        f'background:linear-gradient(135deg, #CC3311, #EE7733); '
-        f'color:white; padding:0.55rem 0.8rem; border-radius:6px; '
-        f'text-decoration:none; font-weight:700; font-size:0.85rem;">'
-        f'🖥 Modo Pantalla Completa</a>'
-        if _slug_for_page else ""
-    )
-    st.markdown(fs_link, unsafe_allow_html=True)
+    if _slug_for_page:
+        st.link_button(
+            "🖥 Modo Pantalla Completa",
+            url=f"?vista={_slug_for_page}&fullscreen=1",
+            type="primary", use_container_width=True,
+        )
     st.caption("Oculta este menú y maximiza el área del mapa. "
                "Botón ✖ arriba a la derecha para salir.")
 

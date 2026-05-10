@@ -75,16 +75,48 @@ def _fetch_manifest(tag: str) -> dict | None:
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
-def _fetch_png(tag: str, asset: str) -> np.ndarray | None:
+def _fetch_png(tag: str, asset: str, keep_alpha: bool = False) -> np.ndarray | None:
     try:
         r = requests.get(_release_url(tag, asset), timeout=20)
         if r.status_code != 200:
             return None
-        img = Image.open(io.BytesIO(r.content)).convert("RGB")
+        img = Image.open(io.BytesIO(r.content))
+        mode = "RGBA" if keep_alpha else "RGB"
+        img = img.convert(mode)
         return np.array(img)
     except Exception as e:
         logger.warning("png %s: %s", asset, e)
         return None
+
+
+def _composite_volcat(volcat_rgba: np.ndarray | None,
+                      base_rgb: np.ndarray | None) -> np.ndarray | None:
+    """Componer VOLCAT (RGBA con transparencia) sobre GeoColor.
+
+    Si no hay base, devuelve VOLCAT con bg gris para que no salga negro.
+    Si VOLCAT es None, devuelve base.
+    """
+    if volcat_rgba is None:
+        return base_rgb
+    if volcat_rgba.shape[-1] != 4:
+        return volcat_rgba  # ya es RGB
+    if base_rgb is None:
+        # Fallback: bg gris oscuro tipo mapa de noche
+        h, w = volcat_rgba.shape[:2]
+        base_rgb = np.full((h, w, 3), 30, dtype=np.uint8)
+    # Resize base si shape difiere
+    if base_rgb.shape[:2] != volcat_rgba.shape[:2]:
+        from PIL import Image as PILImage
+        base_pil = PILImage.fromarray(base_rgb).resize(
+            (volcat_rgba.shape[1], volcat_rgba.shape[0]), PILImage.LANCZOS,
+        )
+        base_rgb = np.array(base_pil)
+    # Alpha composite
+    alpha = volcat_rgba[..., 3:4].astype(np.float32) / 255.0
+    fg = volcat_rgba[..., :3].astype(np.float32)
+    bg = base_rgb.astype(np.float32)
+    out = (fg * alpha + bg * (1 - alpha)).astype(np.uint8)
+    return out
 
 
 def _array_to_data_url(arr: np.ndarray) -> str:
@@ -252,6 +284,14 @@ def render():
 
     # Pre-fetch en paralelo no es trivial con st.cache_data. Cargamos
     # serial pero las fetch siguientes (al cambiar slider) se cachean.
+    # Pre-cargar GeoColor del scope+ts si tenemos VOLCAT en lista — lo usaremos
+    # como base para componer el overlay VOLCAT (que es transparente fuera
+    # de pixeles con ceniza).
+    geo_for_volcat = None
+    if "volcat" in show_products:
+        geo_asset = f"{sel_scope}__geocolor__{ts}.png"
+        geo_for_volcat = _fetch_png(tag, geo_asset, keep_alpha=False)
+
     for r in range(n_rows):
         cols = st.columns(cols_per_row)
         for c in range(cols_per_row):
@@ -260,13 +300,16 @@ def render():
                 break
             prod = show_products[i]
             with cols[c]:
-                # Resolver el filename del PNG segun producto
                 if prod == "volcat":
+                    # VOLCAT es overlay transparente — componer sobre GeoColor.
                     asset = f"{sel_scope}__volcat__{ts}.png"
+                    volcat_rgba = _fetch_png(tag, asset, keep_alpha=True)
+                    arr = _composite_volcat(volcat_rgba, geo_for_volcat)
+                    label = "VOLCAT (overlay sobre GeoColor)"
                 else:
                     asset = f"{sel_scope}__{prod}__{ts}.png"
-                arr = _fetch_png(tag, asset)
-                label = PRODUCT_LABELS.get(prod, prod)
+                    arr = _fetch_png(tag, asset)
+                    label = PRODUCT_LABELS.get(prod, prod)
                 fig = _render_product_panel(arr, bounds, label, height=360)
                 st.plotly_chart(fig, use_container_width=True,
                                 config={"displayModeBar": False})

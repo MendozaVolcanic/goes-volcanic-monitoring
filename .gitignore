@@ -35,3 +35,9 @@ Thumbs.db
 # Local settings & logs
 .claude/
 Logs pruebas/
+
+# Build outputs (regenerados por scripts, no en repo)
+out_backfill/
+out_hires/
+out_animation_cache/
+out_backfill_run.log

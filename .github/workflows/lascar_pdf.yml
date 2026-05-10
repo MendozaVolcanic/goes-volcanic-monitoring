@@ -1,9 +1,12 @@
-name: Reporte diario Lascar PDF
+name: Reporte Lascar PDF (manual)
 
+# CAMBIO 2026-05-10: cron diario desactivado. La auditoria detecto que
+# nadie valida estos PDFs operacionalmente. Para mantener la posibilidad
+# de generarlos a demanda lo dejamos como workflow_dispatch solamente.
+# Si en el futuro se valida un consumidor, descomentar el cron.
 on:
-  schedule:
-    # 11:00 UTC = 08:00 hora Chile estandar — antes del turno
-    - cron: '0 11 * * *'
+  # schedule:
+  #   - cron: '0 11 * * *'   # 11:00 UTC = 08:00 hora Chile, antes del turno
   workflow_dispatch:
 
 permissions:

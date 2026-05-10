@@ -48,6 +48,13 @@ def _save_png(arr, path: Path) -> int:
 
 
 def main() -> int:
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--mode", choices=["color", "mono_05km"], default="color",
+                    help="color: TrueColor 1km/px (day) + IR (night). "
+                         "mono_05km: banda 2 sola a 0.5km/px sepia (4× zoom real, solo dia).")
+    args = ap.parse_args()
+
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     # Limpiar — cada build es snapshot completo
     for p in OUT_DIR.glob("*"):
@@ -73,25 +80,28 @@ def main() -> int:
     }
 
     # 3. Build
-    log.info("Procesando hi-res para %d scopes...", len(scopes))
-    results = build_hires_for_scopes(dt, scopes, radius_deg=RADIUS_DEG)
+    log.info("Procesando hi-res para %d scopes mode=%s...", len(scopes), args.mode)
+    results = build_hires_for_scopes(dt, scopes, radius_deg=RADIUS_DEG,
+                                      mode=args.mode)
 
-    # 4. Guardar
+    # 4. Guardar — sufijo del filename indica el mode
     ts_str = dt.strftime("%Y%m%d%H%M%S")
+    suffix = "hires_mono" if args.mode == "mono_05km" else "hires"
     available = []
     total_bytes = 0
     for sid, arr in results.items():
         if arr is None:
             log.warning("[%s] sin imagen, skipping", sid)
             continue
-        fname = f"{sid}__hires__{ts_str}.png"
+        fname = f"{sid}__{suffix}__{ts_str}.png"
         nb = _save_png(arr, OUT_DIR / fname)
         total_bytes += nb
         available.append(sid)
 
-    # 5. Manifest
+    # 5. Manifest (key segun mode para no pisar el otro cache)
     manifest = {
         "generated_utc": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),
+        "mode": args.mode,
         "scan_ts": ts_str,
         "scan_dt_iso": dt.isoformat(),
         "radius_deg": RADIUS_DEG,
@@ -105,7 +115,10 @@ def main() -> int:
             for sid in scopes
         },
     }
-    (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    # Manifest filename: manifest.json para color (compat), manifest_mono.json
+    # para mono_05km. Asi cohabitan ambos modos en el mismo release.
+    manifest_name = "manifest_mono.json" if args.mode == "mono_05km" else "manifest.json"
+    (OUT_DIR / manifest_name).write_text(json.dumps(manifest, indent=2))
 
     log.info("DONE. %d/%d scopes OK, %.1f MB total",
              len(available), len(scopes), total_bytes / 1e6)

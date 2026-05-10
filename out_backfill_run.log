@@ -1,0 +1,156 @@
+2026-05-09 11:44:36,733 INFO Detectando offset segundos para 2026-02-08...
+2026-05-09 11:44:41,947 INFO Offset detectado para 2026-02-08: 21
+2026-05-09 11:44:41,948 INFO Offset: 21
+2026-05-09 11:44:41,948 INFO Timestamps: 51 (20260208104021 a 20260208190021)
+2026-05-09 11:44:41,948 INFO Scopes: ['volcan__lascar', 'zona__norte']
+2026-05-09 11:44:41,949 INFO RAMMB: 408 tareas (51 ts × 4 productos × 2 scopes)
+2026-05-09 11:44:44,421 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:44,447 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:44,471 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:44,482 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:48,125 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:48,133 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:48,137 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:50,778 INFO   progreso 50/408 (100% ok)
+2026-05-09 11:44:51,500 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:51,519 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:53,854 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:55,041 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:55,090 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:55,152 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:55,242 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:55,368 INFO   progreso 100/408 (100% ok)
+2026-05-09 11:44:56,848 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:56,863 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:44:58,402 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:00,014 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:00,132 INFO   progreso 150/408 (100% ok)
+2026-05-09 11:45:04,744 INFO   progreso 200/408 (100% ok)
+2026-05-09 11:45:06,988 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:06,990 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:09,037 INFO   progreso 250/408 (100% ok)
+2026-05-09 11:45:12,646 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:13,407 INFO   progreso 300/408 (100% ok)
+2026-05-09 11:45:14,865 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:15,435 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:15,438 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:15,443 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:15,445 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:16,035 INFO   progreso 350/408 (89% ok)
+2026-05-09 11:45:16,589 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:16,590 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:16,864 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:16,870 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:16,873 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:18,307 INFO   progreso 400/408 (78% ok)
+2026-05-09 11:45:18,482 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:18,519 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:18,524 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:18,533 WARNING Connection pool is full, discarding connection: slider.cira.colostate.edu. Connection pool size: 10
+2026-05-09 11:45:18,545 INFO RAMMB: 312/408 OK, 74.6 MB
+2026-05-09 11:45:18,545 INFO Bajando VOLCAT desde RealEarth...
+2026-05-09 11:45:20,399 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:20,877 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:21,287 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:21,684 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:22,078 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:22,459 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:22,890 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:23,485 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:23,884 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:24,497 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:24,926 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:25,557 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:25,965 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:26,562 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:26,975 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:27,574 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:27,964 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:28,548 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:28,964 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:29,594 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:30,003 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:30,627 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:31,040 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:31,675 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:32,126 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:32,790 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:33,205 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:33,821 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:34,239 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:34,807 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:35,225 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:35,827 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:36,257 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:36,873 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:37,393 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:38,035 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:38,522 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:39,108 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:39,522 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:40,151 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:40,594 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:41,188 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:41,627 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:42,239 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:42,669 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:43,287 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:43,695 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:44,299 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:44,720 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:45,345 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:45,804 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:46,451 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:46,872 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:47,502 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:47,961 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:48,618 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:49,024 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:49,621 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:50,061 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:50,705 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:51,131 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:51,756 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:52,385 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:53,017 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:53,456 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:54,161 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:54,596 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:55,211 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:55,631 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:56,240 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:56,693 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:57,310 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:57,761 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:58,394 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:58,832 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:45:59,472 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:45:59,932 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:01,229 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:01,848 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:02,489 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:02,955 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:03,619 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:04,086 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:04,745 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:05,194 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:05,838 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:06,325 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:07,036 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:07,518 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:08,134 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:08,578 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:09,221 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:09,678 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:10,351 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:10,805 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:11,439 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:11,904 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:12,597 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:13,074 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:13,728 INFO Fetched ash_rgb: 600x600 (21 KB)
+2026-05-09 11:46:14,167 INFO Fetched ash_rgb: 600x600 (19 KB)
+2026-05-09 11:46:14,799 INFO Fetched ash_rgb: 600x600 (21 KB)
+C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\scripts\build_backfill.py:294: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "generated_utc": datetime.utcnow().strftime("%Y%m%dT%H%M%SZ"),
+2026-05-09 11:46:14,817 INFO DONE. 415 assets, 75.0 MB en C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\out_backfill

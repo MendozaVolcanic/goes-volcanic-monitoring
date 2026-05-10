@@ -255,7 +255,7 @@ def _mode_antes_despues(now: datetime):
                         f"⏪ ANTES · {_ts_format(ts_a)} · {_ts_age_label(ts_a, now)}"
                         + _flag(used_ts_a, ts_a, zoom_a),
                         height=620),
-            use_container_width=True,
+            width='stretch',
             config={"displayModeBar": False},
         )
     with c2:
@@ -264,7 +264,7 @@ def _mode_antes_despues(now: datetime):
                         f"⏩ DESPUÉS · {_ts_format(ts_b)} · {_ts_age_label(ts_b, now)}"
                         + _flag(used_ts_b, ts_b, zoom_b),
                         height=620),
-            use_container_width=True,
+            width='stretch',
             config={"displayModeBar": False},
         )
 
@@ -331,14 +331,14 @@ def _mode_dos_volcanes(now: datetime):
         st.plotly_chart(
             _plot_frame(img1, vo1.lat, vo1.lon, vo1.name,
                         f"🌋 {vo1.name} · {_ts_format(ts)}", height=620),
-            use_container_width=True,
+            width='stretch',
             config={"displayModeBar": False},
         )
     with c2:
         st.plotly_chart(
             _plot_frame(img2, vo2.lat, vo2.lon, vo2.name,
                         f"🌋 {vo2.name} · {_ts_format(ts)}", height=620),
-            use_container_width=True,
+            width='stretch',
             config={"displayModeBar": False},
         )
 
@@ -454,7 +454,7 @@ def _mode_baseline(now: datetime):
             _plot_frame(img_base, v.lat, v.lon, v.name,
                         f"📅 BASELINE · hace {days_ago}d · {_label(used_ts_base, target_ts_str)}{delta_label}",
                         height=620),
-            use_container_width=True,
+            width='stretch',
             config={"displayModeBar": False},
         )
     with c2:
@@ -462,7 +462,7 @@ def _mode_baseline(now: datetime):
             _plot_frame(img_now, v.lat, v.lon, v.name,
                         f"⏩ AHORA · {_label(used_ts_now, timestamps_now[0])}",
                         height=620),
-            use_container_width=True,
+            width='stretch',
             config={"displayModeBar": False},
         )
 
@@ -535,14 +535,14 @@ def _mode_diff_temporal(now: datetime):
         st.plotly_chart(
             _plot_frame(img_a, v.lat, v.lon, v.name,
                         f"⏪ ANTES · {_ts_format(ts_a)}", height=380),
-            use_container_width=True,
+            width='stretch',
             config={"displayModeBar": False},
         )
     with c2:
         st.plotly_chart(
             _plot_frame(img_b, v.lat, v.lon, v.name,
                         f"⏩ AHORA · {_ts_format(ts_b)}", height=380),
-            use_container_width=True,
+            width='stretch',
             config={"displayModeBar": False},
         )
 
@@ -567,7 +567,7 @@ def _mode_diff_temporal(now: datetime):
                    f"DIFF · {v.name} · Δt = {delta_min // 60}h {delta_min % 60}min "
                    f"({_ts_format(ts_a)} → {_ts_format(ts_b)})",
                    height=700),
-        use_container_width=True,
+        width='stretch',
         config={"displayModeBar": False},
     )
 

@@ -286,7 +286,7 @@ def render():
     with c4:
         st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
         fetch = st.button("Calcular", type="primary",
-                          use_container_width=True)
+                          width='stretch')
 
     n_frames, default_radius = WINDOW_OPTIONS[window_label]
 
@@ -377,7 +377,7 @@ def render():
 
     # ── Plot ──
     fig = _plot_series(points, product, volc_name)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     # ── Thumbnails contextuales: PICO + ÚLTIMO ──
     # El plot dice "cuánta señal hay"; estas imágenes dicen "DÓNDE está".
@@ -435,7 +435,7 @@ def render():
                     st.image(
                         png,
                         caption=f"Frame en el pico de la serie — {volc_name}",
-                        use_container_width=True,
+                        width='stretch',
                     )
                 else:
                     st.warning("No se pudo cargar el frame del pico.")
@@ -452,7 +452,7 @@ def render():
                     st.image(
                         png,
                         caption=f"Último frame disponible — {volc_name}",
-                        use_container_width=True,
+                        width='stretch',
                     )
                 else:
                     st.warning("No se pudo cargar el último frame.")
@@ -466,7 +466,7 @@ def render():
         for p in points
     ])
     with st.expander("Ver / descargar datos como CSV", expanded=False):
-        st.dataframe(df, use_container_width=True, hide_index=True)
+        st.dataframe(df, width='stretch', hide_index=True)
         csv_bytes = df.to_csv(index=False).encode("utf-8")
         st.download_button(
             f"⬇ Descargar CSV ({len(points)} pts)",

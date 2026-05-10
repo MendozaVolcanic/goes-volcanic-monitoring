@@ -133,7 +133,7 @@ def render():
             counts_by_day.insert(0, {})  # placeholder vacio
 
     fig = _build_heatmap(counts_by_day, today)
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig, width='stretch', config={"displayModeBar": False})
 
     total_today = sum(counts_today.values())
     if total_today > 0:
@@ -178,4 +178,4 @@ def render():
                 "Región": v.region,
                 "Elev (m)": v.elevation,
             })
-        st.dataframe(rows, use_container_width=True, hide_index=True)
+        st.dataframe(rows, width='stretch', hide_index=True)

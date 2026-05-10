@@ -307,7 +307,7 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
                 st.plotly_chart(
                     _zone_fig(img, zone_key, label, hotspots,
                               height=height, show_volcanoes=show_volcanoes),
-                    use_container_width=True,
+                    width='stretch',
                     config={"displayModeBar": False},
                 )
 

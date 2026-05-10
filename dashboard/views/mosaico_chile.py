@@ -169,10 +169,13 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
         xshift=4, yshift=-4,
     )
     # Badge de zoom usado (esquina inferior derecha):
-    #   -1 = hi-res NOAA (azul), 4 = RAMMB max (verde),
-    #   3 = RAMMB fallback (naranja).
+    #   -2 = hi-res mono 0.5 km/px (cyan), -1 = hi-res color 1 km/px (azul),
+    #    4 = RAMMB max (verde),  3 = RAMMB fallback (naranja).
     if zoom_used is not None and zoom_used != 0:
-        if zoom_used == -1:
+        if zoom_used == -2:
+            badge_color = "#00ddff"
+            badge_text = "HI-RES MONO · 0.5km/px (4×)"
+        elif zoom_used == -1:
             badge_color = "#33aaff"
             badge_text = "HI-RES NOAA · 1km/px"
         elif zoom_used >= 4:
@@ -206,14 +209,15 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
 
 
 @st.cache_data(ttl=120, show_spinner=False)
-def _hires_for_volcano_cached(volcano_name: str):
+def _hires_for_volcano_cached(volcano_name: str, mode: str = "color"):
     """Wrapper cacheado del fetch hi-res. Cache 2 min para no spamear."""
     from src.fetch.hires_cache import fetch_hires_for_volcano
-    return fetch_hires_for_volcano(volcano_name)
+    return fetch_hires_for_volcano(volcano_name, mode=mode)
 
 
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
-def _grid_fragment(product: str, use_hires: bool = False):
+def _grid_fragment(product: str, use_hires: bool = False,
+                   hires_mode: str = "color"):
     """Solo el grid se auto-refresca cada 60s. El selector queda afuera."""
     timestamps = _recent_timestamps(product, n=5)
     now = datetime.now(timezone.utc)
@@ -258,13 +262,13 @@ def _grid_fragment(product: str, use_hires: bool = False):
 
             # Intento hi-res primero si toggle activo
             img = None
-            used_zoom = 0  # 0 = hi-res no, sino RAMMB zoom
-            label_extra = ""
+            used_zoom = 0  # 0 = RAMMB normal con zoom 4
             if use_hires:
-                hires_arr, hires_info = _hires_for_volcano_cached(name)
+                hires_arr, hires_info = _hires_for_volcano_cached(name, mode=hires_mode)
                 if hires_arr is not None:
                     img = hires_arr
-                    used_zoom = -1  # codigo especial = hi-res
+                    # -2 = mono_05km (4× zoom), -1 = color 1km/px
+                    used_zoom = -2 if hires_mode == "mono_05km" else -1
                     hires_used += 1
                 else:
                     hires_fallback += 1
@@ -283,7 +287,7 @@ def _grid_fragment(product: str, use_hires: bool = False):
                     _render_mini(img, v.lat, v.lon, name,
                                  target_width_px=380, show_rings=True,
                                  zoom_used=used_zoom),
-                    use_container_width=True,
+                    width='stretch',
                     config={"displayModeBar": False},
                 )
 
@@ -349,14 +353,14 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
                     _render_mini(img, v.lat, v.lon, name,
                                  target_width_px=460, show_rings=True,
                                  zoom_used=used_zoom),
-                    use_container_width=True,
+                    width='stretch',
                     config={"displayModeBar": False},
                 )
 
 
 def _live_panel():
     """Selector de producto + grid con auto-refresh."""
-    cols_top = st.columns([2, 2, 3])
+    cols_top = st.columns([2, 2.5, 2.5])
     with cols_top[0]:
         product = st.selectbox(
             "Producto",
@@ -365,20 +369,26 @@ def _live_panel():
             index=0, key="mosaico_product",
         )
     with cols_top[1]:
-        use_hires = st.toggle(
-            "🔬 Hi-res NOAA (1 km/px)", value=False, key="mosaico_hires",
-            help="Usa imagenes visibles 0.5km/px desde NOAA L1b (downsampleadas "
-                 "a 1km/px para alinear). 1.7x mejor que RAMMB zoom 4. Day = "
-                 "TrueColor, Night = IR pseudo-color. Requiere que el cron "
-                 "hires_visible_cache haya corrido en los ultimos 30 min.",
+        hires_mode = st.radio(
+            "Resolucion",
+            ["RAMMB normal", "Hi-res color (1 km/px)", "Hi-res mono (0.5 km/px)"],
+            index=0, key="mosaico_hires_mode", horizontal=True,
+            help="RAMMB normal: tiles CIRA 1.7 km/px (siempre disponible).\n"
+                 "Hi-res color: NOAA L1b TrueColor 1km/px diurno + IR nocturno.\n"
+                 "Hi-res mono: NOAA L1b banda 2 sola a resolucion NATIVA "
+                 "0.5 km/px (4x zoom real). Solo de dia. Tinte sepia.",
         )
     with cols_top[2]:
-        if use_hires:
-            st.caption(
-                "ℹ Hi-res override esta activo — el selector de producto se "
-                "ignora (hi-res = TrueColor o IR pseudo-color)."
-            )
-    _grid_fragment(product, use_hires=use_hires)
+        if hires_mode == "Hi-res mono (0.5 km/px)":
+            st.caption("ℹ Mono 0.5km/px = solo banda 2 visible NATIVA · "
+                       "4x zoom real vs RAMMB · solo de dia.")
+        elif hires_mode == "Hi-res color (1 km/px)":
+            st.caption("ℹ Color 1km/px = TrueColor diurno o IR nocturno · "
+                       "1.7x mejor que RAMMB.")
+
+    use_hires = hires_mode != "RAMMB normal"
+    hires_mode_arg = "mono_05km" if "mono" in hires_mode else "color"
+    _grid_fragment(product, use_hires=use_hires, hires_mode=hires_mode_arg)
     st.markdown(
         "<div style='text-align:center; color:#445566; font-size:0.75rem; "
         "margin-top:0.8rem; padding-top:0.5rem; border-top:1px solid #223;'>"

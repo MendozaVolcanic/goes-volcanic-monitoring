@@ -81,7 +81,7 @@ if _fullscreen:
         c_exit_fs, c_rest_fs = st.columns([1, 14])
         with c_exit_fs:
             st.link_button("✖ Salir fullscreen", url=_url_no_fs,
-                           use_container_width=True)
+                           width='stretch')
 
 # ── Sidebar ──────────────────────────────────────────────────────
 with st.sidebar:
@@ -159,7 +159,7 @@ with st.sidebar:
         st.link_button(
             "🖥 Modo Pantalla Completa",
             url=f"?vista={_slug_for_page}&fullscreen=1",
-            type="primary", use_container_width=True,
+            type="primary", width='stretch',
         )
     st.caption("Oculta este menú y maximiza el área del mapa. "
                "Botón ✖ arriba a la derecha para salir.")

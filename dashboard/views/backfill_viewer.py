@@ -75,6 +75,20 @@ def _fetch_manifest(tag: str) -> dict | None:
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
+def _fetch_hotspots_json(tag: str, asset: str) -> list[dict]:
+    """Bajar JSON de hotspots de un (scope, ts). Devuelve lista de dicts."""
+    try:
+        r = requests.get(_release_url(tag, asset), timeout=10)
+        if r.status_code != 200:
+            return []
+        data = r.json()
+        return data.get("hotspots", [])
+    except Exception as e:
+        logger.warning("hotspots json %s: %s", asset, e)
+        return []
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
 def _fetch_png(tag: str, asset: str, keep_alpha: bool = False) -> np.ndarray | None:
     try:
         r = requests.get(_release_url(tag, asset), timeout=20)
@@ -136,8 +150,28 @@ def _ts_to_label(ts: str) -> str:
         return ts
 
 
+def _add_hotspots_overlay(fig: go.Figure, hotspots: list[dict]) -> None:
+    """Agregar marcadores diamante rojos por hotspot. Tamaño por FRP."""
+    if not hotspots:
+        return
+    lats = [h["lat"] for h in hotspots]
+    lons = [h["lon"] for h in hotspots]
+    sizes = [float(8 + min(16, np.sqrt(max(0.0, h.get("frp_mw", 0))) * 1.6))
+             for h in hotspots]
+    labels = [f"{h.get('temp_k', 0):.0f}K · FRP {h.get('frp_mw', 0):.1f}MW "
+              f"({h.get('confidence', '?')})" for h in hotspots]
+    fig.add_trace(go.Scatter(
+        x=lons, y=lats, mode="markers",
+        marker=dict(symbol="diamond", size=sizes, color="#ff3300",
+                    line=dict(color="white", width=1)),
+        text=labels, hoverinfo="text", showlegend=False,
+        name=f"Hot spots ({len(hotspots)})",
+    ))
+
+
 def _render_product_panel(arr: np.ndarray | None, bounds: dict,
-                           label: str, height: int = 360) -> go.Figure:
+                           label: str, height: int = 360,
+                           hotspots: list[dict] | None = None) -> go.Figure:
     fig = go.Figure()
     if arr is not None:
         fig.add_layout_image(
@@ -166,6 +200,8 @@ def _render_product_panel(arr: np.ndarray | None, bounds: dict,
         xanchor="left", yanchor="top",
         xshift=4, yshift=-4,
     )
+    # Hotspots overlay (siempre encima de la imagen)
+    _add_hotspots_overlay(fig, hotspots or [])
     fig.update_layout(
         height=height, margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
@@ -263,15 +299,34 @@ def render():
         unsafe_allow_html=True,
     )
 
-    # ── Productos a mostrar ───────────────────────────────────────────
-    products_in_manifest = manifest.get("products_rammb", [])
-    show_products = st.multiselect(
-        "Productos a mostrar",
-        products_in_manifest + ["volcat"],
-        default=products_in_manifest + ["volcat"],
-        format_func=lambda p: PRODUCT_LABELS.get(p, p),
-        key="bf_products",
-    )
+    # ── Productos + toggle hotspots ───────────────────────────────────
+    cols_prod = st.columns([3, 1])
+    with cols_prod[0]:
+        products_in_manifest = manifest.get("products_rammb", [])
+        show_products = st.multiselect(
+            "Productos a mostrar",
+            products_in_manifest + ["volcat"],
+            default=products_in_manifest + ["volcat"],
+            format_func=lambda p: PRODUCT_LABELS.get(p, p),
+            key="bf_products",
+        )
+    with cols_prod[1]:
+        # Solo mostrar toggle si el manifest dice que hay hotspots
+        has_hs = bool(scope_data.get("hotspots_ts"))
+        show_hotspots = st.toggle(
+            "🔥 Hot spots overlay", value=has_hs,
+            disabled=not has_hs, key="bf_hotspots",
+            help=("Hotspots NOAA FDCF historicos overlay sobre cada producto. "
+                  "Diamantes rojos, tamano = FRP. Disponibles solo si el "
+                  "backfill se construyo con --include-hotspots.") if has_hs
+                 else "No hay hotspots en este backfill (re-correr con --include-hotspots)",
+        )
+
+    # Cargar hotspots para este (scope, ts) si toggle activo
+    hotspots_for_ts: list[dict] = []
+    if show_hotspots and has_hs:
+        hs_asset = f"{sel_scope}__hotspots__{ts}.json"
+        hotspots_for_ts = _fetch_hotspots_json(tag, hs_asset)
 
     if not show_products:
         st.info("Selecciona al menos un producto.")
@@ -310,8 +365,9 @@ def render():
                     asset = f"{sel_scope}__{prod}__{ts}.png"
                     arr = _fetch_png(tag, asset)
                     label = PRODUCT_LABELS.get(prod, prod)
-                fig = _render_product_panel(arr, bounds, label, height=360)
-                st.plotly_chart(fig, use_container_width=True,
+                fig = _render_product_panel(arr, bounds, label, height=360,
+                                             hotspots=hotspots_for_ts)
+                st.plotly_chart(fig, width='stretch',
                                 config={"displayModeBar": False})
 
     # ── Panel info ────────────────────────────────────────────────────

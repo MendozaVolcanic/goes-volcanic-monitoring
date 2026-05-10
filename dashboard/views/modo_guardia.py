@@ -321,7 +321,7 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
         st.plotly_chart(
             _render_chile_with_hotspots(frame, hotspots, volcan_name, product,
                                          show_rings=show_rings),
-            use_container_width=True,
+            width='stretch',
             config={"displayModeBar": False},
         )
     else:
@@ -378,7 +378,7 @@ def _rotating_chile_tv(volcan_name: str, show_rings: bool = True,
                                        show_rings=show_rings)
     # Modo Sala: usar todo el alto disponible
     fig.update_layout(height=920, margin=dict(l=0, r=0, t=2, b=0))
-    st.plotly_chart(fig, use_container_width=True,
+    st.plotly_chart(fig, width='stretch',
                     config={"displayModeBar": False})
 
 
@@ -411,7 +411,7 @@ def _chile_subtab():
     with cols[3]:
         if st.button("🖥 Modo Sala · Chile (rotando productos)",
                      key="btn_sala_chile", type="primary",
-                     use_container_width=True):
+                     width='stretch'):
             _activate_tv("chile", volcan=volcan)
     _live_panel(volcan, product=product, show_rings=show_rings)
 
@@ -435,7 +435,7 @@ def _mosaico_subtab():
     from dashboard.views.mosaico_chile import _live_panel as mosaico_panel
     if st.button(
         "🖥 Modo Sala · Mosaico (rotando productos cada 10s)",
-        key="btn_tv_mosaico", type="primary", use_container_width=False,
+        key="btn_tv_mosaico", type="primary", width='content',
     ):
         _activate_tv("mosaico")
     mosaico_panel()
@@ -451,7 +451,7 @@ def _zonas_subtab():
     # con URLs relativas dentro del iframe sandbox de Streamlit Cloud)
     if st.button(
         "🖥 Modo Sala (4 zonas, rotando productos cada 10s)",
-        key="btn_tv_zonas", type="primary", use_container_width=False,
+        key="btn_tv_zonas", type="primary", width='content',
     ):
         _activate_tv("1")
     st.caption(
@@ -526,7 +526,7 @@ def _volcan_subtab():
     # Boton TV puro volcan (lleva el volcan seleccionado en query_params)
     if st.button(
         f"🖥 Modo Sala · {volcan} (3 productos)",
-        key="btn_tv_volcan", type="primary", use_container_width=False,
+        key="btn_tv_volcan", type="primary", width='content',
     ):
         _activate_tv("volcan", volcan=volcan)
     with cols[1]:
@@ -632,7 +632,7 @@ def render():
         with c_exit:
             st.link_button("✖ Salir", url="?vista=guardia", type="primary",
                            help="Salir del modo Sala y volver a Modo Guardia",
-                           use_container_width=True)
+                           width='stretch')
         if tv_mode == "chile":
             volcan_name = st.query_params.get("volcan", DEFAULT_VOLCANO)
             _rotating_chile_tv(volcan_name, show_rings=True)

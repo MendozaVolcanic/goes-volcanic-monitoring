@@ -249,3 +249,124 @@ def fetch_latest_hotspots(
     # Ordenar por FRP descendente (los mas intensos arriba)
     hotspots.sort(key=lambda h: h.frp_mw, reverse=True)
     return hotspots, scan_dt
+
+
+def _list_files_at_hour(s3, dt: datetime) -> list[str]:
+    """Listar archivos FDCF disponibles para una hora UTC especifica."""
+    prefix = (
+        f"{S3_BUCKET}/{S3_PRODUCT}/"
+        f"{dt.year}/{dt.timetuple().tm_yday:03d}/{dt.hour:02d}/"
+    )
+    try:
+        return sorted(s3.ls(prefix))
+    except FileNotFoundError:
+        return []
+    except Exception as e:
+        logger.warning("listing %s: %s", prefix, e)
+        return []
+
+
+def fetch_hotspots_at_time(
+    dt: datetime,
+    bounds: Optional[dict] = None,
+    high_conf_only: bool = False,
+) -> tuple[list[HotSpot], Optional[datetime]]:
+    """Bajar el FDCF mas cercano a `dt` y devolver hotspots filtrados.
+
+    Para backfill historico: dt en cualquier momento desde 2017 (GOES-16) o
+    abril 2025 (GOES-19). Busca en la hora exacta + hora previa por si el
+    scan que matcha cae en el borde.
+
+    Args:
+        dt:               datetime UTC del scan deseado.
+        bounds:           bbox para filtrar.
+        high_conf_only:   solo Mask 10/11.
+
+    Returns:
+        (hotspots, scan_dt_real) con scan_dt_real = ts del archivo elegido
+        (puede diferir de `dt` por ±5 min). ([], None) si no encuentra.
+    """
+    try:
+        import s3fs
+        import xarray as xr
+    except ImportError as e:
+        logger.error("s3fs/xarray no disponible: %s", e)
+        return [], None
+
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+
+    s3 = s3fs.S3FileSystem(anon=True)
+    keys = _list_files_at_hour(s3, dt)
+    # Si no hay en la hora exacta, probar hora previa
+    if not keys:
+        keys = _list_files_at_hour(s3, dt - timedelta(hours=1))
+    if not keys:
+        logger.warning("FDCF: no hay archivos en %s ni hora previa", dt.isoformat())
+        return [], None
+
+    # Elegir archivo cuyo timestamp parseado este mas cerca de dt
+    def _delta(k):
+        ts = _parse_scan_time(k)
+        if ts is None:
+            return float("inf")
+        return abs((ts - dt).total_seconds())
+
+    chosen = min(keys, key=_delta)
+    logger.info("FDCF: ts=%s, archivo elegido: %s",
+                dt.isoformat(), chosen.split("/")[-1])
+
+    try:
+        with s3.open(chosen, "rb") as f:
+            ds = xr.open_dataset(f, engine="h5netcdf")
+            mask = ds["Mask"].values
+            power = ds["Power"].values
+            temp = ds["Temp"].values
+            area = ds["Area"].values
+            x_rad = ds["x"].values
+            y_rad = ds["y"].values
+            sat_lon = float(
+                ds["goes_imager_projection"].attrs.get(
+                    "longitude_of_projection_origin", -75.0
+                )
+            )
+            scan_dt = _parse_scan_time(chosen)
+    except Exception as e:
+        logger.exception("Error leyendo FDCF historico %s: %s", chosen, e)
+        return [], None
+
+    valid_mask_set = HIGH_CONF_MASK if high_conf_only else HOTSPOT_MASK_VALUES
+    hot_idx = np.isin(mask, list(valid_mask_set)) & np.isfinite(power)
+    if not hot_idx.any():
+        return [], scan_dt
+
+    rows, cols = np.where(hot_idx)
+    x_pts = x_rad[cols]
+    y_pts = y_rad[rows]
+    lats, lons = _abi_to_latlon(x_pts, y_pts, sat_lon=sat_lon)
+
+    if bounds is not None:
+        keep = (
+            (lats >= bounds["lat_min"]) & (lats <= bounds["lat_max"]) &
+            (lons >= bounds["lon_min"]) & (lons <= bounds["lon_max"])
+        )
+        if not keep.any():
+            return [], scan_dt
+        rows = rows[keep]; cols = cols[keep]
+        lats = lats[keep]; lons = lons[keep]
+
+    hotspots = []
+    for i in range(len(rows)):
+        r, c = int(rows[i]), int(cols[i])
+        m_v = int(mask[r, c])
+        hotspots.append(HotSpot(
+            lat=float(lats[i]),
+            lon=float(lons[i]),
+            frp_mw=float(power[r, c]) if np.isfinite(power[r, c]) else 0.0,
+            temp_k=float(temp[r, c]) if np.isfinite(temp[r, c]) else 0.0,
+            area_km2=float(area[r, c]) if np.isfinite(area[r, c]) else 0.0,
+            mask=m_v,
+            confidence=_confidence_from_mask(m_v),
+        ))
+    hotspots.sort(key=lambda h: h.frp_mw, reverse=True)
+    return hotspots, scan_dt

@@ -343,7 +343,7 @@ def _render_height_section(key_suffix: str = "tab") -> None:
                     f"{sel_meta['label_es']} — "
                     f"{volc_name_h} ({sector.replace('_', ' ')}) — {ts_h}"
                 ),
-                use_container_width=True,
+                width='stretch',
             )
             st.download_button(
                 f"⬇ Descargar PNG VOLCAT ({len(img_bytes)//1024} KB)",
@@ -354,7 +354,7 @@ def _render_height_section(key_suffix: str = "tab") -> None:
                 ),
                 mime="image/png",
                 key=f"dl_volcat_height_{prod_h}_{sector}_{key_suffix}",
-                use_container_width=True,
+                width='stretch',
             )
         else:
             st.error("No se pudo descargar la imagen.")
@@ -365,7 +365,7 @@ def _render_height_section(key_suffix: str = "tab") -> None:
                     unsafe_allow_html=True)
         leg_bytes = _volcat_image_bytes(meta["legend_url"])
         if leg_bytes:
-            st.image(leg_bytes, use_container_width=True)
+            st.image(leg_bytes, width='stretch')
         else:
             st.caption("(sin leyenda)")
 
@@ -424,7 +424,7 @@ def render():
     with c2:
         st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
         fetch = st.button("Obtener imagenes SSEC", type="primary",
-                          use_container_width=True)
+                          width='stretch')
 
     bounds = ZONE_OPTIONS[zone_key]
 
@@ -532,7 +532,7 @@ def render():
         st.download_button(
             f"⬇ {button_label} ({size_str})",
             data=png, file_name=filename, mime="image/png",
-            key=key, use_container_width=True,
+            key=key, width='stretch',
         )
 
     with tab1:
@@ -544,7 +544,7 @@ def render():
                     f"Ash RGB — SSEC/CIMSS GOES-19 ({ts_display})",
                     CATALOG,
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
                 _ssec_png_download(
                     ash_img,
                     filename=f"volcat_ssec_ash_rgb_{ash_ts or 'latest'}.png",
@@ -565,7 +565,7 @@ def render():
                     f"SO2 RGB — SSEC/CIMSS GOES-19 ({_parse_timestamp(so2_ts)})",
                     CATALOG,
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
                 _ssec_png_download(
                     so2_img,
                     filename=f"volcat_ssec_so2_rgb_{so2_ts or 'latest'}.png",

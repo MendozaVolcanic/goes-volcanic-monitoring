@@ -351,7 +351,7 @@ def _png_download_button(arr: np.ndarray, filename: str, label_overlay: str,
         file_name=filename,
         mime="image/png",
         key=key,
-        use_container_width=True,
+        width='stretch',
     )
 
 
@@ -393,7 +393,7 @@ def _download_buttons(arr: np.ndarray, bounds: dict, base_filename: str,
                 file_name=f"{base_filename}.tif",
                 mime="image/tiff",
                 key=f"{key_prefix}_tif",
-                use_container_width=True,
+                width='stretch',
                 help=(
                     "Imagen georeferenciada (EPSG:4326, RGB). Abre directo en "
                     "QGIS, ArcGIS o cualquier viewer GIS. Conserva las "
@@ -692,7 +692,7 @@ def _live_content():
 
     with col_btn:
         st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
-        if st.button("🔄 Actualizar", use_container_width=True, key="live_refresh_btn",
+        if st.button("🔄 Actualizar", width='stretch', key="live_refresh_btn",
                      help="Consultar RAMMB ahora mismo e cargar el scan mas reciente"):
             # Invalidar solo el cache liviano de timestamps.
             # Los frames ya descargados (cache 2h por ts) se conservan.
@@ -1144,7 +1144,7 @@ def _live_content():
                                autorange=False, scaleanchor="x", scaleratio=1),
                     margin=dict(t=40, b=35, l=45, r=15),
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
 
                 # Botones de descarga (PNG con timestamp + GeoTIFF georeferenciado)
                 _dl_label = (
@@ -1259,7 +1259,7 @@ def _live_content():
                             height=760,
                             margin=dict(l=10, r=10, t=30, b=10),
                         )
-                        st.plotly_chart(fig_z, use_container_width=True)
+                        st.plotly_chart(fig_z, width='stretch')
 
                         # Descarga PNG + GeoTIFF por zona
                         _dt_zona = parse_rammb_ts(ts_zona)
@@ -1304,7 +1304,7 @@ def _live_content():
             cargar_volc = st.button(
                 "Cargar volcán",
                 key="btn_cargar_volc", type="primary",
-                use_container_width=True,
+                width='stretch',
                 help="Descarga zoom=4 (~1.7 km/px) para el volcán seleccionado.",
             )
 
@@ -1425,7 +1425,7 @@ def _live_content():
                             height=820,
                             margin=dict(l=10, r=10, t=30, b=10),
                         )
-                        st.plotly_chart(fig_v, use_container_width=True)
+                        st.plotly_chart(fig_v, width='stretch')
 
                         # Descarga PNG + GeoTIFF
                         _dt_volc = parse_rammb_ts(ts_volc)

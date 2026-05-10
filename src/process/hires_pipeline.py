@@ -38,7 +38,8 @@ from src.fetch.goes_s3 import download_band, open_band
 from src.process.brightness_temp import rad_to_bt
 from src.process.geo import crop_to_bounds, get_lat_lon
 from src.process.geocolor_lite import (
-    bt_to_pseudo_color_ir, rad_to_reflectance, solar_elevation, true_color_rgb,
+    band2_monochrome_05km, bt_to_pseudo_color_ir, rad_to_reflectance,
+    solar_elevation, true_color_rgb,
 )
 
 logger = logging.getLogger(__name__)
@@ -84,6 +85,7 @@ def build_hires_for_scopes(
     dt: datetime,
     scopes: dict[str, dict],
     radius_deg: float = 0.5,
+    mode: str = "color",
 ) -> dict[str, np.ndarray | None]:
     """Genera RGB hi-res para cada scope a partir del mismo scan L1b.
 
@@ -92,14 +94,19 @@ def build_hires_for_scopes(
         scopes:       dict scope_id -> {"lat": float, "lon": float}.
                       Por scope generamos un bbox cuadrado de ±radius_deg.
         radius_deg:   medio-tamanio del bbox en grados (default 0.5° ≈ 55 km).
+        mode:         "color" (default): TrueColor 1km/px diurno + IR nocturno.
+                      "mono_05km": SOLO banda 2 a 0.5 km/px (4× zoom real).
+                                   No baja b1 ni b3. Diurno solamente.
 
     Returns:
         dict scope_id -> numpy (H, W, 3) uint8 RGB. None si fallo.
     """
-    # 1. Descargar bandas
-    logger.info("Descargando bandas %s para %s ...", BANDS_HIRES,
-                dt.strftime("%Y-%m-%d %H:%M UTC"))
-    band_paths = _download_bands_parallel(dt, BANDS_HIRES)
+    # 1. Descargar bandas. En mono_05km solo necesitamos banda 2 (visible
+    # rojo 0.5km/px) — ahorra ~130 MB de download skipping b1+b3.
+    bands_to_download = [2] if mode == "mono_05km" else BANDS_HIRES
+    logger.info("Descargando bandas %s para %s (mode=%s)...",
+                bands_to_download, dt.strftime("%Y-%m-%d %H:%M UTC"), mode)
+    band_paths = _download_bands_parallel(dt, bands_to_download)
     if 2 not in band_paths:
         logger.error("Banda 2 indispensable no disponible")
         return {sid: None for sid in scopes}
@@ -119,22 +126,24 @@ def build_hires_for_scopes(
             # IR: a brightness temperature
             bts[b] = rad_to_bt(ds).values
 
-    # 3. Geolocalizacion. Calculamos lat/lon UNA vez por banda (resoluciones
-    # diferentes). Banda 1, 3 = 1 km, banda 2 = 0.5 km, banda 13 = 2 km.
-    # Para alinear: trabajamos en 1 km/px. Banda 2 se downsamplea 2x.
-    if 2 in refls:
-        # Downsample banda 2 a la misma grilla que banda 1
-        refls[2] = _downsample_2x(refls[2])
-    # Usamos banda 1 como ref (1 km/px), bands 1+2 (downsampled)+3 alineados
-    ref_band = 1 if 1 in datasets else 2
-    lat, lon = get_lat_lon(datasets[ref_band])
+    # 3. Geolocalizacion.
+    # mode='mono_05km': lat/lon de banda 2 NATIVA (0.5 km/px), sin downsample.
+    # mode='color':     trabajamos en 1 km/px. Banda 2 se downsamplea 2x.
+    if mode == "mono_05km":
+        # Mantener banda 2 a 0.5 km/px nativo
+        lat, lon = get_lat_lon(datasets[2])
+    else:
+        if 2 in refls:
+            refls[2] = _downsample_2x(refls[2])
+        ref_band = 1 if 1 in datasets else 2
+        lat, lon = get_lat_lon(datasets[ref_band])
 
-    # 4. Para banda 13 (2 km/px), upscale 2x via repeat para alinear a 1 km/px
+    # 4. Para banda 13 (2 km/px), upscale 2x via repeat para alinear a 1 km/px.
+    # No aplica en mono_05km (no descargamos banda 13).
     bt13 = None
-    if 13 in bts:
+    if mode == "color" and 13 in bts:
         bt13_2km = bts[13]
         bt13 = np.repeat(np.repeat(bt13_2km, 2, axis=0), 2, axis=1)
-        # Truncar al shape de banda 1 si difiere
         bt13 = bt13[:lat.shape[0], :lat.shape[1]]
 
     # 5. Por cada scope: decidir day/night + recortar + RGB
@@ -150,9 +159,24 @@ def build_hires_for_scopes(
         is_day = sun_alt >= DAY_NIGHT_THRESHOLD_DEG
 
         try:
-            if is_day and all(b in refls for b in (1, 2, 3)):
-                # TrueColor diurno
-                # Recortar cada banda al bbox usando lat/lon de banda 1
+            if mode == "mono_05km":
+                # Modo 0.5 km/px: solo banda 2 monocromatica.
+                # Solo tiene sentido de dia (visible necesita sol).
+                if not is_day:
+                    logger.info("[%s] mono_05km NOCHE (sun=%.1f°) -> skip",
+                                sid, sun_alt)
+                    out[sid] = None
+                    continue
+                b2_crop, _, _ = crop_to_bounds(
+                    xr.DataArray(refls[2], dims=["y", "x"]), lat, lon, bounds)
+                if b2_crop.size == 0:
+                    out[sid] = None
+                    continue
+                rgb = band2_monochrome_05km(b2_crop)
+                logger.info("[%s] mono_05km DIA sun=%.1f° -> %s (0.5km/px)",
+                            sid, sun_alt, rgb.shape)
+            elif is_day and all(b in refls for b in (1, 2, 3)):
+                # TrueColor diurno (1 km/px)
                 b1_crop, _, _ = crop_to_bounds(
                     xr.DataArray(refls[1], dims=["y", "x"]), lat, lon, bounds)
                 b2_crop, _, _ = crop_to_bounds(

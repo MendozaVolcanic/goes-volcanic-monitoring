@@ -140,40 +140,42 @@ def _build_rammb(timestamps: list[str], scopes: dict[str, dict],
 
 def _build_hotspots(timestamps: list[str], scopes: dict[str, dict],
                     out_dir: Path) -> dict[str, list[str]]:
-    """Por cada ts y scope, baja FDCF L2 de S3 y guarda hotspots filtrados."""
-    from src.fetch.goes_fdcf import fetch_latest_hotspots
+    """Por cada ts y scope, baja FDCF L2 historico de S3 y guarda hotspots."""
+    from datetime import timezone as _tz
+    from src.fetch.goes_fdcf import fetch_hotspots_at_time
+
     available: dict[str, list[str]] = {sid: [] for sid in scopes}
+    # Cache por ts: el archivo FDCF cubre todo Chile, asi que UN download
+    # alcanza para todos los scopes del mismo ts. Reutilizamos.
     for ts in timestamps:
-        # Convertir ts RAMMB (YYYYMMDDHHmmss) -> datetime
         try:
-            dt = datetime.strptime(ts, "%Y%m%d%H%M%S")
+            dt = datetime.strptime(ts, "%Y%m%d%H%M%S").replace(tzinfo=_tz.utc)
         except ValueError:
             continue
+        # Bbox amplio (Chile entero) para una sola lectura S3
+        chile_bbox = {"lat_min": -57.0, "lat_max": -17.0,
+                      "lon_min": -76.0, "lon_max": -65.0}
+        try:
+            all_hs, scan_dt = fetch_hotspots_at_time(dt, bounds=chile_bbox)
+        except Exception as e:
+            log.warning("hotspots fetch %s: %s", ts, e)
+            continue
+        # Filtrar y guardar por scope
         for sid, bounds in scopes.items():
-            try:
-                # fetch_latest_hotspots acepta dt? Si no, usar hours_back
-                # apuntando al pasado. Por ahora simplificamos: solo si el
-                # producto FDCF L2 esta en S3 para ese ts (lo esta).
-                hs_list, hs_dt = fetch_latest_hotspots(
-                    bounds=bounds, hours_back=1,
-                )
-                # Si fetch_latest_hotspots no acepta ts especifico,
-                # esto traera los HS de ahora — DESDE el codigo actual
-                # no podemos pedir un ts historico sin extender la funcion.
-                # Para v1 del backfill grabamos lo que haya y marcamos.
-                # TODO: extender goes_fdcf.fetch_at_time(dt, bounds).
-                payload = {
-                    "ts": ts, "scope": sid,
-                    "n_hotspots": len(hs_list),
-                    "warning": "fetch_at_time historico no implementado; "
-                               "este JSON contiene hotspots ACTUALES, no del ts historico",
-                    "hotspots": [],
-                }
-                fname = f"{sid}__hotspots__{ts}.json"
-                (out_dir / fname).write_text(json.dumps(payload))
-                available[sid].append(ts)
-            except Exception as e:
-                log.warning("hotspots %s %s: %s", sid, ts, e)
+            scope_hs = [h for h in all_hs
+                        if (bounds["lat_min"] <= h.lat <= bounds["lat_max"]
+                            and bounds["lon_min"] <= h.lon <= bounds["lon_max"])]
+            payload = {
+                "ts": ts, "scope": sid,
+                "scan_dt": scan_dt.isoformat() if scan_dt else None,
+                "n_hotspots": len(scope_hs),
+                "hotspots": [h.to_dict() for h in scope_hs],
+            }
+            fname = f"{sid}__hotspots__{ts}.json"
+            (out_dir / fname).write_text(json.dumps(payload))
+            available[sid].append(ts)
+        if all_hs:
+            log.info("[hotspots] ts=%s -> %d total Chile", ts, len(all_hs))
     return available
 
 
@@ -230,7 +232,7 @@ def main():
     ap.add_argument("--include-volcat", action="store_true",
                     help="Intentar VOLCAT (puede ser lento o fallar para fechas viejas)")
     ap.add_argument("--include-hotspots", action="store_true",
-                    help="Intentar hotspots FDCF (placeholder, no historico aun)")
+                    help="Intentar hotspots FDCF historicos desde S3 NOAA")
     args = ap.parse_args()
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)

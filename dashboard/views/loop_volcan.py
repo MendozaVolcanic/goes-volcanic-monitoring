@@ -219,7 +219,7 @@ def render_subtab():
         st.error("No se pudo construir animación.")
         return
 
-    st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+    st.plotly_chart(fig, width='stretch', config={"displayModeBar": False})
 
     try:
         ts_first = parse_rammb_ts(frames[0]["ts"])

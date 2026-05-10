@@ -490,7 +490,7 @@ def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
                 _render_product(img, bounds, full_label, v.lat, v.lon, v.name,
                                 hotspots=hs, show_wind=show_wind, wind_data=wind,
                                 show_rings=show_rings),
-                use_container_width=True,
+                width='stretch',
                 config={"displayModeBar": False},
             )
             st.markdown(
@@ -511,7 +511,7 @@ def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
                 data=png_bytes,
                 file_name=f"{v.name}_{now.strftime('%Y%m%d_%H%M')}_UTC.png",
                 mime="image/png",
-                use_container_width=True,
+                width='stretch',
             )
         except Exception as e:
             st.warning(f"No se pudo construir captura: {e}")

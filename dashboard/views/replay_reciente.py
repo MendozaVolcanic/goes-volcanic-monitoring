@@ -218,7 +218,7 @@ def render():
 
     st.plotly_chart(
         _plot_frame(img, v.lat, v.lon, v.name, label, height=720),
-        use_container_width=True,
+        width='stretch',
         config={"displayModeBar": False},
     )
 
@@ -233,7 +233,7 @@ def render():
         {"Producto": "BTD raw (L1b)", "Estado": "✅ Disponible", "Probar": "Tab Ash RGB Viewer — heatmap K"},
         {"Producto": "Tri-espectral (Pavolonis)", "Estado": "⚠ Parcial", "Probar": "Sólo en VOLCAT por ahora"},
     ]
-    st.dataframe(rows, use_container_width=True, hide_index=True)
+    st.dataframe(rows, width='stretch', hide_index=True)
 
     st.caption(
         "💡 **Workflow sugerido**: con el slider encontrá un timestamp "

@@ -675,7 +675,7 @@ def render():
     with c4:
         st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
         fetch_btn = st.button("Cargar animacion", type="primary",
-                              use_container_width=True)
+                              width='stretch')
 
     zone_key = None
     volc_name = None
@@ -860,7 +860,7 @@ def render():
         wind_center = (cy, cx)
     fig = _build_animation(frames, bounds, height=height,
                            wind_data=wind_data, wind_center=wind_center)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     # ── Descargas ─────────────────────────────────────────────────────────
     # Generamos los binarios solo on-demand (lazy) via expander para no
@@ -919,7 +919,7 @@ def render():
             )
             # Re-generar si cambia FPS — usamos fps en la session_state key
             if st.button("Generar MP4", key="gen_mp4",
-                         use_container_width=True):
+                         width='stretch'):
                 with st.spinner("Construyendo MP4 (H.264)..."):
                     mp4_bytes = _build_mp4(frames, fps=fps)
                     if mp4_bytes:
@@ -941,7 +941,7 @@ def render():
                     file_name=st.session_state["_mp4_name"],
                     mime="video/mp4",
                     key="dl_mp4",
-                    use_container_width=True,
+                    width='stretch',
                 )
 
         with col_g:
@@ -951,7 +951,7 @@ def render():
                 unsafe_allow_html=True,
             )
             if st.button("Generar GIF", key="gen_gif",
-                         use_container_width=True):
+                         width='stretch'):
                 with st.spinner("Construyendo GIF..."):
                     st.session_state["_gif_bytes"] = _build_gif(frames)
                     st.session_state["_gif_name"] = f"{base_name}.gif"
@@ -963,7 +963,7 @@ def render():
                     file_name=st.session_state["_gif_name"],
                     mime="image/gif",
                     key="dl_gif",
-                    use_container_width=True,
+                    width='stretch',
                 )
 
         with col_z:
@@ -973,7 +973,7 @@ def render():
                 unsafe_allow_html=True,
             )
             if st.button("Generar ZIP", key="gen_zip",
-                         use_container_width=True):
+                         width='stretch'):
                 with st.spinner("Construyendo ZIP..."):
                     st.session_state["_zip_bytes"] = _build_zip_frames(
                         frames, PRODUCT_LABELS[sel["product"]], scope_label,
@@ -987,7 +987,7 @@ def render():
                     file_name=st.session_state["_zip_name"],
                     mime="application/zip",
                     key="dl_zip",
-                    use_container_width=True,
+                    width='stretch',
                 )
 
         st.markdown(

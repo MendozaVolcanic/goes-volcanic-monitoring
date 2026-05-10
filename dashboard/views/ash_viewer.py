@@ -195,7 +195,7 @@ def render():
     with c3:
         st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
         fetch_new = st.button("Descargar imagen fresca", type="primary",
-                              use_container_width=True)
+                              width='stretch')
 
     bounds = ZONE_OPTIONS[zone_key]
 
@@ -299,7 +299,7 @@ def render():
                     data["ash_rgb"], data["lat"], data["lon"],
                     insight_text, CATALOG,
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
         with col_leg:
             ash_legend()
 
@@ -316,7 +316,7 @@ def render():
                     data["ash_so2_rgb"], data["lat"], data["lon"],
                     so2_title, CATALOG,
                 )
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             else:
                 info_panel("Producto Ash/SO2 RGB no disponible en cache. Descarga una imagen fresca.")
         with col_leg2a:
@@ -328,7 +328,7 @@ def render():
             if btd_arr.size:
                 btd_title = f"{ash_px:,} pixeles con BTD negativo — umbral ceniza: -1 K"
                 fig = _fig_btd(btd_arr, data["lat"], data["lon"], btd_title, CATALOG)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
         with col_leg3:
             btd_legend()
 
@@ -342,7 +342,7 @@ def render():
                     else "Sin deteccion de SO2 en la region"
                 )
                 fig = _fig_so2(so2_arr, data["lat"], data["lon"], so2_map_title, CATALOG)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, width='stretch')
             else:
                 info_panel("Datos SO2 no disponibles. Descarga una imagen fresca.")
         with col_leg4:
@@ -356,4 +356,4 @@ def render():
                 else "Sin detecciones de confianza alta"
             )
             fig = _fig_confidence(conf_arr, data["lat"], data["lon"], conf_title, CATALOG)
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')

@@ -68,6 +68,28 @@ def bt_to_pseudo_color_ir(bt: np.ndarray,
     return (rgb * 255).astype(np.uint8)
 
 
+def band2_monochrome_05km(refl_b2: np.ndarray, gamma: float = 0.6,
+                           tint: tuple[int, int, int] = (255, 245, 220)
+                           ) -> np.ndarray:
+    """Banda 2 sola en resolucion NATIVA 0.5 km/px como pseudo-color sepia.
+
+    Trade-off: pierde color verdadero (es un canal monocromatico) pero
+    mantiene la resolucion completa de 0.5 km/px = 4× mejor que RAMMB.
+    Aplica gamma para brightening + tint sepia para que no sea grayscale puro.
+
+    Pensado para "ver el crater". A 0.5 km/px Lascar (~500m crater) ocupa
+    un cuadrante de la imagen, no un pixel.
+    """
+    refl = np.clip(refl_b2, 0, 1)
+    refl = np.power(refl, gamma)
+    # Aplicar tint suave (mezcla 80% intensidad neutra + 20% sepia)
+    r = refl * tint[0] / 255.0
+    g = refl * tint[1] / 255.0
+    b = refl * tint[2] / 255.0
+    rgb = np.stack([r, g, b], axis=-1)
+    return (np.clip(rgb, 0, 1) * 255).astype(np.uint8)
+
+
 def true_color_rgb(refl_b1: np.ndarray, refl_b2: np.ndarray,
                    refl_b3: np.ndarray, gamma: float = 0.5) -> np.ndarray:
     """TrueColor RGB simplificado desde reflectancias bandas 1, 2, 3.

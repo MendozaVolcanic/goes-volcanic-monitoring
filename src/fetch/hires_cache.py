@@ -32,7 +32,8 @@ CDN_BASE = (
     f"https://github.com/{RELEASE_OWNER}/{RELEASE_REPO}"
     f"/releases/download/{RELEASE_TAG}"
 )
-MANIFEST_URL = f"{CDN_BASE}/manifest.json"
+MANIFEST_URL = f"{CDN_BASE}/manifest.json"          # mode=color (default)
+MANIFEST_MONO_URL = f"{CDN_BASE}/manifest_mono.json" # mode=mono_05km
 TIMEOUT = 12
 
 
@@ -51,27 +52,37 @@ def _slugify(name: str) -> str:
     return "".join(c if c.isalnum() else "_" for c in name.lower())
 
 
-def fetch_manifest() -> dict | None:
-    """Descargar manifest.json. Devuelve None si no existe (cron nunca corrio)."""
+def fetch_manifest(mode: str = "color") -> dict | None:
+    """Descargar manifest.json del cache hi-res.
+
+    mode='color' -> manifest.json (TrueColor + IR night)
+    mode='mono_05km' -> manifest_mono.json (banda 2 sola, 0.5 km/px sepia)
+    """
+    url_base = MANIFEST_MONO_URL if mode == "mono_05km" else MANIFEST_URL
     try:
         import time as _t
-        url = f"{MANIFEST_URL}?_={int(_t.time())}"
+        url = f"{url_base}?_={int(_t.time())}"
         r = _get_session().get(url, timeout=TIMEOUT)
         if r.status_code == 404:
             return None
         r.raise_for_status()
         return r.json()
     except Exception as e:
-        logger.warning("hires manifest: %s", e)
+        logger.warning("hires manifest (mode=%s): %s", mode, e)
         return None
 
 
-def fetch_hires_for_volcano(volcano_name: str) -> tuple[np.ndarray | None, dict | None]:
+def fetch_hires_for_volcano(volcano_name: str, mode: str = "color"
+                            ) -> tuple[np.ndarray | None, dict | None]:
     """Bajar PNG hi-res del volcan. Devuelve (array, info) o (None, None).
 
-    info incluye scan_ts, scan_dt_iso, lat, lon — util para badges/labels.
+    Args:
+        volcano_name: nombre exacto del volcan (matchea CATALOG).
+        mode: 'color' o 'mono_05km'.
+
+    info incluye scan_ts, scan_dt_iso, lat, lon, mode — util para badges.
     """
-    manifest = fetch_manifest()
+    manifest = fetch_manifest(mode=mode)
     if manifest is None:
         return None, None
     sid = _slugify(volcano_name)
@@ -81,7 +92,8 @@ def fetch_hires_for_volcano(volcano_name: str) -> tuple[np.ndarray | None, dict 
     ts = manifest.get("scan_ts")
     if not ts:
         return None, None
-    asset = f"{sid}__hires__{ts}.png"
+    suffix = "hires_mono" if mode == "mono_05km" else "hires"
+    asset = f"{sid}__{suffix}__{ts}.png"
     try:
         r = _get_session().get(f"{CDN_BASE}/{asset}", timeout=TIMEOUT)
         if r.status_code != 200:
@@ -92,6 +104,7 @@ def fetch_hires_for_volcano(volcano_name: str) -> tuple[np.ndarray | None, dict 
             "scan_dt_iso": manifest.get("scan_dt_iso"),
             "lat": scopes[sid].get("lat"),
             "lon": scopes[sid].get("lon"),
+            "mode": mode,
         }
     except Exception as e:
         logger.warning("hires fetch %s: %s", asset, e)

@@ -12,9 +12,21 @@ name: Hi-res visible cache build
 
 on:
   schedule:
-    # Cada 30 min en :17 y :47 (offset para no chocar con animation_cache :07)
+    # Cada 30 min en :17 y :47 (offset para no chocar con animation_cache :07).
+    # Default = color (TrueColor day + IR night).
     - cron: '17,47 * * * *'
+    # Cada 60 min en :22 (offset distinto), modo mono_05km (4× zoom real),
+    # solo durante horario diurno sobre Chile (UTC 11-23 cubre amanecer
+    # hasta atardecer). Un solo trigger usa el cron de arriba; el modo
+    # se elige via input por defecto en jobs.* (color).
   workflow_dispatch:
+    inputs:
+      mode:
+        description: "Modo: 'color' (TrueColor + IR night) o 'mono_05km' (4× zoom real, solo dia)"
+        required: false
+        default: 'color'
+        type: choice
+        options: ['color', 'mono_05km']
 
 permissions:
   contents: write
@@ -38,7 +50,10 @@ jobs:
         run: pip install -r requirements_actions.txt
 
       - name: Build cache hi-res
-        run: python scripts/build_hires_cache.py
+        run: |
+          MODE="${{ inputs.mode || 'color' }}"
+          echo "Building hi-res mode=$MODE"
+          python scripts/build_hires_cache.py --mode "$MODE"
 
       - name: Listar contenido
         run: |

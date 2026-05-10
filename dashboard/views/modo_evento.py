@@ -240,13 +240,13 @@ def _live_panel(volcan_name: str, show_rings: bool = True,
         )
     with head_r:
         if event_started:
-            if st.button("✖ Cerrar evento", use_container_width=True,
+            if st.button("✖ Cerrar evento", width='stretch',
                          key=f"close_evt_{volcan_name}"):
                 del st.session_state[event_start_key]
                 st.rerun()
         else:
             if st.button("⏱ Marcar inicio del evento", type="primary",
-                         use_container_width=True, key=f"start_evt_{volcan_name}"):
+                         width='stretch', key=f"start_evt_{volcan_name}"):
                 st.session_state[event_start_key] = now
                 st.rerun()
 
@@ -346,7 +346,7 @@ def _live_panel(volcan_name: str, show_rings: bool = True,
                 _ash_fig(img, v.lat, v.lon,
                          f"{label} · {ts_label}", height=460,
                          show_rings=show_rings, wind_data=wind_for_panel),
-                use_container_width=True,
+                width='stretch',
                 config={"displayModeBar": False},
             )
 
@@ -363,7 +363,7 @@ def _live_panel(volcan_name: str, show_rings: bool = True,
                 "Lat": f"{h.lat:.3f}",
                 "Lon": f"{h.lon:.3f}",
             })
-        st.dataframe(rows, use_container_width=True, hide_index=True)
+        st.dataframe(rows, width='stretch', hide_index=True)
         if hs_dt:
             st.caption(
                 f"📡 Scan FDCF: {hs_dt.strftime('%Y-%m-%d %H:%M UTC')} · "

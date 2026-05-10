@@ -32,6 +32,10 @@ on:
         description: 'Intentar VOLCAT (puede fallar si no esta en archive SSEC)'
         type: boolean
         default: true
+      include_hotspots:
+        description: 'Intentar hotspots FDCF historicos (S3 NOAA L2)'
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -68,6 +72,9 @@ jobs:
           fi
           if [ "${{ inputs.include_volcat }}" = "true" ]; then
             ARGS+=("--include-volcat")
+          fi
+          if [ "${{ inputs.include_hotspots }}" = "true" ]; then
+            ARGS+=("--include-hotspots")
           fi
           python scripts/build_backfill.py "${ARGS[@]}"
 

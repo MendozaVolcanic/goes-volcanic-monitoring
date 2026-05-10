@@ -85,41 +85,20 @@ jobs:
           echo "Total assets: $(ls out_backfill/ | wc -l)"
           echo "Total size: $(du -sh out_backfill/ | cut -f1)"
 
-      - name: Publicar al release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Calcular tag y title (deps de inputs)
+        id: meta
         run: |
-          set -e
-          # Slug del volcan para el tag (lowercase, alfanumerico)
           VOLC_SLUG=$(echo "${{ inputs.volcan }}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/_/g')
-          TAG="backfill-${{ inputs.date }}-${VOLC_SLUG}"
-          TITLE="Backfill ${{ inputs.volcan }} ${{ inputs.date }} ${{ inputs.start }}-${{ inputs.end }} UTC"
+          echo "tag=backfill-${{ inputs.date }}-${VOLC_SLUG}" >> "$GITHUB_OUTPUT"
+          echo "title=Backfill ${{ inputs.volcan }} ${{ inputs.date }} ${{ inputs.start }}-${{ inputs.end }} UTC" >> "$GITHUB_OUTPUT"
 
-          # Crear o actualizar release
-          if ! gh release view "$TAG" >/dev/null 2>&1; then
-            gh release create "$TAG" --title "$TITLE" \
-              --notes "Backfill auto-generado por workflow para ${{ inputs.volcan }} ${{ inputs.date }}. Lee desde dashboard view 'Backfill historico'."
-          fi
-
-          # Borrar assets viejos (snapshot completo cada vez)
-          gh release view "$TAG" --json assets --jq '.assets[].name' \
-            | while read -r asset; do
-                gh release delete-asset "$TAG" "$asset" --yes 2>/dev/null || true
-              done
-
-          # Subir en batches de 50 con 30s sleep entre — evita rate limit
-          # secundario de GitHub (~5000 req/h pero hay sub-quotas en uploads).
-          BATCH_SIZE=50
-          ALL_FILES=(out_backfill/*)
-          TOTAL=${#ALL_FILES[@]}
-          echo "Subiendo $TOTAL assets en batches de $BATCH_SIZE..."
-          for ((i=0; i<TOTAL; i+=BATCH_SIZE)); do
-            BATCH=("${ALL_FILES[@]:i:BATCH_SIZE}")
-            echo "  Batch $((i/BATCH_SIZE + 1)): ${#BATCH[@]} files"
-            gh release upload "$TAG" "${BATCH[@]}" --clobber
-            if (( i + BATCH_SIZE < TOTAL )); then
-              echo "  Sleeping 30s para evitar rate limit..."
-              sleep 30
-            fi
-          done
-          echo "Listo. Tag: $TAG"
+      - name: Publicar al release
+        uses: ./.github/actions/gh-release-snapshot
+        with:
+          tag: ${{ steps.meta.outputs.tag }}
+          title: ${{ steps.meta.outputs.title }}
+          notes: "Backfill auto-generado por workflow para ${{ inputs.volcan }} ${{ inputs.date }}. Lee desde dashboard view 'Backfill historico'."
+          dir: out_backfill
+          prerelease: 'false'
+          batch-size: '50'
+          sleep-between-batches: '30'

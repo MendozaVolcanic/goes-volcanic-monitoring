@@ -63,23 +63,12 @@ jobs:
           echo "Total size: $(du -sh out_hires/ | cut -f1)"
 
       - name: Publicar al release rolling
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -e
-          TAG="hires-rolling"
-
-          if ! gh release view "$TAG" >/dev/null 2>&1; then
-            gh release create "$TAG" \
-              --title "Hi-res visible cache (rolling)" \
-              --notes "Cache rolling de imagenes visibles 1 km/px para los 8 volcanes prioritarios. Actualizado por hires_visible_cache.yml cada 30 min. Day = TrueColor, Night = IR pseudo-color." \
-              --prerelease
-          fi
-
-          gh release view "$TAG" --json assets --jq '.assets[].name' \
-            | while read -r asset; do
-                gh release delete-asset "$TAG" "$asset" --yes 2>/dev/null || true
-              done
-
-          gh release upload "$TAG" out_hires/* --clobber
-          echo "Listo. Tag: $TAG"
+        uses: ./.github/actions/gh-release-snapshot
+        with:
+          tag: hires-rolling
+          title: "Hi-res visible cache (rolling)"
+          notes: "Cache rolling de imagenes visibles 1 km/px para los 8 volcanes prioritarios. Actualizado por hires_visible_cache.yml cada 30 min. Day = TrueColor, Night = IR pseudo-color."
+          dir: out_hires
+          prerelease: 'true'
+          batch-size: '50'
+          sleep-between-batches: '15'

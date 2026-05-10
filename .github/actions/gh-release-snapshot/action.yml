@@ -1,0 +1,103 @@
+name: 'GH Release Snapshot Upload'
+description: |
+  Crea/actualiza un GitHub Release como snapshot rolling: borra todos los
+  assets viejos y sube los nuevos en batches con sleep para evitar el
+  secondary rate limit (HTTP 403) de uploads masivos.
+
+  Uso tipico desde animation_cache, hires_visible_cache, backfill_build:
+    - uses: ./.github/actions/gh-release-snapshot
+      with:
+        tag: animations-rolling
+        title: "Animation cache (rolling)"
+        notes: "Cache rolling de frames..."
+        dir: out_animation_cache
+        prerelease: 'true'
+        batch-size: '50'
+        sleep-between-batches: '30'
+
+inputs:
+  tag:
+    description: "Release tag (e.g. animations-rolling, hires-rolling)"
+    required: true
+  title:
+    description: "Release title (solo se usa al crear el release)"
+    required: true
+  notes:
+    description: "Release notes (solo se usa al crear el release)"
+    required: false
+    default: "Snapshot auto-generado"
+  dir:
+    description: "Directorio con los assets a subir (todos los archivos)"
+    required: true
+  prerelease:
+    description: "Marcar como prerelease (true/false)"
+    required: false
+    default: 'true'
+  batch-size:
+    description: "Cantidad de archivos por batch (default 50)"
+    required: false
+    default: '50'
+  sleep-between-batches:
+    description: "Segundos a esperar entre batches (default 30)"
+    required: false
+    default: '30'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Crear release si no existe
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -e
+        TAG="${{ inputs.tag }}"
+        if ! gh release view "$TAG" >/dev/null 2>&1; then
+          echo "Creando release $TAG..."
+          ARGS=("$TAG" "--title" "${{ inputs.title }}" "--notes" "${{ inputs.notes }}")
+          if [ "${{ inputs.prerelease }}" = "true" ]; then
+            ARGS+=("--prerelease")
+          fi
+          gh release create "${ARGS[@]}"
+        else
+          echo "Release $TAG ya existe — se reutilizara."
+        fi
+
+    - name: Borrar assets viejos
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -e
+        TAG="${{ inputs.tag }}"
+        echo "Borrando assets actuales de $TAG..."
+        gh release view "$TAG" --json assets --jq '.assets[].name' \
+          | while read -r asset; do
+              gh release delete-asset "$TAG" "$asset" --yes 2>/dev/null || true
+            done
+        echo "Listo, release vacio."
+
+    - name: Subir assets en batches
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        set -e
+        TAG="${{ inputs.tag }}"
+        DIR="${{ inputs.dir }}"
+        BATCH_SIZE=${{ inputs.batch-size }}
+        SLEEP=${{ inputs.sleep-between-batches }}
+
+        ALL_FILES=("$DIR"/*)
+        TOTAL=${#ALL_FILES[@]}
+        echo "Subiendo $TOTAL assets en batches de $BATCH_SIZE..."
+        for ((i=0; i<TOTAL; i+=BATCH_SIZE)); do
+          BATCH=("${ALL_FILES[@]:i:BATCH_SIZE}")
+          echo "  Batch $((i/BATCH_SIZE + 1)): ${#BATCH[@]} files"
+          gh release upload "$TAG" "${BATCH[@]}" --clobber
+          if (( i + BATCH_SIZE < TOTAL )); then
+            echo "  Sleeping ${SLEEP}s para evitar rate limit..."
+            sleep "$SLEEP"
+          fi
+        done
+        echo "DONE. Tag: $TAG"

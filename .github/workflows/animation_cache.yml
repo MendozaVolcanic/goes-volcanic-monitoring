@@ -43,31 +43,13 @@ jobs:
           echo "Total assets: $(ls out_animation_cache/ | wc -l)"
           echo "Total size: $(du -sh out_animation_cache/ | cut -f1)"
 
-      - name: Publicar en release rolling
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -e
-          TAG="animations-rolling"
-
-          # Crear release si no existe (idempotente).
-          if ! gh release view "$TAG" >/dev/null 2>&1; then
-            echo "Creando release $TAG..."
-            gh release create "$TAG" \
-              --title "Animation cache (rolling)" \
-              --notes "Cache rolling de frames de animacion. Actualizado por animation_cache.yml cada hora. NO descargar manualmente — los assets cambian sin previo aviso." \
-              --prerelease
-          fi
-
-          # Borrar todos los assets actuales (snapshot completo cada vez).
-          # `gh release delete-asset` falla si no existe -> ignorar errores.
-          echo "Borrando assets viejos..."
-          gh release view "$TAG" --json assets --jq '.assets[].name' \
-            | while read -r asset; do
-                gh release delete-asset "$TAG" "$asset" --yes 2>/dev/null || true
-              done
-
-          # Subir todos los nuevos. `--clobber` por si quedo algun residuo.
-          echo "Subiendo $(ls out_animation_cache/ | wc -l) archivos nuevos..."
-          gh release upload "$TAG" out_animation_cache/* --clobber
-          echo "Listo."
+      - name: Publicar al release rolling
+        uses: ./.github/actions/gh-release-snapshot
+        with:
+          tag: animations-rolling
+          title: "Animation cache (rolling)"
+          notes: "Cache rolling de frames de animacion. Actualizado por animation_cache.yml cada hora. NO descargar manualmente — los assets cambian sin previo aviso."
+          dir: out_animation_cache
+          prerelease: 'true'
+          batch-size: '50'
+          sleep-between-batches: '20'

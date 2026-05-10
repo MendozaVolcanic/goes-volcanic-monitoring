@@ -9,7 +9,55 @@ src.borders) para evitar problemas de import en Streamlit Cloud
 por si otro proyecto del ecosistema lo necesita.
 """
 
+import base64
+import io
+
+import numpy as np
 import plotly.graph_objects as go
+
+
+def array_to_data_url(arr: "np.ndarray") -> str:
+    """Convertir array numpy uint8 (H, W, 3) a data URL PNG para layout_image.
+
+    Uso tipico en plotly: `fig.add_layout_image(source=array_to_data_url(rgb), ...)`.
+
+    Centraliza la receta que estaba copiada en 8 vistas (modo_guardia,
+    modo_guardia_volcan, mosaico_chile, comparador, zonas_fullscreen,
+    modo_evento, replay_reciente, backfill_viewer).
+    """
+    from PIL import Image
+    img = Image.fromarray(arr.astype(np.uint8))
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+
+
+def hotspot_distance_km(lat1: float, lon1: float,
+                        lat2: float, lon2: float) -> float:
+    """Distancia plana km entre dos puntos cercanos (small-angle approximation).
+
+    Usa cos(lat) para corregir la separacion de meridianos. Valido para
+    distancias < ~500 km. Centraliza calculo duplicado en modo_guardia,
+    modo_evento y heatmap_actividad.
+    """
+    dlat = (lat2 - lat1) * 111.0
+    dlon = (lon2 - lon1) * 111.0 * float(np.cos(np.radians(lat1)))
+    return float(np.hypot(dlat, dlon))
+
+
+def nearest_hotspot(hotspots, lat: float, lon: float):
+    """Hotspot mas cercano a (lat, lon) + distancia km. (None, inf) si lista vacia.
+
+    `hotspots` debe ser iterable de objetos con atributos .lat y .lon.
+    """
+    if not hotspots:
+        return None, float("inf")
+    best, best_d = None, float("inf")
+    for h in hotspots:
+        d = hotspot_distance_km(lat, lon, h.lat, h.lon)
+        if d < best_d:
+            best, best_d = h, d
+    return best, best_d
 
 
 def _interp_segments(pts: list[tuple[float, float]], n_extra: int = 2

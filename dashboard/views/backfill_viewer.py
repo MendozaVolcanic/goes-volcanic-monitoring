@@ -133,12 +133,8 @@ def _composite_volcat(volcat_rgba: np.ndarray | None,
     return out
 
 
-def _array_to_data_url(arr: np.ndarray) -> str:
-    import base64
-    img = Image.fromarray(arr)
-    buf = io.BytesIO()
-    img.save(buf, format="PNG")
-    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+from dashboard.map_helpers import array_to_data_url as _array_to_data_url
+
 
 
 def _ts_to_label(ts: str) -> str:

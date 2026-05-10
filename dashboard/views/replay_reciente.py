@@ -65,14 +65,8 @@ def _list_timestamps(product: str, n: int = 200) -> list[str]:
     return get_latest_timestamps(product, n=n)
 
 
-def _array_to_data_url(arr: np.ndarray) -> str:
-    import base64
-    import io
-    from PIL import Image
-    img = Image.fromarray(arr.astype(np.uint8))
-    buf = io.BytesIO()
-    img.save(buf, format="PNG")
-    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+from dashboard.map_helpers import array_to_data_url as _array_to_data_url
+
 
 
 def _plot_frame(img: np.ndarray | None, lat: float, lon: float,

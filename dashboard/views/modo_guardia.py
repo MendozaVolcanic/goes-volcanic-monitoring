@@ -90,32 +90,16 @@ def _hotspots_chile() -> tuple[list[HotSpot], datetime | None]:
         return [], None
 
 
-def _nearest_hotspot(hotspots: list[HotSpot], lat: float, lon: float
-                     ) -> tuple[HotSpot | None, float]:
-    """Hotspot mas cercano al volcan + distancia en km. Devuelve (None, inf) si lista vacia."""
-    if not hotspots:
-        return None, float("inf")
-    best, best_d = None, float("inf")
-    for h in hotspots:
-        dlat = (h.lat - lat) * 111.0
-        dlon = (h.lon - lon) * 111.0 * float(np.cos(np.radians(lat)))
-        d = float(np.hypot(dlat, dlon))
-        if d < best_d:
-            best, best_d = h, d
-    return best, best_d
+# nearest_hotspot ahora vive en dashboard.map_helpers para no duplicar
+# el calculo de distancia km. Mantenemos el alias _nearest_hotspot para
+# que las llamadas internas no requieran refactor.
+from dashboard.map_helpers import nearest_hotspot as _nearest_hotspot
 
 
 # ── Render ───────────────────────────────────────────────────────────
 
-def _array_to_data_url(arr: np.ndarray) -> str:
-    """numpy uint8 (H,W,3) -> data URL para Plotly layout_image."""
-    import base64
-    import io
-    from PIL import Image
-    img = Image.fromarray(arr.astype(np.uint8))
-    buf = io.BytesIO()
-    img.save(buf, format="PNG")
-    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+from dashboard.map_helpers import array_to_data_url as _array_to_data_url
+
 
 
 def _hotspot_marker_size(frp_mw: float) -> float:

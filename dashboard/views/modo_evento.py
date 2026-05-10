@@ -87,14 +87,8 @@ def _wind_volcan(lat: float, lon: float) -> dict:
     return out
 
 
-def _array_to_data_url(arr: np.ndarray) -> str:
-    import base64
-    import io
-    from PIL import Image
-    img = Image.fromarray(arr.astype(np.uint8))
-    buf = io.BytesIO()
-    img.save(buf, format="PNG")
-    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+from dashboard.map_helpers import array_to_data_url as _array_to_data_url
+
 
 
 def _circle_points(lat0: float, lon0: float, radius_km: float, n: int = 64):

@@ -68,14 +68,8 @@ def _volcano_frame_with_fallback(product: str, timestamps: list[str],
     )
 
 
-def _array_to_data_url(arr: np.ndarray) -> str:
-    import base64
-    import io
-    from PIL import Image
-    img = Image.fromarray(arr.astype(np.uint8))
-    buf = io.BytesIO()
-    img.save(buf, format="PNG")
-    return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
+from dashboard.map_helpers import array_to_data_url as _array_to_data_url
+
 
 
 RING_RADII_KM = [5, 10, 25, 50]

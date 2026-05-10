@@ -91,6 +91,19 @@ dashboard/
 | Cadencia | ~6 horas | **10 minutos** |
 | Detecta | Anomalías térmicas (lava, fumarolas) | **Plumas de ceniza y SO2** |
 
+## Deploy en servidor SERNAGEOMIN (alternativa a Streamlit Cloud)
+
+Para uptime garantizado y acceso desde la LAN del observatorio sin
+depender de Streamlit Cloud free, ver guía completa:
+
+📄 **[`docs/DEPLOY_LOCALHOST.md`](docs/DEPLOY_LOCALHOST.md)**
+
+Setup automatizado en Windows (PowerShell):
+```powershell
+# Como administrador (si vas a registrar el servicio Windows)
+.\scripts\setup_localhost.ps1 -InstallService
+```
+
 ## Referencias
 
 - Prata, A.J. (1989). Observations of volcanic ash clouds using AVHRR-2

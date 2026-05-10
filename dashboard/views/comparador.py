@@ -46,9 +46,12 @@ PRODUCT_OPTIONS = {
 
 # ── Cache helpers ────────────────────────────────────────────────────
 
-@st.cache_data(ttl=120, show_spinner=False)
+from src.cache_ttl import TTL_TIMESTAMPS_LIST
+
+
+@st.cache_data(ttl=TTL_TIMESTAMPS_LIST, show_spinner=False)
 def _list_timestamps(product: str, n: int = N_TIMESTAMPS) -> list[str]:
-    """Lista los ultimos N timestamps disponibles. Cache 2 min."""
+    """Lista los ultimos N timestamps. Cache TTL_TIMESTAMPS_LIST (30s)."""
     return get_latest_timestamps(product, n=n)
 
 

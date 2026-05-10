@@ -201,13 +201,36 @@ def _volcat_cheatsheet_html() -> str:
     )
 
 
-@st.cache_data(ttl=300, show_spinner=False)
+from src.cache_ttl import TTL_VOLCAT, TTL_FRAME_IMAGE
+
+
+@st.cache_data(ttl=TTL_VOLCAT, show_spinner=False)
 def _volcat_latest_cached(sector: str, instr: str, image_type: str) -> dict | None:
-    """Cache 5 min — el VOLCAT publica cada 10 min con scan ABI."""
+    """Cache TTL_VOLCAT — el VOLCAT publica cada 10 min con scan ABI."""
     return volcat_latest(sector, instr=instr, image_type=image_type)
 
 
-@st.cache_data(ttl=600, show_spinner=False)
+# Wrappers cacheados de RealEarth API. Antes las llamadas a fetch_image y
+# fetch_vaa_geojson eran sin cache → cada rerun bajaba 600x600 PNGs (~50KB c/u).
+# Con cache TTL_VOLCAT, dentro de la misma ventana 5 min se reutilizan.
+@st.cache_data(ttl=TTL_VOLCAT, show_spinner=False)
+def _get_latest_time_cached(product_key: str) -> str | None:
+    return get_latest_time(product_key)
+
+
+@st.cache_data(ttl=TTL_VOLCAT, show_spinner=False)
+def _fetch_image_cached(product_key: str, bounds: dict, time: str | None):
+    """Wrapper cacheado de RealEarth fetch_image. Bounds cacheado por dict
+    serializable (Streamlit hashea el dict)."""
+    return fetch_image(product_key, bounds=bounds, time=time)
+
+
+@st.cache_data(ttl=TTL_VOLCAT, show_spinner=False)
+def _fetch_vaa_cached():
+    return fetch_vaa_geojson()
+
+
+@st.cache_data(ttl=TTL_FRAME_IMAGE, show_spinner=False)
 def _volcat_image_bytes(image_url: str) -> bytes:
     """Descargar PNG raw del VOLCAT (cache 10 min por URL — la URL incluye timestamp)."""
     import requests
@@ -473,12 +496,12 @@ def render():
     vaa = None
 
     with st.spinner("Descargando productos SSEC (Ash RGB + SO2 RGB + VAA)..."):
-        ash_ts = get_latest_time("ash_rgb")
-        so2_ts = get_latest_time("so2_rgb")
+        ash_ts = _get_latest_time_cached("ash_rgb")
+        so2_ts = _get_latest_time_cached("so2_rgb")
 
-        ash_img = fetch_image("ash_rgb", bounds=bounds, time=ash_ts)
-        so2_img = fetch_image("so2_rgb", bounds=bounds, time=so2_ts)
-        vaa = fetch_vaa_geojson()
+        ash_img = _fetch_image_cached("ash_rgb", bounds, ash_ts)
+        so2_img = _fetch_image_cached("so2_rgb", bounds, so2_ts)
+        vaa = _fetch_vaa_cached()
 
     # ── Status banner ──
     products_ok = sum(1 for x in [ash_img, so2_img] if x is not None)

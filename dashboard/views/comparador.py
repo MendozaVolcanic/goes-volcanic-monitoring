@@ -46,7 +46,10 @@ PRODUCT_OPTIONS = {
 
 # ── Cache helpers ────────────────────────────────────────────────────
 
-from src.cache_ttl import TTL_TIMESTAMPS_LIST
+try:
+    from src.cache_ttl import TTL_TIMESTAMPS_LIST
+except Exception:
+    TTL_TIMESTAMPS_LIST = 30  # ver src/cache_ttl.py
 
 
 @st.cache_data(ttl=TTL_TIMESTAMPS_LIST, show_spinner=False)
@@ -89,7 +92,10 @@ def _frame_robust(product: str, ts_target: str, all_timestamps: list[str],
 
 # ── Helpers viz ──────────────────────────────────────────────────────
 
-from dashboard.map_helpers import array_to_data_url as _array_to_data_url
+def _array_to_data_url(arr):
+    # Lazy import (gotcha Streamlit Cloud — ver CLAUDE.md).
+    from dashboard.map_helpers import array_to_data_url
+    return array_to_data_url(arr)
 
 
 

@@ -56,8 +56,12 @@ PRODUCTS = {
     "jma_so2": "SO2 RGB",
 }
 
-# Centralizado en src/config — antes RADIUS_DEG = 0.4 hardcoded.
-from src.config import REPLAY_RADIUS_DEG as RADIUS_DEG  # noqa: E402
+# Canonical en src/config (REPLAY_RADIUS_DEG). Fallback hardcoded por
+# si Streamlit Cloud falla el import durante hot-reload (gotcha CLAUDE.md).
+try:
+    from src.config import REPLAY_RADIUS_DEG as RADIUS_DEG
+except Exception:
+    RADIUS_DEG = 0.4  # ver src/config.py
 
 
 @st.cache_data(ttl=300, show_spinner=False)
@@ -66,7 +70,10 @@ def _list_timestamps(product: str, n: int = 200) -> list[str]:
     return get_latest_timestamps(product, n=n)
 
 
-from dashboard.map_helpers import array_to_data_url as _array_to_data_url
+def _array_to_data_url(arr):
+    # Lazy import (gotcha Streamlit Cloud — ver CLAUDE.md).
+    from dashboard.map_helpers import array_to_data_url
+    return array_to_data_url(arr)
 
 
 

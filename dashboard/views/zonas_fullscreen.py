@@ -73,7 +73,10 @@ def _hotspots_zone(zone_key: str) -> tuple[list[HotSpot], datetime | None]:
         return [], None
 
 
-from dashboard.map_helpers import array_to_data_url as _array_to_data_url
+def _array_to_data_url(arr):
+    # Lazy import (gotcha Streamlit Cloud — ver CLAUDE.md).
+    from dashboard.map_helpers import array_to_data_url
+    return array_to_data_url(arr)
 
 
 

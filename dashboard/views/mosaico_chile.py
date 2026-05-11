@@ -24,10 +24,13 @@ logger = logging.getLogger(__name__)
 
 REFRESH_SECONDS = 60
 ROTATION_SECONDS = 10
-# Radio del bbox por volcan en el mosaico (centralizado en src/config).
-# 0.5° (~55 km lado-medio) maximiza pixeles reales RAMMB zoom=4 por
-# miniatura sin perder identificacion del crater.
-from src.config import MOSAICO_RADIUS_DEG as RADIUS_DEG  # noqa: E402
+# Radio del bbox por volcan en el mosaico. Canonical en src/config
+# (MOSAICO_RADIUS_DEG). Fallback hardcoded por si Streamlit Cloud
+# falla el import cross-package durante hot-reload (gotcha CLAUDE.md).
+try:
+    from src.config import MOSAICO_RADIUS_DEG as RADIUS_DEG
+except Exception:
+    RADIUS_DEG = 0.5  # ver src/config.py para canonical
 PRODUCT_LIST_TV = ["geocolor", "eumetsat_ash", "jma_so2"]
 
 PRODUCT_OPTIONS = {
@@ -66,7 +69,10 @@ def _volcano_frame_with_fallback(product: str, timestamps: list[str],
     )
 
 
-from dashboard.map_helpers import array_to_data_url as _array_to_data_url
+def _array_to_data_url(arr):
+    # Lazy import (gotcha Streamlit Cloud — ver CLAUDE.md).
+    from dashboard.map_helpers import array_to_data_url
+    return array_to_data_url(arr)
 
 
 

@@ -201,7 +201,12 @@ def _volcat_cheatsheet_html() -> str:
     )
 
 
-from src.cache_ttl import TTL_VOLCAT, TTL_FRAME_IMAGE
+try:
+    from src.cache_ttl import TTL_VOLCAT, TTL_FRAME_IMAGE
+except Exception:
+    # Fallback si Streamlit Cloud falla el import cross-package
+    TTL_VOLCAT = 300
+    TTL_FRAME_IMAGE = 7200
 
 
 @st.cache_data(ttl=TTL_VOLCAT, show_spinner=False)

@@ -90,10 +90,13 @@ def _hotspots_chile() -> tuple[list[HotSpot], datetime | None]:
         return [], None
 
 
-# nearest_hotspot ahora vive en dashboard.map_helpers para no duplicar
-# el calculo de distancia km. Mantenemos el alias _nearest_hotspot para
-# que las llamadas internas no requieran refactor.
-from dashboard.map_helpers import nearest_hotspot as _nearest_hotspot
+# nearest_hotspot vive en dashboard.map_helpers. Lazy import (definicion
+# local que delega) para evitar el gotcha de Streamlit Cloud:
+# `from dashboard.X import Y` top-level falla intermitentemente con
+# KeyError/ImportError durante hot-reloads. Ver CLAUDE.md.
+def _nearest_hotspot(hotspots, lat, lon):
+    from dashboard.map_helpers import nearest_hotspot
+    return nearest_hotspot(hotspots, lat, lon)
 
 
 # ── Render ───────────────────────────────────────────────────────────

@@ -159,7 +159,10 @@ def _wind_arrow_endpoints(lat0: float, lon0: float, u_kmh: float, v_kmh: float,
 
 # ── Conversion array a data URL ──────────────────────────────────────
 
-from dashboard.map_helpers import array_to_data_url as _array_to_data_url
+def _array_to_data_url(arr):
+    # Lazy import (gotcha Streamlit Cloud — ver CLAUDE.md).
+    from dashboard.map_helpers import array_to_data_url
+    return array_to_data_url(arr)
 
 
 

@@ -1,0 +1,20 @@
+# Pyproject.toml mínimo — el proyecto sigue siendo Streamlit + scripts,
+# pero declaramos `requires-python` explícito para que herramientas que
+# leen este formato (uv, pip moderno, Streamlit Cloud nuevo) no usen
+# Python 3.14 que tiene race condition en importlib.
+#
+# Tres archivos pinning Python a 3.12 (triple redundancia):
+#  - runtime.txt          → formato legacy Streamlit/Heroku
+#  - .python-version      → formato pyenv (uv lo respeta)
+#  - pyproject.toml       → formato PEP 621 (más moderno)
+#
+# Razón: Streamlit Cloud cambió en 2026 a `uv` para instalar deps y
+# empezó a ignorar `runtime.txt` en algunos deploys. El log del 14-may-2026
+# confirma `Using Python 3.14.4 environment` → la app entra en estado
+# dormant/auth-required tras horas de race conditions del importlib 3.14.
+
+[project]
+name = "goes-volcanic-monitoring"
+version = "0.1.0"
+description = "Dashboard NRT de monitoreo volcánico GOES-19 para Chile"
+requires-python = "==3.12.*"

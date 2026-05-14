@@ -13,7 +13,10 @@ cartopy>=0.22.0
 plotly>=5.18.0
 
 # Dashboard
-streamlit>=1.37.0   # 1.37+ para @st.fragment(run_every=...) + st.rerun(scope=...)
+streamlit>=1.37.0,<1.60.0   # 1.37+ para @st.fragment(run_every=...) + st.rerun(scope=...).
+                            # Upper-bound preventivo: post-2026-06-01 Streamlit remueve
+                            # st.components.v1.html que aun usamos en live_viewer.
+                            # Subir el cap cuando migremos al reemplazo.
 folium>=0.15.0
 streamlit-folium>=0.17.0
 

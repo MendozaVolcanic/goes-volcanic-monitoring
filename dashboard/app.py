@@ -112,27 +112,35 @@ with st.sidebar:
     # codigo en zonas_fullscreen.py, que Guardia importa). Slug 'zonas'
     # se redirige a guardia abajo para no romper bookmarks.
     PAGE_OPTIONS = [
-        "🔴 En Vivo", "🛡 Modo Guardia",
+        "🌎 Vista Operacional", "🛡 Modo Guardia",
         "🔀 Comparador",
         "🚨 Modo Evento", "📅 Heatmap actividad",
         "🔁 Replay reciente", "📅 Backfill historico",
-        "Ash RGB Viewer (L1b + BTD)", "VOLCAT (SSEC)",
-        "Animacion (RAMMB)", "📈 Series de tiempo",
+        "🌡 Ash + BTD (temperaturas K)", "📏 VOLCAT (altura pluma)",
+        "🎞 Loops descargables", "📈 Series de tiempo",
     ]
     PAGE_SLUGS = {
-        "live": "🔴 En Vivo", "guardia": "🛡 Modo Guardia",
+        "operacional": "🌎 Vista Operacional",
+        "guardia": "🛡 Modo Guardia",
         "comparador": "🔀 Comparador", "evento": "🚨 Modo Evento",
         "heatmap": "📅 Heatmap actividad",
         "replay": "🔁 Replay reciente",
         "backfill": "📅 Backfill historico",
-        "ash": "Ash RGB Viewer (L1b + BTD)",
-        "volcat": "VOLCAT (SSEC)", "animacion": "Animacion (RAMMB)",
+        "ash": "🌡 Ash + BTD (temperaturas K)",
+        "volcat": "📏 VOLCAT (altura pluma)",
+        "loops": "🎞 Loops descargables",
         "series": "📈 Series de tiempo",
     }
     qp = st.query_params
-    # Compat: bookmarks viejos a ?vista=zonas → redirigir a guardia
-    if qp.get("vista") == "zonas":
-        st.query_params["vista"] = "guardia"
+    # Compat: redirigir slugs viejos sin romper bookmarks/permalinks
+    _SLUG_REDIRECTS = {
+        "zonas": "guardia",       # 4 Zonas Full Screen → sub-tab de Guardia
+        "live": "operacional",    # 🔴 En Vivo → 🌎 Vista Operacional
+        "animacion": "loops",     # Animacion RAMMB → 🎞 Loops descargables
+    }
+    _curr = qp.get("vista")
+    if _curr in _SLUG_REDIRECTS:
+        st.query_params["vista"] = _SLUG_REDIRECTS[_curr]
         qp = st.query_params
     initial_idx = 0
     if "vista" in qp:
@@ -223,7 +231,7 @@ with st.sidebar:
     )
 
 # ── Routing ──────────────────────────────────────────────────────
-if page == "🔴 En Vivo":
+if page == "🌎 Vista Operacional":
     from dashboard.views.live_viewer import render
     render()
 elif page == "🛡 Modo Guardia":
@@ -244,13 +252,13 @@ elif page == "🔁 Replay reciente":
 elif page == "📅 Backfill historico":
     from dashboard.views.backfill_viewer import render
     render()
-elif page == "Ash RGB Viewer (L1b + BTD)":
+elif page == "🌡 Ash + BTD (temperaturas K)":
     from dashboard.views.ash_viewer import render
     render()
-elif page == "VOLCAT (SSEC)":
+elif page == "📏 VOLCAT (altura pluma)":
     from dashboard.views.volcat_viewer import render
     render()
-elif page == "Animacion (RAMMB)":
+elif page == "🎞 Loops descargables":
     from dashboard.views.rammb_viewer import render
     render()
 elif page == "📈 Series de tiempo":

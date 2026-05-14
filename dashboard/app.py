@@ -71,17 +71,22 @@ if _fullscreen:
             """,
             unsafe_allow_html=True,
         )
-        # Salir fullscreen via link (anchor HTML) en vez de st.button para
-        # evitar conflictos con fragments de auto-refresh (mismo motivo
-        # que el boton ✖ Salir TV en modo_guardia.py).
-        # Construir URL preservando el resto de query params salvo fullscreen.
+        # Salir fullscreen como anchor HTML con target="_top". Streamlit
+        # Cloud renderea la app en un iframe — un link relativo navega DENTRO
+        # del iframe (parece no hacer nada). target="_top" rompe el sandbox.
+        # Preserva otros query params salvo fullscreen.
         _qp_keep = {k: v for k, v in st.query_params.items() if k != "fullscreen"}
         _qs = "&".join(f"{k}={v}" for k, v in _qp_keep.items())
         _url_no_fs = ("?" + _qs) if _qs else "/"
-        c_exit_fs, c_rest_fs = st.columns([1, 14])
-        with c_exit_fs:
-            st.link_button("✖ Salir fullscreen", url=_url_no_fs,
-                           width='stretch')
+        st.markdown(
+            f'<a href="{_url_no_fs}" target="_top" '
+            f'style="display:inline-block; padding:0.4rem 1.2rem; '
+            f'background:#ff4b4b; color:white; text-decoration:none; '
+            f'border-radius:6px; font-weight:600; font-size:0.85rem;" '
+            f'title="Salir del modo pantalla completa">'
+            f'✖ Salir fullscreen</a>',
+            unsafe_allow_html=True,
+        )
 
 # ── Sidebar ──────────────────────────────────────────────────────
 with st.sidebar:

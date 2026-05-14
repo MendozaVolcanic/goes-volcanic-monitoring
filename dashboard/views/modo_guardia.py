@@ -610,16 +610,23 @@ def render():
             """,
             unsafe_allow_html=True,
         )
-        # Boton "✖ Salir" como link (NO st.button) porque st.button choca
-        # con el fragment auto-rerun cada 10s — el click se pierde mientras
-        # el fragment esta en medio de su ciclo. st.link_button es un anchor
-        # HTML que navega via URL, sin necesidad de rerun de Streamlit, por
-        # lo tanto no compite con el scheduling de fragments.
-        c_exit, c_spacer = st.columns([1, 14])
-        with c_exit:
-            st.link_button("✖ Salir", url="?vista=guardia", type="primary",
-                           help="Salir del modo Sala y volver a Modo Guardia",
-                           width='stretch')
+        # Boton "✖ Salir" como anchor HTML con target="_top". Razon:
+        # Streamlit Cloud renderea la app dentro de un iframe; un link
+        # relativo navega DENTRO del iframe (parece que no pasa nada).
+        # `target="_top"` rompe el sandbox y navega la URL del browser
+        # principal. st.link_button NO soporta target — por eso usamos
+        # st.markdown con HTML inline + estilos imitando el boton primary
+        # de Streamlit.
+        st.markdown(
+            '<a href="?vista=guardia" target="_top" '
+            'style="display:inline-block; padding:0.4rem 1.2rem; '
+            'background:#ff4b4b; color:white; text-decoration:none; '
+            'border-radius:6px; font-weight:600; font-size:0.9rem; '
+            'margin-bottom:0.4rem;" '
+            'title="Salir del modo Sala y volver a Modo Guardia">'
+            '✖ Salir</a>',
+            unsafe_allow_html=True,
+        )
         if tv_mode == "chile":
             volcan_name = st.query_params.get("volcan", DEFAULT_VOLCANO)
             _rotating_chile_tv(volcan_name, show_rings=True)

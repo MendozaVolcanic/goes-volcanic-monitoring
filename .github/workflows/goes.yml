@@ -1,8 +1,14 @@
-name: GOES-19 NRT Monitor
+name: GOES-19 NRT Monitor (manual)
 
+# CAMBIO 2026-05-15: cron desactivado. El workflow estaba fallando con
+# "workflow file issue" en cada ejecucion desde hace dias (0s, ni siquiera
+# arrancaba). La auditoria previa confirmo que NADIE consume operacional-
+# mente STATUS_NRT.md (su unico output). Lo dejamos como workflow_dispatch
+# para no perder la opcion de generarlo manualmente si aparece consumidor.
+# Tambien tambien evitamos el spam de notificaciones de fallo cada 10 min.
 on:
-  schedule:
-    - cron: '*/10 * * * *'  # Cada 10 min — cadencia Full Disk GOES-19
+  # schedule:
+  #   - cron: '*/10 * * * *'  # Cada 10 min — cadencia Full Disk GOES-19
   workflow_dispatch:         # Ejecucion manual desde GitHub
 
 permissions:

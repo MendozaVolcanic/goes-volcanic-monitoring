@@ -99,6 +99,9 @@ def fetch_hires_for_volcano(volcano_name: str, mode: str = "color"
             "lat": scopes[sid].get("lat"),
             "lon": scopes[sid].get("lon"),
             "mode": mode,
+            # Render metadata (None si manifest viejo no la tiene)
+            "sun_alt": scopes[sid].get("sun_alt"),
+            "render": scopes[sid].get("render"),
         }
     except Exception as e:
         logger.warning("hires fetch %s: %s", asset, e)

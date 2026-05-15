@@ -89,7 +89,9 @@ def _circle_points(lat0: float, lon0: float, radius_km: float, n: int = 48):
 def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
                  height: int = 420, show_rings: bool = False,
                  target_width_px: int | None = None,
-                 zoom_used: int | None = None):
+                 zoom_used: int | None = None,
+                 hires_render: str | None = None,
+                 hires_sun_alt: float | None = None):
     """Mini-plot cuadrado con bbox compensado por latitud.
 
     `height` se usa solo si `target_width_px=None`. Si se pasa width,
@@ -166,16 +168,33 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
         xanchor="left", yanchor="top",
         xshift=4, yshift=-4,
     )
-    # Badge de zoom usado (esquina inferior derecha):
+    # Badge de zoom usado + tipo de render (esquina inferior derecha):
     #   -2 = hi-res mono 0.5 km/px (cyan), -1 = hi-res color 1 km/px (azul),
     #    4 = RAMMB max (verde),  3 = RAMMB fallback (naranja).
+    # Para hi-res, distinguir explicitamente VIS vs IR — clave porque a sol
+    # bajo el pipeline cae a IR pseudo-color y la imagen se ve sepia/amarillo
+    # (confuso si el usuario espera color real).
     if zoom_used is not None and zoom_used != 0:
         if zoom_used == -2:
             badge_color = "#00ddff"
             badge_text = "HI-RES MONO · 0.5km/px (4×)"
+            if hires_sun_alt is not None:
+                badge_text += f" · ☀{hires_sun_alt:.0f}°"
         elif zoom_used == -1:
-            badge_color = "#33aaff"
-            badge_text = "HI-RES NOAA · 1km/px"
+            # Render: visible_color (TrueColor), ir_pseudo (sol bajo -> IR), o None
+            if hires_render == "ir_pseudo":
+                badge_color = "#ffaa55"  # naranja: alerta visible no disponible
+                badge_text = "HI-RES IR · 1km/px"
+                if hires_sun_alt is not None:
+                    badge_text += f" · ☀{hires_sun_alt:.0f}° (noche/twilight)"
+            elif hires_render == "visible_color":
+                badge_color = "#33aaff"
+                badge_text = "HI-RES VIS · 1km/px"
+                if hires_sun_alt is not None:
+                    badge_text += f" · ☀{hires_sun_alt:.0f}°"
+            else:
+                badge_color = "#33aaff"
+                badge_text = "HI-RES NOAA · 1km/px"
         elif zoom_used >= 4:
             badge_color = "#3fb950"
             badge_text = f"z={zoom_used} · 1.7km/px"
@@ -261,12 +280,17 @@ def _grid_fragment(product: str, use_hires: bool = False,
             # Intento hi-res primero si toggle activo
             img = None
             used_zoom = 0  # 0 = RAMMB normal con zoom 4
+            hires_render = None  # 'visible_color' | 'visible_mono' | 'ir_pseudo' | None
+            hires_sun_alt = None
             if use_hires:
                 hires_arr, hires_info = _hires_for_volcano_cached(name, mode=hires_mode)
                 if hires_arr is not None:
                     img = hires_arr
                     # -2 = mono_05km (4× zoom), -1 = color 1km/px
                     used_zoom = -2 if hires_mode == "mono_05km" else -1
+                    if hires_info:
+                        hires_render = hires_info.get("render")
+                        hires_sun_alt = hires_info.get("sun_alt")
                     hires_used += 1
                 else:
                     hires_fallback += 1
@@ -284,7 +308,9 @@ def _grid_fragment(product: str, use_hires: bool = False,
                 st.plotly_chart(
                     _render_mini(img, v.lat, v.lon, name,
                                  target_width_px=380, show_rings=True,
-                                 zoom_used=used_zoom),
+                                 zoom_used=used_zoom,
+                                 hires_render=hires_render,
+                                 hires_sun_alt=hires_sun_alt),
                     width='stretch',
                     config={"displayModeBar": False},
                 )

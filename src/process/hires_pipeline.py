@@ -86,7 +86,7 @@ def build_hires_for_scopes(
     scopes: dict[str, dict],
     radius_deg: float = 0.5,
     mode: str = "color",
-) -> dict[str, np.ndarray | None]:
+) -> tuple[dict[str, np.ndarray | None], dict[str, dict]]:
     """Genera RGB hi-res para cada scope a partir del mismo scan L1b.
 
     Args:
@@ -99,7 +99,12 @@ def build_hires_for_scopes(
                                    No baja b1 ni b3. Diurno solamente.
 
     Returns:
-        dict scope_id -> numpy (H, W, 3) uint8 RGB. None si fallo.
+        Tupla `(images, meta)`:
+          - `images`: dict scope_id -> numpy (H,W,3) uint8 RGB (None si fallo)
+          - `meta`:   dict scope_id -> {"sun_alt": float (deg),
+                                         "render": str}
+            donde render ∈ {"visible_color", "visible_mono", "ir_pseudo",
+                           "skip_night", "no_data", "error"}.
     """
     # 1. Descargar bandas. En mono_05km solo necesitamos banda 2 (visible
     # rojo 0.5km/px) — ahorra ~130 MB de download skipping b1+b3.
@@ -146,8 +151,11 @@ def build_hires_for_scopes(
         bt13 = np.repeat(np.repeat(bt13_2km, 2, axis=0), 2, axis=1)
         bt13 = bt13[:lat.shape[0], :lat.shape[1]]
 
-    # 5. Por cada scope: decidir day/night + recortar + RGB
+    # 5. Por cada scope: decidir day/night + recortar + RGB.
+    # `out_meta` registra qué modo se usó por scope (visible/IR) + sun_alt
+    # para que el dashboard pueda mostrar al usuario QUÉ está viendo.
     out: dict[str, np.ndarray | None] = {}
+    out_meta: dict[str, dict] = {}
     for sid, scope_info in scopes.items():
         lat_c = scope_info["lat"]
         lon_c = scope_info["lon"]
@@ -158,6 +166,7 @@ def build_hires_for_scopes(
         sun_alt = solar_elevation(lat_c, lon_c, dt)
         is_day = sun_alt >= DAY_NIGHT_THRESHOLD_DEG
 
+        out_meta[sid] = {"sun_alt": round(sun_alt, 1), "render": None}
         try:
             if mode == "mono_05km":
                 # Modo 0.5 km/px: solo banda 2 monocromatica.
@@ -166,13 +175,16 @@ def build_hires_for_scopes(
                     logger.info("[%s] mono_05km NOCHE (sun=%.1f°) -> skip",
                                 sid, sun_alt)
                     out[sid] = None
+                    out_meta[sid]["render"] = "skip_night"
                     continue
                 b2_crop, _, _ = crop_to_bounds(
                     xr.DataArray(refls[2], dims=["y", "x"]), lat, lon, bounds)
                 if b2_crop.size == 0:
                     out[sid] = None
+                    out_meta[sid]["render"] = "no_data"
                     continue
                 rgb = band2_monochrome_05km(b2_crop)
+                out_meta[sid]["render"] = "visible_mono"
                 logger.info("[%s] mono_05km DIA sun=%.1f° -> %s (0.5km/px)",
                             sid, sun_alt, rgb.shape)
             elif is_day and all(b in refls for b in (1, 2, 3)):
@@ -185,8 +197,10 @@ def build_hires_for_scopes(
                     xr.DataArray(refls[3], dims=["y", "x"]), lat, lon, bounds)
                 if b2_crop.size == 0:
                     out[sid] = None
+                    out_meta[sid]["render"] = "no_data"
                     continue
                 rgb = true_color_rgb(b1_crop, b2_crop, b3_crop)
+                out_meta[sid]["render"] = "visible_color"
                 logger.info("[%s] DIA sun=%.1f° -> TrueColor %s",
                             sid, sun_alt, rgb.shape)
             elif bt13 is not None:
@@ -195,20 +209,26 @@ def build_hires_for_scopes(
                     xr.DataArray(bt13, dims=["y", "x"]), lat, lon, bounds)
                 if bt_crop.size == 0:
                     out[sid] = None
+                    out_meta[sid]["render"] = "no_data"
                     continue
                 rgb = bt_to_pseudo_color_ir(bt_crop)
+                out_meta[sid]["render"] = "ir_pseudo"
                 logger.info("[%s] NOCHE sun=%.1f° -> IR pseudo-color %s",
                             sid, sun_alt, rgb.shape)
             else:
                 logger.warning("[%s] sin datos visible NI IR -> None", sid)
                 out[sid] = None
+                out_meta[sid]["render"] = "no_data"
                 continue
             out[sid] = rgb
         except Exception as e:
             logger.exception("[%s] error: %s", sid, e)
             out[sid] = None
+            out_meta[sid]["render"] = "error"
 
     # Cerrar datasets
     for ds in datasets.values():
         ds.close()
-    return out
+    # Devolver tupla (imagenes, metadata por scope) para que el caller
+    # registre QUE TIPO de render salio (visible vs IR) y muestre al user.
+    return out, out_meta

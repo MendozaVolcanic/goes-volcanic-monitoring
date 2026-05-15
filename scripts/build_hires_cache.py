@@ -79,10 +79,11 @@ def main() -> int:
         for v in priority
     }
 
-    # 3. Build
+    # 3. Build (devuelve imagenes + metadata por scope con sun_alt + render type)
     log.info("Procesando hi-res para %d scopes mode=%s...", len(scopes), args.mode)
-    results = build_hires_for_scopes(dt, scopes, radius_deg=RADIUS_DEG,
-                                      mode=args.mode)
+    results, results_meta = build_hires_for_scopes(
+        dt, scopes, radius_deg=RADIUS_DEG, mode=args.mode,
+    )
 
     # 4. Guardar — sufijo del filename indica el mode
     ts_str = dt.strftime("%Y%m%d%H%M%S")
@@ -91,7 +92,9 @@ def main() -> int:
     total_bytes = 0
     for sid, arr in results.items():
         if arr is None:
-            log.warning("[%s] sin imagen, skipping", sid)
+            meta = results_meta.get(sid, {})
+            log.warning("[%s] sin imagen (sun=%s, render=%s)", sid,
+                        meta.get("sun_alt"), meta.get("render"))
             continue
         fname = f"{sid}__{suffix}__{ts_str}.png"
         nb = _save_png(arr, OUT_DIR / fname)
@@ -111,6 +114,11 @@ def main() -> int:
                 "lon": scopes[sid]["lon"],
                 "name": scopes[sid]["name"],
                 "available": sid in available,
+                # Metadata del render: sun_alt + tipo (visible_color, ir_pseudo,
+                # visible_mono, skip_night, no_data, error). El dashboard usa
+                # esto para mostrar al usuario QUE tipo de imagen esta viendo.
+                "sun_alt": results_meta.get(sid, {}).get("sun_alt"),
+                "render": results_meta.get(sid, {}).get("render"),
             }
             for sid in scopes
         },

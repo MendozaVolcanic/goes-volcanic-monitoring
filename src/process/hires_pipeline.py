@@ -134,6 +134,12 @@ def build_hires_for_scopes(
     # 3. Geolocalizacion.
     # mode='mono_05km': lat/lon de banda 2 NATIVA (0.5 km/px), sin downsample.
     # mode='color':     trabajamos en 1 km/px. Banda 2 se downsamplea 2x.
+    #
+    # WARNING mono_05km: get_lat_lon() para banda 2 nativa calcula arrays
+    # 10848×10848 float64 (~1 GB cada uno: lat + lon + intermedios). Excede
+    # los 7GB del runner GH Actions free → OOM (exit 143). TODO: calcular
+    # lat/lon SOLO para sub-region del scope antes de allocar el grid full.
+    # Por ahora mono_05km solo funciona localmente o en runner self-hosted.
     if mode == "mono_05km":
         # Mantener banda 2 a 0.5 km/px nativo
         lat, lon = get_lat_lon(datasets[2])

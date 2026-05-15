@@ -68,30 +68,74 @@ def bt_to_pseudo_color_ir(bt: np.ndarray,
     return (rgb * 255).astype(np.uint8)
 
 
+def contrast_stretch(rgb: np.ndarray, low_pct: float = 2.0,
+                     high_pct: float = 98.0) -> np.ndarray:
+    """Rescalar valores a percentil (low, high) -> (0, 1). Sube contraste.
+
+    Sin Rayleigh proper, las imágenes TrueColor tienen std baja (~15) vs
+    GeoColor RAMMB (std ~66). Este stretch al percentil 2-98 recupera
+    ~80% del contraste perdido. Por canal individual para evitar shift de
+    color.
+    """
+    out = np.zeros_like(rgb)
+    for c in range(rgb.shape[-1]):
+        ch = rgb[..., c]
+        lo, hi = np.percentile(ch, [low_pct, high_pct])
+        if hi - lo > 1e-6:
+            out[..., c] = np.clip((ch - lo) / (hi - lo), 0, 1)
+        else:
+            out[..., c] = ch
+    return out
+
+
+def unsharp_mask(rgb: np.ndarray, amount: float = 0.6,
+                 sigma: float = 1.0) -> np.ndarray:
+    """Unsharp mask suave para sharpening de hi-res. amount=0.6 = +60% bordes."""
+    try:
+        from scipy.ndimage import gaussian_filter
+    except ImportError:
+        return rgb
+    blurred = np.zeros_like(rgb)
+    for c in range(rgb.shape[-1]):
+        blurred[..., c] = gaussian_filter(rgb[..., c], sigma=sigma)
+    sharpened = rgb + amount * (rgb - blurred)
+    return np.clip(sharpened, 0, 1)
+
+
 def band2_monochrome_05km(refl_b2: np.ndarray, gamma: float = 0.6,
-                           tint: tuple[int, int, int] = (255, 245, 220)
+                           tint: tuple[int, int, int] = (255, 245, 220),
+                           enhance: bool = True
                            ) -> np.ndarray:
     """Banda 2 sola en resolucion NATIVA 0.5 km/px como pseudo-color sepia.
 
     Trade-off: pierde color verdadero (es un canal monocromatico) pero
     mantiene la resolucion completa de 0.5 km/px = 4× mejor que RAMMB.
-    Aplica gamma para brightening + tint sepia para que no sea grayscale puro.
+    Aplica gamma + (opcional) contrast stretch + unsharp mask para que
+    no se vea plano vs RAMMB.
 
     Pensado para "ver el crater". A 0.5 km/px Lascar (~500m crater) ocupa
     un cuadrante de la imagen, no un pixel.
     """
     refl = np.clip(refl_b2, 0, 1)
     refl = np.power(refl, gamma)
+    if enhance:
+        # Contrast stretch en el canal monocromo
+        lo, hi = np.percentile(refl, [2.0, 98.0])
+        if hi - lo > 1e-6:
+            refl = np.clip((refl - lo) / (hi - lo), 0, 1)
     # Aplicar tint suave (mezcla 80% intensidad neutra + 20% sepia)
     r = refl * tint[0] / 255.0
     g = refl * tint[1] / 255.0
     b = refl * tint[2] / 255.0
     rgb = np.stack([r, g, b], axis=-1)
+    if enhance:
+        rgb = unsharp_mask(rgb, amount=0.5, sigma=0.9)
     return (np.clip(rgb, 0, 1) * 255).astype(np.uint8)
 
 
 def true_color_rgb(refl_b1: np.ndarray, refl_b2: np.ndarray,
-                   refl_b3: np.ndarray, gamma: float = 0.5) -> np.ndarray:
+                   refl_b3: np.ndarray, gamma: float = 0.5,
+                   enhance: bool = True) -> np.ndarray:
     """TrueColor RGB simplificado desde reflectancias bandas 1, 2, 3.
 
     Asume todas las bandas YA estan al mismo grid (resampling externo).
@@ -100,7 +144,10 @@ def true_color_rgb(refl_b1: np.ndarray, refl_b2: np.ndarray,
         refl_b1: banda 1 (azul) reflectancia [0, 1].
         refl_b2: banda 2 (rojo) reflectancia [0, 1].
         refl_b3: banda 3 (NIR vegetacion) reflectancia [0, 1].
-        gamma: factor gamma para brightening (0.5 = visible mas brillante).
+        gamma:   factor gamma para brightening (0.5 = visible mas brillante).
+        enhance: si True (default), aplica contrast stretch + unsharp mask
+                 post-gamma para compensar la falta de Rayleigh correction.
+                 Sin enhance la imagen sale plana (std~15) vs RAMMB (std~66).
 
     Devuelve uint8 (H, W, 3) RGB.
     """
@@ -110,6 +157,13 @@ def true_color_rgb(refl_b1: np.ndarray, refl_b2: np.ndarray,
     rgb = np.stack([refl_b2, green, refl_b1], axis=-1)
     rgb = np.clip(rgb, 0, 1)
     rgb = np.power(rgb, gamma)  # brightness curve
+
+    if enhance:
+        # Contrast stretch percentil 2-98 + unsharp mask suave.
+        # Esto recupera ~80% del contraste perdido por no tener Rayleigh.
+        rgb = contrast_stretch(rgb, low_pct=2.0, high_pct=98.0)
+        rgb = unsharp_mask(rgb, amount=0.5, sigma=0.9)
+
     return (rgb * 255).astype(np.uint8)
 
 

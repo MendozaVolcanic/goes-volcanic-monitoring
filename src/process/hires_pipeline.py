@@ -65,6 +65,59 @@ def _downsample_2x(arr: np.ndarray) -> np.ndarray:
         return arr[:h2 * 2, :w2 * 2].reshape(h2, 2, w2, 2, -1).mean(axis=(1, 3))
 
 
+def _scope_pixel_bounds(ds: "xr.Dataset", lat_c: float, lon_c: float,
+                        radius_deg: float, sat_lon: float = -75.0
+                        ) -> tuple[int, int, int, int] | None:
+    """Devolver (r0, r1, c0, c1) en pixels del Dataset para cubrir el bbox.
+
+    Sin allocar grids 2D. Usa solo los arrays 1D x/y del dataset (87 KB c/u
+    vs 940 MB de un meshgrid full de 21696×21696). Critico para mono_05km
+    en runner GH free que solo tiene 7 GB RAM.
+    """
+    try:
+        from pyproj import Proj
+    except ImportError:
+        return None
+
+    h = float(ds["goes_imager_projection"].attrs.get(
+        "perspective_point_height", 35786023.0))
+    p = Proj(proj="geos", lon_0=sat_lon, h=h, ellps="GRS80", sweep="x")
+
+    x_arr = ds["x"].values  # 1D, ~21696 elementos
+    y_arr = ds["y"].values  # 1D, idem
+
+    cols, rows = [], []
+    # Probar 9 puntos (4 esquinas + 4 medios + centro) para asegurar cobertura
+    test_pts = []
+    for dlat in (-radius_deg, 0, radius_deg):
+        for dlon in (-radius_deg, 0, radius_deg):
+            test_pts.append((lat_c + dlat, lon_c + dlon))
+    for lat, lon in test_pts:
+        try:
+            x_m, y_m = p(lon, lat)
+        except Exception:
+            continue
+        if not (np.isfinite(x_m) and np.isfinite(y_m)):
+            continue
+        x_rad = x_m / h
+        y_rad = y_m / h
+        # argmin |array - target| funciona en arrays ascendentes o descendentes
+        col = int(np.argmin(np.abs(x_arr - x_rad)))
+        row = int(np.argmin(np.abs(y_arr - y_rad)))
+        cols.append(col)
+        rows.append(row)
+
+    if not rows:
+        return None
+
+    # Margen de 5 pixels para no perder bordes
+    margin = 5
+    return (max(0, min(rows) - margin),
+            min(len(y_arr), max(rows) + margin + 1),
+            max(0, min(cols) - margin),
+            min(len(x_arr), max(cols) + margin + 1))
+
+
 def _download_bands_parallel(dt: datetime, bands: list[int]) -> dict[int, str]:
     """Bajar todas las bandas en paralelo. Devuelve dict band -> path."""
     out = {}
@@ -116,7 +169,10 @@ def build_hires_for_scopes(
         logger.error("Banda 2 indispensable no disponible")
         return {sid: None for sid in scopes}
 
-    # 2. Abrir y procesar bandas (radiance -> refl/BT)
+    # 2. Abrir y procesar bandas (radiance -> refl/BT).
+    # En mono_05km NO preload banda 2 (es 21696x21696 = 1.9 GB float32).
+    # Vamos a calcular el super-bbox que cubre todos los scopes y slice
+    # ANTES de allocar reflectance. Eso evita OOM en runner GH free (7 GB).
     datasets: dict[int, xr.Dataset] = {}
     refls: dict[int, np.ndarray] = {}
     bts: dict[int, np.ndarray] = {}
@@ -124,25 +180,45 @@ def build_hires_for_scopes(
     for b, p in band_paths.items():
         ds = open_band(p)
         datasets[b] = ds
+        if mode == "mono_05km" and b == 2:
+            # Skip preload — vamos a procesar sub-region solamente
+            continue
         if b in (1, 2, 3):
-            # Visible/NIR: a reflectance
             refls[b] = rad_to_reflectance(ds["Rad"], ds)
         elif b == 13:
-            # IR: a brightness temperature
             bts[b] = rad_to_bt(ds).values
 
     # 3. Geolocalizacion.
-    # mode='mono_05km': lat/lon de banda 2 NATIVA (0.5 km/px), sin downsample.
-    # mode='color':     trabajamos en 1 km/px. Banda 2 se downsamplea 2x.
-    #
-    # WARNING mono_05km: get_lat_lon() para banda 2 nativa calcula arrays
-    # 10848×10848 float64 (~1 GB cada uno: lat + lon + intermedios). Excede
-    # los 7GB del runner GH Actions free → OOM (exit 143). TODO: calcular
-    # lat/lon SOLO para sub-region del scope antes de allocar el grid full.
-    # Por ahora mono_05km solo funciona localmente o en runner self-hosted.
+    # mode='mono_05km': lat/lon SOLO del super-bbox que cubre todos los scopes
+    #                   (~5000×1300 px = ~25 MB vs 21696×21696 = 7 GB).
+    # mode='color':     trabajamos en 1 km/px full grid. Banda 2 downsample 2x.
     if mode == "mono_05km":
-        # Mantener banda 2 a 0.5 km/px nativo
-        lat, lon = get_lat_lon(datasets[2])
+        # Precompute pixel bounds de cada scope -> super-bbox
+        all_bounds = []
+        for sid, sinfo in scopes.items():
+            pb = _scope_pixel_bounds(
+                datasets[2], sinfo["lat"], sinfo["lon"], radius_deg,
+            )
+            if pb is not None:
+                all_bounds.append(pb)
+        if not all_bounds:
+            logger.error("mono_05km: no pude calcular pixel bounds de ningun scope")
+            for ds in datasets.values():
+                ds.close()
+            return {sid: None for sid in scopes}, {sid: {"render": "error", "sun_alt": None} for sid in scopes}
+        super_r0 = min(b[0] for b in all_bounds)
+        super_r1 = max(b[1] for b in all_bounds)
+        super_c0 = min(b[2] for b in all_bounds)
+        super_c1 = max(b[3] for b in all_bounds)
+        logger.info("mono_05km super-bbox: rows[%d:%d] cols[%d:%d] = %d x %d px",
+                    super_r0, super_r1, super_c0, super_c1,
+                    super_r1 - super_r0, super_c1 - super_c0)
+        # Slice + compute reflectance + lat/lon SOLO para sub-region
+        ds_super = datasets[2].isel(y=slice(super_r0, super_r1),
+                                     x=slice(super_c0, super_c1))
+        refls[2] = rad_to_reflectance(ds_super["Rad"], ds_super)
+        lat, lon = get_lat_lon(ds_super)
+        ds_super.close()
     else:
         if 2 in refls:
             refls[2] = _downsample_2x(refls[2])

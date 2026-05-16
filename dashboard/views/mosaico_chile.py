@@ -315,9 +315,31 @@ def _grid_fragment(product: str, use_hires: bool = False,
                     config={"displayModeBar": False},
                 )
 
-    if use_hires and hires_used:
-        st.caption(f"🔬 Hi-res NOAA activo · {hires_used}/8 usaron hi-res, "
-                   f"{hires_fallback}/8 fallback a RAMMB")
+    if use_hires:
+        # Distinguir 3 casos al user: todo OK / parcial fallback / TODO fallback
+        if hires_used == 0:
+            # Caso especial mono_05km: el workflow del cron OOMs en runner
+            # GH free porque banda 2 nativa (21696×21696) requiere ~7 GB RAM
+            # solo para get_lat_lon. Por eso el cache mono esta SIEMPRE vacio
+            # y siempre cae a RAMMB. El user no nota diferencia con RAMMB
+            # normal — por eso un mensaje explicito.
+            if hires_mode == "mono_05km":
+                st.warning(
+                    "⚠ **Hi-res mono (0.5 km/px) NO disponible actualmente** — el "
+                    "workflow falla por OOM en runner GH free (banda 2 nativa "
+                    "requiere ~7 GB RAM). Lo que ves es **RAMMB fallback**. "
+                    "Para activar el modo mono real: correr `python scripts/build_hires_cache.py "
+                    "--mode mono_05km` desde el localhost del observatorio (más RAM)."
+                )
+            else:
+                st.warning(
+                    f"⚠ **Hi-res color sin datos disponibles** ({hires_fallback}/8 "
+                    "fallback a RAMMB). El cache puede estar viejo o el cron tardó. "
+                    "Re-trigger del workflow `hires_visible_cache.yml` en GitHub Actions."
+                )
+        else:
+            st.caption(f"🔬 Hi-res NOAA activo · {hires_used}/8 usaron hi-res, "
+                       f"{hires_fallback}/8 fallback a RAMMB")
 
     notes = []
     if fallback_ts:
@@ -395,17 +417,19 @@ def _live_panel():
     with cols_top[1]:
         hires_mode = st.radio(
             "Resolucion",
-            ["RAMMB normal", "Hi-res color (1 km/px)", "Hi-res mono (0.5 km/px)"],
+            ["RAMMB normal", "Hi-res color (1 km/px)",
+             "Hi-res mono (0.5 km/px) ⚠"],
             index=0, key="mosaico_hires_mode", horizontal=True,
             help="RAMMB normal: tiles CIRA 1.7 km/px (siempre disponible).\n"
                  "Hi-res color: NOAA L1b TrueColor 1km/px diurno + IR nocturno.\n"
-                 "Hi-res mono: NOAA L1b banda 2 sola a resolucion NATIVA "
-                 "0.5 km/px (4x zoom real). Solo de dia. Tinte sepia.",
+                 "Hi-res mono: NOAA L1b banda 2 sola 0.5 km/px (4x zoom real). "
+                 "⚠ ACTUALMENTE NO DISPONIBLE en cloud (OOM workflow GH free) — "
+                 "cae a RAMMB normal. Requiere localhost del observatorio.",
         )
     with cols_top[2]:
-        if hires_mode == "Hi-res mono (0.5 km/px)":
-            st.caption("ℹ Mono 0.5km/px = solo banda 2 visible NATIVA · "
-                       "4x zoom real vs RAMMB · solo de dia.")
+        if "mono" in hires_mode:
+            st.caption("⚠ Mono 0.5km/px no disponible cloud — vas a ver RAMMB. "
+                       "Requiere correr local desde el observatorio.")
         elif hires_mode == "Hi-res color (1 km/px)":
             st.caption("ℹ Color 1km/px = TrueColor diurno o IR nocturno · "
                        "1.7x mejor que RAMMB.")

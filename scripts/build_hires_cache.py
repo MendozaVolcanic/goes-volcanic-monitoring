@@ -53,12 +53,16 @@ def main() -> int:
     ap.add_argument("--mode", choices=["color", "mono_05km"], default="color",
                     help="color: TrueColor 1km/px (day) + IR (night). "
                          "mono_05km: banda 2 sola a 0.5km/px sepia (4× zoom real, solo dia).")
+    ap.add_argument("--no-clean", action="store_true",
+                    help="No borrar out_hires/ al inicio. Util para chainear modes "
+                         "(corre color, despues mono, ambos terminan en el mismo dir).")
     args = ap.parse_args()
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    # Limpiar — cada build es snapshot completo
-    for p in OUT_DIR.glob("*"):
-        p.unlink()
+    # Limpiar — cada build es snapshot completo (a menos que --no-clean)
+    if not args.no_clean:
+        for p in OUT_DIR.glob("*"):
+            p.unlink()
 
     # 1. Determinar el scan mas reciente disponible en S3
     dt = get_latest_time()

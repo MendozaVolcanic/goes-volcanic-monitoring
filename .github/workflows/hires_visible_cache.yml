@@ -51,9 +51,19 @@ jobs:
 
       - name: Build cache hi-res
         run: |
-          MODE="${{ inputs.mode || 'color' }}"
-          echo "Building hi-res mode=$MODE"
-          python scripts/build_hires_cache.py --mode "$MODE"
+          # workflow_dispatch puede pasar mode especifico (color o mono_05km).
+          # En schedule (sin input) corremos AMBOS modos para mantener los
+          # 2 caches frescos: color (TrueColor + IR) Y mono (0.5km/px sepia).
+          # El segundo run usa --no-clean para preservar los PNGs del primero.
+          INPUT_MODE="${{ inputs.mode }}"
+          if [ -z "$INPUT_MODE" ]; then
+            echo "Schedule run: building BOTH modes"
+            python scripts/build_hires_cache.py --mode color
+            python scripts/build_hires_cache.py --mode mono_05km --no-clean
+          else
+            echo "Manual run: building mode=$INPUT_MODE"
+            python scripts/build_hires_cache.py --mode "$INPUT_MODE"
+          fi
 
       - name: Listar contenido
         run: |

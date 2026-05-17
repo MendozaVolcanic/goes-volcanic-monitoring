@@ -26,7 +26,14 @@ import requests
 import streamlit as st
 from PIL import Image
 
-from dashboard.style import header
+try:
+    from dashboard.style import header
+except Exception:
+    # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.
+    # Si esto se ejecuta, hay un bug — log y reraise para que Streamlit muestre el error.
+    import logging as _logging
+    _logging.exception("Cross-package import fallo top-level — gotcha Streamlit Cloud")
+    raise
 
 logger = logging.getLogger(__name__)
 

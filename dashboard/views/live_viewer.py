@@ -14,21 +14,28 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
-from dashboard.map_helpers import add_chile_border
-from dashboard.style import C_ACCENT, header, info_panel, kpi_card, refresh_info_badge
-from dashboard.utils import (
-    fmt_both_long, fmt_chile, now_utc, parse_rammb_ts, utc_to_chile,
-)
-from src.config import VOLCANIC_ZONES
-from src.fetch.rammb_slider import (
-    CHILE_REPROJECTED_BOUNDS, CHILE_TILE_BOUNDS, CHILE_TILES_Z2, PRODUCTS,
-    fetch_stitched_frame, fetch_frame_for_bounds,
-    get_latest_timestamps, reproject_to_latlon,
-    ZOOM_ZONE, ZOOM_VOLCAN, VOLCANO_RADIUS_DEG,
-)
-from src.fetch.wind_data import WIND_LEVELS, fetch_wind_grid, fetch_wind_diagnostic
-from src.fetch.goes_fdcf import fetch_latest_hotspots, HotSpot
-from src.volcanos import CATALOG, get_priority, get_volcano, PRIORITY_VOLCANOES
+try:
+    from dashboard.map_helpers import add_chile_border
+    from dashboard.style import C_ACCENT, header, info_panel, kpi_card, refresh_info_badge
+    from dashboard.utils import (
+        fmt_both_long, fmt_chile, now_utc, parse_rammb_ts, utc_to_chile,
+    )
+    from src.config import VOLCANIC_ZONES
+    from src.fetch.rammb_slider import (
+        CHILE_REPROJECTED_BOUNDS, CHILE_TILE_BOUNDS, CHILE_TILES_Z2, PRODUCTS,
+        fetch_stitched_frame, fetch_frame_for_bounds,
+        get_latest_timestamps, reproject_to_latlon,
+        ZOOM_ZONE, ZOOM_VOLCAN, VOLCANO_RADIUS_DEG,
+    )
+    from src.fetch.wind_data import WIND_LEVELS, fetch_wind_grid, fetch_wind_diagnostic
+    from src.fetch.goes_fdcf import fetch_latest_hotspots, HotSpot
+    from src.volcanos import CATALOG, get_priority, get_volcano, PRIORITY_VOLCANOES
+except Exception:
+    # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.
+    # Si esto se ejecuta, hay un bug — log y reraise para que Streamlit muestre el error.
+    import logging as _logging
+    _logging.exception("Cross-package import fallo top-level — gotcha Streamlit Cloud")
+    raise
 
 logger = logging.getLogger(__name__)
 

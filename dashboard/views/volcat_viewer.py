@@ -14,21 +14,28 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
-from dashboard.style import (
-    C_ACCENT, C_ASH, C_SO2,
-    ash_legend, ash_so2_legend, header, info_panel, kpi_card, refresh_info_badge,
-)
-from dashboard.utils import fmt_chile
-from src.config import CHILE_BOUNDS, VOLCANIC_ZONES
-from src.fetch.realearth_api import (
-    fetch_image,
-    fetch_vaa_geojson,
-    get_latest_time,
-)
-from src.fetch.volcat_api import (
-    VOLCANO_TO_SECTOR, get_sector_for_volcano, volcat_latest,
-)
-from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
+try:
+    from dashboard.style import (
+        C_ACCENT, C_ASH, C_SO2,
+        ash_legend, ash_so2_legend, header, info_panel, kpi_card, refresh_info_badge,
+    )
+    from dashboard.utils import fmt_chile
+    from src.config import CHILE_BOUNDS, VOLCANIC_ZONES
+    from src.fetch.realearth_api import (
+        fetch_image,
+        fetch_vaa_geojson,
+        get_latest_time,
+    )
+    from src.fetch.volcat_api import (
+        VOLCANO_TO_SECTOR, get_sector_for_volcano, volcat_latest,
+    )
+    from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
+except Exception:
+    # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.
+    # Si esto se ejecuta, hay un bug — log y reraise para que Streamlit muestre el error.
+    import logging as _logging
+    _logging.exception("Cross-package import fallo top-level — gotcha Streamlit Cloud")
+    raise
 
 logger = logging.getLogger(__name__)
 

@@ -17,16 +17,23 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from dashboard.style import (
-    C_ACCENT, C_ASH, C_SO2,
-    header, info_panel, kpi_card, refresh_info_badge,
-)
-from dashboard.utils import fmt_chile, parse_rammb_ts
-from src.fetch.timeseries import (
-    METRIC_LABEL, fetch_volcano_timeseries,
-)
-from src.fetch.rammb_slider import ZOOM_VOLCAN, ZOOM_ZONE, fetch_frame_for_bounds
-from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
+try:
+    from dashboard.style import (
+        C_ACCENT, C_ASH, C_SO2,
+        header, info_panel, kpi_card, refresh_info_badge,
+    )
+    from dashboard.utils import fmt_chile, parse_rammb_ts
+    from src.fetch.timeseries import (
+        METRIC_LABEL, fetch_volcano_timeseries,
+    )
+    from src.fetch.rammb_slider import ZOOM_VOLCAN, ZOOM_ZONE, fetch_frame_for_bounds
+    from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
+except Exception:
+    # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.
+    # Si esto se ejecuta, hay un bug — log y reraise para que Streamlit muestre el error.
+    import logging as _logging
+    _logging.exception("Cross-package import fallo top-level — gotcha Streamlit Cloud")
+    raise
 
 logger = logging.getLogger(__name__)
 

@@ -30,12 +30,19 @@ import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
-from dashboard.style import header
-from dashboard.utils import fmt_chile, parse_rammb_ts
-from src.fetch.rammb_slider import (
-    fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
-)
-from src.volcanos import CATALOG, get_volcano
+try:
+    from dashboard.style import header
+    from dashboard.utils import fmt_chile, parse_rammb_ts
+    from src.fetch.rammb_slider import (
+        fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
+    )
+    from src.volcanos import CATALOG, get_volcano
+except Exception:
+    # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.
+    # Si esto se ejecuta, hay un bug — log y reraise para que Streamlit muestre el error.
+    import logging as _logging
+    _logging.exception("Cross-package import fallo top-level — gotcha Streamlit Cloud")
+    raise
 
 logger = logging.getLogger(__name__)
 

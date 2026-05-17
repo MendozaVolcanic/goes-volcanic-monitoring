@@ -30,7 +30,7 @@ import json
 import logging
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -311,7 +311,7 @@ def main():
         },
         "products_rammb": PRODUCTS_RAMMB,
         "historic_max_zoom": HISTORIC_MAX_ZOOM,
-        "generated_utc": datetime.utcnow().strftime("%Y%m%dT%H%M%SZ"),
+        "generated_utc": datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"),
     }
     (OUT_DIR / "manifest.json").write_text(json.dumps(manifest, indent=2))
 

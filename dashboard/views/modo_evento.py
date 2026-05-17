@@ -243,6 +243,10 @@ def _live_panel(volcan_name: str, show_rings: bool = True,
             unsafe_allow_html=True,
         )
     with head_r:
+        # Estos botones mutan st.session_state (NO navegan URL/vista), asi
+        # que st.button es correcto aca — el problema del iframe Streamlit
+        # Cloud solo afecta navegacion por query_params. Aca el rerun aplica
+        # el cambio de estado y refresca la misma vista.
         if event_started:
             if st.button("✖ Cerrar evento", width='stretch',
                          key=f"close_evt_{volcan_name}"):

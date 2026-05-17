@@ -403,18 +403,29 @@ def _chile_subtab():
                  "Util para medir largo de pluma en escala continental.",
         )
     with cols[3]:
-        if st.button("🖥 Modo Sala · Chile (rotando productos)",
-                     key="btn_sala_chile", type="primary",
-                     width='stretch'):
-            _activate_tv("chile", volcan=volcan)
+        # Anchor HTML con target=_top: st.button con _activate_tv (que llama
+        # st.rerun) puede no escapar el iframe de Streamlit Cloud. El anchor
+        # navega el browser top frame y preserva el volcan seleccionado.
+        st.markdown(
+            f'<a href="?vista=guardia&fullscreen=1&tv=chile&volcan={volcan}" '
+            'target="_top" '
+            'style="display:inline-block; width:100%; box-sizing:border-box; '
+            'padding:0.4rem 1.2rem; background:#ff4b4b; color:white; '
+            'text-decoration:none; border-radius:6px; font-weight:600; '
+            'font-size:0.9rem; text-align:center;">'
+            '🖥 Modo Sala · Chile (rotando productos)</a>',
+            unsafe_allow_html=True,
+        )
     _live_panel(volcan, product=product, show_rings=show_rings)
 
 
 def _activate_tv(tv_value: str, **extra):
     """Setea query_params para entrar en modo TV puro y rerun.
 
-    Mas confiable que <a target='_top'> con URLs relativas dentro del
-    iframe sandbox de Streamlit Cloud.
+    NOTA: ya NO se usa desde los botones de Modo Sala (reemplazados por
+    anchors HTML con target=_top porque st.button + st.rerun no siempre
+    escapa el iframe sandbox de Streamlit Cloud). Se mantiene por compat
+    con cualquier otra vista que pudiera importarla.
     """
     st.query_params["vista"] = "guardia"
     st.query_params["fullscreen"] = "1"
@@ -427,11 +438,15 @@ def _activate_tv(tv_value: str, **extra):
 def _mosaico_subtab():
     """Sub-tab Mosaico: 8 prioritarios en grid 4x2."""
     from dashboard.views.mosaico_chile import _live_panel as mosaico_panel
-    if st.button(
-        "🖥 Modo Sala · Mosaico (rotando productos cada 10s)",
-        key="btn_tv_mosaico", type="primary", width='content',
-    ):
-        _activate_tv("mosaico")
+    # Anchor HTML target=_top para escapar iframe Streamlit Cloud.
+    st.markdown(
+        '<a href="?vista=guardia&fullscreen=1&tv=mosaico" target="_top" '
+        'style="display:inline-block; padding:0.4rem 1.2rem; '
+        'background:#ff4b4b; color:white; text-decoration:none; '
+        'border-radius:6px; font-weight:600; font-size:0.9rem;">'
+        '🖥 Modo Sala · Mosaico (rotando productos cada 10s)</a>',
+        unsafe_allow_html=True,
+    )
     mosaico_panel()
 
 
@@ -441,13 +456,16 @@ def _zonas_subtab():
         _grid_4_zonas, _rotating_grid_4_zonas, PRODUCT_OPTIONS, ROTATION_SECONDS,
     )
 
-    # Boton activar TV puro — st.button con callback (mas confiable que <a>
-    # con URLs relativas dentro del iframe sandbox de Streamlit Cloud)
-    if st.button(
-        "🖥 Modo Sala (4 zonas, rotando productos cada 10s)",
-        key="btn_tv_zonas", type="primary", width='content',
-    ):
-        _activate_tv("1")
+    # Anchor HTML target=_top — st.button con st.rerun no siempre escapa
+    # el iframe de Streamlit Cloud. El anchor navega el browser top frame.
+    st.markdown(
+        '<a href="?vista=guardia&fullscreen=1&tv=1" target="_top" '
+        'style="display:inline-block; padding:0.4rem 1.2rem; '
+        'background:#ff4b4b; color:white; text-decoration:none; '
+        'border-radius:6px; font-weight:600; font-size:0.9rem;">'
+        '🖥 Modo Sala (4 zonas, rotando productos cada 10s)</a>',
+        unsafe_allow_html=True,
+    )
     st.caption(
         "Modo Sala = solo los 4 mapas a pantalla completa rotando productos. "
         "Sin header, sin sub-tabs, sin toolbar. Pensado para monitor 24/7. "
@@ -517,12 +535,17 @@ def _volcan_subtab():
             label_visibility="collapsed",
             key="mg_volcan_selector",
         )
-    # Boton TV puro volcan (lleva el volcan seleccionado en query_params)
-    if st.button(
-        f"🖥 Modo Sala · {volcan} (3 productos)",
-        key="btn_tv_volcan", type="primary", width='content',
-    ):
-        _activate_tv("volcan", volcan=volcan)
+    # Anchor HTML target=_top — lleva el volcan seleccionado en query_params.
+    # st.button + st.rerun no siempre escapa el iframe de Streamlit Cloud.
+    st.markdown(
+        f'<a href="?vista=guardia&fullscreen=1&tv=volcan&volcan={volcan}" '
+        'target="_top" '
+        'style="display:inline-block; padding:0.4rem 1.2rem; '
+        'background:#ff4b4b; color:white; text-decoration:none; '
+        'border-radius:6px; font-weight:600; font-size:0.9rem;">'
+        f'🖥 Modo Sala · {volcan} (3 productos)</a>',
+        unsafe_allow_html=True,
+    )
     with cols[1]:
         show_wind = st.toggle(
             "💨 Viento", value=False, key="mg_wind",

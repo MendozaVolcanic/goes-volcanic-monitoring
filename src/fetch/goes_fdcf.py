@@ -55,8 +55,13 @@ S3_PRODUCT = "ABI-L2-FDCF"
 # (10-15 son detecciones; 30+ son nube/no-fire/sin-datos)
 HOTSPOT_MASK_VALUES = {10, 11, 12, 13, 14, 15}
 
-# Subset de mask values con alta confianza (sin saturacion ni baja conf)
-HIGH_CONF_MASK = {10, 11}
+# Subset de mask values con alta confianza operacional.
+# (ABI L2 Fires ReadMe NOAA — categorías 10/11 = processed,
+#  30/31 = processed temporally filtered). Las temporally filtered ya
+# pasaron un test de persistencia en scans previos, por lo que son al
+# menos tan confiables como las processed simples — incluirlas evita
+# perder hotspots reales que se reportan en categoria 30/31.
+HIGH_CONF_MASK = {10, 11, 30, 31}
 
 
 @dataclass

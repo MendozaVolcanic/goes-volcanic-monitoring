@@ -12,11 +12,14 @@ Uso:
 """
 
 import json
+import logging
 import sys
 import os
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 # Fix encoding
 if sys.platform == 'win32':
@@ -63,8 +66,8 @@ def exportar():
             if meta_prev.get("timestamp_str") == ts_str:
                 print(f"Imagen {ts_str} ya exportada. Sin cambios.")
                 return 0
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning("lectura meta_latest.json fallo (no critico): %s", e)
 
     # Procesar
     print(f"\nProcesando pipeline para {dt.strftime('%Y-%m-%d %H:%M UTC')}...")

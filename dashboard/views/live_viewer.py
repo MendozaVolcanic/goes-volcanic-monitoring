@@ -15,7 +15,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
-    from dashboard.map_helpers import add_chile_border
+    from dashboard.map_helpers import add_chile_border, hotspot_distance_km
     from dashboard.style import C_ACCENT, header, info_panel, kpi_card, refresh_info_badge
     from dashboard.utils import (
         fmt_both_long, fmt_chile, now_utc, parse_rammb_ts, utc_to_chile,
@@ -1397,12 +1397,19 @@ def _live_content():
                                     scan_label=(_hs_ts_v[11:16] + " UTC"
                                                 if _hs_ts_v else None),
                                 )
+                                # Distancia con cos(lat): formula plana sin cos
+                                # subestimaba ~75% en sur de Chile (lat -45).
+                                _min_d = min(
+                                    hotspot_distance_km(
+                                        volcano.lat, volcano.lon,
+                                        h['lat'], h['lon'],
+                                    )
+                                    for h in _hs_volc
+                                )
                                 st.caption(
                                     f"🔥 {len(_hs_volc)} hot spot(s) cerca de "
                                     f"{volcano.name}. Distancia mínima al vent: "
-                                    + (
-                                        f"{min(((h['lat']-volcano.lat)**2 + (h['lon']-volcano.lon)**2)**0.5 * 111 for h in _hs_volc):.1f} km"
-                                    )
+                                    f"{_min_d:.1f} km"
                                 )
 
                         # Viento sobre la vista del volcan

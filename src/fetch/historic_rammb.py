@@ -35,6 +35,13 @@ from src.fetch.rammb_slider import (
     get_tile_size,
 )
 
+# Constante fisica canonical desde src/config (con try/except fallback,
+# mismo patron que MOSAICO_RADIUS_DEG en dashboard/views/).
+try:
+    from src.config import GOES19_SAT_LON as _SAT_LON_DEFAULT
+except Exception:
+    _SAT_LON_DEFAULT = -75.0
+
 logger = logging.getLogger(__name__)
 
 # Mapeo producto -> zoom maximo disponible para fechas archivo (feb 2026 +).
@@ -180,7 +187,7 @@ def fetch_historic_stitched(product: str, ts: str, zoom: int,
 
 def fetch_historic_frame_for_bounds(product: str, ts: str, bounds: dict,
                                     zoom: int = 3,
-                                    sat_lon: float = -75.0
+                                    sat_lon: float = _SAT_LON_DEFAULT
                                     ) -> np.ndarray | None:
     """Equivalente a `fetch_frame_for_bounds` pero para tiles historicos.
 

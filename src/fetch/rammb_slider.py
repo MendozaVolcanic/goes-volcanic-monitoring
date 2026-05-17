@@ -49,6 +49,18 @@ ZOOM_VOLCAN = 4   # Volcán zoom     (~1.7 km/px, ~9-12 tiles)
 # pipelines refieran al mismo numero (cambio una vez, aplica a todos).
 from src.config import VOLCANO_RADIUS_DEG_FULL as VOLCANO_RADIUS_DEG  # noqa: E402,F401
 
+# Constantes fisicas canonical desde src/config (con try/except fallback
+# por si Streamlit Cloud falla el import cross-package durante hot-reload —
+# mismo patron que usamos para MOSAICO_RADIUS_DEG en dashboard/views/).
+try:
+    from src.config import GOES19_SAT_LON as _SAT_LON_DEFAULT
+    from src.config import GOES19_PERSPECTIVE_POINT_HEIGHT as _H_DEFAULT
+    from src.config import ABI_MAX_SCAN_ANGLE as _ABI_MAX_DEFAULT
+except Exception:
+    _SAT_LON_DEFAULT = -75.0
+    _H_DEFAULT = 35786023.0
+    _ABI_MAX_DEFAULT = 0.151872
+
 # Tiles Chile completo a zoom=3 (calculados desde scan angles del zoom=2)
 # zoom=2 Chile: cols[1,2] rows[2,3] → scan angles x∈[-0.0759,+0.0758] y∈[0,-0.1518]
 # zoom=3 cfac=13484 center=2048: cols [2..5] rows [4..7]
@@ -76,7 +88,7 @@ SOUTH_AMERICA_TILES_Z1 = {"rows": [1], "cols": [0, 1]}
 def get_tiles_for_bounds(
     bounds: dict,
     zoom: int,
-    sat_lon: float = -75.0,
+    sat_lon: float = _SAT_LON_DEFAULT,
 ) -> tuple[list[int], list[int]]:
     """Calcular qué tiles RAMMB cubren los bounds lat/lon dados.
 
@@ -93,9 +105,9 @@ def get_tiles_for_bounds(
     n_tiles   = 2 ** zoom
     full_disk = n_tiles * tile_sz
     center    = full_disk / 2.0
-    ABI_MAX   = 0.151872
+    ABI_MAX   = _ABI_MAX_DEFAULT
     cfac      = center / ABI_MAX
-    h_m       = 35786023.0
+    h_m       = _H_DEFAULT
 
     p = Proj(proj="geos", lon_0=sat_lon, h=h_m, ellps="GRS80", sweep="x")
 
@@ -205,7 +217,7 @@ def reproject_to_latlon(
     row_start: int,
     out_bounds: dict | None = None,
     out_size: tuple[int, int] | None = None,
-    sat_lon: float = -75.0,
+    sat_lon: float = _SAT_LON_DEFAULT,
     zoom: int = 2,
     tile_sz: int | None = None,
 ) -> np.ndarray:
@@ -261,12 +273,12 @@ def reproject_to_latlon(
     n_tiles          = 2 ** zoom
     if tile_sz is None:
         tile_sz      = get_tile_size(zoom)
-    ABI_MAX_SCAN_ANGLE = 0.151872
+    ABI_MAX_SCAN_ANGLE = _ABI_MAX_DEFAULT
     full_disk_px     = n_tiles * tile_sz
     center           = full_disk_px / 2.0
     cfac_z           = center / ABI_MAX_SCAN_ANGLE
     lfac_z           = cfac_z
-    h_m              = 35786023.0
+    h_m              = _H_DEFAULT
 
     out_h, out_w = out_size
     lat_max = out_bounds["lat_max"]
@@ -411,7 +423,7 @@ def fetch_frame_for_bounds(
     ts: str,
     bounds: dict,
     zoom: int = ZOOM_ZONE,
-    sat_lon: float = -75.0,
+    sat_lon: float = _SAT_LON_DEFAULT,
 ) -> np.ndarray | None:
     """Descargar y reprojectar el frame para un área geográfica específica.
 
@@ -454,7 +466,7 @@ def fetch_frame_robust(
     bounds: dict,
     zoom_preferred: int = ZOOM_VOLCAN,
     zoom_fallback: int = ZOOM_ZONE,
-    sat_lon: float = -75.0,
+    sat_lon: float = _SAT_LON_DEFAULT,
 ) -> tuple[np.ndarray | None, str | None, int]:
     """Fetch con fallback de timestamps Y de zoom.
 

@@ -44,6 +44,15 @@ from src.process.geocolor_lite import (
 
 logger = logging.getLogger(__name__)
 
+# Constantes fisicas canonical desde src/config (con try/except fallback,
+# mismo patron que MOSAICO_RADIUS_DEG en dashboard/views/).
+try:
+    from src.config import GOES19_SAT_LON as _SAT_LON_DEFAULT
+    from src.config import GOES19_PERSPECTIVE_POINT_HEIGHT as _H_DEFAULT
+except Exception:
+    _SAT_LON_DEFAULT = -75.0
+    _H_DEFAULT = 35786023.0
+
 # Bandas a descargar:
 #   1 = azul visible 0.47um, 1km/px
 #   2 = rojo visible 0.64um, 0.5km/px (la "hi-res" que da el x4)
@@ -66,7 +75,7 @@ def _downsample_2x(arr: np.ndarray) -> np.ndarray:
 
 
 def _scope_pixel_bounds(ds: "xr.Dataset", lat_c: float, lon_c: float,
-                        radius_deg: float, sat_lon: float = -75.0
+                        radius_deg: float, sat_lon: float = _SAT_LON_DEFAULT
                         ) -> tuple[int, int, int, int] | None:
     """Devolver (r0, r1, c0, c1) en pixels del Dataset para cubrir el bbox.
 
@@ -80,7 +89,7 @@ def _scope_pixel_bounds(ds: "xr.Dataset", lat_c: float, lon_c: float,
         return None
 
     h = float(ds["goes_imager_projection"].attrs.get(
-        "perspective_point_height", 35786023.0))
+        "perspective_point_height", _H_DEFAULT))
     p = Proj(proj="geos", lon_0=sat_lon, h=h, ellps="GRS80", sweep="x")
 
     x_arr = ds["x"].values  # 1D, ~21696 elementos

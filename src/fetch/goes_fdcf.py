@@ -36,6 +36,15 @@ from typing import Optional
 
 import numpy as np
 
+# Constantes fisicas canonical desde src/config (con try/except fallback,
+# mismo patron que MOSAICO_RADIUS_DEG en dashboard/views/).
+try:
+    from src.config import GOES19_SAT_LON as _SAT_LON_DEFAULT
+    from src.config import GOES19_PERSPECTIVE_POINT_HEIGHT as _H_DEFAULT
+except Exception:
+    _SAT_LON_DEFAULT = -75.0
+    _H_DEFAULT = 35786023.0
+
 logger = logging.getLogger(__name__)
 
 # Cuál es el archivo S3 para FDCF Full Disk
@@ -128,7 +137,7 @@ def _list_recent_files(s3, hours_back: int = 1) -> list[str]:
 
 
 def _abi_to_latlon(
-    x_rad: np.ndarray, y_rad: np.ndarray, sat_lon: float = -75.0,
+    x_rad: np.ndarray, y_rad: np.ndarray, sat_lon: float = _SAT_LON_DEFAULT,
 ) -> tuple[np.ndarray, np.ndarray]:
     """Convertir coords ABI fixed grid (radianes) a lat/lon.
 
@@ -141,7 +150,7 @@ def _abi_to_latlon(
         logger.error("pyproj requerido para reproyectar FDCF")
         return np.zeros_like(x_rad), np.zeros_like(y_rad)
 
-    h = 35786023.0
+    h = _H_DEFAULT
     p = Proj(proj="geos", lon_0=sat_lon, h=h, ellps="GRS80", sweep="x")
 
     # x/y radianes → metros
@@ -198,7 +207,7 @@ def fetch_latest_hotspots(
             # sat_lon del proyectado
             sat_lon = float(
                 ds["goes_imager_projection"].attrs.get(
-                    "longitude_of_projection_origin", -75.0
+                    "longitude_of_projection_origin", _SAT_LON_DEFAULT
                 )
             )
             # Time del scan — parsear del nombre del archivo (mas robusto que
@@ -327,7 +336,7 @@ def fetch_hotspots_at_time(
             y_rad = ds["y"].values
             sat_lon = float(
                 ds["goes_imager_projection"].attrs.get(
-                    "longitude_of_projection_origin", -75.0
+                    "longitude_of_projection_origin", _SAT_LON_DEFAULT
                 )
             )
             scan_dt = _parse_scan_time(chosen)

@@ -23,6 +23,16 @@ S3_REGION = "us-east-1"
 # arreglado mayo 2026). Cualquier llamada a pyproj GEOS debe usar este valor.
 GOES19_SAT_LON = -75.0
 
+# Altura del satélite GOES geoestacionario en metros (canonical NOAA).
+# Cualquier llamada a pyproj GEOS debe usar este valor como h=, salvo
+# que se lea explícitamente del NetCDF (perspective_point_height) — eso
+# es lo canónico del archivo y siempre prevalece.
+GOES19_PERSPECTIVE_POINT_HEIGHT = 35786023.0  # metros
+
+# Maximo scan angle del ABI Full Disk (radianes). Es la "media-anchura"
+# del fixed grid; CFAC = (full_disk_pixels/2) / ABI_MAX_SCAN_ANGLE.
+ABI_MAX_SCAN_ANGLE = 0.151872  # radianes
+
 # ── Bboxes default por scope (centralizados para que un cambio aplique
 # consistentemente a todos los pipelines). Antes estaban dispersos en
 # rammb_slider, mosaico_chile, replay_reciente, hires_pipeline. ────────

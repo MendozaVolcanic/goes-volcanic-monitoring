@@ -60,6 +60,49 @@ def nearest_hotspot(hotspots, lat: float, lon: float):
     return best, best_d
 
 
+def render_top_navigation_button(label: str, query_string: str,
+                                  height: int = 50, full_width: bool = False,
+                                  bg: str = "#ff4b4b") -> None:
+    """Renderizar un boton rojo que navega el browser top frame via JS.
+
+    Streamlit Cloud renderea la app en un iframe sandbox. Hay 3 patrones
+    que FALLAN para navegar fuera del iframe:
+    1. `st.button` + `st.query_params + st.rerun` — el rerun queda dentro
+       del iframe, la URL del browser principal NO cambia.
+    2. `<a href="?vista=X" target="_top">` con href RELATIVO — el browser
+       resuelve el href contra la URL del iframe (no del top), entonces
+       target=_top navega a una URL incompleta.
+    3. `<button onclick="window.top.location...">` en st.markdown — el
+       sanitizer HTML de Streamlit REMUEVE atributos `on*` (event handlers)
+       por seguridad. El JS nunca se ejecuta.
+
+    Solucion definitiva: usar `st.components.v1.html()` que crea un IFRAME
+    INTERNO con su propio JS sin sanitizar. El JS construye la URL absoluta
+    con `window.top.location.origin + pathname + query` y navega el top.
+
+    Args:
+        label:        texto del boton (puede incluir emoji).
+        query_string: la query string a setear (ej. 'vista=guardia&tv=mosaico').
+                      SIN el `?` inicial.
+        height:       altura del iframe interno en px (default 50).
+        full_width:   si True, el boton ocupa 100% del ancho del iframe.
+        bg:           color de fondo CSS (default #ff4b4b primary Streamlit).
+    """
+    import streamlit as st
+    import streamlit.components.v1 as components
+    width_css = "width:100%; box-sizing:border-box;" if full_width else ""
+    html = f"""
+    <button onclick="window.top.location.href = window.top.location.origin + window.top.location.pathname + '?{query_string}';"
+            style="{width_css} padding:0.4rem 1.2rem; background:{bg};
+                   color:white; border:0; border-radius:6px; font-weight:600;
+                   font-size:0.9rem; text-align:center; cursor:pointer;
+                   font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+      {label}
+    </button>
+    """
+    components.html(html, height=height)
+
+
 def _interp_segments(pts: list[tuple[float, float]], n_extra: int = 2
                       ) -> list[tuple[float, float]]:
     """Linea mas suave: agrega `n_extra` puntos interpolados entre

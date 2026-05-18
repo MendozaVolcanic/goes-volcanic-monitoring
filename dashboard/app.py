@@ -71,24 +71,15 @@ if _fullscreen:
             """,
             unsafe_allow_html=True,
         )
-        # Salir fullscreen con JS window.top.location explicito. El anchor
-        # target=_top con href relativo NO escapa iframe Streamlit Cloud
-        # (browser resuelve el relative contra URL del iframe). Preserva
-        # otros query params salvo fullscreen.
+        # Salir fullscreen via helper iframe (st.markdown sanitiza onclick).
+        # Preserva otros query params salvo fullscreen.
+        from dashboard.map_helpers import render_top_navigation_button
         _qp_keep = {k: v for k, v in st.query_params.items() if k != "fullscreen"}
         _qs = "&".join(f"{k}={v}" for k, v in _qp_keep.items())
-        _query_suffix = ("?" + _qs) if _qs else ""
-        st.markdown(
-            f'<button onclick="window.top.location.href='
-            f"window.top.location.origin + window.top.location.pathname + "
-            f"'{_query_suffix}'"
-            f'" '
-            'style="padding:0.4rem 1.2rem; background:#ff4b4b; color:white; '
-            'border:0; border-radius:6px; font-weight:600; font-size:0.85rem; '
-            'cursor:pointer;" '
-            'title="Salir del modo pantalla completa">'
-            '✖ Salir fullscreen</button>',
-            unsafe_allow_html=True,
+        render_top_navigation_button(
+            "✖ Salir fullscreen",
+            _qs,  # puede estar vacio = navega a /
+            height=40,
         )
 
 # ── Sidebar ──────────────────────────────────────────────────────

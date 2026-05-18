@@ -96,6 +96,11 @@ with st.sidebar:
         "</div>",
         unsafe_allow_html=True,
     )
+    # ── Build version marker (verifica que Streamlit Cloud sirve la version
+    # actual del repo, no una vieja cacheada). Si no ves este texto despues
+    # de un push, la app sigue dormant y hay que hacer Reboot manual.
+    BUILD_SHA = "build-2026-05-18-iframe-fix"
+    st.caption(f"🔖 `{BUILD_SHA}`")
     st.markdown("---")
 
     # ── Permalinks: leer ?vista= de la URL ───────────────────────

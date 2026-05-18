@@ -71,15 +71,17 @@ if _fullscreen:
             """,
             unsafe_allow_html=True,
         )
-        # Salir fullscreen via helper iframe (st.markdown sanitiza onclick).
-        # Preserva otros query params salvo fullscreen.
+        # Salir fullscreen: helper hace clear+set query_params.
+        # Pasamos los params actuales SALVO fullscreen.
         from dashboard.map_helpers import render_top_navigation_button
         _qp_keep = {k: v for k, v in st.query_params.items() if k != "fullscreen"}
         _qs = "&".join(f"{k}={v}" for k, v in _qp_keep.items())
+        if not _qs:
+            _qs = "vista=operacional"  # fallback si no hay nada
         render_top_navigation_button(
             "✖ Salir fullscreen",
-            _qs,  # puede estar vacio = navega a /
-            height=40,
+            _qs,
+            key="btn_exit_fs",
         )
 
 # ── Sidebar ──────────────────────────────────────────────────────
@@ -99,7 +101,7 @@ with st.sidebar:
     # ── Build version marker (verifica que Streamlit Cloud sirve la version
     # actual del repo, no una vieja cacheada). Si no ves este texto despues
     # de un push, la app sigue dormant y hay que hacer Reboot manual.
-    BUILD_SHA = "build-2026-05-18-iframe-fix"
+    BUILD_SHA = "build-2026-05-18-btn-rerun-v6"
     st.caption(f"🔖 `{BUILD_SHA}`")
     st.markdown("---")
 

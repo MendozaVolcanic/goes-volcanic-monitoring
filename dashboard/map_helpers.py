@@ -61,68 +61,57 @@ def nearest_hotspot(hotspots, lat: float, lon: float):
 
 
 def render_top_navigation_button(label: str, query_string: str,
+                                  key: str | None = None,
                                   height: int = 50, full_width: bool = False,
                                   bg: str = "#ff4b4b") -> None:
-    """Renderizar un boton que navega el browser top frame.
+    """Boton de navegacion interna: setea query_params + rerun.
 
-    Streamlit Cloud renderea la app en un iframe sandbox. Patrones que
-    PROBAMOS y FALLARON:
-    1. `st.button + st.rerun` — rerun queda dentro del iframe.
-    2. `<a href="?..." target="_top">` href RELATIVO — el browser resuelve
-       contra URL del iframe (no del top), navega a URL incompleta.
-    3. `<button onclick="window.top.location...">` en st.markdown — el
-       sanitizer HTML de Streamlit REMUEVE atributos `on*`.
-    4. `components.html(<button onclick="top.location...">)` — el sandbox
-       del iframe bloquea WRITE de top.location (silencioso).
+    HISTORIA de 5 intentos fallidos para "navegar el top frame":
+    1. `st.button + st.rerun` — pareciamos pensar que NO funcionaba.
+    2. `<a target="_top">` href relativo — resolvia contra iframe URL.
+    3. `<button onclick>` en st.markdown — Streamlit sanitiza on*.
+    4. `components.html` con onclick top.location — write bloqueado.
+    5. `components.html` con anchor + target=_top — sandbox bloquea
+       `allow-top-navigation`. Error explicito en console:
+       "frame attempting navigation of the top-level window is sandboxed,
+        but the flag of 'allow-top-navigation' is not set".
 
-    SOLUCION (5): anchor con href construido al cargar:
-       - `top.location.origin` y `pathname` SI son READ-accesibles desde
-         iframe sandbox (mismo origin).
-       - Construir href ABSOLUTO una vez al cargar el iframe.
-       - target='_top' con href absoluto SI navega correctamente
-         (browser ya tiene URL completa, no necesita resolver relativo).
-       - Si la lectura falla, fallback a href relativo (al menos algo).
+    APRENDIZAJE: el iframe sandbox de Streamlit Cloud NUNCA permite navegar
+    el top frame. NINGUN truco JS/HTML funciona. NO insistir.
+
+    SOLUCION DEFINITIVA (intento 6 = vuelta a 1): NO intentar navegar el
+    top. Solo setear st.query_params + st.rerun. La URL del browser
+    principal NO cambia, pero:
+    - app.py lee st.query_params y aplica CSS fullscreen
+    - modo_guardia.py lee tv_mode y entra al branch TV
+    - El user VE el TV mode aunque la URL del browser sea la misma
+
+    Es la unica forma 100% confiable en Streamlit Cloud.
 
     Args:
-        label:        texto del boton (puede incluir emoji).
-        query_string: la query string a setear (ej. 'vista=guardia&tv=mosaico').
-                      SIN el `?` inicial.
-        height:       altura del iframe interno en px (default 50).
-        full_width:   si True, el boton ocupa 100% del ancho del iframe.
-        bg:           color de fondo CSS (default #ff4b4b primary Streamlit).
+        label:        texto del boton.
+        query_string: query params a setear (ej. 'vista=guardia&tv=mosaico').
+                      SIN el `?` inicial. Separados por `&`.
+        key:          key unico para el st.button (REQUERIDO si hay varios
+                      botones en la misma vista — Streamlit lanza error sino).
+        height:       NO USADO en esta version (st.button es nativo).
+        full_width:   si True, button ocupa 100% del column width.
+        bg:           NO USADO (st.button usa estilo primary de Streamlit).
     """
-    import streamlit.components.v1 as components
-    width_css = "width:100%; box-sizing:border-box;" if full_width else ""
-    # ID unico para evitar colisiones si hay multiples botones en la pagina.
-    import uuid as _uuid
-    btn_id = f"navbtn_{_uuid.uuid4().hex[:8]}"
-    html = f"""
-    <a id="{btn_id}" href="?{query_string}" target="_top"
-       style="display:inline-block; {width_css} padding:0.4rem 1.2rem;
-              background:{bg}; color:white; text-decoration:none;
-              border-radius:6px; font-weight:600; font-size:0.9rem;
-              text-align:center; cursor:pointer;
-              font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
-      {label}
-    </a>
-    <script>
-      (function() {{
-        var btn = document.getElementById('{btn_id}');
-        try {{
-          // Construir URL ABSOLUTA usando READ de top.location (permitido
-          // por sandbox same-origin). El href absoluto + target=_top
-          // garantiza navegacion correcta del browser principal.
-          var abs = top.location.origin + top.location.pathname + '?{query_string}';
-          btn.href = abs;
-        }} catch (e) {{
-          // Fallback: si top no accesible, queda el href relativo inicial.
-          // Mejor algo (relativo) que nada.
-          console.warn('top.location no accesible, usando href relativo', e);
-        }}
-      }})();
-    </script>
-    """
-    components.html(html, height=height)
+    import streamlit as st
+    btn_key = key or f"navbtn_{abs(hash(query_string))}"
+    if st.button(label, key=btn_key, type="primary",
+                 width="stretch" if full_width else "content"):
+        # Clear PRIMERO y despues set: garantiza que params que NO
+        # estan en query_string se BORRAN (ej. el boton "Salir" pasa
+        # query_string='vista=guardia' y queremos que fullscreen y tv
+        # desaparezcan, no que persistan del estado anterior).
+        st.query_params.clear()
+        for pair in query_string.split("&"):
+            if "=" in pair:
+                k, v = pair.split("=", 1)
+                st.query_params[k] = v
+        st.rerun()
 
 
 def _interp_segments(pts: list[tuple[float, float]], n_extra: int = 2

@@ -409,6 +409,7 @@ def _chile_subtab():
         render_top_navigation_button(
             "🖥 Modo Sala · Chile (rotando productos)",
             f"vista=guardia&fullscreen=1&tv=chile&volcan={volcan}",
+            key="btn_sala_chile",
             full_width=True,
         )
     _live_panel(volcan, product=product, show_rings=show_rings)
@@ -437,6 +438,7 @@ def _mosaico_subtab():
     render_top_navigation_button(
         "🖥 Modo Sala · Mosaico (rotando productos cada 10s)",
         "vista=guardia&fullscreen=1&tv=mosaico",
+        key="btn_sala_mosaico",
     )
     mosaico_panel()
 
@@ -451,6 +453,7 @@ def _zonas_subtab():
     render_top_navigation_button(
         "🖥 Modo Sala (4 zonas, rotando productos cada 10s)",
         "vista=guardia&fullscreen=1&tv=1",
+        key="btn_sala_zonas",
     )
     st.caption(
         "Modo Sala = solo los 4 mapas a pantalla completa rotando productos. "
@@ -525,6 +528,7 @@ def _volcan_subtab():
     render_top_navigation_button(
         f"🖥 Modo Sala · {volcan} (3 productos)",
         f"vista=guardia&fullscreen=1&tv=volcan&volcan={volcan}",
+        key=f"btn_sala_volcan_{volcan}",
     )
     with cols[1]:
         show_wind = st.toggle(
@@ -624,7 +628,7 @@ def render():
         render_top_navigation_button(
             "✖ Salir",
             "vista=guardia",
-            height=40,
+            key="btn_exit_tv",
         )
         if tv_mode == "chile":
             volcan_name = st.query_params.get("volcan", DEFAULT_VOLCANO)

@@ -63,22 +63,25 @@ def nearest_hotspot(hotspots, lat: float, lon: float):
 def render_top_navigation_button(label: str, query_string: str,
                                   height: int = 50, full_width: bool = False,
                                   bg: str = "#ff4b4b") -> None:
-    """Renderizar un boton rojo que navega el browser top frame via JS.
+    """Renderizar un boton que navega el browser top frame.
 
-    Streamlit Cloud renderea la app en un iframe sandbox. Hay 3 patrones
-    que FALLAN para navegar fuera del iframe:
-    1. `st.button` + `st.query_params + st.rerun` — el rerun queda dentro
-       del iframe, la URL del browser principal NO cambia.
-    2. `<a href="?vista=X" target="_top">` con href RELATIVO — el browser
-       resuelve el href contra la URL del iframe (no del top), entonces
-       target=_top navega a una URL incompleta.
+    Streamlit Cloud renderea la app en un iframe sandbox. Patrones que
+    PROBAMOS y FALLARON:
+    1. `st.button + st.rerun` — rerun queda dentro del iframe.
+    2. `<a href="?..." target="_top">` href RELATIVO — el browser resuelve
+       contra URL del iframe (no del top), navega a URL incompleta.
     3. `<button onclick="window.top.location...">` en st.markdown — el
-       sanitizer HTML de Streamlit REMUEVE atributos `on*` (event handlers)
-       por seguridad. El JS nunca se ejecuta.
+       sanitizer HTML de Streamlit REMUEVE atributos `on*`.
+    4. `components.html(<button onclick="top.location...">)` — el sandbox
+       del iframe bloquea WRITE de top.location (silencioso).
 
-    Solucion definitiva: usar `st.components.v1.html()` que crea un IFRAME
-    INTERNO con su propio JS sin sanitizar. El JS construye la URL absoluta
-    con `window.top.location.origin + pathname + query` y navega el top.
+    SOLUCION (5): anchor con href construido al cargar:
+       - `top.location.origin` y `pathname` SI son READ-accesibles desde
+         iframe sandbox (mismo origin).
+       - Construir href ABSOLUTO una vez al cargar el iframe.
+       - target='_top' con href absoluto SI navega correctamente
+         (browser ya tiene URL completa, no necesita resolver relativo).
+       - Si la lectura falla, fallback a href relativo (al menos algo).
 
     Args:
         label:        texto del boton (puede incluir emoji).
@@ -88,17 +91,36 @@ def render_top_navigation_button(label: str, query_string: str,
         full_width:   si True, el boton ocupa 100% del ancho del iframe.
         bg:           color de fondo CSS (default #ff4b4b primary Streamlit).
     """
-    import streamlit as st
     import streamlit.components.v1 as components
     width_css = "width:100%; box-sizing:border-box;" if full_width else ""
+    # ID unico para evitar colisiones si hay multiples botones en la pagina.
+    import uuid as _uuid
+    btn_id = f"navbtn_{_uuid.uuid4().hex[:8]}"
     html = f"""
-    <button onclick="window.top.location.href = window.top.location.origin + window.top.location.pathname + '?{query_string}';"
-            style="{width_css} padding:0.4rem 1.2rem; background:{bg};
-                   color:white; border:0; border-radius:6px; font-weight:600;
-                   font-size:0.9rem; text-align:center; cursor:pointer;
-                   font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
+    <a id="{btn_id}" href="?{query_string}" target="_top"
+       style="display:inline-block; {width_css} padding:0.4rem 1.2rem;
+              background:{bg}; color:white; text-decoration:none;
+              border-radius:6px; font-weight:600; font-size:0.9rem;
+              text-align:center; cursor:pointer;
+              font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
       {label}
-    </button>
+    </a>
+    <script>
+      (function() {{
+        var btn = document.getElementById('{btn_id}');
+        try {{
+          // Construir URL ABSOLUTA usando READ de top.location (permitido
+          // por sandbox same-origin). El href absoluto + target=_top
+          // garantiza navegacion correcta del browser principal.
+          var abs = top.location.origin + top.location.pathname + '?{query_string}';
+          btn.href = abs;
+        }} catch (e) {{
+          // Fallback: si top no accesible, queda el href relativo inicial.
+          // Mejor algo (relativo) que nada.
+          console.warn('top.location no accesible, usando href relativo', e);
+        }}
+      }})();
+    </script>
     """
     components.html(html, height=height)
 

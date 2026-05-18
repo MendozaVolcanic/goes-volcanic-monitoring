@@ -101,7 +101,7 @@ with st.sidebar:
     # ── Build version marker (verifica que Streamlit Cloud sirve la version
     # actual del repo, no una vieja cacheada). Si no ves este texto despues
     # de un push, la app sigue dormant y hay que hacer Reboot manual.
-    BUILD_SHA = "build-2026-05-18-coast-NE10m"
+    BUILD_SHA = "build-2026-05-18-geom-lazy-load"
     st.caption(f"🔖 `{BUILD_SHA}`")
     st.markdown("---")
 

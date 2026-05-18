@@ -71,20 +71,23 @@ if _fullscreen:
             """,
             unsafe_allow_html=True,
         )
-        # Salir fullscreen como anchor HTML con target="_top". Streamlit
-        # Cloud renderea la app en un iframe — un link relativo navega DENTRO
-        # del iframe (parece no hacer nada). target="_top" rompe el sandbox.
-        # Preserva otros query params salvo fullscreen.
+        # Salir fullscreen con JS window.top.location explicito. El anchor
+        # target=_top con href relativo NO escapa iframe Streamlit Cloud
+        # (browser resuelve el relative contra URL del iframe). Preserva
+        # otros query params salvo fullscreen.
         _qp_keep = {k: v for k, v in st.query_params.items() if k != "fullscreen"}
         _qs = "&".join(f"{k}={v}" for k, v in _qp_keep.items())
-        _url_no_fs = ("?" + _qs) if _qs else "/"
+        _query_suffix = ("?" + _qs) if _qs else ""
         st.markdown(
-            f'<a href="{_url_no_fs}" target="_top" '
-            f'style="display:inline-block; padding:0.4rem 1.2rem; '
-            f'background:#ff4b4b; color:white; text-decoration:none; '
-            f'border-radius:6px; font-weight:600; font-size:0.85rem;" '
-            f'title="Salir del modo pantalla completa">'
-            f'✖ Salir fullscreen</a>',
+            f'<button onclick="window.top.location.href='
+            f"window.top.location.origin + window.top.location.pathname + "
+            f"'{_query_suffix}'"
+            f'" '
+            'style="padding:0.4rem 1.2rem; background:#ff4b4b; color:white; '
+            'border:0; border-radius:6px; font-weight:600; font-size:0.85rem; '
+            'cursor:pointer;" '
+            'title="Salir del modo pantalla completa">'
+            '✖ Salir fullscreen</button>',
             unsafe_allow_html=True,
         )
 

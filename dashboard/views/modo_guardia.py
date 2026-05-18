@@ -403,17 +403,20 @@ def _chile_subtab():
                  "Util para medir largo de pluma en escala continental.",
         )
     with cols[3]:
-        # Anchor HTML con target=_top: st.button con _activate_tv (que llama
-        # st.rerun) puede no escapar el iframe de Streamlit Cloud. El anchor
-        # navega el browser top frame y preserva el volcan seleccionado.
+        # Boton "Modo Sala": target=_top con href RELATIVO no escapa el
+        # iframe de Streamlit Cloud (el browser resuelve el href contra la
+        # URL del IFRAME, no del top). Fix: JavaScript explicito
+        # `window.top.location` que SIEMPRE navega el browser principal.
         st.markdown(
-            f'<a href="?vista=guardia&fullscreen=1&tv=chile&volcan={volcan}" '
-            'target="_top" '
+            f'<button onclick="window.top.location.href='
+            f"window.top.location.origin + window.top.location.pathname + "
+            f"'?vista=guardia&fullscreen=1&tv=chile&volcan={volcan}'"
+            f'" '
             'style="display:inline-block; width:100%; box-sizing:border-box; '
-            'padding:0.4rem 1.2rem; background:#ff4b4b; color:white; '
-            'text-decoration:none; border-radius:6px; font-weight:600; '
-            'font-size:0.9rem; text-align:center;">'
-            '🖥 Modo Sala · Chile (rotando productos)</a>',
+            'padding:0.4rem 1.2rem; background:#ff4b4b; color:white; border:0; '
+            'border-radius:6px; font-weight:600; font-size:0.9rem; '
+            'text-align:center; cursor:pointer;">'
+            '🖥 Modo Sala · Chile (rotando productos)</button>',
             unsafe_allow_html=True,
         )
     _live_panel(volcan, product=product, show_rings=show_rings)
@@ -438,13 +441,17 @@ def _activate_tv(tv_value: str, **extra):
 def _mosaico_subtab():
     """Sub-tab Mosaico: 8 prioritarios en grid 4x2."""
     from dashboard.views.mosaico_chile import _live_panel as mosaico_panel
-    # Anchor HTML target=_top para escapar iframe Streamlit Cloud.
+    # Boton "Modo Sala" con JS window.top.location explicito (ver nota en
+    # _chile_subtab — anchor target=_top con href relativo NO escapa iframe).
     st.markdown(
-        '<a href="?vista=guardia&fullscreen=1&tv=mosaico" target="_top" '
-        'style="display:inline-block; padding:0.4rem 1.2rem; '
-        'background:#ff4b4b; color:white; text-decoration:none; '
-        'border-radius:6px; font-weight:600; font-size:0.9rem;">'
-        '🖥 Modo Sala · Mosaico (rotando productos cada 10s)</a>',
+        '<button onclick="window.top.location.href='
+        "window.top.location.origin + window.top.location.pathname + "
+        "'?vista=guardia&fullscreen=1&tv=mosaico'"
+        '" '
+        'style="padding:0.4rem 1.2rem; background:#ff4b4b; color:white; '
+        'border:0; border-radius:6px; font-weight:600; font-size:0.9rem; '
+        'cursor:pointer;">'
+        '🖥 Modo Sala · Mosaico (rotando productos cada 10s)</button>',
         unsafe_allow_html=True,
     )
     mosaico_panel()
@@ -456,14 +463,16 @@ def _zonas_subtab():
         _grid_4_zonas, _rotating_grid_4_zonas, PRODUCT_OPTIONS, ROTATION_SECONDS,
     )
 
-    # Anchor HTML target=_top — st.button con st.rerun no siempre escapa
-    # el iframe de Streamlit Cloud. El anchor navega el browser top frame.
+    # Boton "Modo Sala" con JS window.top.location explicito.
     st.markdown(
-        '<a href="?vista=guardia&fullscreen=1&tv=1" target="_top" '
-        'style="display:inline-block; padding:0.4rem 1.2rem; '
-        'background:#ff4b4b; color:white; text-decoration:none; '
-        'border-radius:6px; font-weight:600; font-size:0.9rem;">'
-        '🖥 Modo Sala (4 zonas, rotando productos cada 10s)</a>',
+        '<button onclick="window.top.location.href='
+        "window.top.location.origin + window.top.location.pathname + "
+        "'?vista=guardia&fullscreen=1&tv=1'"
+        '" '
+        'style="padding:0.4rem 1.2rem; background:#ff4b4b; color:white; '
+        'border:0; border-radius:6px; font-weight:600; font-size:0.9rem; '
+        'cursor:pointer;">'
+        '🖥 Modo Sala (4 zonas, rotando productos cada 10s)</button>',
         unsafe_allow_html=True,
     )
     st.caption(
@@ -535,15 +544,16 @@ def _volcan_subtab():
             label_visibility="collapsed",
             key="mg_volcan_selector",
         )
-    # Anchor HTML target=_top — lleva el volcan seleccionado en query_params.
-    # st.button + st.rerun no siempre escapa el iframe de Streamlit Cloud.
+    # Boton "Modo Sala" con JS window.top.location explicito.
     st.markdown(
-        f'<a href="?vista=guardia&fullscreen=1&tv=volcan&volcan={volcan}" '
-        'target="_top" '
-        'style="display:inline-block; padding:0.4rem 1.2rem; '
-        'background:#ff4b4b; color:white; text-decoration:none; '
-        'border-radius:6px; font-weight:600; font-size:0.9rem;">'
-        f'🖥 Modo Sala · {volcan} (3 productos)</a>',
+        f'<button onclick="window.top.location.href='
+        f"window.top.location.origin + window.top.location.pathname + "
+        f"'?vista=guardia&fullscreen=1&tv=volcan&volcan={volcan}'"
+        f'" '
+        'style="padding:0.4rem 1.2rem; background:#ff4b4b; color:white; '
+        'border:0; border-radius:6px; font-weight:600; font-size:0.9rem; '
+        'cursor:pointer;">'
+        f'🖥 Modo Sala · {volcan} (3 productos)</button>',
         unsafe_allow_html=True,
     )
     with cols[1]:
@@ -640,21 +650,19 @@ def render():
             """,
             unsafe_allow_html=True,
         )
-        # Boton "✖ Salir" como anchor HTML con target="_top". Razon:
-        # Streamlit Cloud renderea la app dentro de un iframe; un link
-        # relativo navega DENTRO del iframe (parece que no pasa nada).
-        # `target="_top"` rompe el sandbox y navega la URL del browser
-        # principal. st.link_button NO soporta target — por eso usamos
-        # st.markdown con HTML inline + estilos imitando el boton primary
-        # de Streamlit.
+        # Boton "✖ Salir" con JS window.top.location explicito. El anchor
+        # target=_top con href relativo NO escapa el iframe Streamlit Cloud
+        # (el href relativo se resuelve contra la URL del iframe, no del top).
         st.markdown(
-            '<a href="?vista=guardia" target="_top" '
-            'style="display:inline-block; padding:0.4rem 1.2rem; '
-            'background:#ff4b4b; color:white; text-decoration:none; '
-            'border-radius:6px; font-weight:600; font-size:0.9rem; '
-            'margin-bottom:0.4rem;" '
+            '<button onclick="window.top.location.href='
+            "window.top.location.origin + window.top.location.pathname + "
+            "'?vista=guardia'"
+            '" '
+            'style="padding:0.4rem 1.2rem; background:#ff4b4b; color:white; '
+            'border:0; border-radius:6px; font-weight:600; font-size:0.9rem; '
+            'cursor:pointer; margin-bottom:0.4rem;" '
             'title="Salir del modo Sala y volver a Modo Guardia">'
-            '✖ Salir</a>',
+            '✖ Salir</button>',
             unsafe_allow_html=True,
         )
         if tv_mode == "chile":

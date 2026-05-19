@@ -27,16 +27,25 @@ _GEO_CACHE: dict | None = None
 
 
 def _load_geo() -> dict:
-    """Cargar chile_geometry.json una vez. Cache en module-level."""
+    """Cargar chile_geometry.json una vez. Cache en module-level.
+
+    DEFENSIVO: si falla por CUALQUIER razon (archivo missing, JSON corrupto,
+    permisos, OOM, lo que sea), devolver dict vacio. La app sigue cargando
+    SIN frontera de Chile pero NO crashea. Mejor app degradada que 'Oh no'.
+    """
+    import logging
     global _GEO_CACHE
     if _GEO_CACHE is None:
-        path = _Path(__file__).parent / "chile_geometry.json"
-        with open(path, encoding="utf-8") as f:
-            data = _json.load(f)
-        # Convertir a tuplas (con None preservado)
-        coast = [tuple(p) if p[0] is not None else (None, None) for p in data["coast"]]
-        border = [tuple(p) for p in data["border"]]
-        _GEO_CACHE = {"coast": coast, "border": border}
+        try:
+            path = _Path(__file__).parent / "chile_geometry.json"
+            with open(path, encoding="utf-8") as f:
+                data = _json.load(f)
+            coast = [tuple(p) if p[0] is not None else (None, None) for p in data["coast"]]
+            border = [tuple(p) for p in data["border"]]
+            _GEO_CACHE = {"coast": coast, "border": border}
+        except Exception as e:
+            logging.exception("Error cargando chile_geometry.json: %s", e)
+            _GEO_CACHE = {"coast": [], "border": []}
     return _GEO_CACHE
 
 

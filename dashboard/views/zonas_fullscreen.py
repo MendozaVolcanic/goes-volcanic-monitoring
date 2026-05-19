@@ -162,6 +162,10 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
     fig.update_layout(
         height=height, margin=dict(l=0, r=0, t=0, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
+        # autosize=True: en conjunto con config={"responsive": True}
+        # hace que plotly se auto-ajuste cuando el iframe es resizeado
+        # via CSS (caso TV mode con `height: calc(100vh - 56px)`).
+        autosize=True,
     )
     if img is None:
         fig.add_annotation(text="Sin imagen", xref="paper", yref="paper",
@@ -312,7 +316,12 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
                     _zone_fig(img, zone_key, label, hotspots,
                               height=height, show_volcanoes=show_volcanoes),
                     width='stretch',
-                    config={"displayModeBar": False},
+                    # responsive=True: plotly escucha resize del iframe
+                    # y refit el chart. CRITICO para TV mode donde CSS
+                    # fuerza `height: calc(100vh - 56px)` — sin esto el
+                    # plot quedaria renderizado al `height` python fijo
+                    # (820/900) sin importar el viewport real.
+                    config={"displayModeBar": False, "responsive": True},
                 )
 
 

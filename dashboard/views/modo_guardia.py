@@ -662,6 +662,36 @@ def render():
                          enable_capture=False)
             return
         else:  # default = zonas
+            # CSS especifico TV 4 zonas: fuerza cada plot a llenar el
+            # viewport VERTICAL del browser actual (NO del display
+            # fisico de 17280x1080). Soluciona el caso de pantalla
+            # operacional gigante donde el browser ocupa solo una
+            # franja: el grid se adapta al viewport del browser.
+            # `calc(100vh - 56px)` reserva ~56px para la barra de
+            # leyenda compacta + boton Salir arriba.
+            # Plotly recibe `responsive: True` para refit cuando el
+            # iframe cambia de tamaño (resize del browser).
+            st.markdown(
+                """
+                <style>
+                  /* TV 4 zonas 1x4: cada plot llena alto viewport */
+                  [data-testid="stPlotlyChart"],
+                  [data-testid="stPlotlyChart"] > div,
+                  [data-testid="stPlotlyChart"] iframe {
+                    height: calc(100vh - 56px) !important;
+                    min-height: 200px !important;
+                  }
+                  /* Block-container al 100% del viewport del browser
+                     (NO del display fisico). max-width:100% ya estaba,
+                     pero ademas eliminamos cualquier max horizontal. */
+                  .block-container {
+                    max-width: 100vw !important;
+                    width: 100vw !important;
+                  }
+                </style>
+                """,
+                unsafe_allow_html=True,
+            )
             from dashboard.views.zonas_fullscreen import _rotating_grid_4_zonas
             _rotating_grid_4_zonas(
                 show_volcanoes=True, show_hotspots=True,

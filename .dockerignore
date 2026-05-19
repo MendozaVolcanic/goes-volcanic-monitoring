@@ -31,5 +31,7 @@ data/borders/V4_Limite_Internacional.kmz
 data/borders/V4_limite_Internacional_Recuadro_CHS/
 data/borders/OSM/
 
-# Logs descargados
-*.txt
+# Logs descargados de Streamlit Cloud (los txt que descarga el user)
+# IMPORTANTE: NO usar `*.txt` porque excluiria requirements.txt y runtime.txt.
+# Match solo el patron especifico del nombre de los logs.
+logs-mendozavolcanic-*.txt

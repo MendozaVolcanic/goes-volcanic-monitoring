@@ -1,6 +1,21 @@
+---
+title: GOES Volcanic Monitor Chile
+emoji: 🌋
+colorFrom: red
+colorTo: orange
+sdk: streamlit
+sdk_version: 1.57.0
+app_file: dashboard/app.py
+pinned: true
+python_version: "3.12"
+short_description: Monitoreo volcanico NRT con GOES-19 para SERNAGEOMIN
+---
+
 # GOES Volcanic Monitoring - Chile
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://goesvolcanic.streamlit.app)
+
+> El YAML al inicio de este README es metadata para [Hugging Face Spaces](https://huggingface.co/docs/hub/spaces-config-reference) (mirror del deploy primario). GitHub lo renderiza como texto plano arriba — no es bug.
 
 Dashboard de monitoreo volcánico en tiempo casi-real usando imágenes del satélite geoestacionario **GOES-19** (GOES-East).
 

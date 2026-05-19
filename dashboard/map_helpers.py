@@ -142,24 +142,42 @@ def render_top_navigation_button(label: str, query_string: str,
         bg:           NO USADO (st.button usa estilo primary de Streamlit).
     """
     import streamlit as st
-    # ACTUALIZACION 2026-05-19 (verified via Chrome audit en HF Spaces):
-    # st.button + st.rerun + st.query_params queda ATRAPADO por el fragment
-    # `run_every=10s` del TV mode. El click se procesa pero el rerun se
-    # consume por el fragment scheduler antes de poder aplicar el cambio
-    # de query_params. URL del browser NUNCA cambia.
+    # HISTORIA: probamos 4 patrones que fallaron:
+    # 1. st.button + st.rerun: atrapado por fragment run_every
+    # 2. <a href> sin target: Streamlit intercepta clicks
+    # 3. <a href target=_top>: confirmado en Chrome audit HF Spaces que
+    #    no escapa el iframe (Streamlit JS intercepta o sandbox bloquea)
+    # 4. components.v1.html con onclick: sandbox bloquea allow-top-nav
     #
-    # Fix: anchor HTML simple con target="_top". En HF Spaces (sin iframe
-    # sandbox) navega nativamente. En Streamlit Cloud el target=_top
-    # intenta escapar el iframe (best-effort, no siempre funciona pero
-    # es lo mejor que se puede sin custom component).
+    # SOLUCION (funciona en HF y Streamlit Cloud): HTML form con
+    # method=GET + target=_top. Streamlit NO intercepta form submits
+    # (a diferencia de anchor clicks), el form action="" hace GET al
+    # mismo URL con los `name=value` de los inputs como query params,
+    # reemplazando completamente la querystring actual.
+    #
+    # Estructura: <form action="" method="get" target="_top">
+    #   <input type="hidden" name="vista" value="guardia">
+    #   <input type="hidden" name="fullscreen" value="1">
+    #   <button type="submit">Salir</button>
+    # </form>
+    # Resultado URL: ?vista=guardia&fullscreen=1
     width_css = "width:100%; box-sizing:border-box;" if full_width else ""
+    # Parsear query_string a inputs hidden
+    inputs = []
+    for pair in query_string.split("&"):
+        if "=" in pair:
+            k, v = pair.split("=", 1)
+            inputs.append(f'<input type="hidden" name="{k}" value="{v}">')
+    inputs_html = "".join(inputs)
     st.markdown(
-        f'<a href="?{query_string}" target="_top" '
-        f'style="display:inline-block; {width_css} padding:0.4rem 1.2rem; '
-        f'background:{bg}; color:white; text-decoration:none; '
-        f'border-radius:6px; font-weight:600; font-size:0.9rem; '
-        f'text-align:center; margin-bottom:0.4rem; cursor:pointer;">'
-        f'{label}</a>',
+        f'<form action="" method="get" target="_top" '
+        f'style="display:inline-block; {width_css} margin-bottom:0.4rem;">'
+        f'{inputs_html}'
+        f'<button type="submit" '
+        f'style="{width_css} padding:0.4rem 1.2rem; background:{bg}; '
+        f'color:white; border:0; border-radius:6px; font-weight:600; '
+        f'font-size:0.9rem; cursor:pointer; text-align:center;">'
+        f'{label}</button></form>',
         unsafe_allow_html=True,
     )
 

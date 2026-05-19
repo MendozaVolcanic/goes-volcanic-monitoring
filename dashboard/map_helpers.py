@@ -142,43 +142,34 @@ def render_top_navigation_button(label: str, query_string: str,
         bg:           NO USADO (st.button usa estilo primary de Streamlit).
     """
     import streamlit as st
-    # HISTORIA: probamos 4 patrones que fallaron:
-    # 1. st.button + st.rerun: atrapado por fragment run_every
-    # 2. <a href> sin target: Streamlit intercepta clicks
-    # 3. <a href target=_top>: confirmado en Chrome audit HF Spaces que
-    #    no escapa el iframe (Streamlit JS intercepta o sandbox bloquea)
-    # 4. components.v1.html con onclick: sandbox bloquea allow-top-nav
+    # HISTORIA: probamos 5 patrones que fallaron:
+    # 1. st.button + st.rerun: atrapado por fragment run_every.
+    # 2. <a href> sin target: Streamlit intercepta clicks.
+    # 3. <a href target=_top>: Chrome audit HF confirmo que no navega.
+    # 4. components.v1.html con onclick top.location: sandbox bloquea
+    #    allow-top-navigation.
+    # 5. HTML <form method=get target=_top> con button type=submit en
+    #    st.markdown: programaticamente (btn.click() en JS) navega OK,
+    #    pero clicks reales de usuario son "swallowed" — el submit
+    #    event llega a window pero la navegacion no ocurre. Sospecha:
+    #    React synthetic event system de Streamlit o fragment auto-rerun
+    #    a 10s intermitentemente reemplaza el form mientras el user
+    #    hace click, dejando un click target stale.
     #
-    # SOLUCION (funciona en HF y Streamlit Cloud): HTML form con
-    # method=GET + target=_top. Streamlit NO intercepta form submits
-    # (a diferencia de anchor clicks), el form action="" hace GET al
-    # mismo URL con los `name=value` de los inputs como query params,
-    # reemplazando completamente la querystring actual.
+    # SOLUCION (intento 6, funciona): usar st.link_button — el MISMO
+    # widget que ya usamos para "Modo Pantalla Completa" (entrar a
+    # fullscreen funciona desde HF sin issues). Renderiza un <a> que
+    # Streamlit maneja internamente con su SPA router, sobreviviendo a
+    # los rerenders de fragmentos. No depende de form submit ni de
+    # event sanitization.
     #
-    # Estructura: <form action="" method="get" target="_top">
-    #   <input type="hidden" name="vista" value="guardia">
-    #   <input type="hidden" name="fullscreen" value="1">
-    #   <button type="submit">Salir</button>
-    # </form>
-    # Resultado URL: ?vista=guardia&fullscreen=1
-    width_css = "width:100%; box-sizing:border-box;" if full_width else ""
-    # Parsear query_string a inputs hidden
-    inputs = []
-    for pair in query_string.split("&"):
-        if "=" in pair:
-            k, v = pair.split("=", 1)
-            inputs.append(f'<input type="hidden" name="{k}" value="{v}">')
-    inputs_html = "".join(inputs)
-    st.markdown(
-        f'<form action="" method="get" target="_top" '
-        f'style="display:inline-block; {width_css} margin-bottom:0.4rem;">'
-        f'{inputs_html}'
-        f'<button type="submit" '
-        f'style="{width_css} padding:0.4rem 1.2rem; background:{bg}; '
-        f'color:white; border:0; border-radius:6px; font-weight:600; '
-        f'font-size:0.9rem; cursor:pointer; text-align:center;">'
-        f'{label}</button></form>',
-        unsafe_allow_html=True,
+    # Ignoramos `bg` y `height` — st.link_button usa estilo Streamlit
+    # nativo (type="primary" para color rojo similar al ff4b4b).
+    st.link_button(
+        label,
+        url=f"?{query_string}",
+        type="primary",
+        width="stretch" if full_width else "content",
     )
 
 

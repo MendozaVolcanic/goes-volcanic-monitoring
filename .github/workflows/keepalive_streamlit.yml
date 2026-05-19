@@ -16,8 +16,11 @@ name: Keepalive Streamlit Cloud
 
 on:
   schedule:
-    # Cada 8h en :11 (offset para no chocar con otros workflows)
-    - cron: '11 */8 * * *'
+    # Cada 4h en :11. Antes era cada 8h pero Streamlit Cloud bajo el
+    # threshold de sleep a ~6h (verificado log 2026-05-18: app durmio
+    # 18:08 -> 00:30 = 6h22min). Con cada 4h queda holgura de 2h.
+    # Costo extra: ~90 min/mes de GH Actions (negligible).
+    - cron: '11 */4 * * *'
   workflow_dispatch:
 
 permissions:

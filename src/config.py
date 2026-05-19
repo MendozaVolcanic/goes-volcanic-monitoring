@@ -3,6 +3,12 @@
 from pathlib import Path
 
 # ── Directorios ──────────────────────────────────────────────────
+# Estos directorios SOLO se usan en src/process/pipeline.py para procesar
+# L1b crudo descargado de S3 NOAA. El dashboard NRT NO los necesita.
+# Por eso el mkdir es DEFENSIVO: si el filesystem es read-only (caso HF
+# Spaces Docker container con user UID 1000 sin permisos sobre /app),
+# loggeamos el error y seguimos. Las funciones que los usan deben hacer
+# su propio mkdir cuando intenten escribir.
 PROJECT_ROOT = Path(__file__).parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 RAW_DIR = DATA_DIR / "raw"
@@ -10,7 +16,13 @@ PROCESSED_DIR = DATA_DIR / "processed"
 CACHE_DIR = DATA_DIR / "cache"
 
 for d in [RAW_DIR, PROCESSED_DIR, CACHE_DIR]:
-    d.mkdir(parents=True, exist_ok=True)
+    try:
+        d.mkdir(parents=True, exist_ok=True)
+    except (PermissionError, OSError):
+        # Filesystem read-only (deploy en HF Spaces, etc) — no crashear.
+        # Los modulos que necesiten escribir aca van a tirar error propio
+        # cuando lo intenten.
+        pass
 
 # ── GOES S3 ──────────────────────────────────────────────────────
 GOES_SATELLITE = 19          # GOES-East (cubre Sudamérica)

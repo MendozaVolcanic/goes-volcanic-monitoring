@@ -1,16 +1,20 @@
 #!/bin/bash
 # Deploy a Hugging Face Spaces (mirror de Streamlit Cloud).
 #
-# HF rechaza archivos >10MB y carpetas grandes (data/, PDFs). Este script
-# crea un branch temporal sin esos archivos y hace force-push solo de
-# eso al Space. El branch main local NO se toca.
+# HF rechaza archivos >10MB (PDFs grandes en docs/) y archivos en commits
+# pasados de la historia del branch. Por eso usamos ORPHAN branch
+# (sin historia) con solo los archivos esenciales.
+#
+# Tambien: `.dockerignore` con `*.txt` excluiria requirements.txt y
+# runtime.txt. Asegurate que solo matchee patterns especificos como
+# `logs-mendozavolcanic-*.txt`.
 #
 # Uso:
 #   export HF_TOKEN="hf_..."        # generar en https://huggingface.co/settings/tokens
 #   bash scripts/deploy_hf.sh
 #
-# Requiere git remote 'hf' configurado:
-#   git remote add hf https://huggingface.co/spaces/mendozavolcanic/goes-volcanic-monitoring
+# El branch main local NO se toca. El script crea un orphan branch
+# temporal, hace force push a HF/main, y vuelve a main.
 
 set -e
 
@@ -21,26 +25,51 @@ if [ -z "$HF_TOKEN" ]; then
     exit 1
 fi
 
-# Branch limpio sin archivos pesados
+HF_SPACE="mendozavolcanic/goes-volcanic-monitoring"
 TEMP_BRANCH="hf-deploy-$(date +%s)"
-echo "==> Creando branch temporal $TEMP_BRANCH desde main..."
-git checkout -b "$TEMP_BRANCH"
 
-echo "==> Removiendo archivos pesados del staging (no del filesystem)..."
-git rm --cached -r data/ docs/papers_links/ docs/manuales_pdf/ "Logs pruebas/" 2>/dev/null || true
-git rm --cached docs/*.pdf 2>/dev/null || true
+echo "==> Asegurando que estamos en main..."
+git checkout main
 
-echo "==> Commit snapshot HF..."
-git commit -m "HF Spaces deploy snapshot (excluye data/ y PDFs)" --quiet || true
+echo "==> Creando ORPHAN branch $TEMP_BRANCH (sin historia, evita rechazo HF por PDFs en commits viejos)..."
+git checkout --orphan "$TEMP_BRANCH"
 
-echo "==> Push --force a HF Space..."
-PUSH_URL="https://mendozavolcanic:${HF_TOKEN}@huggingface.co/spaces/mendozavolcanic/goes-volcanic-monitoring"
-git push "$PUSH_URL" "$TEMP_BRANCH:main" --force
+echo "==> Limpiando staging (todo desaged)..."
+git rm -rf --cached . >/dev/null 2>&1 || true
+
+echo "==> Agregando SOLO archivos esenciales para el Space..."
+git add \
+    Dockerfile \
+    .dockerignore \
+    requirements.txt \
+    requirements_actions.txt \
+    runtime.txt \
+    .python-version \
+    pyproject.toml \
+    README.md \
+    dashboard/ \
+    src/ \
+    tests/ \
+    scripts/build_hires_cache.py \
+    scripts/build_animation_cache.py \
+    scripts/build_backfill.py \
+    scripts/build_hotspots_daily.py 2>&1 | tail -3
+
+echo "==> Commit snapshot..."
+git commit -m "HF Spaces deploy $(date -u +%Y-%m-%dT%H:%M:%SZ)" --quiet
+
+echo "==> Force push a HF Space ($HF_SPACE)..."
+git push "https://mendozavolcanic:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}" \
+    "${TEMP_BRANCH}:main" --force
 
 echo "==> Limpiando branch temporal..."
 git checkout main -f
 git branch -D "$TEMP_BRANCH"
 
 echo ""
-echo "DONE. Build en https://huggingface.co/spaces/mendozavolcanic/goes-volcanic-monitoring"
+echo "DONE. Build en https://huggingface.co/spaces/${HF_SPACE}"
 echo "App en https://mendozavolcanic-goes-volcanic-monitoring.hf.space"
+echo ""
+echo "Monitorear con:"
+echo "  curl -s -H \"Authorization: Bearer \$HF_TOKEN\" \\"
+echo "    \"https://huggingface.co/api/spaces/${HF_SPACE}/runtime\" | python -m json.tool"

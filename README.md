@@ -12,12 +12,18 @@ short_description: Monitoreo volcanico NRT con GOES-19 para SERNAGEOMIN
 # GOES Volcanic Monitoring - Chile
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://goesvolcanic.streamlit.app)
+[![Hugging Face Space](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm-dark.svg)](https://mendozavolcanic-goes-volcanic-monitoring.hf.space)
 
 > El YAML al inicio de este README es metadata para [Hugging Face Spaces](https://huggingface.co/docs/hub/spaces-config-reference) (mirror del deploy primario). GitHub lo renderiza como texto plano arriba — no es bug.
 
 Dashboard de monitoreo volcánico en tiempo casi-real usando imágenes del satélite geoestacionario **GOES-19** (GOES-East).
 
-**Demo pública:** https://goesvolcanic.streamlit.app
+**Demos públicas (mismo código, dos hosts para redundancia):**
+
+- 🎈 Streamlit Cloud: https://goesvolcanic.streamlit.app
+- 🤗 Hugging Face Spaces: https://mendozavolcanic-goes-volcanic-monitoring.hf.space
+
+Si una está caída (sleep mode, mantención), usar la otra. HF Spaces tiende a ser más estable (16 GB RAM, 48 h sleep) que Streamlit Cloud free (~6 h sleep, crashes intermitentes con Python 3.14).
 
 Genera productos **Ash RGB**, **detección de ceniza** (BTD split-window) y **SO2** para los **43 volcanes activos de Chile** monitoreados por SERNAGEOMIN.
 
@@ -70,7 +76,10 @@ rgb = generate_ash_rgb(bt11, bt13, bt14, bt15)
 
 ## Dashboard
 
-**Versión pública:** https://goesvolcanic.streamlit.app
+**Versiones públicas:**
+
+- Streamlit Cloud — https://goesvolcanic.streamlit.app
+- Hugging Face Spaces (mirror) — https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 Para correr localmente:
 

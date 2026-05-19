@@ -142,19 +142,26 @@ def render_top_navigation_button(label: str, query_string: str,
         bg:           NO USADO (st.button usa estilo primary de Streamlit).
     """
     import streamlit as st
-    btn_key = key or f"navbtn_{abs(hash(query_string))}"
-    if st.button(label, key=btn_key, type="primary",
-                 width="stretch" if full_width else "content"):
-        # Clear PRIMERO y despues set: garantiza que params que NO
-        # estan en query_string se BORRAN (ej. el boton "Salir" pasa
-        # query_string='vista=guardia' y queremos que fullscreen y tv
-        # desaparezcan, no que persistan del estado anterior).
-        st.query_params.clear()
-        for pair in query_string.split("&"):
-            if "=" in pair:
-                k, v = pair.split("=", 1)
-                st.query_params[k] = v
-        st.rerun()
+    # ACTUALIZACION 2026-05-19 (verified via Chrome audit en HF Spaces):
+    # st.button + st.rerun + st.query_params queda ATRAPADO por el fragment
+    # `run_every=10s` del TV mode. El click se procesa pero el rerun se
+    # consume por el fragment scheduler antes de poder aplicar el cambio
+    # de query_params. URL del browser NUNCA cambia.
+    #
+    # Fix: anchor HTML simple con target="_top". En HF Spaces (sin iframe
+    # sandbox) navega nativamente. En Streamlit Cloud el target=_top
+    # intenta escapar el iframe (best-effort, no siempre funciona pero
+    # es lo mejor que se puede sin custom component).
+    width_css = "width:100%; box-sizing:border-box;" if full_width else ""
+    st.markdown(
+        f'<a href="?{query_string}" target="_top" '
+        f'style="display:inline-block; {width_css} padding:0.4rem 1.2rem; '
+        f'background:{bg}; color:white; text-decoration:none; '
+        f'border-radius:6px; font-weight:600; font-size:0.9rem; '
+        f'text-align:center; margin-bottom:0.4rem; cursor:pointer;">'
+        f'{label}</a>',
+        unsafe_allow_html=True,
+    )
 
 
 def _interp_segments(pts: list[tuple[float | None, float | None]],

@@ -1,0 +1,35 @@
+# Excluir del build context Docker — acelera build y reduce tamano imagen
+.git/
+.github/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.streamlit/
+
+# Output dirs (regenerados por workflows)
+out_animation_cache/
+out_backfill/
+out_hires/
+
+# Logs locales
+*.log
+
+# Docs pesadas no necesarias en runtime
+docs/manuales_pdf/
+docs/papers_links/
+docs/*.pdf
+"Logs pruebas/"
+
+# Data raw (gitignored ya, pero por las dudas)
+data/raw/
+data/processed/
+data/cache/
+
+# Shapefiles raw (ya extrajimos lo necesario a chile_geometry.json)
+data/borders/V4_Limite_Internacional.kmz
+data/borders/V4_limite_Internacional_Recuadro_CHS/
+data/borders/OSM/
+
+# Logs descargados
+*.txt

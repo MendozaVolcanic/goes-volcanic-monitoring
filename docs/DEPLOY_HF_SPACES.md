@@ -29,9 +29,13 @@ URL final: `https://huggingface.co/spaces/<USERNAME>/goes-volcanic-monitoring`
    - **Owner**: tu username
    - **Space name**: `goes-volcanic-monitoring` (o el que prefieras)
    - **License**: `mit`
-   - **Select the Space SDK**: click **`Streamlit`** (icono naranja)
-   - **Space hardware**: `CPU basic · 16 GB · FREE` (default)
-   - **Public** (no Private para que sea accesible sin login)
+   - **Select the Space SDK**: click **`Docker`** (HF removio el SDK
+     Streamlit de la UI en mayo-2026 — usamos Docker con Dockerfile
+     custom que ya esta en el repo).
+   - **Choose a Docker template**: click **`Blank`** (la opcion mas a
+     la izquierda, sin template).
+   - **Space hardware**: `CPU Basic · FREE` (default).
+   - **Public** (no Private para que sea accesible sin login).
 3. Click **Create Space**.
 
 Te lleva a `https://huggingface.co/spaces/<USERNAME>/goes-volcanic-monitoring`. Va a mostrar un repo vacío con un README placeholder. Lo vamos a reemplazar.

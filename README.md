@@ -3,11 +3,9 @@ title: GOES Volcanic Monitor Chile
 emoji: 🌋
 colorFrom: red
 colorTo: orange
-sdk: streamlit
-sdk_version: 1.57.0
-app_file: dashboard/app.py
+sdk: docker
+app_port: 7860
 pinned: true
-python_version: "3.12"
 short_description: Monitoreo volcanico NRT con GOES-19 para SERNAGEOMIN
 ---
 

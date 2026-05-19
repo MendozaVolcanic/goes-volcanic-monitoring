@@ -101,7 +101,7 @@ with st.sidebar:
     # ── Build version marker (verifica que Streamlit Cloud sirve la version
     # actual del repo, no una vieja cacheada). Si no ves este texto despues
     # de un push, la app sigue dormant y hay que hacer Reboot manual.
-    BUILD_SHA = "build-2026-05-19-tv-viewport-fit"
+    BUILD_SHA = "build-2026-05-19-zonas-parallel-fetch"
     st.caption(f"🔖 `{BUILD_SHA}`")
     st.markdown("---")
 

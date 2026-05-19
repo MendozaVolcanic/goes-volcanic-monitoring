@@ -289,23 +289,44 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
         rows_zones = [["norte", "centro"], ["sur", "austral"]]
         n_cols = 2
 
+    # ── Fetch PARALELO de las 4 zonas ────────────────────────────
+    # Antes: for serial -> 4 zonas x ~1-2s c/u = 4-8s "una por una"
+    # visible al usuario (lo que reporto en HF).
+    # Ahora: ThreadPoolExecutor con 4 workers -> todas en paralelo,
+    # el tiempo total ~= zona mas lenta. fetch_frame_robust es
+    # thread-safe (solo usa vars locales, sin estado compartido).
+    from concurrent.futures import ThreadPoolExecutor
+    all_zones = [z for row in rows_zones for z in row]
+
+    def _fetch_one(zone_key: str):
+        bounds_z = VOLCANIC_ZONES[zone_key]
+        img_z, used_ts_z, used_zoom_z = fetch_frame_robust(
+            product, timestamps, bounds_z,
+            zoom_preferred=ZOOM_ZONE, zoom_fallback=ZOOM_ZONE - 1,
+        )
+        hotspots_z = []
+        if show_hotspots:
+            try:
+                hotspots_z, _ = _hotspots_zone(zone_key)
+            except Exception:
+                hotspots_z = []
+        return zone_key, img_z, used_ts_z, used_zoom_z, hotspots_z
+
+    results: dict = {}
+    with ThreadPoolExecutor(max_workers=4) as ex:
+        for zk, img_z, used_ts_z, used_zoom_z, hs_z in ex.map(_fetch_one, all_zones):
+            results[zk] = (img_z, used_ts_z, used_zoom_z, hs_z)
+
+    # ── Render serial (debe correr en thread principal Streamlit) ─
     fallback_count = 0
     for row_zones in rows_zones:
         cols = st.columns(n_cols)
         for i, zone_key in enumerate(row_zones):
-            bounds = VOLCANIC_ZONES[zone_key]
-            img, used_ts, used_zoom = fetch_frame_robust(
-                product, timestamps, bounds,
-                zoom_preferred=ZOOM_ZONE, zoom_fallback=ZOOM_ZONE - 1,
-            )
+            img, used_ts, used_zoom, hotspots = results[zone_key]
             if used_ts and used_ts != ts:
                 fallback_count += 1
             if used_zoom < ZOOM_ZONE:
                 fallback_count += 1
-
-            hotspots = []
-            if show_hotspots:
-                hotspots, _ = _hotspots_zone(zone_key)
 
             label = ZONE_LABELS[zone_key]
             if used_ts and used_ts != ts:

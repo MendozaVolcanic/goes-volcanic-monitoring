@@ -1480,6 +1480,9 @@ def _live_content():
 
 
 def render():
+    # Manual: expander colapsado al INICIO. Ver dashboard/manuals.py.
+    from dashboard.manuals import render_manual
+    render_manual("operacional")
     # CSS para compactar top — el header de Streamlit y el padding superior
     # comen mucho espacio vertical y empujan el toolbar fuera de la vista.
     st.markdown(

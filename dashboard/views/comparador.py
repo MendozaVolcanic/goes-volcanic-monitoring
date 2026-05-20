@@ -584,6 +584,8 @@ def _mode_diff_temporal(now: datetime):
 # ── Render principal ─────────────────────────────────────────────────
 
 def render():
+    from dashboard.manuals import render_manual
+    render_manual("comparador")
     st.markdown(
         """
         <style>

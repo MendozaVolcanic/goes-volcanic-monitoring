@@ -116,6 +116,8 @@ def _build_heatmap(counts_by_day: list[dict], today: datetime) -> go.Figure:
 
 
 def render():
+    from dashboard.manuals import render_manual
+    render_manual("heatmap")
     header(
         "📅 Heatmap actividad — últimos 7 días",
         f"Hot spots NOAA FDCF en radio {RADIUS_KM} km de cada volcán prioritario",

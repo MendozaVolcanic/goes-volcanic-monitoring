@@ -641,6 +641,8 @@ def _fetch_latest_ts_label(product: str) -> str:
 
 
 def render():
+    from dashboard.manuals import render_manual
+    render_manual("loops")
     header(
         "Animacion RAMMB/CIRA — GOES-19",
         "Loops de los ultimos scans &middot; Nacional, por zona o por volcan",

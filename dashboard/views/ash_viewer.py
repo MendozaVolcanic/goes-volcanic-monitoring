@@ -186,6 +186,8 @@ def _compute_insight(btd_arr, conf_arr):
 
 
 def render():
+    from dashboard.manuals import render_manual
+    render_manual("ash")
     header(
         "Ash RGB Viewer",
         "Deteccion de ceniza volcanica y SO2 desde GOES-19 (bandas 11, 13, 14, 15)",

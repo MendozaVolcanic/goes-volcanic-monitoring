@@ -247,6 +247,8 @@ def _kpis_from_points(points: list[dict]) -> dict:
 
 
 def render():
+    from dashboard.manuals import render_manual
+    render_manual("series")
     header(
         "Series de tiempo por volcán",
         "Tendencia de firma de ceniza/SO2 en las últimas horas — RAMMB/CIRA GOES-19",

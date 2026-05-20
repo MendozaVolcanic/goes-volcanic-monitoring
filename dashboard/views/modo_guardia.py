@@ -700,6 +700,10 @@ def render():
             )
             return
 
+    # Manual: solo en modo normal (no TV — la sala no quiere expanders).
+    from dashboard.manuals import render_manual
+    render_manual("guardia")
+
     st.markdown(
         """
         <style>

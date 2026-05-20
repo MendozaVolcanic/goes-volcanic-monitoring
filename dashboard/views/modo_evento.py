@@ -389,6 +389,8 @@ def _live_panel(volcan_name: str, show_rings: bool = True,
 
 
 def render():
+    from dashboard.manuals import render_manual
+    render_manual("evento")
     st.markdown(
         """
         <style>

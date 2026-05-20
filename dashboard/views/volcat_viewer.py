@@ -444,6 +444,8 @@ def _parse_timestamp(ts_str):
 
 
 def render():
+    from dashboard.manuals import render_manual
+    render_manual("volcat")
     header(
         "VOLCAT — Productos SSEC/CIMSS",
         "Imagenes pre-procesadas por la Universidad de Wisconsin via RealEarth API &middot; GOES-19",

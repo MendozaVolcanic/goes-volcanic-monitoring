@@ -126,6 +126,8 @@ def _plot_frame(img: np.ndarray | None, lat: float, lon: float,
 
 
 def render():
+    from dashboard.manuals import render_manual
+    render_manual("replay")
     header(
         "🔁 Replay reciente — actividad real GOES-19",
         "Eventos volcánicos en últimos 28 días · Sangay/Reventador/Sabancaya/Lascar/Villarrica/Copahue",

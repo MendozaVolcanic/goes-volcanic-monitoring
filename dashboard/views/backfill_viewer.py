@@ -221,6 +221,8 @@ def _render_product_panel(arr: np.ndarray | None, bounds: dict,
 
 
 def render():
+    from dashboard.manuals import render_manual
+    render_manual("backfill")
     header(
         "📅 Backfill historico — eventos pasados",
         "Revision dia/hora de productos GOES-19 sobre eventos volcanicos archivados",

@@ -101,7 +101,7 @@ with st.sidebar:
     # ── Build version marker (verifica que Streamlit Cloud sirve la version
     # actual del repo, no una vieja cacheada). Si no ves este texto despues
     # de un push, la app sigue dormant y hay que hacer Reboot manual.
-    BUILD_SHA = "build-2026-05-20-manuales-por-vista"
+    BUILD_SHA = "build-2026-05-21-nav-state-sync-fix"
     st.caption(f"🔖 `{BUILD_SHA}`")
     st.markdown("---")
 
@@ -143,6 +143,26 @@ with st.sidebar:
     if _curr in _SLUG_REDIRECTS:
         st.query_params["vista"] = _SLUG_REDIRECTS[_curr]
         qp = st.query_params
+
+    # BUG histórico (mayo 2026): `index=initial_idx` en st.radio SOLO
+    # se aplica en el PRIMER render. En reruns posteriores Streamlit usa
+    # `st.session_state["nav_page"]` que persiste con el ULTIMO click.
+    # Consecuencia: deep-linking (?vista=evento), browser back/forward,
+    # o cualquier cambio de URL programatico NO actualizaba el radio —
+    # quedaba el highlight viejo, mientras el contenido sí cambiaba
+    # (basado en el `page` retornado). El usuario veía la URL, el radio
+    # y el contenido DESINCRONIZADOS.
+    #
+    # FIX: forzar session_state["nav_page"] desde URL ANTES de instanciar
+    # el widget. Streamlit permite escribir session_state pre-instancia,
+    # y `st.radio` lo tomara como valor canonico (preferira session_state
+    # sobre `index`). Asi la URL siempre gana sobre estado viejo.
+    _url_vista = qp.get("vista", "").lower()
+    if _url_vista in PAGE_SLUGS:
+        _desired_page = PAGE_SLUGS[_url_vista]
+        if st.session_state.get("nav_page") != _desired_page:
+            st.session_state["nav_page"] = _desired_page
+
     initial_idx = 0
     if "vista" in qp:
         slug = qp["vista"].lower()

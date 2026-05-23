@@ -1,5 +1,5 @@
 {
-  "last_updated_utc": "2026-05-22T05:54:34Z",
+  "last_updated_utc": "2026-05-23T05:29:08Z",
   "days": {
     "2026-05-01": {
       "Villarrica": 0,
@@ -212,6 +212,16 @@
       "Hudson": 0
     },
     "2026-05-22": {
+      "Villarrica": 0,
+      "Lascar": 0,
+      "Copahue": 0,
+      "Puyehue-Cordon Caulle": 0,
+      "Calbuco": 0,
+      "Nevados de Chillan": 0,
+      "Llaima": 0,
+      "Hudson": 0
+    },
+    "2026-05-23": {
       "Villarrica": 0,
       "Lascar": 0,
       "Copahue": 0,

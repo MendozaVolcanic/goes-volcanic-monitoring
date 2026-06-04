@@ -193,7 +193,7 @@ def render():
         "Deteccion de ceniza volcanica y SO2 desde GOES-19 (bandas 11, 13, 14, 15)",
     )
 
-    refresh_info_badge(context="general")
+    refresh_info_badge(context="ash")
 
     # ── Controles ──
     c1, c2, c3 = st.columns([1.5, 1, 1])

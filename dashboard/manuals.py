@@ -293,7 +293,7 @@ cuantitativa** (km sobre nivel del mar) y carga de ceniza (g/m²).
 
 **Cómo leerlo**:
 - **Altura (km)**: usa diferencia entre BT observada y perfil
-  atmosférico vertical (ECMWF) para resolver altura. Útil para alerta
+  atmosférico vertical (GFS) para resolver altura. Útil para alerta
   aeronáutica (FL flight levels).
 - **Mass loading (g/m²)**: integral vertical de masa de ceniza por
   unidad de área. Para cuantificar emisión total combinar con área

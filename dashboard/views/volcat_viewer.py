@@ -451,7 +451,7 @@ def render():
         "Imagenes pre-procesadas por la Universidad de Wisconsin via RealEarth API &middot; GOES-19",
     )
 
-    refresh_info_badge(context="general")
+    refresh_info_badge(context="volcat")
 
     # ── Controles ──
     c1, c2 = st.columns([1.5, 1])

@@ -419,15 +419,23 @@ def refresh_info_badge(context: str = "general"):
     Debe ir visible en todas las vistas para que el usuario entienda
     cuanto tarda entre scan y scan y por que.
 
-    context: "live" = auto-refresh cada 60s.
-             "general" = cada vez que se carga la vista.
-             "animation" = al recargar el animador.
+    context: "live"      = auto-refresh cada 60s (RAMMB Slider tiles).
+             "general"   = carga manual; fuente generica GOES-19.
+             "animation" = al recargar el animador (RAMMB).
+             "volcat"    = productos SSEC/CIMSS (RealEarth + VOLCAT portal).
+             "ash"       = L1b crudo de AWS S3 NOAA, procesado por nosotros.
+
+    NOTA (mayo 2026): antes "general" decia "latencia RAMMB" pero lo usan
+    vistas que NO consumen RAMMB (Ash=S3 NOAA, VOLCAT=SSEC, Series=FDCF).
+    Se agregaron contextos dedicados por fuente para no mentir el origen.
     """
     # Resumen corto en badge inline
     resumen = {
         "live":      ("60 s", "#3fb950", "Polling al servidor cada 60 s; imagen nueva aparece ~3-5 min despues del fin del scan de GOES-19 (ciclo real: 10 min)."),
-        "general":   ("manual", "#4a9eff", "Esta vista carga al abrirla o presionar ↻. GOES-19 publica un scan nuevo cada 10 min + ~3-5 min de latencia RAMMB."),
+        "general":   ("manual", "#4a9eff", "Esta vista carga al abrirla o presionar ↻. GOES-19 publica un scan nuevo cada 10 min; sumale unos minutos de latencia de la fuente."),
         "animation": ("por ejecucion", "#d29922", "Genera una animacion con los N ultimos frames disponibles. Reejecuta para traer el frame mas reciente."),
+        "volcat":    ("manual", "#4a9eff", "Productos pre-procesados por SSEC/CIMSS (RealEarth + portal VOLCAT). Cadencia ABI 10 min; SSEC publica ~3-6 min despues del scan. Apreta ↻ para el frame mas nuevo."),
+        "ash":       ("manual", "#4a9eff", "Baja las 4 bandas L1b crudas de AWS S3 NOAA y las procesa aca (no usa RAMMB). GOES-19 publica cada 10 min + ~2 min de calibracion NOAA."),
     }
     label, color, detail = resumen.get(context, resumen["general"])
     # Compactado: padding reducido, fuente mas chica, margin-bottom mas chico

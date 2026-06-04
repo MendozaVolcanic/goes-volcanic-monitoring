@@ -101,18 +101,8 @@ def get_sector_for_volcano(volcano_name: str) -> Optional[tuple[str, str]]:
     return None
 
 
-def volcat_latest(
-    sector: str,
-    instr: str = "ABI",
-    image_type: str = "Ash_Height",
-    sat: str = "all",
-) -> Optional[dict]:
-    """Consulta el API y devuelve el frame mas reciente disponible.
-
-    Returns:
-        dict con keys: datetime, image_url, legend_url, annot_url, coords.
-        None si no hay frames o falla el request.
-    """
+def _query_frames(sector: str, instr: str, image_type: str, sat: str) -> list:
+    """Helper: pega al API VOLCAT y devuelve la lista de frames (puede vacia)."""
     url = (
         f"{BASE}/imagery/get_list/json/"
         f"sector:{sector}::instr:{instr}::sat:{sat}"
@@ -122,13 +112,46 @@ def volcat_latest(
         r = requests.get(url, timeout=TIMEOUT)
         if r.status_code != 200:
             logger.warning("VOLCAT API %s -> %s", url, r.status_code)
-            return None
+            return []
         d = r.json()
     except Exception as e:
         logger.warning("VOLCAT API fail: %s", e)
-        return None
+        return []
+    return d.get("endtime") or [], d.get("coordinates")
 
-    frames = d.get("endtime") or []
+
+def volcat_latest(
+    sector: str,
+    instr: str = "ABI",
+    image_type: str = "Ash_Height",
+    sat: str = "GOES-19",
+) -> Optional[dict]:
+    """Consulta el API y devuelve el frame mas reciente disponible.
+
+    SATELITE (fix mayo 2026): el API VOLCAT devuelve frames de GOES-18
+    (West) Y GOES-19 (East) MEZCLADOS, ordenados por timestamp. Tomar
+    `frames[-1]` ciego daba a veces GOES-18 — que ve Chile desde el
+    Pacifico con angulo MUY oblicuo (peor parallax, peor geolocalizacion,
+    pluma "tumbada"). Para Sudamerica GOES-19 (East) es SIEMPRE mejor.
+
+    Por eso el default ahora es `sat="GOES-19"`. Pero algunos sectores
+    de test (Kilauea/Hawai) SOLO tienen GOES-18 — para esos hacemos
+    fallback automatico a `sat="all"` si GOES-19 no devuelve nada.
+
+    Returns:
+        dict con keys: datetime, image_url, legend_url, annot_url, coords.
+        None si no hay frames o falla el request.
+    """
+    frames, coords = _query_frames(sector, instr, image_type, sat)
+    # Fallback: si pedimos un satelite especifico y no hay cobertura
+    # (caso Hawai con GOES-19), reintentar con "all" para no quedar sin
+    # imagen. Asi Chile usa GOES-19 y Hawai cae a GOES-18 transparente.
+    used_sat = sat
+    if not frames and sat != "all":
+        logger.info("VOLCAT: sin frames %s para %s, fallback a sat=all",
+                    sat, sector)
+        frames, coords = _query_frames(sector, instr, image_type, "all")
+        used_sat = "all"
     if not frames:
         return None
     last = frames[-1]
@@ -141,7 +164,7 @@ def volcat_latest(
         "legend_url": f"{BASE}/data/sector_imagery_config/overlays/maps/{sector}.MAP.{legend_key}.png",
         "latlon_url": f"{BASE}/data/sector_imagery_config/overlays/latlon/{sector}.LATLON.CYAN.png",
         "volcanoes_url": f"{BASE}/data/sector_imagery_config/overlays/volcanoes/{sector}.VOLCANOES.CYAN.png",
-        "coords": d.get("coordinates"),
+        "coords": coords,
         "sector": sector,
         "instr": instr,
         "image_type": image_type,

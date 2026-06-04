@@ -253,7 +253,7 @@ def render():
         "Series de tiempo por volcán",
         "Tendencia de firma de ceniza/SO2 en las últimas horas — RAMMB/CIRA GOES-19",
     )
-    refresh_info_badge(context="general")
+    refresh_info_badge(context="series")
 
     # ── Aviso de confiabilidad parcial ──
     # Desde 2026-04-26 la metrica usa _ash_red_fraction_v2 que filtra:

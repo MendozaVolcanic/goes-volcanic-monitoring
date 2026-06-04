@@ -436,6 +436,7 @@ def refresh_info_badge(context: str = "general"):
         "animation": ("por ejecucion", "#d29922", "Genera una animacion con los N ultimos frames disponibles. Reejecuta para traer el frame mas reciente."),
         "volcat":    ("manual", "#4a9eff", "Productos pre-procesados por SSEC/CIMSS (RealEarth + portal VOLCAT). Cadencia ABI 10 min; SSEC publica ~3-6 min despues del scan. Apreta ↻ para el frame mas nuevo."),
         "ash":       ("manual", "#4a9eff", "Baja las 4 bandas L1b crudas de AWS S3 NOAA y las procesa aca (no usa RAMMB). GOES-19 publica cada 10 min + ~2 min de calibracion NOAA."),
+        "series":    ("diario", "#3fb950", "Series de hot spots NOAA FDCF + FRP. Un GitHub Action agrega los conteos por volcan 1 vez al dia (02:00 UTC); el dia en curso puede estar incompleto."),
     }
     label, color, detail = resumen.get(context, resumen["general"])
     # Compactado: padding reducido, fuente mas chica, margin-bottom mas chico
@@ -451,19 +452,133 @@ def refresh_info_badge(context: str = "general"):
         f'</div>',
         unsafe_allow_html=True,
     )
-    # Detalle tecnico completo en expander
+    # Detalle tecnico completo en expander — DEPENDIENTE DE LA FUENTE.
+    # Antes era un texto fijo de la cadena RAMMB que aparecia en TODAS las
+    # vistas, incluso VOLCAT (SSEC) y Ash (L1b propio) que NO usan RAMMB.
+    # Ahora cada familia de fuente tiene su propia cadena correcta.
+    # (mayo 2026)
+    _ctx_to_family = {
+        "live": "rammb", "animation": "rammb", "general": "rammb",
+        "volcat": "ssec", "ash": "self_l1b", "series": "fdcf",
+    }
+    family = _ctx_to_family.get(context, "rammb")
+    _detail = _refresh_detail_html(family)
     with st.expander("Como se actualizan los datos (detalle)"):
-        st.markdown("""
-<div style="font-size:0.78rem; line-height:1.55; color:#c0ccd8;">
+        st.markdown(_detail, unsafe_allow_html=True)
 
+
+def _refresh_detail_html(family: str) -> str:
+    """HTML del detalle de actualizacion segun la FUENTE de datos real.
+
+    family:
+      "rammb"    -> tiles RGB pre-armados por RAMMB/CIRA (En Vivo, Guardia,
+                    Comparador, Loops, Replay).
+      "ssec"     -> productos VOLCAT pre-procesados por SSEC/CIMSS.
+      "self_l1b" -> bandas L1b crudas de AWS S3 NOAA, procesadas por nosotros
+                    (Ash + BTD).
+      "fdcf"     -> hot spots L2 FDCF de NOAA (Series de tiempo).
+    """
+    _wrap = ('<div style="font-size:0.78rem; line-height:1.55; '
+             'color:#c0ccd8;">{}</div>')
+
+    if family == "ssec":
+        body = """
+<b>Cadena de datos — VOLCAT (SSEC/CIMSS)</b><br>
+Esta vista NO usa RAMMB. Los productos los pre-procesa la Universidad de
+Wisconsin (SSEC/CIMSS) con el algoritmo Pavolonis 2013.
+
+<table style="width:100%; font-size:0.78rem; border-collapse:collapse; margin-top:0.4rem;">
+<tr style="color:#8899aa;">
+  <th style="text-align:left; padding:2px 6px;">Paso</th>
+  <th style="text-align:left; padding:2px 6px;">Tiempo</th>
+  <th style="text-align:left; padding:2px 6px;">Que pasa</th></tr>
+<tr><td style="padding:2px 6px;">1. Scan del satelite</td>
+    <td style="padding:2px 6px;"><b>10 min</b></td>
+    <td style="padding:2px 6px;">GOES-19 barre el disco completo</td></tr>
+<tr><td style="padding:2px 6px;">2. Calibracion NOAA</td>
+    <td style="padding:2px 6px;">1-2 min</td>
+    <td style="padding:2px 6px;">El dato bruto se publica en AWS</td></tr>
+<tr><td style="padding:2px 6px;">3. Procesamiento SSEC</td>
+    <td style="padding:2px 6px;">3-6 min</td>
+    <td style="padding:2px 6px;">SSEC corre Pavolonis (deteccion + altura/carga) y publica en RealEarth + portal VOLCAT</td></tr>
+<tr><td style="padding:2px 6px;">4. El dashboard consulta</td>
+    <td style="padding:2px 6px;">al abrir / ↻</td>
+    <td style="padding:2px 6px;">Pedimos el frame mas nuevo a la API de SSEC</td></tr>
+<tr><td style="padding:2px 6px;">5. Descarga + dibujo</td>
+    <td style="padding:2px 6px;">2-10 s</td>
+    <td style="padding:2px 6px;">Bajamos el PNG del producto y lo mostramos</td></tr>
+</table>
+
+<b>Total tipico fenomeno -> pantalla:</b> ~13-18 min.<br>
+<b>Satelite:</b> preferimos GOES-19 (East); si un sector solo tiene GOES-18 se usa ese.<br>
+<b>Como recargar:</b> reabrir la vista, cambiar volcan/zona/producto, o tecla <b>R</b>.<br>
+<b>Fuente:</b> <a href="https://volcano.ssec.wisc.edu" target="_blank" style="color:#4a9eff;">VOLCAT portal</a>
++ <a href="https://realearth.ssec.wisc.edu" target="_blank" style="color:#4a9eff;">RealEarth</a> — SSEC/CIMSS, Univ. Wisconsin.
+"""
+    elif family == "self_l1b":
+        body = """
+<b>Cadena de datos — Ash + BTD (procesamiento propio)</b><br>
+Esta vista NO usa RAMMB ni SSEC: bajamos las bandas crudas y calculamos
+todo aca (temperaturas de brillo, BTD split-window y tri-espectral).
+
+<table style="width:100%; font-size:0.78rem; border-collapse:collapse; margin-top:0.4rem;">
+<tr style="color:#8899aa;">
+  <th style="text-align:left; padding:2px 6px;">Paso</th>
+  <th style="text-align:left; padding:2px 6px;">Tiempo</th>
+  <th style="text-align:left; padding:2px 6px;">Que pasa</th></tr>
+<tr><td style="padding:2px 6px;">1. Scan del satelite</td>
+    <td style="padding:2px 6px;"><b>10 min</b></td>
+    <td style="padding:2px 6px;">GOES-19 barre el disco completo</td></tr>
+<tr><td style="padding:2px 6px;">2. L1b en AWS S3 NOAA</td>
+    <td style="padding:2px 6px;">1-2 min</td>
+    <td style="padding:2px 6px;">NOAA publica las bandas crudas (radiancias) sin procesar</td></tr>
+<tr><td style="padding:2px 6px;">3. Procesamiento propio</td>
+    <td style="padding:2px 6px;">10-20 s</td>
+    <td style="padding:2px 6px;">Bajamos 4 bandas (~100 MB), radiancia->temperatura (Planck), calculamos BTD</td></tr>
+<tr><td style="padding:2px 6px;">4. Render</td>
+    <td style="padding:2px 6px;">2-5 s</td>
+    <td style="padding:2px 6px;">Dibujamos Ash RGB / BTD / mapa de confianza</td></tr>
+</table>
+
+<b>Total tipico fenomeno -> pantalla:</b> ~13-16 min (la descarga L1b es lo mas lento).<br>
+<b>Cache:</b> el resultado procesado se guarda ~2 h para no re-descargar.<br>
+<b>Como recargar:</b> boton <b>Descargar imagen fresca</b>, o cambiar de region.<br>
+<b>Fuente:</b> <a href="https://registry.opendata.aws/noaa-goes/" target="_blank" style="color:#4a9eff;">AWS S3 noaa-goes19</a> — bandas L1b crudas (ABI-L1b-RadF).
+"""
+    elif family == "fdcf":
+        body = """
+<b>Cadena de datos — Series de tiempo (hot spots NOAA FDCF)</b><br>
+Estas series se arman a partir del producto L2 FDCF de NOAA (deteccion de
+focos termicos) y del % de pixeles ash-rojos. NO es una imagen NRT.
+
+<table style="width:100%; font-size:0.78rem; border-collapse:collapse; margin-top:0.4rem;">
+<tr style="color:#8899aa;">
+  <th style="text-align:left; padding:2px 6px;">Paso</th>
+  <th style="text-align:left; padding:2px 6px;">Cadencia</th>
+  <th style="text-align:left; padding:2px 6px;">Que pasa</th></tr>
+<tr><td style="padding:2px 6px;">1. Producto FDCF L2</td>
+    <td style="padding:2px 6px;">10 min</td>
+    <td style="padding:2px 6px;">NOAA detecta focos termicos (hot spots + FRP) por scan</td></tr>
+<tr><td style="padding:2px 6px;">2. Agregacion diaria</td>
+    <td style="padding:2px 6px;">1 vez/dia</td>
+    <td style="padding:2px 6px;">Un GitHub Action (02:00 UTC) regenera el JSON de conteos y FRP por volcan</td></tr>
+<tr><td style="padding:2px 6px;">3. El dashboard lee</td>
+    <td style="padding:2px 6px;">al abrir</td>
+    <td style="padding:2px 6px;">Carga el JSON y dibuja las series</td></tr>
+</table>
+
+<b>Nota:</b> el dia en curso puede aparecer incompleto hasta que cierra el conteo diario.<br>
+<b>Fuente:</b> NOAA GOES-19 <b>ABI-L2-FDCF</b> (Fire/Hot Characterization) via AWS S3.
+"""
+    else:  # "rammb"
+        body = """
 <b>Cuanto tarda una imagen nueva en aparecer aca</b>
 
 <table style="width:100%; font-size:0.78rem; border-collapse:collapse;">
 <tr style="color:#8899aa;">
   <th style="text-align:left; padding:2px 6px;">Paso</th>
   <th style="text-align:left; padding:2px 6px;">Tiempo</th>
-  <th style="text-align:left; padding:2px 6px;">Que pasa</th>
-</tr>
+  <th style="text-align:left; padding:2px 6px;">Que pasa</th></tr>
 <tr><td style="padding:2px 6px;">1. Scan del satelite</td>
     <td style="padding:2px 6px;"><b>10 min</b></td>
     <td style="padding:2px 6px;">GOES-19 barre el disco completo cada 10 min</td></tr>
@@ -482,25 +597,22 @@ def refresh_info_badge(context: str = "general"):
 </table>
 
 <b>Tiempo total entre el fenomeno y verlo aca:</b>
-tipico <b>8-10 min</b>, minimo ~4 min, maximo ~15 min
-(depende de si la erupcion ocurre justo antes o justo despues de un scan).
+tipico <b>8-10 min</b>, minimo ~4 min, maximo ~15 min.
 
 <b>En que vistas aplica el auto-refresh:</b><br>
 &bull; <b>En Vivo</b>: auto-refresh de 60 s. Detecta la imagen nueva solo.<br>
-&bull; Resto de vistas (Ash Viewer, Por Volcan, VOLCAT, Animacion):
-  cargan al abrir la vista o al presionar un boton. El backend guarda
-  las imagenes 2 h en cache para no re-descargar.
+&bull; Resto de vistas RAMMB (Por Volcan, Animacion, Replay): cargan al
+  abrir o al presionar un boton; cache 2 h.
 
 <b>Como forzar una recarga inmediata:</b><br>
 &bull; Boton <b>↻ Actualizar</b> en En Vivo<br>
-&bull; Tecla <b>R</b> en el navegador (cualquier vista)<br>
+&bull; Tecla <b>R</b> en el navegador<br>
 &bull; Cambiar el producto o el volcan seleccionado
 
 <b>Fuente:</b> <a href="https://slider.cira.colostate.edu" target="_blank"
 style="color:#4a9eff;">RAMMB/CIRA SLIDER</a> — Colorado State University.
-
-</div>
-        """, unsafe_allow_html=True)
+"""
+    return _wrap.format(body)
 
 
 def ash_legend():

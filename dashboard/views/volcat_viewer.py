@@ -354,6 +354,21 @@ def _volcat_map_only(image_url: str, latlon_url: str | None,
             top, bot = int(ys.min()), int(ys.max())
             left, right = int(xs.min()), int(xs.max())
 
+    # SSEC tambien quema el texto amarillo "GOES-19 ABI (fecha)" SOBRE la
+    # esquina superior del mapa (debajo del titulo blanco ya recortado).
+    # Lo detectamos por su color amarillo brillante y recortamos hasta
+    # despues — redundante con nuestro header de zona+hora.
+    try:
+        rgb = np.array(base.convert("RGB"))
+        scan_to = min(top + 70, h)
+        yellow = ((rgb[:scan_to, :, 0] > 170) & (rgb[:scan_to, :, 1] > 170)
+                  & (rgb[:scan_to, :, 2] < 110))
+        yrows = np.where(yellow.sum(axis=1) > 5)[0]
+        if len(yrows):
+            top = max(top, int(yrows.max()) + 4)
+    except Exception:
+        pass
+
     try:
         dp = math.degrees(coords["SCALE_FACTOR"] / coords["EQ_RADIUS"])
         lat0 = coords["ORIGIN_LAT"] + coords.get("OFFSET_Y", 0) * dp

@@ -289,6 +289,18 @@ def _render_height_section(key_suffix: str = "tab") -> None:
     # Cheat-sheet con los 4 productos antes del selector — ayuda a elegir.
     st.markdown(_volcat_cheatsheet_html(), unsafe_allow_html=True)
 
+    # ── Modo de seleccion: por VOLCAN puntual o por ZONA regional ──
+    # VOLCAT tiene sectores regionales (Chile_North/Central/South_2km) que
+    # cubren zonas completas. Antes solo se accedia eligiendo un volcan;
+    # ahora ofrecemos el acceso directo por zona tambien.
+    from src.fetch.volcat_api import ZONE_TO_SECTOR
+    modo_sel = st.radio(
+        "Ver por", ["Volcán", "Zona"], horizontal=True,
+        key=f"volcat_height_modo_{key_suffix}",
+        help="Volcán = sector dedicado del volcán elegido. "
+             "Zona = sector regional completo (Norte/Centro/Sur).",
+    )
+
     priority_names = [v.name for v in CATALOG if v.name in PRIORITY_VOLCANOES
                       and v.name in VOLCANO_TO_SECTOR]
     other_names    = [v.name for v in CATALOG if v.name in VOLCANO_TO_SECTOR
@@ -297,12 +309,20 @@ def _render_height_section(key_suffix: str = "tab") -> None:
 
     cv1, cv2 = st.columns([1.5, 1.5])
     with cv1:
-        sel_raw = st.selectbox(
-            "Volcán", volc_options, index=0,
-            key=f"volcat_height_volcano_{key_suffix}",
-            help="★ = volcán prioritario (con sector dedicado en VOLCAT)",
-        )
-        volc_name_h = sel_raw.replace("★ ", "")
+        if modo_sel == "Zona":
+            zona_sel = st.selectbox(
+                "Zona volcánica", list(ZONE_TO_SECTOR.keys()), index=0,
+                key=f"volcat_height_zona_{key_suffix}",
+                help="Sector regional VOLCAT. 'Sur' cubre tambien la zona austral.",
+            )
+            volc_name_h = f"Zona {zona_sel}"
+        else:
+            sel_raw = st.selectbox(
+                "Volcán", volc_options, index=0,
+                key=f"volcat_height_volcano_{key_suffix}",
+                help="★ = volcán prioritario (con sector dedicado en VOLCAT)",
+            )
+            volc_name_h = sel_raw.replace("★ ", "")
     with cv2:
         # Tooltip ampliado en el selectbox + descripción inline debajo.
         help_text = "\n".join(
@@ -331,15 +351,18 @@ def _render_height_section(key_suffix: str = "tab") -> None:
         unsafe_allow_html=True,
     )
 
-    sector_info = get_sector_for_volcano(volc_name_h)
-    if not sector_info:
-        st.error(
-            f"El volcán '{volc_name_h}' no tiene sector VOLCAT mapeado todavía. "
-            "Avisame para agregarlo a `src/fetch/volcat_api.py::VOLCANO_TO_SECTOR`."
-        )
-        return
-
-    sector, instr = sector_info
+    if modo_sel == "Zona":
+        # Sector regional directo — no pasa por get_sector_for_volcano.
+        sector, instr = ZONE_TO_SECTOR[zona_sel]
+    else:
+        sector_info = get_sector_for_volcano(volc_name_h)
+        if not sector_info:
+            st.error(
+                f"El volcán '{volc_name_h}' no tiene sector VOLCAT mapeado todavía. "
+                "Avisame para agregarlo a `src/fetch/volcat_api.py::VOLCANO_TO_SECTOR`."
+            )
+            return
+        sector, instr = sector_info
     with st.spinner(
         f"Consultando VOLCAT para {volc_name_h} (sector {sector}, {prod_h})..."
     ):
@@ -360,7 +383,7 @@ def _render_height_section(key_suffix: str = "tab") -> None:
     ts_h = _parse_volcat_dt(meta.get("datetime"))
     kh1, kh2, kh3 = st.columns(3)
     with kh1:
-        kpi_card(volc_name_h, "Volcán")
+        kpi_card(volc_name_h, "Zona" if modo_sel == "Zona" else "Volcán")
     with kh2:
         kpi_card(sector.replace("_", " "), "Sector VOLCAT")
     with kh3:
@@ -443,206 +466,169 @@ def _parse_timestamp(ts_str):
         return ts_str
 
 
-def render():
-    from dashboard.manuals import render_manual
-    render_manual("volcat")
-    header(
-        "VOLCAT — Productos SSEC/CIMSS",
-        "Imagenes pre-procesadas por la Universidad de Wisconsin via RealEarth API &middot; GOES-19",
+def _ssec_png_download(img_rgba, filename: str, button_label: str, key: str):
+    """Boton de descarga para imagen SSEC (RGBA -> PNG con alpha aplicado)."""
+    if img_rgba is None:
+        return
+    import io as _io
+    from PIL import Image as _PIL
+    rgb = img_rgba[:, :, :3].copy()
+    alpha = img_rgba[:, :, 3:4].astype(np.float32) / 255.0
+    rgb = (rgb.astype(np.float32) * alpha).astype(np.uint8)
+    buf = _io.BytesIO()
+    _PIL.fromarray(rgb).save(buf, format="PNG", optimize=True)
+    png = buf.getvalue()
+    size_kb = len(png) / 1024
+    size_str = f"{size_kb/1024:.1f} MB" if size_kb >= 1024 else f"{size_kb:.0f} KB"
+    st.download_button(
+        f"⬇ {button_label} ({size_str})",
+        data=png, file_name=filename, mime="image/png",
+        key=key, width='stretch',
     )
 
-    refresh_info_badge(context="volcat")
 
-    # ── Controles ──
+def _render_vaa_block():
+    """Avisos VAA (Volcanic Ash Advisories) globales — GeoJSON liviano."""
+    vaa = _fetch_vaa_cached()
+    feats = vaa.get("features", []) if vaa else []
+    if feats:
+        st.markdown(
+            f'<div class="status-banner warn">'
+            f'<b>&#9888; {len(feats)} Volcanic Ash Advisory(ies) activos globalmente</b>'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+        for feat in feats:
+            props = feat.get("properties", {})
+            name = props.get("name", props.get("title", "Sin nombre"))
+            desc = props.get("description", "")
+            st.markdown(
+                f'<div class="volcano-card"><h3>{name}</h3>'
+                f'<div class="detail">{desc}</div></div>',
+                unsafe_allow_html=True,
+            )
+    else:
+        info_panel(
+            "<b>Sin Volcanic Ash Advisories activos.</b><br>"
+            "Los VAA son emitidos por los VAACs (Volcanic Ash Advisory Centers) "
+            "cuando se detecta ceniza volcanica que puede afectar la aviacion. "
+            "La ausencia de VAA indica condiciones normales."
+        )
+
+
+def _render_ssec_rgb_block():
+    """Ash/SO2 RGB de SSEC (RealEarth) — REDUNDANTE con Modo Guardia.
+
+    Se renderiza colapsado como respaldo. La descarga es pesada (Full Disk),
+    por eso detras de un boton explicito.
+    """
+    st.caption(
+        "Estos Ash/SO2 RGB vienen de **SSEC RealEarth** y son equivalentes a "
+        "los de **Modo Guardia** (que usan RAMMB/CIRA) — misma idea, otro "
+        "proveedor. Utiles solo como respaldo si RAMMB no responde."
+    )
     c1, c2 = st.columns([1.5, 1])
     with c1:
         zone_key = st.selectbox("Region", list(ZONE_OPTIONS.keys()), index=0,
                                 key="volcat_zone")
     with c2:
         st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
-        fetch = st.button("Obtener imagenes SSEC", type="primary",
-                          width='stretch')
-
+        fetch = st.button("Obtener imagenes SSEC", type="primary", width='stretch')
     bounds = ZONE_OPTIONS[zone_key]
 
     if not fetch:
-        # Mostrar info panel + tab de Altura (que es independiente del fetch
-        # pesado de RGB Full Disk).
-        col_info, col_ts = st.columns([2, 1])
-        with col_info:
-            info_panel(
-                "<b>Productos VOLCAT via SSEC/CIMSS</b><br><br>"
-                "<b>Ash RGB / SO2 RGB</b> (Full Disk via RealEarth API): "
-                "apretá <i>Obtener imagenes SSEC</i> arriba para descargarlas. "
-                "Pesado, ~10s.<br><br>"
-                "<b>Altura de pluma / Loading / Probability / Reff</b> "
-                "(VOLCAT portal por sector): <b>disponible directo abajo</b>, "
-                "no necesita el botón. Algoritmo Pavolonis 2013 "
-                "(optimal estimation), ±1-2 km de error en plumas opacas.<br><br>"
-                "<b>Fuente:</b> RealEarth + VOLCAT portal (publico, sin auth)<br>"
-                "<b>Retencion:</b> ~28 dias"
-            )
-        with col_ts:
-            ash_ts = get_latest_time("ash_rgb")
-            so2_ts = get_latest_time("so2_rgb")
-            st.markdown(
-                f'<div class="legend-container">'
-                f'<div class="legend-title">Ultima imagen disponible</div>'
-                f'<div style="font-size:0.82rem; color:#99aabb; line-height:2;">'
-                f'<b>Ash RGB:</b> {_parse_timestamp(ash_ts)}<br>'
-                f'<b>SO2 RGB:</b> {_parse_timestamp(so2_ts)}'
-                f'</div></div>',
-                unsafe_allow_html=True,
-            )
-
-        # Tab Altura (independiente — no requiere fetch pesado)
-        st.markdown("---")
+        ash_ts = get_latest_time("ash_rgb")
+        so2_ts = get_latest_time("so2_rgb")
         st.markdown(
-            "### 📏 Altura de pluma VOLCAT (disponible siempre)",
+            f'<div class="legend-container">'
+            f'<div class="legend-title">Ultima imagen disponible</div>'
+            f'<div style="font-size:0.82rem; color:#99aabb; line-height:2;">'
+            f'<b>Ash RGB:</b> {_parse_timestamp(ash_ts)}<br>'
+            f'<b>SO2 RGB:</b> {_parse_timestamp(so2_ts)}'
+            f'</div></div>',
             unsafe_allow_html=True,
         )
-        _render_height_section(key_suffix="standalone")
+        st.info("Apreta **Obtener imagenes SSEC** para descargar los RGB Full Disk (~10s).")
         return
 
-    # ── Fetch images ──
-    ash_img = None
-    so2_img = None
-    vaa = None
-
-    with st.spinner("Descargando productos SSEC (Ash RGB + SO2 RGB + VAA)..."):
+    with st.spinner("Descargando productos SSEC (Ash RGB + SO2 RGB)..."):
         ash_ts = _get_latest_time_cached("ash_rgb")
         so2_ts = _get_latest_time_cached("so2_rgb")
-
         ash_img = _fetch_image_cached("ash_rgb", bounds, ash_ts)
         so2_img = _fetch_image_cached("so2_rgb", bounds, so2_ts)
-        vaa = _fetch_vaa_cached()
 
-    # ── Status banner ──
     products_ok = sum(1 for x in [ash_img, so2_img] if x is not None)
-    vaa_count = len(vaa.get("features", [])) if vaa else 0
-
     ts_display = _parse_timestamp(ash_ts)
     st.markdown(
         f'<div class="status-banner ok">'
-        f'<b>&#10003; {products_ok}/2 productos descargados — '
-        f'{vaa_count} VAA activos globalmente</b>'
+        f'<b>&#10003; {products_ok}/2 productos descargados</b>'
         f'<span style="color:#556677; font-size:0.78rem;">{ts_display}</span>'
         f'</div>',
         unsafe_allow_html=True,
     )
 
-    # ── KPIs ──
-    k1, k2, k3 = st.columns(3)
-    with k1:
-        kpi_card("SSEC", "Fuente de datos")
-    with k2:
-        kpi_card(ts_display.split(" ")[1] if " " in ts_display else "—", "Hora UTC")
-    with k3:
-        kpi_card(str(vaa_count), "VAA activos",
-                 delta="global" if vaa_count > 0 else "",
-                 delta_type="negative" if vaa_count > 0 else "neutral")
-
-    st.markdown("<div style='height:0.2rem'></div>", unsafe_allow_html=True)
-
-    # ── Tabs ──
-    tab1, tab2, tab_height, tab3 = st.tabs([
-        "Ash RGB (SSEC)",
-        "SO2 RGB (SSEC)",
-        "📏 Altura de pluma (VOLCAT)",
-        "VAA Advisories",
-    ])
-
-    def _ssec_png_download(img_rgba, filename: str, button_label: str, key: str):
-        """Boton de descarga para imagen SSEC (RGBA -> PNG con alpha aplicado)."""
-        if img_rgba is None:
-            return
-        import io as _io
-        from PIL import Image as _PIL
-        rgb = img_rgba[:, :, :3].copy()
-        alpha = img_rgba[:, :, 3:4].astype(np.float32) / 255.0
-        rgb = (rgb.astype(np.float32) * alpha).astype(np.uint8)
-        buf = _io.BytesIO()
-        _PIL.fromarray(rgb).save(buf, format="PNG", optimize=True)
-        png = buf.getvalue()
-        size_kb = len(png) / 1024
-        size_str = f"{size_kb/1024:.1f} MB" if size_kb >= 1024 else f"{size_kb:.0f} KB"
-        st.download_button(
-            f"⬇ {button_label} ({size_str})",
-            data=png, file_name=filename, mime="image/png",
-            key=key, width='stretch',
-        )
-
+    tab1, tab2 = st.tabs(["Ash RGB (SSEC)", "SO2 RGB (SSEC)"])
     with tab1:
         col_img, col_leg = st.columns([5, 1.2])
         with col_img:
             if ash_img is not None:
                 fig = _fig_ssec_image(
                     ash_img, bounds,
-                    f"Ash RGB — SSEC/CIMSS GOES-19 ({ts_display})",
-                    CATALOG,
+                    f"Ash RGB — SSEC/CIMSS GOES-19 ({ts_display})", CATALOG,
                 )
                 st.plotly_chart(fig, width='stretch')
                 _ssec_png_download(
-                    ash_img,
-                    filename=f"volcat_ssec_ash_rgb_{ash_ts or 'latest'}.png",
-                    button_label="Descargar Ash RGB SSEC (PNG)",
-                    key="dl_volcat_ash",
+                    ash_img, filename=f"volcat_ssec_ash_rgb_{ash_ts or 'latest'}.png",
+                    button_label="Descargar Ash RGB SSEC (PNG)", key="dl_volcat_ash",
                 )
             else:
                 st.error("No se pudo descargar la imagen Ash RGB de SSEC")
         with col_leg:
             ash_legend()
-
     with tab2:
         col_img2, col_leg2 = st.columns([5, 1.2])
         with col_img2:
             if so2_img is not None:
                 fig = _fig_ssec_image(
                     so2_img, bounds,
-                    f"SO2 RGB — SSEC/CIMSS GOES-19 ({_parse_timestamp(so2_ts)})",
-                    CATALOG,
+                    f"SO2 RGB — SSEC/CIMSS GOES-19 ({_parse_timestamp(so2_ts)})", CATALOG,
                 )
                 st.plotly_chart(fig, width='stretch')
                 _ssec_png_download(
-                    so2_img,
-                    filename=f"volcat_ssec_so2_rgb_{so2_ts or 'latest'}.png",
-                    button_label="Descargar SO2 RGB SSEC (PNG)",
-                    key="dl_volcat_so2",
+                    so2_img, filename=f"volcat_ssec_so2_rgb_{so2_ts or 'latest'}.png",
+                    button_label="Descargar SO2 RGB SSEC (PNG)", key="dl_volcat_so2",
                 )
             else:
                 st.error("No se pudo descargar la imagen SO2 RGB de SSEC")
         with col_leg2:
             ash_so2_legend()
 
-    # ── TAB: Altura de pluma VOLCAT (Pavolonis 2013, ±1-2 km) ──
-    with tab_height:
-        _render_height_section(key_suffix="tab")
 
-    with tab3:
-        if vaa and vaa.get("features"):
-            st.markdown(
-                f'<div class="status-banner warn">'
-                f'<b>&#9888; {vaa_count} Volcanic Ash Advisory(ies) activos globalmente</b>'
-                f'</div>',
-                unsafe_allow_html=True,
-            )
+def render():
+    from dashboard.manuals import render_manual
+    render_manual("volcat")
+    header(
+        "VOLCAT — Altura de pluma (SSEC/CIMSS)",
+        "Caracterizacion cuantitativa de pluma via algoritmo Pavolonis 2013 &middot; GOES-19",
+    )
 
-            for feat in vaa["features"]:
-                props = feat.get("properties", {})
-                name = props.get("name", props.get("title", "Sin nombre"))
-                desc = props.get("description", "")
+    refresh_info_badge(context="volcat")
 
-                st.markdown(
-                    f'<div class="volcano-card">'
-                    f'<h3>{name}</h3>'
-                    f'<div class="detail">{desc}</div>'
-                    f'</div>',
-                    unsafe_allow_html=True,
-                )
-        else:
-            info_panel(
-                "<b>Sin Volcanic Ash Advisories activos.</b><br>"
-                "Los VAA son emitidos por los VAACs (Volcanic Ash Advisory Centers) "
-                "cuando se detecta ceniza volcanica en la atmosfera que puede afectar "
-                "la aviacion. La ausencia de VAA indica condiciones normales."
-            )
+    # ── PROTAGONISTA: altura de pluma VOLCAT. Es lo UNICO exclusivo de
+    # esta pagina (altura km / carga g/m² / probabilidad / radio µm que
+    # ningun otro modulo calcula). Va ARRIBA, disponible siempre, sin
+    # botones pesados. (reordenado mayo 2026 — antes estaba al final y lo
+    # primero era el boton de RGB redundantes). ──
+    _render_height_section(key_suffix="main")
+
+    # ── Complemento opcional y colapsado: Ash/SO2 RGB de SSEC (redundantes
+    # con Modo Guardia, otro proveedor) + Avisos VAA de aviacion. ──
+    st.markdown("---")
+    with st.expander(
+        "🛰 Ash / SO2 RGB de SSEC + Avisos VAA (respaldo opcional)",
+        expanded=False,
+    ):
+        _render_ssec_rgb_block()
+        st.markdown("---")
+        st.markdown("**Avisos de ceniza volcánica (VAA) — global**")
+        _render_vaa_block()

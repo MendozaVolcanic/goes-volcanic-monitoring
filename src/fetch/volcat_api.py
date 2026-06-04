@@ -77,6 +77,17 @@ VOLCANO_TO_SECTOR: dict[str, tuple[str, str]] = {
     "Popocatépetl (México)": ("Popocatepetl_250_m", "ABI"),
 }
 
+# Sectores REGIONALES de VOLCAT que cubren zonas completas (no un volcan
+# puntual). Permite ver altura de pluma por zona en vez de obligar a
+# elegir un volcan. Verificado: los 3 tienen cobertura GOES-19 nativa.
+# No existe sector "austral" en VOLCAT — Chile_South_2_km cubre hasta el
+# extremo sur, asi que la zona austral cae bajo "Sur".
+ZONE_TO_SECTOR: dict[str, tuple[str, str]] = {
+    "Norte":  ("Chile_North_2_km",   "ABI"),
+    "Centro": ("Chile_Central_2_km", "ABI"),
+    "Sur":    ("Chile_South_2_km",   "ABI"),
+}
+
 # Leyenda color->producto
 LEGEND_KEY = {
     "Ash_Height": "ASH_HGT-LOAD",

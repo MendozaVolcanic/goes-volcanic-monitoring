@@ -375,6 +375,7 @@ def _render_height_section(key_suffix: str = "tab") -> None:
     from src.fetch.volcat_api import ZONE_TO_SECTOR
     modo_sel = st.radio(
         "Ver por", ["Volcán", "Zona"], horizontal=True,
+        index=1,  # default = Zona (la zona default es Norte) al abrir la vista
         key=f"volcat_height_modo_{key_suffix}",
         help="Volcán = sector dedicado del volcán elegido. "
              "Zona = sector regional completo (Norte/Centro/Sur).",

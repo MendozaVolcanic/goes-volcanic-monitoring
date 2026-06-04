@@ -268,27 +268,37 @@ def _volcat_image_with_overlays(image_url: str,
     referencia geografica. Cacheada por las 3 URLs (incluyen timestamp).
     """
     import io
+    from concurrent.futures import ThreadPoolExecutor
     import requests
     from PIL import Image
-    try:
-        r = requests.get(image_url, timeout=30)
-        r.raise_for_status()
-        base = Image.open(io.BytesIO(r.content)).convert("RGBA")
-    except Exception as e:
-        logger.warning("VOLCAT base %s: %s", image_url, e)
-        return b""
-    # Orden: fronteras/grilla primero, volcanes ENCIMA (mas visibles).
-    for url in [latlon_url, volcanoes_url]:
+
+    def _dl(url):
+        """Baja una URL y la abre como PIL RGBA (None si falla/vacia)."""
         if not url:
-            continue
+            return None
         try:
-            ro = requests.get(url, timeout=30)
-            ro.raise_for_status()
-            ov = Image.open(io.BytesIO(ro.content)).convert("RGBA")
-            if ov.size == base.size:
-                base = Image.alpha_composite(base, ov)
+            r = requests.get(url, timeout=30)
+            r.raise_for_status()
+            return Image.open(io.BytesIO(r.content)).convert("RGBA")
         except Exception as e:
-            logger.warning("VOLCAT overlay %s: %s", url, e)
+            logger.warning("VOLCAT dl %s: %s", url, e)
+            return None
+
+    # Descargas EN PARALELO (base + fronteras + volcanes). Antes eran
+    # seriales -> 3 round-trips x 3 zonas = 9 seriales, hacian el frame
+    # VOLCAT tan lento que trababa la rotacion de 10s del Modo Sala.
+    with ThreadPoolExecutor(max_workers=3) as ex:
+        f_base = ex.submit(_dl, image_url)
+        f_ll = ex.submit(_dl, latlon_url)
+        f_vol = ex.submit(_dl, volcanoes_url)
+        base, ll, vol = f_base.result(), f_ll.result(), f_vol.result()
+
+    if base is None:
+        return b""
+    # Composicion: fronteras/grilla primero, volcanes ENCIMA (mas visibles).
+    for ov in [ll, vol]:
+        if ov is not None and ov.size == base.size:
+            base = Image.alpha_composite(base, ov)
     buf = io.BytesIO()
     base.convert("RGB").save(buf, format="PNG")
     return buf.getvalue()

@@ -524,9 +524,9 @@ def _volcat_zonas_subtab():
     # Streamlit Cloud con imports cross-package top-level).
     from dashboard.views.volcat_viewer import (
         VOLCAT_PRODUCTS, _volcat_latest_cached, _volcat_image_bytes,
-        _volcat_map_only, _volcat_dt_obj,
+        _volcat_map_only, _volcat_image_with_overlays, _volcat_dt_obj,
     )
-    from dashboard.views.zonas_fullscreen import _volcat_zone_fig
+    from dashboard.views.zonas_fullscreen import _volcat_zone_fig, VOLCAT_TV_RENDER
     from dashboard.utils import fmt_both
     from src.fetch.volcat_api import ZONE_TO_SECTOR
 
@@ -571,26 +571,42 @@ def _volcat_zonas_subtab():
                     f"(sector {sector})."
                 )
                 continue
-            data = _volcat_map_only(
-                meta["image_url"], meta.get("latlon_url"),
-                meta.get("coords") or {})
-            if not data:
-                st.error(f"No se pudo bajar la imagen de zona {zona}.")
-                continue
-            sb = data["bounds"]
-            vb = {
-                "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
-                "lon_min": max(sb["lon_min"], -76.0),
-                "lon_max": min(sb["lon_max"], -66.0),
-            }
             dt = _volcat_dt_obj(meta.get("datetime"))
             time_label = fmt_both(dt) if dt else ""
-            st.plotly_chart(
-                _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
-                                 time_label, height=620),
-                width='stretch',
-                config={"displayModeBar": False},
+            st.markdown(
+                f"<div style='font-weight:800; color:#ff6644; "
+                f"font-size:0.95rem; margin-bottom:0.2rem;'>Zona {zona}"
+                f" <span style='color:#aabbc8; font-weight:400; "
+                f"font-size:0.78rem;'>· {time_label}</span></div>",
+                unsafe_allow_html=True,
             )
+            if VOLCAT_TV_RENDER == "plotly_volcanes":
+                data = _volcat_map_only(
+                    meta["image_url"], meta.get("latlon_url"),
+                    meta.get("coords") or {})
+                if not data:
+                    st.error(f"No se pudo bajar la imagen de zona {zona}.")
+                    continue
+                sb = data["bounds"]
+                vb = {
+                    "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
+                    "lon_min": max(sb["lon_min"], -76.0),
+                    "lon_max": min(sb["lon_max"], -66.0),
+                }
+                st.plotly_chart(
+                    _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
+                                     time_label, height=620),
+                    width='stretch',
+                    config={"displayModeBar": False},
+                )
+            else:  # "ssec_overlay" — imagen SSEC clasica (muchos volcanes)
+                img = _volcat_image_with_overlays(
+                    meta["image_url"], meta.get("volcanoes_url"),
+                    meta.get("latlon_url"))
+                if img:
+                    st.image(img, width='stretch')
+                else:
+                    st.error(f"No se pudo bajar la imagen de zona {zona}.")
             # Colorbar del producto (leyenda de altura/carga), aparte.
             leg = _volcat_image_bytes(meta["legend_url"])
             if leg:

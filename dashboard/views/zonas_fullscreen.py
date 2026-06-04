@@ -180,6 +180,18 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
     return fig
 
 
+# ── FEATURE FLAG: modo de render de VOLCAT por zona ──────────────────
+# "ssec_overlay"   = imagen SSEC tal cual (con su titulo, grilla y TODOS
+#                    los volcanes del overlay de SSEC). Es el despliegue
+#                    "clasico" (muchos volcanes). ACTIVO por defecto.
+# "plotly_volcanes"= render propio con plotly: mapa recortado (sin titulo
+#                    ni colorbar) + SOLO nuestros volcanes (los mismos que
+#                    las RGB) + frontera de Chile. Mas limpio y consistente.
+#
+# Para cambiar de modo basta editar esta constante y redeployar — ambos
+# renders conviven en el codigo. (mayo 2026)
+VOLCAT_TV_RENDER = "ssec_overlay"
+
 # Encuadre (rango de ejes) por zona VOLCAT — ajustado a la franja chilena
 # para no mostrar tanto oceano. La imagen SSEC cubre mas area; plotly hace
 # zoom a estos bounds. 'Sur' extiende hasta austral (Chile_South lo cubre).
@@ -254,12 +266,15 @@ def _render_volcat_zonas_tv(height: int):
     """Render de las 3 zonas VOLCAT (altura de pluma) en fila, para el
     Modo Sala TV.
 
-    Cada zona se renderiza con plotly georeferenciado: la imagen VOLCAT de
-    SSEC abajo + NUESTROS volcanes (mismos que las RGB) y la frontera de
-    Chile encima. Sin grids ni el overlay de cientos de volcanes de SSEC.
+    El modo lo decide la constante VOLCAT_TV_RENDER (feature flag):
+    - "ssec_overlay": imagen SSEC clasica (titulo, grilla, todos los
+      volcanes de SSEC) via st.image. Despliegue por defecto actual.
+    - "plotly_volcanes": render propio con plotly, mapa recortado +
+      nuestros volcanes + frontera. Mas limpio (activable mas adelante).
     """
     from dashboard.views.volcat_viewer import (
-        _volcat_latest_cached, _volcat_map_only, _volcat_dt_obj,
+        _volcat_latest_cached, _volcat_map_only, _volcat_image_with_overlays,
+        _volcat_dt_obj,
     )
     from dashboard.utils import fmt_both
     from src.fetch.volcat_api import ZONE_TO_SECTOR
@@ -271,10 +286,7 @@ def _render_volcat_zonas_tv(height: int):
                 meta = _volcat_latest_cached(sector, instr, "Ash_Height")
             except Exception:
                 meta = None
-            data = _volcat_map_only(
-                meta["image_url"], meta.get("latlon_url"),
-                meta.get("coords") or {}) if meta else {}
-            if not data:
+            if not meta:
                 st.markdown(
                     f"<div style='color:#ff6644; font-weight:800;'>Zona {zona}"
                     f"</div><div style='color:#7a8a9a; padding:2rem 0; "
@@ -284,19 +296,51 @@ def _render_volcat_zonas_tv(height: int):
                 continue
             dt = _volcat_dt_obj(meta.get("datetime"))
             time_label = fmt_both(dt) if dt else ""
-            sb = data["bounds"]
-            # Encuadre: alto = mapa recortado; ancho = franja chilena.
-            vb = {
-                "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
-                "lon_min": max(sb["lon_min"], -76.0),
-                "lon_max": min(sb["lon_max"], -66.0),
-            }
-            st.plotly_chart(
-                _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
-                                 time_label, height),
-                width='stretch',
-                config={"displayModeBar": False, "responsive": True},
-            )
+
+            if VOLCAT_TV_RENDER == "plotly_volcanes":
+                data = _volcat_map_only(
+                    meta["image_url"], meta.get("latlon_url"),
+                    meta.get("coords") or {})
+                if not data:
+                    st.markdown(
+                        f"<div style='color:#7a8a9a; padding:2rem 0; "
+                        f"text-align:center;'>VOLCAT sin frame</div>",
+                        unsafe_allow_html=True)
+                    continue
+                sb = data["bounds"]
+                vb = {
+                    "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
+                    "lon_min": max(sb["lon_min"], -76.0),
+                    "lon_max": min(sb["lon_max"], -66.0),
+                }
+                st.plotly_chart(
+                    _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
+                                     time_label, height),
+                    width='stretch',
+                    config={"displayModeBar": False, "responsive": True},
+                )
+            else:  # "ssec_overlay" — imagen SSEC clasica (muchos volcanes)
+                st.markdown(
+                    f"<div style='display:flex; justify-content:space-between; "
+                    f"align-items:baseline; background:rgba(10,14,20,0.92); "
+                    f"padding:0.2rem 0.6rem; border-radius:4px 4px 0 0; "
+                    f"border-left:3px solid #ff6644;'>"
+                    f"<span style='color:#ff6644; font-weight:800; "
+                    f"font-size:0.95rem;'>Zona {zona}</span>"
+                    f"<span style='color:#aabbc8; font-size:0.78rem;'>"
+                    f"{time_label or 'sin hora'}</span></div>",
+                    unsafe_allow_html=True,
+                )
+                img = _volcat_image_with_overlays(
+                    meta["image_url"], meta.get("volcanoes_url"),
+                    meta.get("latlon_url"))
+                if img:
+                    st.image(img, width='stretch')
+                else:
+                    st.markdown(
+                        "<div style='color:#7a8a9a; padding:2rem 0; "
+                        "text-align:center;'>VOLCAT sin frame</div>",
+                        unsafe_allow_html=True)
 
 
 @st.fragment(run_every=f"{ROTATION_SECONDS}s")

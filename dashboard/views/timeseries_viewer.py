@@ -251,7 +251,7 @@ def render():
     render_manual("series")
     header(
         "Series de tiempo por volcán",
-        "Tendencia de firma de ceniza/SO2 en las últimas horas — RAMMB/CIRA GOES-19",
+        "Hot spots NOAA FDCF + FRP, con % ash-rojo de apoyo &middot; GOES-19",
     )
     refresh_info_badge(context="series")
 

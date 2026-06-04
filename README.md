@@ -39,7 +39,7 @@ Genera productos **Ash RGB**, **detección de ceniza** (BTD split-window) y **SO
 
 ## Fuente de datos
 
-- **Satélite**: GOES-19 (GOES-East, 75.2°W) - cubre toda Sudamérica
+- **Satélite**: GOES-19 (GOES-East, 75.0°W) - cubre toda Sudamérica
 - **Datos**: AWS S3 bucket `noaa-goes19` (sin credenciales, gratuito)
 - **Cadencia**: Full Disk cada 10 minutos, resolución 2 km IR
 - **Latencia**: ~10-30 minutos post-adquisición
@@ -128,7 +128,10 @@ Setup automatizado en Windows (PowerShell):
 
 ## Referencias
 
-- Prata, A.J. (1989). Observations of volcanic ash clouds using AVHRR-2
+- Prata, A.J. (1989). *Observations of volcanic ash clouds in the 10–12 µm window using AVHRR/2 data*. Int. J. Remote Sensing, 10(4–5), 751–761. https://doi.org/10.1080/01431168908903916
+- Pavolonis, M.J., Heidinger, A.K., Sieglaff, J. (2013). *Automated retrievals of volcanic ash and dust cloud properties from upwelling infrared measurements*. JGR Atmospheres, 118(3), 1436–1458. https://doi.org/10.1002/jgrd.50173
+- Schmit, T.J. et al. (2017). *A Closer Look at the ABI on the GOES-R Series*. BAMS, 98(4), 681–698. https://doi.org/10.1175/BAMS-D-15-00230.1
+- Miller, S.D. et al. (2016). *A Sight for Sore Eyes: The Return of True Color to Geostationary Satellites* (GeoColor). BAMS, 97(10), 1803–1816. https://doi.org/10.1175/BAMS-D-15-00154.1
 - GOES-R ATBD Volcanic Ash v3.0 (NOAA/NESDIS)
 - RAMMB/CIRA Ash RGB Quick Guide
 

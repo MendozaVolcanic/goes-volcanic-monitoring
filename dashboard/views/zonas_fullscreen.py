@@ -89,7 +89,7 @@ def _array_to_data_url(arr):
 
 def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
               hotspots: list[HotSpot], height: int = 720,
-              show_volcanoes: bool = True):
+              show_volcanoes: bool = True, time_label: str = ""):
     bounds = VOLCANIC_ZONES[zone_key]
     fig = go.Figure()
     if img is not None:
@@ -150,10 +150,16 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
     # Title como annotation EN COORDS DE DATOS para no perder pixeles
     # arriba del plot. Igual estrategia que mosaico — scaleanchor empuja
     # paper-anchored al espacio negro afuera.
+    # Label de zona + hora (UTC/local) debajo, en una sola annotation con
+    # fondo para que se lea sobre la imagen.
+    _txt = f"<b>{label}</b>"
+    if time_label:
+        _txt += (f"<br><span style='font-size:11px; color:#dfe6ee;'>"
+                 f"{time_label}</span>")
     fig.add_annotation(
         x=bounds["lon_min"], y=bounds["lat_max"],
         xref="x", yref="y",
-        text=f"<b>{label}</b>", showarrow=False,
+        text=_txt, showarrow=False, align="left",
         font=dict(size=14, color=ZONE_COLORS[zone_key]),
         bgcolor="rgba(0,0,0,0.65)", borderpad=4,
         xanchor="left", yanchor="top",
@@ -181,26 +187,45 @@ def _render_volcat_zonas_tv(height: int):
     VOLCAT solo tiene 3 sectores regionales (Norte/Centro/Sur; 'Sur'
     cubre hasta austral). Se muestran en 3 columnas — distinto del grid
     de 4 zonas RGB, pero coherente con la cobertura real de VOLCAT.
+
+    Cada zona lleva un header con NOMBRE + hora UTC y local (la imagen
+    SSEC tiene su titulo quemado que tapaba el label viejo). La imagen se
+    compone con los overlays de volcanes y fronteras de SSEC.
     """
     from dashboard.views.volcat_viewer import (
-        _volcat_latest_cached, _volcat_image_bytes,
+        _volcat_latest_cached, _volcat_image_with_overlays, _volcat_dt_obj,
     )
+    from dashboard.utils import fmt_both
     from src.fetch.volcat_api import ZONE_TO_SECTOR
 
     cols = st.columns(len(ZONE_TO_SECTOR))
     for col, (zona, (sector, instr)) in zip(cols, ZONE_TO_SECTOR.items()):
         with col:
-            st.markdown(
-                f"<div style='color:#ff6644; font-weight:700; "
-                f"font-size:0.9rem; margin-bottom:0.15rem;'>Zona {zona}</div>",
-                unsafe_allow_html=True,
-            )
             try:
                 meta = _volcat_latest_cached(sector, instr, "Ash_Height")
             except Exception:
                 meta = None
+            # Header: nombre de zona + hora UTC/local, con fondo para
+            # contraste (la imagen VOLCAT trae su titulo quemado encima).
+            dt = _volcat_dt_obj(meta.get("datetime")) if meta else None
+            hora = fmt_both(dt) if dt else "sin hora"
+            st.markdown(
+                f"<div style='display:flex; justify-content:space-between; "
+                f"align-items:baseline; background:rgba(10,14,20,0.92); "
+                f"padding:0.2rem 0.6rem; border-radius:4px 4px 0 0; "
+                f"border-left:3px solid #ff6644;'>"
+                f"<span style='color:#ff6644; font-weight:800; "
+                f"font-size:0.95rem;'>Zona {zona}</span>"
+                f"<span style='color:#aabbc8; font-size:0.78rem;'>{hora}</span>"
+                f"</div>",
+                unsafe_allow_html=True,
+            )
             if meta:
-                img_bytes = _volcat_image_bytes(meta["image_url"])
+                img_bytes = _volcat_image_with_overlays(
+                    meta["image_url"],
+                    meta.get("volcanoes_url"),
+                    meta.get("latlon_url"),
+                )
                 if img_bytes:
                     st.image(img_bytes, width='stretch')
                     continue
@@ -376,6 +401,10 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
         for zk, img_z, used_ts_z, used_zoom_z, hs_z in ex.map(_fetch_one, all_zones):
             results[zk] = (img_z, used_ts_z, used_zoom_z, hs_z)
 
+    # Hora del scan en UTC + local Chile, para mostrar en cada panel.
+    from dashboard.utils import fmt_both
+    time_label = fmt_both(scan_dt) if scan_dt else ""
+
     # ── Render serial (debe correr en thread principal Streamlit) ─
     fallback_count = 0
     for row_zones in rows_zones:
@@ -394,7 +423,8 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
             with cols[i]:
                 st.plotly_chart(
                     _zone_fig(img, zone_key, label, hotspots,
-                              height=height, show_volcanoes=show_volcanoes),
+                              height=height, show_volcanoes=show_volcanoes,
+                              time_label=time_label),
                     width='stretch',
                     # responsive=True: plotly escucha resize del iframe
                     # y refit el chart. CRITICO para TV mode donde CSS

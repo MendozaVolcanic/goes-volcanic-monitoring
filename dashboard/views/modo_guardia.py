@@ -523,7 +523,7 @@ def _volcat_zonas_subtab():
     # Lazy imports (patron del proyecto — evita gotcha de hot-reload en
     # Streamlit Cloud con imports cross-package top-level).
     from dashboard.views.volcat_viewer import (
-        VOLCAT_PRODUCTS, _volcat_latest_cached, _volcat_image_bytes,
+        VOLCAT_PRODUCTS, _volcat_latest_cached, _volcat_image_with_overlays,
         _parse_volcat_dt,
     )
     from src.fetch.volcat_api import ZONE_TO_SECTOR
@@ -574,7 +574,11 @@ def _volcat_zonas_subtab():
                     f"(sector {sector})."
                 )
                 continue
-            img_bytes = _volcat_image_bytes(meta["image_url"])
+            img_bytes = _volcat_image_with_overlays(
+                meta["image_url"],
+                meta.get("volcanoes_url"),
+                meta.get("latlon_url"),
+            )
             if img_bytes:
                 ts = _parse_volcat_dt(meta.get("datetime"))
                 sat = meta.get("sat", "")

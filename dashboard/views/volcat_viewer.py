@@ -255,19 +255,65 @@ def _volcat_image_bytes(image_url: str) -> bytes:
         return b""
 
 
-def _parse_volcat_dt(s: str | None) -> str:
-    """'2026-04-25_17-20-30' -> '2026-04-25 17:20 UTC (...CL)'."""
+@st.cache_data(ttl=TTL_FRAME_IMAGE, show_spinner=False)
+def _volcat_image_with_overlays(image_url: str,
+                                 volcanoes_url: str | None,
+                                 latlon_url: str | None) -> bytes:
+    """Compone la imagen VOLCAT base + overlays de SSEC (fronteras lat/lon
+    y marcadores de volcanes), todos pre-alineados al mismo sector.
+
+    Los overlays de SSEC son PNG RGBA del MISMO tamano que la base, asi que
+    es alpha-composite directo (fronteras primero, volcanes encima). Asi la
+    imagen VOLCAT pasa a mostrar los volcanes — antes era IR pelado sin
+    referencia geografica. Cacheada por las 3 URLs (incluyen timestamp).
+    """
+    import io
+    import requests
+    from PIL import Image
+    try:
+        r = requests.get(image_url, timeout=30)
+        r.raise_for_status()
+        base = Image.open(io.BytesIO(r.content)).convert("RGBA")
+    except Exception as e:
+        logger.warning("VOLCAT base %s: %s", image_url, e)
+        return b""
+    # Orden: fronteras/grilla primero, volcanes ENCIMA (mas visibles).
+    for url in [latlon_url, volcanoes_url]:
+        if not url:
+            continue
+        try:
+            ro = requests.get(url, timeout=30)
+            ro.raise_for_status()
+            ov = Image.open(io.BytesIO(ro.content)).convert("RGBA")
+            if ov.size == base.size:
+                base = Image.alpha_composite(base, ov)
+        except Exception as e:
+            logger.warning("VOLCAT overlay %s: %s", url, e)
+    buf = io.BytesIO()
+    base.convert("RGB").save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def _volcat_dt_obj(s: str | None):
+    """'2026-04-25_17-20-30' -> datetime UTC (o None)."""
     if not s:
-        return "—"
+        return None
     try:
         from datetime import datetime, timezone
         d, t = s.split("_")
         hh, mm, ss = t.split("-")
-        dt = datetime(*map(int, d.split("-")), int(hh), int(mm), int(ss),
-                      tzinfo=timezone.utc)
-        return f"{dt.strftime('%Y-%m-%d %H:%M UTC')} ({fmt_chile(dt)} Chile)"
+        return datetime(*map(int, d.split("-")), int(hh), int(mm), int(ss),
+                        tzinfo=timezone.utc)
     except Exception:
-        return s
+        return None
+
+
+def _parse_volcat_dt(s: str | None) -> str:
+    """'2026-04-25_17-20-30' -> '2026-04-25 17:20 UTC (...CL)'."""
+    dt = _volcat_dt_obj(s)
+    if dt is None:
+        return s or "—"
+    return f"{dt.strftime('%Y-%m-%d %H:%M UTC')} ({fmt_chile(dt)} Chile)"
 
 
 def _render_height_section(key_suffix: str = "tab") -> None:

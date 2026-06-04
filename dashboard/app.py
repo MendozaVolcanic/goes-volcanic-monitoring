@@ -112,7 +112,7 @@ with st.sidebar:
     # ── Build version marker (verifica que Streamlit Cloud sirve la version
     # actual del repo, no una vieja cacheada). Si no ves este texto despues
     # de un push, la app sigue dormant y hay que hacer Reboot manual.
-    BUILD_SHA = "build-2026-05-21-salir-pointer-events-fix"
+    BUILD_SHA = "build-2026-05-21-volcat-volcanes-horas"
     st.caption(f"🔖 `{BUILD_SHA}`")
     st.markdown("---")
 

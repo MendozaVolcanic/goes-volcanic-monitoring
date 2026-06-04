@@ -46,7 +46,7 @@ except Exception:
 logger = logging.getLogger(__name__)
 
 REFRESH_SECONDS = 60
-ROTATION_SECONDS = 10
+ROTATION_SECONDS = 15
 DEFAULT_VOLCANO = "Villarrica"
 
 # Productos disponibles en sub-tab Chile (mismo set que sub-tab Zonas).
@@ -523,9 +523,11 @@ def _volcat_zonas_subtab():
     # Lazy imports (patron del proyecto — evita gotcha de hot-reload en
     # Streamlit Cloud con imports cross-package top-level).
     from dashboard.views.volcat_viewer import (
-        VOLCAT_PRODUCTS, _volcat_latest_cached, _volcat_image_with_overlays,
-        _parse_volcat_dt,
+        VOLCAT_PRODUCTS, _volcat_latest_cached, _volcat_image_bytes,
+        _volcat_dt_obj, _volcat_sector_bounds,
     )
+    from dashboard.views.zonas_fullscreen import _volcat_zone_fig, VOLCAT_VIEW
+    from dashboard.utils import fmt_both
     from src.fetch.volcat_api import ZONE_TO_SECTOR
 
     st.caption(
@@ -555,14 +557,11 @@ def _volcat_zonas_subtab():
         unsafe_allow_html=True,
     )
 
+    from PIL import Image
+    import io as _io
     cols = st.columns(len(ZONE_TO_SECTOR))
     for col, (zona, (sector, instr)) in zip(cols, ZONE_TO_SECTOR.items()):
         with col:
-            st.markdown(
-                f"<div style='font-weight:700; color:#ff6644; "
-                f"font-size:0.95rem; margin-bottom:0.2rem;'>Zona {zona}</div>",
-                unsafe_allow_html=True,
-            )
             try:
                 meta = _volcat_latest_cached(sector, instr, prod)
             except Exception as e:
@@ -574,25 +573,30 @@ def _volcat_zonas_subtab():
                     f"(sector {sector})."
                 )
                 continue
-            img_bytes = _volcat_image_with_overlays(
-                meta["image_url"],
-                meta.get("volcanoes_url"),
-                meta.get("latlon_url"),
-            )
-            if img_bytes:
-                ts = _parse_volcat_dt(meta.get("datetime"))
-                sat = meta.get("sat", "")
-                st.image(
-                    img_bytes,
-                    caption=f"{meta_p['label_es']} · {ts}"
-                            + (f" · {sat}" if sat else ""),
-                    width='stretch',
-                )
-                leg = _volcat_image_bytes(meta["legend_url"])
-                if leg:
-                    st.image(leg, width='stretch')
-            else:
+            img_bytes = _volcat_image_bytes(meta["image_url"])  # base SIN overlays
+            if not img_bytes:
                 st.error(f"No se pudo bajar la imagen de zona {zona}.")
+                continue
+            try:
+                w, h = Image.open(_io.BytesIO(img_bytes)).size
+            except Exception:
+                w, h = 1000, 821
+            sb = _volcat_sector_bounds(meta.get("coords") or {}, w, h)
+            vb = VOLCAT_VIEW.get(zona, VOLCAT_VIEW["Norte"])
+            if sb is None:
+                sb = vb
+            dt = _volcat_dt_obj(meta.get("datetime"))
+            time_label = fmt_both(dt) if dt else ""
+            st.plotly_chart(
+                _volcat_zone_fig(img_bytes, sb, vb, f"Zona {zona}",
+                                 time_label, height=620),
+                width='stretch',
+                config={"displayModeBar": False},
+            )
+            # Colorbar del producto (leyenda de altura/carga).
+            leg = _volcat_image_bytes(meta["legend_url"])
+            if leg:
+                st.image(leg, width='stretch')
 
 
 def _volcan_subtab():

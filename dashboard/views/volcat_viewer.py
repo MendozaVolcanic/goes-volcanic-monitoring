@@ -304,6 +304,29 @@ def _volcat_image_with_overlays(image_url: str,
     return buf.getvalue()
 
 
+def _volcat_sector_bounds(coords: dict, w: int, h: int) -> dict | None:
+    """Deriva los lat/lon bounds de la imagen VOLCAT desde la proyeccion
+    Cylindrical Equidistant (Plate Carree) de SSEC.
+
+    VALIDADO (mayo 2026) contra las lineas de grilla del overlay latlon:
+    con OFFSET_Y aplicado al lat de origen, las lineas caen en enteros
+    exactos (lon -75/-65, lat -18/-20/...-30). Esto permite georeferenciar
+    la imagen en plotly y dibujar NUESTROS volcanes (mismos que las RGB)
+    en vez del overlay sobrecargado de SSEC.
+    """
+    try:
+        import math
+        dp = math.degrees(coords["SCALE_FACTOR"] / coords["EQ_RADIUS"])
+        lon_min = (coords["ORIGIN_LON"] - 360) + coords.get("OFFSET_X", 0) * dp
+        lat_max = coords["ORIGIN_LAT"] + coords.get("OFFSET_Y", 0) * dp
+        return {
+            "lon_min": lon_min, "lon_max": lon_min + w * dp,
+            "lat_max": lat_max, "lat_min": lat_max - h * dp,
+        }
+    except Exception:
+        return None
+
+
 def _volcat_dt_obj(s: str | None):
     """'2026-04-25_17-20-30' -> datetime UTC (o None)."""
     if not s:

@@ -42,7 +42,7 @@ except Exception:
 logger = logging.getLogger(__name__)
 
 REFRESH_SECONDS = 60
-ROTATION_SECONDS = 10
+ROTATION_SECONDS = 15
 
 PRODUCT_OPTIONS = {
     "eumetsat_ash": "Ash RGB",
@@ -180,20 +180,87 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
     return fig
 
 
+# Encuadre (rango de ejes) por zona VOLCAT — ajustado a la franja chilena
+# para no mostrar tanto oceano. La imagen SSEC cubre mas area; plotly hace
+# zoom a estos bounds. 'Sur' extiende hasta austral (Chile_South lo cubre).
+VOLCAT_VIEW = {
+    "Norte":  {"lat_min": -28.0, "lat_max": -15.5, "lon_min": -71.5, "lon_max": -66.5},
+    "Centro": {"lat_min": -39.0, "lat_max": -28.0, "lon_min": -73.0, "lon_max": -68.0},
+    "Sur":    {"lat_min": -56.0, "lat_max": -36.0, "lon_min": -77.0, "lon_max": -70.0},
+}
+
+
+def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
+                     time_label, height):
+    """Renderiza una imagen VOLCAT con plotly, georeferenciada al sector
+    SSEC, con NUESTROS volcanes (CATALOG) y la frontera de Chile encima —
+    mismos volcanes que las vistas RGB, sin el overlay sobrecargado de SSEC
+    ni las grids. Eje recortado a `view_bounds` (franja chilena)."""
+    import base64
+    fig = go.Figure()
+    if img_bytes:
+        b64 = base64.b64encode(img_bytes).decode()
+        fig.add_layout_image(
+            source=f"data:image/png;base64,{b64}",
+            xref="x", yref="y",
+            x=sector_bounds["lon_min"], y=sector_bounds["lat_max"],
+            sizex=sector_bounds["lon_max"] - sector_bounds["lon_min"],
+            sizey=sector_bounds["lat_max"] - sector_bounds["lat_min"],
+            sizing="stretch", layer="below",
+        )
+    # Nuestros volcanes dentro del encuadre (los MISMOS que las RGB).
+    vis = [v for v in CATALOG
+           if view_bounds["lat_min"] <= v.lat <= view_bounds["lat_max"]
+           and view_bounds["lon_min"] <= v.lon <= view_bounds["lon_max"]
+           and v.zone != "test"]
+    if vis:
+        fig.add_trace(go.Scatter(
+            x=[v.lon for v in vis], y=[v.lat for v in vis],
+            mode="markers+text",
+            marker=dict(symbol="triangle-up", size=9, color="#00ffff",
+                        line=dict(color="white", width=1)),
+            text=[v.name for v in vis], textposition="middle right",
+            textfont=dict(size=9, color="rgba(255,255,255,0.9)"),
+            hovertext=[f"{v.name} ({v.elevation:,} m)" for v in vis],
+            hoverinfo="text", showlegend=False,
+        ))
+    add_chile_border(fig)
+    cos_lat = max(0.1, float(np.cos(np.radians(
+        (view_bounds["lat_min"] + view_bounds["lat_max"]) / 2))))
+    fig.update_xaxes(range=[view_bounds["lon_min"], view_bounds["lon_max"]],
+                     showgrid=False, visible=False)
+    fig.update_yaxes(range=[view_bounds["lat_min"], view_bounds["lat_max"]],
+                     showgrid=False, visible=False,
+                     scaleanchor="x", scaleratio=1.0 / cos_lat)
+    _txt = f"<b>{zona_label}</b>"
+    if time_label:
+        _txt += (f"<br><span style='font-size:11px; color:#dfe6ee;'>"
+                 f"{time_label}</span>")
+    fig.add_annotation(
+        x=view_bounds["lon_min"], y=view_bounds["lat_max"], xref="x", yref="y",
+        text=_txt, showarrow=False, align="left",
+        font=dict(size=14, color="#ff6644"),
+        bgcolor="rgba(0,0,0,0.65)", borderpad=4,
+        xanchor="left", yanchor="top", xshift=4, yshift=-4,
+    )
+    fig.update_layout(
+        height=height, margin=dict(l=0, r=0, t=0, b=0),
+        paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14", autosize=True,
+    )
+    return fig
+
+
 def _render_volcat_zonas_tv(height: int):
     """Render de las 3 zonas VOLCAT (altura de pluma) en fila, para el
-    Modo Sala TV. Reutiliza las funciones cacheadas de volcat_viewer.
+    Modo Sala TV.
 
-    VOLCAT solo tiene 3 sectores regionales (Norte/Centro/Sur; 'Sur'
-    cubre hasta austral). Se muestran en 3 columnas — distinto del grid
-    de 4 zonas RGB, pero coherente con la cobertura real de VOLCAT.
-
-    Cada zona lleva un header con NOMBRE + hora UTC y local (la imagen
-    SSEC tiene su titulo quemado que tapaba el label viejo). La imagen se
-    compone con los overlays de volcanes y fronteras de SSEC.
+    Cada zona se renderiza con plotly georeferenciado: la imagen VOLCAT de
+    SSEC abajo + NUESTROS volcanes (mismos que las RGB) y la frontera de
+    Chile encima. Sin grids ni el overlay de cientos de volcanes de SSEC.
     """
     from dashboard.views.volcat_viewer import (
-        _volcat_latest_cached, _volcat_image_with_overlays, _volcat_dt_obj,
+        _volcat_latest_cached, _volcat_image_bytes, _volcat_dt_obj,
+        _volcat_sector_bounds,
     )
     from dashboard.utils import fmt_both
     from src.fetch.volcat_api import ZONE_TO_SECTOR
@@ -205,34 +272,32 @@ def _render_volcat_zonas_tv(height: int):
                 meta = _volcat_latest_cached(sector, instr, "Ash_Height")
             except Exception:
                 meta = None
-            # Header: nombre de zona + hora UTC/local, con fondo para
-            # contraste (la imagen VOLCAT trae su titulo quemado encima).
-            dt = _volcat_dt_obj(meta.get("datetime")) if meta else None
-            hora = fmt_both(dt) if dt else "sin hora"
-            st.markdown(
-                f"<div style='display:flex; justify-content:space-between; "
-                f"align-items:baseline; background:rgba(10,14,20,0.92); "
-                f"padding:0.2rem 0.6rem; border-radius:4px 4px 0 0; "
-                f"border-left:3px solid #ff6644;'>"
-                f"<span style='color:#ff6644; font-weight:800; "
-                f"font-size:0.95rem;'>Zona {zona}</span>"
-                f"<span style='color:#aabbc8; font-size:0.78rem;'>{hora}</span>"
-                f"</div>",
-                unsafe_allow_html=True,
-            )
-            if meta:
-                img_bytes = _volcat_image_with_overlays(
-                    meta["image_url"],
-                    meta.get("volcanoes_url"),
-                    meta.get("latlon_url"),
+            if not meta:
+                st.markdown(
+                    f"<div style='color:#ff6644; font-weight:800;'>Zona {zona}"
+                    f"</div><div style='color:#7a8a9a; padding:2rem 0; "
+                    f"text-align:center;'>VOLCAT sin frame</div>",
+                    unsafe_allow_html=True,
                 )
-                if img_bytes:
-                    st.image(img_bytes, width='stretch')
-                    continue
-            st.markdown(
-                "<div style='color:#7a8a9a; padding:2rem 0; text-align:center;'>"
-                "VOLCAT sin frame disponible</div>",
-                unsafe_allow_html=True,
+                continue
+            dt = _volcat_dt_obj(meta.get("datetime"))
+            time_label = fmt_both(dt) if dt else ""
+            img_bytes = _volcat_image_bytes(meta["image_url"])  # base SIN overlays
+            from PIL import Image
+            import io as _io
+            try:
+                w, h = Image.open(_io.BytesIO(img_bytes)).size
+            except Exception:
+                w, h = 1000, 821
+            sb = _volcat_sector_bounds(meta.get("coords") or {}, w, h)
+            vb = VOLCAT_VIEW.get(zona, VOLCAT_VIEW["Norte"])
+            if sb is None:
+                sb = vb  # fallback: usar el encuadre como bounds de imagen
+            st.plotly_chart(
+                _volcat_zone_fig(img_bytes, sb, vb, f"Zona {zona}",
+                                 time_label, height),
+                width='stretch',
+                config={"displayModeBar": False, "responsive": True},
             )
 
 

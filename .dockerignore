@@ -5,7 +5,10 @@
 __pycache__/
 *.pyc
 .pytest_cache/
-.streamlit/
+# .streamlit: excluir SOLO secrets (sensible), PERMITIR config.toml.
+# Antes excluiamos todo `.streamlit/` -> el tema dark (config.toml) nunca
+# llegaba al container HF y la app se veia con tema light roto. (mayo 2026)
+.streamlit/secrets.toml
 
 # Output dirs (regenerados por workflows)
 out_animation_cache/

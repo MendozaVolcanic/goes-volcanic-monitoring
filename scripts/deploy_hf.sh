@@ -41,6 +41,7 @@ echo "==> Agregando SOLO archivos esenciales para el Space..."
 git add \
     Dockerfile \
     .dockerignore \
+    .streamlit/config.toml \
     requirements.txt \
     requirements_actions.txt \
     runtime.txt \

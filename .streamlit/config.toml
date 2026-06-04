@@ -1,4 +1,10 @@
 [theme]
+# base="dark" es CLAVE: sin esto Streamlit parte del tema LIGHT y solo
+# pinta encima estos colores. Los componentes nativos (dropdowns de
+# selectbox, menu kebab, tooltips, date pickers) heredan del base y se
+# ven CLAROS/rotos. Con base="dark" todo arranca oscuro y los overrides
+# de abajo solo ajustan acento/fondos. (fix tema mayo 2026)
+base = "dark"
 primaryColor = "#CC3311"
 backgroundColor = "#0a0d14"
 secondaryBackgroundColor = "#111620"

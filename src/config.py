@@ -1,16 +1,57 @@
 """Configuración centralizada del proyecto GOES Volcanic Monitoring."""
 
+import os
+import tempfile
 from pathlib import Path
 
 # ── Directorios ──────────────────────────────────────────────────
-# Estos directorios SOLO se usan en src/process/pipeline.py para procesar
-# L1b crudo descargado de S3 NOAA. El dashboard NRT NO los necesita.
-# Por eso el mkdir es DEFENSIVO: si el filesystem es read-only (caso HF
-# Spaces Docker container con user UID 1000 sin permisos sobre /app),
-# loggeamos el error y seguimos. Las funciones que los usan deben hacer
-# su propio mkdir cuando intenten escribir.
+# Estos directorios SOLO se usan en src/process/pipeline.py (Ash + BTD)
+# y en src/fetch/goes_s3.py para procesar L1b crudo descargado de S3
+# NOAA. El dashboard NRT principal NO los necesita.
+#
+# CASO DEPLOY HF SPACES (mayo 2026): el container Docker corre con user
+# UID 1000 sin permisos sobre /app/data. Antes hacíamos `mkdir` con
+# try/except — sobrevivía el import, pero CUALQUIER intento posterior
+# de escribir tiraba `PermissionError: '/app/data'`, rompiendo la vista
+# Ash + BTD entera con un mensaje feo al user.
+#
+# FIX: detectar si el path "ideal" es escribible. Si NO, redirigir a
+# `$HF_HOME/goes-data` (HF Spaces) o `tempfile.gettempdir()/goes-data`
+# (cualquier OS). Asi los consumidores siempre reciben un Path donde
+# pueden escribir, sin tener que conocer el ambiente.
 PROJECT_ROOT = Path(__file__).parent.parent
-DATA_DIR = PROJECT_ROOT / "data"
+_DATA_DIR_IDEAL = PROJECT_ROOT / "data"
+
+
+def _writable_data_root() -> Path:
+    """Devuelve el primer dir escribible: ideal -> HF home -> /tmp.
+
+    Se evalua una sola vez al importar config. Si el deploy es HF Spaces
+    (read-only /app), cae automaticamente a un dir bajo /home/user o /tmp.
+    """
+    candidates = [_DATA_DIR_IDEAL]
+    # HF Spaces convention: $HOME existe y es escribible para UID 1000
+    home = os.environ.get("HOME")
+    if home:
+        candidates.append(Path(home) / "goes-data")
+    candidates.append(Path(tempfile.gettempdir()) / "goes-data")
+    for c in candidates:
+        try:
+            c.mkdir(parents=True, exist_ok=True)
+            # Test real de escritura (mkdir puede pasar en dir read-only
+            # que ya existia con perms abiertos en la jerarquia)
+            test = c / ".write_test"
+            test.touch()
+            test.unlink()
+            return c
+        except (PermissionError, OSError):
+            continue
+    # Si todo falla, devolver tempdir sin chequeo (siempre escribible
+    # en POSIX por definicion).
+    return Path(tempfile.gettempdir()) / "goes-data"
+
+
+DATA_DIR = _writable_data_root()
 RAW_DIR = DATA_DIR / "raw"
 PROCESSED_DIR = DATA_DIR / "processed"
 CACHE_DIR = DATA_DIR / "cache"
@@ -19,9 +60,8 @@ for d in [RAW_DIR, PROCESSED_DIR, CACHE_DIR]:
     try:
         d.mkdir(parents=True, exist_ok=True)
     except (PermissionError, OSError):
-        # Filesystem read-only (deploy en HF Spaces, etc) — no crashear.
-        # Los modulos que necesiten escribir aca van a tirar error propio
-        # cuando lo intenten.
+        # Backup defensivo: DATA_DIR ya fue validada escribible, pero
+        # los subdirs pueden fallar en edge cases (UID mid-run change).
         pass
 
 # ── GOES S3 ──────────────────────────────────────────────────────

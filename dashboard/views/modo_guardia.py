@@ -524,9 +524,9 @@ def _volcat_zonas_subtab():
     # Streamlit Cloud con imports cross-package top-level).
     from dashboard.views.volcat_viewer import (
         VOLCAT_PRODUCTS, _volcat_latest_cached, _volcat_image_bytes,
-        _volcat_dt_obj, _volcat_sector_bounds,
+        _volcat_map_only, _volcat_dt_obj,
     )
-    from dashboard.views.zonas_fullscreen import _volcat_zone_fig, VOLCAT_VIEW
+    from dashboard.views.zonas_fullscreen import _volcat_zone_fig
     from dashboard.utils import fmt_both
     from src.fetch.volcat_api import ZONE_TO_SECTOR
 
@@ -557,8 +557,6 @@ def _volcat_zonas_subtab():
         unsafe_allow_html=True,
     )
 
-    from PIL import Image
-    import io as _io
     cols = st.columns(len(ZONE_TO_SECTOR))
     for col, (zona, (sector, instr)) in zip(cols, ZONE_TO_SECTOR.items()):
         with col:
@@ -573,27 +571,27 @@ def _volcat_zonas_subtab():
                     f"(sector {sector})."
                 )
                 continue
-            img_bytes = _volcat_image_bytes(meta["image_url"])  # base SIN overlays
-            if not img_bytes:
+            data = _volcat_map_only(
+                meta["image_url"], meta.get("latlon_url"),
+                meta.get("coords") or {})
+            if not data:
                 st.error(f"No se pudo bajar la imagen de zona {zona}.")
                 continue
-            try:
-                w, h = Image.open(_io.BytesIO(img_bytes)).size
-            except Exception:
-                w, h = 1000, 821
-            sb = _volcat_sector_bounds(meta.get("coords") or {}, w, h)
-            vb = VOLCAT_VIEW.get(zona, VOLCAT_VIEW["Norte"])
-            if sb is None:
-                sb = vb
+            sb = data["bounds"]
+            vb = {
+                "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
+                "lon_min": max(sb["lon_min"], -76.0),
+                "lon_max": min(sb["lon_max"], -66.0),
+            }
             dt = _volcat_dt_obj(meta.get("datetime"))
             time_label = fmt_both(dt) if dt else ""
             st.plotly_chart(
-                _volcat_zone_fig(img_bytes, sb, vb, f"Zona {zona}",
+                _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
                                  time_label, height=620),
                 width='stretch',
                 config={"displayModeBar": False},
             )
-            # Colorbar del producto (leyenda de altura/carga).
+            # Colorbar del producto (leyenda de altura/carga), aparte.
             leg = _volcat_image_bytes(meta["legend_url"])
             if leg:
                 st.image(leg, width='stretch')

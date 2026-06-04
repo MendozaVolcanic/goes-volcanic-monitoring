@@ -304,6 +304,73 @@ def _volcat_image_with_overlays(image_url: str,
     return buf.getvalue()
 
 
+@st.cache_data(ttl=TTL_FRAME_IMAGE, show_spinner=False)
+def _volcat_map_only(image_url: str, latlon_url: str | None,
+                     coords: dict) -> dict:
+    """Baja la imagen VOLCAT y la RECORTA al area del mapa, quitando el
+    titulo quemado (arriba) y la colorbar quemada (abajo) de SSEC.
+
+    Usa el overlay de grilla latlon como referencia robusta del extent del
+    mapa (las lineas cyan cubren SOLO el mapa, no el titulo ni la colorbar).
+    Devuelve {'png': bytes recortado, 'bounds': {lat/lon del recorte}} o {}.
+
+    Asi, al georeferenciar en plotly, el titulo no flota dentro del mapa.
+    """
+    import io
+    import math
+    from concurrent.futures import ThreadPoolExecutor
+    import numpy as np
+    import requests
+    from PIL import Image
+
+    def _dl(url):
+        if not url:
+            return None
+        try:
+            r = requests.get(url, timeout=30)
+            r.raise_for_status()
+            return Image.open(io.BytesIO(r.content)).convert("RGBA")
+        except Exception as e:
+            logger.warning("VOLCAT dl %s: %s", url, e)
+            return None
+
+    with ThreadPoolExecutor(max_workers=2) as ex:
+        f_base = ex.submit(_dl, image_url)
+        f_ll = ex.submit(_dl, latlon_url)
+        base, ll = f_base.result(), f_ll.result()
+    if base is None:
+        return {}
+    w, h = base.size
+
+    # Extent del mapa via lineas de grilla cyan del overlay latlon.
+    top, bot, left, right = 0, h - 1, 0, w - 1
+    if ll is not None and ll.size == base.size:
+        a = np.array(ll)
+        alpha = a[:, :, 3] > 40
+        cyan = (a[:, :, 1] > 150) & (a[:, :, 2] > 150) & (a[:, :, 0] < 120) & alpha
+        ys = np.where(cyan.any(axis=1))[0]
+        xs = np.where(cyan.any(axis=0))[0]
+        if len(ys) and len(xs):
+            top, bot = int(ys.min()), int(ys.max())
+            left, right = int(xs.min()), int(xs.max())
+
+    try:
+        dp = math.degrees(coords["SCALE_FACTOR"] / coords["EQ_RADIUS"])
+        lat0 = coords["ORIGIN_LAT"] + coords.get("OFFSET_Y", 0) * dp
+        lon0 = (coords["ORIGIN_LON"] - 360) + coords.get("OFFSET_X", 0) * dp
+        bounds = {
+            "lat_max": lat0 - top * dp, "lat_min": lat0 - bot * dp,
+            "lon_min": lon0 + left * dp, "lon_max": lon0 + right * dp,
+        }
+    except Exception:
+        return {}
+
+    crop = base.crop((left, top, right + 1, bot + 1)).convert("RGB")
+    buf = io.BytesIO()
+    crop.save(buf, format="PNG")
+    return {"png": buf.getvalue(), "bounds": bounds}
+
+
 def _volcat_sector_bounds(coords: dict, w: int, h: int) -> dict | None:
     """Deriva los lat/lon bounds de la imagen VOLCAT desde la proyeccion
     Cylindrical Equidistant (Plate Carree) de SSEC.

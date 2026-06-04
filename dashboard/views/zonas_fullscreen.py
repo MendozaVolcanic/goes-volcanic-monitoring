@@ -259,8 +259,7 @@ def _render_volcat_zonas_tv(height: int):
     Chile encima. Sin grids ni el overlay de cientos de volcanes de SSEC.
     """
     from dashboard.views.volcat_viewer import (
-        _volcat_latest_cached, _volcat_image_bytes, _volcat_dt_obj,
-        _volcat_sector_bounds,
+        _volcat_latest_cached, _volcat_map_only, _volcat_dt_obj,
     )
     from dashboard.utils import fmt_both
     from src.fetch.volcat_api import ZONE_TO_SECTOR
@@ -272,7 +271,10 @@ def _render_volcat_zonas_tv(height: int):
                 meta = _volcat_latest_cached(sector, instr, "Ash_Height")
             except Exception:
                 meta = None
-            if not meta:
+            data = _volcat_map_only(
+                meta["image_url"], meta.get("latlon_url"),
+                meta.get("coords") or {}) if meta else {}
+            if not data:
                 st.markdown(
                     f"<div style='color:#ff6644; font-weight:800;'>Zona {zona}"
                     f"</div><div style='color:#7a8a9a; padding:2rem 0; "
@@ -282,19 +284,15 @@ def _render_volcat_zonas_tv(height: int):
                 continue
             dt = _volcat_dt_obj(meta.get("datetime"))
             time_label = fmt_both(dt) if dt else ""
-            img_bytes = _volcat_image_bytes(meta["image_url"])  # base SIN overlays
-            from PIL import Image
-            import io as _io
-            try:
-                w, h = Image.open(_io.BytesIO(img_bytes)).size
-            except Exception:
-                w, h = 1000, 821
-            sb = _volcat_sector_bounds(meta.get("coords") or {}, w, h)
-            vb = VOLCAT_VIEW.get(zona, VOLCAT_VIEW["Norte"])
-            if sb is None:
-                sb = vb  # fallback: usar el encuadre como bounds de imagen
+            sb = data["bounds"]
+            # Encuadre: alto = mapa recortado; ancho = franja chilena.
+            vb = {
+                "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
+                "lon_min": max(sb["lon_min"], -76.0),
+                "lon_max": min(sb["lon_max"], -66.0),
+            }
             st.plotly_chart(
-                _volcat_zone_fig(img_bytes, sb, vb, f"Zona {zona}",
+                _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
                                  time_label, height),
                 width='stretch',
                 config={"displayModeBar": False, "responsive": True},

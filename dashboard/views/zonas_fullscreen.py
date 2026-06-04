@@ -174,24 +174,69 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
     return fig
 
 
+def _render_volcat_zonas_tv(height: int):
+    """Render de las 3 zonas VOLCAT (altura de pluma) en fila, para el
+    Modo Sala TV. Reutiliza las funciones cacheadas de volcat_viewer.
+
+    VOLCAT solo tiene 3 sectores regionales (Norte/Centro/Sur; 'Sur'
+    cubre hasta austral). Se muestran en 3 columnas — distinto del grid
+    de 4 zonas RGB, pero coherente con la cobertura real de VOLCAT.
+    """
+    from dashboard.views.volcat_viewer import (
+        _volcat_latest_cached, _volcat_image_bytes,
+    )
+    from src.fetch.volcat_api import ZONE_TO_SECTOR
+
+    cols = st.columns(len(ZONE_TO_SECTOR))
+    for col, (zona, (sector, instr)) in zip(cols, ZONE_TO_SECTOR.items()):
+        with col:
+            st.markdown(
+                f"<div style='color:#ff6644; font-weight:700; "
+                f"font-size:0.9rem; margin-bottom:0.15rem;'>Zona {zona}</div>",
+                unsafe_allow_html=True,
+            )
+            try:
+                meta = _volcat_latest_cached(sector, instr, "Ash_Height")
+            except Exception:
+                meta = None
+            if meta:
+                img_bytes = _volcat_image_bytes(meta["image_url"])
+                if img_bytes:
+                    st.image(img_bytes, width='stretch')
+                    continue
+            st.markdown(
+                "<div style='color:#7a8a9a; padding:2rem 0; text-align:center;'>"
+                "VOLCAT sin frame disponible</div>",
+                unsafe_allow_html=True,
+            )
+
+
 @st.fragment(run_every=f"{ROTATION_SECONDS}s")
 def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
                             layout: str = "1x4", height: int = 820,
                             session_key: str = "zonas_rot_idx",
-                            chrome: bool = True):
-    """Auto-rotate productos cada 10s en loop: GeoColor -> Ash -> SO2 -> ...
+                            chrome: bool = True,
+                            include_volcat: bool = False):
+    """Auto-rotate productos cada 10s en loop: GeoColor -> Ash -> SO2 [-> VOLCAT].
 
     chrome=True: muestra banner "ROTANDO PRODUCTOS" arriba.
     chrome=False: solo las imágenes, sin banner — modo TV puro.
+    include_volcat=True: agrega VOLCAT (altura de pluma, 3 zonas) como 4to
+        item de la rotacion. Util para la pantalla de sala 24/7 que no se
+        toca manualmente.
 
     El indice del producto vive en st.session_state.
     """
+    # Rotacion: 3 RGB de RAMMB + opcionalmente VOLCAT (altura) como 4to.
+    rotation = list(PRODUCT_LIST) + (["volcat"] if include_volcat else [])
+    _label = {**PRODUCT_OPTIONS, "volcat": "VOLCAT · Altura de pluma"}
+
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
-    idx = st.session_state[session_key] % len(PRODUCT_LIST)
-    current = PRODUCT_LIST[idx]
-    next_idx = (idx + 1) % len(PRODUCT_LIST)
-    next_product = PRODUCT_LIST[next_idx]
+    idx = st.session_state[session_key] % len(rotation)
+    current = rotation[idx]
+    next_idx = (idx + 1) % len(rotation)
+    next_product = rotation[next_idx]
 
     if chrome:
         # Banner de rotacion arriba (modo normal con toolbar)
@@ -203,14 +248,25 @@ def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
             f"font-size:0.9rem;'>"
             f"<span style='color:#ff6644; font-weight:700;'>"
             f"🔄 ROTANDO PRODUCTOS · cada {ROTATION_SECONDS}s</span>"
-            f"<span style='color:#e0e0e0;'>Mostrando: <b>{PRODUCT_OPTIONS[current]}</b> "
-            f"→ próximo: {PRODUCT_OPTIONS[next_product]}</span></div>",
+            f"<span style='color:#e0e0e0;'>Mostrando: <b>{_label[current]}</b> "
+            f"→ próximo: {_label[next_product]}</span></div>",
+            unsafe_allow_html=True,
+        )
+    elif current == "volcat":
+        # Leyenda compacta VOLCAT (no aplica render_compact_legend de RGB).
+        st.markdown(
+            f"<div style='display:flex; justify-content:space-between; "
+            f"align-items:center; background:rgba(17,24,34,0.85); "
+            f"padding:0.3rem 0.8rem; border-radius:4px; font-size:0.82rem;'>"
+            f"<span style='color:#ff6644; font-weight:700;'>🔄 VOLCAT · "
+            f"Altura de pluma (km AMSL)</span>"
+            f"<span style='color:#8899aa;'>SSEC/CIMSS · Pavolonis 2013 · "
+            f"GOES-19 · 3 zonas</span></div>",
             unsafe_allow_html=True,
         )
     else:
-        # Modo TV puro: leyenda compacta interpretativa que cambia con el
-        # producto. Aprovecha el espacio negro superior. Status badge a
-        # la derecha con scan + refresh.
+        # Modo TV puro RGB: leyenda compacta interpretativa que cambia con
+        # el producto. Status badge a la derecha con scan + refresh.
         from dashboard.map_helpers import render_compact_legend, render_scan_status_badge
         ts_for_status = _recent_ts(current, n=1)
         scan_dt_status = parse_rammb_ts(ts_for_status[0]) if ts_for_status else None
@@ -222,8 +278,11 @@ def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
         )
 
     st.session_state[session_key] = next_idx
-    _render_4_zonas_inner(current, show_volcanoes, show_hotspots, layout, height,
-                          minimal=not chrome)
+    if current == "volcat":
+        _render_volcat_zonas_tv(height)
+    else:
+        _render_4_zonas_inner(current, show_volcanoes, show_hotspots, layout, height,
+                              minimal=not chrome)
 
 
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")

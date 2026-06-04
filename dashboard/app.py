@@ -101,7 +101,7 @@ with st.sidebar:
     # ── Build version marker (verifica que Streamlit Cloud sirve la version
     # actual del repo, no una vieja cacheada). Si no ves este texto despues
     # de un push, la app sigue dormant y hay que hacer Reboot manual.
-    BUILD_SHA = "build-2026-05-21-guardia-volcat-zonas"
+    BUILD_SHA = "build-2026-05-21-salir-fix-volcat-rotacion"
     st.caption(f"🔖 `{BUILD_SHA}`")
     st.markdown("---")
 
@@ -189,17 +189,18 @@ with st.sidebar:
         st.query_params["vista"] = _slug_for_page
 
     # ── Modo Fullscreen ──────────────────────────────────────────
-    # st.link_button (anchor HTML interno de Streamlit) en vez de
-    # <a target="_top"> manual: el iframe sandbox de Streamlit Cloud
-    # bloquea target="_top" en muchos casos, dejando el boton
-    # inclickeable. link_button funciona porque Streamlit lo renderiza
-    # con la logica de navegacion correcta para su iframe.
+    # render_top_navigation_button usa <a target="_self"> (navega la
+    # pestana actual) en vez de st.link_button (que fuerza target="_blank"
+    # y abre pestana NUEVA). Asi entrar a fullscreen queda en la misma
+    # pantalla — clave para la sala 24/7 que no se debe tocar. (mayo 2026)
     st.markdown("---")
     if _slug_for_page:
-        st.link_button(
+        from dashboard.map_helpers import render_top_navigation_button
+        render_top_navigation_button(
             "🖥 Modo Pantalla Completa",
-            url=f"?vista={_slug_for_page}&fullscreen=1",
-            type="primary", width='stretch',
+            f"vista={_slug_for_page}&fullscreen=1",
+            key="btn_enter_fs",
+            full_width=True,
         )
     st.caption("Oculta este menú y maximiza el área del mapa. "
                "Botón ✖ arriba a la derecha para salir.")

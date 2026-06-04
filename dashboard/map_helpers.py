@@ -142,34 +142,35 @@ def render_top_navigation_button(label: str, query_string: str,
         bg:           NO USADO (st.button usa estilo primary de Streamlit).
     """
     import streamlit as st
-    # HISTORIA: probamos 5 patrones que fallaron:
-    # 1. st.button + st.rerun: atrapado por fragment run_every.
-    # 2. <a href> sin target: Streamlit intercepta clicks.
-    # 3. <a href target=_top>: Chrome audit HF confirmo que no navega.
-    # 4. components.v1.html con onclick top.location: sandbox bloquea
-    #    allow-top-navigation.
-    # 5. HTML <form method=get target=_top> con button type=submit en
-    #    st.markdown: programaticamente (btn.click() en JS) navega OK,
-    #    pero clicks reales de usuario son "swallowed" — el submit
-    #    event llega a window pero la navegacion no ocurre. Sospecha:
-    #    React synthetic event system de Streamlit o fragment auto-rerun
-    #    a 10s intermitentemente reemplaza el form mientras el user
-    #    hace click, dejando un click target stale.
+    # CAUSA RAIZ ENCONTRADA (mayo 2026, diagnostico empirico en Chrome):
+    # el bug de "Salir no escapa el fullscreen" NUNCA fue el iframe ni el
+    # fragment. Era que `st.link_button` renderiza el <a> con
+    # **target="_blank"** SIEMPRE (Streamlit lo fuerza). Al hacer click
+    # abria una PESTANA NUEVA en ?vista=guardia y dejaba la pantalla de
+    # sala intacta en fullscreen. Verificado en vivo: cambiando el target
+    # del mismo <a> a "_self" y clickeando, la URL paso de
+    # ?vista=guardia&fullscreen=1&tv=1 a ?vista=guardia (escapo OK).
     #
-    # SOLUCION (intento 6, funciona): usar st.link_button — el MISMO
-    # widget que ya usamos para "Modo Pantalla Completa" (entrar a
-    # fullscreen funciona desde HF sin issues). Renderiza un <a> que
-    # Streamlit maneja internamente con su SPA router, sobreviviendo a
-    # los rerenders de fragmentos. No depende de form submit ni de
-    # event sanitization.
+    # Historia de intentos previos (todos fallaban por NO atacar el target):
+    #   1. st.button + st.rerun           4. components.html onclick
+    #   2. <a> sin target                 5. st.link_button (target=_blank)
+    #   3. <form method=get>
     #
-    # Ignoramos `bg` y `height` — st.link_button usa estilo Streamlit
-    # nativo (type="primary" para color rojo similar al ff4b4b).
-    st.link_button(
-        label,
-        url=f"?{query_string}",
-        type="primary",
-        width="stretch" if full_width else "content",
+    # SOLUCION DEFINITIVA: <a> propio en st.markdown con **target="_self"**
+    # (navega la pestana actual). En HF la app NO esta en iframe, asi que
+    # _self == pestana. En Streamlit Cloud (iframe) _self recarga el
+    # iframe a la nueva query, que tambien sale del fullscreen. href es
+    # query-relativa (`?vista=...`) -> reemplaza la querystring actual.
+    # Streamlit NO sanitiza href/target en <a> de markdown.
+    width_css = "display:block; width:100%; box-sizing:border-box;" if full_width \
+        else "display:inline-block;"
+    st.markdown(
+        f'<a href="?{query_string}" target="_self" '
+        f'style="{width_css} text-decoration:none; text-align:center; '
+        f'padding:0.4rem 1.2rem; background:{bg}; color:white; '
+        f'border-radius:6px; font-weight:600; font-size:0.9rem; '
+        f'cursor:pointer; margin-bottom:0.4rem;">{label}</a>',
+        unsafe_allow_html=True,
     )
 
 

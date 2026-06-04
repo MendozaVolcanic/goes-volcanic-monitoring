@@ -778,6 +778,7 @@ def render():
                 show_volcanoes=True, show_hotspots=True,
                 layout="1x4", height=900,
                 session_key="tv_zonas_rot_idx", chrome=False,
+                include_volcat=True,  # suma VOLCAT como 4to producto en la rotacion
             )
             return
 

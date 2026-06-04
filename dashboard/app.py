@@ -36,6 +36,17 @@ if _fullscreen:
         <style>
           [data-testid="stSidebar"] { display: none !important; }
           [data-testid="stHeader"] { background: rgba(0,0,0,0); height: 0; }
+          /* El header/toolbar de Streamlit es una franja de ancho completo
+             arriba que captura clicks sobre el boton Salir que esta debajo.
+             pointer-events:none lo hace transparente al mouse. (mayo 2026) */
+          [data-testid="stHeader"],
+          [data-testid="stToolbar"] { pointer-events: none !important; }
+          [data-testid="stStatusWidget"] { display: none !important; }
+          [data-testid="stMarkdownContainer"] a {
+            position: relative !important;
+            z-index: 1000000 !important;
+            pointer-events: auto !important;
+          }
           .block-container {
             padding: 0.4rem !important;
             max-width: 100% !important;
@@ -101,7 +112,7 @@ with st.sidebar:
     # ── Build version marker (verifica que Streamlit Cloud sirve la version
     # actual del repo, no una vieja cacheada). Si no ves este texto despues
     # de un push, la app sigue dormant y hay que hacer Reboot manual.
-    BUILD_SHA = "build-2026-05-21-salir-fix-volcat-rotacion"
+    BUILD_SHA = "build-2026-05-21-salir-pointer-events-fix"
     st.caption(f"🔖 `{BUILD_SHA}`")
     st.markdown("---")
 

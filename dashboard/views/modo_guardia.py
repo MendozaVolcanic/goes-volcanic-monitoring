@@ -701,6 +701,23 @@ def render():
               [data-testid="stButton"] > button {
                 pointer-events: auto !important;
               }
+              /* CAUSA RAIZ del 'Salir no clickea' (mayo 2026): el header y
+                 toolbar de Streamlit son una franja de ancho completo arriba
+                 que, aunque visualmente oculta, CAPTURA los clicks sobre el
+                 boton Salir que esta debajo. pointer-events:none los hace
+                 transparentes al mouse; ademas ocultamos el status widget
+                 'Running/Stop' que se posa sobre el boton. */
+              [data-testid="stHeader"],
+              [data-testid="stToolbar"] {
+                pointer-events: none !important;
+              }
+              [data-testid="stStatusWidget"] { display: none !important; }
+              /* El <a> de Salir por encima de todo y siempre clickeable. */
+              [data-testid="stMarkdownContainer"] a {
+                position: relative !important;
+                z-index: 1000000 !important;
+                pointer-events: auto !important;
+              }
             </style>
             """,
             unsafe_allow_html=True,

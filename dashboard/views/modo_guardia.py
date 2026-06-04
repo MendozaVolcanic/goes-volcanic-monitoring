@@ -510,6 +510,87 @@ def _zonas_subtab():
                       layout=layout_key, height=height)
 
 
+def _volcat_zonas_subtab():
+    """Sub-tab VOLCAT por zona: las 3 zonas regionales (Norte/Centro/Sur)
+    con el producto cuantitativo VOLCAT (altura/carga/probabilidad/radio)
+    lado a lado.
+
+    Complementa la sub-tab 'Por Zona Volcánica' (que muestra los RGB de
+    RAMMB): aquellos DETECTAN la pluma, VOLCAT la CUANTIFICA (Pavolonis
+    2013, sobre GOES-19). VOLCAT solo tiene 3 sectores regionales (no hay
+    austral; 'Sur' cubre hasta el extremo sur), por eso 3 columnas y no 4.
+    """
+    # Lazy imports (patron del proyecto — evita gotcha de hot-reload en
+    # Streamlit Cloud con imports cross-package top-level).
+    from dashboard.views.volcat_viewer import (
+        VOLCAT_PRODUCTS, _volcat_latest_cached, _volcat_image_bytes,
+        _parse_volcat_dt,
+    )
+    from src.fetch.volcat_api import ZONE_TO_SECTOR
+
+    st.caption(
+        "VOLCAT (SSEC/CIMSS · algoritmo Pavolonis 2013, sobre GOES-19) — "
+        "los RGB de la pestaña anterior **detectan** la pluma; VOLCAT la "
+        "**cuantifica**: altura del tope (km), carga (g/m²), probabilidad y "
+        "tamaño de partícula. Sin erupción activa los productos salen vacíos."
+    )
+
+    # Selector de producto VOLCAT (default Altura). Los 4 productos vienen
+    # de volcat_viewer.VOLCAT_PRODUCTS (fuente unica).
+    prod = st.selectbox(
+        "Producto VOLCAT",
+        list(VOLCAT_PRODUCTS.keys()),
+        format_func=lambda k: VOLCAT_PRODUCTS[k]["label_es"],
+        index=0, key="mg_volcat_zona_prod",
+    )
+    meta_p = VOLCAT_PRODUCTS[prod]
+    st.markdown(
+        f'<div style="background:rgba(74,158,255,0.08); '
+        f'border-left:3px solid #4a9eff; padding:0.35rem 0.7rem; '
+        f'border-radius:0 6px 6px 0; margin:0.2rem 0 0.5rem 0; '
+        f'font-size:0.78rem;">'
+        f'<span style="color:#4a9eff; font-weight:700;">'
+        f'{meta_p["icon"]} {meta_p["label_es"]}</span> '
+        f'<span style="color:#aabbc8;">— {meta_p["short"]}</span></div>',
+        unsafe_allow_html=True,
+    )
+
+    cols = st.columns(len(ZONE_TO_SECTOR))
+    for col, (zona, (sector, instr)) in zip(cols, ZONE_TO_SECTOR.items()):
+        with col:
+            st.markdown(
+                f"<div style='font-weight:700; color:#ff6644; "
+                f"font-size:0.95rem; margin-bottom:0.2rem;'>Zona {zona}</div>",
+                unsafe_allow_html=True,
+            )
+            try:
+                meta = _volcat_latest_cached(sector, instr, prod)
+            except Exception as e:
+                st.warning(f"VOLCAT no respondió para {zona}: {e}")
+                continue
+            if not meta:
+                st.warning(
+                    f"Sin frame VOLCAT reciente para zona {zona} "
+                    f"(sector {sector})."
+                )
+                continue
+            img_bytes = _volcat_image_bytes(meta["image_url"])
+            if img_bytes:
+                ts = _parse_volcat_dt(meta.get("datetime"))
+                sat = meta.get("sat", "")
+                st.image(
+                    img_bytes,
+                    caption=f"{meta_p['label_es']} · {ts}"
+                            + (f" · {sat}" if sat else ""),
+                    width='stretch',
+                )
+                leg = _volcat_image_bytes(meta["legend_url"])
+                if leg:
+                    st.image(leg, width='stretch')
+            else:
+                st.error(f"No se pudo bajar la imagen de zona {zona}.")
+
+
 def _volcan_subtab():
     """Sub-tab Volcan: zoom volcan con 3 productos + viento + anillos + captura."""
     from dashboard.views.modo_guardia_volcan import _live_panel as volcan_panel
@@ -729,9 +810,10 @@ def render():
         unsafe_allow_html=True,
     )
 
-    sub_chile, sub_zonas, sub_mosaico, sub_volcan, sub_loop = st.tabs([
+    sub_chile, sub_zonas, sub_volcat, sub_mosaico, sub_volcan, sub_loop = st.tabs([
         "🌎 Chile (vista nacional)",
         "🗺 Por Zona Volcánica",
+        "🌋 VOLCAT por zona",
         "🗺 Mosaico 8 prioritarios",
         "🔬 Volcán (3 productos)",
         "🎞 Loop 2h",
@@ -740,6 +822,8 @@ def render():
         _chile_subtab()
     with sub_zonas:
         _zonas_subtab()
+    with sub_volcat:
+        _volcat_zonas_subtab()
     with sub_mosaico:
         _mosaico_subtab()
     with sub_volcan:

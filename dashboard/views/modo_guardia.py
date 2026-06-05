@@ -845,16 +845,19 @@ def render():
                     height: calc(100vh - 6px) !important;
                     min-height: 200px !important;
                   }
-                  /* La imagen VOLCAT (st.image) llena el alto y va CENTRADA
-                     en el ancho (su aspect ratio ~cuadrado deja barras a los
-                     lados; centrarla queda mejor que pegada a la izquierda). */
+                  /* La imagen VOLCAT (st.image): el sector SSEC es "cuadrado"
+                     (aspect ~1.22), asi que a 100vh de alto solo usaba ~54%
+                     del ancho. La agrandamos a ~72vw con estiramiento
+                     horizontal MODERADO (cap ~1.3x via min()) para aprovechar
+                     el espacio sin deformar de mas. (jun 2026, pedido OVDAS) */
                   [data-testid="stImage"] {
                     text-align: center !important;
                     width: 100% !important;
                   }
                   [data-testid="stImage"] img {
-                    max-height: calc(100vh - 10px) !important;
-                    width: auto !important;
+                    height: calc(100vh - 6px) !important;
+                    width: min(72vw, calc((100vh - 6px) * 1.58)) !important;
+                    object-fit: fill !important;
                     margin: 0 auto !important;
                     display: inline-block !important;
                   }

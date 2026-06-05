@@ -71,9 +71,17 @@ def scope_id_volcan(volcano_name: str) -> str:
 
 
 def asset_name(scope_id: str, product: str, ts: str) -> str:
-    """Nombre de archivo PNG en el release para un (scope, producto, timestamp)."""
+    """Nombre de archivo PNG (legacy, dentro del ZIP es solo `{ts}.png`)."""
     # producto puede tener guiones y underscores -> dejar tal cual
     return f"{scope_id}__{product}__{ts}.png"
+
+
+def zip_name(scope_id: str, product: str) -> str:
+    """Nombre del ZIP en el release que agrupa TODOS los frames de un
+    (scope, producto). Pasamos de ~2800 PNGs sueltos a ~39 ZIPs porque
+    GitHub limita 1000 assets por release. Dentro del ZIP cada frame es
+    `{ts}.png`."""
+    return f"{scope_id}__{product}.zip"
 
 
 # ── Lectura del manifest ──────────────────────────────────────────────────
@@ -116,44 +124,65 @@ def fetch_manifest() -> dict | None:
         return None
 
 
-# ── Descarga de frames cacheados ──────────────────────────────────────────
+# ── Descarga de frames cacheados (desde el ZIP del scope/producto) ─────────
 
-def _fetch_one_cached(scope_id: str, product: str, ts: str) -> tuple[str, np.ndarray | None]:
-    """Bajar un PNG del release y decodificarlo a numpy."""
-    url = f"{CDN_BASE}/{asset_name(scope_id, product, ts)}"
+# Cache de modulo del ZIP descargado (bytes), con TTL. Evita re-bajar el ZIP
+# completo (~3-7 MB) en cada rerun de Streamlit. El contenido del release
+# cambia cada hora (cron), por eso TTL corto.
+import time as _time
+
+_zip_cache: dict[tuple[str, str], tuple[float, bytes]] = {}
+_ZIP_TTL = 600  # 10 min
+
+
+def _download_zip_bytes(scope_id: str, product: str) -> bytes | None:
+    """Baja (o reusa de cache) el ZIP del (scope, producto) del release."""
+    key = (scope_id, product)
+    now = _time.time()
+    hit = _zip_cache.get(key)
+    if hit is not None and now - hit[0] < _ZIP_TTL:
+        return hit[1]
+    url = f"{CDN_BASE}/{zip_name(scope_id, product)}"
     try:
-        r = _get_session().get(url, timeout=TIMEOUT)
+        r = _get_session().get(url, timeout=TIMEOUT * 3)
         if r.status_code != 200:
-            return ts, None
-        img = Image.open(io.BytesIO(r.content)).convert("RGB")
-        return ts, np.array(img)
+            return None
+        _zip_cache[key] = (now, r.content)
+        return r.content
     except Exception as e:
-        logger.debug("fallo cache fetch %s: %s", url, e)
-        return ts, None
+        logger.debug("fallo bajar zip %s: %s", url, e)
+        return None
 
 
 def fetch_cached_frames(
     scope_id: str,
     product: str,
     timestamps: list[str],
-    max_workers: int = 8,
+    max_workers: int = 8,  # ignorado ahora (1 ZIP en vez de N PNGs)
 ) -> dict[str, np.ndarray]:
-    """Descargar en paralelo los frames cacheados para los timestamps dados.
+    """Devolver los frames cacheados para los timestamps dados.
 
-    Devuelve dict ts -> array. Los que no estaban no aparecen.
+    Baja el ZIP del (scope, producto) una sola vez y extrae de el los
+    frames pedidos. Devuelve dict ts -> array; los que no estan no aparecen.
     """
+    import zipfile
+
     out: dict[str, np.ndarray] = {}
     if not timestamps:
         return out
-    with ThreadPoolExecutor(max_workers=max_workers) as ex:
-        futures = [
-            ex.submit(_fetch_one_cached, scope_id, product, ts)
-            for ts in timestamps
-        ]
-        for fut in as_completed(futures):
-            ts, arr = fut.result()
-            if arr is not None:
-                out[ts] = arr
+    data = _download_zip_bytes(scope_id, product)
+    if data is None:
+        return out
+    try:
+        with zipfile.ZipFile(io.BytesIO(data)) as zf:
+            names = set(zf.namelist())
+            for ts in timestamps:
+                fn = f"{ts}.png"
+                if fn in names:
+                    img = Image.open(io.BytesIO(zf.read(fn))).convert("RGB")
+                    out[ts] = np.array(img)
+    except Exception as e:
+        logger.warning("error leyendo zip %s/%s: %s", scope_id, product, e)
     return out
 
 

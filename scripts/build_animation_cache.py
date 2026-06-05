@@ -36,9 +36,11 @@ sys.path.insert(0, str(ROOT))
 import numpy as np
 from PIL import Image
 
+import zipfile
+
 from src.config import VOLCANIC_ZONES
 from src.fetch.animation_cache import (
-    asset_name, scope_id_nacional, scope_id_volcan, scope_id_zona,
+    scope_id_nacional, scope_id_volcan, scope_id_zona, zip_name,
 )
 from src.fetch.rammb_slider import (
     CHILE_TILES_Z2, ZOOM_VOLCAN, ZOOM_ZONE, VOLCANO_RADIUS_DEG,
@@ -57,15 +59,28 @@ PRODUCTS = ["geocolor", "eumetsat_ash", "jma_so2"]
 OUT_DIR = ROOT / "out_animation_cache"
 
 
-def _save_frame(arr: np.ndarray, path: Path) -> int:
-    """Guardar PNG. Devuelve bytes escritos."""
+def _png_bytes(arr: np.ndarray) -> bytes:
+    """Codificar un frame a PNG bytes (compress_level moderado)."""
     img = Image.fromarray(arr)
     buf = io.BytesIO()
-    # PNG con optimize moderado: balance tamanio/tiempo.
     img.save(buf, format="PNG", optimize=False, compress_level=6)
-    data = buf.getvalue()
-    path.write_bytes(data)
-    return len(data)
+    return buf.getvalue()
+
+
+def _save_frames_zip(scope_id: str, product: str,
+                     frames: dict[str, np.ndarray]) -> int:
+    """Empaquetar todos los frames de un (scope, producto) en UN ZIP.
+
+    Antes guardabamos cada frame como PNG suelto -> ~2800 assets, pero
+    GitHub limita 1000 assets/release (causa de la falla). Ahora 1 ZIP por
+    (scope, producto) = ~39 assets. Dentro del ZIP cada frame es `{ts}.png`.
+    ZIP_STORED (sin recompresion) porque el PNG ya viene comprimido.
+    """
+    zpath = OUT_DIR / zip_name(scope_id, product)
+    with zipfile.ZipFile(zpath, "w", zipfile.ZIP_STORED) as zf:
+        for ts, arr in frames.items():
+            zf.writestr(f"{ts}.png", _png_bytes(arr))
+    return zpath.stat().st_size
 
 
 def _build_nacional(product: str) -> list[str]:
@@ -79,17 +94,15 @@ def _build_nacional(product: str) -> list[str]:
         log.warning("[nacional/%s] sin frames", product)
         return []
     sid = scope_id_nacional()
-    saved = []
-    total_bytes = 0
+    collected: dict[str, np.ndarray] = {}
     for f in frames:
         # Mismo reproject que el viewer (`_fetch_chile_frames`).
         img = reproject_to_latlon(f["image"], col_start=678, row_start=1356)
-        path = OUT_DIR / asset_name(sid, product, f["ts"])
-        total_bytes += _save_frame(img, path)
-        saved.append(f["ts"])
-    log.info("[nacional/%s] %d frames, %.1f MB", product, len(saved),
+        collected[f["ts"]] = img
+    total_bytes = _save_frames_zip(sid, product, collected)
+    log.info("[nacional/%s] %d frames, %.1f MB (zip)", product, len(collected),
              total_bytes / 1e6)
-    return sorted(saved)
+    return sorted(collected.keys())
 
 
 def _build_bounds(scope_id: str, product: str, bounds: dict, zoom: int,
@@ -108,20 +121,18 @@ def _build_bounds(scope_id: str, product: str, bounds: dict, zoom: int,
             img = fetch_frame_for_bounds(product, ts, bounds, zoom=fallback_zoom)
         return ts, img
 
-    saved = []
-    total_bytes = 0
+    collected: dict[str, np.ndarray] = {}
     with ThreadPoolExecutor(max_workers=6) as ex:
         for fut in as_completed([ex.submit(_one, ts) for ts in timestamps]):
             ts, img = fut.result()
             if img is None:
                 continue
-            path = OUT_DIR / asset_name(scope_id, product, ts)
-            total_bytes += _save_frame(img, path)
-            saved.append(ts)
+            collected[ts] = img
 
-    log.info("[%s/%s] %d frames, %.1f MB", scope_id, product, len(saved),
-             total_bytes / 1e6)
-    return sorted(saved)
+    total_bytes = _save_frames_zip(scope_id, product, collected)
+    log.info("[%s/%s] %d frames, %.1f MB (zip)", scope_id, product,
+             len(collected), total_bytes / 1e6)
+    return sorted(collected.keys())
 
 
 def main() -> int:
@@ -170,10 +181,10 @@ def main() -> int:
     manifest_path = OUT_DIR / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, indent=2))
 
-    total_assets = sum(1 for _ in OUT_DIR.glob("*.png"))
+    total_zips = sum(1 for _ in OUT_DIR.glob("*.zip"))
     total_size = sum(p.stat().st_size for p in OUT_DIR.glob("*"))
-    log.info("DONE. %d PNG + manifest. Total %.1f MB en %s",
-             total_assets, total_size / 1e6, OUT_DIR)
+    log.info("DONE. %d ZIP + manifest = %d assets. Total %.1f MB en %s",
+             total_zips, total_zips + 1, total_size / 1e6, OUT_DIR)
     return 0
 
 

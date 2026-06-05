@@ -449,6 +449,38 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
         )
         _render_volcat_one_zona_tv(val, sector, instr, height)
 
+    # ── PRE-FETCH del proximo slot DISTINTO ──────────────────────────
+    # Ocurre DESPUES de renderizar el slot actual (ya visible). Calienta el
+    # cache del proximo producto/zona para que el cambio sea instantaneo
+    # (sin el "tiron" de descargar al momento). Best-effort: cualquier fallo
+    # se ignora, nunca rompe la rotacion. Idempotente (re-llamar = cache hit).
+    try:
+        nxt = st.session_state[session_key]
+        for j in range(len(slots)):
+            nk, nv, ne = slots[(nxt + j) % len(slots)]
+            if (nk, nv) == (kind, val):
+                continue  # mismo slot actual, buscar el proximo distinto
+            if nk == "rgb":
+                _recent_ts(nv, n=3)  # timestamps del proximo producto
+            else:  # volcat: calentar la imagen (lo mas pesado)
+                ns, ni = ne
+                from dashboard.views.volcat_viewer import (
+                    _volcat_latest_cached, _volcat_image_with_overlays,
+                    _volcat_map_only,
+                )
+                m = _volcat_latest_cached(ns, ni, "Ash_Height")
+                if m:
+                    if VOLCAT_TV_RENDER == "plotly_volcanes":
+                        _volcat_map_only(m["image_url"], m.get("latlon_url"),
+                                         m.get("coords") or {})
+                    else:
+                        _volcat_image_with_overlays(
+                            m["image_url"], m.get("volcanoes_url"),
+                            m.get("latlon_url"))
+            break
+    except Exception:
+        pass  # pre-fetch best-effort
+
 
 @st.fragment(run_every=f"{ROTATION_SECONDS}s")
 def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,

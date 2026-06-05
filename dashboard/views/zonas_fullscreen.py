@@ -656,6 +656,21 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
         rows_zones = [["norte", "centro"], ["sur", "austral"]]
         n_cols = 2
 
+    # ── COLUMNAS PROPORCIONALES AL ASPECT (fix jun 2026) ──────────────
+    # Cada zona tiene un aspect ratio visual distinto (lon*cos_lat/lat, por
+    # la correccion scaleratio=1/cos_lat). Con columnas IGUALES, las zonas
+    # mas "anchas" (Norte) no llenaban el alto y las mas "angostas" (Austral)
+    # si -> tamanos desiguales, y al angostar la ventana se desconfiguraba
+    # heterogeneamente. Dando a cada columna un ANCHO proporcional a su
+    # aspect, cada imagen llena su columna exactamente y las 4 quedan con el
+    # MISMO alto en cualquier ancho de pantalla (verificado matematicamente).
+    def _zone_aspect(zk: str) -> float:
+        zb = VOLCANIC_ZONES[zk]
+        cl = max(0.1, float(np.cos(np.radians(
+            (zb["lat_min"] + zb["lat_max"]) / 2))))
+        return ((zb["lon_max"] - zb["lon_min"]) * cl
+                / (zb["lat_max"] - zb["lat_min"]))
+
     # ── Fetch PARALELO de las 4 zonas ────────────────────────────
     # Antes: for serial -> 4 zonas x ~1-2s c/u = 4-8s "una por una"
     # visible al usuario (lo que reporto en HF).
@@ -691,7 +706,10 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
     # ── Render serial (debe correr en thread principal Streamlit) ─
     fallback_count = 0
     for row_zones in rows_zones:
-        cols = st.columns(n_cols)
+        # Anchos de columna proporcionales al aspect de cada zona -> imagenes
+        # uniformes (mismo alto) y robustas al redimensionar la ventana.
+        col_weights = [_zone_aspect(z) for z in row_zones]
+        cols = st.columns(col_weights)
         for i, zone_key in enumerate(row_zones):
             img, used_ts, used_zoom, hotspots = results[zone_key]
             if used_ts and used_ts != ts:

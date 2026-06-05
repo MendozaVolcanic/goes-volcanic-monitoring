@@ -343,6 +343,113 @@ def _render_volcat_zonas_tv(height: int):
                         unsafe_allow_html=True)
 
 
+def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int):
+    """Render de UNA sola zona VOLCAT, en grande y centrada, para la
+    rotacion del Modo Sala TV (una zona a la vez, no las 3 juntas)."""
+    from dashboard.views.volcat_viewer import (
+        _volcat_latest_cached, _volcat_map_only, _volcat_image_with_overlays,
+        _volcat_dt_obj,
+    )
+    from dashboard.utils import fmt_both
+
+    try:
+        meta = _volcat_latest_cached(sector, instr, "Ash_Height")
+    except Exception:
+        meta = None
+    if not meta:
+        st.markdown(
+            f"<div style='color:#7a8a9a; text-align:center; padding:3rem;'>"
+            f"VOLCAT Zona {zona} — sin frame disponible</div>",
+            unsafe_allow_html=True)
+        return
+    dt = _volcat_dt_obj(meta.get("datetime"))
+    time_label = fmt_both(dt) if dt else ""
+    # Imagen centrada en columna ancha -> se ve grande sin deformarse.
+    _l, _mid, _r = st.columns([1, 2.4, 1])
+    with _mid:
+        if VOLCAT_TV_RENDER == "plotly_volcanes":
+            data = _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
+                                    meta.get("coords") or {})
+            if data:
+                sb = data["bounds"]
+                vb = {"lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
+                      "lon_min": max(sb["lon_min"], -76.0),
+                      "lon_max": min(sb["lon_max"], -66.0)}
+                st.plotly_chart(
+                    _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
+                                     time_label, height),
+                    width='stretch',
+                    config={"displayModeBar": False, "responsive": True})
+        else:  # ssec_overlay
+            img = _volcat_image_with_overlays(
+                meta["image_url"], meta.get("volcanoes_url"),
+                meta.get("latlon_url"))
+            if img:
+                st.image(img, width='stretch')
+
+
+# ── Rotacion del Modo Sala TV con TIEMPOS MIXTOS ─────────────────────
+# RGB (GeoColor/Ash/SO2) -> 15s cada uno, mostrando las 4 zonas en grid.
+# VOLCAT -> rota entre sus 3 zonas, 10s cada una, UNA en grande.
+# Como los tiempos difieren (15 vs 10), el fragment corre cada 5s (el comun
+# divisor) y cada slot ocupa N ticks: RGB = 3 ticks (15s), VOLCAT = 2 ticks
+# (10s). (jun 2026)
+RGB_SECONDS = 15
+VOLCAT_SECONDS = 10
+TICK_SECONDS = 5
+
+
+@st.fragment(run_every=f"{TICK_SECONDS}s")
+def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
+                       height: int = 900, session_key: str = "tv_rot_tick"):
+    """Rotacion del Modo Sala TV: RGB (15s/producto, 4 zonas) y VOLCAT
+    (10s/zona, 1 zona en grande). Una sola pantalla, sin intervencion."""
+    from src.fetch.volcat_api import ZONE_TO_SECTOR
+    from dashboard.map_helpers import (
+        render_compact_legend, render_scan_status_badge,
+    )
+
+    rgb_ticks = max(1, RGB_SECONDS // TICK_SECONDS)        # 3
+    volcat_ticks = max(1, VOLCAT_SECONDS // TICK_SECONDS)  # 2
+    # Lista de slots expandida a ticks de 5s.
+    slots: list[tuple] = []
+    for p in PRODUCT_LIST:
+        slots += [("rgb", p, None)] * rgb_ticks
+    for zona, (sector, instr) in ZONE_TO_SECTOR.items():
+        slots += [("volcat", zona, (sector, instr))] * volcat_ticks
+
+    if session_key not in st.session_state:
+        st.session_state[session_key] = 0
+    idx = st.session_state[session_key] % len(slots)
+    kind, val, extra = slots[idx]
+    st.session_state[session_key] = (idx + 1) % len(slots)
+
+    if kind == "rgb":
+        ts_for_status = _recent_ts(val, n=1)
+        scan_dt = parse_rammb_ts(ts_for_status[0]) if ts_for_status else None
+        render_compact_legend(
+            val,
+            extra_left="<span style='color:#ff6644; font-weight:700; "
+                       "margin-right:0.2rem;'>🔄</span>",
+            extra_right=render_scan_status_badge(scan_dt, RGB_SECONDS),
+        )
+        _render_4_zonas_inner(val, show_volcanoes, show_hotspots,
+                              "1x4", height, minimal=True)
+    else:  # volcat — una zona en grande
+        sector, instr = extra
+        st.markdown(
+            f"<div style='display:flex; justify-content:space-between; "
+            f"align-items:center; background:rgba(17,24,34,0.85); "
+            f"padding:0.3rem 0.8rem; border-radius:4px; font-size:0.82rem;'>"
+            f"<span style='color:#ff6644; font-weight:700;'>🔄 VOLCAT · "
+            f"Altura de pluma (km AMSL) · Zona {val}</span>"
+            f"<span style='color:#8899aa;'>SSEC/CIMSS · Pavolonis 2013 · "
+            f"GOES-19</span></div>",
+            unsafe_allow_html=True,
+        )
+        _render_volcat_one_zona_tv(val, sector, instr, height)
+
+
 @st.fragment(run_every=f"{ROTATION_SECONDS}s")
 def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
                             layout: str = "1x4", height: int = 820,

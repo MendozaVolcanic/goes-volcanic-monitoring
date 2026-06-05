@@ -557,39 +557,31 @@ def _volcat_zonas_subtab():
         unsafe_allow_html=True,
     )
 
-    # Apiladas VERTICALMENTE (Norte arriba, Centro, Sur abajo) a ancho
-    # completo — cada zona se ve grande y aprovecha el ancho de pantalla.
-    # Antes iban en 3 columnas chicas lado a lado. ZONE_TO_SECTOR ya esta
-    # en orden Norte/Centro/Sur.
-    for i, (zona, (sector, instr)) in enumerate(ZONE_TO_SECTOR.items()):
-        if i > 0:
-            st.markdown("---")
-        try:
-            meta = _volcat_latest_cached(sector, instr, prod)
-        except Exception as e:
-            st.warning(f"VOLCAT no respondió para {zona}: {e}")
-            continue
-        if not meta:
-            st.warning(
-                f"Sin frame VOLCAT reciente para zona {zona} "
-                f"(sector {sector})."
+    # 3 zonas lado a lado (Norte/Centro/Sur). La rotacion una-a-una en
+    # grande vive en el Modo Sala TV, no aca.
+    cols = st.columns(len(ZONE_TO_SECTOR))
+    for col, (zona, (sector, instr)) in zip(cols, ZONE_TO_SECTOR.items()):
+        with col:
+            try:
+                meta = _volcat_latest_cached(sector, instr, prod)
+            except Exception as e:
+                st.warning(f"VOLCAT no respondió para {zona}: {e}")
+                continue
+            if not meta:
+                st.warning(
+                    f"Sin frame VOLCAT reciente para zona {zona} "
+                    f"(sector {sector})."
+                )
+                continue
+            dt = _volcat_dt_obj(meta.get("datetime"))
+            time_label = fmt_both(dt) if dt else ""
+            st.markdown(
+                f"<div style='font-weight:800; color:#ff6644; "
+                f"font-size:0.95rem; margin-bottom:0.2rem;'>Zona {zona}"
+                f" <span style='color:#aabbc8; font-weight:400; "
+                f"font-size:0.78rem;'>· {time_label}</span></div>",
+                unsafe_allow_html=True,
             )
-            continue
-        dt = _volcat_dt_obj(meta.get("datetime"))
-        time_label = fmt_both(dt) if dt else ""
-        st.markdown(
-            f"<div style='font-weight:800; color:#ff6644; "
-            f"font-size:1.15rem; margin-bottom:0.2rem;'>Zona {zona}"
-            f" <span style='color:#aabbc8; font-weight:400; "
-            f"font-size:0.85rem;'>· {time_label}</span></div>",
-            unsafe_allow_html=True,
-        )
-        # Imagen centrada y limitada en ancho — el mapa VOLCAT es alto y
-        # angosto; a ancho completo de pantalla quedaria gigante. Lo
-        # encuadramos en una columna central ancha para verlo grande sin
-        # exceso de scroll.
-        _spacer, _mid, _spacer2 = st.columns([1, 2.2, 1])
-        with _mid:
             if VOLCAT_TV_RENDER == "plotly_volcanes":
                 data = _volcat_map_only(
                     meta["image_url"], meta.get("latlon_url"),
@@ -605,7 +597,7 @@ def _volcat_zonas_subtab():
                 }
                 st.plotly_chart(
                     _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
-                                     time_label, height=760),
+                                     time_label, height=620),
                     width='stretch',
                     config={"displayModeBar": False},
                 )
@@ -822,12 +814,12 @@ def render():
                 """,
                 unsafe_allow_html=True,
             )
-            from dashboard.views.zonas_fullscreen import _rotating_grid_4_zonas
-            _rotating_grid_4_zonas(
+            # Rotacion con tiempos mixtos: RGB 15s (4 zonas grid), VOLCAT
+            # 10s por zona (1 zona en grande, rota Norte/Centro/Sur).
+            from dashboard.views.zonas_fullscreen import _rotating_tv_zonas
+            _rotating_tv_zonas(
                 show_volcanoes=True, show_hotspots=True,
-                layout="1x4", height=900,
-                session_key="tv_zonas_rot_idx", chrome=False,
-                include_volcat=True,  # suma VOLCAT como 4to producto en la rotacion
+                height=900, session_key="tv_rot_tick",
             )
             return
 

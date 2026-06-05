@@ -768,6 +768,19 @@ def render():
               [data-testid="stElementContainer"]:has(a[href="?vista=guardia"]):hover a {
                 opacity: 1 !important;
               }
+              /* TRANSICION SUAVE al cambiar de slot (jun 2026): cada vez que
+                 un plot/imagen se MONTA (cambio de producto/zona) hace un
+                 fade-in corto. Con los key estables, los ticks repetidos NO
+                 re-montan -> el fade solo ocurre en el cambio real, dando
+                 una rotacion pulida en vez de un corte abrupto. */
+              [data-testid="stPlotlyChart"],
+              [data-testid="stImage"] {
+                animation: tv-fade-in 0.45s ease-out;
+              }
+              @keyframes tv-fade-in {
+                from { opacity: 0.35; }
+                to   { opacity: 1; }
+              }
             </style>
             """,
             unsafe_allow_html=True,
@@ -822,34 +835,46 @@ def render():
             st.markdown(
                 """
                 <style>
-                  /* TV: cada plot/imagen llena casi TODO el alto del
-                     viewport. El boton Salir es flotante (no resta), solo
-                     reservamos ~30px para la franja delgada de leyenda.
-                     Antes restaba 56px (boton + leyenda). */
+                  /* TV: la leyenda es OVERLAY translucido sobre el top del
+                     mapa (no resta alto), el boton Salir es flotante, asi el
+                     grid usa CASI todo el viewport (100vh - 6px). Antes
+                     restaba 56px (boton + leyenda en flujo). */
                   [data-testid="stPlotlyChart"],
                   [data-testid="stPlotlyChart"] > div,
                   [data-testid="stPlotlyChart"] iframe {
-                    height: calc(100vh - 32px) !important;
+                    height: calc(100vh - 6px) !important;
                     min-height: 200px !important;
                   }
                   /* La imagen VOLCAT (st.image) tambien llena el alto en TV. */
                   [data-testid="stImage"] img {
-                    max-height: calc(100vh - 36px) !important;
+                    max-height: calc(100vh - 10px) !important;
                     width: auto !important;
                     margin: 0 auto !important;
                     display: block !important;
                   }
-                  /* Block-container al 100% del viewport del browser (NO del
-                     display fisico). Padding minimo arriba para ganar alto. */
                   .block-container {
                     max-width: 100vw !important;
                     width: 100vw !important;
                     padding-top: 0.1rem !important;
                   }
-                  /* Franja de leyenda compacta lo mas delgada posible. */
-                  [data-testid="stElementContainer"]:has(.legend-compact),
-                  [data-testid="stElementContainer"]:has([class*="legend"]) {
-                    margin-bottom: 0.1rem !important;
+                  /* LEYENDA OVERLAY: la sacamos del flujo (su contenedor
+                     colapsa a 0) y la flotamos translucida sobre la parte
+                     superior del grid. Asi "usa la parte de arriba" sin
+                     robar alto, como pediste. */
+                  [data-testid="stElementContainer"]:has(.tv-legend) {
+                    position: absolute !important;
+                    top: 4px !important;
+                    left: 50% !important;
+                    transform: translateX(-50%) !important;
+                    z-index: 900 !important;
+                    margin: 0 !important;
+                    width: auto !important;
+                    max-width: 96vw !important;
+                  }
+                  .tv-legend {
+                    opacity: 0.9 !important;
+                    margin-bottom: 0 !important;
+                    box-shadow: 0 2px 12px rgba(0,0,0,0.6) !important;
                   }
                 </style>
                 """,

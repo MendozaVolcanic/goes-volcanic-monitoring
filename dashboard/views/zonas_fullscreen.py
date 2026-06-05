@@ -379,7 +379,9 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int):
                     _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
                                      time_label, height),
                     width='stretch',
-                    config={"displayModeBar": False, "responsive": True})
+                    config={"displayModeBar": False, "responsive": True},
+                    # key fijo por zona -> update in-place, sin parpadeo.
+                    key=f"tvvolcat_{zona}")
         else:  # ssec_overlay
             img = _volcat_image_with_overlays(
                 meta["image_url"], meta.get("volcanoes_url"),
@@ -434,12 +436,13 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
             extra_right=render_scan_status_badge(scan_dt, RGB_SECONDS),
         )
         _render_4_zonas_inner(val, show_volcanoes, show_hotspots,
-                              "1x4", height, minimal=True)
+                              "1x4", height, minimal=True, stable_keys=True)
     else:  # volcat — una zona en grande
         sector, instr = extra
         st.markdown(
-            f"<div style='display:flex; justify-content:space-between; "
-            f"align-items:center; background:rgba(17,24,34,0.85); "
+            f"<div class='tv-legend' style='display:flex; "
+            f"justify-content:space-between; align-items:center; "
+            f"background:rgba(17,24,34,0.85); "
             f"padding:0.3rem 0.8rem; border-radius:4px; font-size:0.82rem;'>"
             f"<span style='color:#ff6644; font-weight:700;'>🔄 VOLCAT · "
             f"Altura de pluma (km AMSL) · Zona {val}</span>"
@@ -570,10 +573,15 @@ def _grid_4_zonas(product: str, show_volcanoes: bool, show_hotspots: bool,
 
 
 def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: bool,
-                           layout: str, height: int, minimal: bool = False):
+                           layout: str, height: int, minimal: bool = False,
+                           stable_keys: bool = False):
     """Logica compartida entre _grid_4_zonas y _rotating_grid_4_zonas.
 
     minimal=True: oculta banner status arriba (modo TV puro).
+    stable_keys=True: da un `key` fijo por zona a cada st.plotly_chart. Asi
+        Streamlit ACTUALIZA el chart in-place (Plotly.react) en vez de
+        destruirlo y recrearlo en cada tick -> elimina el parpadeo del
+        re-render cada 5s del Modo Sala TV. (jun 2026)
     """
     timestamps = _recent_ts(product, n=3)
     if not timestamps:
@@ -678,6 +686,7 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
                     # plot quedaria renderizado al `height` python fijo
                     # (820/900) sin importar el viewport real.
                     config={"displayModeBar": False, "responsive": True},
+                    key=f"tvgrid_{zone_key}" if stable_keys else None,
                 )
 
 

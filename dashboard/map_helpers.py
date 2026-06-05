@@ -322,7 +322,10 @@ def render_compact_legend(product: str, extra_left: str = "",
     items = _LEGEND_ITEMS.get(product, [])
     label = _PRODUCT_LABELS_TV.get(product, product)
     html = (
-        f'<div style="display:flex; gap:0.8rem; align-items:center; '
+        # clase tv-legend: el CSS del Modo Sala TV la convierte en overlay
+        # translucido sobre el top del mapa para no restar alto al grid.
+        f'<div class="tv-legend" style="display:flex; gap:0.8rem; '
+        f'align-items:center; '
         f'background:rgba(0,0,0,0.65); padding:6px 14px; border-radius:4px; '
         f'margin-bottom:0.3rem; height:{height_px}px; '
         f'font-size:0.76rem; color:#e0e0e0; flex-wrap:wrap;">'

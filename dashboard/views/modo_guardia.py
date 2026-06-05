@@ -850,17 +850,19 @@ def render():
                      del ancho. La agrandamos a ~72vw con estiramiento
                      horizontal MODERADO (cap ~1.3x via min()) para aprovechar
                      el espacio sin deformar de mas. (jun 2026, pedido OVDAS) */
-                  [data-testid="stImage"] {
-                    text-align: center !important;
+                  /* flex + justify-center centra la imagen de forma robusta
+                     (margin auto no alcanzaba porque el contenedor no le daba
+                     espacio). El contenedor de columna tambien full-width. */
+                  [data-testid="stImage"],
+                  [data-testid="stImage"] > div {
+                    display: flex !important;
+                    justify-content: center !important;
                     width: 100% !important;
                   }
                   [data-testid="stImage"] img {
                     height: calc(100vh - 6px) !important;
                     width: min(72vw, calc((100vh - 6px) * 1.58)) !important;
                     object-fit: fill !important;
-                    margin-left: auto !important;
-                    margin-right: auto !important;
-                    display: block !important;  /* block + margin auto -> centrada */
                   }
                   .block-container {
                     max-width: 100vw !important;

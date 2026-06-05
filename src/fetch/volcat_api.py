@@ -14,6 +14,7 @@ import logging
 from typing import Optional
 
 import requests
+from src.fetch._http_session import get_session as _get_session
 
 logger = logging.getLogger(__name__)
 
@@ -120,7 +121,7 @@ def _query_frames(sector: str, instr: str, image_type: str, sat: str) -> list:
         f"::image_type:{image_type}::endtime:latest::daterange:180"
     )
     try:
-        r = requests.get(url, timeout=TIMEOUT)
+        r = _get_session().get(url, timeout=TIMEOUT)
         if r.status_code != 200:
             logger.warning("VOLCAT API %s -> %s", url, r.status_code)
             return []
@@ -190,7 +191,7 @@ def volcat_available_types(sector: str, instr: str = "ABI") -> list[str]:
         f"sector:{sector}::instr:{instr}::sat:all::endtime:latest::daterange:60"
     )
     try:
-        r = requests.get(url, timeout=TIMEOUT)
+        r = _get_session().get(url, timeout=TIMEOUT)
         if r.status_code != 200:
             return []
         d = r.json()

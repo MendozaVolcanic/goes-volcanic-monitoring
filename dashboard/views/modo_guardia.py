@@ -876,6 +876,24 @@ def render():
                     margin-bottom: 0 !important;
                     box-shadow: 0 2px 12px rgba(0,0,0,0.6) !important;
                   }
+                  /* PANEL DE ESTADO overlay esquina superior DERECHA: reloj
+                     actual + edad del scan. Separado de la leyenda (centro)
+                     para que no se solapen. */
+                  [data-testid="stElementContainer"]:has(.tv-status) {
+                    position: fixed !important;
+                    top: 4px !important;
+                    right: 12px !important;
+                    z-index: 1000000 !important;
+                    margin: 0 !important;
+                    width: auto !important;
+                  }
+                  .tv-status {
+                    background: rgba(10,14,20,0.82) !important;
+                    padding: 4px 12px !important;
+                    border-radius: 6px !important;
+                    border: 1px solid rgba(100,120,140,0.25) !important;
+                    box-shadow: 0 2px 12px rgba(0,0,0,0.6) !important;
+                  }
                 </style>
                 """,
                 unsafe_allow_html=True,

@@ -401,15 +401,40 @@ VOLCAT_SECONDS = 10
 TICK_SECONDS = 5
 
 
+def _render_tv_status(scan_dt=None):
+    """Panel de estado OVERLAY (esquina superior derecha) del Modo Sala TV:
+    reloj actual (UTC + local) y, si se da scan_dt, la edad del ultimo scan
+    con color de alerta (verde <15min, amarillo <30, rojo >30 = RAMMB caido).
+    Util para que el operador 24/7 vea de un vistazo si los datos estan
+    frescos. (jun 2026)"""
+    from datetime import datetime, timezone
+    from dashboard.utils import fmt_chile
+    now = datetime.now(timezone.utc)
+    parts = [
+        f"<div style='font-weight:800; color:#e6edf3; font-size:0.92rem; "
+        f"line-height:1.1;'>{now.strftime('%H:%M')} UTC</div>",
+        f"<div style='color:#8899aa; font-size:0.72rem;'>{fmt_chile(now)}</div>",
+    ]
+    if scan_dt is not None:
+        age = int((now - scan_dt).total_seconds() / 60)
+        color = "#3fb950" if age < 15 else "#d29922" if age < 30 else "#ff4444"
+        alert = "" if age < 30 else " ⚠"
+        parts.append(
+            f"<div style='color:{color}; font-weight:700; font-size:0.74rem; "
+            f"margin-top:2px;'>● scan hace {age} min{alert}</div>")
+    st.markdown(
+        f"<div class='tv-status' style='text-align:right;'>{''.join(parts)}</div>",
+        unsafe_allow_html=True,
+    )
+
+
 @st.fragment(run_every=f"{TICK_SECONDS}s")
 def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
                        height: int = 900, session_key: str = "tv_rot_tick"):
     """Rotacion del Modo Sala TV: RGB (15s/producto, 4 zonas) y VOLCAT
     (10s/zona, 1 zona en grande). Una sola pantalla, sin intervencion."""
     from src.fetch.volcat_api import ZONE_TO_SECTOR
-    from dashboard.map_helpers import (
-        render_compact_legend, render_scan_status_badge,
-    )
+    from dashboard.map_helpers import render_compact_legend
 
     rgb_ticks = max(1, RGB_SECONDS // TICK_SECONDS)        # 3
     volcat_ticks = max(1, VOLCAT_SECONDS // TICK_SECONDS)  # 2
@@ -433,12 +458,13 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
             val,
             extra_left="<span style='color:#ff6644; font-weight:700; "
                        "margin-right:0.2rem;'>🔄</span>",
-            extra_right=render_scan_status_badge(scan_dt, RGB_SECONDS),
         )
+        _render_tv_status(scan_dt)  # panel de estado overlay (esquina der)
         _render_4_zonas_inner(val, show_volcanoes, show_hotspots,
                               "1x4", height, minimal=True, stable_keys=True)
     else:  # volcat — una zona en grande
         sector, instr = extra
+        _render_tv_status()  # reloj (la hora del scan VOLCAT va en el header)
         st.markdown(
             f"<div class='tv-legend' style='display:flex; "
             f"justify-content:space-between; align-items:center; "

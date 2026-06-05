@@ -845,12 +845,18 @@ def render():
                     height: calc(100vh - 6px) !important;
                     min-height: 200px !important;
                   }
-                  /* La imagen VOLCAT (st.image) tambien llena el alto en TV. */
+                  /* La imagen VOLCAT (st.image) llena el alto y va CENTRADA
+                     en el ancho (su aspect ratio ~cuadrado deja barras a los
+                     lados; centrarla queda mejor que pegada a la izquierda). */
+                  [data-testid="stImage"] {
+                    text-align: center !important;
+                    width: 100% !important;
+                  }
                   [data-testid="stImage"] img {
                     max-height: calc(100vh - 10px) !important;
                     width: auto !important;
                     margin: 0 auto !important;
-                    display: block !important;
+                    display: inline-block !important;
                   }
                   .block-container {
                     max-width: 100vw !important;

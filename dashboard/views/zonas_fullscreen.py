@@ -391,15 +391,13 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int):
             st.image(img, width='stretch')
 
 
-# ── Rotacion del Modo Sala TV con TIEMPOS MIXTOS ─────────────────────
-# RGB (GeoColor/Ash/SO2) -> 15s cada uno, mostrando las 4 zonas en grid.
-# VOLCAT -> rota entre sus 3 zonas, 10s cada una, UNA en grande.
-# Como los tiempos difieren (15 vs 10), el fragment corre cada 5s (el comun
-# divisor) y cada slot ocupa N ticks: RGB = 3 ticks (15s), VOLCAT = 2 ticks
-# (10s). (jun 2026)
-RGB_SECONDS = 15
-VOLCAT_SECONDS = 10
-TICK_SECONDS = 5
+# ── Rotacion del Modo Sala TV con CADENCIA UNIFORME ──────────────────
+# Todos los slots (GeoColor/Ash/SO2 y cada zona VOLCAT) duran lo mismo. El
+# fragment corre cada TV_SLOT_SECONDS y re-renderiza UNA vez por slot, al
+# cambiar -> sin parpadeo. Tiempos mixtos (15/10) requerian un tick de 5s
+# que causaba el parpadeo, asi que se uniformo. (jun 2026)
+# Para cambiar la velocidad de la rotacion, editar SOLO esta constante.
+TV_SLOT_SECONDS = 12
 
 
 def _render_tv_status(scan_dt=None):
@@ -429,20 +427,18 @@ def _render_tv_status(scan_dt=None):
     )
 
 
-@st.fragment(run_every=f"{RGB_SECONDS}s")
+@st.fragment(run_every=f"{TV_SLOT_SECONDS}s")
 def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
                        height: int = 900, session_key: str = "tv_rot_idx"):
-    """Rotacion del Modo Sala TV con CADENCIA UNIFORME de 15s por slot.
+    """Rotacion del Modo Sala TV con CADENCIA UNIFORME (TV_SLOT_SECONDS).
 
-    NO-PARPADEO (jun 2026): el fragment corre cada 15s (= la duracion de un
-    slot), asi RE-RENDERIZA EXACTAMENTE UNA VEZ por slot, justo al cambiar.
-    Antes corria cada 5s (tiempos mixtos) y redibujaba el grid RGB 3 veces
-    durante sus 15s -> parpadeo. El patron de placeholders selectivos NO
-    funciono (Streamlit no renderiza contenido pesado escrito en un st.empty
-    desde un fragment run_every). La solucion robusta es la cadencia uniforme.
-
-    Trade-off: VOLCAT pasa de 10s a 15s/zona (igual que las RGB). Es el
-    precio de no parpadear; cambiar RGB_SECONDS aqui ajusta el tiempo global.
+    NO-PARPADEO (jun 2026): el fragment corre cada TV_SLOT_SECONDS (= la
+    duracion de un slot), asi RE-RENDERIZA EXACTAMENTE UNA VEZ por slot,
+    justo al cambiar. Antes corria cada 5s (tiempos mixtos) y redibujaba el
+    grid RGB 3 veces durante sus 15s -> parpadeo. El patron de placeholders
+    selectivos NO funciono (Streamlit no renderiza contenido pesado escrito
+    en un st.empty desde un fragment run_every). La cadencia uniforme es la
+    solucion robusta.
     """
     from src.fetch.volcat_api import ZONE_TO_SECTOR
     from dashboard.map_helpers import render_compact_legend

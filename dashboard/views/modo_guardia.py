@@ -858,8 +858,9 @@ def render():
                     height: calc(100vh - 6px) !important;
                     width: min(72vw, calc((100vh - 6px) * 1.58)) !important;
                     object-fit: fill !important;
-                    margin: 0 auto !important;
-                    display: inline-block !important;
+                    margin-left: auto !important;
+                    margin-right: auto !important;
+                    display: block !important;  /* block + margin auto -> centrada */
                   }
                   .block-container {
                     max-width: 100vw !important;

@@ -429,39 +429,27 @@ def _render_tv_status(scan_dt=None):
     )
 
 
+@st.fragment(run_every=f"{RGB_SECONDS}s")
 def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
-                       height: int = 900, session_key: str = "tv_rot_tick"):
-    """Setup del Modo Sala TV: crea los placeholders persistentes y arranca
-    el fragment de tick.
+                       height: int = 900, session_key: str = "tv_rot_idx"):
+    """Rotacion del Modo Sala TV con CADENCIA UNIFORME de 15s por slot.
 
-    CLAVE anti-parpadeo (jun 2026): los placeholders se crean UNA sola vez
-    (al entrar al TV; render() no se re-ejecuta, solo el fragment). El
-    fragment los actualiza SELECTIVAMENTE: el reloj cada tick (texto liviano)
-    y el grid/imagen pesado SOLO cuando el slot cambia. Asi, durante los 3
-    ticks de un producto RGB (15s), el contenido NO se re-renderiza -> no
-    parpadea. Antes el fragment redibujaba todo cada 5s.
+    NO-PARPADEO (jun 2026): el fragment corre cada 15s (= la duracion de un
+    slot), asi RE-RENDERIZA EXACTAMENTE UNA VEZ por slot, justo al cambiar.
+    Antes corria cada 5s (tiempos mixtos) y redibujaba el grid RGB 3 veces
+    durante sus 15s -> parpadeo. El patron de placeholders selectivos NO
+    funciono (Streamlit no renderiza contenido pesado escrito en un st.empty
+    desde un fragment run_every). La solucion robusta es la cadencia uniforme.
+
+    Trade-off: VOLCAT pasa de 10s a 15s/zona (igual que las RGB). Es el
+    precio de no parpadear; cambiar RGB_SECONDS aqui ajusta el tiempo global.
     """
-    status_ph = st.empty()
-    content_ph = st.empty()
-    _tv_tick(status_ph, content_ph, show_volcanoes, show_hotspots,
-             height, session_key)
-
-
-@st.fragment(run_every=f"{TICK_SECONDS}s")
-def _tv_tick(status_ph, content_ph, show_volcanoes: bool, show_hotspots: bool,
-             height: int, session_key: str):
-    """Tick cada 5s: avanza el slot, actualiza reloj siempre y el contenido
-    pesado SOLO si el slot cambio (RGB 15s = 3 ticks, VOLCAT 10s = 2 ticks)."""
     from src.fetch.volcat_api import ZONE_TO_SECTOR
     from dashboard.map_helpers import render_compact_legend
 
-    rgb_ticks = max(1, RGB_SECONDS // TICK_SECONDS)        # 3
-    volcat_ticks = max(1, VOLCAT_SECONDS // TICK_SECONDS)  # 2
-    slots: list[tuple] = []
-    for p in PRODUCT_LIST:
-        slots += [("rgb", p, None)] * rgb_ticks
-    for zona, (sector, instr) in ZONE_TO_SECTOR.items():
-        slots += [("volcat", zona, (sector, instr))] * volcat_ticks
+    # Rotacion: 3 RGB (4 zonas grid) + 3 zonas VOLCAT (1 en grande). 15s c/u.
+    slots: list[tuple] = [("rgb", p, None) for p in PRODUCT_LIST]
+    slots += [("volcat", z, si) for z, si in ZONE_TO_SECTOR.items()]
 
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
@@ -469,69 +457,56 @@ def _tv_tick(status_ph, content_ph, show_volcanoes: bool, show_hotspots: bool,
     kind, val, extra = slots[idx]
     st.session_state[session_key] = (idx + 1) % len(slots)
 
-    # Scan dt (solo RGB) para el panel de estado.
     scan_dt = None
     if kind == "rgb":
         ts_for_status = _recent_ts(val, n=1)
         scan_dt = parse_rammb_ts(ts_for_status[0]) if ts_for_status else None
+    _render_tv_status(scan_dt)  # reloj + edad scan (overlay esquina der)
 
-    # RELOJ/ESTADO: cada tick (es texto, no parpadea notoriamente).
-    with status_ph.container():
-        _render_tv_status(scan_dt)
+    if kind == "rgb":
+        render_compact_legend(
+            val,
+            extra_left="<span style='color:#ff6644; font-weight:700; "
+                       "margin-right:0.2rem;'>🔄</span>",
+        )
+        _render_4_zonas_inner(val, show_volcanoes, show_hotspots,
+                              "1x4", height, minimal=True, stable_keys=True)
+    else:  # volcat — una zona en grande
+        sector, instr = extra
+        st.markdown(
+            f"<div class='tv-legend' style='display:flex; "
+            f"justify-content:space-between; align-items:center; "
+            f"background:rgba(17,24,34,0.85); padding:0.3rem 0.8rem; "
+            f"border-radius:4px; font-size:0.82rem;'>"
+            f"<span style='color:#ff6644; font-weight:700;'>🔄 VOLCAT · "
+            f"Altura de pluma (km AMSL) · Zona {val}</span>"
+            f"<span style='color:#8899aa;'>SSEC/CIMSS · Pavolonis 2013 · "
+            f"GOES-19</span></div>",
+            unsafe_allow_html=True,
+        )
+        _render_volcat_one_zona_tv(val, sector, instr, height)
 
-    # CONTENIDO PESADO: solo cuando el slot CAMBIA -> sin parpadeo intermedio.
-    if st.session_state.get("tv_last_slot") != (kind, val):
-        st.session_state["tv_last_slot"] = (kind, val)
-        with content_ph.container():
-            if kind == "rgb":
-                render_compact_legend(
-                    val,
-                    extra_left="<span style='color:#ff6644; font-weight:700; "
-                               "margin-right:0.2rem;'>🔄</span>",
-                )
-                _render_4_zonas_inner(val, show_volcanoes, show_hotspots,
-                                      "1x4", height, minimal=True,
-                                      stable_keys=True)
-            else:  # volcat — una zona en grande
-                sector, instr = extra
-                st.markdown(
-                    f"<div class='tv-legend' style='display:flex; "
-                    f"justify-content:space-between; align-items:center; "
-                    f"background:rgba(17,24,34,0.85); padding:0.3rem 0.8rem; "
-                    f"border-radius:4px; font-size:0.82rem;'>"
-                    f"<span style='color:#ff6644; font-weight:700;'>🔄 VOLCAT · "
-                    f"Altura de pluma (km AMSL) · Zona {val}</span>"
-                    f"<span style='color:#8899aa;'>SSEC/CIMSS · Pavolonis 2013 · "
-                    f"GOES-19</span></div>",
-                    unsafe_allow_html=True,
-                )
-                _render_volcat_one_zona_tv(val, sector, instr, height)
-
-    # ── PRE-FETCH del proximo slot DISTINTO (best-effort) ────────────
+    # ── PRE-FETCH del proximo slot (best-effort) -> cambio instantaneo ──
     try:
         nxt = st.session_state[session_key]
-        for j in range(len(slots)):
-            nk, nv, ne = slots[(nxt + j) % len(slots)]
-            if (nk, nv) == (kind, val):
-                continue
-            if nk == "rgb":
-                _recent_ts(nv, n=3)
-            else:
-                ns, ni = ne
-                from dashboard.views.volcat_viewer import (
-                    _volcat_latest_cached, _volcat_image_with_overlays,
-                    _volcat_map_only,
-                )
-                m = _volcat_latest_cached(ns, ni, "Ash_Height")
-                if m:
-                    if VOLCAT_TV_RENDER == "plotly_volcanes":
-                        _volcat_map_only(m["image_url"], m.get("latlon_url"),
-                                         m.get("coords") or {})
-                    else:
-                        _volcat_image_with_overlays(
-                            m["image_url"], m.get("volcanoes_url"),
-                            m.get("latlon_url"))
-            break
+        nk, nv, ne = slots[nxt % len(slots)]
+        if nk == "rgb":
+            _recent_ts(nv, n=3)
+        else:
+            ns, ni = ne
+            from dashboard.views.volcat_viewer import (
+                _volcat_latest_cached, _volcat_image_with_overlays,
+                _volcat_map_only,
+            )
+            m = _volcat_latest_cached(ns, ni, "Ash_Height")
+            if m:
+                if VOLCAT_TV_RENDER == "plotly_volcanes":
+                    _volcat_map_only(m["image_url"], m.get("latlon_url"),
+                                     m.get("coords") or {})
+                else:
+                    _volcat_image_with_overlays(
+                        m["image_url"], m.get("volcanoes_url"),
+                        m.get("latlon_url"))
     except Exception:
         pass
 

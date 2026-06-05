@@ -611,7 +611,14 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
     """
     timestamps = _recent_ts(product, n=3)
     if not timestamps:
-        st.error("RAMMB no respondió.")
+        if minimal:  # TV: mensaje prolijo, no una caja roja de error
+            st.markdown(
+                "<div style='color:#d29922; text-align:center; padding:4rem; "
+                "font-size:1rem;'>⏳ Esperando a RAMMB/CIRA — "
+                "reintentando en el próximo ciclo…</div>",
+                unsafe_allow_html=True)
+        else:
+            st.error("RAMMB no respondió.")
         return
 
     ts = timestamps[0]

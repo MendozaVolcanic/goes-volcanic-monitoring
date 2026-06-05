@@ -742,6 +742,32 @@ def render():
                 z-index: 1000000 !important;
                 pointer-events: auto !important;
               }
+              /* BOTON SALIR FLOTANTE + AUTO-HIDE (jun 2026): sacamos el
+                 boton del flujo (position:fixed) para que NO reste espacio
+                 al grid, y lo dejamos semi-transparente hasta que pasas el
+                 mouse por la esquina sup-izq. Asi se aprovecha todo el alto
+                 y el boton no molesta en la pantalla de sala 24/7. */
+              [data-testid="stElementContainer"]:has(a[href="?vista=guardia"]) {
+                position: fixed !important;
+                top: 2px !important;
+                left: 8px !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                z-index: 1000001 !important;
+                width: auto !important;
+              }
+              a[href="?vista=guardia"] {
+                opacity: 0.18 !important;
+                transition: opacity 0.25s ease !important;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.7) !important;
+              }
+              a[href="?vista=guardia"]:hover { opacity: 1 !important; }
+              /* Zona "imán" invisible arriba-izquierda: al acercar el mouse
+                 a esa esquina, el boton se hace visible (mejora descubrir-
+                 lo sin tener que apuntar al boton casi-invisible). */
+              [data-testid="stElementContainer"]:has(a[href="?vista=guardia"]):hover a {
+                opacity: 1 !important;
+              }
             </style>
             """,
             unsafe_allow_html=True,
@@ -796,19 +822,34 @@ def render():
             st.markdown(
                 """
                 <style>
-                  /* TV 4 zonas 1x4: cada plot llena alto viewport */
+                  /* TV: cada plot/imagen llena casi TODO el alto del
+                     viewport. El boton Salir es flotante (no resta), solo
+                     reservamos ~30px para la franja delgada de leyenda.
+                     Antes restaba 56px (boton + leyenda). */
                   [data-testid="stPlotlyChart"],
                   [data-testid="stPlotlyChart"] > div,
                   [data-testid="stPlotlyChart"] iframe {
-                    height: calc(100vh - 56px) !important;
+                    height: calc(100vh - 32px) !important;
                     min-height: 200px !important;
                   }
-                  /* Block-container al 100% del viewport del browser
-                     (NO del display fisico). max-width:100% ya estaba,
-                     pero ademas eliminamos cualquier max horizontal. */
+                  /* La imagen VOLCAT (st.image) tambien llena el alto en TV. */
+                  [data-testid="stImage"] img {
+                    max-height: calc(100vh - 36px) !important;
+                    width: auto !important;
+                    margin: 0 auto !important;
+                    display: block !important;
+                  }
+                  /* Block-container al 100% del viewport del browser (NO del
+                     display fisico). Padding minimo arriba para ganar alto. */
                   .block-container {
                     max-width: 100vw !important;
                     width: 100vw !important;
+                    padding-top: 0.1rem !important;
+                  }
+                  /* Franja de leyenda compacta lo mas delgada posible. */
+                  [data-testid="stElementContainer"]:has(.legend-compact),
+                  [data-testid="stElementContainer"]:has([class*="legend"]) {
+                    margin-bottom: 0.1rem !important;
                   }
                 </style>
                 """,

@@ -112,7 +112,7 @@ with st.sidebar:
     # ── Build version marker (verifica que Streamlit Cloud sirve la version
     # actual del repo, no una vieja cacheada). Si no ves este texto despues
     # de un push, la app sigue dormant y hay que hacer Reboot manual.
-    BUILD_SHA = "build-2026-06-08-tv-volcan-imagen-compuesta"
+    BUILD_SHA = "build-2026-06-08-tv-volcan-anillos-circulares"
     st.caption(f"🔖 `{BUILD_SHA}`")
     st.markdown("---")
 

@@ -52,10 +52,12 @@ git add \
     src/ \
     tests/ \
     data/hotspots_daily.json \
+    data/frp_timeline.json \
     scripts/build_hires_cache.py \
     scripts/build_animation_cache.py \
     scripts/build_backfill.py \
-    scripts/build_hotspots_daily.py 2>&1 | tail -3
+    scripts/build_hotspots_daily.py \
+    scripts/build_frp_timeline.py 2>&1 | tail -3
 
 echo "==> Commit snapshot..."
 git commit -m "HF Spaces deploy $(date -u +%Y-%m-%dT%H:%M:%SZ)" --quiet

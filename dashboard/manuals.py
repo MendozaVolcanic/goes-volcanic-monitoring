@@ -154,24 +154,51 @@ el operador de turno tenga toda la info para llamar al jefe en <60 s.
 
     # ── Heatmap actividad ─────────────────────────────────────────
     "heatmap": (
-        "Heatmap de actividad",
+        "Pulso térmico y panorama de actividad",
         """
-**Qué muestra**: mapa de calor diario con conteo de **hot spots NOAA
-FDCF** detectados sobre los 43 volcanes chilenos en ventanas de tiempo
-configurables. Datos pre-procesados por un cron diario que regenera
-`data/hotspots_daily.json` a las 02:00 UTC.
+Esta vista tiene **dos secciones complementarias**, cada una explotando
+una escala temporal distinta del producto NOAA FDCF de GOES-19.
 
-**Cómo leerlo**:
-- Eje **Y**: volcanes (ordenados N → S geográficamente).
-- Eje **X**: días.
-- **Color**: número de detecciones FDCF (`mask >= 10`, alta confianza
-  + saturated) por día. Cuanto más cálido el color, más detecciones.
+---
 
-**Interpretación geológica**: una fila con celdas consistentemente
-calientes durante semanas indica actividad sostenida (ej. lago de lava,
-fumarolas vigorosas). Picos aislados sin contexto suelen ser falsos
-positivos por incendios forestales cercanos o reflejo solar especular
-en horario crítico.
+**1) Pulso térmico intradía — la fortaleza ÚNICA de GOES**
+
+**Qué muestra**: una curva de **FRP (Fire Radiative Power, en MW)** por
+volcán a lo largo del tiempo, a la cadencia nativa de GOES (~10 min). Es
+la *evolución temporal* de la emisión radiativa — el encendido y la
+escalada de un evento efusivo.
+
+**Por qué importa (y por qué MODIS/VIIRS no lo dan)**: GOES es
+geoestacionario, ve el mismo punto cada 10 min (~144 scans/día). MODIS y
+VIIRS son polares: 2-4 pasadas/día. Para *magnitud* y *sensibilidad* los
+polares ganan (375 m–1 km vs ~2 km de GOES, peor en el sur de Chile por
+el ángulo oblicuo). Pero para captar la *dinámica intradía* de una
+erupción efusiva, GOES no tiene rival. Esta curva es ese aporte único.
+
+**Cómo leerlo**: eje X = tiempo (UTC); eje Y = FRP sumado dentro de
+50 km de cada volcán. Sólo se grafican volcanes con señal > 0; el resto
+se listan como "calmos". Pre-cocinado incremental por el GitHub Action
+`frp_timeline.yml` (ventana rodante de 48h).
+
+**Limitación honesta**: FDCF rara vez dispara sobre volcanes chilenos
+(0-3 hotspots en todo Chile por scan; las explosivas con ceniza fría NO
+calientan el pixel). Así que este panel está en CERO la mayor parte del
+tiempo y "se enciende" sólo en actividad efusiva con lava expuesta
+(típico: Villarrica, Láscar, Nevados de Chillán). Eso es exactamente
+cuando la cadencia de 10 min vale.
+
+---
+
+**2) Panorama semanal — conteo diario de hot spots**
+
+**Qué muestra**: mapa de calor de **número de detecciones FDCF** por
+volcán y por día (últimos 7). Vista de mediano plazo. Pre-procesado por
+el cron `hotspots_daily.yml` (`data/hotspots_daily.json`, 02:00 UTC).
+
+**Cómo leerlo**: eje Y = volcanes; eje X = días; color = nº de
+detecciones (`mask >= 10`). Una fila consistentemente cálida durante
+semanas indica actividad sostenida; picos aislados suelen ser falsos
+positivos por incendios cercanos o reflejo solar especular.
 
 **Limitación**: FDCF está optimizado para incendios; volcanes con
 anomalías térmicas suaves (fumarolas < 200 K sobre fondo) pueden

@@ -39,6 +39,7 @@ VIEWS = [
 FETCHERS = [
     "src.fetch.goes_s3",
     "src.fetch.goes_fdcf",
+    "src.fetch.frp_timeline",
     "src.fetch.rammb_slider",
     "src.fetch.realearth_api",
     "src.fetch.timeseries",
@@ -83,9 +84,53 @@ def test_style_has_required_helpers():
         assert hasattr(style, name), f"dashboard.style.{name} faltante"
 
 
+def test_frp_sum_per_volcano():
+    """sum_frp_per_volcano: suma FRP y cuenta hotspots dentro del radio."""
+    from dataclasses import dataclass
+
+    from src.fetch.frp_timeline import sum_frp_per_volcano
+
+    @dataclass
+    class _HS:
+        lat: float
+        lon: float
+        frp_mw: float
+
+    @dataclass
+    class _Volc:
+        name: str
+        lat: float
+        lon: float
+
+    v = _Volc("Test", -39.42, -71.93)  # ~Villarrica
+    # dos hotspots encima del volcán + uno a ~500 km (fuera del radio)
+    hotspots = [
+        _HS(v.lat, v.lon, 20.0),
+        _HS(v.lat + 0.05, v.lon, 5.0),
+        _HS(v.lat + 5.0, v.lon, 99.0),
+    ]
+    frp, counts = sum_frp_per_volcano(hotspots, [v], radius_km=50)
+    assert frp["Test"] == 25.0, frp
+    assert counts["Test"] == 2, counts
+
+    # sin hotspots → cero, no excepción
+    frp0, c0 = sum_frp_per_volcano([], [v], radius_km=50)
+    assert frp0["Test"] == 0.0 and c0["Test"] == 0
+
+
+def test_frp_timeline_view_builds_with_empty():
+    """La sección de timeline no debe romper con lista de scans vacía."""
+    import dashboard.views.heatmap_actividad as H
+
+    # _load_frp_timeline tolera ausencia de archivo
+    assert isinstance(H._load_frp_timeline(), dict)
+
+
 if __name__ == "__main__":
     for m in VIEWS + FETCHERS + PROCESSORS + EXPORTERS:
         test_module_imports(m)
     test_views_have_render()
     test_style_has_required_helpers()
+    test_frp_sum_per_volcano()
+    test_frp_timeline_view_builds_with_empty()
     print("OK — smoke tests passed")

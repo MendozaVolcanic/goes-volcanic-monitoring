@@ -1,0 +1,58 @@
+name: FRP timeline build
+
+# Serie intradía de FRP por volcán (fortaleza única de GOES: cadencia 10 min).
+# Diseño incremental: cada corrida baja sólo las últimas 3h de scans (~18,
+# ~2 s/scan con lector recortado) y las agrega a la ventana rodante de 48h.
+# La ventana se llena sola con el correr de las corridas.
+
+on:
+  schedule:
+    # Cada hora — backfill de 3h da solape (auto-sanante si se saltea una)
+    - cron: '5 * * * *'
+  workflow_dispatch:
+    inputs:
+      backfill_hours:
+        description: 'Horas hacia atrás a barrer (bootstrap usa más, ej. 24)'
+        required: false
+        default: '3'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements_actions.txt
+
+      - name: Build frp_timeline.json
+        run: |
+          python scripts/build_frp_timeline.py \
+            --backfill-hours "${{ github.event.inputs.backfill_hours || '3' }}" \
+            --step-min 10
+
+      - name: Commit JSON
+        run: |
+          git config user.name "GOESBot"
+          git config user.email "goes-bot@noreply"
+          git add data/frp_timeline.json 2>/dev/null || true
+          if git diff --quiet --staged 2>/dev/null; then
+            echo "Sin cambios"
+          else
+            TS=$(date -u +'%Y-%m-%dT%H:%MZ')
+            git commit -m "frp: rolling intraday timeline $TS"
+            git pull origin main --rebase -X ours 2>/dev/null || true
+            git push origin main || true
+          fi

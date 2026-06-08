@@ -146,6 +146,34 @@ def test_frp_timeline_view_builds_with_empty():
     assert isinstance(H._load_frp_timeline(), dict)
 
 
+def test_hires_crop_centered_aligns():
+    """_crop_centered: recorte central por fracción lineal (hi-res → vista)."""
+    import numpy as np
+
+    import dashboard.views.modo_guardia_volcan as MGV
+
+    arr = np.zeros((100, 80, 3), dtype="uint8")
+    out = MGV._crop_centered(arr, 0.7)
+    assert out.shape == (70, 56, 3), out.shape
+    # frac=1 devuelve igual; frac fuera de rango se clampa sin romper
+    assert MGV._crop_centered(arr, 1.0).shape == (100, 80, 3)
+    assert MGV._crop_centered(arr, 5.0).shape == (100, 80, 3)
+    assert MGV._crop_centered(arr, 0.0).shape[0] >= 1  # clamp inferior
+
+
+def test_hires_age_min():
+    """_hires_age_min: edad en minutos, robusto a iso sin tz / ausente."""
+    from datetime import datetime, timezone
+
+    import dashboard.views.modo_guardia_volcan as MGV
+
+    now = datetime(2026, 6, 8, 21, 40, tzinfo=timezone.utc)
+    assert MGV._hires_age_min(
+        {"scan_dt_iso": "2026-06-08T21:00:00+00:00"}, now) == 40
+    assert MGV._hires_age_min({}, now) is None
+    assert MGV._hires_age_min({"scan_dt_iso": "basura"}, now) is None
+
+
 if __name__ == "__main__":
     for m in VIEWS + FETCHERS + PROCESSORS + EXPORTERS:
         test_module_imports(m)

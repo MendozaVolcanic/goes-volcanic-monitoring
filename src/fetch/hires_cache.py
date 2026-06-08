@@ -99,6 +99,8 @@ def fetch_hires_for_volcano(volcano_name: str, mode: str = "color"
             "lat": scopes[sid].get("lat"),
             "lon": scopes[sid].get("lon"),
             "mode": mode,
+            # radius_deg del bbox con que se generó (para recortar/alinear).
+            "radius_deg": manifest.get("radius_deg", 0.5),
             # Render metadata (None si manifest viejo no la tiene)
             "sun_alt": scopes[sid].get("sun_alt"),
             "render": scopes[sid].get("render"),

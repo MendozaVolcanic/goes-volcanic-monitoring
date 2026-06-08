@@ -50,6 +50,11 @@ REFRESH_SECONDS = 60
 DEFAULT_VOLCANO = "Villarrica"
 RADIUS_DEG = 0.35  # ~38 km — un volcan + sus alrededores
 
+# Hi-res L1b para el panel GeoColor: usamos el cache 0.5 km/px SOLO cuando el
+# render es visible diurno (de noche el modo color cae a IR pseudo 2 km, peor
+# que el GeoColor nocturno de RAMMB con luces de ciudad). Y solo si está fresco.
+HIRES_MAX_AGE_MIN = 90
+
 PRODUCTS = [
     ("eumetsat_ash", "Ash RGB", "EUMETSAT B15-B14 / B14-B11 / B13"),
     ("geocolor", "GeoColor", "Visible mejorado (CIRA)"),
@@ -162,6 +167,37 @@ def _wind_arrow_endpoints(lat0: float, lon0: float, u_kmh: float, v_kmh: float,
     lon_end = lon0 + ux * scale / float(np.cos(np.radians(lat0)))
     lat_end = lat0 + vy * scale
     return [lon0, lon_end], [lat0, lat_end]
+
+
+# ── Hi-res GeoColor (switch día/noche, mejor vista cuando aplica) ─────
+
+def _crop_centered(arr: np.ndarray, frac: float) -> np.ndarray:
+    """Recorta el centro de una imagen a una fracción lineal (0<frac<=1).
+
+    El cache hi-res cubre radio 0.5°; esta vista zooma a 0.35°. Como ambos
+    están centrados en el volcán y usan el mismo factor cos(lat) en lon, el
+    recorte central por frac=0.35/0.5 alinea exacto con los bounds de la vista
+    → drop-in del frame RAMMB, sin tocar la geometría del render ni la captura.
+    """
+    frac = max(0.05, min(1.0, frac))
+    h, w = arr.shape[:2]
+    rh, rw = int(round(h * frac)), int(round(w * frac))
+    r0, c0 = (h - rh) // 2, (w - rw) // 2
+    return arr[r0:r0 + rh, c0:c0 + rw]
+
+
+def _hires_age_min(info: dict, now: datetime) -> int | None:
+    """Edad en minutos del scan hi-res respecto a `now` (None si no parsea)."""
+    iso = (info or {}).get("scan_dt_iso")
+    if not iso:
+        return None
+    try:
+        dt = datetime.fromisoformat(iso)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return int((now - dt).total_seconds() / 60)
+    except Exception:
+        return None
 
 
 # ── Conversion array a data URL ──────────────────────────────────────
@@ -456,34 +492,62 @@ def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
         unsafe_allow_html=True,
     )
 
+    # Lazy import del cache hi-res (gotcha Streamlit Cloud — ver CLAUDE.md).
+    try:
+        from src.fetch.hires_cache import fetch_hires_for_volcano
+    except Exception:
+        fetch_hires_for_volcano = None
+
     # Bajar los 3 productos (cache 2h por ts) con fallback a ts previos
     captured = []   # (label, img, ts_label) para captura
     cols = st.columns(3)
     for i, (prod_id, label, recipe) in enumerate(PRODUCTS):
-        timestamps = _recent_timestamps(prod_id, n=3)
         img = None
         ts_label = "—"
         used_ts = None
-        if timestamps:
-            img, used_ts, used_zoom = _frame_with_fallback(
-                prod_id, timestamps,
-                bounds["lat_min"], bounds["lat_max"],
-                bounds["lon_min"], bounds["lon_max"],
-            )
-            if used_ts:
-                try:
-                    ts_dt = parse_rammb_ts(used_ts)
-                    age = int((now - ts_dt).total_seconds() / 60)
-                    ts_label = f"{ts_dt.strftime('%H:%M UTC')} (hace {age} min)"
-                    flags = []
-                    if used_ts != timestamps[0]:
-                        flags.append("scan previo")
-                    if used_zoom == ZOOM_ZONE:
-                        flags.append(f"zoom {ZOOM_ZONE} (~3.4 km/px)")
-                    if flags:
-                        ts_label += " ⚠ " + ", ".join(flags)
-                except Exception:
-                    ts_label = used_ts
+
+        # ── 1) GeoColor: intentar hi-res L1b PRIMERO, pero SOLO si es visible
+        #       diurno y fresco (de noche RAMMB es mejor). "Mejor vista posible
+        #       cuando se puede; switch cuando está disponible."
+        if prod_id == "geocolor" and fetch_hires_for_volcano is not None:
+            try:
+                h_arr, h_info = fetch_hires_for_volcano(v.name, mode="color")
+            except Exception:
+                h_arr, h_info = None, None
+            age = _hires_age_min(h_info, now) if h_info else None
+            if (h_arr is not None and h_info
+                    and h_info.get("render") == "visible_color"
+                    and age is not None and age <= HIRES_MAX_AGE_MIN):
+                # Recortar del radio del cache (0.5°) al de la vista (0.35°)
+                r = float(h_info.get("radius_deg") or 0.5)
+                img = _crop_centered(h_arr, RADIUS_DEG / r) if r > 0 else h_arr
+                hhmm = h_info.get("scan_ts", "")[8:12]
+                hhmm = f"{hhmm[:2]}:{hhmm[2:]} UTC" if len(hhmm) == 4 else "?"
+                ts_label = f"{hhmm} (hace {age} min) ✨ hi-res L1b ~1 km/px (visible)"
+
+        # ── 2) RAMMB normal (Ash, SO2, y GeoColor nocturno / sin hi-res) ──
+        if img is None:
+            timestamps = _recent_timestamps(prod_id, n=3)
+            if timestamps:
+                img, used_ts, used_zoom = _frame_with_fallback(
+                    prod_id, timestamps,
+                    bounds["lat_min"], bounds["lat_max"],
+                    bounds["lon_min"], bounds["lon_max"],
+                )
+                if used_ts:
+                    try:
+                        ts_dt = parse_rammb_ts(used_ts)
+                        age = int((now - ts_dt).total_seconds() / 60)
+                        ts_label = f"{ts_dt.strftime('%H:%M UTC')} (hace {age} min)"
+                        flags = []
+                        if used_ts != timestamps[0]:
+                            flags.append("scan previo")
+                        if used_zoom == ZOOM_ZONE:
+                            flags.append(f"zoom {ZOOM_ZONE} (~3.4 km/px)")
+                        if flags:
+                            ts_label += " ⚠ " + ", ".join(flags)
+                    except Exception:
+                        ts_label = used_ts
 
         captured.append((label, img, ts_label))
 

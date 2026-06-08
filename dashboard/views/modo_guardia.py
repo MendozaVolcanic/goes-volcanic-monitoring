@@ -850,15 +850,22 @@ def render():
                      del ancho. La agrandamos a ~72vw con estiramiento
                      horizontal MODERADO (cap ~1.3x via min()) para aprovechar
                      el espacio sin deformar de mas. (jun 2026, pedido OVDAS) */
-                  /* Imagen VOLCAT (st.image): el contenedor stImage toma el
-                     ancho de la imagen; con margin auto se CENTRA dentro del
-                     stElementContainer (full-width). Le fijamos el ancho a
-                     ~72vw y la img adentro lo llena, alto 100vh, con
-                     estiramiento moderado (cap ~1.3x). */
+                  /* Imagen VOLCAT (st.image): cadena de contenedores
+                     stFullScreenFrame > stImage > stImageContainer > img.
+                     El frame full-width permite centrar el stImage (72vw) con
+                     margin auto; el stImageContainer DEBE ser 100% o la img
+                     queda en su ancho natural (~55%). La img llena 72vw, alto
+                     100vh, estiramiento moderado (cap ~1.3x). */
+                  [data-testid="stFullScreenFrame"] {
+                    width: 100% !important;
+                  }
                   [data-testid="stImage"] {
                     width: min(72vw, calc((100vh - 6px) * 1.58)) !important;
                     margin-left: auto !important;
                     margin-right: auto !important;
+                  }
+                  [data-testid="stImageContainer"] {
+                    width: 100% !important;
                   }
                   [data-testid="stImage"] img {
                     height: calc(100vh - 6px) !important;

@@ -525,24 +525,22 @@ def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
         panels.append((label, img, ts_label, hs))
 
     try:
-        import base64
-        import io
         composed = _compose_volcan_panels(v, V_RADIUS, panels)
-        buf = io.BytesIO()
-        composed.save(buf, format="PNG")
-        b64 = base64.b64encode(buf.getvalue()).decode()
-        # <img> propio (NO st.image): así NO hereda el CSS del TV que fuerza
-        # object-fit:fill (pensado para la imagen VOLCAT 1.58) y que deformaba
-        # mis anillos a óvalos. object-fit:contain preserva el aspecto -> los
-        # anillos quedan CIRCULARES. Sigue siendo estático -> sin "achicarse".
+        # Override SOLO para este slot: el CSS global del TV fuerza
+        # object-fit:fill (pensado para la imagen VOLCAT, aspecto ~1.58) que
+        # comprimía mi imagen 2.21 -> anillos OVALADOS. Acá lo pasamos a
+        # contain (preserva aspecto -> anillos CIRCULARES) y ancho completo.
+        # El override vive en el output del fragment -> sólo aplica en este
+        # slot; al rotar a VOLCAT desaparece y VOLCAT recupera su fill.
         st.markdown(
-            f"<div style='display:flex; justify-content:center; "
-            f"align-items:center; width:100%;'>"
-            f"<img src='data:image/png;base64,{b64}' "
-            f"style='max-width:100vw; max-height:calc(100vh - 8px); "
-            f"width:auto; height:auto; object-fit:contain;'/></div>",
+            "<style>"
+            "[data-testid='stImage']{width:100% !important;}"
+            "[data-testid='stImage'] img{object-fit:contain !important;"
+            "height:calc(100vh - 8px) !important;width:100% !important;}"
+            "</style>",
             unsafe_allow_html=True,
         )
+        st.image(composed)
     except Exception as e:
         logger.warning("compose volcan zoom falló: %s", e)
         st.warning(f"No se pudo componer el zoom de {v.name}.")

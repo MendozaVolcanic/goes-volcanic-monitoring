@@ -493,29 +493,11 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
         )
         _render_volcat_one_zona_tv(val, sector, instr, height)
 
-    # ── PRE-FETCH del proximo slot (best-effort) -> cambio instantaneo ──
-    try:
-        nxt = st.session_state[session_key]
-        nk, nv, ne = slots[nxt % len(slots)]
-        if nk == "rgb":
-            _recent_ts(nv, n=3)
-        else:
-            ns, ni = ne
-            from dashboard.views.volcat_viewer import (
-                _volcat_latest_cached, _volcat_image_with_overlays,
-                _volcat_map_only,
-            )
-            m = _volcat_latest_cached(ns, ni, "Ash_Height")
-            if m:
-                if VOLCAT_TV_RENDER == "plotly_volcanes":
-                    _volcat_map_only(m["image_url"], m.get("latlon_url"),
-                                     m.get("coords") or {})
-                else:
-                    _volcat_image_with_overlays(
-                        m["image_url"], m.get("volcanoes_url"),
-                        m.get("latlon_url"))
-    except Exception:
-        pass
+    # NOTA: antes habia un PRE-FETCH del proximo slot aca. Se quito (jun 2026):
+    # bloqueaba el thread del fragment DESPUES del render, retrasando la
+    # aparicion del slot actual (la rotacion se sentia "trabada"). El cache se
+    # calienta igual cuando cada slot se muestra; tras el primer ciclo (~72s)
+    # todo esta cacheado y la rotacion es fluida.
 
 
 @st.fragment(run_every=f"{ROTATION_SECONDS}s")

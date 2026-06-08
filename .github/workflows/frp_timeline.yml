@@ -1,14 +1,16 @@
 name: FRP timeline build
 
 # Serie intradía de FRP por volcán (fortaleza única de GOES: cadencia 10 min).
-# Diseño incremental: cada corrida baja sólo las últimas 3h de scans (~18,
-# ~2 s/scan con lector recortado) y las agrega a la ventana rodante de 48h.
-# La ventana se llena sola con el correr de las corridas.
+# Diseño incremental: cada corrida baja sólo los scans NUEVOS de las últimas 3h
+# (pre-check salta los ya descargados → barato) y los agrega a la ventana
+# rodante de 48h. Corre cada 15 min para reflejar la anomalía casi en NRT
+# (latencia ~10-15 min; el scan FDCF tiene su propia latencia de ~6-8 min).
 
 on:
   schedule:
-    # Cada hora — backfill de 3h da solape (auto-sanante si se saltea una)
-    - cron: '5 * * * *'
+    # Cada 15 min — pre-check evita re-bajar scans ya presentes; backfill de 3h
+    # da solape (auto-sanante si se saltea una corrida)
+    - cron: '*/15 * * * *'
   workflow_dispatch:
     inputs:
       backfill_hours:

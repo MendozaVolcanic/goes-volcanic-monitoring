@@ -86,6 +86,12 @@ def main():
     ap.add_argument("--window-hours", type=float, default=48.0)
     ap.add_argument("--step-min", type=int, default=10)
     ap.add_argument("--radius-km", type=float, default=50.0)
+    # Backfill histórico del roll-up diario (one-time bootstrap). Barre los
+    # días MÁS VIEJOS que ayer (hoy/ayer ya vienen a 10 min de la ventana) a un
+    # muestreo más ralo (rollup-step-min) para llenar el heatmap semanal de una.
+    ap.add_argument("--rollup-days", type=int, default=0,
+                    help="0 = off. N = backfillea N días del roll-up diario.")
+    ap.add_argument("--rollup-step-min", type=int, default=20)
     args = ap.parse_args()
 
     volcanoes = get_priority()
@@ -95,14 +101,19 @@ def main():
     existing = {s["t"]: s for s in data["scans"]}
 
     now = datetime.now(timezone.utc).replace(second=0, microsecond=0)
-    start = now - timedelta(hours=args.backfill_hours)
+    # Alinear 'now' al múltiplo de step para que los targets caigan en los
+    # límites reales de scan (:00, :10, ...) y la pre-comprobación de "ya lo
+    # tengo" sea fiable sin tener que descargar el archivo.
+    now_floor = now - timedelta(minutes=now.minute % args.step_min)
 
-    # Construir lista de timestamps objetivo (paso step_min) en la ventana de
-    # backfill. Saltear los que ya están en el archivo.
-    n_steps = int((now - start).total_seconds() // (args.step_min * 60)) + 1
+    n_steps = int(args.backfill_hours * 60 // args.step_min) + 1
     fetched = 0
     for i in range(n_steps):
-        target = start + timedelta(minutes=i * args.step_min)
+        target = now_floor - timedelta(minutes=i * args.step_min)
+        # PRE-CHECK barato: si ya tenemos ese timestamp, NO descargamos el
+        # scan (clave para correr cada 10-15 min sin re-bajar lo mismo).
+        if target.strftime(ISO) in existing:
+            continue
         try:
             hs, scan_dt = fetch_scan_sliced(target, bounds=CHILE_BBOX)
         except Exception as e:
@@ -143,6 +154,38 @@ def main():
             daily[day] = window_daily[day]
         elif day == today_str:
             daily.setdefault(day, {})  # hoy sin actividad → registrado vacío
+    # ── Backfill histórico opcional (one-time bootstrap) ─────────────────
+    # Barre [now-rollup_days, now-2días] a rollup_step_min y rellena el
+    # roll-up de los días viejos. NO toca hoy/ayer (que quedan a 10 min).
+    if args.rollup_days > 0:
+        bf: dict[str, dict[str, int]] = {}
+        sweep_end = now_floor - timedelta(days=2)
+        sweep_start = now_floor - timedelta(days=args.rollup_days)
+        t = sweep_start
+        swept = 0
+        while t <= sweep_end:
+            try:
+                hs, scan_dt = fetch_scan_sliced(t, bounds=CHILE_BBOX)
+            except Exception as e:
+                log.warning("backfill scan %s falló: %s", t.isoformat(), e)
+                t += timedelta(minutes=args.rollup_step_min)
+                continue
+            if scan_dt is not None:
+                day = scan_dt.strftime("%Y-%m-%d")
+                _, counts = sum_frp_per_volcano(
+                    hs, volcanoes, radius_km=args.radius_km)
+                d = bf.setdefault(day, {})
+                for name, c in counts.items():
+                    if c > 0:
+                        d[name] = d.get(name, 0) + 1
+            t += timedelta(minutes=args.rollup_step_min)
+            swept += 1
+        for day, counts in bf.items():
+            if day not in (today_str, yesterday_str):
+                daily[day] = counts
+        log.info("Backfill histórico: %d scans barridos, %d días viejos "
+                 "rellenados", swept, len(bf))
+
     cutoff_day = (now - timedelta(days=30)).strftime("%Y-%m-%d")
     daily = {k: v for k, v in sorted(daily.items()) if k >= cutoff_day}
 

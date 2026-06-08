@@ -208,6 +208,63 @@ def _array_to_data_url(arr):
     return array_to_data_url(arr)
 
 
+def fetch_volcan_product(prod_id: str, volcano_name: str,
+                         lat: float, lon: float, bounds: dict,
+                         now: datetime) -> tuple[np.ndarray | None, str]:
+    """Imagen + etiqueta de un producto centrado en el volcán.
+
+    Encapsula el SWITCH de "mejor vista posible" para reusar desde la página
+    completa Y desde la rotación del Modo Sala TV:
+    - GeoColor: hi-res L1b visible (≈1 km/px true color) cuando hay render
+      diurno fresco; si no, RAMMB GeoColor (mejor de noche).
+    - Ash / SO2: siempre RAMMB (son IR 2 km, no hay ganancia de resolución).
+
+    Devuelve (img, ts_label). img=None si no hay nada disponible.
+    """
+    # 1) GeoColor → intentar hi-res primero (solo visible diurno y fresco)
+    if prod_id == "geocolor":
+        try:
+            from src.fetch.hires_cache import fetch_hires_for_volcano
+            h_arr, h_info = fetch_hires_for_volcano(volcano_name, mode="color")
+        except Exception:
+            h_arr, h_info = None, None
+        age = _hires_age_min(h_info, now) if h_info else None
+        if (h_arr is not None and h_info
+                and h_info.get("render") == "visible_color"
+                and age is not None and age <= HIRES_MAX_AGE_MIN):
+            r = float(h_info.get("radius_deg") or 0.5)
+            img = _crop_centered(h_arr, RADIUS_DEG / r) if r > 0 else h_arr
+            hhmm = h_info.get("scan_ts", "")[8:12]
+            hhmm = f"{hhmm[:2]}:{hhmm[2:]} UTC" if len(hhmm) == 4 else "?"
+            return img, f"{hhmm} (hace {age} min) ✨ hi-res L1b ~1 km/px (visible)"
+
+    # 2) RAMMB (Ash, SO2, y GeoColor nocturno / sin hi-res)
+    img = None
+    ts_label = "—"
+    timestamps = _recent_timestamps(prod_id, n=3)
+    if timestamps:
+        img, used_ts, used_zoom = _frame_with_fallback(
+            prod_id, timestamps,
+            bounds["lat_min"], bounds["lat_max"],
+            bounds["lon_min"], bounds["lon_max"],
+        )
+        if used_ts:
+            try:
+                ts_dt = parse_rammb_ts(used_ts)
+                age = int((now - ts_dt).total_seconds() / 60)
+                ts_label = f"{ts_dt.strftime('%H:%M UTC')} (hace {age} min)"
+                flags = []
+                if used_ts != timestamps[0]:
+                    flags.append("scan previo")
+                if used_zoom == ZOOM_ZONE:
+                    flags.append(f"zoom {ZOOM_ZONE} (~3.4 km/px)")
+                if flags:
+                    ts_label += " ⚠ " + ", ".join(flags)
+            except Exception:
+                ts_label = used_ts
+    return img, ts_label
+
+
 
 # ── Render por producto ──────────────────────────────────────────────
 
@@ -492,63 +549,13 @@ def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
         unsafe_allow_html=True,
     )
 
-    # Lazy import del cache hi-res (gotcha Streamlit Cloud — ver CLAUDE.md).
-    try:
-        from src.fetch.hires_cache import fetch_hires_for_volcano
-    except Exception:
-        fetch_hires_for_volcano = None
-
-    # Bajar los 3 productos (cache 2h por ts) con fallback a ts previos
+    # Bajar los 3 productos (con switch hi-res en GeoColor — ver
+    # fetch_volcan_product, reutilizado por la rotación del Modo Sala TV).
     captured = []   # (label, img, ts_label) para captura
     cols = st.columns(3)
     for i, (prod_id, label, recipe) in enumerate(PRODUCTS):
-        img = None
-        ts_label = "—"
-        used_ts = None
-
-        # ── 1) GeoColor: intentar hi-res L1b PRIMERO, pero SOLO si es visible
-        #       diurno y fresco (de noche RAMMB es mejor). "Mejor vista posible
-        #       cuando se puede; switch cuando está disponible."
-        if prod_id == "geocolor" and fetch_hires_for_volcano is not None:
-            try:
-                h_arr, h_info = fetch_hires_for_volcano(v.name, mode="color")
-            except Exception:
-                h_arr, h_info = None, None
-            age = _hires_age_min(h_info, now) if h_info else None
-            if (h_arr is not None and h_info
-                    and h_info.get("render") == "visible_color"
-                    and age is not None and age <= HIRES_MAX_AGE_MIN):
-                # Recortar del radio del cache (0.5°) al de la vista (0.35°)
-                r = float(h_info.get("radius_deg") or 0.5)
-                img = _crop_centered(h_arr, RADIUS_DEG / r) if r > 0 else h_arr
-                hhmm = h_info.get("scan_ts", "")[8:12]
-                hhmm = f"{hhmm[:2]}:{hhmm[2:]} UTC" if len(hhmm) == 4 else "?"
-                ts_label = f"{hhmm} (hace {age} min) ✨ hi-res L1b ~1 km/px (visible)"
-
-        # ── 2) RAMMB normal (Ash, SO2, y GeoColor nocturno / sin hi-res) ──
-        if img is None:
-            timestamps = _recent_timestamps(prod_id, n=3)
-            if timestamps:
-                img, used_ts, used_zoom = _frame_with_fallback(
-                    prod_id, timestamps,
-                    bounds["lat_min"], bounds["lat_max"],
-                    bounds["lon_min"], bounds["lon_max"],
-                )
-                if used_ts:
-                    try:
-                        ts_dt = parse_rammb_ts(used_ts)
-                        age = int((now - ts_dt).total_seconds() / 60)
-                        ts_label = f"{ts_dt.strftime('%H:%M UTC')} (hace {age} min)"
-                        flags = []
-                        if used_ts != timestamps[0]:
-                            flags.append("scan previo")
-                        if used_zoom == ZOOM_ZONE:
-                            flags.append(f"zoom {ZOOM_ZONE} (~3.4 km/px)")
-                        if flags:
-                            ts_label += " ⚠ " + ", ".join(flags)
-                    except Exception:
-                        ts_label = used_ts
-
+        img, ts_label = fetch_volcan_product(
+            prod_id, v.name, v.lat, v.lon, bounds, now)
         captured.append((label, img, ts_label))
 
         # Hotspots overlay solo en Ash; viento en los 3 (es info universal)

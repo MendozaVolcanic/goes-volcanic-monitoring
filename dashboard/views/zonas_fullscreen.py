@@ -408,6 +408,61 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int):
             st.image(img)
 
 
+def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
+    """Slot TV: zoom a UN volcán, sus 3 productos centrados lado a lado.
+
+    Ash · GeoColor · SO2 centrados en el volcán (radio ~38 km, con anillos de
+    distancia). El panel GeoColor hace el SWITCH automático a hi-res L1b
+    visible diurno vía fetch_volcan_product (mismo motor que la página
+    completa tv=volcan). Ash/SO2 son IR (RAMMB, 2 km nativo).
+    """
+    from datetime import datetime, timezone
+
+    from dashboard.views.modo_guardia_volcan import (
+        PRODUCTS, RADIUS_DEG as V_RADIUS, _hotspots_volcan, _render_product,
+        fetch_volcan_product,
+    )
+    from src.volcanos import get_volcano
+
+    v = get_volcano(volcano_name)
+    if v is None:
+        st.warning(f"Volcán {volcano_name} no está en el catálogo.")
+        return
+
+    bounds = {
+        "lat_min": v.lat - V_RADIUS, "lat_max": v.lat + V_RADIUS,
+        "lon_min": v.lon - V_RADIUS, "lon_max": v.lon + V_RADIUS,
+    }
+    now = datetime.now(timezone.utc)
+
+    hotspots = []
+    if show_hotspots:
+        try:
+            hotspots, _ = _hotspots_volcan(
+                bounds["lat_min"], bounds["lat_max"],
+                bounds["lon_min"], bounds["lon_max"])
+        except Exception:
+            hotspots = []
+
+    cols = st.columns(3)
+    for i, (prod_id, label, recipe) in enumerate(PRODUCTS):
+        img, ts_label = fetch_volcan_product(
+            prod_id, v.name, v.lat, v.lon, bounds, now)
+        hs = hotspots if prod_id == "eumetsat_ash" else None
+        with cols[i]:
+            fig = _render_product(
+                img, bounds, f"{label} · {ts_label}",
+                v.lat, v.lon, v.name, hotspots=hs, show_rings=True)
+            # TV: llenar el alto y centrar (mismo truco constrain=domain que
+            # usamos para las 4 zonas RGB).
+            fig.update_layout(height=height, margin=dict(l=0, r=0, t=26, b=0))
+            fig.update_xaxes(constrain="domain")
+            fig.update_yaxes(constrain="domain")
+            st.plotly_chart(
+                fig, width="stretch", config={"displayModeBar": False},
+                key=f"tv_volcan_{v.name}_{prod_id}")
+
+
 # ── Rotacion del Modo Sala TV con CADENCIA UNIFORME ──────────────────
 # Todos los slots (GeoColor/Ash/SO2 y cada zona VOLCAT) duran lo mismo. El
 # fragment corre cada TV_SLOT_SECONDS y re-renderiza UNA vez por slot, al
@@ -415,6 +470,10 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int):
 # que causaba el parpadeo, asi que se uniformo. (jun 2026)
 # Para cambiar la velocidad de la rotacion, editar SOLO esta constante.
 TV_SLOT_SECONDS = 12
+
+# Volcanes con slot de zoom dedicado en la rotacion TV (3 productos centrados,
+# con switch hi-res en GeoColor). Agregar nombres del CATALOG para sumar mas.
+TV_VOLCAN_ZOOMS = ["Villarrica"]
 
 
 def _render_tv_status(scan_dt=None):
@@ -460,9 +519,11 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
     from src.fetch.volcat_api import ZONE_TO_SECTOR
     from dashboard.map_helpers import render_compact_legend
 
-    # Rotacion: 3 RGB (4 zonas grid) + 3 zonas VOLCAT (1 en grande). 15s c/u.
+    # Rotacion (12s c/u): 3 RGB (4 zonas grid) + 3 zonas VOLCAT (1 en grande)
+    # + zoom a Villarrica (sus 3 productos centrados, con switch hi-res).
     slots: list[tuple] = [("rgb", p, None) for p in PRODUCT_LIST]
     slots += [("volcat", z, si) for z, si in ZONE_TO_SECTOR.items()]
+    slots += [("volcan", v, None) for v in TV_VOLCAN_ZOOMS]
 
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
@@ -485,6 +546,19 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
         _render_4_zonas_inner(val, show_volcanoes, show_hotspots,
                               "1x4", height, minimal=True, stable_keys=True,
                               uniform_size=True)
+    elif kind == "volcan":  # zoom a un volcán — sus 3 productos centrados
+        st.markdown(
+            f"<div class='tv-legend' style='display:flex; "
+            f"justify-content:space-between; align-items:center; "
+            f"background:rgba(17,24,34,0.85); padding:0.3rem 0.8rem; "
+            f"border-radius:4px; font-size:0.82rem;'>"
+            f"<span style='color:#ff6644; font-weight:700;'>🔄 ZOOM {val} · "
+            f"Ash · GeoColor · SO2 (centrados, anillos 5/10/25/50 km)</span>"
+            f"<span style='color:#8899aa;'>GOES-19 · GeoColor con switch "
+            f"hi-res L1b de día</span></div>",
+            unsafe_allow_html=True,
+        )
+        _render_volcan_zoom_tv(val, show_hotspots, height)
     else:  # volcat — una zona en grande
         sector, instr = extra
         st.markdown(

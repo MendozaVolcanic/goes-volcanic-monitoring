@@ -16,13 +16,11 @@ import logging
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
 
 try:
     from dashboard.style import header
-    from src.fetch.goes_fdcf import fetch_latest_hotspots
     from src.volcanos import PRIORITY_VOLCANOES, get_volcano
 except Exception:
     # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.
@@ -35,7 +33,6 @@ logger = logging.getLogger(__name__)
 
 LOOKBACK_DAYS = 7
 RADIUS_KM = 50
-HISTORIC_PATH = Path(__file__).parent.parent.parent / "data" / "hotspots_daily.json"
 FRP_TIMELINE_PATH = Path(__file__).parent.parent.parent / "data" / "frp_timeline.json"
 
 # Paleta estable por volcán prioritario (para el timeline intradía).
@@ -46,57 +43,13 @@ _VOLCANO_COLORS = {
 }
 
 
-def _load_historic() -> dict:
-    """Lee hotspots_daily.json (pre-cocinado por GitHub Action)."""
-    if not HISTORIC_PATH.exists():
-        return {}
-    try:
-        return json.loads(HISTORIC_PATH.read_text()).get("days", {})
-    except Exception as e:
-        logger.warning("hotspots_daily.json corrupto: %s", e)
-        return {}
-
-
-@st.cache_data(ttl=600, show_spinner="Calculando hot spots última hora…")
-def _hotspots_today() -> list:
-    """Hot spots Chile en la última hora — proxy del día actual.
-
-    NOTA: para versión real con backfill histórico hay que escanear el
-    archivo S3 NOAA-19 FDCF de los últimos N días. Eso requiere ~1000
-    requests, y debería estar pre-cocinado por un GitHub Action diario.
-    """
-    bounds = {
-        "lat_min": -56, "lat_max": -17,
-        "lon_min": -76, "lon_max": -66,
-    }
-    try:
-        hs, dt = fetch_latest_hotspots(bounds=bounds, hours_back=1)
-        return hs
-    except Exception as e:
-        logger.warning("hotspots fetch fallo: %s", e)
-        return []
-
-
-def _count_hotspots_per_volcano(hotspots: list) -> dict[str, int]:
-    """Por volcán prioritario: cuántos hot spots ≤RADIUS_KM."""
-    counts = {}
-    for name in PRIORITY_VOLCANOES:
-        v = get_volcano(name)
-        if v is None:
-            continue
-        n = 0
-        for h in hotspots:
-            dlat = (h.lat - v.lat) * 111.0
-            dlon = (h.lon - v.lon) * 111.0 * float(np.cos(np.radians(v.lat)))
-            d = float(np.hypot(dlat, dlon))
-            if d <= RADIUS_KM:
-                n += 1
-        counts[name] = n
-    return counts
-
-
 def _build_heatmap(counts_by_day: list[dict], today: datetime) -> go.Figure:
-    """Plotly heatmap con días en X, volcanes en Y, count como color."""
+    """Heatmap semanal: días en X, volcanes en Y, scans-con-detección como color.
+
+    La métrica (counts_by_day[i][volcan]) es el número de scans de ~10 min con
+    ≥1 hotspot ese día — medida de persistencia derivada del roll-up diario de
+    frp_timeline.json (NO de un solo scan).
+    """
     days = [(today - timedelta(days=i)).strftime("%d-%b") for i in range(LOOKBACK_DAYS)][::-1]
     z = []
     for name in PRIORITY_VOLCANOES:
@@ -109,9 +62,10 @@ def _build_heatmap(counts_by_day: list[dict], today: datetime) -> go.Figure:
         y=PRIORITY_VOLCANOES,
         colorscale=[[0, "#0f1418"], [0.01, "#1a3322"], [0.3, "#3fb950"],
                     [0.6, "#d29922"], [1.0, "#ff4444"]],
-        zmin=0, zmax=10,
-        hovertemplate="<b>%{y}</b><br>%{x}<br>Hot spots: %{z}<extra></extra>",
-        colorbar=dict(title="Hot spots", thickness=12, len=0.6),
+        zmin=0, zmax=12,
+        hovertemplate=("<b>%{y}</b><br>%{x}<br>Scans con detección: "
+                       "%{z}<extra></extra>"),
+        colorbar=dict(title="Scans", thickness=12, len=0.6),
     ))
     fig.update_layout(
         height=420, margin=dict(l=10, r=10, t=20, b=10),
@@ -251,75 +205,67 @@ def render():
     _render_frp_timeline_section()
     st.markdown("---")
 
-    # ── SECCIÓN SECUNDARIA: panorama semanal (conteo diario) ──
+    # ── SECCIÓN SECUNDARIA: panorama semanal (roll-up diario) ──
     header(
-        "📅 Panorama semanal — conteo de hot spots (7 días)",
-        f"Cuántos hot spots NOAA FDCF aparecieron ≤{RADIUS_KM} km de cada "
-        "volcán por día. Complementa al pulso intradía con la vista de mediano "
-        "plazo.",
+        "📅 Panorama semanal — persistencia térmica (7 días)",
+        f"Cuántos scans de ~10 min tuvieron detección FDCF ≤{RADIUS_KM} km de "
+        "cada volcán, por día. Derivado de la MISMA serie intradía (una sola "
+        "fuente), no de un scan suelto. Más scans = actividad más sostenida.",
     )
 
     today = datetime.now(timezone.utc)
 
-    # Hoy: datos reales calculados live. Dias previos: del archivo historico
-    # pre-cocinado por GitHub Action (.github/workflows/hotspots_daily.yml).
-    counts_today = _count_hotspots_per_volcano(_hotspots_today())
-    historic = _load_historic()
+    # Fuente ÚNICA: roll-up diario derivado de frp_timeline.json (los mismos
+    # scans de 10 min de la curva de arriba). Hoy y días previos salen del
+    # mismo lugar — sin el bug del "conteo de un solo scan".
+    daily = _load_frp_timeline().get("daily", {})
 
     counts_by_day = []
+    covered_days = 0  # días cubiertos por el pre-cocinado (aunque sean 0 act.)
     for i in range(LOOKBACK_DAYS):
-        day = today - timedelta(days=i)
-        day_key = day.strftime("%Y-%m-%d")
-        if i == 0:
-            counts_by_day.insert(0, counts_today)
-        elif day_key in historic:
-            counts_by_day.insert(0, historic[day_key])
-        else:
-            counts_by_day.insert(0, {})  # placeholder vacio
+        day_key = (today - timedelta(days=i)).strftime("%Y-%m-%d")
+        if day_key in daily:
+            covered_days += 1
+        counts_by_day.insert(0, daily.get(day_key, {}))
 
     fig = _build_heatmap(counts_by_day, today)
     st.plotly_chart(fig, width='stretch', config={"displayModeBar": False})
 
-    total_today = sum(counts_today.values())
-    if total_today > 0:
-        active = [k for k, v in counts_today.items() if v > 0]
+    counts_today = counts_by_day[-1]  # último elemento = hoy
+    if counts_today:
+        active = sorted([k for k, v in counts_today.items() if v > 0],
+                        key=lambda k: -counts_today[k])
         st.success(
-            f"🔥 **Hoy ({today.strftime('%d-%b')})**: {total_today} hot spots "
-            f"distribuidos en {len(active)} volcán(es): {', '.join(active)}"
+            f"🔥 **Hoy ({today.strftime('%d-%b')})**: detección térmica en "
+            f"{len(active)} volcán(es) — "
+            + ", ".join(f"{k} ({counts_today[k]} scans)" for k in active)
         )
     else:
         st.info(
-            f"✅ **Hoy ({today.strftime('%d-%b')})**: cero hot spots NOAA en los "
-            f"{len(PRIORITY_VOLCANOES)} volcanes prioritarios. Calma operacional."
+            f"✅ **Hoy ({today.strftime('%d-%b')})**: sin detección FDCF en los "
+            f"{len(PRIORITY_VOLCANOES)} volcanes prioritarios (aún). "
+            "Calma operacional."
         )
 
-    historic_days = sum(1 for c in counts_by_day[:-1] if c)
-    if historic_days > 0:
-        st.success(
-            f"📊 Histórico: {historic_days}/{LOOKBACK_DAYS - 1} días cargados "
-            f"desde `data/hotspots_daily.json` (pre-cocinado por GitHub Action diario)."
-        )
-    else:
-        st.info(
-            "📊 Días anteriores aparecen vacíos hasta que el GitHub Action "
-            "diario (`.github/workflows/hotspots_daily.yml`) corra al menos "
-            "una vez. La primera corrida es a las 02:00 UTC del día siguiente "
-            "al deploy."
-        )
+    st.caption(
+        f"📊 {covered_days}/{LOOKBACK_DAYS} días cubiertos por el pre-cocinado. "
+        "El roll-up se llena hasta 7 días con las corridas horarias del "
+        "workflow `frp_timeline.yml` (fuente única con el pulso intradía)."
+    )
 
-    # Tabla de detalles del día
+    # Tabla de detalle del día actual
     if counts_today:
         st.markdown("### Detalle día actual")
         rows = []
-        for name, n in counts_today.items():
+        for name in PRIORITY_VOLCANOES:
             v = get_volcano(name)
             if v is None:
                 continue
-            status = "🔥 Activo" if n > 0 else "✅ Calmo"
+            n = counts_today.get(name, 0)
             rows.append({
                 "Volcán": name,
-                "Hot spots ≤50 km": n,
-                "Estado": status,
+                "Scans con detección": n,
+                "Estado": "🔥 Activo" if n > 0 else "✅ Calmo",
                 "Región": v.region,
                 "Elev (m)": v.elevation,
             })

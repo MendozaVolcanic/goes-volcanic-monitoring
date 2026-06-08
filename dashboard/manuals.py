@@ -189,16 +189,19 @@ cuando la cadencia de 10 min vale.
 
 ---
 
-**2) Panorama semanal — conteo diario de hot spots**
+**2) Panorama semanal — persistencia térmica**
 
-**Qué muestra**: mapa de calor de **número de detecciones FDCF** por
-volcán y por día (últimos 7). Vista de mediano plazo. Pre-procesado por
-el cron `hotspots_daily.yml` (`data/hotspots_daily.json`, 02:00 UTC).
+**Qué muestra**: mapa de calor de **cuántos scans de ~10 min tuvieron
+detección FDCF** por volcán y por día (últimos 7). Vista de mediano
+plazo. **Misma fuente única** que el pulso intradía: se deriva del
+roll-up diario de `data/frp_timeline.json` (workflow `frp_timeline.yml`),
+NO de un scan suelto.
 
-**Cómo leerlo**: eje Y = volcanes; eje X = días; color = nº de
-detecciones (`mask >= 10`). Una fila consistentemente cálida durante
-semanas indica actividad sostenida; picos aislados suelen ser falsos
-positivos por incendios cercanos o reflejo solar especular.
+**Cómo leerlo**: eje Y = volcanes; eje X = días; color = nº de scans con
+detección ese día (persistencia). Una fila consistentemente cálida indica
+actividad sostenida (muchos intervalos de 10 min con señal); celdas
+aisladas con pocos scans suelen ser blips o falsos positivos por
+incendios cercanos o reflejo solar especular.
 
 **Limitación**: FDCF está optimizado para incendios; volcanes con
 anomalías térmicas suaves (fumarolas < 200 K sobre fondo) pueden

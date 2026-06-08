@@ -118,6 +118,26 @@ def test_frp_sum_per_volcano():
     assert frp0["Test"] == 0.0 and c0["Test"] == 0
 
 
+def test_frp_daily_rollup():
+    """daily_rollup: cuenta scans con detección por día y volcán."""
+    from src.fetch.frp_timeline import daily_rollup
+
+    scans = [
+        {"t": "2026-06-08T10:00:00Z", "n": {"Lascar": 1, "Llaima": 0}},
+        {"t": "2026-06-08T10:10:00Z", "n": {"Lascar": 2, "Llaima": 0}},
+        {"t": "2026-06-08T10:20:00Z", "n": {"Lascar": 0, "Llaima": 0}},
+        {"t": "2026-06-07T23:50:00Z", "n": {"Lascar": 1}},
+    ]
+    roll = daily_rollup(scans)
+    # 08: Lascar detectado en 2 scans (10:00 y 10:10); Llaima nunca → ausente
+    assert roll["2026-06-08"]["Lascar"] == 2, roll
+    assert "Llaima" not in roll["2026-06-08"], roll
+    # 07: Lascar 1 scan
+    assert roll["2026-06-07"]["Lascar"] == 1, roll
+    # vacío no rompe
+    assert daily_rollup([]) == {}
+
+
 def test_frp_timeline_view_builds_with_empty():
     """La sección de timeline no debe romper con lista de scans vacía."""
     import dashboard.views.heatmap_actividad as H
@@ -132,5 +152,6 @@ if __name__ == "__main__":
     test_views_have_render()
     test_style_has_required_helpers()
     test_frp_sum_per_volcano()
+    test_frp_daily_rollup()
     test_frp_timeline_view_builds_with_empty()
     print("OK — smoke tests passed")

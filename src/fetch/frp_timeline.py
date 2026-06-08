@@ -94,6 +94,34 @@ def sum_frp_per_volcano(
     return frp_by_name, count_by_name
 
 
+def daily_rollup(scans: list) -> dict:
+    """Roll-up diario derivado de los scans de 10 min (para el heatmap semanal).
+
+    Métrica por (día, volcán): **número de scans con detección** (≥1 hotspot
+    ≤radio). Es una medida de *persistencia* — cuántos intervalos de ~10 min
+    tuvieron señal térmica ese día. Distingue un blip de 1 scan de actividad
+    sostenida, cosa que el conteo de pixeles de un solo scan NO podía hacer.
+
+    Args:
+        scans: lista de dicts {"t": iso, "frp": {...}, "n": {...}} como los que
+               guarda build_frp_timeline (campo "n" = conteo de hotspots).
+
+    Returns:
+        {"YYYY-MM-DD": {"Villarrica": 8, "Lascar": 2, ...}, ...}
+        Sólo incluye volcanes con ≥1 scan con detección ese día.
+    """
+    out: dict[str, dict[str, int]] = {}
+    for s in scans:
+        day = str(s.get("t", ""))[:10]
+        if not day:
+            continue
+        d = out.setdefault(day, {})
+        for name, n in s.get("n", {}).items():
+            if n and n > 0:
+                d[name] = d.get(name, 0) + 1
+    return out
+
+
 def _chile_xy_index_range(
     x_rad: np.ndarray, y_rad: np.ndarray, sat_lon: float,
     bbox: dict = CHILE_BBOX, margin_rad: float = 0.003,

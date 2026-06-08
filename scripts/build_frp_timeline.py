@@ -40,7 +40,12 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.fetch.frp_timeline import CHILE_BBOX, fetch_scan_sliced, sum_frp_per_volcano
+from src.fetch.frp_timeline import (
+    CHILE_BBOX,
+    daily_rollup,
+    fetch_scan_sliced,
+    sum_frp_per_volcano,
+)
 from src.volcanos import get_priority
 
 logging.basicConfig(level=logging.INFO,
@@ -116,12 +121,30 @@ def main():
             log.info("  %s  FRP_total=%.1f MW  %s", key, total,
                      {k: v for k, v in frp.items() if v > 0})
 
-    # Podar ventana rodante
+    # Podar ventana rodante de scans (para la curva intradía)
     cutoff = (now - timedelta(hours=args.window_hours)).strftime(ISO)
     scans = sorted(
         (s for s in existing.values() if s["t"] >= cutoff),
         key=lambda s: s["t"],
     )
+
+    # ── Roll-up diario (para el heatmap semanal) ─────────────────────────
+    # Fuente ÚNICA: derivamos el conteo diario de los mismos scans de 10 min,
+    # NO de un solo scan. Sólo refrescamos HOY y AYER: son los únicos días que
+    # la ventana de 48h cubre por completo (días más viejos quedaron fijados
+    # cuando fueron "ayer" en corridas previas; no los pisamos con datos
+    # parciales). Ventana persistente: 30 días.
+    daily = dict(data.get("daily", {}))
+    window_daily = daily_rollup(scans)
+    today_str = now.strftime("%Y-%m-%d")
+    yesterday_str = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+    for day in (today_str, yesterday_str):
+        if day in window_daily:
+            daily[day] = window_daily[day]
+        elif day == today_str:
+            daily.setdefault(day, {})  # hoy sin actividad → registrado vacío
+    cutoff_day = (now - timedelta(days=30)).strftime("%Y-%m-%d")
+    daily = {k: v for k, v in sorted(daily.items()) if k >= cutoff_day}
 
     out = {
         "last_updated_utc": now.strftime(ISO),
@@ -129,9 +152,11 @@ def main():
         "radius_km": args.radius_km,
         "step_min": args.step_min,
         "scans": scans,
+        "daily": daily,
     }
     save(out)
-    log.info("Done. %d scans nuevos, %d en ventana.", fetched, len(scans))
+    log.info("Done. %d scans nuevos, %d en ventana, %d días en roll-up.",
+             fetched, len(scans), len(daily))
 
 
 if __name__ == "__main__":

@@ -61,9 +61,11 @@ hot spots y color real para 43 volcanes chilenos.
 - **Calbuco 2015 NO sirve para test de plataforma**: RAMMB no archiva GOES-13. Usar eventos recientes (Sangay, Reventador, Sabancaya) del archive GOES-19 ~28 días.
 
 ## Comandos comunes
-- `python -m pytest tests/ -q` — 44 tests (smoke imports, Planck round-trip, geo subsatélite)
+- `python -m pytest tests/ -q` — smoke imports, Planck round-trip, geo subsatélite, FRP rollup
 - Workflow `goes.yml` corre cada 10 min, escribe `STATUS_NRT.md` (NO `STATUS.md`)
-- Workflow `hotspots_daily.yml` corre 02:00 UTC, regenera `data/hotspots_daily.json` para Heatmap
+- Workflow `frp_timeline.yml` corre cada hora, regenera `data/frp_timeline.json` (pulso
+  intradía de FRP + roll-up diario para el Heatmap — FUENTE ÚNICA, reemplazó al viejo
+  `hotspots_daily.yml` que tenía el bug de "conteo de 1 solo scan", junio 2026)
 - Workflow `lascar_pdf.yml` corre 11:00 UTC, genera reporte PDF en `reports/lascar/`
 
 ## Testing

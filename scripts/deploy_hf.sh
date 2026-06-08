@@ -51,12 +51,10 @@ git add \
     dashboard/ \
     src/ \
     tests/ \
-    data/hotspots_daily.json \
     data/frp_timeline.json \
     scripts/build_hires_cache.py \
     scripts/build_animation_cache.py \
     scripts/build_backfill.py \
-    scripts/build_hotspots_daily.py \
     scripts/build_frp_timeline.py 2>&1 | tail -3
 
 echo "==> Commit snapshot..."

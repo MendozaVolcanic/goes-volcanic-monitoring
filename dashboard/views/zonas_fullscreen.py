@@ -454,12 +454,16 @@ def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
                 img, bounds, f"{label} · {ts_label}",
                 v.lat, v.lon, v.name, hotspots=hs, show_rings=True)
             # TV: llenar el alto y centrar (mismo truco constrain=domain que
-            # usamos para las 4 zonas RGB).
-            fig.update_layout(height=height, margin=dict(l=0, r=0, t=26, b=0))
+            # usamos para las 4 zonas RGB). autosize + responsive para que
+            # plotly se ajuste suave al CSS 100vh (sin esto el chart no era
+            # responsive y "saltaba"/achicaba en la transición del fragment).
+            fig.update_layout(height=height, autosize=True,
+                              margin=dict(l=0, r=0, t=26, b=0))
             fig.update_xaxes(constrain="domain")
             fig.update_yaxes(constrain="domain")
             st.plotly_chart(
-                fig, width="stretch", config={"displayModeBar": False},
+                fig, width="stretch",
+                config={"displayModeBar": False, "responsive": True},
                 key=f"tv_volcan_{v.name}_{prod_id}")
 
 
@@ -476,12 +480,16 @@ TV_SLOT_SECONDS = 12
 TV_VOLCAN_ZOOMS = ["Villarrica"]
 
 
-def _render_tv_status(scan_dt=None):
+def _render_tv_status(scan_dt=None, scan_label="scan",
+                      ok_min=15, warn_min=30):
     """Panel de estado OVERLAY (esquina superior derecha) del Modo Sala TV:
     reloj actual (UTC + local) y, si se da scan_dt, la edad del ultimo scan
-    con color de alerta (verde <15min, amarillo <30, rojo >30 = RAMMB caido).
-    Util para que el operador 24/7 vea de un vistazo si los datos estan
-    frescos. (jun 2026)"""
+    con color de alerta (verde <ok_min, amarillo <warn_min, rojo si mas).
+
+    Los umbrales son por-producto: RAMMB es ~6-10 min (ok=15/warn=30), pero
+    VOLCAT tiene latencia EXTERNA de SSEC ~30-50 min (normal, no es caida) ->
+    se pasa ok=60/warn=120 y scan_label='VOLCAT' para no alarmar de mas.
+    Util para que el operador 24/7 vea de un vistazo el estado real. (jun 2026)"""
     from datetime import datetime, timezone
     from dashboard.utils import fmt_chile
     now = datetime.now(timezone.utc)
@@ -492,11 +500,11 @@ def _render_tv_status(scan_dt=None):
     ]
     if scan_dt is not None:
         age = int((now - scan_dt).total_seconds() / 60)
-        color = "#3fb950" if age < 15 else "#d29922" if age < 30 else "#ff4444"
-        alert = "" if age < 30 else " ⚠"
+        color = "#3fb950" if age < ok_min else "#d29922" if age < warn_min else "#ff4444"
+        alert = "" if age < warn_min else " ⚠"
         parts.append(
             f"<div style='color:{color}; font-weight:700; font-size:0.74rem; "
-            f"margin-top:2px;'>● scan hace {age} min{alert}</div>")
+            f"margin-top:2px;'>● {scan_label} hace {age} min{alert}</div>")
     st.markdown(
         f"<div class='tv-status' style='text-align:right;'>{''.join(parts)}</div>",
         unsafe_allow_html=True,
@@ -532,10 +540,23 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
     st.session_state[session_key] = (idx + 1) % len(slots)
 
     scan_dt = None
+    status_kwargs = {}
     if kind == "rgb":
         ts_for_status = _recent_ts(val, n=1)
         scan_dt = parse_rammb_ts(ts_for_status[0]) if ts_for_status else None
-    _render_tv_status(scan_dt)  # reloj + edad scan (overlay esquina der)
+    elif kind == "volcat":
+        # Mostrar la edad REAL del frame VOLCAT (latencia externa SSEC ~40 min,
+        # normal). Umbrales propios para no marcarlo en rojo de más.
+        sector, instr = extra
+        try:
+            from dashboard.views.volcat_viewer import (
+                _volcat_dt_obj, _volcat_latest_cached)
+            _m = _volcat_latest_cached(sector, instr, "Ash_Height")
+            scan_dt = _volcat_dt_obj(_m.get("datetime")) if _m else None
+        except Exception:
+            scan_dt = None
+        status_kwargs = dict(scan_label="VOLCAT", ok_min=60, warn_min=120)
+    _render_tv_status(scan_dt, **status_kwargs)  # reloj + edad (overlay der)
 
     if kind == "rgb":
         render_compact_legend(

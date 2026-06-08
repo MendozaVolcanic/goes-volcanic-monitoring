@@ -89,8 +89,11 @@ def _array_to_data_url(arr):
 
 def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
               hotspots: list[HotSpot], height: int = 720,
-              show_volcanoes: bool = True, time_label: str = ""):
-    bounds = VOLCANIC_ZONES[zone_key]
+              show_volcanoes: bool = True, time_label: str = "",
+              bounds_override: dict | None = None):
+    # bounds_override: bounds custom (ej. los de aspect UNIFORME del TV, para
+    # que las 4 zonas se vean del mismo tamano). Si None, usa la zona estandar.
+    bounds = bounds_override or VOLCANIC_ZONES[zone_key]
     fig = go.Figure()
     if img is not None:
         fig.add_layout_image(
@@ -472,7 +475,8 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
                        "margin-right:0.2rem;'>🔄</span>",
         )
         _render_4_zonas_inner(val, show_volcanoes, show_hotspots,
-                              "1x4", height, minimal=True, stable_keys=True)
+                              "1x4", height, minimal=True, stable_keys=True,
+                              uniform_size=True)
     else:  # volcat — una zona en grande
         sector, instr = extra
         st.markdown(
@@ -582,17 +586,60 @@ def _grid_4_zonas(product: str, show_volcanoes: bool, show_hotspots: bool,
     _render_4_zonas_inner(product, show_volcanoes, show_hotspots, layout, height)
 
 
+def _uniform_aspect_bounds() -> dict:
+    """Bounds de las 4 zonas ajustados a un MISMO aspect ratio visual.
+
+    Cada zona tiene aspect distinto (lon*cos_lat/lat) por la correccion
+    1/cos_lat, asi que en el TV se veian de tamanos muy dispares (Norte
+    grande, Austral chica). Aca igualamos el aspect al de la zona mas
+    'ancha' (Norte) ENSANCHANDO el lon de las australes (manteniendo el
+    centro y la latitud). NO deforma (mantiene scaleanchor) y NO recorta
+    volcanes (solo agrega oceano/Argentina a los lados). Con columnas
+    iguales, las 4 quedan del MISMO tamano y robustas al redimensionar.
+    Cacheado a nivel modulo (los bounds no cambian). (jun 2026)
+    """
+    global _UNIFORM_BOUNDS_CACHE
+    if _UNIFORM_BOUNDS_CACHE is not None:
+        return _UNIFORM_BOUNDS_CACHE
+    zones = ["norte", "centro", "sur", "austral"]
+
+    def _asp(zb):
+        cl = float(np.cos(np.radians((zb["lat_min"] + zb["lat_max"]) / 2)))
+        return (zb["lon_max"] - zb["lon_min"]) * cl / (zb["lat_max"] - zb["lat_min"])
+
+    target = max(_asp(VOLCANIC_ZONES[z]) for z in zones)
+    out = {}
+    for z in zones:
+        zb = VOLCANIC_ZONES[z]
+        cl = float(np.cos(np.radians((zb["lat_min"] + zb["lat_max"]) / 2)))
+        lat_span = zb["lat_max"] - zb["lat_min"]
+        lon_span_new = target * lat_span / cl
+        lon_c = (zb["lon_min"] + zb["lon_max"]) / 2
+        out[z] = {
+            "lat_min": zb["lat_min"], "lat_max": zb["lat_max"],
+            "lon_min": lon_c - lon_span_new / 2,
+            "lon_max": lon_c + lon_span_new / 2,
+        }
+    _UNIFORM_BOUNDS_CACHE = out
+    return out
+
+
+_UNIFORM_BOUNDS_CACHE: dict | None = None
+
+
 def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: bool,
                            layout: str, height: int, minimal: bool = False,
-                           stable_keys: bool = False):
+                           stable_keys: bool = False,
+                           uniform_size: bool = False):
     """Logica compartida entre _grid_4_zonas y _rotating_grid_4_zonas.
 
     minimal=True: oculta banner status arriba (modo TV puro).
-    stable_keys=True: da un `key` fijo por zona a cada st.plotly_chart. Asi
-        Streamlit ACTUALIZA el chart in-place (Plotly.react) en vez de
-        destruirlo y recrearlo en cada tick -> elimina el parpadeo del
-        re-render cada 5s del Modo Sala TV. (jun 2026)
+    stable_keys=True: da un `key` fijo por zona a cada st.plotly_chart -> sin
+        parpadeo (update in-place).
+    uniform_size=True: usa bounds de aspect UNIFORME (todas las zonas del
+        mismo tamano visual) + columnas iguales. Para el Modo Sala TV. (jun 2026)
     """
+    zbounds = _uniform_aspect_bounds() if uniform_size else None
     timestamps = _recent_ts(product, n=3)
     if not timestamps:
         if minimal:  # TV: mensaje prolijo, no una caja roja de error
@@ -644,32 +691,16 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
         rows_zones = [["norte", "centro"], ["sur", "austral"]]
         n_cols = 2
 
-    # ── COLUMNAS PROPORCIONALES AL ASPECT (fix jun 2026) ──────────────
-    # Cada zona tiene un aspect ratio visual distinto (lon*cos_lat/lat, por
-    # la correccion scaleratio=1/cos_lat). Con columnas IGUALES, las zonas
-    # mas "anchas" (Norte) no llenaban el alto y las mas "angostas" (Austral)
-    # si -> tamanos desiguales, y al angostar la ventana se desconfiguraba
-    # heterogeneamente. Dando a cada columna un ANCHO proporcional a su
-    # aspect, cada imagen llena su columna exactamente y las 4 quedan con el
-    # MISMO alto en cualquier ancho de pantalla (verificado matematicamente).
-    def _zone_aspect(zk: str) -> float:
-        zb = VOLCANIC_ZONES[zk]
-        cl = max(0.1, float(np.cos(np.radians(
-            (zb["lat_min"] + zb["lat_max"]) / 2))))
-        return ((zb["lon_max"] - zb["lon_min"]) * cl
-                / (zb["lat_max"] - zb["lat_min"]))
-
     # ── Fetch PARALELO de las 4 zonas ────────────────────────────
-    # Antes: for serial -> 4 zonas x ~1-2s c/u = 4-8s "una por una"
-    # visible al usuario (lo que reporto en HF).
-    # Ahora: ThreadPoolExecutor con 4 workers -> todas en paralelo,
-    # el tiempo total ~= zona mas lenta. fetch_frame_robust es
-    # thread-safe (solo usa vars locales, sin estado compartido).
+    # ThreadPoolExecutor con 4 workers -> todas en paralelo, el tiempo total
+    # ~= zona mas lenta. fetch_frame_robust es thread-safe.
     from concurrent.futures import ThreadPoolExecutor
     all_zones = [z for row in rows_zones for z in row]
 
     def _fetch_one(zone_key: str):
-        bounds_z = VOLCANIC_ZONES[zone_key]
+        # uniform_size: bounds de aspect uniforme (zona mas ancha) -> las 4
+        # imagenes salen del mismo tamano. Si no, bounds estandar.
+        bounds_z = zbounds[zone_key] if zbounds else VOLCANIC_ZONES[zone_key]
         img_z, used_ts_z, used_zoom_z = fetch_frame_robust(
             product, timestamps, bounds_z,
             zoom_preferred=ZOOM_ZONE, zoom_fallback=ZOOM_ZONE - 1,
@@ -694,10 +725,19 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
     # ── Render serial (debe correr en thread principal Streamlit) ─
     fallback_count = 0
     for row_zones in rows_zones:
-        # Anchos de columna proporcionales al aspect de cada zona -> imagenes
-        # uniformes (mismo alto) y robustas al redimensionar la ventana.
-        col_weights = [_zone_aspect(z) for z in row_zones]
-        cols = st.columns(col_weights)
+        # uniform_size: columnas IGUALES (los bounds ya son de aspect uniforme,
+        # asi las 4 imagenes salen del mismo tamano). Si no, proporcionales al
+        # aspect para que llenen mejor.
+        if uniform_size:
+            cols = st.columns(len(row_zones))
+        else:
+            cols = st.columns([
+                (VOLCANIC_ZONES[z]["lon_max"] - VOLCANIC_ZONES[z]["lon_min"])
+                * max(0.1, float(np.cos(np.radians(
+                    (VOLCANIC_ZONES[z]["lat_min"]
+                     + VOLCANIC_ZONES[z]["lat_max"]) / 2))))
+                / (VOLCANIC_ZONES[z]["lat_max"] - VOLCANIC_ZONES[z]["lat_min"])
+                for z in row_zones])
         for i, zone_key in enumerate(row_zones):
             img, used_ts, used_zoom, hotspots = results[zone_key]
             if used_ts and used_ts != ts:
@@ -713,7 +753,8 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
                 st.plotly_chart(
                     _zone_fig(img, zone_key, label, hotspots,
                               height=height, show_volcanoes=show_volcanoes,
-                              time_label=time_label),
+                              time_label=time_label,
+                              bounds_override=zbounds[zone_key] if zbounds else None),
                     width='stretch',
                     # responsive=True: plotly escucha resize del iframe
                     # y refit el chart. CRITICO para TV mode donde CSS

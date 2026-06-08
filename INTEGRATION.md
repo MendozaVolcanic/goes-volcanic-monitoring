@@ -1,8 +1,8 @@
 ---
 slug: goes
 title: GOES Volcanic Monitoring
-last_updated: 2026-04-25
-last_commit: 1fc74f0
+last_updated: 2026-06-08
+last_commit: a825a0c
 status: producción
 tier: 1
 deploy_url: "https://goesvolcanic.streamlit.app"
@@ -52,6 +52,11 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
 - **GeoColor** — color real mejorado (CIRA)
 - **BTD split-window** — BT(11.2) - BT(12.3); negativo = ceniza (Prata 1989)
 - **Hot spots NOAA FDCF** — producto L2 ABI con FRP, T_brightness, área sub-pixel
+- **Pulso térmico intradía (FRP timeline)** — serie de FRP (MW) por volcán a
+  cadencia GOES (~10 min), pre-cocinada incremental en `data/frp_timeline.json`
+  (ventana rodante 48h, workflow `frp_timeline.yml`). Aporta la dimensión
+  *temporal* que MODIS/VIIRS no dan; COMPLEMENTA, no sustituye, la plataforma
+  VRP MODIS/VIIRS (que gana en magnitud/sensibilidad)
 - **VOLCAT** — Ash Height, Ash Loading, Ash Probability, Ash Reff (Pavolonis 2013)
 - **VAA** — Volcanic Ash Advisories como GeoJSON
 - **Series de tiempo** — % píxeles con firma de ceniza/SO2 por volcán, ventanas 1-24h

@@ -388,18 +388,13 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int):
             meta["image_url"], meta.get("volcanoes_url"),
             meta.get("latlon_url"))
         if img:
-            # HTML propio (no st.image) para CONTROL TOTAL del centrado y
-            # tamano: un div flex centra la img de forma garantizada (el DOM
-            # de st.image no se dejaba centrar). clase tv-volcat-img -> el CSS
-            # del TV le da alto 100vh + ancho ~72vw. (jun 2026)
-            import base64
-            b64 = base64.b64encode(img).decode()
-            st.markdown(
-                f"<div style='display:flex; justify-content:center; "
-                f"width:100%;'><img class='tv-volcat-img' "
-                f"src='data:image/png;base64,{b64}'/></div>",
-                unsafe_allow_html=True,
-            )
+            # st.image (NO base64 inline): sirve la imagen por URL /media/,
+            # que el navegador CACHEA por hash -> al rotar a la misma zona en
+            # el proximo ciclo NO re-descarga ni re-parsea ~730KB. Mucho mas
+            # fluido que inyectar el data URL en el HTML cada render. El
+            # centrado + tamano lo da el CSS del TV (margin auto sobre el
+            # contenedor stImage, que toma el ancho de la imagen). (jun 2026)
+            st.image(img)
 
 
 # ── Rotacion del Modo Sala TV con CADENCIA UNIFORME ──────────────────

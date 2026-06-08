@@ -850,13 +850,19 @@ def render():
                      del ancho. La agrandamos a ~72vw con estiramiento
                      horizontal MODERADO (cap ~1.3x via min()) para aprovechar
                      el espacio sin deformar de mas. (jun 2026, pedido OVDAS) */
-                  /* La imagen VOLCAT se renderiza como .tv-volcat-img dentro
-                     de un div flex (en zonas_fullscreen) -> centrado
-                     garantizado. Alto 100vh + ancho ~72vw (estiramiento
-                     capado a ~1.3x). */
-                  img.tv-volcat-img {
-                    height: calc(100vh - 6px) !important;
+                  /* Imagen VOLCAT (st.image): el contenedor stImage toma el
+                     ancho de la imagen; con margin auto se CENTRA dentro del
+                     stElementContainer (full-width). Le fijamos el ancho a
+                     ~72vw y la img adentro lo llena, alto 100vh, con
+                     estiramiento moderado (cap ~1.3x). */
+                  [data-testid="stImage"] {
                     width: min(72vw, calc((100vh - 6px) * 1.58)) !important;
+                    margin-left: auto !important;
+                    margin-right: auto !important;
+                  }
+                  [data-testid="stImage"] img {
+                    height: calc(100vh - 6px) !important;
+                    width: 100% !important;
                     object-fit: fill !important;
                   }
                   .block-container {

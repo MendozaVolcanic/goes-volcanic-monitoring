@@ -856,13 +856,18 @@ def render():
                      margin auto; el stImageContainer DEBE ser 100% o la img
                      queda en su ancho natural (~55%). La img llena 72vw, alto
                      100vh, estiramiento moderado (cap ~1.3x). */
+                  /* frame full-width + flex justify-center -> centra el
+                     stImage (72vw) de forma robusta (los contenedores heredan
+                     el ancho de la imagen, asi que margin auto no alcanzaba).
+                     Tambien el stElementContainer por si el frame no es full. */
+                  [data-testid="stElementContainer"]:has([data-testid="stImage"]),
                   [data-testid="stFullScreenFrame"] {
                     width: 100% !important;
+                    display: flex !important;
+                    justify-content: center !important;
                   }
                   [data-testid="stImage"] {
                     width: min(72vw, calc((100vh - 6px) * 1.58)) !important;
-                    margin-left: auto !important;
-                    margin-right: auto !important;
                   }
                   [data-testid="stImageContainer"] {
                     width: 100% !important;

@@ -161,6 +161,25 @@ def test_hires_crop_centered_aligns():
     assert MGV._crop_centered(arr, 0.0).shape[0] >= 1  # clamp inferior
 
 
+def test_compose_volcan_panels():
+    """_compose_volcan_panels: 3 paneles -> 1 imagen PIL, aspecto ~2.2, tolera
+    panel sin imagen."""
+    import numpy as np
+
+    import dashboard.views.zonas_fullscreen as Z
+    from src.volcanos import get_volcano
+
+    v = get_volcano("Villarrica")
+    img = np.zeros((60, 46, 3), dtype="uint8")
+    panels = [("Ash RGB", img, "22:30 UTC", []),
+              ("GeoColor", img, "22:30 UTC ✨ hi-res", []),
+              ("SO2 RGB", None, "sin scan", [])]
+    out = Z._compose_volcan_panels(v, 0.35, panels)
+    w, h = out.size
+    assert out.mode == "RGB"
+    assert 1.8 < (w / h) < 2.6, (w, h)  # ~2.2, ancho para el TV
+
+
 def test_hires_age_min():
     """_hires_age_min: edad en minutos, robusto a iso sin tz / ausente."""
     from datetime import datetime, timezone

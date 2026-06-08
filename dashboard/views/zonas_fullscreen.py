@@ -408,6 +408,78 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int):
             st.image(img)
 
 
+def _compose_volcan_panels(v, radius_deg: float, panels: list, ph: int = 720):
+    """Compone los N productos centrados en el volcán en UNA imagen (PIL).
+
+    Por qué imagen y no 3 charts Plotly: en el Modo Sala TV el fragment
+    re-renderiza cada 12s y Plotly (con responsive) se 'achicaba' un instante
+    en la transición. st.image es estático (sin ResizeObserver) -> sin glitch,
+    igual que el slot VOLCAT. Además, 3 paneles lado a lado dan aspecto ~2.2:1
+    que llena el TV mejor que 3 cuadrados.
+
+    Dibuja anillos de distancia CIRCULARES (panel km-proporcional: pw=ph·cosφ)
+    + triángulo del cráter + hotspots.
+    """
+    import numpy as np
+    from PIL import Image, ImageDraw
+
+    from dashboard.views.modo_guardia_volcan import RING_RADII_KM, _load_font
+
+    cos_lat = max(0.1, float(np.cos(np.radians(v.lat))))
+    pw = int(round(ph * cos_lat))            # km-proporcional -> anillos = círculos
+    km_per_px = (2 * radius_deg * 111.0) / ph
+    label_h = 42
+    gap = 8
+    b = {"lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
+         "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg}
+    lon_span = b["lon_max"] - b["lon_min"]
+    lat_span = b["lat_max"] - b["lat_min"]
+    f_label = _load_font(20)
+    f_small = _load_font(13)
+    f_ring = _load_font(12)
+
+    def _xy(lat, lon):
+        return ((lon - b["lon_min"]) / lon_span * pw,
+                label_h + (b["lat_max"] - lat) / lat_span * ph)
+
+    tiles = []
+    for label, img, ts_label, hs in panels:
+        tile = Image.new("RGB", (pw, ph + label_h), (10, 14, 20))
+        if img is not None:
+            pim = Image.fromarray(np.asarray(img, dtype="uint8")).convert("RGB")
+            tile.paste(pim.resize((pw, ph)), (0, label_h))
+        d = ImageDraw.Draw(tile)
+        if img is None:
+            d.text((pw // 2 - 36, label_h + ph // 2), "sin imagen",
+                   fill=(120, 130, 145), font=f_small)
+        cx, cy = pw / 2.0, label_h + ph / 2.0
+        for r_km in RING_RADII_KM:
+            rpx = r_km / km_per_px
+            d.ellipse([cx - rpx, cy - rpx, cx + rpx, cy + rpx],
+                      outline=(210, 215, 225), width=1)
+            if cy - rpx > label_h + 4:
+                d.text((cx + 3, cy - rpx - 2), f"{r_km} km",
+                       fill=(210, 215, 225), font=f_ring)
+        if hs:
+            for h in hs:
+                hx, hy = _xy(h.lat, h.lon)
+                d.polygon([(hx, hy - 6), (hx + 6, hy), (hx, hy + 6),
+                           (hx - 6, hy)], fill=(255, 51, 0),
+                          outline=(255, 255, 255))
+        d.polygon([(cx, cy - 9), (cx + 8, cy + 6), (cx - 8, cy + 6)],
+                  fill=(0, 255, 255), outline=(255, 255, 255))
+        d.rectangle([0, 0, pw, label_h], fill=(15, 20, 28))
+        d.text((6, 3), label, fill=(255, 102, 68), font=f_label)
+        d.text((6, 25), ts_label, fill=(150, 160, 180), font=f_small)
+        tiles.append(tile)
+
+    total_w = len(tiles) * pw + (len(tiles) - 1) * gap
+    out = Image.new("RGB", (total_w, ph + label_h), (10, 14, 20))
+    for i, t in enumerate(tiles):
+        out.paste(t, (i * (pw + gap), 0))
+    return out
+
+
 def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
     """Slot TV: zoom a UN volcán, sus 3 productos centrados lado a lado.
 
@@ -419,8 +491,7 @@ def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
     from datetime import datetime, timezone
 
     from dashboard.views.modo_guardia_volcan import (
-        PRODUCTS, RADIUS_DEG as V_RADIUS, _hotspots_volcan, _render_product,
-        fetch_volcan_product,
+        PRODUCTS, RADIUS_DEG as V_RADIUS, _hotspots_volcan, fetch_volcan_product,
     )
     from src.volcanos import get_volcano
 
@@ -444,27 +515,21 @@ def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
         except Exception:
             hotspots = []
 
-    cols = st.columns(3)
-    for i, (prod_id, label, recipe) in enumerate(PRODUCTS):
+    # Bajar los 3 productos (GeoColor con switch hi-res) y componer en UNA
+    # imagen -> st.image estático, sin el 'achicarse' de los charts Plotly.
+    panels = []
+    for prod_id, label, recipe in PRODUCTS:
         img, ts_label = fetch_volcan_product(
             prod_id, v.name, v.lat, v.lon, bounds, now)
         hs = hotspots if prod_id == "eumetsat_ash" else None
-        with cols[i]:
-            fig = _render_product(
-                img, bounds, f"{label} · {ts_label}",
-                v.lat, v.lon, v.name, hotspots=hs, show_rings=True)
-            # TV: llenar el alto y centrar (mismo truco constrain=domain que
-            # usamos para las 4 zonas RGB). autosize + responsive para que
-            # plotly se ajuste suave al CSS 100vh (sin esto el chart no era
-            # responsive y "saltaba"/achicaba en la transición del fragment).
-            fig.update_layout(height=height, autosize=True,
-                              margin=dict(l=0, r=0, t=26, b=0))
-            fig.update_xaxes(constrain="domain")
-            fig.update_yaxes(constrain="domain")
-            st.plotly_chart(
-                fig, width="stretch",
-                config={"displayModeBar": False, "responsive": True},
-                key=f"tv_volcan_{v.name}_{prod_id}")
+        panels.append((label, img, ts_label, hs))
+
+    try:
+        composed = _compose_volcan_panels(v, V_RADIUS, panels)
+        st.image(composed)
+    except Exception as e:
+        logger.warning("compose volcan zoom falló: %s", e)
+        st.warning(f"No se pudo componer el zoom de {v.name}.")
 
 
 # ── Rotacion del Modo Sala TV con CADENCIA UNIFORME ──────────────────

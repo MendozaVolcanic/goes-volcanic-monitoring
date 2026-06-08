@@ -1,0 +1,11 @@
+Versión 4.0 del Límite Internacional
+
+1. Para la utilización del Límite Internacional en mapas web es necesario incluir la siguiente reserva: 
+“La representación del Límite Internacional ha sido autorizada para una escala 1:50.000 cualquier representación
+ a escalas mayores puede no corresponder completamente al trazado de los límites oficiales”
+
+2. Es importante mencionar que la disponibilización y entrega del presente Límite Internacional, y cualquier utilización que se haga del mismo
+no implica bajo ninguna circunstancia la aprobación para la circulación de cualquier obra que represente el límite internacional, por lo que dicho
+material deberá ser remitido a esta Dirección Nacional según lo dispuesto en la normativa vigente para su revisión, edición, aprobación y circulación.
+
+3. Para consultas, dirigirse a ugit@minrel.gob.cl

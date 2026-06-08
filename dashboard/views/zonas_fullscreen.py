@@ -145,11 +145,19 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
     cos_lat = max(0.1, float(np.cos(np.radians(
         (bounds["lat_min"] + bounds["lat_max"]) / 2
     ))))
+    # constrain="domain": CLAVE para llenar el espacio. Con scaleanchor (aspecto
+    # bloqueado) + un contenedor de otra proporcion, el solver de Plotly por
+    # default ENCOGE el area de datos y la centra (quedaba 215x489 en una caja
+    # de 380x689 = 56% ancho / 70% alto desperdiciado). Con constrain="domain"
+    # Plotly llena el 100% de la dimension mayor (altura) y centra en la otra.
+    # Combinado con bounds de aspecto UNIFORME (todas las zonas 0.439), las 4
+    # quedan ~302x689: identicas entre si Y +40% mas grandes. (2026-06-08)
     fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
-                     showgrid=False, visible=False)
+                     showgrid=False, visible=False, constrain="domain")
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
                      showgrid=False, visible=False,
-                     scaleanchor="x", scaleratio=1.0 / cos_lat)
+                     scaleanchor="x", scaleratio=1.0 / cos_lat,
+                     constrain="domain")
     # Title como annotation EN COORDS DE DATOS para no perder pixeles
     # arriba del plot. Igual estrategia que mosaico — scaleanchor empuja
     # paper-anchored al espacio negro afuera.

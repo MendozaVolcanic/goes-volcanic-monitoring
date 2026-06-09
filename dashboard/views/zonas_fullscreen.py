@@ -724,11 +724,96 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
         )
         _render_volcat_one_zona_tv(val, sector, instr, height)
 
-    # NOTA: antes habia un PRE-FETCH del proximo slot aca. Se quito (jun 2026):
-    # bloqueaba el thread del fragment DESPUES del render, retrasando la
-    # aparicion del slot actual (la rotacion se sentia "trabada"). El cache se
-    # calienta igual cuando cada slot se muestra; tras el primer ciclo (~72s)
-    # todo esta cacheado y la rotacion es fluida.
+    # NOTA: antes habia un PRE-FETCH SINCRONO del proximo slot aca. Se quito
+    # (jun 2026): bloqueaba el thread del fragment DESPUES del render. El
+    # pre-calentamiento ahora vive en prewarm_tv_caches() (hilo daemon, NO
+    # bloquea) -> ver abajo.
+
+
+def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
+    """Pre-calienta en BACKGROUND las caches de TODOS los slots del Modo Sala TV.
+
+    Por qué: el cache de st.cache_data es GLOBAL (cross-sesión) y la sala corre
+    24/7, así que normalmente está caliente. Pero TRAS UN DEPLOY/REBOOT el
+    primer ciclo es frío (RGB ~12s, VOLCAT ~3s, zoom ~6s en su 1a aparición).
+    Esto dispara, UNA vez por sesión, un hilo daemon que llena en paralelo:
+    3 RGB × 4 zonas + 3 VOLCAT + el/los zoom(s) de volcán.
+
+    Clave: NO bloquea el render (a diferencia del viejo pre-fetch síncrono).
+    El fragment sigue mostrando el slot actual mientras el hilo calienta el
+    resto. Totalmente defensivo: cualquier fallo se traga, nunca rompe la app.
+    """
+    import threading
+
+    if st.session_state.get("__tv_prewarmed"):
+        return
+    st.session_state["__tv_prewarmed"] = True
+    zooms = volcan_zooms if volcan_zooms is not None else TV_VOLCAN_ZOOMS
+
+    def _warm():
+        from concurrent.futures import ThreadPoolExecutor
+        from datetime import datetime, timezone
+
+        jobs = []
+
+        def _rgb(product, zone):
+            try:
+                ts = tuple(_recent_ts(product, n=3))
+                if ts:
+                    _zone_frame_cached(product, ts, zone, True)
+            except Exception:
+                pass
+
+        for product in PRODUCT_LIST:
+            for zone in ("norte", "centro", "sur", "austral"):
+                jobs.append(lambda p=product, z=zone: _rgb(p, z))
+
+        def _volcat(sector, instr):
+            try:
+                from dashboard.views.volcat_viewer import (
+                    _volcat_image_with_overlays, _volcat_latest_cached)
+                meta = _volcat_latest_cached(sector, instr, "Ash_Height")
+                if meta:
+                    _volcat_image_with_overlays(
+                        meta["image_url"], meta.get("volcanoes_url"),
+                        meta.get("latlon_url"))
+            except Exception:
+                pass
+
+        try:
+            from src.fetch.volcat_api import ZONE_TO_SECTOR
+            for _zona, (sector, instr) in ZONE_TO_SECTOR.items():
+                jobs.append(lambda s=sector, i=instr: _volcat(s, i))
+        except Exception:
+            pass
+
+        def _zoom(name):
+            try:
+                now = datetime.now(timezone.utc)
+                bucket = f"{now:%Y%m%d%H}{(now.minute // 5) * 5:02d}"
+                _volcan_zoom_png(name, bucket, show_hotspots)
+            except Exception:
+                pass
+
+        for name in zooms:
+            jobs.append(lambda n=name: _zoom(n))
+
+        try:
+            with ThreadPoolExecutor(max_workers=4) as ex:
+                list(ex.map(lambda f: f(), jobs))
+        except Exception:
+            pass
+
+    t = threading.Thread(target=_warm, name="tv-prewarm", daemon=True)
+    try:
+        from streamlit.runtime.scriptrunner import add_script_run_ctx
+        add_script_run_ctx(t)
+    except Exception:
+        pass
+    try:
+        t.start()
+    except Exception:
+        pass
 
 
 @st.fragment(run_every=f"{ROTATION_SECONDS}s")

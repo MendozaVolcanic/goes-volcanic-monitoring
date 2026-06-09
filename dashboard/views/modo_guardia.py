@@ -923,9 +923,13 @@ def render():
                 """,
                 unsafe_allow_html=True,
             )
-            # Rotacion con tiempos mixtos: RGB 15s (4 zonas grid), VOLCAT
-            # 10s por zona (1 zona en grande, rota Norte/Centro/Sur).
-            from dashboard.views.zonas_fullscreen import _rotating_tv_zonas
+            # Rotacion uniforme (12s/slot): 3 RGB (4 zonas) + 3 VOLCAT + zoom.
+            from dashboard.views.zonas_fullscreen import (
+                _rotating_tv_zonas, prewarm_tv_caches,
+            )
+            # Pre-calentar en BACKGROUND (1 vez/sesion, no bloquea) para que ni
+            # el primer ciclo tras un reboot se sienta lento.
+            prewarm_tv_caches(show_hotspots=True)
             _rotating_tv_zonas(
                 show_volcanoes=True, show_hotspots=True,
                 height=900, session_key="tv_rot_tick",

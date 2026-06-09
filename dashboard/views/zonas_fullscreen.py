@@ -80,6 +80,24 @@ def _hotspots_zone(zone_key: str) -> tuple[list[HotSpot], datetime | None]:
         return [], None
 
 
+@st.cache_data(ttl=900, show_spinner=False)
+def _zone_frame_cached(product: str, timestamps: tuple, zone_key: str,
+                       uniform: bool):
+    """Frame RGB de una zona, CACHEADO (imagen ya reproyectada).
+
+    fetch_frame_robust NO está cacheado: cada aparición del slot re-descargaba
+    (~12s frío) y re-reproyectaba (~2s) las 4 zonas. Acá cacheamos el resultado
+    keyed por (product, timestamps, zona, uniform). Como `timestamps` incluye
+    el último scan (via _recent_ts, ttl 30s), la cache se invalida sola cuando
+    llega un scan nuevo -> sin staleness. Repetidas apariciones = instantáneas.
+    """
+    bounds = (_uniform_aspect_bounds()[zone_key] if uniform
+              else VOLCANIC_ZONES[zone_key])
+    return fetch_frame_robust(
+        product, list(timestamps), bounds,
+        zoom_preferred=ZOOM_ZONE, zoom_fallback=ZOOM_ZONE - 1)
+
+
 def _array_to_data_url(arr):
     # Lazy import (gotcha Streamlit Cloud — ver CLAUDE.md).
     from dashboard.map_helpers import array_to_data_url
@@ -911,14 +929,12 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
     from concurrent.futures import ThreadPoolExecutor
     all_zones = [z for row in rows_zones for z in row]
 
+    ts_key = tuple(timestamps)  # hashable para la cache
+
     def _fetch_one(zone_key: str):
-        # uniform_size: bounds de aspect uniforme (zona mas ancha) -> las 4
-        # imagenes salen del mismo tamano. Si no, bounds estandar.
-        bounds_z = zbounds[zone_key] if zbounds else VOLCANIC_ZONES[zone_key]
-        img_z, used_ts_z, used_zoom_z = fetch_frame_robust(
-            product, timestamps, bounds_z,
-            zoom_preferred=ZOOM_ZONE, zoom_fallback=ZOOM_ZONE - 1,
-        )
+        # Frame CACHEADO (ya reproyectado) -> 2a+ aparición instantánea.
+        img_z, used_ts_z, used_zoom_z = _zone_frame_cached(
+            product, ts_key, zone_key, bool(zbounds))
         hotspots_z = []
         if show_hotspots:
             try:

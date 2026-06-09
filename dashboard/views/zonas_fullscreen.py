@@ -480,14 +480,19 @@ def _compose_volcan_panels(v, radius_deg: float, panels: list, ph: int = 720):
     return out
 
 
-def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
-    """Slot TV: zoom a UN volcán, sus 3 productos centrados lado a lado.
+@st.cache_data(ttl=600, show_spinner=False)
+def _volcan_zoom_png(volcano_name: str, bucket: str, show_hotspots: bool):
+    """Imagen compuesta del zoom (CACHEADA por bucket de tiempo) -> bytes PNG.
 
-    Ash · GeoColor · SO2 centrados en el volcán (radio ~38 km, con anillos de
-    distancia). El panel GeoColor hace el SWITCH automático a hi-res L1b
-    visible diurno vía fetch_volcan_product (mismo motor que la página
-    completa tv=volcan). Ash/SO2 son IR (RAMMB, 2 km nativo).
+    Antes el slot bajaba los 3 productos EN SERIE (~9s) + el manifiesto hi-res
+    DENTRO de su ventana de 12s -> la imagen aparecía recién a los ~9s y se veía
+    solo ~3s. Ahora:
+    - Fetch de los 3 productos EN PARALELO (ThreadPool) -> ~5s en frío.
+    - Resultado cacheado por `bucket` (5 min): tras la 1a aparición de cada
+      bucket, las siguientes son INSTANTÁNEAS y el slot llena sus 12s.
     """
+    import io
+    from concurrent.futures import ThreadPoolExecutor
     from datetime import datetime, timezone
 
     from dashboard.views.modo_guardia_volcan import (
@@ -497,9 +502,7 @@ def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
 
     v = get_volcano(volcano_name)
     if v is None:
-        st.warning(f"Volcán {volcano_name} no está en el catálogo.")
-        return
-
+        return None
     bounds = {
         "lat_min": v.lat - V_RADIUS, "lat_max": v.lat + V_RADIUS,
         "lon_min": v.lon - V_RADIUS, "lon_max": v.lon + V_RADIUS,
@@ -515,35 +518,64 @@ def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
         except Exception:
             hotspots = []
 
-    # Bajar los 3 productos (GeoColor con switch hi-res) y componer en UNA
-    # imagen -> st.image estático, sin el 'achicarse' de los charts Plotly.
-    panels = []
-    for prod_id, label, recipe in PRODUCTS:
+    def _one(item):
+        prod_id, label, _recipe = item
         img, ts_label = fetch_volcan_product(
             prod_id, v.name, v.lat, v.lon, bounds, now)
+        return prod_id, label, img, ts_label
+
+    with ThreadPoolExecutor(max_workers=3) as ex:
+        results = list(ex.map(_one, PRODUCTS))   # preserva orden de PRODUCTS
+
+    panels = []
+    for prod_id, label, img, ts_label in results:
         hs = hotspots if prod_id == "eumetsat_ash" else None
         panels.append((label, img, ts_label, hs))
 
+    composed = _compose_volcan_panels(v, V_RADIUS, panels)
+    buf = io.BytesIO()
+    composed.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
+    """Slot TV: zoom a UN volcán, sus 3 productos centrados lado a lado.
+
+    Ash · GeoColor · SO2 centrados en el volcán (radio ~38 km, con anillos de
+    distancia). El panel GeoColor hace el SWITCH automático a hi-res L1b
+    visible diurno vía fetch_volcan_product (mismo motor que la página
+    completa tv=volcan). Ash/SO2 son IR (RAMMB, 2 km nativo).
+    """
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    # Bucket de 5 min -> la imagen se reusa cacheada dentro de la ventana, así
+    # el slot llena sus 12s (la 1a aparición de cada bucket construye; las
+    # siguientes son instantáneas). Refresca al cruzar el bucket.
+    bucket = f"{now:%Y%m%d%H}{(now.minute // 5) * 5:02d}"
     try:
-        composed = _compose_volcan_panels(v, V_RADIUS, panels)
-        # Override SOLO para este slot: el CSS global del TV fuerza
-        # object-fit:fill (pensado para la imagen VOLCAT, aspecto ~1.58) que
-        # comprimía mi imagen 2.21 -> anillos OVALADOS. Acá lo pasamos a
-        # contain (preserva aspecto -> anillos CIRCULARES) y ancho completo.
-        # El override vive en el output del fragment -> sólo aplica en este
-        # slot; al rotar a VOLCAT desaparece y VOLCAT recupera su fill.
-        st.markdown(
-            "<style>"
-            "[data-testid='stImage']{width:100% !important;}"
-            "[data-testid='stImage'] img{object-fit:contain !important;"
-            "height:calc(100vh - 8px) !important;width:100% !important;}"
-            "</style>",
-            unsafe_allow_html=True,
-        )
-        st.image(composed)
+        png = _volcan_zoom_png(volcano_name, bucket, show_hotspots)
     except Exception as e:
         logger.warning("compose volcan zoom falló: %s", e)
-        st.warning(f"No se pudo componer el zoom de {v.name}.")
+        png = None
+    if not png:
+        st.warning(f"No se pudo componer el zoom de {volcano_name}.")
+        return
+
+    # Override SOLO para este slot: el CSS global del TV fuerza object-fit:fill
+    # (pensado para la imagen VOLCAT, aspecto ~1.58) que comprimía mi imagen
+    # 2.21 -> anillos OVALADOS. Acá lo pasamos a contain (preserva aspecto ->
+    # anillos CIRCULARES) y ancho completo. El override vive en el output del
+    # fragment -> sólo aplica en este slot; al rotar a VOLCAT desaparece.
+    st.markdown(
+        "<style>"
+        "[data-testid='stImage']{width:100% !important;}"
+        "[data-testid='stImage'] img{object-fit:contain !important;"
+        "height:calc(100vh - 8px) !important;width:100% !important;}"
+        "</style>",
+        unsafe_allow_html=True,
+    )
+    st.image(png)
 
 
 # ── Rotacion del Modo Sala TV con CADENCIA UNIFORME ──────────────────

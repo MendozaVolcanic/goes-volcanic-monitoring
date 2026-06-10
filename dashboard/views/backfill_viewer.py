@@ -40,6 +40,7 @@ logger = logging.getLogger(__name__)
 # Lista de releases disponibles. Para agregar uno nuevo, sumar tag al dict.
 # El default abajo apunta al primer test (Lascar 8-feb-2026).
 AVAILABLE_BACKFILLS = {
+    "Villarrica 7-jun-2026 (07:30-10:30 UTC) — pulso": "backfill-2026-06-07-villarrica",
     "Lascar 8-feb-2026 (10:36-19:00 UTC)": "backfill-2026-02-08-lascar",
 }
 
@@ -287,17 +288,11 @@ def render():
     scope_data = manifest["scopes"][sel_scope]
     bounds = scope_data["bounds"]
 
-    # ── Slider de timestamp ───────────────────────────────────────────
+    # ── Slider de timestamp (deslizá para ver la evolución temporal) ──
     timestamps = manifest["timestamps_target"]
-    st.markdown(
-        "<div style='font-size:0.85rem; color:#aabbcc; margin-top:0.4rem;'>"
-        "Slider de timestamp — desliza para ver la evolucion temporal:"
-        "</div>",
-        unsafe_allow_html=True,
-    )
     idx = st.slider(
-        "ts_idx", 0, len(timestamps) - 1, 0, 1,
-        format="%d", label_visibility="collapsed", key="bf_ts_idx",
+        "Timestamp (deslizá para ver la evolución)", 0, len(timestamps) - 1,
+        0, 1, format="%d", label_visibility="collapsed", key="bf_ts_idx",
     )
     ts = timestamps[idx]
     st.markdown(

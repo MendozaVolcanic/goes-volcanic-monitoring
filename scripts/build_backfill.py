@@ -122,9 +122,12 @@ def _build_rammb(timestamps: list[str], scopes: dict[str, dict],
     # Reconstruir 'available' escaneando el output (mas robusto que
     # tracking del future).
     for png in sorted(out_dir.glob("*.png")):
-        # nombre: scope__producto__ts.png
+        # nombre: {scope}__{producto}__{ts}.png — OJO: scope_id CONTIENE '__'
+        # (ej. 'volcan__villarrica'), asi que hay que partir desde la DERECHA.
+        # Con split() normal, sid quedaba 'volcan' y no matcheaba -> RGB en 0
+        # en el manifest aunque los PNG estuvieran en disco. (fix jun 2026)
         try:
-            sid, prod, ts_with_ext = png.name.split("__", 2)
+            sid, prod, ts_with_ext = png.name.rsplit("__", 2)
             ts = ts_with_ext.replace(".png", "")
             if sid in available and prod in available[sid]:
                 available[sid][prod].append(ts)

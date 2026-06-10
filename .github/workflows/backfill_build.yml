@@ -100,5 +100,7 @@ jobs:
           notes: "Backfill auto-generado por workflow para ${{ inputs.volcan }} ${{ inputs.date }}. Lee desde dashboard view 'Backfill historico'."
           dir: out_backfill
           prerelease: 'false'
-          batch-size: '50'
-          sleep-between-batches: '30'
+          # batch chico + sleep para evitar el 401/403 de secondary rate-limit
+          # que cortó el upload del primer intento (~32 assets in). (jun 2026)
+          batch-size: '20'
+          sleep-between-batches: '25'

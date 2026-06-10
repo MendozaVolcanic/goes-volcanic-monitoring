@@ -94,7 +94,20 @@ runs:
         for ((i=0; i<TOTAL; i+=BATCH_SIZE)); do
           BATCH=("${ALL_FILES[@]:i:BATCH_SIZE}")
           echo "  Batch $((i/BATCH_SIZE + 1)): ${#BATCH[@]} files"
-          gh release upload "$TAG" "${BATCH[@]}" --clobber
+          # RETRY con backoff: el secondary rate-limit de uploads.github.com
+          # devuelve 401/403 transitorio en uploads masivos. Reintentamos el
+          # batch con esperas crecientes en vez de abortar todo. (jun 2026)
+          n=0
+          until gh release upload "$TAG" "${BATCH[@]}" --clobber; do
+            n=$((n+1))
+            if [ "$n" -ge 6 ]; then
+              echo "  Batch falló tras 6 intentos — abortando."
+              exit 1
+            fi
+            WAIT=$((n*45))
+            echo "  Upload falló (rate-limit?), reintento $n/6 en ${WAIT}s..."
+            sleep "$WAIT"
+          done
           if (( i + BATCH_SIZE < TOTAL )); then
             echo "  Sleeping ${SLEEP}s para evitar rate limit..."
             sleep "$SLEEP"

@@ -239,32 +239,14 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
         unsafe_allow_html=True,
     )
 
-    # ── Header KPIs (todos basados en datos validados externamente) ──
-    c1, c2, c3, c4 = st.columns(4)
+    # ── Header KPIs (3, específicos del volcán). La edad del scan NO se repite
+    # acá: ya vive (con color + estado) en el banner de arriba. (jun 2026: dedup)
+    c1, c2, c3 = st.columns(3)
 
-    # KPI 1: edad del ultimo scan
-    if frame is not None:
-        scan_age_min = (now - frame["dt"]).total_seconds() / 60
-        scan_color = "#44dd88" if scan_age_min < 15 else "#ffaa44" if scan_age_min < 30 else "#ff4444"
-        scan_label = f"hace {int(scan_age_min)} min"
-    else:
-        scan_color = "#888"
-        scan_label = "sin datos"
-    with c1:
-        st.markdown(
-            f"<div style='background:#0f1418; border-left:4px solid {scan_color}; "
-            f"padding:0.8rem 1rem; border-radius:4px;'>"
-            f"<div style='font-size:0.7rem; color:#7a8a9a; text-transform:uppercase; "
-            f"letter-spacing:0.1em;'>Ultimo scan GOES-19</div>"
-            f"<div style='font-size:1.6rem; font-weight:700; color:{scan_color};'>"
-            f"{scan_label}</div></div>",
-            unsafe_allow_html=True,
-        )
-
-    # KPI 2: hot spots Chile (producto NOAA FDCF, validado)
+    # KPI: hot spots Chile (producto NOAA FDCF, validado)
     n_hs = len(hotspots)
     hs_color = "#ff4444" if n_hs > 0 else "#44dd88"
-    with c2:
+    with c1:
         st.markdown(
             f"<div style='background:#0f1418; border-left:4px solid {hs_color}; "
             f"padding:0.8rem 1rem; border-radius:4px;'>"
@@ -285,7 +267,7 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
         nh_color = "#44dd88"
         nh_label = "sin hotspots"
         nh_sub = "≤100 km del volcán"
-    with c3:
+    with c2:
         st.markdown(
             f"<div style='background:#0f1418; border-left:4px solid {nh_color}; "
             f"padding:0.8rem 1rem; border-radius:4px;'>"
@@ -297,8 +279,8 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
             unsafe_allow_html=True,
         )
 
-    # KPI 4: hora UTC / Chile
-    with c4:
+    # KPI: hora UTC / Chile
+    with c3:
         st.markdown(
             f"<div style='background:#0f1418; border-left:4px solid #4a9eff; "
             f"padding:0.8rem 1rem; border-radius:4px;'>"
@@ -326,8 +308,7 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
     st.markdown(
         f"<div style='text-align:right; color:#445566; font-size:0.75rem; "
         f"margin-top:0.5rem;'>"
-        f"Auto-refresh cada {REFRESH_SECONDS}s · GOES-19 cadencia real 10 min · "
-        f"render @ {now.strftime('%H:%M:%S')} UTC<br>"
+        f"Auto-refresh cada {REFRESH_SECONDS}s · GOES-19 cadencia real 10 min<br>"
         f"<i>Imagenes Ash RGB y hot spots NOAA FDCF — sin metricas automaticas. "
         f"La interpretacion queda al criterio del experto.</i></div>",
         unsafe_allow_html=True,

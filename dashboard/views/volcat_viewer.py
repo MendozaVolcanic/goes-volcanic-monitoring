@@ -559,10 +559,9 @@ def _render_height_section(key_suffix: str = "tab") -> None:
         if img_bytes:
             st.image(
                 img_bytes,
-                caption=(
-                    f"{sel_meta['label_es']} — "
-                    f"{volc_name_h} ({sector.replace('_', ' ')}) — {ts_h}"
-                ),
+                # Caption SOLO producto + timestamp: el volcán y el sector ya
+                # están en los 3 KPI de arriba (no los repetimos). (jun 2026)
+                caption=f"{sel_meta['label_es']} · {ts_h}",
                 width='stretch',
             )
             st.download_button(

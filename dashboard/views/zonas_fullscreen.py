@@ -580,20 +580,25 @@ def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
         st.warning(f"No se pudo componer el zoom de {volcano_name}.")
         return
 
-    # Override SOLO para este slot: el CSS global del TV fuerza object-fit:fill
-    # (pensado para la imagen VOLCAT, aspecto ~1.58) que comprimía mi imagen
-    # 2.21 -> anillos OVALADOS. Acá lo pasamos a contain (preserva aspecto ->
-    # anillos CIRCULARES) y ancho completo. El override vive en el output del
-    # fragment -> sólo aplica en este slot; al rotar a VOLCAT desaparece.
+    # Render como <img> con estilo INLINE (NO st.image + <style> separado).
+    # Por qué: con st.image necesitábamos inyectar un <style> aparte para
+    # object-fit:contain (el CSS global del TV fuerza fill, pensado para VOLCAT).
+    # Ese <style> es OTRO elemento -> al rotar, Streamlit lo removía un frame
+    # ANTES que la imagen -> la imagen saltaba a fill (estirada) por un instante
+    # = el "pestañazo" al final del zoom. Con el estilo INLINE en el <img>,
+    # imagen y estilo son EL MISMO elemento (mismo ciclo de vida) -> sin salto.
+    # Además, al no ser stImage, no hereda el CSS de VOLCAT (no lo afecta).
+    # max-width/height + auto preservan el aspecto -> anillos CIRCULARES.
+    import base64
+    b64 = base64.b64encode(png).decode()
     st.markdown(
-        "<style>"
-        "[data-testid='stImage']{width:100% !important;}"
-        "[data-testid='stImage'] img{object-fit:contain !important;"
-        "height:calc(100vh - 8px) !important;width:100% !important;}"
-        "</style>",
+        f"<div style='display:flex; justify-content:center; "
+        f"align-items:center; width:100%;'>"
+        f"<img src='data:image/png;base64,{b64}' "
+        f"style='max-width:100vw; max-height:calc(100vh - 8px); "
+        f"width:auto; height:auto; object-fit:contain;'/></div>",
         unsafe_allow_html=True,
     )
-    st.image(png)
 
 
 # ── Rotacion del Modo Sala TV con CADENCIA UNIFORME ──────────────────

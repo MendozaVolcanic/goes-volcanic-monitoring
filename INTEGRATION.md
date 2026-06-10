@@ -1,7 +1,7 @@
 ---
 slug: goes
 title: GOES Volcanic Monitoring
-last_updated: 2026-06-08
+last_updated: 2026-06-10
 last_commit: a825a0c
 status: producción
 tier: 1
@@ -74,6 +74,7 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
 5. **VOLCAT (SSEC)** — Ash RGB / SO2 RGB pre-procesados + 📏 **Altura de pluma** (4 productos VOLCAT con cheat-sheet visual) + VAA.
 6. **Animación (RAMMB)** — loops 1-3h con scope Nacional/Zona/Volcán. Export GIF/MP4/ZIP.
 7. **📈 Series de tiempo** — tendencia por volcán con KPIs + **thumbnails contextuales** (PICO + ÚLTIMO con triángulo rojo en el volcán).
+8. **📅 Backfill histórico** — revisión día/hora de eventos pasados desde GitHub Releases (`backfill-<fecha>-<volcán>`). Slider temporal con grid de productos + hot spots overlay + **altura de pluma VOLCAT** cuantitativa (imagen de sector + colorbar). Generado por `scripts/build_backfill.py`. **Desbloqueo L1b**: con `--l1b-fallback`, los productos (GeoColor TrueColor aprox, Ash/SO2/BTD) se regeneran desde bandas L1b crudas de S3 cuando la fecha cae fuera del archive RAMMB (~9-10 meses) — `src/process/historic_l1b_rgb.py`.
 
 ## Volcanes monitoreados
 

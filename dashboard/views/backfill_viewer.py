@@ -97,6 +97,24 @@ def _fetch_hotspots_json(tag: str, asset: str) -> list[dict]:
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
+def _fetch_raw_bytes(tag: str, asset: str) -> bytes:
+    """Bajar un asset del release como bytes crudos (sin decodificar).
+
+    Para la altura VOLCAT preservamos el PNG color-codificado tal cual lo
+    sirve SSEC (con su colorbar quemada y proyeccion de sector) — no lo
+    convertimos a array RGB ni lo recortamos.
+    """
+    try:
+        r = requests.get(_release_url(tag, asset), timeout=20)
+        if r.status_code != 200:
+            return b""
+        return r.content
+    except Exception as e:
+        logger.warning("raw bytes %s: %s", asset, e)
+        return b""
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
 def _fetch_png(tag: str, asset: str, keep_alpha: bool = False) -> np.ndarray | None:
     try:
         r = requests.get(_release_url(tag, asset), timeout=20)
@@ -221,6 +239,85 @@ def _render_product_panel(arr: np.ndarray | None, bounds: dict,
     return fig
 
 
+def _nearest_ts(avail: list[str], ts: str) -> str | None:
+    """Timestamp disponible mas cercano a `ts` (ambos 'YYYYMMDDHHMMSS')."""
+    if not avail:
+        return None
+    try:
+        target = datetime.strptime(ts, "%Y%m%d%H%M%S")
+    except Exception:
+        return avail[0]
+    def _gap(t):
+        try:
+            return abs((datetime.strptime(t, "%Y%m%d%H%M%S") - target).total_seconds())
+        except Exception:
+            return float("inf")
+    return min(avail, key=_gap)
+
+
+def _render_volcat_height(tag: str, manifest: dict, ts: str) -> None:
+    """Seccion dedicada: altura de pluma VOLCAT (km AMSL) para el ts actual.
+
+    A diferencia de los productos de la grilla (recortados al bbox y
+    georeferenciados), la altura es la imagen de SECTOR completo de SSEC con
+    su colorbar — se muestra tal cual, al lado de la leyenda, como en la
+    pagina VOLCAT. Es el unico producto cuantitativo (Pavolonis 2013).
+    """
+    vh = manifest.get("volcat_height") or {}
+    avail = vh.get("ts") or []
+    if not avail:
+        return
+
+    st.markdown("---")
+    st.markdown(
+        "#### ⬆ Altura de pluma VOLCAT (km AMSL) — cuantitativo (Pavolonis 2013)"
+    )
+    sector = vh.get("sector", "?")
+    chosen = _nearest_ts(avail, ts)
+    if chosen is None:
+        st.info("Sin frames de altura VOLCAT en este backfill.")
+        return
+
+    frame_meta = (vh.get("frames") or {}).get(chosen, {})
+    gap_s = frame_meta.get("gap_s")
+    frame_dt = frame_meta.get("frame_dt")
+    # Aviso si el frame mas cercano cae lejos del ts pedido.
+    gap_note = ""
+    if isinstance(gap_s, (int, float)) and gap_s > 0:
+        gap_note = f" · frame a {int(round(gap_s / 60))} min del timestamp"
+
+    st.caption(
+        f"Sector **{sector.replace('_', ' ')}** · SSEC/CIMSS · imagen de "
+        f"sector completo (no recortada al volcán){gap_note}. "
+        f"Archivo de altura ~30 días: para eventos más viejos no hay dato."
+    )
+
+    png = _fetch_raw_bytes(tag, f"volcat_height__{chosen}.png")
+    col_im, col_lg = st.columns([4, 1.4])
+    with col_im:
+        if png:
+            cap = f"Altura de pluma · frame VOLCAT {frame_dt or chosen}"
+            st.image(png, caption=cap, width="stretch")
+        else:
+            st.warning(
+                "No se pudo bajar la imagen de altura para este timestamp."
+            )
+    with col_lg:
+        st.markdown(
+            "<b style='font-size:0.78rem; color:#8899aa;'>Colorbar (km)</b>",
+            unsafe_allow_html=True,
+        )
+        legend_asset = vh.get("legend_asset")
+        if legend_asset:
+            lg = _fetch_raw_bytes(tag, legend_asset)
+            if lg:
+                st.image(lg, width="stretch")
+            else:
+                st.caption("(sin leyenda)")
+        else:
+            st.caption("(sin leyenda)")
+
+
 def render():
     from dashboard.manuals import render_manual
     render_manual("backfill")
@@ -277,6 +374,17 @@ def render():
         f"({', '.join(scopes)})</span></div>",
         unsafe_allow_html=True,
     )
+
+    # Aviso si los productos se regeneraron desde L1b crudo (fecha fuera del
+    # archive RAMMB). GeoColor en ese caso es TrueColor aprox, no el de CIRA.
+    if manifest.get("l1b_fallback"):
+        modo = "L1b-only (fecha fuera del archive RAMMB)" if manifest.get(
+            "l1b_only") else "RAMMB + fallback L1b por frame faltante"
+        st.caption(
+            f"🛰 Productos regenerados desde bandas L1b GOES-19 ({modo}). "
+            "GeoColor es **TrueColor aproximado** (motor propio, sin Rayleigh "
+            "ni night-lights de CIRA); Ash/SO2/BTD usan las recetas estándar."
+        )
 
     # ── Selector de scope (volcan vs zona) ────────────────────────────
     scope_labels = {sid: sid.replace("__", " · ").replace("_", " ").title()
@@ -372,6 +480,9 @@ def render():
                                              hotspots=hotspots_for_ts)
                 st.plotly_chart(fig, width='stretch',
                                 config={"displayModeBar": False})
+
+    # ── Altura de pluma VOLCAT (seccion dedicada, sector-georef) ──────
+    _render_volcat_height(tag, manifest, ts)
 
     # ── Panel info ────────────────────────────────────────────────────
     with st.expander("ℹ Que muestra cada producto"):

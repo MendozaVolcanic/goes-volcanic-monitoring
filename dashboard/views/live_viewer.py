@@ -572,7 +572,11 @@ def _health_banner(ts_all: dict):
     El user veia 30+ min a veces — este banner explicita la causa
     (es RAMMB, no nosotros) sin que tenga que adivinar.
     """
-    # Encontrar el scan mas reciente entre los 3 productos
+    # CONSOLIDADO (jun 2026): esta tira ÚNICA reemplaza al banner de estado +
+    # la caja "Último scan" + el "Hora del scan" de la barra de auto-refresh.
+    # Antes la hora/edad del scan aparecía en 3 bloques distintos. Ahora todo
+    # vive acá: estado (color por edad) · reloj · scan por producto · edad de
+    # consulta. Corre cada 60s -> se mantiene fresco.
     most_recent_dt = None
     for prod, _label, _c in LIVE_PRODUCTS:
         info = ts_all.get(prod)
@@ -586,46 +590,83 @@ def _health_banner(ts_all: dict):
 
     now = datetime.now(timezone.utc)
     if most_recent_dt is None:
-        color = "#ff4444"
-        bg = "rgba(255,68,68,0.12)"
-        icon = "❌"
-        msg = "Sin datos de RAMMB. Reintentando."
-        sub = ""
+        color = "#ff4444"; bg = "rgba(255,68,68,0.10)"; icon = "❌"
+        msg = "Sin datos de RAMMB"; sub = "reintentando"
+        tip = "RAMMB/CIRA no respondió. Reintentando en el próximo ciclo."
     else:
         age_min = int((now - most_recent_dt).total_seconds() / 60)
         if age_min < 15:
-            color = "#3fb950"; bg = "rgba(63,185,80,0.10)"; icon = "✅"
-            msg = "Sistema operativo"
-            sub = f"Último scan hace {age_min} min · todo en orden"
+            color = "#3fb950"; bg = "rgba(63,185,80,0.08)"; icon = "✅"
+            msg = "Sistema operativo"; sub = f"último scan hace {age_min} min"
+            tip = "GOES-19 + RAMMB/CIRA al día."
         elif age_min < 30:
-            color = "#d29922"; bg = "rgba(210,153,34,0.12)"; icon = "⚠"
+            color = "#d29922"; bg = "rgba(210,153,34,0.10)"; icon = "⚠"
             msg = "Latencia elevada"
-            sub = (f"Último scan hace {age_min} min · "
-                   "RAMMB/CIRA está lento. No es problema nuestro — "
+            sub = f"último scan hace {age_min} min · RAMMB lento"
+            tip = ("RAMMB/CIRA está lento. No es problema nuestro — "
                    "esperá el próximo ciclo.")
         else:
-            color = "#ff4444"; bg = "rgba(255,68,68,0.12)"; icon = "❌"
+            color = "#ff4444"; bg = "rgba(255,68,68,0.10)"; icon = "❌"
             msg = "Datos atrasados"
-            sub = (f"Último scan hace {age_min} min · "
-                   "RAMMB/CIRA aparentemente caído o con hueco en publicación. "
-                   "Cruzar con: status.cira.colostate.edu o usar VOLCAT (SSEC).")
+            sub = f"último scan hace {age_min} min"
+            tip = ("RAMMB/CIRA aparentemente caído o con hueco en publicación. "
+                   "Cruzar con status.cira.colostate.edu o usar VOLCAT (SSEC).")
 
-    # Edad del polling propio (cuando NUESTRO servidor consulto RAMMB)
+    # Reloj (UTC + Chile) — se refresca con el fragment (cada 60s).
+    utc_str = now.strftime("%H:%M:%S UTC")
+    ch_str = fmt_chile(now)
+
+    # Edad del polling propio (cuando NUESTRO servidor consultó RAMMB).
     import time as _time_mod
     _polled_at = ts_all.get("_polled_at", _time_mod.time())
     _polling_age = int(_time_mod.time() - _polled_at)
-    if _polling_age > 120:
-        sub += f" · ⚠ Tu sesión consultó RAMMB hace {_polling_age}s — Streamlit Cloud puede estar dormido"
+    poll_extra = (f" · ⚠ sesión dormida {_polling_age}s"
+                  if _polling_age > 120 else "")
+
+    # Scan por producto, compacto (pueden diferir: ej. SO2 va un scan atrás).
+    prods_html = ""
+    for prod, label, pcolor in LIVE_PRODUCTS:
+        info = ts_all.get(prod)
+        if info:
+            prods_html += (
+                f"<span style='margin-right:0.7rem; white-space:nowrap;'>"
+                f"<span style='color:{pcolor};'>■</span> "
+                f"<b style='color:#c0ccd8;'>{label}</b> "
+                f"<span style='color:#99aabb; font-family:monospace;'>"
+                f"{info['utc']}</span></span>")
+        else:
+            prods_html += (f"<span style='margin-right:0.7rem; color:#556;'>"
+                           f"{label} —</span>")
 
     st.markdown(
-        f"<div style='background:{bg}; border-left:4px solid {color}; "
-        f"padding:0.6rem 0.95rem; border-radius:6px; margin-bottom:0.6rem;'>"
-        f"<div style='display:flex; align-items:center; gap:0.7rem;'>"
-        f"<span style='font-size:1.4rem;'>{icon}</span>"
-        f"<div style='flex:1;'>"
-        f"<div style='color:{color}; font-weight:700; font-size:1.0rem;'>{msg}</div>"
-        f"<div style='color:#9aaabb; font-size:0.78rem;'>{sub}</div>"
-        f"</div></div></div>",
+        f"<div style='border-left:4px solid {color}; background:{bg}; "
+        f"padding:0.45rem 0.9rem; border-radius:6px; margin-bottom:0.5rem; "
+        f"display:flex; align-items:center; gap:0.9rem; flex-wrap:wrap;'>"
+        # Estado (color por edad)
+        f"<span style='font-size:1.25rem;' title=\"{tip}\">{icon}</span>"
+        f"<div style='min-width:120px;'>"
+        f"<div style='color:{color}; font-weight:700; font-size:0.92rem; "
+        f"line-height:1.15;'>{msg}</div>"
+        f"<div style='color:#9aaabb; font-size:0.7rem;'>{sub}</div></div>"
+        f"<span style='color:#33414f;'>│</span>"
+        # Reloj
+        f"<div style='line-height:1.15;'>"
+        f"<div style='font-size:1.0rem; color:#e8eaf0; font-family:monospace; "
+        f"font-weight:700;'>{utc_str}</div>"
+        f"<div style='font-size:0.7rem; color:#99aabb; font-family:monospace;'>"
+        f"{ch_str} <span style='color:#556;'>Chile</span></div></div>"
+        f"<span style='color:#33414f;'>│</span>"
+        # Scan por producto
+        f"<div style='font-size:0.78rem; line-height:1.3;'>"
+        f"<div style='font-size:0.56rem; color:#556677; text-transform:uppercase; "
+        f"letter-spacing:0.06em;'>Último scan · RAMMB/CIRA</div>"
+        f"<div>{prods_html}</div></div>"
+        # Edad de consulta (derecha)
+        f"<span style='margin-left:auto; color:#667788; font-size:0.66rem; "
+        f"white-space:nowrap;' title='Hora en que tu sesión consultó RAMMB. Si "
+        f"el scan es viejo pero esto es reciente, RAMMB aún no publicó el nuevo.'>"
+        f"consultado hace {_polling_age}s{poll_extra}</span>"
+        f"</div>",
         unsafe_allow_html=True,
     )
 
@@ -648,64 +689,10 @@ def _live_content():
     ts_all = _fetch_latest_ts_all()
     _health_banner(ts_all)
 
-    # ── Fila superior: reloj · estado · botón refresh ─────────────────────
-    col_clock, col_status, col_btn = st.columns([1, 2, 0.6])
-
-    with col_clock:
-        _reloj_chile()
-
-    with col_status:
-        # "polled_at" = cuando la llamada a RAMMB efectivamente salio al
-        # origen. Lo guardamos dentro del dict cacheado, asi que puede ser
-        # de hace varios segundos si estamos leyendo del cache.
-        import time as _time_mod
-        _polled_at = ts_all.get("_polled_at", _time_mod.time())
-        _age = int(_time_mod.time() - _polled_at)
-        _polled_dt = datetime.fromtimestamp(_polled_at, tz=timezone.utc)
-        _polled_utc = _polled_dt.strftime("%H:%M:%S UTC")
-        _polled_cl  = fmt_chile(_polled_dt)
-
-        status_html = (
-            '<div style="padding:0.35rem 0.7rem; background:rgba(17,24,34,0.6); '
-            'border-radius:6px; border:1px solid rgba(100,120,140,0.2);">'
-            '<div style="font-size:0.62rem; color:#556677; text-transform:uppercase; '
-            'letter-spacing:0.08em; margin-bottom:0.15rem; '
-            'display:flex; justify-content:space-between; align-items:center;">'
-            '<span>Ultimo scan · RAMMB/CIRA</span>'
-            f'<span title="Hora en la que nuestro servidor le pregunto a RAMMB por el ultimo scan. Si ves un scan viejo pero esta consulta es reciente, RAMMB aun no publico el nuevo." '
-            f'style="color:#667788; text-transform:none; font-size:0.66rem;">'
-            f'consulta: {_polled_utc} ({_polled_cl} CL) · hace {_age}s</span>'
-            '</div>'
-        )
-        for prod, label, color in LIVE_PRODUCTS:
-            info = ts_all.get(prod)
-            if info:
-                status_html += (
-                    f'<div style="font-size:0.78rem; line-height:1.45;">'
-                    f'<span style="color:{color}; font-weight:700;">■</span> '
-                    f'<b style="color:#c0ccd8;">{label}</b> '
-                    f'<span style="color:#99aabb; font-family:monospace;">{info["utc"]}</span>'
-                    f'<span style="color:#5a6a7a; font-size:0.72rem; margin-left:0.4rem;">'
-                    f'({info["local"]} Chile)</span>'
-                    f'</div>'
-                )
-            else:
-                status_html += (
-                    f'<div style="font-size:0.78rem; color:#445566; line-height:1.45;">'
-                    f'<b>{label}</b> — no disponible</div>'
-                )
-        status_html += '</div>'
-        st.markdown(status_html, unsafe_allow_html=True)
-
-    with col_btn:
-        st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
-        if st.button("🔄 Actualizar", width='stretch', key="live_refresh_btn",
-                     help="Consultar RAMMB ahora mismo e cargar el scan mas reciente"):
-            # Invalidar solo el cache liviano de timestamps.
-            # Los frames ya descargados (cache 2h por ts) se conservan.
-            _get_latest_ts.clear()
-            _fetch_latest_ts_all.clear()
-            st.rerun()
+    # NOTA (jun 2026): el reloj, la caja "Último scan" (3 productos) y el botón
+    # refresh vivían acá en 3 columnas separadas. El reloj y los tiempos de scan
+    # se CONSOLIDARON en la tira única de _health_banner (arriba) para matar la
+    # redundancia. El botón refresh bajó a la fila del contador de auto-refresh.
 
     # ── Indicador de auto-refresh con contador regresivo ──────────────────
     # Calcula el proximo scan esperado: ultimo ts + 10 min + ~4 min latencia RAMMB.
@@ -734,7 +721,7 @@ def _live_content():
     # contador de "proximo chequeo" (60s despues).
     _now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
 
-    _stc.html(
+    _countdown_html = (
         f"""
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
                     font-size:0.8rem; color:#99aabb; padding:0.3rem 0.8rem;
@@ -751,11 +738,6 @@ def _live_content():
                                     font-size:1.05rem; padding-left:0.3rem;">
               --
             </b>
-          </span>
-          <span style="color:#556677;">|</span>
-          <span title="Timestamp que GOES-19 grabo en el nombre del archivo de RAMMB (inicio del scan). NO es la hora en que lo vimos nosotros.">
-            Hora del scan (RAMMB):
-            <b style="color:#e6edf3; font-family:monospace;">{_last_iso}</b>
           </span>
           <span style="color:#556677;">|</span>
           <span>Proximo scan estimado en
@@ -802,9 +784,19 @@ def _live_content():
             setInterval(function() {{ tickPoll(); tickNext(); }}, 1000);
           }})();
         </script>
-        """,
-        height=42,
+        """
     )
+
+    # Barra de auto-refresh (izq) + botón refresh compacto (der), en una fila.
+    col_cd, col_rf = st.columns([7, 0.9])
+    with col_cd:
+        _stc.html(_countdown_html, height=42)
+    with col_rf:
+        if st.button("🔄", width='stretch', key="live_refresh_btn",
+                     help="Consultar RAMMB ahora y cargar el scan más reciente"):
+            _get_latest_ts.clear()
+            _fetch_latest_ts_all.clear()
+            st.rerun()
 
     # ── Controles de viento ────────────────────────────────────────────────
     # Alturas estandar ISA (Standard Atmosphere) para referencia.

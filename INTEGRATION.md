@@ -43,7 +43,7 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
 | Latencia detección | ≤ 60 s desde publicación RAMMB |
 | Latencia total user-visible | 4-7 min después del scan real |
 | Formato output | PNG con timestamp + GeoTIFF (EPSG:4326) + GIF/MP4 (animación) + ZIP frames |
-| Retención RAMMB | ~28 días |
+| Retención RAMMB | ~9-10 meses (medido jun-2026: frame OK a 270d; era GOES-19, desde abr-2025) |
 
 ## Productos disponibles
 
@@ -122,7 +122,11 @@ streamlit run dashboard/app.py
 ## Limitaciones conocidas
 
 - **Parallax GOES**: volcanes altos (>4000 m) aparecen ~1-3 km al este de su coord real WGS84.
-- **No hay datos históricos**: RAMMB retiene ~28 días, NOAA S3 más pero requiere fetch desde L1b.
+- **Profundidad histórica por fuente** (medido jun-2026): RAMMB RGB ~9-10 meses
+  (era GOES-19, desde abr-2025); hot spots FDCF en S3 desde el inicio de
+  GOES-19 (OK a feb-2025); RealEarth VOLCAT/ash_rgb ≥5 meses. Para ir más atrás
+  hay que computar las RGB desde L1b (S3 `noaa-goes19`, indefinido). Pre-abr-2025
+  es GOES-16 (no soportado).
 - **SO2 RGB es cualitativo**: para cuantificar usar TROPOMI Sentinel-5P (vía VolcPlume-v1).
 - **Altura VOLCAT solo PNG**: API pública sirve imagen con colorbar, no NetCDF con valores numéricos. Para uso cuantitativo gestionar feed con CIMSS.
 - **No funciona offline**: depende de RAMMB y AWS S3.

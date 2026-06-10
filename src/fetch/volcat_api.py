@@ -184,6 +184,75 @@ def volcat_latest(
     }
 
 
+def _parse_volcat_frame_dt(dstr: Optional[str]):
+    """'2026-05-11_12-00-30' -> datetime UTC (o None)."""
+    if not dstr:
+        return None
+    try:
+        from datetime import datetime, timezone
+        d, t = dstr.split("_")
+        y, mo, da = map(int, d.split("-"))
+        hh, mm, ss = map(int, t.split("-"))
+        return datetime(y, mo, da, hh, mm, ss, tzinfo=timezone.utc)
+    except Exception:
+        return None
+
+
+def volcat_at_time(
+    target_dt,
+    sector: str,
+    instr: str = "ABI",
+    image_type: str = "Ash_Height",
+    sat: str = "GOES-19",
+    max_gap_min: float = 30.0,
+) -> Optional[dict]:
+    """Frame VOLCAT más cercano a `target_dt` (histórico, no el último).
+
+    El API devuelve hasta ~30 días de frames (Ash_Height); en vez de tomar el
+    último (volcat_latest) elegimos el más cercano al timestamp objetivo. Para
+    el backfill de la ALTURA cuantitativa (km AMSL, Pavolonis 2013).
+
+    Args:
+        target_dt:    datetime UTC objetivo.
+        max_gap_min:  si el frame más cercano queda a más de esto, devuelve None
+                      (mejor no mostrar nada que un frame de otra hora).
+
+    Returns:
+        Mismo dict que volcat_latest (datetime/image_url/legend_url/...), o None.
+    """
+    frames, coords = _query_frames(sector, instr, image_type, sat)
+    if not frames and sat != "all":
+        frames, coords = _query_frames(sector, instr, image_type, "all")
+    if not frames:
+        return None
+
+    best, best_gap = None, None
+    for f in frames:
+        fdt = _parse_volcat_frame_dt(f.get("datetime"))
+        if fdt is None:
+            continue
+        gap = abs((fdt - target_dt).total_seconds())
+        if best_gap is None or gap < best_gap:
+            best, best_gap = f, gap
+    if best is None or best_gap > max_gap_min * 60:
+        return None
+
+    legend_key = LEGEND_KEY.get(image_type, "ASH_HGT-LOAD")
+    return {
+        "datetime": best.get("datetime"),
+        "image_url": BASE + best["filename"],
+        "annot_url": (BASE + best["annot"]) if best.get("annot") else None,
+        "legend_url": f"{BASE}/data/sector_imagery_config/overlays/maps/{sector}.MAP.{legend_key}.png",
+        "latlon_url": f"{BASE}/data/sector_imagery_config/overlays/latlon/{sector}.LATLON.CYAN.png",
+        "volcanoes_url": f"{BASE}/data/sector_imagery_config/overlays/volcanoes/{sector}.VOLCANOES.CYAN.png",
+        "coords": coords,
+        "sector": sector,
+        "instr": instr,
+        "image_type": image_type,
+        "gap_seconds": int(best_gap),
+    }
+
+
 def volcat_available_types(sector: str, instr: str = "ABI") -> list[str]:
     """Lista productos image_type disponibles para un sector."""
     url = (

@@ -161,6 +161,20 @@ def test_hires_crop_centered_aligns():
     assert MGV._crop_centered(arr, 0.0).shape[0] >= 1  # clamp inferior
 
 
+def test_volcat_frame_dt_parser():
+    """_parse_volcat_frame_dt: '2026-05-11_12-00-30' -> datetime UTC."""
+    from datetime import timezone
+
+    from src.fetch.volcat_api import _parse_volcat_frame_dt
+
+    dt = _parse_volcat_frame_dt("2026-06-07_07-50-30")
+    assert dt is not None
+    assert (dt.year, dt.month, dt.day, dt.hour, dt.minute) == (2026, 6, 7, 7, 50)
+    assert dt.tzinfo == timezone.utc
+    assert _parse_volcat_frame_dt(None) is None
+    assert _parse_volcat_frame_dt("basura") is None
+
+
 def test_compose_volcan_panels():
     """_compose_volcan_panels: 3 paneles -> 1 imagen PIL, aspecto ~2.2, tolera
     panel sin imagen."""

@@ -701,17 +701,31 @@ def render():
               [data-testid="stElementContainer"]:has(a[href="?vista=guardia"]):hover a {
                 opacity: 1 !important;
               }
-              /* TRANSICION SUAVE al cambiar de slot (jun 2026): cada vez que
-                 un plot/imagen se MONTA (cambio de producto/zona) hace un
-                 fade-in corto. Con los key estables, los ticks repetidos NO
-                 re-montan -> el fade solo ocurre en el cambio real, dando
-                 una rotacion pulida en vez de un corte abrupto. */
+              /* CAUSA DEL 'se oscurece antes de cambiar' (jun 2026): en cada
+                 tick del fragment run_every, Streamlit marca el contenido viejo
+                 como data-stale="true" y le BAJA la opacity (~0.4) mientras
+                 recomputa. Si el recompute tarda mas que el delay (~0.5s) se ve
+                 el contenido atenuado. En una pantalla de sala 24/7 eso es el
+                 parpadeo principal. Forzamos opacity:1 -> el frame previo se ve
+                 NITIDO hasta que el nuevo lo reemplaza de una. */
+              [data-testid="stElementContainer"][data-stale="true"],
+              [data-testid="stVerticalBlock"][data-stale="true"],
+              [data-testid="stHorizontalBlock"][data-stale="true"] {
+                opacity: 1 !important;
+                transition: none !important;
+                filter: none !important;
+              }
+              /* TRANSICION SUAVE al cambiar de slot: fade-in corto SOLO al
+                 montar el contenido nuevo (no en los ticks repetidos por los
+                 key estables). Va despues del override de stale para no
+                 reintroducir el atenuado del viejo. */
               [data-testid="stPlotlyChart"],
-              [data-testid="stImage"] {
-                animation: tv-fade-in 0.45s ease-out;
+              [data-testid="stImage"],
+              [data-testid="stMarkdown"] img {
+                animation: tv-fade-in 0.4s ease-out;
               }
               @keyframes tv-fade-in {
-                from { opacity: 0.35; }
+                from { opacity: 0.55; }
                 to   { opacity: 1; }
               }
             </style>

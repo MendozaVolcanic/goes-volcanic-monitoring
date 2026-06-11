@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 import streamlit as st
-from dashboard.style import inject_css
+from dashboard.style import inject_css, inject_reconnect_watchdog
 
 # IMPORTANTE: st.set_page_config debe ser la PRIMERA llamada Streamlit.
 # NO podemos llamar st.query_params antes — eso crashea con
@@ -25,6 +25,10 @@ st.set_page_config(
 )
 
 inject_css()
+# Watchdog de reconexión: si Streamlit cae en 'Connection error' (Cached
+# ForwardMsg MISS tras un reinicio del servidor), recarga el frame de la app
+# automáticamente. Ver dashboard/style.py::inject_reconnect_watchdog.
+inject_reconnect_watchdog()
 
 # Ahora SI podemos leer query params
 _fullscreen = st.query_params.get("fullscreen") == "1"

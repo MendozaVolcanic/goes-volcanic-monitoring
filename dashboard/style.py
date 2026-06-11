@@ -380,6 +380,83 @@ def inject_css():
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 
+def inject_reconnect_watchdog():
+    """Watchdog JS que auto-recarga la app si Streamlit cae en 'Connection error'.
+
+    EL PROBLEMA: 'Cached ForwardMsg MISS' es un error fatal del cliente de
+    Streamlit — cuando el servidor se reinicia (sleep/wake de Streamlit Cloud,
+    o la race del importlib de Python 3.14, misma familia que el KeyError
+    documentado en CLAUDE.md), el navegador queda referenciando hashes de
+    mensajes que ya no existen ni en cliente ni en servidor. Streamlit NO se
+    auto-recupera: muestra el diálogo y el websocket queda muerto.
+
+    LA SOLUCIÓN: un iframe invisible (components.html) cuyo JS sobrevive a la
+    caída del websocket (es HTML estático, no depende del servidor). Cada 1.5s
+    inspecciona el documento PADRE (el frame de la app) buscando el diálogo de
+    error; si persiste > GRACE_MS, recarga el frame de la app.
+
+    POR QUÉ window.parent.location.reload() y NO top:
+      El sandbox de Streamlit Cloud bloquea navegar el TOP-frame (5 intentos
+      fallidos documentados en map_helpers.py:122). Pero recargar el frame de
+      la APP (el parent del component iframe) es la misma operación que el
+      <a target="_self"> que SÍ funciona — no es top-nav. En Hugging Face (sin
+      iframe) parent == la pestaña, también funciona.
+
+    Anti-loop: backoff por sessionStorage (no recarga más de 1 vez cada
+    BACKOFF_MS) — si el servidor está caído de verdad, no martillea reloads.
+    """
+    import streamlit.components.v1 as components
+    components.html(
+        """
+        <script>
+        (function(){
+          var GRACE_MS = 4000;     // error visible este tiempo antes de recargar
+          var BACKOFF_MS = 20000;  // como mucho 1 recarga cada 20s (anti-loop)
+          var POLL_MS = 1500;
+          var errorSince = null;
+
+          function parentDoc(){
+            try { return window.parent.document; } catch(e){ return null; }
+          }
+          function hasConnError(doc){
+            if(!doc) return false;
+            // Solo miramos diálogos/status (barato) — el error fatal es un modal.
+            var nodes;
+            try {
+              nodes = doc.querySelectorAll(
+                '[role="dialog"], [data-testid="stConnectionStatus"]');
+            } catch(e){ return false; }
+            var txt = '';
+            for (var i=0; i<nodes.length; i++){ txt += (nodes[i].innerText || ''); }
+            return /Failed to process a Websocket message/i.test(txt)
+                || /Cached ForwardMsg/i.test(txt)
+                || (/Connection error/i.test(txt) && /Websocket/i.test(txt));
+          }
+          function tryReload(){
+            var now = Date.now(), last = 0;
+            try { last = parseInt(sessionStorage.getItem('goesReloadAt')||'0',10); } catch(e){}
+            if (now - last < BACKOFF_MS) return;   // backoff
+            try { sessionStorage.setItem('goesReloadAt', String(now)); } catch(e){}
+            // Recargar el frame de la APP (parent), NO el top (sandbox lo bloquea).
+            try { window.parent.location.reload(); return; } catch(e){}
+            try { window.location.reload(); } catch(e){}
+          }
+          setInterval(function(){
+            var doc = parentDoc();
+            if (hasConnError(doc)){
+              if (errorSince === null) errorSince = Date.now();
+              else if (Date.now() - errorSince > GRACE_MS) tryReload();
+            } else {
+              errorSince = null;
+            }
+          }, POLL_MS);
+        })();
+        </script>
+        """,
+        height=0,
+    )
+
+
 def header(title: str, subtitle: str = ""):
     sub_html = (
         f'<span style="color:#445566; font-size:0.9rem;">·</span>'

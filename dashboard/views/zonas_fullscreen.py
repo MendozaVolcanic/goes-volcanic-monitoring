@@ -230,6 +230,99 @@ VOLCAT_VIEW = {
     "Sur":    {"lat_min": -56.0, "lat_max": -36.0, "lon_min": -77.0, "lon_max": -70.0},
 }
 
+# ── VOLCAT en 4 zonas (igualar el grid RGB Norte/Centro/Sur/Austral) ──
+# VOLCAT_ZONAS_4=True  -> 4 columnas. 'Sur' se ACOTA a -46..-36 y 'Austral'
+#   toma la franja -56..-46 (ambos del sector Chile_South, recorte distinto via
+#   view-bounds). Render por RECORTE georef (plotly), para que Austral != Sur.
+# VOLCAT_ZONAS_4=False -> comportamiento previo: 3 zonas con el render que diga
+#   VOLCAT_TV_RENDER (ssec_overlay clasico por defecto). Flag de revert. (jun 2026)
+VOLCAT_ZONAS_4 = True
+
+VOLCAT_VIEW_4 = {
+    "Norte":   {"lat_min": -28.0, "lat_max": -15.5, "lon_min": -71.5, "lon_max": -66.5},
+    "Centro":  {"lat_min": -39.0, "lat_max": -28.0, "lon_min": -73.0, "lon_max": -68.0},
+    "Sur":     {"lat_min": -46.0, "lat_max": -36.0, "lon_min": -77.0, "lon_max": -70.0},
+    "Austral": {"lat_min": -56.0, "lat_max": -45.5, "lon_min": -77.0, "lon_max": -70.0},
+}
+
+
+def _volcat_zone_specs():
+    """Specs de zonas VOLCAT: lista de (zona, sector, instr, view_bounds).
+
+    Si VOLCAT_ZONAS_4 -> 4 zonas con recorte (view_bounds por zona, Austral =
+    recorte austral de Chile_South). Si no -> 3 zonas con view_bounds None
+    (cae al render ssec_overlay clasico). Fuente unica para todos los grids
+    VOLCAT por zona (TV rotacion, sub-tab Modo Guardia).
+    """
+    from src.fetch.volcat_api import ZONE_TO_SECTOR, ZONE_TO_SECTOR_4
+    if VOLCAT_ZONAS_4:
+        return [(z, s, i, VOLCAT_VIEW_4[z])
+                for z, (s, i) in ZONE_TO_SECTOR_4.items()]
+    return [(z, s, i, None) for z, (s, i) in ZONE_TO_SECTOR.items()]
+
+
+def _render_volcat_zone_cell(zona, sector, instr, view_bounds, product,
+                             height):
+    """Render de UNA celda VOLCAT (dentro de su columna ya abierta).
+
+    view_bounds dado  -> recorte georef con plotly (_volcat_map_only +
+        _volcat_zone_fig), encuadrado a `view_bounds`. Asi Austral (recorte
+        sur de Chile_South) se ve distinto de Sur. Modo de 4 zonas.
+    view_bounds None  -> render ssec_overlay clasico (st.image de la imagen
+        SSEC completa). Modo de 3 zonas (revert).
+    """
+    from dashboard.views.volcat_viewer import (
+        _volcat_dt_obj, _volcat_image_bytes, _volcat_image_with_overlays,
+        _volcat_latest_cached, _volcat_map_only,
+    )
+    from dashboard.utils import fmt_both
+
+    try:
+        meta = _volcat_latest_cached(sector, instr, product)
+    except Exception:
+        meta = None
+    if not meta:
+        st.markdown(
+            f"<div style='color:#ff6644; font-weight:800;'>Zona {zona}</div>"
+            f"<div style='color:#7a8a9a; padding:2rem 0; text-align:center;'>"
+            f"VOLCAT sin frame</div>", unsafe_allow_html=True)
+        return
+    dt = _volcat_dt_obj(meta.get("datetime"))
+    time_label = fmt_both(dt) if dt else ""
+
+    if view_bounds is not None:
+        data = _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
+                                meta.get("coords") or {})
+        if not data:
+            st.markdown(
+                f"<div style='color:#ff6644; font-weight:800;'>Zona {zona}"
+                f"</div><div style='color:#7a8a9a; padding:2rem 0; "
+                f"text-align:center;'>VOLCAT sin frame</div>",
+                unsafe_allow_html=True)
+            return
+        st.plotly_chart(
+            _volcat_zone_fig(data["png"], data["bounds"], view_bounds,
+                             f"Zona {zona}", time_label, height),
+            width='stretch',
+            config={"displayModeBar": False, "responsive": True},
+            key=f"volcat4_{zona}_{product}",
+        )
+    else:  # ssec_overlay clasico (3 zonas)
+        st.markdown(
+            f"<div style='font-weight:800; color:#ff6644; font-size:0.95rem; "
+            f"margin-bottom:0.2rem;'>Zona {zona} <span style='color:#aabbc8; "
+            f"font-weight:400; font-size:0.78rem;'>· {time_label}</span></div>",
+            unsafe_allow_html=True)
+        img = _volcat_image_with_overlays(
+            meta["image_url"], meta.get("volcanoes_url"),
+            meta.get("latlon_url"))
+        if img:
+            st.image(img, width='stretch')
+    # Colorbar del producto.
+    leg = _volcat_image_bytes(meta["legend_url"])
+    if leg:
+        st.image(leg, width='stretch')
+
 
 def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
                      time_label, height):
@@ -292,8 +385,8 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
 
 
 def _render_volcat_zonas_tv(height: int):
-    """Render de las 3 zonas VOLCAT (altura de pluma) en fila, para el
-    Modo Sala TV.
+    """Render de las zonas VOLCAT (altura de pluma) en fila, para el Modo
+    Sala TV. 4 zonas con VOLCAT_ZONAS_4 (Austral=recorte sur), 3 si no.
 
     El modo lo decide la constante VOLCAT_TV_RENDER (feature flag):
     - "ssec_overlay": imagen SSEC clasica (titulo, grilla, todos los
@@ -301,80 +394,22 @@ def _render_volcat_zonas_tv(height: int):
     - "plotly_volcanes": render propio con plotly, mapa recortado +
       nuestros volcanes + frontera. Mas limpio (activable mas adelante).
     """
-    from dashboard.views.volcat_viewer import (
-        _volcat_latest_cached, _volcat_map_only, _volcat_image_with_overlays,
-        _volcat_dt_obj,
-    )
-    from dashboard.utils import fmt_both
-    from src.fetch.volcat_api import ZONE_TO_SECTOR
-
-    cols = st.columns(len(ZONE_TO_SECTOR))
-    for col, (zona, (sector, instr)) in zip(cols, ZONE_TO_SECTOR.items()):
+    specs = _volcat_zone_specs()
+    cols = st.columns(len(specs))
+    for col, (zona, sector, instr, view_bounds) in zip(cols, specs):
         with col:
-            try:
-                meta = _volcat_latest_cached(sector, instr, "Ash_Height")
-            except Exception:
-                meta = None
-            if not meta:
-                st.markdown(
-                    f"<div style='color:#ff6644; font-weight:800;'>Zona {zona}"
-                    f"</div><div style='color:#7a8a9a; padding:2rem 0; "
-                    f"text-align:center;'>VOLCAT sin frame</div>",
-                    unsafe_allow_html=True,
-                )
-                continue
-            dt = _volcat_dt_obj(meta.get("datetime"))
-            time_label = fmt_both(dt) if dt else ""
-
-            if VOLCAT_TV_RENDER == "plotly_volcanes":
-                data = _volcat_map_only(
-                    meta["image_url"], meta.get("latlon_url"),
-                    meta.get("coords") or {})
-                if not data:
-                    st.markdown(
-                        f"<div style='color:#7a8a9a; padding:2rem 0; "
-                        f"text-align:center;'>VOLCAT sin frame</div>",
-                        unsafe_allow_html=True)
-                    continue
-                sb = data["bounds"]
-                vb = {
-                    "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
-                    "lon_min": max(sb["lon_min"], -76.0),
-                    "lon_max": min(sb["lon_max"], -66.0),
-                }
-                st.plotly_chart(
-                    _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
-                                     time_label, height),
-                    width='stretch',
-                    config={"displayModeBar": False, "responsive": True},
-                )
-            else:  # "ssec_overlay" — imagen SSEC clasica (muchos volcanes)
-                st.markdown(
-                    f"<div style='display:flex; justify-content:space-between; "
-                    f"align-items:baseline; background:rgba(10,14,20,0.92); "
-                    f"padding:0.2rem 0.6rem; border-radius:4px 4px 0 0; "
-                    f"border-left:3px solid #ff6644;'>"
-                    f"<span style='color:#ff6644; font-weight:800; "
-                    f"font-size:0.95rem;'>Zona {zona}</span>"
-                    f"<span style='color:#aabbc8; font-size:0.78rem;'>"
-                    f"{time_label or 'sin hora'}</span></div>",
-                    unsafe_allow_html=True,
-                )
-                img = _volcat_image_with_overlays(
-                    meta["image_url"], meta.get("volcanoes_url"),
-                    meta.get("latlon_url"))
-                if img:
-                    st.image(img, width='stretch')
-                else:
-                    st.markdown(
-                        "<div style='color:#7a8a9a; padding:2rem 0; "
-                        "text-align:center;'>VOLCAT sin frame</div>",
-                        unsafe_allow_html=True)
+            _render_volcat_zone_cell(zona, sector, instr, view_bounds,
+                                     "Ash_Height", height)
 
 
-def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int):
+def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
+                               view_bounds: dict | None = None):
     """Render de UNA sola zona VOLCAT, en grande y centrada, para la
-    rotacion del Modo Sala TV (una zona a la vez, no las 3 juntas)."""
+    rotacion del Modo Sala TV (una zona a la vez).
+
+    view_bounds dado (modo 4 zonas) -> recorte georef plotly a ese encuadre
+    (Austral = recorte sur de Chile_South). view_bounds None -> usa el modo
+    VOLCAT_TV_RENDER clasico (ssec_overlay por defecto)."""
     from dashboard.views.volcat_viewer import (
         _volcat_latest_cached, _volcat_map_only, _volcat_image_with_overlays,
         _volcat_dt_obj,
@@ -397,14 +432,17 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int):
     # ~46% del ancho -> se limitaba por ancho y NO llenaba el alto. Ahora usa
     # todo el ancho disponible; el CSS del TV la escala por max-height
     # (calc(100vh)) centrada -> aprovecha todo el alto de la pantalla. (jun 2026)
-    if VOLCAT_TV_RENDER == "plotly_volcanes":
+    if view_bounds is not None or VOLCAT_TV_RENDER == "plotly_volcanes":
         data = _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
                                 meta.get("coords") or {})
         if data:
             sb = data["bounds"]
-            vb = {"lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
-                  "lon_min": max(sb["lon_min"], -76.0),
-                  "lon_max": min(sb["lon_max"], -66.0)}
+            # view_bounds (4 zonas) recorta a la franja de la zona; si no, el
+            # encuadre clasico acotado a la franja chilena.
+            vb = view_bounds or {
+                "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
+                "lon_min": max(sb["lon_min"], -76.0),
+                "lon_max": min(sb["lon_max"], -66.0)}
             st.plotly_chart(
                 _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
                                  time_label, height),
@@ -658,13 +696,15 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
     en un st.empty desde un fragment run_every). La cadencia uniforme es la
     solucion robusta.
     """
-    from src.fetch.volcat_api import ZONE_TO_SECTOR
     from dashboard.map_helpers import render_compact_legend
 
-    # Rotacion (12s c/u): 3 RGB (4 zonas grid) + 3 zonas VOLCAT (1 en grande)
+    # Rotacion (12s c/u): 3 RGB (4 zonas grid) + N zonas VOLCAT (1 en grande)
     # + zoom a Villarrica (sus 3 productos centrados, con switch hi-res).
+    # VOLCAT: 4 zonas con VOLCAT_ZONAS_4 (Austral=recorte sur), 3 si no.
+    _vspecs = _volcat_zone_specs()
     slots: list[tuple] = [("rgb", p, None) for p in PRODUCT_LIST]
-    slots += [("volcat", z, si) for z, si in ZONE_TO_SECTOR.items()]
+    slots += [("volcat", zona, (sector, instr, vb))
+              for zona, sector, instr, vb in _vspecs]
     slots += [("volcan", v, None) for v in TV_VOLCAN_ZOOMS]
 
     if session_key not in st.session_state:
@@ -681,7 +721,7 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
     elif kind == "volcat":
         # Mostrar la edad REAL del frame VOLCAT (latencia externa SSEC ~40 min,
         # normal). Umbrales propios para no marcarlo en rojo de más.
-        sector, instr = extra
+        sector, instr, _vb = extra
         try:
             from dashboard.views.volcat_viewer import (
                 _volcat_dt_obj, _volcat_latest_cached)
@@ -698,9 +738,13 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
             extra_left="<span style='color:#ff6644; font-weight:700; "
                        "margin-right:0.2rem;'>🔄</span>",
         )
-        _render_4_zonas_inner(val, show_volcanoes, show_hotspots,
-                              "1x4", height, minimal=True, stable_keys=True,
-                              uniform_size=True)
+        if TV_ZONAS_RENDER == "image":
+            # Imagen compuesta estatica (robusta, sin el bug del 4to panel).
+            _render_4_zonas_image_tv(val, show_volcanoes, show_hotspots)
+        else:  # "plotly" — path previo (4 charts responsive con stable_keys)
+            _render_4_zonas_inner(val, show_volcanoes, show_hotspots,
+                                  "1x4", height, minimal=True, stable_keys=True,
+                                  uniform_size=True)
     elif kind == "volcan":  # zoom a un volcán — sus 3 productos centrados
         st.markdown(
             f"<div class='tv-legend' style='display:flex; "
@@ -715,7 +759,7 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
         )
         _render_volcan_zoom_tv(val, show_hotspots, height)
     else:  # volcat — una zona en grande
-        sector, instr = extra
+        sector, instr, view_bounds = extra
         st.markdown(
             f"<div class='tv-legend' style='display:flex; "
             f"justify-content:space-between; align-items:center; "
@@ -727,7 +771,8 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
             f"GOES-19</span></div>",
             unsafe_allow_html=True,
         )
-        _render_volcat_one_zona_tv(val, sector, instr, height)
+        _render_volcat_one_zona_tv(val, sector, instr, height,
+                                   view_bounds=view_bounds)
 
     # NOTA: antes habia un PRE-FETCH SINCRONO del proximo slot aca. Se quito
     # (jun 2026): bloqueaba el thread del fragment DESPUES del render. El
@@ -773,12 +818,33 @@ def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
             for zone in ("norte", "centro", "sur", "austral"):
                 jobs.append(lambda p=product, z=zone: _rgb(p, z))
 
+        # Pre-componer la imagen del grid de 4 zonas (si ese es el modo activo)
+        # para que la 1a aparicion del slot RGB salga instantanea tras deploy.
+        def _compose(product):
+            try:
+                ts = tuple(_recent_ts(product, n=3))
+                if ts:
+                    _compose_4_zonas_png(product, ts, True, show_hotspots)
+            except Exception:
+                pass
+
+        if TV_ZONAS_RENDER == "image":
+            for product in PRODUCT_LIST:
+                jobs.append(lambda p=product: _compose(p))
+
         def _volcat(sector, instr):
             try:
                 from dashboard.views.volcat_viewer import (
-                    _volcat_image_with_overlays, _volcat_latest_cached)
+                    _volcat_image_with_overlays, _volcat_latest_cached,
+                    _volcat_map_only)
                 meta = _volcat_latest_cached(sector, instr, "Ash_Height")
-                if meta:
+                if not meta:
+                    return
+                if VOLCAT_ZONAS_4:
+                    # Modo 4 zonas: el render usa el recorte georef.
+                    _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
+                                     meta.get("coords") or {})
+                else:
                     _volcat_image_with_overlays(
                         meta["image_url"], meta.get("volcanoes_url"),
                         meta.get("latlon_url"))
@@ -871,7 +937,7 @@ def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
             f"<span style='color:#ff6644; font-weight:700;'>🔄 VOLCAT · "
             f"Altura de pluma (km AMSL)</span>"
             f"<span style='color:#8899aa;'>SSEC/CIMSS · Pavolonis 2013 · "
-            f"GOES-19 · 3 zonas</span></div>",
+            f"GOES-19 · {len(_volcat_zone_specs())} zonas</span></div>",
             unsafe_allow_html=True,
         )
     else:
@@ -947,6 +1013,165 @@ def _uniform_aspect_bounds() -> dict:
 
 
 _UNIFORM_BOUNDS_CACHE: dict | None = None
+
+
+# ── FEATURE FLAG: render del grid de 4 zonas en el Modo Sala TV ──────
+# "image"  = grid de 4 zonas compuesto en UNA imagen PIL estatica (default,
+#            jun 2026). Mismo patron robusto que el slot de zoom-volcan: sin
+#            ResizeObserver ni Plotly.react, no hay glitch al rotar NI el bug
+#            del 4to panel que no montaba con los charts Plotly + stable_keys.
+# "plotly" = los 4 charts Plotly responsive con stable_keys (comportamiento
+#            previo). Se preserva para revert facil — editar esta constante.
+TV_ZONAS_RENDER = "image"
+
+
+@st.cache_data(ttl=900, show_spinner=False)
+def _compose_4_zonas_png(product: str, timestamps: tuple,
+                         show_volcanoes: bool, show_hotspots: bool,
+                         ph: int = 700) -> bytes | None:
+    """Compone las 4 zonas RGB (Norte/Centro/Sur/Austral) en UNA imagen PNG.
+
+    Por que imagen y no 4 charts Plotly: en el Modo Sala TV el fragment
+    re-renderiza cada slot y Plotly (con responsive=True + stable_keys) era
+    fragil — el 4to panel (austral) a veces no montaba y habia lag/parpadeo en
+    la transicion. st.image es estatico (sin ResizeObserver) -> robusto. Mismo
+    patron que _compose_volcan_panels (el slot de zoom-volcan ya lo usa).
+
+    Usa bounds de aspect UNIFORME (las 4 zonas del mismo tamano visual) y
+    dibuja en PIL: imagen RGB + triangulos de volcanes + diamantes de hotspots
+    + header de zona. Cacheado por (product, timestamps, flags) -> apariciones
+    repetidas del slot = instantaneas (misma ventaja que _zone_frame_cached).
+    """
+    import io
+    from concurrent.futures import ThreadPoolExecutor
+
+    from PIL import Image, ImageDraw
+
+    from dashboard.views.modo_guardia_volcan import _load_font
+
+    if not timestamps:
+        return None
+    ub = _uniform_aspect_bounds()
+    zones = ["norte", "centro", "sur", "austral"]
+    label_h = 38
+    gap = 6
+    f_zone = _load_font(20)
+    f_volc = _load_font(12)
+
+    def _fetch(zk):
+        try:
+            img, _uts, _uz = _zone_frame_cached(product, timestamps, zk, True)
+        except Exception:
+            img = None
+        hs = []
+        if show_hotspots:
+            try:
+                hs, _ = _hotspots_zone(zk)
+            except Exception:
+                hs = []
+        return zk, img, hs
+
+    with ThreadPoolExecutor(max_workers=4) as ex:
+        fetched = {zk: (img, hs) for zk, img, hs in ex.map(_fetch, zones)}
+
+    tiles = []
+    for zk in zones:
+        img, hs = fetched[zk]
+        b = ub[zk]
+        lon_span = b["lon_max"] - b["lon_min"]
+        lat_span = b["lat_max"] - b["lat_min"]
+        cos_lat = max(0.1, float(np.cos(np.radians(
+            (b["lat_min"] + b["lat_max"]) / 2))))
+        pw = max(120, int(round(ph * lon_span * cos_lat / lat_span)))
+
+        def _xy(lat, lon):
+            return ((lon - b["lon_min"]) / lon_span * pw,
+                    label_h + (b["lat_max"] - lat) / lat_span * ph)
+
+        tile = Image.new("RGB", (pw, ph + label_h), (10, 14, 20))
+        if img is not None:
+            pim = Image.fromarray(np.asarray(img, dtype="uint8")).convert("RGB")
+            tile.paste(pim.resize((pw, ph)), (0, label_h))
+        d = ImageDraw.Draw(tile)
+        if img is None:
+            d.text((pw // 2 - 30, label_h + ph // 2), "sin imagen",
+                   fill=(120, 130, 145), font=f_volc)
+
+        # Volcanes (triangulos cyan + label) — los MISMOS que las vistas RGB.
+        if show_volcanoes and img is not None:
+            for v in CATALOG:
+                if (v.zone != "test"
+                        and b["lat_min"] <= v.lat <= b["lat_max"]
+                        and b["lon_min"] <= v.lon <= b["lon_max"]):
+                    vx, vy = _xy(v.lat, v.lon)
+                    d.polygon([(vx, vy - 6), (vx + 5, vy + 4), (vx - 5, vy + 4)],
+                              fill=(0, 255, 255), outline=(255, 255, 255))
+                    d.text((vx + 6, vy - 6), v.name,
+                           fill=(255, 255, 255), font=f_volc)
+        # Hot spots (diamantes rojos)
+        if hs:
+            for h in hs:
+                hx, hy = _xy(h.lat, h.lon)
+                d.polygon([(hx, hy - 6), (hx + 6, hy), (hx, hy + 6),
+                           (hx - 6, hy)], fill=(255, 51, 0),
+                          outline=(255, 255, 255))
+        # Header de zona
+        d.rectangle([0, 0, pw, label_h], fill=(15, 20, 28))
+        zc = ZONE_COLORS[zk]
+        rgb_c = tuple(int(zc[i:i + 2], 16) for i in (1, 3, 5))
+        d.text((6, 7), ZONE_LABELS[zk], fill=rgb_c, font=f_zone)
+        tiles.append(tile)
+
+    total_w = sum(t.width for t in tiles) + gap * (len(tiles) - 1)
+    out = Image.new("RGB", (total_w, ph + label_h), (10, 14, 20))
+    x = 0
+    for t in tiles:
+        out.paste(t, (x, 0))
+        x += t.width + gap
+    buf = io.BytesIO()
+    out.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def _render_4_zonas_image_tv(product: str, show_volcanoes: bool,
+                             show_hotspots: bool) -> None:
+    """Render del grid TV de 4 zonas como UNA imagen estatica (anti-glitch).
+
+    Mismo enfoque que _render_volcan_zoom_tv: <img> con estilo INLINE para que
+    imagen y estilo compartan ciclo de vida (sin pestaneo al rotar) y el CSS
+    del TV la escale por max-height a casi todo el alto.
+    """
+    import base64
+
+    ts = _recent_ts(product, n=3)
+    if not ts:
+        st.markdown(
+            "<div style='color:#d29922; text-align:center; padding:4rem; "
+            "font-size:1rem;'>⏳ Esperando a RAMMB/CIRA — "
+            "reintentando en el próximo ciclo…</div>",
+            unsafe_allow_html=True)
+        return
+    try:
+        png = _compose_4_zonas_png(product, tuple(ts), show_volcanoes,
+                                   show_hotspots)
+    except Exception as e:
+        logger.warning("compose 4 zonas falló: %s", e)
+        png = None
+    if not png:
+        st.markdown(
+            "<div style='color:#d29922; text-align:center; padding:4rem;'>"
+            "⏳ Componiendo zonas — próximo ciclo…</div>",
+            unsafe_allow_html=True)
+        return
+    b64 = base64.b64encode(png).decode()
+    st.markdown(
+        f"<div style='display:flex; justify-content:center; "
+        f"align-items:center; width:100%;'>"
+        f"<img src='data:image/png;base64,{b64}' "
+        f"style='max-width:100vw; max-height:calc(100vh - 8px); "
+        f"width:auto; height:auto; object-fit:contain;'/></div>",
+        unsafe_allow_html=True,
+    )
 
 
 def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: bool,

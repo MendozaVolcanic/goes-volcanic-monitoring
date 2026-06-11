@@ -89,6 +89,18 @@ ZONE_TO_SECTOR: dict[str, tuple[str, str]] = {
     "Sur":    ("Chile_South_2_km",   "ABI"),
 }
 
+# Variante de 4 zonas para igualar el grid de los RGB (Norte/Centro/Sur/Austral).
+# VOLCAT NO tiene sector austral propio: Chile_South_2_km cubre hasta el extremo
+# sur, asi que 'Austral' reusa ese sector pero RECORTADO a la franja austral
+# (el encuadre lo definen los view-bounds en zonas_fullscreen.VOLCAT_VIEW_4).
+# ZONE_TO_SECTOR (3) se mantiene intacto para el resto del codigo. (jun 2026)
+ZONE_TO_SECTOR_4: dict[str, tuple[str, str]] = {
+    "Norte":   ("Chile_North_2_km",   "ABI"),
+    "Centro":  ("Chile_Central_2_km", "ABI"),
+    "Sur":     ("Chile_South_2_km",   "ABI"),
+    "Austral": ("Chile_South_2_km",   "ABI"),  # mismo sector, recorte austral
+}
+
 # Leyenda color->producto
 LEGEND_KEY = {
     "Ash_Height": "ASH_HGT-LOAD",

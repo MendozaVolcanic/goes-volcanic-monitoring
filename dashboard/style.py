@@ -405,9 +405,17 @@ def inject_reconnect_watchdog():
     Anti-loop: backoff por sessionStorage (no recarga más de 1 vez cada
     BACKOFF_MS) — si el servidor está caído de verdad, no martillea reloads.
     """
-    import streamlit.components.v1 as components
-    components.html(
-        """
+    # Defensivo: components.html es la UNICA API que ejecuta JS (iframe), pero
+    # esta deprecada (removal anunciado post 2026-06-01). Si algun dia no esta,
+    # degradamos SIN watchdog en vez de crashear la app entera (esto corre en el
+    # top-level de app.py en cada carga).
+    try:
+        import streamlit.components.v1 as components
+    except Exception:
+        return
+    try:
+        components.html(
+            """
         <script>
         (function(){
           var GRACE_MS = 4000;     // error visible este tiempo antes de recargar
@@ -453,8 +461,11 @@ def inject_reconnect_watchdog():
         })();
         </script>
         """,
-        height=0,
-    )
+            height=0,
+        )
+    except Exception:
+        # Nunca dejar que el watchdog rompa el render principal.
+        pass
 
 
 def header(title: str, subtitle: str = ""):

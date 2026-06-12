@@ -316,7 +316,7 @@ def _render_volcat_zone_cell(zona, sector, instr, view_bounds, product,
         SSEC completa). Modo de 3 zonas (revert).
     """
     from dashboard.views.volcat_viewer import (
-        _volcat_dt_obj, _volcat_image_bytes, _volcat_image_with_overlays,
+        _volcat_colorbar_strip, _volcat_dt_obj, _volcat_image_with_overlays,
         _volcat_latest_cached, _volcat_map_only,
     )
     from dashboard.utils import fmt_both
@@ -362,8 +362,9 @@ def _render_volcat_zone_cell(zona, sector, instr, view_bounds, product,
             meta.get("latlon_url"))
         if img:
             st.image(img, width='stretch')
-    # Colorbar del producto.
-    leg = _volcat_image_bytes(meta["legend_url"])
+    # Colorbar REAL (escala km AMSL), extraido de la imagen — el legend_url de
+    # SSEC era un mapa de costa, no la escala. (jun 2026)
+    leg = _volcat_colorbar_strip(meta["image_url"])
     if leg:
         st.image(leg, width='stretch')
 
@@ -390,16 +391,17 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
             sizey=sector_bounds["lat_max"] - sector_bounds["lat_min"],
             sizing="stretch", layer="below",
         )
-    # Colorbar (escala km) incrustado a la IZQUIERDA (lado sin pluma) — robusto:
-    # va DENTRO de la figura, no como overlay flotante (que no se veia).
+    # Colorbar REAL (tira horizontal 'Ash/Dust Height km AMSL') incrustado al
+    # PIE, centrado, sobre una banda oscura para legibilidad. Va DENTRO de la
+    # figura -> siempre visible. (jun 2026)
     if legend_bytes:
         lb64 = base64.b64encode(legend_bytes).decode()
         fig.add_layout_image(
             source=f"data:image/png;base64,{lb64}",
             xref="paper", yref="paper",
-            x=0.01, y=0.01, xanchor="left", yanchor="bottom",
-            sizex=0.34, sizey=0.34, sizing="contain", layer="above",
-            opacity=0.95,
+            x=0.5, y=0.005, xanchor="center", yanchor="bottom",
+            sizex=0.66, sizey=0.13, sizing="contain", layer="above",
+            opacity=0.98,
         )
     # Nuestros volcanes dentro del encuadre (los MISMOS que las RGB).
     vis = [v for v in CATALOG
@@ -530,10 +532,11 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
                 "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
                 "lon_min": max(sb["lon_min"], -76.0),
                 "lon_max": min(sb["lon_max"], -66.0)}
-            # Colorbar (escala km) incrustado DENTRO de la figura (robusto,
-            # siempre visible; el overlay flotante anterior no se veia).
-            from dashboard.views.volcat_viewer import _volcat_image_bytes
-            leg = _volcat_image_bytes(meta["legend_url"])
+            # Colorbar REAL (tira 'Ash/Dust Height km AMSL' extraida del pie de
+            # la imagen) incrustado DENTRO de la figura. El legend_url de SSEC
+            # era un MAPA de costa, no la escala -> por eso no se veia. (jun 2026)
+            from dashboard.views.volcat_viewer import _volcat_colorbar_strip
+            leg = _volcat_colorbar_strip(meta["image_url"])
             st.plotly_chart(
                 _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
                                  time_label, height, legend_bytes=leg or None),
@@ -949,8 +952,8 @@ def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
         # -> imagen SSEC completa con overlays (_volcat_image_with_overlays).
         try:
             from dashboard.views.volcat_viewer import (
-                _volcat_image_with_overlays, _volcat_latest_cached,
-                _volcat_map_only)
+                _volcat_colorbar_strip, _volcat_image_with_overlays,
+                _volcat_latest_cached, _volcat_map_only)
             for _zona, sector, instr, _vb in _volcat_zone_specs():
                 meta = _volcat_latest_cached(sector, instr, "Ash_Height")
                 if not meta:
@@ -958,6 +961,7 @@ def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
                 if VOLCAT_ZONAS_4:
                     _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
                                      meta.get("coords") or {})
+                    _volcat_colorbar_strip(meta["image_url"])  # tira colorbar
                 else:
                     _volcat_image_with_overlays(
                         meta["image_url"], meta.get("volcanoes_url"),

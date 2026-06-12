@@ -256,6 +256,36 @@ def _volcat_image_bytes(image_url: str) -> bytes:
 
 
 @st.cache_data(ttl=TTL_FRAME_IMAGE, show_spinner=False)
+def _volcat_colorbar_strip(image_url: str) -> bytes:
+    """Extrae la TIRA DEL COLORBAR (escala km AMSL) de la imagen VOLCAT completa.
+
+    El `legend_url` de SSEC (overlays/maps/...MAP...) NO es un colorbar: es un
+    mapa de costa. El colorbar REAL está QUEMADO al pie de la imagen del producto
+    (image_url): a la derecha 'Ash/Dust Height [km AMSL]' (arcoíris) y a la
+    izquierda '10.3 µm BT [K]'. Recortamos esa franja inferior EXCLUYENDO el
+    globo RealEarth (izq) y los logos NOAA (der). Reutiliza el download cacheado.
+    """
+    import io
+    from PIL import Image
+    raw = _volcat_image_bytes(image_url)
+    if not raw:
+        return b""
+    try:
+        im = Image.open(io.BytesIO(raw)).convert("RGB")
+        w, h = im.size
+        # Fracciones medidas sobre el layout SSEC (1000x821): franja de los 2
+        # colorbars, sin el globo (x<0.16) ni los logos NOAA (x>0.875).
+        crop = im.crop((int(0.16 * w), int(0.915 * h),
+                        int(0.875 * w), int(0.997 * h)))
+        buf = io.BytesIO()
+        crop.save(buf, format="PNG")
+        return buf.getvalue()
+    except Exception as e:
+        logger.warning("colorbar strip fail: %s", e)
+        return b""
+
+
+@st.cache_data(ttl=TTL_FRAME_IMAGE, show_spinner=False)
 def _volcat_image_with_overlays(image_url: str,
                                  volcanoes_url: str | None,
                                  latlon_url: str | None) -> bytes:
@@ -580,9 +610,11 @@ def _render_height_section(key_suffix: str = "tab") -> None:
             st.caption(f"URL: {meta.get('image_url', '?')}")
 
     with col_lg:
-        st.markdown("<b style='font-size:0.78rem; color:#8899aa;'>Colorbar</b>",
-                    unsafe_allow_html=True)
-        leg_bytes = _volcat_image_bytes(meta["legend_url"])
+        st.markdown("<b style='font-size:0.78rem; color:#8899aa;'>Colorbar "
+                    "(escala km AMSL)</b>", unsafe_allow_html=True)
+        # Colorbar REAL extraido de la imagen (legend_url era un mapa de costa,
+        # no la escala). (jun 2026)
+        leg_bytes = _volcat_colorbar_strip(meta["image_url"])
         if leg_bytes:
             st.image(leg_bytes, width='stretch')
         else:

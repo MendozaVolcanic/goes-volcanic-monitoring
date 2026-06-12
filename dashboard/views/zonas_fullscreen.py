@@ -369,11 +369,15 @@ def _render_volcat_zone_cell(zona, sector, instr, view_bounds, product,
 
 
 def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
-                     time_label, height):
+                     time_label, height, legend_bytes=None):
     """Renderiza una imagen VOLCAT con plotly, georeferenciada al sector
     SSEC, con NUESTROS volcanes (CATALOG) y la frontera de Chile encima —
     mismos volcanes que las vistas RGB, sin el overlay sobrecargado de SSEC
-    ni las grids. Eje recortado a `view_bounds` (franja chilena)."""
+    ni las grids. Eje recortado a `view_bounds` (franja chilena).
+
+    legend_bytes: PNG del colorbar (altura km). Si se da, se incrusta como
+    imagen FIJA en el borde IZQUIERDO (lado del Pacifico, sin pluma) -> la
+    escala cuantitativa siempre visible, robusto (parte de la figura)."""
     import base64
     fig = go.Figure()
     if img_bytes:
@@ -385,6 +389,16 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
             sizex=sector_bounds["lon_max"] - sector_bounds["lon_min"],
             sizey=sector_bounds["lat_max"] - sector_bounds["lat_min"],
             sizing="stretch", layer="below",
+        )
+    # Colorbar (escala km) incrustado a la IZQUIERDA (lado sin pluma) — robusto:
+    # va DENTRO de la figura, no como overlay flotante (que no se veia).
+    if legend_bytes:
+        lb64 = base64.b64encode(legend_bytes).decode()
+        fig.add_layout_image(
+            source=f"data:image/png;base64,{lb64}",
+            xref="paper", yref="paper",
+            x=0.005, y=0.5, xanchor="left", yanchor="middle",
+            sizex=0.13, sizey=0.94, sizing="contain", layer="above",
         )
     # Nuestros volcanes dentro del encuadre (los MISMOS que las RGB).
     vis = [v for v in CATALOG
@@ -404,11 +418,14 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
             hovertext=[f"{v.name} ({v.elevation:,} m)" for v in vis],
             hoverinfo="text", showlegend=False,
         ))
-        # Nombres de TODOS con anti-encimado (greedy en coords: salta si hay
-        # otro nombre muy cerca; prioritarios primero). Caja oscura = halo.
+        # Nombres a la IZQUIERDA del volcan (xanchor=right): si hay erupcion la
+        # pluma se va al ESTE (derecha), asi la etiqueta no la tapa. Anti-encime
+        # greedy (salta si hay otro nombre muy cerca; prioritarios primero). El
+        # umbral lon es CHICO (los volcanes se apilan en latitud sobre la
+        # cordillera), asi entran mas nombres. Caja oscura SEMITRANSPARENTE
+        # (mas difusa) para no tapar tanto. (jun 2026)
         _ls = view_bounds["lat_max"] - view_bounds["lat_min"]
-        _ns = view_bounds["lon_max"] - view_bounds["lon_min"]
-        _mdlat, _mdlon = _ls * 0.05, _ns * 0.17
+        _mdlat, _mdlon = _ls * 0.04, 0.45
         _placed = []
         for v in sorted(vis, key=lambda v: (v.name not in PRIORITY_VOLCANOES, v.lat)):
             if any(abs(v.lat - pl) < _mdlat and abs(v.lon - pn) < _mdlon
@@ -417,8 +434,8 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
             fig.add_annotation(
                 x=v.lon, y=v.lat, text=v.name, showarrow=False,
                 font=dict(size=12, color="#ffffff"),
-                xanchor="left", yanchor="middle", xshift=7,
-                bgcolor="rgba(10,14,20,0.62)", borderpad=2,
+                xanchor="right", yanchor="middle", xshift=-8,
+                bgcolor="rgba(8,11,16,0.42)", borderpad=2,
             )
             _placed.append((v.lat, v.lon))
     # Frontera con HALO (oscuro ancho + claro fino) -> visible sobre nubes.
@@ -512,28 +529,17 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
                 "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
                 "lon_min": max(sb["lon_min"], -76.0),
                 "lon_max": min(sb["lon_max"], -66.0)}
+            # Colorbar (escala km) incrustado DENTRO de la figura (robusto,
+            # siempre visible; el overlay flotante anterior no se veia).
+            from dashboard.views.volcat_viewer import _volcat_image_bytes
+            leg = _volcat_image_bytes(meta["legend_url"])
             st.plotly_chart(
                 _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
-                                 time_label, height),
+                                 time_label, height, legend_bytes=leg or None),
                 width='stretch',
                 config={"displayModeBar": False, "responsive": True},
                 # key fijo por zona -> update in-place, sin parpadeo.
                 key=f"tvvolcat_{zona}")
-            # Colorbar (altura km) como overlay flotante en la esquina inf-der.
-            # Via <img> inline (NO st.image) para NO heredar el CSS del TV que
-            # agranda las imagenes a pantalla completa. (jun 2026)
-            from dashboard.views.volcat_viewer import _volcat_image_bytes
-            leg = _volcat_image_bytes(meta["legend_url"])
-            if leg:
-                import base64
-                lb64 = base64.b64encode(leg).decode()
-                st.markdown(
-                    f"<img src='data:image/png;base64,{lb64}' "
-                    f"style='position:fixed; bottom:12px; right:14px; "
-                    f"height:min(42vh,340px); width:auto; z-index:950; "
-                    f"background:rgba(10,14,20,0.55); padding:4px; "
-                    f"border-radius:6px;'/>",
-                    unsafe_allow_html=True)
     else:  # ssec_overlay
         img = _volcat_image_with_overlays(
             meta["image_url"], meta.get("volcanoes_url"),
@@ -755,7 +761,14 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
     en un st.empty desde un fragment run_every). La cadencia uniforme es la
     solucion robusta.
     """
+    import time as _time
     from dashboard.map_helpers import render_compact_legend
+
+    # Marcar la sala como ACTIVA -> el hilo productor compone; al navegar a otro
+    # modo esto deja de actualizarse y el productor pasa a ocioso (libera CPU
+    # para que la navegacion sea fluida). (fix HF, jun 2026)
+    global _TV_LAST_SEEN
+    _TV_LAST_SEEN = _time.time()
 
     # Rotacion (12s c/u): 3 RGB (4 zonas grid) + N zonas VOLCAT (1 en grande)
     # + zoom a Villarrica (sus 3 productos centrados, con switch hi-res).
@@ -861,7 +874,11 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
 # con plotly desde cache (el productor lo mantiene caliente).
 _TV_PRODUCED: dict[str, bytes] = {}
 _TV_PRODUCER_STARTED = False
+_TV_LAST_SEEN = 0.0  # epoch de la ultima vez que se RENDERIZO la sala TV
 TV_PRODUCER_PERIOD_S = 20  # cada cuanto el productor refresca todos los slots
+TV_PRODUCER_IDLE_S = 60    # si nadie mira la sala hace mas de esto, el productor
+                          # se queda OCIOSO (no compone) -> libera CPU para que
+                          # navegar a otros modos sea fluido (fix HF). (jun 2026)
 
 
 def _emit_tv_png(png: bytes) -> None:
@@ -963,10 +980,14 @@ def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
     def _producer():
         import time as _time
         while True:
-            try:
-                _produce_once()
-            except Exception:
-                pass
+            # Solo componer si la sala TV se vio hace poco. Si nadie la mira, el
+            # hilo NO consume CPU (las composiciones PIL retienen el GIL y
+            # trababan la navegacion a otros modos en HF). (jun 2026)
+            if _time.time() - _TV_LAST_SEEN < TV_PRODUCER_IDLE_S:
+                try:
+                    _produce_once()
+                except Exception:
+                    pass
             _time.sleep(TV_PRODUCER_PERIOD_S)
 
     t = threading.Thread(target=_producer, name="tv-producer", daemon=True)

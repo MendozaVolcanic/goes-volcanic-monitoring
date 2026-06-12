@@ -418,8 +418,8 @@ def inject_reconnect_watchdog():
             """
         <script>
         (function(){
-          var GRACE_MS = 4000;     // error visible este tiempo antes de recargar
-          var BACKOFF_MS = 20000;  // como mucho 1 recarga cada 20s (anti-loop)
+          var GRACE_MS = 8000;     // error visible este tiempo antes de recargar
+          var BACKOFF_MS = 60000;  // como mucho 1 recarga cada 60s (anti-loop)
           var POLL_MS = 1500;
           var errorSince = null;
 

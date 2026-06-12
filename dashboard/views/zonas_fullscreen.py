@@ -707,11 +707,16 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
               for zona, sector, instr, vb in _vspecs]
     slots += [("volcan", v, None) for v in TV_VOLCAN_ZOOMS]
 
-    if session_key not in st.session_state:
-        st.session_state[session_key] = 0
-    idx = st.session_state[session_key] % len(slots)
+    # INDICE BASADO EN RELOJ (no en session_state): el slot es funcion del
+    # tiempo de pared -> (epoch // TV_SLOT_SECONDS) % N. CLAVE: si el watchdog
+    # de reconexion (o cualquier reconnect de Streamlit) RECARGA la pagina, el
+    # session_state se borra y con el viejo contador la rotacion VOLVIA a slot 0
+    # (Ash RGB) y parecia "trabada". Con reloj, tras una recarga retoma el slot
+    # que toca por tiempo -> la rotacion se ve continua igual. (jun 2026)
+    from datetime import datetime, timezone
+    idx = int(datetime.now(timezone.utc).timestamp()
+              // TV_SLOT_SECONDS) % len(slots)
     kind, val, extra = slots[idx]
-    st.session_state[session_key] = (idx + 1) % len(slots)
 
     scan_dt = None
     status_kwargs = {}
@@ -818,19 +823,12 @@ def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
             for zone in ("norte", "centro", "sur", "austral"):
                 jobs.append(lambda p=product, z=zone: _rgb(p, z))
 
-        # Pre-componer la imagen del grid de 4 zonas (si ese es el modo activo)
-        # para que la 1a aparicion del slot RGB salga instantanea tras deploy.
-        def _compose(product):
-            try:
-                ts = tuple(_recent_ts(product, n=3))
-                if ts:
-                    _compose_4_zonas_png(product, ts, True, show_hotspots)
-            except Exception:
-                pass
-
-        if TV_ZONAS_RENDER == "image":
-            for product in PRODUCT_LIST:
-                jobs.append(lambda p=product: _compose(p))
+        # NO pre-componemos la imagen del grid aca: _compose_4_zonas_png abre su
+        # PROPIO ThreadPool(4) y, anidado dentro de este pool de prewarm, hacia
+        # explotar los hilos (4x4) y saturaba el vCPU de Streamlit Cloud ->
+        # "se mueve lento". Con los frames ya calientes (jobs _rgb de arriba),
+        # la composicion en la 1a aparicion foreground es barata (~0.5s, solo
+        # PIL) y el override de stale mantiene el frame previo nitido. (jun 2026)
 
         def _volcat(sector, instr):
             try:

@@ -397,8 +397,9 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
         fig.add_layout_image(
             source=f"data:image/png;base64,{lb64}",
             xref="paper", yref="paper",
-            x=0.005, y=0.5, xanchor="left", yanchor="middle",
-            sizex=0.13, sizey=0.94, sizing="contain", layer="above",
+            x=0.01, y=0.01, xanchor="left", yanchor="bottom",
+            sizex=0.34, sizey=0.34, sizing="contain", layer="above",
+            opacity=0.95,
         )
     # Nuestros volcanes dentro del encuadre (los MISMOS que las RGB).
     vis = [v for v in CATALOG
@@ -1266,11 +1267,17 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
                            key=lambda v: (v.name not in PRIORITY_VOLCANOES, v.lat))
             for v in order:
                 vx, vy = _xy(v.lat, v.lon)
-                tx, ty = vx + 6, vy - 6
+                try:
+                    tw = d.textlength(v.name, font=f_volc)
+                except Exception:
+                    tw = len(v.name) * 6
+                # Texto a la IZQUIERDA del volcan (la pluma se va al este): el
+                # nombre termina antes del triangulo y no tapa la pluma.
+                tx, ty = vx - 7 - tw, vy - 6
                 try:
                     bb = d.textbbox((tx, ty), v.name, font=f_volc, stroke_width=2)
                 except Exception:
-                    bb = (tx, ty, tx + len(v.name) * 6, ty + 12)
+                    bb = (tx, ty, tx + tw, ty + 12)
                 if _hit(bb):
                     continue
                 d.text((tx, ty), v.name, fill=(255, 255, 255), font=f_volc,

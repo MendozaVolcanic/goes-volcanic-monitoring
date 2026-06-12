@@ -31,7 +31,7 @@ try:
     from src.fetch.rammb_slider import (
         fetch_frame_robust, get_latest_timestamps, ZOOM_ZONE,
     )
-    from src.volcanos import CATALOG
+    from src.volcanos import CATALOG, PRIORITY_VOLCANOES
 except Exception:
     # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.
     # Si esto se ejecuta, hay un bug — log y reraise para que Streamlit muestre el error.
@@ -361,17 +361,29 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
            and view_bounds["lon_min"] <= v.lon <= view_bounds["lon_max"]
            and v.zone != "test"]
     if vis:
+        # Marcadores de TODOS (triangulo cyan, contorno OSCURO -> visible sobre
+        # nubes blancas). Etiqueta SOLO de prioritarios, como ANNOTATION con
+        # caja oscura (halo) -> legible sobre cualquier fondo (plotly no soporta
+        # stroke en el texto del scatter) y tamano ~parejo con el RGB. (jun 2026)
         fig.add_trace(go.Scatter(
             x=[v.lon for v in vis], y=[v.lat for v in vis],
-            mode="markers+text",
-            marker=dict(symbol="triangle-up", size=9, color="#00ffff",
-                        line=dict(color="white", width=1)),
-            text=[v.name for v in vis], textposition="middle right",
-            textfont=dict(size=9, color="rgba(255,255,255,0.9)"),
+            mode="markers",
+            marker=dict(symbol="triangle-up", size=10, color="#00ffff",
+                        line=dict(color="#0f1218", width=1.2)),
             hovertext=[f"{v.name} ({v.elevation:,} m)" for v in vis],
             hoverinfo="text", showlegend=False,
         ))
-    add_chile_border(fig)
+        for v in vis:
+            if v.name in PRIORITY_VOLCANOES:
+                fig.add_annotation(
+                    x=v.lon, y=v.lat, text=v.name, showarrow=False,
+                    font=dict(size=13, color="#ffffff"),
+                    xanchor="left", yanchor="middle", xshift=7,
+                    bgcolor="rgba(10,14,20,0.6)", borderpad=2,
+                )
+    # Frontera con HALO (oscuro ancho + claro fino) -> visible sobre nubes.
+    add_chile_border(fig, color="rgba(20,24,32,0.9)", width=3.2)
+    add_chile_border(fig, color="rgba(235,240,250,0.9)", width=1.2)
     cos_lat = max(0.1, float(np.cos(np.radians(
         (view_bounds["lat_min"] + view_bounds["lat_max"]) / 2))))
     fig.update_xaxes(range=[view_bounds["lon_min"], view_bounds["lon_max"]],
@@ -1111,8 +1123,11 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
     zones = ["norte", "centro", "sur", "austral"]
     label_h = 38
     gap = 6
-    f_zone = _load_font(20)
-    f_volc = _load_font(12)
+    # OJO: el PNG compuesto (ph=700) se AGRANDA ~1.46x al llenar pantalla, asi
+    # que las fuentes hay que pedirlas chicas aca para que en pantalla queden
+    # ~parejas con las de VOLCAT (plotly, que renderiza a tamano real). (jun 2026)
+    f_zone = _load_font(15)
+    f_volc = _load_font(9)
 
     def _fetch(zk):
         try:
@@ -1153,14 +1168,17 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
             d.text((pw // 2 - 30, label_h + ph // 2), "sin imagen",
                    fill=(120, 130, 145), font=f_volc)
 
-        # Frontera de Chile (costa + limite andino), portada de add_chile_border
-        # a PIL. Sin esto el RGB compuesto perdia las lineas fronterizas que
-        # tenia el render plotly viejo. (fix jun 2026)
+        # Frontera de Chile (costa + limite andino), con HALO oscuro para que
+        # se vea sobre nubes blancas: linea oscura ancha primero, clara fina
+        # encima -> contorno visible sobre cualquier fondo. (fix jun 2026)
         if img is not None:
-            _draw_geo_lines(d, geo.get("coast", []), _xy)
-            _draw_geo_lines(d, geo.get("border", []), _xy)
+            for pts in (geo.get("coast", []), geo.get("border", [])):
+                _draw_geo_lines(d, pts, _xy, color=(25, 28, 36), width=3)
+                _draw_geo_lines(d, pts, _xy, color=(235, 240, 250), width=1)
 
-        # Volcanes (triangulos cyan + label) — los MISMOS que las vistas RGB.
+        # Volcanes: triangulo cyan con contorno OSCURO (visible sobre blanco).
+        # Label SOLO para prioritarios (evita el encimado de nombres en zonas
+        # densas) y con HALO negro (stroke) para leerse sobre nubes. (jun 2026)
         if show_volcanoes and img is not None:
             for v in CATALOG:
                 if (v.zone != "test"
@@ -1168,16 +1186,18 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
                         and b["lon_min"] <= v.lon <= b["lon_max"]):
                     vx, vy = _xy(v.lat, v.lon)
                     d.polygon([(vx, vy - 6), (vx + 5, vy + 4), (vx - 5, vy + 4)],
-                              fill=(0, 255, 255), outline=(255, 255, 255))
-                    d.text((vx + 6, vy - 6), v.name,
-                           fill=(255, 255, 255), font=f_volc)
-        # Hot spots (diamantes rojos)
+                              fill=(0, 255, 255), outline=(15, 18, 24))
+                    if v.name in PRIORITY_VOLCANOES:
+                        d.text((vx + 6, vy - 6), v.name, fill=(255, 255, 255),
+                               font=f_volc, stroke_width=2,
+                               stroke_fill=(0, 0, 0))
+        # Hot spots (diamantes rojos, contorno oscuro para verse sobre blanco)
         if hs:
             for h in hs:
                 hx, hy = _xy(h.lat, h.lon)
                 d.polygon([(hx, hy - 6), (hx + 6, hy), (hx, hy + 6),
                            (hx - 6, hy)], fill=(255, 51, 0),
-                          outline=(255, 255, 255))
+                          outline=(15, 18, 24))
         # Header de zona
         d.rectangle([0, 0, pw, label_h], fill=(15, 20, 28))
         zc = ZONE_COLORS[zk]

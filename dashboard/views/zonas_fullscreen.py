@@ -236,7 +236,12 @@ VOLCAT_VIEW = {
 #   view-bounds). Render por RECORTE georef (plotly), para que Austral != Sur.
 # VOLCAT_ZONAS_4=False -> comportamiento previo: 3 zonas con el render que diga
 #   VOLCAT_TV_RENDER (ssec_overlay clasico por defecto). Flag de revert. (jun 2026)
-VOLCAT_ZONAS_4 = True
+#
+# REVERTIDO a False (jun 2026): el modo 4 zonas RECORTABA el sector (Austral no
+# existe en VOLCAT -> recorte de Chile_South) y las imagenes se veian "cortadas"
+# vs el original. Volvemos a las 3 zonas con la imagen SSEC completa. Si se
+# quiere reintentar 4 zonas, hay que mejorar el encuadre del recorte primero.
+VOLCAT_ZONAS_4 = False
 
 VOLCAT_VIEW_4 = {
     "Norte":   {"lat_min": -28.0, "lat_max": -15.5, "lon_min": -71.5, "lon_max": -66.5},
@@ -779,17 +784,20 @@ TV_PRODUCER_PERIOD_S = 20  # cada cuanto el productor refresca todos los slots
 
 
 def _emit_tv_png(png: bytes) -> None:
-    """Muestra un PNG a pantalla casi completa, centrado, sin distorsion.
-    <img> con estilo INLINE (mismo ciclo de vida que la imagen -> sin pestaneo
-    al rotar) y object-fit:contain (preserva aspecto)."""
+    """Muestra un PNG LLENANDO el viewport, centrado, sin distorsion.
+
+    CLAVE (fix jun 2026): antes el <img> usaba width/height:auto + max-* -> el
+    navegador lo mostraba a su tamano NATIVO (~1246px) sin agrandarlo, asi que
+    en una pantalla de sala grande se veia CHICO. Ahora el <img> ocupa el
+    viewport completo (100vw x 100vh) y object-fit:contain ESCALA la imagen
+    para llenar la dimension mayor preservando el aspecto (sin recorte ni
+    deformacion). Mismo ciclo de vida estilo+imagen (inline) -> sin pestaneo."""
     import base64
     b64 = base64.b64encode(png).decode()
     st.markdown(
-        f"<div style='display:flex; justify-content:center; "
-        f"align-items:center; width:100%;'>"
         f"<img src='data:image/png;base64,{b64}' "
-        f"style='max-width:100vw; max-height:calc(100vh - 8px); "
-        f"width:auto; height:auto; object-fit:contain;'/></div>",
+        f"style='display:block; width:100vw; height:calc(100vh - 8px); "
+        f"object-fit:contain;'/>",
         unsafe_allow_html=True,
     )
 
@@ -837,16 +845,24 @@ def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
         # cada ciclo es instantaneo.
         for product in [p for p in PRODUCT_LIST if p != "eumetsat_ash"]:
             _rgb_png(product)
-        # VOLCAT: solo calentar (latest + recorte georef). El foreground arma el
-        # plotly desde cache -> instantaneo.
+        # VOLCAT: calentar el render que use el foreground segun el modo.
+        # 4 zonas -> recorte georef (_volcat_map_only). 3 zonas (ssec_overlay)
+        # -> imagen SSEC completa con overlays (_volcat_image_with_overlays).
         try:
             from dashboard.views.volcat_viewer import (
-                _volcat_latest_cached, _volcat_map_only)
+                _volcat_image_with_overlays, _volcat_latest_cached,
+                _volcat_map_only)
             for _zona, sector, instr, _vb in _volcat_zone_specs():
                 meta = _volcat_latest_cached(sector, instr, "Ash_Height")
-                if meta:
+                if not meta:
+                    continue
+                if VOLCAT_ZONAS_4:
                     _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
                                      meta.get("coords") or {})
+                else:
+                    _volcat_image_with_overlays(
+                        meta["image_url"], meta.get("volcanoes_url"),
+                        meta.get("latlon_url"))
         except Exception:
             pass
         # Volcan zoom: PNG compuesto.

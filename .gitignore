@@ -41,3 +41,6 @@ out_backfill/
 out_hires/
 out_animation_cache/
 out_backfill_run.log
+
+# Token HF para deploy local (nunca commitear)
+.hf_token

@@ -602,41 +602,16 @@ def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
     visible diurno vía fetch_volcan_product (mismo motor que la página
     completa tv=volcan). Ash/SO2 son IR (RAMMB, 2 km nativo).
     """
-    from datetime import datetime, timezone
-
-    now = datetime.now(timezone.utc)
-    # Bucket de 5 min -> la imagen se reusa cacheada dentro de la ventana, así
-    # el slot llena sus 12s (la 1a aparición de cada bucket construye; las
-    # siguientes son instantáneas). Refresca al cruzar el bucket.
-    bucket = f"{now:%Y%m%d%H}{(now.minute // 5) * 5:02d}"
-    try:
-        png = _volcan_zoom_png(volcano_name, bucket, show_hotspots)
-    except Exception as e:
-        logger.warning("compose volcan zoom falló: %s", e)
-        png = None
-    if not png:
-        st.warning(f"No se pudo componer el zoom de {volcano_name}.")
-        return
-
-    # Render como <img> con estilo INLINE (NO st.image + <style> separado).
-    # Por qué: con st.image necesitábamos inyectar un <style> aparte para
-    # object-fit:contain (el CSS global del TV fuerza fill, pensado para VOLCAT).
-    # Ese <style> es OTRO elemento -> al rotar, Streamlit lo removía un frame
-    # ANTES que la imagen -> la imagen saltaba a fill (estirada) por un instante
-    # = el "pestañazo" al final del zoom. Con el estilo INLINE en el <img>,
-    # imagen y estilo son EL MISMO elemento (mismo ciclo de vida) -> sin salto.
-    # Además, al no ser stImage, no hereda el CSS de VOLCAT (no lo afecta).
-    # max-width/height + auto preservan el aspecto -> anillos CIRCULARES.
-    import base64
-    b64 = base64.b64encode(png).decode()
-    st.markdown(
-        f"<div style='display:flex; justify-content:center; "
-        f"align-items:center; width:100%;'>"
-        f"<img src='data:image/png;base64,{b64}' "
-        f"style='max-width:100vw; max-height:calc(100vh - 8px); "
-        f"width:auto; height:auto; object-fit:contain;'/></div>",
-        unsafe_allow_html=True,
-    )
+    # SOLO LEE el PNG ya producido en background (nunca compone en foreground,
+    # que con cache frio tardaba ~6s y bloqueaba el fragment). El estilo INLINE
+    # del <img> mantiene aspecto (anillos circulares) y mismo ciclo de vida que
+    # la imagen -> sin pestaneo. Ver prewarm_tv_caches / _emit_tv_png.
+    png = _TV_PRODUCED.get(f"volcan:{volcano_name}")
+    if png:
+        _emit_tv_png(png)
+    else:
+        _tv_placeholder(f"Preparando zoom {volcano_name} "
+                        f"— se compone en segundo plano…")
 
 
 # ── Rotacion del Modo Sala TV con CADENCIA UNIFORME ──────────────────
@@ -785,95 +760,119 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
     # bloquea) -> ver abajo.
 
 
+# ── Productor-consumidor del Modo Sala TV (jun 2026) ─────────────────
+# PROBLEMA: el fragment foreground componia el PNG del slot en linea. Con cache
+# frio (tras un REINICIO del servidor — el cache de st.cache_data es del proceso,
+# un reload no lo enfria pero un restart si), componer eumetsat_ash tardaba ~54s
+# (RAMMB falla intermitente en ash -> reintentos). Durante esos 54s el fragment
+# no producia salida nueva y, con el override de stale, el frame PREVIO (p.ej.
+# SO2) quedaba congelado nitido = "queda mucho tiempo en la misma escena".
+#
+# SOLUCION: desacoplar computo de display. Un hilo daemon PRODUCTOR computa los
+# PNG de cada slot en background y los deja en _TV_PRODUCED; el fragment SOLO LEE
+# de ahi (instantaneo, nunca bloquea). Si un slot aun no esta listo (primeros
+# ~60s tras un restart), muestra un placeholder y sigue rotando. VOLCAT se sirve
+# con plotly desde cache (el productor lo mantiene caliente).
+_TV_PRODUCED: dict[str, bytes] = {}
+_TV_PRODUCER_STARTED = False
+TV_PRODUCER_PERIOD_S = 20  # cada cuanto el productor refresca todos los slots
+
+
+def _emit_tv_png(png: bytes) -> None:
+    """Muestra un PNG a pantalla casi completa, centrado, sin distorsion.
+    <img> con estilo INLINE (mismo ciclo de vida que la imagen -> sin pestaneo
+    al rotar) y object-fit:contain (preserva aspecto)."""
+    import base64
+    b64 = base64.b64encode(png).decode()
+    st.markdown(
+        f"<div style='display:flex; justify-content:center; "
+        f"align-items:center; width:100%;'>"
+        f"<img src='data:image/png;base64,{b64}' "
+        f"style='max-width:100vw; max-height:calc(100vh - 8px); "
+        f"width:auto; height:auto; object-fit:contain;'/></div>",
+        unsafe_allow_html=True,
+    )
+
+
+def _tv_placeholder(msg: str) -> None:
+    st.markdown(
+        f"<div style='color:#d29922; text-align:center; padding:4rem; "
+        f"font-size:1.05rem;'>⏳ {msg}</div>",
+        unsafe_allow_html=True,
+    )
+
+
 def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
-    """Pre-calienta en BACKGROUND las caches de TODOS los slots del Modo Sala TV.
+    """Arranca (1 vez por proceso) el hilo PRODUCTOR del Modo Sala TV.
 
-    Por qué: el cache de st.cache_data es GLOBAL (cross-sesión) y la sala corre
-    24/7, así que normalmente está caliente. Pero TRAS UN DEPLOY/REBOOT el
-    primer ciclo es frío (RGB ~12s, VOLCAT ~3s, zoom ~6s en su 1a aparición).
-    Esto dispara, UNA vez por sesión, un hilo daemon que llena en paralelo:
-    3 RGB × 4 zonas + 3 VOLCAT + el/los zoom(s) de volcán.
-
-    Clave: NO bloquea el render (a diferencia del viejo pre-fetch síncrono).
-    El fragment sigue mostrando el slot actual mientras el hilo calienta el
-    resto. Totalmente defensivo: cualquier fallo se traga, nunca rompe la app.
+    El productor corre en loop cada TV_PRODUCER_PERIOD_S y deja en _TV_PRODUCED
+    el PNG de cada slot RGB y de cada zoom de volcan, y mantiene caliente el
+    cache de VOLCAT. El fragment foreground solo lee -> nunca bloquea (ver el
+    bloque de comentario arriba). Defensivo: cualquier fallo se traga.
     """
     import threading
 
-    if st.session_state.get("__tv_prewarmed"):
+    global _TV_PRODUCER_STARTED
+    if _TV_PRODUCER_STARTED:
         return
-    st.session_state["__tv_prewarmed"] = True
+    _TV_PRODUCER_STARTED = True
     zooms = volcan_zooms if volcan_zooms is not None else TV_VOLCAN_ZOOMS
 
-    def _warm():
-        from concurrent.futures import ThreadPoolExecutor
-        from datetime import datetime, timezone
-
-        jobs = []
-
-        def _rgb(product, zone):
-            try:
-                ts = tuple(_recent_ts(product, n=3))
-                if ts:
-                    _zone_frame_cached(product, ts, zone, True)
-            except Exception:
-                pass
-
-        for product in PRODUCT_LIST:
-            for zone in ("norte", "centro", "sur", "austral"):
-                jobs.append(lambda p=product, z=zone: _rgb(p, z))
-
-        # NO pre-componemos la imagen del grid aca: _compose_4_zonas_png abre su
-        # PROPIO ThreadPool(4) y, anidado dentro de este pool de prewarm, hacia
-        # explotar los hilos (4x4) y saturaba el vCPU de Streamlit Cloud ->
-        # "se mueve lento". Con los frames ya calientes (jobs _rgb de arriba),
-        # la composicion en la 1a aparicion foreground es barata (~0.5s, solo
-        # PIL) y el override de stale mantiene el frame previo nitido. (jun 2026)
-
-        def _volcat(sector, instr):
-            try:
-                from dashboard.views.volcat_viewer import (
-                    _volcat_image_with_overlays, _volcat_latest_cached,
-                    _volcat_map_only)
-                meta = _volcat_latest_cached(sector, instr, "Ash_Height")
-                if not meta:
-                    return
-                if VOLCAT_ZONAS_4:
-                    # Modo 4 zonas: el render usa el recorte georef.
-                    _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
-                                     meta.get("coords") or {})
-                else:
-                    _volcat_image_with_overlays(
-                        meta["image_url"], meta.get("volcanoes_url"),
-                        meta.get("latlon_url"))
-            except Exception:
-                pass
-
+    def _rgb_png(product):
         try:
-            from src.fetch.volcat_api import ZONE_TO_SECTOR
-            for _zona, (sector, instr) in ZONE_TO_SECTOR.items():
-                jobs.append(lambda s=sector, i=instr: _volcat(s, i))
+            ts = tuple(_recent_ts(product, n=3))
+            if ts:
+                png = _compose_4_zonas_png(product, ts, True, show_hotspots)
+                if png:
+                    _TV_PRODUCED[f"rgb:{product}"] = png
         except Exception:
             pass
 
-        def _zoom(name):
+    def _produce_once():
+        from datetime import datetime, timezone
+
+        # ORDEN: lo RAPIDO primero para que la sala muestre algo en ~10s tras un
+        # restart; eumetsat_ash (compose ~54s con cache frio por los reintentos
+        # de RAMMB) va AL FINAL para no demorar el resto. Una vez cacheado todo,
+        # cada ciclo es instantaneo.
+        for product in [p for p in PRODUCT_LIST if p != "eumetsat_ash"]:
+            _rgb_png(product)
+        # VOLCAT: solo calentar (latest + recorte georef). El foreground arma el
+        # plotly desde cache -> instantaneo.
+        try:
+            from dashboard.views.volcat_viewer import (
+                _volcat_latest_cached, _volcat_map_only)
+            for _zona, sector, instr, _vb in _volcat_zone_specs():
+                meta = _volcat_latest_cached(sector, instr, "Ash_Height")
+                if meta:
+                    _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
+                                     meta.get("coords") or {})
+        except Exception:
+            pass
+        # Volcan zoom: PNG compuesto.
+        for name in zooms:
             try:
                 now = datetime.now(timezone.utc)
                 bucket = f"{now:%Y%m%d%H}{(now.minute // 5) * 5:02d}"
-                _volcan_zoom_png(name, bucket, show_hotspots)
+                png = _volcan_zoom_png(name, bucket, show_hotspots)
+                if png:
+                    _TV_PRODUCED[f"volcan:{name}"] = png
             except Exception:
                 pass
+        # eumetsat_ash al final (el lento).
+        if "eumetsat_ash" in PRODUCT_LIST:
+            _rgb_png("eumetsat_ash")
 
-        for name in zooms:
-            jobs.append(lambda n=name: _zoom(n))
+    def _producer():
+        import time as _time
+        while True:
+            try:
+                _produce_once()
+            except Exception:
+                pass
+            _time.sleep(TV_PRODUCER_PERIOD_S)
 
-        try:
-            with ThreadPoolExecutor(max_workers=4) as ex:
-                list(ex.map(lambda f: f(), jobs))
-        except Exception:
-            pass
-
-    t = threading.Thread(target=_warm, name="tv-prewarm", daemon=True)
+    t = threading.Thread(target=_producer, name="tv-producer", daemon=True)
     try:
         from streamlit.runtime.scriptrunner import add_script_run_ctx
         add_script_run_ctx(t)
@@ -1133,43 +1132,18 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
 
 def _render_4_zonas_image_tv(product: str, show_volcanoes: bool,
                              show_hotspots: bool) -> None:
-    """Render del grid TV de 4 zonas como UNA imagen estatica (anti-glitch).
+    """Muestra el grid TV de 4 zonas LEYENDO el PNG ya producido en background.
 
-    Mismo enfoque que _render_volcan_zoom_tv: <img> con estilo INLINE para que
-    imagen y estilo compartan ciclo de vida (sin pestaneo al rotar) y el CSS
-    del TV la escale por max-height a casi todo el alto.
+    NUNCA computa en el foreground (eso bloqueaba el fragment ~54s con cache
+    frio). Si el productor aun no dejo el PNG (primeros ~60s tras un restart),
+    muestra un placeholder y la rotacion sigue. Ver prewarm_tv_caches.
     """
-    import base64
-
-    ts = _recent_ts(product, n=3)
-    if not ts:
-        st.markdown(
-            "<div style='color:#d29922; text-align:center; padding:4rem; "
-            "font-size:1rem;'>⏳ Esperando a RAMMB/CIRA — "
-            "reintentando en el próximo ciclo…</div>",
-            unsafe_allow_html=True)
-        return
-    try:
-        png = _compose_4_zonas_png(product, tuple(ts), show_volcanoes,
-                                   show_hotspots)
-    except Exception as e:
-        logger.warning("compose 4 zonas falló: %s", e)
-        png = None
-    if not png:
-        st.markdown(
-            "<div style='color:#d29922; text-align:center; padding:4rem;'>"
-            "⏳ Componiendo zonas — próximo ciclo…</div>",
-            unsafe_allow_html=True)
-        return
-    b64 = base64.b64encode(png).decode()
-    st.markdown(
-        f"<div style='display:flex; justify-content:center; "
-        f"align-items:center; width:100%;'>"
-        f"<img src='data:image/png;base64,{b64}' "
-        f"style='max-width:100vw; max-height:calc(100vh - 8px); "
-        f"width:auto; height:auto; object-fit:contain;'/></div>",
-        unsafe_allow_html=True,
-    )
+    png = _TV_PRODUCED.get(f"rgb:{product}")
+    if png:
+        _emit_tv_png(png)
+    else:
+        _tv_placeholder(f"Preparando {PRODUCT_OPTIONS.get(product, product)} "
+                        f"— las 4 zonas se cargan en segundo plano…")
 
 
 def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: bool,

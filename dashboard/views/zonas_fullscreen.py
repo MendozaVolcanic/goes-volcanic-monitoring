@@ -237,17 +237,25 @@ VOLCAT_VIEW = {
 # VOLCAT_ZONAS_4=False -> comportamiento previo: 3 zonas con el render que diga
 #   VOLCAT_TV_RENDER (ssec_overlay clasico por defecto). Flag de revert. (jun 2026)
 #
-# REVERTIDO a False (jun 2026): el modo 4 zonas RECORTABA el sector (Austral no
-# existe en VOLCAT -> recorte de Chile_South) y las imagenes se veian "cortadas"
-# vs el original. Volvemos a las 3 zonas con la imagen SSEC completa. Si se
-# quiere reintentar 4 zonas, hay que mejorar el encuadre del recorte primero.
-VOLCAT_ZONAS_4 = False
+# REACTIVADO con corrección geográfica (jun 2026): el primer intento cortaba mal
+# porque Sur y Austral usaban el MISMO sector Chile_South — que NO cubre los
+# volcanes sur (Villarrica -39, Llaima -38 están en Chile_CENTRAL, que llega a
+# -46). Ahora cada zona usa el sector que de verdad la cubre (ZONE_TO_SECTOR_4)
+# y el encuadre (VOLCAT_VIEW_4) cae DENTRO de los datos del sector -> sin cortes
+# feos ni vacíos, y Sur≠Austral. Extents reales medidos:
+#   Chile_North   lat[-30.3,-16.3]  Chile_Central lat[-46.3,-32.3]
+#   Chile_South   lat[-54.2,-40.3]
+VOLCAT_ZONAS_4 = True
 
 VOLCAT_VIEW_4 = {
-    "Norte":   {"lat_min": -28.0, "lat_max": -15.5, "lon_min": -71.5, "lon_max": -66.5},
-    "Centro":  {"lat_min": -39.0, "lat_max": -28.0, "lon_min": -73.0, "lon_max": -68.0},
-    "Sur":     {"lat_min": -46.0, "lat_max": -36.0, "lon_min": -77.0, "lon_max": -70.0},
-    "Austral": {"lat_min": -56.0, "lat_max": -45.5, "lon_min": -77.0, "lon_max": -70.0},
+    # Norte: sector Chile_North.
+    "Norte":   {"lat_min": -29.5, "lat_max": -16.8, "lon_min": -71.5, "lon_max": -66.8},
+    # Centro: sector Chile_Central, franja central (Tupungatito..Chillán).
+    "Centro":  {"lat_min": -37.3, "lat_max": -32.5, "lon_min": -72.5, "lon_max": -68.5},
+    # Sur: sector Chile_Central (¡ahí caen Villarrica/Llaima/Osorno/Calbuco!).
+    "Sur":     {"lat_min": -42.5, "lat_max": -37.0, "lon_min": -74.0, "lon_max": -70.5},
+    # Austral: sector Chile_South, de Chaitén hacia el sur.
+    "Austral": {"lat_min": -49.0, "lat_max": -41.5, "lon_min": -76.0, "lon_max": -71.0},
 }
 
 
@@ -455,6 +463,21 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
                 config={"displayModeBar": False, "responsive": True},
                 # key fijo por zona -> update in-place, sin parpadeo.
                 key=f"tvvolcat_{zona}")
+            # Colorbar (altura km) como overlay flotante en la esquina inf-der.
+            # Via <img> inline (NO st.image) para NO heredar el CSS del TV que
+            # agranda las imagenes a pantalla completa. (jun 2026)
+            from dashboard.views.volcat_viewer import _volcat_image_bytes
+            leg = _volcat_image_bytes(meta["legend_url"])
+            if leg:
+                import base64
+                lb64 = base64.b64encode(leg).decode()
+                st.markdown(
+                    f"<img src='data:image/png;base64,{lb64}' "
+                    f"style='position:fixed; bottom:12px; right:14px; "
+                    f"height:min(42vh,340px); width:auto; z-index:950; "
+                    f"background:rgba(10,14,20,0.55); padding:4px; "
+                    f"border-radius:6px;'/>",
+                    unsafe_allow_html=True)
     else:  # ssec_overlay
         img = _volcat_image_with_overlays(
             meta["image_url"], meta.get("volcanoes_url"),
@@ -1038,6 +1061,24 @@ _UNIFORM_BOUNDS_CACHE: dict | None = None
 TV_ZONAS_RENDER = "image"
 
 
+def _draw_geo_lines(d, pts, xy, color=(225, 230, 240), width=1):
+    """Dibuja una polilinea lat/lon sobre un ImageDraw (PIL).
+
+    `pts` es lista de (lat, lon); (None, None) corta la linea (segmentos
+    separados, como la costa). `xy(lat, lon)->(px, py)` es la proyeccion del
+    tile. PIL recorta lo que cae fuera del tile, asi que dibujamos todo.
+    """
+    prev = None
+    for p in pts:
+        if not p or p[0] is None:
+            prev = None
+            continue
+        cur = xy(p[0], p[1])
+        if prev is not None:
+            d.line([prev, cur], fill=color, width=width)
+        prev = cur
+
+
 @st.cache_data(ttl=900, show_spinner=False)
 def _compose_4_zonas_png(product: str, timestamps: tuple,
                          show_volcanoes: bool, show_hotspots: bool,
@@ -1060,10 +1101,12 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
 
     from PIL import Image, ImageDraw
 
+    from dashboard.map_helpers import _load_geo
     from dashboard.views.modo_guardia_volcan import _load_font
 
     if not timestamps:
         return None
+    geo = _load_geo()  # {"coast": [...], "border": [...]} en (lat, lon)
     ub = _uniform_aspect_bounds()
     zones = ["norte", "centro", "sur", "austral"]
     label_h = 38
@@ -1109,6 +1152,13 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
         if img is None:
             d.text((pw // 2 - 30, label_h + ph // 2), "sin imagen",
                    fill=(120, 130, 145), font=f_volc)
+
+        # Frontera de Chile (costa + limite andino), portada de add_chile_border
+        # a PIL. Sin esto el RGB compuesto perdia las lineas fronterizas que
+        # tenia el render plotly viejo. (fix jun 2026)
+        if img is not None:
+            _draw_geo_lines(d, geo.get("coast", []), _xy)
+            _draw_geo_lines(d, geo.get("border", []), _xy)
 
         # Volcanes (triangulos cyan + label) — los MISMOS que las vistas RGB.
         if show_volcanoes and img is not None:

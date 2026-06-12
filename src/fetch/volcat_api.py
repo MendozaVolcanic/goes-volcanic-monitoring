@@ -97,8 +97,11 @@ ZONE_TO_SECTOR: dict[str, tuple[str, str]] = {
 ZONE_TO_SECTOR_4: dict[str, tuple[str, str]] = {
     "Norte":   ("Chile_North_2_km",   "ABI"),
     "Centro":  ("Chile_Central_2_km", "ABI"),
-    "Sur":     ("Chile_South_2_km",   "ABI"),
-    "Austral": ("Chile_South_2_km",   "ABI"),  # mismo sector, recorte austral
+    # Sur usa Chile_CENTRAL (no Chile_South): Villarrica/Llaima/Osorno/Calbuco
+    # (-37 a -41) caen en Chile_Central (-46.3..-32.3); Chile_South arranca en
+    # -40.3 y se los pierde. El encuadre lo acota a la franja sur (VOLCAT_VIEW_4).
+    "Sur":     ("Chile_Central_2_km", "ABI"),
+    "Austral": ("Chile_South_2_km",   "ABI"),  # de Chaitén hacia el sur
 }
 
 # Leyenda color->producto

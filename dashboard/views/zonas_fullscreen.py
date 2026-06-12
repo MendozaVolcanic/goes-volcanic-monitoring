@@ -259,6 +259,37 @@ VOLCAT_VIEW_4 = {
 }
 
 
+_VOLCAT_UNIFORM_CACHE: dict | None = None
+
+
+def _volcat_uniform_views() -> dict:
+    """VOLCAT_VIEW_4 con aspecto UNIFORME -> las 4 zonas llenan la pantalla
+    IGUAL (hoy la Norte queda angosta porque es mucho mas alta N-S). Ensancha
+    el lon de las angostas hacia el aspecto de la mas ancha, manteniendo centro
+    y latitud, DENTRO de los datos del sector. Mismo patron que
+    _uniform_aspect_bounds (RGB). Cacheado a nivel modulo."""
+    global _VOLCAT_UNIFORM_CACHE
+    if _VOLCAT_UNIFORM_CACHE is not None:
+        return _VOLCAT_UNIFORM_CACHE
+
+    def _asp(v):
+        cl = float(np.cos(np.radians((v["lat_min"] + v["lat_max"]) / 2)))
+        return (v["lon_max"] - v["lon_min"]) * cl / (v["lat_max"] - v["lat_min"])
+
+    target = max(_asp(v) for v in VOLCAT_VIEW_4.values())
+    out = {}
+    for z, v in VOLCAT_VIEW_4.items():
+        cl = float(np.cos(np.radians((v["lat_min"] + v["lat_max"]) / 2)))
+        lat_span = v["lat_max"] - v["lat_min"]
+        lon_span_new = target * lat_span / cl
+        lon_c = (v["lon_min"] + v["lon_max"]) / 2
+        out[z] = {"lat_min": v["lat_min"], "lat_max": v["lat_max"],
+                  "lon_min": lon_c - lon_span_new / 2,
+                  "lon_max": lon_c + lon_span_new / 2}
+    _VOLCAT_UNIFORM_CACHE = out
+    return out
+
+
 def _volcat_zone_specs():
     """Specs de zonas VOLCAT: lista de (zona, sector, instr, view_bounds).
 
@@ -269,8 +300,8 @@ def _volcat_zone_specs():
     """
     from src.fetch.volcat_api import ZONE_TO_SECTOR, ZONE_TO_SECTOR_4
     if VOLCAT_ZONAS_4:
-        return [(z, s, i, VOLCAT_VIEW_4[z])
-                for z, (s, i) in ZONE_TO_SECTOR_4.items()]
+        uv = _volcat_uniform_views()  # aspecto homogeneo -> llenan igual
+        return [(z, s, i, uv[z]) for z, (s, i) in ZONE_TO_SECTOR_4.items()]
     return [(z, s, i, None) for z, (s, i) in ZONE_TO_SECTOR.items()]
 
 
@@ -373,24 +404,37 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
             hovertext=[f"{v.name} ({v.elevation:,} m)" for v in vis],
             hoverinfo="text", showlegend=False,
         ))
-        for v in vis:
-            if v.name in PRIORITY_VOLCANOES:
-                fig.add_annotation(
-                    x=v.lon, y=v.lat, text=v.name, showarrow=False,
-                    font=dict(size=13, color="#ffffff"),
-                    xanchor="left", yanchor="middle", xshift=7,
-                    bgcolor="rgba(10,14,20,0.6)", borderpad=2,
-                )
+        # Nombres de TODOS con anti-encimado (greedy en coords: salta si hay
+        # otro nombre muy cerca; prioritarios primero). Caja oscura = halo.
+        _ls = view_bounds["lat_max"] - view_bounds["lat_min"]
+        _ns = view_bounds["lon_max"] - view_bounds["lon_min"]
+        _mdlat, _mdlon = _ls * 0.05, _ns * 0.17
+        _placed = []
+        for v in sorted(vis, key=lambda v: (v.name not in PRIORITY_VOLCANOES, v.lat)):
+            if any(abs(v.lat - pl) < _mdlat and abs(v.lon - pn) < _mdlon
+                   for pl, pn in _placed):
+                continue
+            fig.add_annotation(
+                x=v.lon, y=v.lat, text=v.name, showarrow=False,
+                font=dict(size=12, color="#ffffff"),
+                xanchor="left", yanchor="middle", xshift=7,
+                bgcolor="rgba(10,14,20,0.62)", borderpad=2,
+            )
+            _placed.append((v.lat, v.lon))
     # Frontera con HALO (oscuro ancho + claro fino) -> visible sobre nubes.
     add_chile_border(fig, color="rgba(20,24,32,0.9)", width=3.2)
     add_chile_border(fig, color="rgba(235,240,250,0.9)", width=1.2)
     cos_lat = max(0.1, float(np.cos(np.radians(
         (view_bounds["lat_min"] + view_bounds["lat_max"]) / 2))))
+    # constrain="domain": llena el lado mayor del contenedor y centra el otro
+    # -> con vistas de aspecto UNIFORME (_volcat_uniform_views) las 4 zonas
+    # llenan la pantalla IGUAL (antes la Norte quedaba angosta). (jun 2026)
     fig.update_xaxes(range=[view_bounds["lon_min"], view_bounds["lon_max"]],
-                     showgrid=False, visible=False)
+                     showgrid=False, visible=False, constrain="domain")
     fig.update_yaxes(range=[view_bounds["lat_min"], view_bounds["lat_max"]],
                      showgrid=False, visible=False,
-                     scaleanchor="x", scaleratio=1.0 / cos_lat)
+                     scaleanchor="x", scaleratio=1.0 / cos_lat,
+                     constrain="domain")
     _txt = f"<b>{zona_label}</b>"
     if time_label:
         _txt += (f"<br><span style='font-size:11px; color:#dfe6ee;'>"
@@ -766,15 +810,17 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
                                   "1x4", height, minimal=True, stable_keys=True,
                                   uniform_size=True)
     elif kind == "volcan":  # zoom a un volcán — sus 3 productos centrados
+        # Titulo GRANDE con el nombre del volcan (se pidio que se entienda de un
+        # vistazo que estamos viendo ese volcan), + subtitulo con los productos.
         st.markdown(
-            f"<div class='tv-legend' style='display:flex; "
-            f"justify-content:space-between; align-items:center; "
-            f"background:rgba(17,24,34,0.85); padding:0.3rem 0.8rem; "
-            f"border-radius:4px; font-size:0.82rem;'>"
-            f"<span style='color:#ff6644; font-weight:700;'>🔄 ZOOM {val} · "
-            f"Ash · GeoColor · SO2 (centrados, anillos 5/10/25/50 km)</span>"
-            f"<span style='color:#8899aa;'>GOES-19 · GeoColor con switch "
-            f"hi-res L1b de día</span></div>",
+            f"<div class='tv-legend' style='display:flex; align-items:baseline; "
+            f"gap:0.7rem; background:rgba(17,24,34,0.85); padding:0.25rem 0.9rem; "
+            f"border-radius:4px;'>"
+            f"<span style='color:#ffffff; font-weight:800; font-size:1.7rem; "
+            f"text-shadow:0 2px 6px #000;'>🌋 {val.upper()}</span>"
+            f"<span style='color:#aab4c0; font-size:0.82rem;'>ZOOM · "
+            f"Ash · GeoColor · SO2 (centrados, anillos 5/10/25/50 km) · "
+            f"GeoColor hi-res L1b de día</span></div>",
             unsafe_allow_html=True,
         )
         _render_volcan_zoom_tv(val, show_hotspots, height)
@@ -1176,21 +1222,39 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
                 _draw_geo_lines(d, pts, _xy, color=(25, 28, 36), width=3)
                 _draw_geo_lines(d, pts, _xy, color=(235, 240, 250), width=1)
 
-        # Volcanes: triangulo cyan con contorno OSCURO (visible sobre blanco).
-        # Label SOLO para prioritarios (evita el encimado de nombres en zonas
-        # densas) y con HALO negro (stroke) para leerse sobre nubes. (jun 2026)
+        # Volcanes: triangulo cyan con contorno OSCURO (visible sobre blanco)
+        # para TODOS. Los NOMBRES se colocan greedy anti-encimado: se intentan
+        # TODOS, pero se salta el label si su caja choca con uno ya puesto.
+        # Prioritarios primero (ganan el lugar). Halo negro (stroke) -> legible
+        # sobre nubes. Asi se ven todos los que entran, sin pisarse. (jun 2026)
         if show_volcanoes and img is not None:
-            for v in CATALOG:
-                if (v.zone != "test"
-                        and b["lat_min"] <= v.lat <= b["lat_max"]
-                        and b["lon_min"] <= v.lon <= b["lon_max"]):
-                    vx, vy = _xy(v.lat, v.lon)
-                    d.polygon([(vx, vy - 6), (vx + 5, vy + 4), (vx - 5, vy + 4)],
-                              fill=(0, 255, 255), outline=(15, 18, 24))
-                    if v.name in PRIORITY_VOLCANOES:
-                        d.text((vx + 6, vy - 6), v.name, fill=(255, 255, 255),
-                               font=f_volc, stroke_width=2,
-                               stroke_fill=(0, 0, 0))
+            in_zone = [v for v in CATALOG if v.zone != "test"
+                       and b["lat_min"] <= v.lat <= b["lat_max"]
+                       and b["lon_min"] <= v.lon <= b["lon_max"]]
+            for v in in_zone:
+                vx, vy = _xy(v.lat, v.lon)
+                d.polygon([(vx, vy - 6), (vx + 5, vy + 4), (vx - 5, vy + 4)],
+                          fill=(0, 255, 255), outline=(15, 18, 24))
+            placed = []
+
+            def _hit(a):
+                return any(not (a[2] < p[0] or a[0] > p[2]
+                                or a[3] < p[1] or a[1] > p[3]) for p in placed)
+
+            order = sorted(in_zone,
+                           key=lambda v: (v.name not in PRIORITY_VOLCANOES, v.lat))
+            for v in order:
+                vx, vy = _xy(v.lat, v.lon)
+                tx, ty = vx + 6, vy - 6
+                try:
+                    bb = d.textbbox((tx, ty), v.name, font=f_volc, stroke_width=2)
+                except Exception:
+                    bb = (tx, ty, tx + len(v.name) * 6, ty + 12)
+                if _hit(bb):
+                    continue
+                d.text((tx, ty), v.name, fill=(255, 255, 255), font=f_volc,
+                       stroke_width=2, stroke_fill=(0, 0, 0))
+                placed.append(bb)
         # Hot spots (diamantes rojos, contorno oscuro para verse sobre blanco)
         if hs:
             for h in hs:

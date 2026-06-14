@@ -540,6 +540,9 @@ def _fetch_chile_frames(product: str, n_frames: int,
 
     Intenta cache + delta primero; si no hay cache cae al flujo completo.
     """
+    # Lazy import (patrón del proyecto). Antes faltaba -> NameError y la cobertura
+    # 'Nacional (Chile)' crasheaba siempre. (fix audit jun 2026)
+    from src.fetch.animation_cache import scope_id_nacional
     sid = scope_id_nacional()
     cache_result = _fetch_via_cache(sid, product, n_frames)
     if cache_result is not None:

@@ -293,6 +293,11 @@ def _mode_dos_volcanes(now: datetime):
         )
     with cols[1]:
         v2_options = [v for v in PRIORITY_VOLCANOES if v != v1]
+        # Si el valor persistido de Volcán 2 quedó fuera de las opciones (porque
+        # el usuario eligió ese mismo en Volcán 1), limpiarlo ANTES de crear el
+        # selectbox -> evita StreamlitAPIException. (fix audit jun 2026)
+        if st.session_state.get("comp_2v_v2") not in v2_options:
+            st.session_state.pop("comp_2v_v2", None)
         v2 = st.selectbox(
             "Volcán 2", options=v2_options,
             index=0, key="comp_2v_v2",

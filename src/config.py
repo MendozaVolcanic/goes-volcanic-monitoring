@@ -146,8 +146,13 @@ VOLCANIC_ZONES = {
     # Bboxes uniformizados: 5° lon × ~10-11° lat para que en grid 1x4
     # los 4 paneles tengan aspect ratio similar y la imagen llene
     # consistentemente.
+    # OJO (fix audit jun 2026): el boundary sur/austral estaba ~5° corrido al
+    # sur — los 13 volcanes 'austral' (Osorno -41.1 … Hudson -45.9) caían DENTRO
+    # del bbox 'sur' y el bbox 'austral' (-56…-46) quedaba VACÍO (solo fiordos).
+    # Corregido para que cada bbox CONTENGA los volcanes de su zona (validado en
+    # tests/test_smoke.py::test_zone_bboxes_contain_their_volcanoes).
     "norte":   {"lat_min": -28.0, "lat_max": -17.5, "lon_min": -71.5, "lon_max": -66.5},
     "centro":  {"lat_min": -39.0, "lat_max": -28.0, "lon_min": -73.0, "lon_max": -68.0},
-    "sur":     {"lat_min": -46.0, "lat_max": -36.0, "lon_min": -75.0, "lon_max": -70.0},
-    "austral": {"lat_min": -56.0, "lat_max": -46.0, "lon_min": -76.0, "lon_max": -71.0},
+    "sur":     {"lat_min": -41.5, "lat_max": -36.0, "lon_min": -75.0, "lon_max": -70.0},
+    "austral": {"lat_min": -46.5, "lat_max": -41.0, "lon_min": -76.0, "lon_max": -71.0},
 }

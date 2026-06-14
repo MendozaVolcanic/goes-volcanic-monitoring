@@ -53,7 +53,7 @@ ACTIVE_VOLCANOES = [
     {"name": "Reventador (Ecuador)", "rationale": "Explosiones diarias. Pluma frecuente."},
     {"name": "Sabancaya (Perú)", "rationale": "1-3 explosiones/día documentadas."},
     {"name": "Villarrica", "rationale": "Lago de lava activo. Hot spots térmicos."},
-    {"name": "Láscar", "rationale": "Hot spots térmicos esporádicos."},
+    {"name": "Lascar", "rationale": "Hot spots térmicos esporádicos."},
     {"name": "Copahue", "rationale": "Emisión sostenida de SO2."},
 ]
 
@@ -216,8 +216,14 @@ def render():
         "lat_min": v.lat - RADIUS_DEG, "lat_max": v.lat + RADIUS_DEG,
         "lon_min": v.lon - RADIUS_DEG, "lon_max": v.lon + RADIUS_DEG,
     }
+    # Fallback con frames VECINOS del seleccionado (no near-live): si el frame
+    # histórico no carga en RAMMB, probamos los timestamps adyacentes en el
+    # tiempo — así un fallback sigue siendo "cercano" de verdad y no salta a un
+    # frame reciente mal etiquetado como el pasado. (fix audit jun 2026)
+    _neighbors = timestamps_chrono[max(0, idx - 2):idx + 3]
+    _candidates = [selected_ts] + [t for t in _neighbors if t != selected_ts]
     img, used_ts, used_zoom = fetch_frame_robust(
-        product, [selected_ts] + timestamps[:5], bounds,
+        product, _candidates, bounds,
         zoom_preferred=ZOOM_VOLCAN, zoom_fallback=ZOOM_ZONE,
     )
 

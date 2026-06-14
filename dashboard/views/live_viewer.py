@@ -562,8 +562,17 @@ def _reloj_chile():
 
 
 @st.fragment(run_every="60s")
-def _health_banner(ts_all: dict):
+def _health_banner():
     """Banner ancho con codigo de color segun edad del scan mas reciente.
+
+    Este fragment es el POLLER de 60s de la vista En Vivo. Re-consulta los
+    timestamps (cacheado 15s) por su cuenta — NO recibe ts_all como argumento,
+    porque los args de un run_every fragment quedan CONGELADOS en el último
+    full-rerun y nunca detectarían un scan nuevo. Al final, si llegó un scan
+    nuevo, dispara st.rerun(scope="app") para refrescar los mapas (que viven
+    fuera del fragment, con sus selectores preservados por key). Así se restaura
+    el auto-refresh que se perdió al mover el decorator desde _live_content
+    (jun 2026 — bug del audit).
 
     ✅ verde (<15 min): sistema operativo, GOES + RAMMB OK
     ⚠ amarillo (15-30 min): latencia elevada, probablemente RAMMB lento
@@ -572,6 +581,7 @@ def _health_banner(ts_all: dict):
     El user veia 30+ min a veces — este banner explicita la causa
     (es RAMMB, no nosotros) sin que tenga que adivinar.
     """
+    ts_all = _fetch_latest_ts_all()  # fresco cada 60s (cacheado 15s)
     # CONSOLIDADO (jun 2026): esta tira ÚNICA reemplaza al banner de estado +
     # la caja "Último scan" + el "Hora del scan" de la barra de auto-refresh.
     # Antes la hora/edad del scan aparecía en 3 bloques distintos. Ahora todo
@@ -670,6 +680,17 @@ def _health_banner(ts_all: dict):
         unsafe_allow_html=True,
     )
 
+    # AUTO-REFRESH de los mapas: si llegó un scan NUEVO desde el ciclo anterior,
+    # rerun de TODA la app -> _live_content se re-ejecuta y los mapas bajan el
+    # frame nuevo (clave de cache = ts); los selectores se preservan por key.
+    # Se dispara solo cuando hay scan nuevo (~cada 10 min), no cada 60s. Restaura
+    # el auto-refresh prometido sin resetear toggles/tabs. (jun 2026)
+    _sig = tuple((p, (ts_all.get(p) or {}).get("ts")) for p, _l, _c in LIVE_PRODUCTS)
+    _prev = st.session_state.get("__live_scan_sig")
+    st.session_state["__live_scan_sig"] = _sig
+    if _prev is not None and _sig != _prev and any(s for _p, s in _sig):
+        st.rerun(scope="app")
+
 
 def _live_content():
     """Contenido principal — se refresca automaticamente cada 60s.
@@ -685,9 +706,10 @@ def _live_content():
       2. _fetch_frame_for_ts(p, ts)  TTL=2h   → descarga pesada, clave = timestamp
     """
 
-    # ── Health banner (ancho completo, color-coded segun edad de scan) ────
+    # ── Health banner (fragment poller 60s: refresca estado + dispara rerun
+    # de la app cuando hay scan nuevo -> mapas al día). ──
+    _health_banner()
     ts_all = _fetch_latest_ts_all()
-    _health_banner(ts_all)
 
     # NOTA (jun 2026): el reloj, la caja "Último scan" (3 productos) y el botón
     # refresh vivían acá en 3 columnas separadas. El reloj y los tiempos de scan

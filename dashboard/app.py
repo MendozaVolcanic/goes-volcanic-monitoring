@@ -88,9 +88,13 @@ if _fullscreen:
         )
         # Salir fullscreen: helper hace clear+set query_params.
         # Pasamos los params actuales SALVO fullscreen.
+        from urllib.parse import quote
         from dashboard.map_helpers import render_top_navigation_button
         _qp_keep = {k: v for k, v in st.query_params.items() if k != "fullscreen"}
-        _qs = "&".join(f"{k}={v}" for k, v in _qp_keep.items())
+        # URL-encode los valores: hay params con espacios/acentos
+        # (volcan=Nevados de Chillán, Planchón-Peteroa) que sin escape rompían
+        # el permalink al salir de fullscreen. (fix audit jun 2026)
+        _qs = "&".join(f"{k}={quote(str(v))}" for k, v in _qp_keep.items())
         if not _qs:
             _qs = "vista=operacional"  # fallback si no hay nada
         render_top_navigation_button(

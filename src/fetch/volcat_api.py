@@ -13,7 +13,6 @@ from __future__ import annotations
 import logging
 from typing import Optional
 
-import requests
 from src.fetch._http_session import get_session as _get_session
 
 logger = logging.getLogger(__name__)
@@ -128,8 +127,15 @@ def get_sector_for_volcano(volcano_name: str) -> Optional[tuple[str, str]]:
     return None
 
 
-def _query_frames(sector: str, instr: str, image_type: str, sat: str) -> list:
-    """Helper: pega al API VOLCAT y devuelve la lista de frames (puede vacia)."""
+def _query_frames(sector: str, instr: str, image_type: str,
+                  sat: str) -> tuple[list, dict | None]:
+    """Helper: pega al API VOLCAT y devuelve (frames, coords).
+
+    SIEMPRE devuelve una 2-tupla — los callers desempacan con
+    `frames, coords = _query_frames(...)`. Antes los paths de error devolvían
+    `[]` (lista desnuda) -> ValueError al desempacar y crash de la página VOLCAT
+    cuando SSEC fallaba. (fix audit jun 2026)
+    """
     url = (
         f"{BASE}/imagery/get_list/json/"
         f"sector:{sector}::instr:{instr}::sat:{sat}"
@@ -139,11 +145,11 @@ def _query_frames(sector: str, instr: str, image_type: str, sat: str) -> list:
         r = _get_session().get(url, timeout=TIMEOUT)
         if r.status_code != 200:
             logger.warning("VOLCAT API %s -> %s", url, r.status_code)
-            return []
+            return [], None
         d = r.json()
     except Exception as e:
         logger.warning("VOLCAT API fail: %s", e)
-        return []
+        return [], None
     return d.get("endtime") or [], d.get("coordinates")
 
 

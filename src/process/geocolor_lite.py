@@ -76,16 +76,20 @@ def contrast_stretch(rgb: np.ndarray, low_pct: float = 2.0,
     GeoColor RAMMB (std ~66). Este stretch al percentil 2-98 recupera
     ~80% del contraste perdido. Por canal individual para evitar shift de
     color.
+
+    NaN-safe: usa nanpercentile (un solo NaN de pixel fill/off-disk con
+    np.percentile devolvia NaN y ANULABA el stretch de TODO el canal) y
+    nan_to_num al final (NaN->0 = negro, convencion de borde del proyecto).
     """
     out = np.zeros_like(rgb)
     for c in range(rgb.shape[-1]):
         ch = rgb[..., c]
-        lo, hi = np.percentile(ch, [low_pct, high_pct])
-        if hi - lo > 1e-6:
-            out[..., c] = np.clip((ch - lo) / (hi - lo), 0, 1)
+        lo, hi = np.nanpercentile(ch, [low_pct, high_pct])
+        if np.isfinite(lo) and np.isfinite(hi) and hi - lo > 1e-6:
+            out[..., c] = (ch - lo) / (hi - lo)
         else:
             out[..., c] = ch
-    return out
+    return np.clip(np.nan_to_num(out, nan=0.0), 0, 1)
 
 
 def unsharp_mask(rgb: np.ndarray, amount: float = 0.6,
@@ -133,38 +137,174 @@ def band2_monochrome_05km(refl_b2: np.ndarray, gamma: float = 0.6,
     return (np.clip(rgb, 0, 1) * 255).astype(np.uint8)
 
 
-def true_color_rgb(refl_b1: np.ndarray, refl_b2: np.ndarray,
-                   refl_b3: np.ndarray, gamma: float = 0.5,
-                   enhance: bool = True) -> np.ndarray:
-    """TrueColor RGB simplificado desde reflectancias bandas 1, 2, 3.
+def _downsample_mean_2x(arr: np.ndarray) -> np.ndarray:
+    """Downsample 2x por bloque-media (anti-alias). Trunca a dims pares. 2D."""
+    h, w = arr.shape[:2]
+    h2, w2 = h // 2, w // 2
+    return arr[:h2 * 2, :w2 * 2].reshape(h2, 2, w2, 2).mean(axis=(1, 3))
 
-    Asume todas las bandas YA estan al mismo grid (resampling externo).
 
-    Args:
-        refl_b1: banda 1 (azul) reflectancia [0, 1].
-        refl_b2: banda 2 (rojo) reflectancia [0, 1].
-        refl_b3: banda 3 (NIR vegetacion) reflectancia [0, 1].
-        gamma:   factor gamma para brightening (0.5 = visible mas brillante).
-        enhance: si True (default), aplica contrast stretch + unsharp mask
-                 post-gamma para compensar la falta de Rayleigh correction.
-                 Sin enhance la imagen sale plana (std~15) vs RAMMB (std~66).
+def _box_lowpass_2x(arr: np.ndarray) -> np.ndarray:
+    """Low-pass a la escala 1 km: downsample-media 2x + re-upsample nearest.
 
-    Devuelve uint8 (H, W, 3) RGB.
+    Devuelve un array de la MISMA forma (par) que `arr`. La diferencia
+    `arr - lowpass` aisla el detalle sub-1km (la octava que B1/B3 a 1 km
+    no resuelven). Numpy puro: no depende de scipy (no garantizado en el
+    runner HF — ver fallback de unsharp_mask).
     """
-    # Verde sintetizado: combinacion balanceada (receta CIRA simplificada)
-    green = 0.45 * refl_b2 + 0.10 * refl_b3 + 0.45 * refl_b1
+    h, w = arr.shape[:2]
+    h2, w2 = (h // 2) * 2, (w // 2) * 2
+    a = arr[:h2, :w2]
+    lo = _downsample_mean_2x(a)
+    return np.repeat(np.repeat(lo, 2, axis=0), 2, axis=1)
 
+
+def _stretch_single(ch: np.ndarray, low_pct: float = 2.0,
+                    high_pct: float = 98.0) -> np.ndarray:
+    """Contrast stretch percentil de un solo canal -> [0, 1]. NaN-safe."""
+    if not np.isfinite(ch).any():
+        return np.zeros_like(ch)
+    lo, hi = np.nanpercentile(ch, [low_pct, high_pct])
+    if np.isfinite(lo) and np.isfinite(hi) and hi - lo > 1e-6:
+        out = (ch - lo) / (hi - lo)
+    else:
+        out = ch
+    return np.clip(np.nan_to_num(out, nan=0.0), 0, 1)
+
+
+def _resize_rgb_bilinear(rgb_float: np.ndarray,
+                         out_hw: tuple[int, int]) -> np.ndarray:
+    """Re-escalar RGB float [0,1] (H,W,3) a (out_h,out_w) bilineal via PIL.
+
+    PIL es dependencia core del proyecto. Lazy import (gotcha Streamlit
+    hot-reload, ver CLAUDE.md). Fallback nearest-numpy si PIL faltara.
+    Maneja ratios arbitrarios -> no exige que LR sea exactamente 2x del pan.
+    """
+    out_h, out_w = out_hw
+    if rgb_float.shape[:2] == (out_h, out_w):
+        return rgb_float
+    try:
+        from PIL import Image
+        u8 = (np.clip(np.nan_to_num(rgb_float, nan=0.0), 0, 1)
+              * 255).astype(np.uint8)
+        img = Image.fromarray(u8, mode="RGB").resize(
+            (out_w, out_h), Image.BILINEAR)  # PIL toma (W, H)
+        return np.asarray(img, dtype=np.float32) / 255.0
+    except Exception:
+        # Fallback degradado pero sin crash: nearest por repeticion/recorte.
+        ry = max(1, out_h // rgb_float.shape[0])
+        rx = max(1, out_w // rgb_float.shape[1])
+        up = np.repeat(np.repeat(rgb_float, ry, axis=0), rx, axis=1)
+        return up[:out_h, :out_w]
+
+
+def _true_color_lr_float(refl_b1: np.ndarray, refl_b2: np.ndarray,
+                         refl_b3: np.ndarray, gamma: float, enhance: bool,
+                         do_unsharp: bool) -> np.ndarray:
+    """Nucleo TrueColor (receta CIRA simplificada) -> RGB float [0,1] (H,W,3).
+
+    Compartido por el camino 1 km (`true_color_rgb` sin pan, do_unsharp=True)
+    y por el pan-sharpen (do_unsharp=False: el detalle lo aporta el pan, no
+    queremos sharpenear lo borroso de 1 km y despues ampliarlo).
+    """
+    green = 0.45 * refl_b2 + 0.10 * refl_b3 + 0.45 * refl_b1
     rgb = np.stack([refl_b2, green, refl_b1], axis=-1)
     rgb = np.clip(rgb, 0, 1)
     rgb = np.power(rgb, gamma)  # brightness curve
-
     if enhance:
-        # Contrast stretch percentil 2-98 + unsharp mask suave.
-        # Esto recupera ~80% del contraste perdido por no tener Rayleigh.
         rgb = contrast_stretch(rgb, low_pct=2.0, high_pct=98.0)
-        rgb = unsharp_mask(rgb, amount=0.5, sigma=0.9)
+        if do_unsharp:
+            rgb = unsharp_mask(rgb, amount=0.5, sigma=0.9)
+    # nan_to_num: NaN de pixel fill/off-disk -> 0 (negro), salida siempre
+    # finita para el cast a uint8. No-op en datos finitos (compat byte-idem).
+    return np.nan_to_num(np.clip(rgb, 0, 1), nan=0.0)
 
-    return (rgb * 255).astype(np.uint8)
+
+def _pansharpen(rgb_lo_float: np.ndarray, pan: np.ndarray, gamma: float,
+                enhance: bool, detail_weight: float) -> np.ndarray:
+    """High-Pass Modulation: color del RGB 1 km + detalle 0.5 km del pan.
+
+    Args:
+        rgb_lo_float: (Hl,Wl,3) [0,1] color a baja resolucion (1 km).
+        pan:          (Hh,Wh) reflectancia hi-res (B2 0.5 km) = fuente de detalle.
+        detail_weight: ganancia del detalle inyectado (1.0 = nominal).
+
+    Devuelve uint8 (Hh,Wh,3) (pan recortado a dims pares).
+
+    Por que: el detalle `pan - lowpass(pan)` es de media ~cero, asi que agrega
+    SOLO bordes/textura sub-1km. La luminancia de salida APROXIMA el pan nativo
+    (el resize bilineal y el gamma no-lineal hacen que no sea exacto) y el color
+    lo aporta el LR. Asume estructura espacial compartida entre bandas visibles
+    (estandar en pan-sharpening true-color: nubes/costa/sombra del cono se ven
+    igual en B1/B2/B3, solo cambia la resolucion del muestreo).
+
+    El detalle se clampea al HEADROOM por-pixel (cuanto se puede sumar/restar
+    antes de que ALGUN canal sature) y se aplica IGUAL a R/G/B -> la croma se
+    preserva exactamente incluso en nube/nieve brillante (sin el shift de tono
+    que daria un clip por-canal asimetrico).
+    """
+    pan = np.asarray(pan, dtype=np.float32)
+    h, w = pan.shape[:2]
+    h2, w2 = (h // 2) * 2, (w // 2) * 2
+    if h2 < 2 or w2 < 2:
+        # Tile degenerado (sin par util) -> solo color LR re-escalado, sin
+        # detalle. Evita np.percentile sobre array vacio. (no deberia pasar:
+        # el caller deriva pan como 2x indices 1km, pero robustez del helper.)
+        out = _resize_rgb_bilinear(rgb_lo_float, (max(h2, 1), max(w2, 1)))
+        return (np.clip(np.nan_to_num(out, nan=0.0), 0, 1) * 255).astype(np.uint8)
+    pan = np.clip(pan[:h2, :w2], 0, 1)
+
+    # 1. Color LR re-escalado al grid del pan (0.5 km).
+    rgb_up = np.clip(_resize_rgb_bilinear(rgb_lo_float, (h2, w2)), 0, 1)
+
+    # 2. Detalle hi-res en espacio de display (mismo gamma/stretch que canales).
+    pan_disp = np.power(pan, gamma)
+    if enhance:
+        pan_disp = _stretch_single(pan_disp)
+    detail = detail_weight * (pan_disp - _box_lowpass_2x(pan_disp))  # ~media 0
+
+    # 3. Clampear el detalle al headroom por-pixel (sumable antes de que el
+    #    canal mas alto sature; restable antes de que el mas bajo llegue a 0)
+    #    y aplicarlo IGUAL a los 3 canales -> croma intacta sin clip asimetrico.
+    hi_room = 1.0 - rgb_up.max(axis=-1)   # margen positivo (canal mas brillante)
+    lo_room = rgb_up.min(axis=-1)         # margen negativo (canal mas oscuro)
+    detail = np.minimum(np.maximum(detail, -lo_room), hi_room)
+
+    out = np.clip(rgb_up + detail[..., None], 0, 1)
+    return (np.nan_to_num(out, nan=0.0) * 255).astype(np.uint8)
+
+
+def true_color_rgb(refl_b1: np.ndarray, refl_b2: np.ndarray,
+                   refl_b3: np.ndarray, gamma: float = 0.5,
+                   enhance: bool = True, pan: "np.ndarray | None" = None,
+                   detail_weight: float = 1.0) -> np.ndarray:
+    """TrueColor RGB simplificado desde reflectancias bandas 1, 2, 3.
+
+    Asume B1/B2/B3 al mismo grid (resampling externo). Si se pasa `pan`,
+    pan-sharpening: el color sale de B1/B2/B3 a 1 km y el detalle de `pan`
+    (B2 nativa 0.5 km) -> salida a 0.5 km/px (4x RAMMB) sin shift de color.
+
+    Args:
+        refl_b1: banda 1 (azul) reflectancia [0, 1].
+        refl_b2: banda 2 (rojo) reflectancia [0, 1] al MISMO grid que b1/b3
+                 (1 km; en el camino pan-sharpen es B2 degradada a 1 km).
+        refl_b3: banda 3 (NIR vegetacion) reflectancia [0, 1].
+        gamma:   factor gamma para brightening (0.5 = visible mas brillante).
+        enhance: si True (default), contrast stretch + unsharp (camino 1 km)
+                 para compensar la falta de Rayleigh correction. Sin enhance
+                 la imagen sale plana (std~15) vs RAMMB (std~66).
+        pan:     reflectancia B2 nativa 0.5 km (Hh,Wh ≈ 2x). None = 1 km clasico.
+        detail_weight: ganancia del detalle pan inyectado (default 1.0).
+
+    Devuelve uint8 (H, W, 3) RGB. Con pan, (H,W) es el grid del pan.
+    """
+    if pan is None:
+        rgb = _true_color_lr_float(refl_b1, refl_b2, refl_b3, gamma, enhance,
+                                   do_unsharp=True)
+        return (rgb * 255).astype(np.uint8)
+    rgb_lo = _true_color_lr_float(refl_b1, refl_b2, refl_b3, gamma, enhance,
+                                  do_unsharp=False)
+    return _pansharpen(rgb_lo, pan, gamma, enhance, detail_weight)
 
 
 def solar_elevation(lat: float, lon: float, dt: datetime) -> float:

@@ -13,10 +13,14 @@ Uso:
 Decisiones clave:
 - Todas las bandas se descargan UNA vez por scan (~330 MB total). Despues
   recortamos por scope sin re-descargar.
-- Banda 2 (0.5 km/px) se downsamplea 2x para alinear con bandas 1/3
-  (1 km/px). Pierdo el factor 2 ahi pero el RGB queda balanceado en 1 km/px.
-  Si quiero los 0.5 km/px reales, uso solo banda 2 como grayscale (Phase 2).
-- De noche (sun < 5°) genero pseudo-color desde banda 13 IR.
+- AMBOS modes hacen super-bbox slicing: se calcula la sub-region 0.5km que
+  cubre todos los scopes y se materializa SOLO eso (refl + get_lat_lon).
+  Jamas tocamos full-disk (B2 0.5km = 1.9 GB, get_lat_lon 1km = varios GB).
+- mode 'color': PAN-SHARPENING. El color sale de B1/B2/B3 a 1 km y el detalle
+  de B2 nativa a 0.5 km se inyecta (High-Pass Modulation) -> true-color a
+  0.5 km/px (4× RAMMB) sin shift de color. Reemplazo del downsample 2x viejo.
+- mode 'mono_05km': solo banda 2 a 0.5 km nativa, sepia monocromatica.
+- De noche (sun < 5°) genero pseudo-color desde banda 13 IR (2 km nativo).
 
 Performance esperado en runner GH:
 - Descarga 4 bandas: ~30s (S3 NOAA paralelo)
@@ -36,7 +40,7 @@ import xarray as xr
 
 from src.fetch.goes_s3 import download_band, open_band
 from src.process.brightness_temp import rad_to_bt
-from src.process.geo import crop_to_bounds, get_lat_lon
+from src.process.geo import bbox_indices, crop_to_bounds, get_lat_lon
 from src.process.geocolor_lite import (
     band2_monochrome_05km, bt_to_pseudo_color_ir, rad_to_reflectance,
     solar_elevation, true_color_rgb,
@@ -156,7 +160,8 @@ def build_hires_for_scopes(
         scopes:       dict scope_id -> {"lat": float, "lon": float}.
                       Por scope generamos un bbox cuadrado de ±radius_deg.
         radius_deg:   medio-tamanio del bbox en grados (default 0.5° ≈ 55 km).
-        mode:         "color" (default): TrueColor 1km/px diurno + IR nocturno.
+        mode:         "color" (default): TrueColor pan-sharpened a 0.5km/px
+                      diurno (4× RAMMB) + IR 2km nocturno.
                       "mono_05km": SOLO banda 2 a 0.5 km/px (4× zoom real).
                                    No baja b1 ni b3. Diurno solamente.
 
@@ -178,69 +183,111 @@ def build_hires_for_scopes(
         logger.error("Banda 2 indispensable no disponible")
         return {sid: None for sid in scopes}
 
-    # 2. Abrir y procesar bandas (radiance -> refl/BT).
-    # En mono_05km NO preload banda 2 (es 21696x21696 = 1.9 GB float32).
-    # Vamos a calcular el super-bbox que cubre todos los scopes y slice
-    # ANTES de allocar reflectance. Eso evita OOM en runner GH free (7 GB).
+    # 2. Abrir datasets en modo LAZY (no materializamos Rad full-disk).
+    #    AMBOS modes hacen super-bbox slicing: jamas allocamos full-disk ni
+    #    reflectancia (B2 0.5km = 1.9 GB) ni get_lat_lon 1km (varios GB de
+    #    arrays intermedios). Critico para el runner HF (7 GB). El modo color
+    #    ANTES materializaba B2 0.5km full + get_lat_lon 1km full -> OOM
+    #    (hallazgo audit jun 2026). Ahora deferido al super-bbox como mono.
     datasets: dict[int, xr.Dataset] = {}
-    refls: dict[int, np.ndarray] = {}
-    bts: dict[int, np.ndarray] = {}
-
     for b, p in band_paths.items():
-        ds = open_band(p)
-        datasets[b] = ds
-        if mode == "mono_05km" and b == 2:
-            # Skip preload — vamos a procesar sub-region solamente
-            continue
-        if b in (1, 2, 3):
-            refls[b] = rad_to_reflectance(ds["Rad"], ds)
-        elif b == 13:
-            bts[b] = rad_to_bt(ds).values
+        datasets[b] = open_band(p)
 
-    # 3. Geolocalizacion.
-    # mode='mono_05km': lat/lon SOLO del super-bbox que cubre todos los scopes
-    #                   (~5000×1300 px = ~25 MB vs 21696×21696 = 7 GB).
-    # mode='color':     trabajamos en 1 km/px full grid. Banda 2 downsample 2x.
-    if mode == "mono_05km":
-        # Precompute pixel bounds de cada scope -> super-bbox
-        all_bounds = []
-        for sid, sinfo in scopes.items():
-            pb = _scope_pixel_bounds(
-                datasets[2], sinfo["lat"], sinfo["lon"], radius_deg,
-            )
-            if pb is not None:
-                all_bounds.append(pb)
-        if not all_bounds:
-            logger.error("mono_05km: no pude calcular pixel bounds de ningun scope")
-            for ds in datasets.values():
-                ds.close()
-            return {sid: None for sid in scopes}, {sid: {"render": "error", "sun_alt": None} for sid in scopes}
-        super_r0 = min(b[0] for b in all_bounds)
-        super_r1 = max(b[1] for b in all_bounds)
-        super_c0 = min(b[2] for b in all_bounds)
-        super_c1 = max(b[3] for b in all_bounds)
-        logger.info("mono_05km super-bbox: rows[%d:%d] cols[%d:%d] = %d x %d px",
-                    super_r0, super_r1, super_c0, super_c1,
-                    super_r1 - super_r0, super_c1 - super_c0)
-        # Slice + compute reflectance + lat/lon SOLO para sub-region
-        ds_super = datasets[2].isel(y=slice(super_r0, super_r1),
-                                     x=slice(super_c0, super_c1))
-        refls[2] = rad_to_reflectance(ds_super["Rad"], ds_super)
-        lat, lon = get_lat_lon(ds_super)
-        ds_super.close()
-    else:
-        if 2 in refls:
-            refls[2] = _downsample_2x(refls[2])
-        ref_band = 1 if 1 in datasets else 2
-        lat, lon = get_lat_lon(datasets[ref_band])
+    # 3. Super-bbox sobre la grilla 0.5 km de B2 (la mas fina) que cubre
+    #    TODOS los scopes (~5000×1300 px ≈ 26 MB). Snap a multiplos de 4 para
+    #    que la sub-region 0.5km mapee limpio a 1km (//2) y 2km (//4) por el
+    #    anidamiento del fixed grid ABI (cada banda gruesa = block-mean de la
+    #    fina, indices anidados por potencias de 2).
+    all_bounds = []
+    for sid, sinfo in scopes.items():
+        pb = _scope_pixel_bounds(datasets[2], sinfo["lat"], sinfo["lon"],
+                                 radius_deg)
+        if pb is not None:
+            all_bounds.append(pb)
+    if not all_bounds:
+        logger.error("super-bbox: no pude calcular pixel bounds de ningun scope")
+        for ds in datasets.values():
+            ds.close()
+        return ({sid: None for sid in scopes},
+                {sid: {"render": "error", "sun_alt": None} for sid in scopes})
 
-    # 4. Para banda 13 (2 km/px), upscale 2x via repeat para alinear a 1 km/px.
-    # No aplica en mono_05km (no descargamos banda 13).
-    bt13 = None
-    if mode == "color" and 13 in bts:
-        bt13_2km = bts[13]
-        bt13 = np.repeat(np.repeat(bt13_2km, 2, axis=0), 2, axis=1)
-        bt13 = bt13[:lat.shape[0], :lat.shape[1]]
+    ny5 = int(datasets[2].sizes["y"])
+    nx5 = int(datasets[2].sizes["x"])
+    super_r0 = (min(b[0] for b in all_bounds) // 4) * 4
+    super_r1 = min(((max(b[1] for b in all_bounds) + 3) // 4) * 4, ny5)
+    super_c0 = (min(b[2] for b in all_bounds) // 4) * 4
+    super_c1 = min(((max(b[3] for b in all_bounds) + 3) // 4) * 4, nx5)
+    logger.info("super-bbox 0.5km: rows[%d:%d] cols[%d:%d] = %d x %d px",
+                super_r0, super_r1, super_c0, super_c1,
+                super_r1 - super_r0, super_c1 - super_c0)
+
+    # Invariante de anidamiento ABI RadF: B2 0.5km = 2× B1/B3 1km = 4× B13 2km.
+    # Los //2, //4 y el pan_crop=refls[2][2*r0:...] dependen de esto. Si alguna
+    # banda NO fuera RadF full-disk (p.ej. RadC/RadM, otro origin de grid), el
+    # recorte quedaria geograficamente CORRIDO sin lanzar excepcion. Lo chequeo
+    # y, si no se cumple, logueo fuerte y NO pan-sharpenamos (mejor sin hi-res
+    # que una imagen mal georreferenciada). Con RadF (hardcodeado en
+    # download_band) siempre se cumple — es defensa ante cambios futuros.
+    nest_ok = all(
+        datasets[b].sizes["y"] * 2 == ny5 and datasets[b].sizes["x"] * 2 == nx5
+        for b in (1, 3) if b in datasets
+    ) and (13 not in datasets or (
+        datasets[13].sizes["y"] * 4 == ny5
+        and datasets[13].sizes["x"] * 4 == nx5))
+    if mode == "color" and not nest_ok:
+        logger.error("Anidamiento ABI roto (bandas no RadF?): B2=%dx%d -> "
+                     "SIN pan-sharpen para este scan", ny5, nx5)
+
+    # Grillas/arrays por resolucion. Solo materializamos sub-regiones.
+    refls: dict[int, np.ndarray] = {}
+    refl_b2_lo = None           # B2 degradada a 1 km (canal rojo del color LR)
+    bt_ir = None                # B13 BT a 2 km (night IR pseudo-color)
+    lat_hi = lon_hi = None      # grilla 0.5 km (pan + mono)
+    lat_lo = lon_lo = None      # grilla 1 km   (color LR)
+    lat_ir = lon_ir = None      # grilla 2 km   (night IR)
+
+    # B2 nativa 0.5 km (sub-region) — pan (color) o canal mono.
+    ds2_s = datasets[2].isel(y=slice(super_r0, super_r1),
+                             x=slice(super_c0, super_c1))
+    refls[2] = rad_to_reflectance(ds2_s["Rad"], ds2_s)
+    lat_hi, lon_hi = get_lat_lon(ds2_s)
+    ds2_s.close()
+
+    if mode == "color" and nest_ok:
+        # B1, B3 a 1 km: bounds = super//2 (anidamiento ABI).
+        r0_1, r1_1 = super_r0 // 2, super_r1 // 2
+        c0_1, c1_1 = super_c0 // 2, super_c1 // 2
+        for b in (1, 3):
+            if b not in datasets:
+                continue
+            ds_b = datasets[b].isel(y=slice(r0_1, r1_1), x=slice(c0_1, c1_1))
+            refls[b] = rad_to_reflectance(ds_b["Rad"], ds_b)
+            if lat_lo is None:
+                lat_lo, lon_lo = get_lat_lon(ds_b)
+            ds_b.close()
+        # B2 degradada a 1 km = canal rojo del color LR (alineado a B1/B3).
+        refl_b2_lo = _downsample_2x(refls[2])
+        # Alinear shapes (off-by-1 por anidamiento) -> recortar a min comun.
+        if lat_lo is not None and 1 in refls and 3 in refls:
+            mh = min(refls[1].shape[0], refls[3].shape[0],
+                     refl_b2_lo.shape[0], lat_lo.shape[0])
+            mw = min(refls[1].shape[1], refls[3].shape[1],
+                     refl_b2_lo.shape[1], lat_lo.shape[1])
+            refls[1] = refls[1][:mh, :mw]
+            refls[3] = refls[3][:mh, :mw]
+            refl_b2_lo = refl_b2_lo[:mh, :mw]
+            lat_lo = lat_lo[:mh, :mw]
+            lon_lo = lon_lo[:mh, :mw]
+
+        # B13 a 2 km (night IR fallback): bounds = super//4.
+        if 13 in datasets:
+            r0_4, r1_4 = super_r0 // 4, super_r1 // 4
+            c0_4, c1_4 = super_c0 // 4, super_c1 // 4
+            ds13_s = datasets[13].isel(y=slice(r0_4, r1_4),
+                                       x=slice(c0_4, c1_4))
+            bt_ir = rad_to_bt(ds13_s).values
+            lat_ir, lon_ir = get_lat_lon(ds13_s)
+            ds13_s.close()
 
     # 5. Por cada scope: decidir day/night + recortar + RGB.
     # `out_meta` registra qué modo se usó por scope (visible/IR) + sun_alt
@@ -269,7 +316,8 @@ def build_hires_for_scopes(
                     out_meta[sid]["render"] = "skip_night"
                     continue
                 b2_crop, _, _ = crop_to_bounds(
-                    xr.DataArray(refls[2], dims=["y", "x"]), lat, lon, bounds)
+                    xr.DataArray(refls[2], dims=["y", "x"]),
+                    lat_hi, lon_hi, bounds)
                 if b2_crop.size == 0:
                     out[sid] = None
                     out_meta[sid]["render"] = "no_data"
@@ -278,26 +326,38 @@ def build_hires_for_scopes(
                 out_meta[sid]["render"] = "visible_mono"
                 logger.info("[%s] mono_05km DIA sun=%.1f° -> %s (0.5km/px)",
                             sid, sun_alt, rgb.shape)
-            elif is_day and all(b in refls for b in (1, 2, 3)):
-                # TrueColor diurno (1 km/px)
-                b1_crop, _, _ = crop_to_bounds(
-                    xr.DataArray(refls[1], dims=["y", "x"]), lat, lon, bounds)
-                b2_crop, _, _ = crop_to_bounds(
-                    xr.DataArray(refls[2], dims=["y", "x"]), lat, lon, bounds)
-                b3_crop, _, _ = crop_to_bounds(
-                    xr.DataArray(refls[3], dims=["y", "x"]), lat, lon, bounds)
-                if b2_crop.size == 0:
+            elif (is_day and 1 in refls and 3 in refls
+                  and refl_b2_lo is not None and lat_lo is not None):
+                # TrueColor diurno PAN-SHARPENED a 0.5 km/px (4× RAMMB):
+                # color de B1/B2lo/B3 a 1 km + detalle de B2 nativa 0.5 km.
+                # Recorto UNA vez en la grilla 1 km y derivo el pan como
+                # EXACTAMENTE 2× los mismos indices (anidamiento ABI: 1km
+                # pixel k <-> 0.5km pixels 2k,2k+1). Asi color y detalle quedan
+                # co-registrados — sin ghosting por recortes independientes.
+                idx = bbox_indices(lat_lo, lon_lo, bounds)
+                if idx is None:
                     out[sid] = None
                     out_meta[sid]["render"] = "no_data"
                     continue
-                rgb = true_color_rgb(b1_crop, b2_crop, b3_crop)
+                r0, r1, c0, c1 = idx
+                b1_crop = refls[1][r0:r1, c0:c1]
+                b2lo_crop = refl_b2_lo[r0:r1, c0:c1]
+                b3_crop = refls[3][r0:r1, c0:c1]
+                pan_crop = refls[2][2 * r0:2 * r1, 2 * c0:2 * c1]
+                if b2lo_crop.size == 0 or pan_crop.size == 0:
+                    out[sid] = None
+                    out_meta[sid]["render"] = "no_data"
+                    continue
+                rgb = true_color_rgb(b1_crop, b2lo_crop, b3_crop,
+                                     pan=pan_crop)
                 out_meta[sid]["render"] = "visible_color"
-                logger.info("[%s] DIA sun=%.1f° -> TrueColor %s",
+                logger.info("[%s] DIA sun=%.1f° -> TrueColor pan-sharp %s (0.5km/px)",
                             sid, sun_alt, rgb.shape)
-            elif bt13 is not None:
-                # Night IR pseudo-color
+            elif bt_ir is not None and lat_ir is not None:
+                # Night IR pseudo-color (2 km nativo).
                 bt_crop, _, _ = crop_to_bounds(
-                    xr.DataArray(bt13, dims=["y", "x"]), lat, lon, bounds)
+                    xr.DataArray(bt_ir, dims=["y", "x"]),
+                    lat_ir, lon_ir, bounds)
                 if bt_crop.size == 0:
                     out[sid] = None
                     out_meta[sid]["render"] = "no_data"

@@ -68,6 +68,34 @@ def get_lat_lon(ds: xr.Dataset) -> tuple[np.ndarray, np.ndarray]:
     return lat, lon
 
 
+def bbox_indices(
+    lat: np.ndarray,
+    lon: np.ndarray,
+    bounds: dict,
+) -> tuple[int, int, int, int] | None:
+    """Índices (r0, r1, c0, c1) del bounding box de pixeles dentro de bounds.
+
+    r1/c1 son EXCLUSIVOS (estilo slice de numpy). None si no hay overlap.
+
+    Util cuando hace falta el rango de pixeles ademas del recorte — p.ej.
+    para alinear dos grillas anidadas (1 km vs 0.5 km) recortando una y
+    derivando la otra como 2× los mismos indices (pan-sharpening).
+    """
+    mask = (
+        (lat >= bounds["lat_min"])
+        & (lat <= bounds["lat_max"])
+        & (lon >= bounds["lon_min"])
+        & (lon <= bounds["lon_max"])
+    )
+    rows = np.any(mask, axis=1)
+    cols = np.any(mask, axis=0)
+    if not rows.any() or not cols.any():
+        return None
+    r_min, r_max = np.where(rows)[0][[0, -1]]
+    c_min, c_max = np.where(cols)[0][[0, -1]]
+    return int(r_min), int(r_max) + 1, int(c_min), int(c_max) + 1
+
+
 def crop_to_bounds(
     data: xr.DataArray,
     lat: np.ndarray,
@@ -85,25 +113,13 @@ def crop_to_bounds(
     Returns:
         Tupla (data_crop, lat_crop, lon_crop) como arrays 2D.
     """
-    mask = (
-        (lat >= bounds["lat_min"])
-        & (lat <= bounds["lat_max"])
-        & (lon >= bounds["lon_min"])
-        & (lon <= bounds["lon_max"])
-    )
-
-    # Encontrar bounding box en coordenadas de pixel
-    rows = np.any(mask, axis=1)
-    cols = np.any(mask, axis=0)
-
-    if not rows.any() or not cols.any():
+    idx = bbox_indices(lat, lon, bounds)
+    if idx is None:
         return np.array([]), np.array([]), np.array([])
 
-    r_min, r_max = np.where(rows)[0][[0, -1]]
-    c_min, c_max = np.where(cols)[0][[0, -1]]
-
-    data_crop = data.values[r_min : r_max + 1, c_min : c_max + 1]
-    lat_crop = lat[r_min : r_max + 1, c_min : c_max + 1]
-    lon_crop = lon[r_min : r_max + 1, c_min : c_max + 1]
+    r0, r1, c0, c1 = idx
+    data_crop = data.values[r0:r1, c0:c1]
+    lat_crop = lat[r0:r1, c0:c1]
+    lon_crop = lon[r0:r1, c0:c1]
 
     return data_crop, lat_crop, lon_crop

@@ -14,7 +14,7 @@ import xarray as xr
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.process.geo import crop_to_bounds, get_lat_lon
+from src.process.geo import bbox_indices, crop_to_bounds, get_lat_lon
 
 
 # Parametros de proyeccion GOES-19 (GOES-East, lon=-75)
@@ -101,11 +101,11 @@ def test_crop_to_bounds_basic():
     bounds = {"lat_min": -42, "lat_max": -38, "lon_min": -73, "lon_max": -71}
     data_c, lat_c, lon_c = crop_to_bounds(data, lat, lon, bounds)
 
-    # Debe quedar al menos un pixel y todos dentro del bbox
-    assert lat_c.size > 0
-    assert lat_c.min() >= -45 and lat_c.max() <= -35  # consistencia bbox amplia
-    # El pixel central (lat=-40, lon=-72) DEBE estar
-    assert -42 <= -40 <= -38 and -73 <= -72 <= -71
+    # Solo el pixel (row=1, col=1): lat=-40 (in [-42,-38]) y lon=-72 (in [-73,-71]).
+    # Aserta el CONTENIDO real del crop, no una tautologia sobre literales.
+    assert data_c.shape == (1, 1), data_c.shape
+    assert data_c[0, 0] == 4  # data[1,1] = 4
+    assert lat_c[0, 0] == -40 and lon_c[0, 0] == -72
 
 
 def test_crop_empty_when_no_overlap():
@@ -120,6 +120,34 @@ def test_crop_empty_when_no_overlap():
     assert data_c.size == 0
 
 
+def test_bbox_indices_exclusive_and_coupled():
+    """bbox_indices: r1/c1 EXCLUSIVOS, None sin overlap, y acoplado a crop.
+
+    El pipeline hace pan_crop = refls[2][2*r0:2*r1, ...] confiando en que
+    r1/c1 son exclusivos (estilo slice). Si alguien los volviera inclusivos,
+    crop_to_bounds seguiria pareciendo correcto pero el pan_crop quedaria 2px
+    corto -> misregistro silencioso. Este test ancla el contrato exclusivo.
+    """
+    # Grilla 4x4: lat por fila, lon por columna.
+    lat = np.array([[-44.0]*4, [-42.0]*4, [-40.0]*4, [-38.0]*4])
+    lon = np.tile(np.array([-75.0, -73.0, -71.0, -69.0]), (4, 1))
+    bounds = {"lat_min": -43, "lat_max": -39, "lon_min": -74, "lon_max": -70}
+    # filas con lat en [-43,-39]: -42 (1), -40 (2) -> r0=1, r1=3 (exclusivo)
+    # cols con lon en [-74,-70]: -73 (1), -71 (2) -> c0=1, c1=3 (exclusivo)
+    idx = bbox_indices(lat, lon, bounds)
+    assert idx == (1, 3, 1, 3), idx
+    r0, r1, c0, c1 = idx
+    # Exclusivo: el conteo de pixeles = r1-r0 (no r1-r0+1)
+    assert (r1 - r0, c1 - c0) == (2, 2)
+    # Acoplado: crop_to_bounds devuelve EXACTAMENTE ese shape
+    data = xr.DataArray(np.arange(16).reshape(4, 4))
+    data_c, _, _ = crop_to_bounds(data, lat, lon, bounds)
+    assert data_c.shape == (r1 - r0, c1 - c0)
+    # None si no hay overlap
+    assert bbox_indices(lat, lon, {"lat_min": 10, "lat_max": 20,
+                                   "lon_min": 10, "lon_max": 20}) is None
+
+
 if __name__ == "__main__":
     test_subsatellite_point()
     test_off_disk_pixels_are_nan()
@@ -127,4 +155,5 @@ if __name__ == "__main__":
     test_chile_is_within_disk()
     test_crop_to_bounds_basic()
     test_crop_empty_when_no_overlap()
+    test_bbox_indices_exclusive_and_coupled()
     print("OK — geo tests passed")

@@ -215,8 +215,8 @@ def fetch_volcan_product(prod_id: str, volcano_name: str,
 
     Encapsula el SWITCH de "mejor vista posible" para reusar desde la página
     completa Y desde la rotación del Modo Sala TV:
-    - GeoColor: hi-res L1b visible (≈1 km/px true color) cuando hay render
-      diurno fresco; si no, RAMMB GeoColor (mejor de noche).
+    - GeoColor: hi-res L1b visible (≈0.5 km/px true color pan-sharpened)
+      cuando hay render diurno fresco; si no, RAMMB GeoColor (mejor de noche).
     - Ash / SO2: siempre RAMMB (son IR 2 km, no hay ganancia de resolución).
 
     Devuelve (img, ts_label). img=None si no hay nada disponible.
@@ -236,7 +236,7 @@ def fetch_volcan_product(prod_id: str, volcano_name: str,
             img = _crop_centered(h_arr, RADIUS_DEG / r) if r > 0 else h_arr
             hhmm = h_info.get("scan_ts", "")[8:12]
             hhmm = f"{hhmm[:2]}:{hhmm[2:]} UTC" if len(hhmm) == 4 else "?"
-            return img, f"{hhmm} (hace {age} min) ✨ hi-res L1b ~1 km/px (visible)"
+            return img, f"{hhmm} (hace {age} min) ✨ hi-res L1b ~0.5 km/px (visible, pan-sharp)"
 
     # 2) RAMMB (Ash, SO2, y GeoColor nocturno / sin hi-res)
     img = None

@@ -1,8 +1,9 @@
 """Build hi-res visible cache: 8 priority volcanoes desde NOAA L1b.
 
-Genera composites a 1 km/px (banda 2 a 0.5 km/px downsampleada 2x para
-alinear con bandas 1+3 a 1 km/px). Aun asi son 1.7x mejor que RAMMB
-zoom 4 efectivo.
+mode 'color' (default): true-color PAN-SHARPENED a 0.5 km/px (color de
+bandas 1+2+3 a 1 km + detalle de banda 2 nativa 0.5 km via High-Pass
+Modulation) = 4× RAMMB zoom 4 efectivo. mode 'mono_05km': banda 2 sola
+sepia a 0.5 km/px.
 
 Cron sugerido: cada 30 min (cron '17,47 * * * *').
 

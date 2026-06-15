@@ -876,8 +876,10 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
 # de ahi (instantaneo, nunca bloquea). Si un slot aun no esta listo (primeros
 # ~60s tras un restart), muestra un placeholder y sigue rotando. VOLCAT se sirve
 # con plotly desde cache (el productor lo mantiene caliente).
+import threading as _threading
 _TV_PRODUCED: dict[str, bytes] = {}
 _TV_PRODUCER_STARTED = False
+_TV_PRODUCER_LOCK = _threading.Lock()  # arranque exactamente-una-vez del hilo
 _TV_LAST_SEEN = 0.0  # epoch de la ultima vez que se RENDERIZO la sala TV
 TV_PRODUCER_PERIOD_S = 20  # cada cuanto el productor refresca todos los slots
 TV_PRODUCER_IDLE_S = 60    # si nadie mira la sala hace mas de esto, el productor
@@ -922,10 +924,13 @@ def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
     """
     import threading
 
+    # Gate atómico: el check-then-set sin lock dejaba arrancar 2+ hilos
+    # productores si dos sesiones entraban al Modo Sala a la vez. (fix audit)
     global _TV_PRODUCER_STARTED
-    if _TV_PRODUCER_STARTED:
-        return
-    _TV_PRODUCER_STARTED = True
+    with _TV_PRODUCER_LOCK:
+        if _TV_PRODUCER_STARTED:
+            return
+        _TV_PRODUCER_STARTED = True
     zooms = volcan_zooms if volcan_zooms is not None else TV_VOLCAN_ZOOMS
 
     def _rgb_png(product):

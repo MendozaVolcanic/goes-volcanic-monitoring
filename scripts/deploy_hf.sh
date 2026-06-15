@@ -28,6 +28,16 @@ fi
 HF_SPACE="mendozavolcanic/goes-volcanic-monitoring"
 TEMP_BRANCH="hf-deploy-$(date +%s)"
 
+# Limpieza garantizada: si el push falla (token, red, rechazo, rate-limit), con
+# set -e el script abortaba DEJANDO al usuario parado en el orphan branch, con el
+# árbol modificado y el branch temporal sin borrar. Este trap vuelve a main y
+# borra el branch temporal pase lo que pase. (fix audit jun 2026)
+cleanup() {
+    git checkout main -f 2>/dev/null || true
+    git branch -D "$TEMP_BRANCH" 2>/dev/null || true
+}
+trap cleanup EXIT
+
 echo "==> Asegurando que estamos en main..."
 git checkout main
 
@@ -65,8 +75,7 @@ git push "https://mendozavolcanic:${HF_TOKEN}@huggingface.co/spaces/${HF_SPACE}"
     "${TEMP_BRANCH}:main" --force
 
 echo "==> Limpiando branch temporal..."
-git checkout main -f
-git branch -D "$TEMP_BRANCH"
+# (el trap cleanup EXIT vuelve a main y borra el branch temporal)
 
 echo ""
 echo "DONE. Build en https://huggingface.co/spaces/${HF_SPACE}"

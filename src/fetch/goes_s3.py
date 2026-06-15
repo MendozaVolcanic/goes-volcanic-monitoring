@@ -5,6 +5,9 @@ Descarga bandas L1b individuales y productos L2 (MCMIPF, FDCF).
 """
 
 import logging
+import os
+import threading
+import uuid
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -31,6 +34,53 @@ def _get_fs() -> s3fs.S3FileSystem:
     if _fs is None:
         _fs = s3fs.S3FileSystem(anon=True)
     return _fs
+
+
+# Locks por-archivo para descarga ATÓMICA. Antes download_band/mcmip/fdc hacían
+# fs.get() directo sobre el path final (s3fs escribe in-place, sin tmp+rename) y
+# luego use_cache lo daba por válido por el solo hecho de existir. Con descargas
+# PARALELAS del mismo scan (grid de 4 zonas, hilo productor, hires_pipeline) dos
+# hilos escribían el MISMO archivo a la vez -> NetCDF corrupto o medio escrito
+# tomado como cache. Ahora: lock por filename + download a tmp único + os.replace
+# atómico (solo si terminó OK). (fix audit jun 2026)
+_DL_LOCKS: dict[str, threading.Lock] = {}
+_DL_LOCKS_GUARD = threading.Lock()
+
+
+def _lock_for(name: str) -> threading.Lock:
+    with _DL_LOCKS_GUARD:
+        lk = _DL_LOCKS.get(name)
+        if lk is None:
+            lk = threading.Lock()
+            _DL_LOCKS[name] = lk
+        return lk
+
+
+def _download_cached(remote_path: str, use_cache: bool = True) -> Path:
+    """Descarga atómica y thread-safe de un objeto S3 a RAW_DIR.
+
+    Devuelve el Path local. Lock por filename + tmp+os.replace -> sin corrupción
+    con descargas concurrentes del mismo archivo.
+    """
+    filename = remote_path.split("/")[-1]
+    local_path = RAW_DIR / filename
+    if use_cache and local_path.exists():
+        return local_path
+    with _lock_for(filename):
+        if use_cache and local_path.exists():
+            return local_path  # otro hilo la bajó mientras esperábamos
+        RAW_DIR.mkdir(parents=True, exist_ok=True)
+        tmp = local_path.with_name(f"{filename}.part-{uuid.uuid4().hex[:8]}")
+        try:
+            _get_fs().get(remote_path, str(tmp))
+            os.replace(str(tmp), str(local_path))
+        finally:
+            try:
+                if tmp.exists():
+                    tmp.unlink()
+            except Exception:
+                pass
+    return local_path
 
 
 def _time_to_s3_path(product: str, dt: datetime) -> str:
@@ -73,17 +123,7 @@ def download_band(dt: datetime, band: int, use_cache: bool = True) -> Path | Non
 
     # Tomar el último archivo de la hora (más reciente)
     remote_path = files[-1]
-    filename = remote_path.split("/")[-1]
-
-    local_path = RAW_DIR / filename
-    if use_cache and local_path.exists():
-        logger.debug("Cache hit: %s", filename)
-        return local_path
-
-    logger.info("Downloading band %d: %s", band, filename)
-    fs = _get_fs()
-    fs.get(remote_path, str(local_path))
-    return local_path
+    return _download_cached(remote_path, use_cache)
 
 
 def download_volcanic_bands(dt: datetime) -> dict[int, Path]:
@@ -104,18 +144,7 @@ def download_mcmip(dt: datetime, use_cache: bool = True) -> Path | None:
     files = list_files(PRODUCTS["mcmip"], dt)
     if not files:
         return None
-
-    remote_path = files[-1]
-    filename = remote_path.split("/")[-1]
-
-    local_path = RAW_DIR / filename
-    if use_cache and local_path.exists():
-        return local_path
-
-    logger.info("Downloading MCMIPF: %s", filename)
-    fs = _get_fs()
-    fs.get(remote_path, str(local_path))
-    return local_path
+    return _download_cached(files[-1], use_cache)
 
 
 def download_fdc(dt: datetime, use_cache: bool = True) -> Path | None:
@@ -123,18 +152,7 @@ def download_fdc(dt: datetime, use_cache: bool = True) -> Path | None:
     files = list_files(PRODUCTS["fdc"], dt)
     if not files:
         return None
-
-    remote_path = files[-1]
-    filename = remote_path.split("/")[-1]
-
-    local_path = RAW_DIR / filename
-    if use_cache and local_path.exists():
-        return local_path
-
-    logger.info("Downloading FDCF: %s", filename)
-    fs = _get_fs()
-    fs.get(remote_path, str(local_path))
-    return local_path
+    return _download_cached(files[-1], use_cache)
 
 
 def open_band(path: Path) -> xr.Dataset:

@@ -276,10 +276,13 @@ def _volcat_colorbar_strip(image_url: str) -> bytes:
         # Fracciones medidas sobre el layout SSEC (1000x821). El globo RealEarth
         # y los logos NOAA/CIMSS están ARRIBA (y<0.93); los 2 colorbars con sus
         # NÚMEROS y UNIDADES ("10.3 µm BT [K]" / "Ash/Dust Height [km, ASL]")
-        # están en la franja inferior (y 0.935→1.0). Tomamos esa franja casi
-        # full-width para NO cortar las escalas ni las unidades. (fix jun 2026:
-        # el recorte previo cortaba el inicio de la escala BT y las unidades.)
-        crop = im.crop((int(0.065 * w), int(0.935 * h), int(0.985 * w), h))
+        # están en la franja inferior (y 0.935→1.0). Tomamos esa franja desde
+        # 0.065*w hasta el BORDE DERECHO (w) para NO cortar ni el inicio de la
+        # escala BT ni el final de la escala de altura. (fix jun 2026: el 0.985*w
+        # previo cortaba el "0" del "20" en Ash/Dust Height — verificado contra
+        # la imagen SSEC 1000×821: el "20" llega hasta ~x=993, no hay logo a la
+        # derecha de la franja inferior.)
+        crop = im.crop((int(0.065 * w), int(0.935 * h), w, h))
         buf = io.BytesIO()
         crop.save(buf, format="PNG")
         return buf.getvalue()

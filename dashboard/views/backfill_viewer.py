@@ -18,7 +18,6 @@ import io
 import json
 import logging
 from datetime import datetime
-from typing import Optional
 
 import numpy as np
 import plotly.graph_objects as go

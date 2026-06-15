@@ -10,7 +10,6 @@ la tendencia.
 from __future__ import annotations
 
 import logging
-from datetime import timedelta
 
 import numpy as np
 import pandas as pd
@@ -26,7 +25,7 @@ try:
     from src.fetch.timeseries import (
         METRIC_LABEL, fetch_volcano_timeseries,
     )
-    from src.fetch.rammb_slider import ZOOM_VOLCAN, ZOOM_ZONE, fetch_frame_for_bounds
+    from src.fetch.rammb_slider import ZOOM_ZONE, fetch_frame_for_bounds
     from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
 except Exception:
     # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.

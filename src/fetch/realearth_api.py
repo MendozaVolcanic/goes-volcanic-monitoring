@@ -9,10 +9,8 @@ Ref: https://realearth.ssec.wisc.edu/api/
 
 import io
 import logging
-from datetime import datetime
 
 import numpy as np
-import requests
 
 from src.config import CACHE_DIR, CHILE_BOUNDS
 

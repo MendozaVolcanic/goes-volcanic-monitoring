@@ -14,7 +14,7 @@ inmediatamente sobre ese volcán (compartible por mail/Slack al equipo).
 """
 
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 
 import numpy as np
 import plotly.graph_objects as go
@@ -22,7 +22,7 @@ import streamlit as st
 
 try:
     from dashboard.utils import fmt_chile, parse_rammb_ts
-    from src.fetch.goes_fdcf import HotSpot, fetch_latest_hotspots
+    from src.fetch.goes_fdcf import fetch_latest_hotspots
     from src.fetch.rammb_slider import (
         fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
     )

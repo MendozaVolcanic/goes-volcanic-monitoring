@@ -207,6 +207,87 @@ def test_hires_age_min():
     assert MGV._hires_age_min({"scan_dt_iso": "basura"}, now) is None
 
 
+def test_planck_roundtrip():
+    """rad_to_bt: round-trip Planck (T -> Rad -> T) + Rad<=0 -> NaN.
+
+    Núcleo cuantitativo de TODO el pipeline térmico (Ash RGB, BTD, SO2).
+    Forward: t_eff = T*bc2 + bc1 ; Rad = fk1 / (exp(fk2/t_eff) - 1).
+    """
+    import numpy as np
+    import xarray as xr
+
+    from src.process.brightness_temp import rad_to_bt
+
+    fk1, fk2, bc1, bc2 = 2.0e4, 1.3e3, 0.5, 0.9995
+    bt_true = np.array([[230.0, 270.0, 300.0]])
+    t_eff = bt_true * bc2 + bc1
+    rad = fk1 / (np.exp(fk2 / t_eff) - 1.0)
+    ds = xr.Dataset({
+        "Rad": (("y", "x"), rad),
+        "planck_fk1": fk1, "planck_fk2": fk2,
+        "planck_bc1": bc1, "planck_bc2": bc2,
+    })
+    bt = rad_to_bt(ds)
+    assert np.allclose(bt.values, bt_true, atol=1e-4), bt.values
+    assert bt.attrs["units"] == "K"
+
+    # Radiancia <= 0 -> NaN (no log de negativo); positiva -> finito.
+    ds2 = ds.copy()
+    ds2["Rad"] = (("y", "x"), np.array([[-1.0, 0.0, float(rad[0, 2])]]))
+    bt2 = rad_to_bt(ds2).values
+    assert np.isnan(bt2[0, 0]) and np.isnan(bt2[0, 1])
+    assert np.isfinite(bt2[0, 2])
+
+
+def test_btd_and_ash_detection():
+    """BTD split-window + detección de ceniza (Prata 1989, thresholds config)."""
+    import numpy as np
+    import xarray as xr
+
+    from src.process.ash_detection import (
+        compute_ash_confidence, compute_btd_split_window, detect_ash_basic,
+    )
+
+    def da(a):
+        return xr.DataArray(np.array(a, dtype=float), dims=("y", "x"))
+
+    # bt14 (11.2um), bt15 (12.3um), bt11 (8.4um)
+    bt14 = da([[250.0, 250.0, 190.0]])   # 3er pixel frío (<200 K -> filtrado)
+    bt15 = da([[252.0, 250.5, 191.0]])   # BTD = -2.0, -0.5, -1.0
+    bt11 = da([[244.0, 250.0, 188.0]])
+
+    btd = compute_btd_split_window(bt14, bt15)
+    assert np.allclose(btd.values, [[-2.0, -0.5, -1.0]]), btd.values
+
+    basic = detect_ash_basic(bt14, bt15)
+    # pix0: BTD -2 < -1 y temp 250>200 -> ceniza; pix1: -0.5 no; pix2: frío -> no
+    assert basic.values.tolist() == [[True, False, False]], basic.values
+
+    conf = compute_ash_confidence(bt11, bt14, bt15)
+    assert conf.values[0, 0] >= 2  # BTD fuerte -> confianza media/alta
+    assert conf.values[0, 1] == 0  # BTD débil -> sin ceniza
+    assert conf.values[0, 2] == 0  # frío -> sin ceniza
+
+
+def test_zone_bboxes_contain_their_volcanoes():
+    """Cada bbox de VOLCANIC_ZONES debe CONTENER los volcanes de su zona.
+
+    Atrapa el bug del audit (boundary sur/austral corrido: zona 'austral' bbox
+    vacío, 'sur' saturado). (jun 2026)
+    """
+    from src.config import VOLCANIC_ZONES
+    from src.volcanos import get_by_zone
+
+    for zk in ["norte", "centro", "sur", "austral"]:
+        b = VOLCANIC_ZONES[zk]
+        vs = get_by_zone(zk)
+        assert vs, f"zona {zk} sin volcanes en el catálogo"
+        for v in vs:
+            assert (b["lat_min"] <= v.lat <= b["lat_max"]
+                    and b["lon_min"] <= v.lon <= b["lon_max"]), (
+                f"{v.name} (zona {zk}) cae FUERA de su bbox {b}")
+
+
 if __name__ == "__main__":
     for m in VIEWS + FETCHERS + PROCESSORS + EXPORTERS:
         test_module_imports(m)

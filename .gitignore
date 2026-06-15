@@ -44,3 +44,6 @@ out_backfill_run.log
 
 # Token HF para deploy local (nunca commitear)
 .hf_token
+
+# Artefacto crudo del audit multi-agente (el legible es AUDIT_REPORT.md)
+audit_findings.json

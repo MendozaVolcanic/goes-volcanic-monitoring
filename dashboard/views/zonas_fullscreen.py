@@ -717,8 +717,10 @@ def _render_volcan_zoom_tv(volcano_name: str, show_hotspots: bool, height: int):
 TV_SLOT_SECONDS = 12
 
 # Volcanes con slot de zoom dedicado en la rotacion TV (3 productos centrados,
-# con switch hi-res en GeoColor). Agregar nombres del CATALOG para sumar mas.
-TV_VOLCAN_ZOOMS = ["Villarrica"]
+# con switch hi-res en GeoColor). Orden = orden de aparicion en la rotacion.
+# Nombres EXACTOS del CATALOG (sin tilde: "Nevados de Chillan"). Agregar mas
+# sumando nombres aca.
+TV_VOLCAN_ZOOMS = ["Villarrica", "Nevados de Chillan"]
 
 
 def _render_tv_status(scan_dt=None, scan_label="scan",

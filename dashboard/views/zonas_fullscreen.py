@@ -364,9 +364,23 @@ def _render_volcat_zone_cell(zona, sector, instr, view_bounds, product,
             st.image(img, width='stretch')
     # Colorbar REAL (escala km AMSL), extraido de la imagen — el legend_url de
     # SSEC era un mapa de costa, no la escala. (jun 2026)
+    # Se emite como <img> markdown (NO st.image) con alto FIJO chico: el CSS del
+    # Modo Sala TV estira TODO `[data-testid=stImage] img` a height:100vh, y
+    # como esta celda ya tiene un st.image (el mapa), un segundo st.image para
+    # el colorbar quedaba inflado a pantalla completa -> apilado bajo el mapa =
+    # scroll, tapaba el mapa y se cortaba. El <img> markdown escapa ese CSS y
+    # queda compacto y centrado. (fix jun 2026)
     leg = _volcat_colorbar_strip(meta["image_url"])
     if leg:
-        st.image(leg, width='stretch')
+        import base64
+        b64 = base64.b64encode(leg).decode()
+        st.markdown(
+            f"<img src='data:image/png;base64,{b64}' "
+            f"alt='Colorbar VOLCAT (km AMSL / K)' style='display:block; "
+            f"max-height:30px; max-width:96%; width:auto; height:auto; "
+            f"margin:3px auto 0;'/>",
+            unsafe_allow_html=True,
+        )
 
 
 def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,

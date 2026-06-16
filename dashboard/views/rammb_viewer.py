@@ -923,6 +923,7 @@ def render():
     scope_sel = sel["scope"]
     scope_label = ""
     height = 700
+    used_hires_loop = False  # el loop hi-res ignora la ventana (cache chico ≤8h)
     try:
         if scope_sel == "Nacional (Chile)":
             with st.spinner(f"Descargando {sel['n']} scans nacionales..."):
@@ -951,17 +952,23 @@ def render():
             if sel.get("hires_loop") and sel["product"] == "geocolor":
                 from src.fetch.hires_loop_cache import fetch_hires_loop_frames
                 with st.spinner(f"Cargando loop hi-res 0.5 km de {v.name}..."):
-                    hframes, hinfo = fetch_hires_loop_frames(
-                        v.name, max_frames=sel["n"])
+                    # Traemos TODOS los frames del cache (es chico, ≤8h): la
+                    # ventana/preset NO aplica al hi-res (si no, pedir "10-12h
+                    # atras" daria vacio porque el cache solo retiene 8h y recien
+                    # se esta llenando).
+                    hframes, hinfo = fetch_hires_loop_frames(v.name)
                 if hframes:
                     frames = hframes
+                    used_hires_loop = True
                     rr = (hinfo or {}).get("radius_deg", 0.5)
                     scope_label = f"{v.name} (±{rr}°) · 0.5 km hi-res"
                     height = 720
                 else:
-                    st.info("Loop hi-res 0.5 km aun no disponible para este "
-                            "volcan/ventana (el cache rolling se llena en ~8 h, "
-                            "cadencia 30 min) — uso RAMMB ~1.7 km.")
+                    st.info(f"Loop hi-res 0.5 km aun no disponible para {v.name}: "
+                            "el cache rolling recien arranca y se llena hasta 12 h "
+                            "(1 frame cada ~30 min). Por ahora uso RAMMB ~1.7 km. "
+                            "Para un loop de 12 h destilda el hi-res y usa el "
+                            "preset/rango con RAMMB (retiene ~12 h).")
             if frames is None:
                 r = sel["radius"]
                 vb = {
@@ -998,7 +1005,8 @@ def render():
         return
 
     # Rango personalizado: recortar los frames a la ventana pedida (post-fetch).
-    if sel.get("range_on") and sel.get("range_h"):
+    # NO aplica al hi-res (su cache es chico y ≤8h -> se muestran todos).
+    if sel.get("range_on") and sel.get("range_h") and not used_hires_loop:
         from datetime import datetime, timedelta, timezone
         h_recent, h_old = sel["range_h"]
         tnow = datetime.now(timezone.utc)
@@ -1008,9 +1016,17 @@ def render():
                   if t_old <= parse_rammb_ts(f["ts"]) <= t_recent]
         if not frames:
             st.warning(
-                "No hay frames en esa ventana (el cache retiene ~12 h). "
+                "No hay frames RAMMB en esa ventana (el cache retiene ~12 h). "
                 "Proba un rango mas reciente o usa un preset de Duracion.")
             return
+
+    if used_hires_loop:
+        st.caption(
+            f"✨ Loop hi-res 0.5 km: {len(frames)} frame(s) en el cache rolling "
+            "(~1 cada 30 min, retiene hasta 12 h; se esta llenando). La "
+            "ventana/preset y el radio no aplican al hi-res — se muestran todos "
+            "los frames disponibles. Para mas frames AHORA, destilda el hi-res "
+            "(RAMMB ~1.7 km ya retiene ~12 h).")
 
     # ── KPIs (ahora con hora local ademas de UTC) ─────────────────────────
     dt_first = parse_rammb_ts(frames[0]["ts"])

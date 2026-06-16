@@ -43,7 +43,7 @@ log = logging.getLogger("hires_loop_cache")
 
 OUT_DIR = ROOT / "out_hires_loop"
 RADIUS_DEG = 0.5            # mismo radio que el still hi-res (0.5° ≈ 55 km)
-ROLL_HOURS = 8             # retencion de la ventana rodante
+ROLL_HOURS = 12            # retencion (≈ presets max RAMMB). 24 frames a 30 min
 RELEASE_TAG = "hires-loop-rolling"
 CDN_BASE = ("https://github.com/MendozaVolcanic/goes-volcanic-monitoring"
             f"/releases/download/{RELEASE_TAG}")

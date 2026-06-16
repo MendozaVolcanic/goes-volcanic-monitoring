@@ -88,6 +88,28 @@ def hotspot_distance_km(lat1: float, lon1: float,
     return float(np.hypot(dlat, dlon))
 
 
+# Distancia maxima (km) para considerar un foco de calor RELEVANTE para el
+# monitoreo volcanico. Focos mas lejos (incendios forestales, industria,
+# quemas agricolas) NO son relevantes y solo ensucian el mapa. 30 km da margen
+# para el error de geolocalizacion del FDCF (~2 km) + cráteres satelite.
+HOTSPOT_NEAR_KM = 30.0
+
+
+def filter_hotspots_near_volcanoes(hotspots, max_km: float = HOTSPOT_NEAR_KM):
+    """Quedarse SOLO con los focos a <= max_km de ALGUN volcan del CATALOG.
+
+    Los focos FDCF lejos de cualquier volcan (incendios, industria) no aportan
+    al monitoreo volcanico — el usuario pidio no mostrarlos. (jun 2026 OVDAS)
+    """
+    if not hotspots:
+        return hotspots
+    from src.volcanos import CATALOG
+    vs = [(v.lat, v.lon) for v in CATALOG if v.zone != "test"]
+    return [h for h in hotspots
+            if any(hotspot_distance_km(h.lat, h.lon, vlat, vlon) <= max_km
+                   for vlat, vlon in vs)]
+
+
 def nearest_hotspot(hotspots, lat: float, lon: float):
     """Hotspot mas cercano a (lat, lon) + distancia km. (None, inf) si lista vacia.
 

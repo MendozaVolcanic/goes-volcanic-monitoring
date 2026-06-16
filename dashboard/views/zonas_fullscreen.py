@@ -75,7 +75,9 @@ def _recent_ts(product: str, n: int = 3) -> list[str]:
 def _hotspots_zone(zone_key: str) -> tuple[list[HotSpot], datetime | None]:
     bounds = VOLCANIC_ZONES[zone_key]
     try:
-        return fetch_latest_hotspots(bounds=bounds, hours_back=1)
+        hs, dt = fetch_latest_hotspots(bounds=bounds, hours_back=1)
+        from dashboard.map_helpers import filter_hotspots_near_volcanoes
+        return filter_hotspots_near_volcanoes(hs), dt
     except Exception:
         return [], None
 

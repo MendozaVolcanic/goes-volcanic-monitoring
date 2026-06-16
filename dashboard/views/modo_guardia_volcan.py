@@ -117,7 +117,9 @@ def _hotspots_volcan(lat_min: float, lat_max: float,
     bounds = {"lat_min": lat_min, "lat_max": lat_max,
               "lon_min": lon_min, "lon_max": lon_max}
     try:
-        return fetch_latest_hotspots(bounds=bounds, hours_back=1)
+        hs, dt = fetch_latest_hotspots(bounds=bounds, hours_back=1)
+        from dashboard.map_helpers import filter_hotspots_near_volcanoes
+        return filter_hotspots_near_volcanoes(hs), dt
     except Exception as e:
         logger.warning("hotspots fallo: %s", e)
         return [], None

@@ -816,6 +816,7 @@ def render():
     zone_key = None
     volc_name = None
     radius = VOLCANO_RADIUS_DEG
+    hires_loop = False
 
     if scope == "Por zona volcanica":
         zone_key = st.selectbox(
@@ -835,6 +836,15 @@ def render():
         with cv2:
             radius = st.slider("Radio (°)", 0.5, 3.0, VOLCANO_RADIUS_DEG, 0.5,
                                key="anim_radius")
+        if product == "geocolor":
+            hires_loop = st.checkbox(
+                "✨ 0.5 km hi-res (loop pan-sharpened L1b — solo ★ prioritarios)",
+                value=False, key="anim_hires_loop",
+                help="Usa el cache rolling de frames GeoColor 0.5 km/px (L1b "
+                     "pan-sharpened, 4× RAMMB) en vez de RAMMB ~1.7 km. Solo "
+                     "para los 8 volcanes ★ y cadencia ~30 min (loop mas "
+                     "espaciado). Radio fijo ±0.5°. Si aun no hay frames "
+                     "cacheados, cae a RAMMB.")
 
     # Rango temporal personalizado (opcional): ventana inicio/fin dentro de las
     # ~12 h que retiene el cache, en vez del preset "ultimas N horas".
@@ -900,13 +910,13 @@ def render():
         st.session_state["anim_sel"] = dict(
             product=product, n=n_frames, scope=scope,
             zone=zone_key, volc=volc_name, radius=radius,
-            range_on=range_on, range_h=range_h,
+            range_on=range_on, range_h=range_h, hires_loop=hires_loop,
         )
 
     sel = st.session_state.get("anim_sel", dict(
         product=product, n=n_frames, scope=scope,
         zone=zone_key, volc=volc_name, radius=radius,
-        range_on=range_on, range_h=range_h,
+        range_on=range_on, range_h=range_h, hires_loop=hires_loop,
     ))
 
     # ── Determinar bounds + zoom segun scope ──────────────────────────────
@@ -935,30 +945,48 @@ def render():
             if v is None:
                 st.error(f"Volcan '{vname}' no encontrado.")
                 return
-            r = sel["radius"]
-            vb = {
-                "lat_min": v.lat - r, "lat_max": v.lat + r,
-                "lon_min": v.lon - r, "lon_max": v.lon + r,
-            }
-            bt = (vb["lat_min"], vb["lat_max"], vb["lon_min"], vb["lon_max"])
-            # El cache pre-bajado es al radio DEFAULT (VOLCANO_RADIUS_DEG). Si el
-            # usuario cambia el radio, el bounds_key NO debe mapear al cache: si
-            # no, _fetch_via_cache devolveria los frames al radio viejo y el
-            # slider "no haria nada". 'vr:' no matchea v:/z: -> baja on-demand al
-            # bbox pedido. (fix jun 2026: el radio no se aplicaba en prioritarios)
-            at_default = abs(r - VOLCANO_RADIUS_DEG) < 1e-6
-            bkey = f"v:{v.name}" if at_default else f"vr:{v.name}:{r:g}"
-            with st.spinner(f"Descargando {sel['n']} scans zoom para {v.name}..."):
-                frames = _fetch_bounds_frames(
-                    sel["product"], sel["n"], ZOOM_VOLCAN, bkey, bt,
-                )
-                if not frames:
-                    # Fallback a zoom=3 si zoom=4 no esta disponible
+            frames = None
+            # 0.5 km hi-res loop (GeoColor): cache rolling de frames L1b
+            # pan-sharpened. Solo prioritarios; si aun no hay frames, cae a RAMMB.
+            if sel.get("hires_loop") and sel["product"] == "geocolor":
+                from src.fetch.hires_loop_cache import fetch_hires_loop_frames
+                with st.spinner(f"Cargando loop hi-res 0.5 km de {v.name}..."):
+                    hframes, hinfo = fetch_hires_loop_frames(
+                        v.name, max_frames=sel["n"])
+                if hframes:
+                    frames = hframes
+                    rr = (hinfo or {}).get("radius_deg", 0.5)
+                    scope_label = f"{v.name} (±{rr}°) · 0.5 km hi-res"
+                    height = 720
+                else:
+                    st.info("Loop hi-res 0.5 km aun no disponible para este "
+                            "volcan/ventana (el cache rolling se llena en ~8 h, "
+                            "cadencia 30 min) — uso RAMMB ~1.7 km.")
+            if frames is None:
+                r = sel["radius"]
+                vb = {
+                    "lat_min": v.lat - r, "lat_max": v.lat + r,
+                    "lon_min": v.lon - r, "lon_max": v.lon + r,
+                }
+                bt = (vb["lat_min"], vb["lat_max"], vb["lon_min"], vb["lon_max"])
+                # El cache pre-bajado es al radio DEFAULT (VOLCANO_RADIUS_DEG).
+                # Si el usuario cambia el radio, el bounds_key NO debe mapear al
+                # cache (si no devolveria los frames al radio viejo). 'vr:' no
+                # matchea v:/z: -> baja on-demand al bbox pedido. (fix jun 2026)
+                at_default = abs(r - VOLCANO_RADIUS_DEG) < 1e-6
+                bkey = f"v:{v.name}" if at_default else f"vr:{v.name}:{r:g}"
+                with st.spinner(
+                        f"Descargando {sel['n']} scans zoom para {v.name}..."):
                     frames = _fetch_bounds_frames(
-                        sel["product"], sel["n"], ZOOM_ZONE, f"vz3:{v.name}", bt,
+                        sel["product"], sel["n"], ZOOM_VOLCAN, bkey, bt,
                     )
-            scope_label = f"{v.name} (±{r}°)"
-            height = 720
+                    if not frames:
+                        frames = _fetch_bounds_frames(
+                            sel["product"], sel["n"], ZOOM_ZONE,
+                            f"vz3:{v.name}", bt,
+                        )
+                scope_label = f"{v.name} (±{r}°)"
+                height = 720
     except Exception as e:
         logger.exception("anim error")
         st.error(f"Error descargando: {e}")

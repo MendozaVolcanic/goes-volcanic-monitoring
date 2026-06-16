@@ -39,6 +39,8 @@ VIEWS = [
 FETCHERS = [
     "src.fetch.goes_s3",
     "src.fetch.goes_fdcf",
+    "src.fetch.hires_cache",
+    "src.fetch.hires_loop_cache",
     "src.fetch.frp_timeline",
     "src.fetch.rammb_slider",
     "src.fetch.realearth_api",

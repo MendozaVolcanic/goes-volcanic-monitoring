@@ -66,12 +66,19 @@ jobs:
             python scripts/build_hires_cache.py --mode "$INPUT_MODE"
           fi
 
+      - name: Build loop cache rolling (0.5km hi-res)
+        # Ventana RODANTE ~8h de frames 0.5km para LOOPS hi-res. Incremental:
+        # baja el ZIP rodante existente del release, agrega SOLO el frame del
+        # scan actual (reusa las bandas L1b ya bajadas por el paso anterior),
+        # poda lo > 8h. En ~8h se llena (~16 frames a 30 min).
+        run: python scripts/build_hires_loop_cache.py
+
       - name: Listar contenido
         run: |
           ls -lh out_hires/ | head -15
-          echo "---"
-          echo "Total assets: $(ls out_hires/ | wc -l)"
-          echo "Total size: $(du -sh out_hires/ | cut -f1)"
+          echo "--- loop cache ---"
+          ls -lh out_hires_loop/ 2>/dev/null | head -12
+          echo "Total assets hires: $(ls out_hires/ | wc -l)"
 
       - name: Publicar al release rolling
         uses: ./.github/actions/gh-release-snapshot
@@ -80,6 +87,19 @@ jobs:
           title: "Hi-res visible cache (rolling)"
           notes: "Cache rolling de imagenes visibles 0.5 km/px (pan-sharpened) para los 8 volcanes prioritarios. Actualizado por hires_visible_cache.yml cada 30 min. Day = TrueColor pan-sharp, Night = IR pseudo-color."
           dir: out_hires
+          prerelease: 'true'
+          batch-size: '50'
+          sleep-between-batches: '15'
+
+      - name: Publicar loop cache (0.5km rolling)
+        # Release separado para la ventana rodante de loops hi-res. dir distinto.
+        if: ${{ hashFiles('out_hires_loop/**') != '' }}
+        uses: ./.github/actions/gh-release-snapshot
+        with:
+          tag: hires-loop-rolling
+          title: "Hi-res loop cache (rolling 0.5km)"
+          notes: "Ventana rodante ~8h de frames GeoColor 0.5km pan-sharpened para los 8 volcanes prioritarios. Permite LOOPS hi-res en la vista loops (modo volcan). Actualizado cada ~30 min; se llena en ~8h."
+          dir: out_hires_loop
           prerelease: 'true'
           batch-size: '50'
           sleep-between-batches: '15'

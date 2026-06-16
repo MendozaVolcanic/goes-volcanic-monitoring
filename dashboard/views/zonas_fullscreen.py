@@ -316,8 +316,8 @@ def _render_volcat_zone_cell(zona, sector, instr, view_bounds, product,
         SSEC completa). Modo de 3 zonas (revert).
     """
     from dashboard.views.volcat_viewer import (
-        _volcat_colorbar_strip, _volcat_dt_obj, _volcat_image_with_overlays,
-        _volcat_latest_cached, _volcat_map_only,
+        _volcat_colorbar_strip, _volcat_colorbar_strip_vertical, _volcat_dt_obj,
+        _volcat_image_with_overlays, _volcat_latest_cached, _volcat_map_only,
     )
     from dashboard.utils import fmt_both
 
@@ -344,32 +344,33 @@ def _render_volcat_zone_cell(zona, sector, instr, view_bounds, product,
                 f"text-align:center;'>VOLCAT sin frame</div>",
                 unsafe_allow_html=True)
             return
+        # Colorbar VERTICAL incrustado en la figura (borde Pacifico, sin
+        # volcanes): NO va debajo del mapa (evita el scroll del Modo Sala) ni
+        # tapa la cordillera. (jun 2026)
+        vleg = _volcat_colorbar_strip_vertical(meta["image_url"])
         st.plotly_chart(
             _volcat_zone_fig(data["png"], data["bounds"], view_bounds,
-                             f"Zona {zona}", time_label, height),
+                             f"Zona {zona}", time_label, height,
+                             legend_bytes=vleg or None),
             width='stretch',
             config={"displayModeBar": False, "responsive": True},
             key=f"volcat4_{zona}_{product}",
         )
-    else:  # ssec_overlay clasico (3 zonas)
-        st.markdown(
-            f"<div style='font-weight:800; color:#ff6644; font-size:0.95rem; "
-            f"margin-bottom:0.2rem;'>Zona {zona} <span style='color:#aabbc8; "
-            f"font-weight:400; font-size:0.78rem;'>· {time_label}</span></div>",
-            unsafe_allow_html=True)
-        img = _volcat_image_with_overlays(
-            meta["image_url"], meta.get("volcanoes_url"),
-            meta.get("latlon_url"))
-        if img:
-            st.image(img, width='stretch')
-    # Colorbar REAL (escala km AMSL), extraido de la imagen — el legend_url de
-    # SSEC era un mapa de costa, no la escala. (jun 2026)
-    # Se emite como <img> markdown (NO st.image) con alto FIJO chico: el CSS del
-    # Modo Sala TV estira TODO `[data-testid=stImage] img` a height:100vh, y
-    # como esta celda ya tiene un st.image (el mapa), un segundo st.image para
-    # el colorbar quedaba inflado a pantalla completa -> apilado bajo el mapa =
-    # scroll, tapaba el mapa y se cortaba. El <img> markdown escapa ese CSS y
-    # queda compacto y centrado. (fix jun 2026)
+        return  # leyenda ya incrustada (vertical) -> sin tira separada abajo
+
+    # ssec_overlay clasico (3 zonas): la imagen SSEC ya trae el colorbar quemado
+    # al pie; agregamos uno compacto horizontal como <img> markdown (escapa el
+    # CSS del Modo Sala que estira [data-testid=stImage] img a 100vh).
+    st.markdown(
+        f"<div style='font-weight:800; color:#ff6644; font-size:0.95rem; "
+        f"margin-bottom:0.2rem;'>Zona {zona} <span style='color:#aabbc8; "
+        f"font-weight:400; font-size:0.78rem;'>· {time_label}</span></div>",
+        unsafe_allow_html=True)
+    img = _volcat_image_with_overlays(
+        meta["image_url"], meta.get("volcanoes_url"),
+        meta.get("latlon_url"))
+    if img:
+        st.image(img, width='stretch')
     leg = _volcat_colorbar_strip(meta["image_url"])
     if leg:
         import base64
@@ -405,17 +406,18 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
             sizey=sector_bounds["lat_max"] - sector_bounds["lat_min"],
             sizing="stretch", layer="below",
         )
-    # Colorbar REAL (tira horizontal 'Ash/Dust Height km AMSL') incrustado al
-    # PIE, centrado, sobre una banda oscura para legibilidad. Va DENTRO de la
-    # figura -> siempre visible. (jun 2026)
+    # Colorbar VERTICAL incrustado al borde IZQUIERDO (lado del Pacifico, SIN
+    # volcanes): no tapa la cordillera ni va debajo del mapa (lo que obligaba a
+    # scrollear). Va DENTRO de la figura -> siempre visible, sin robar alto.
+    # (jun 2026: antes era horizontal al pie y tapaba/empujaba — pedido OVDAS)
     if legend_bytes:
         lb64 = base64.b64encode(legend_bytes).decode()
         fig.add_layout_image(
             source=f"data:image/png;base64,{lb64}",
             xref="paper", yref="paper",
-            x=0.5, y=0.005, xanchor="center", yanchor="bottom",
-            sizex=0.66, sizey=0.13, sizing="contain", layer="above",
-            opacity=0.98,
+            x=0.0, y=0.5, xanchor="left", yanchor="middle",
+            sizex=0.12, sizey=0.96, sizing="contain", layer="above",
+            opacity=0.96,
         )
     # Nuestros volcanes dentro del encuadre (los MISMOS que las RGB).
     vis = [v for v in CATALOG
@@ -546,11 +548,12 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
                 "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
                 "lon_min": max(sb["lon_min"], -76.0),
                 "lon_max": min(sb["lon_max"], -66.0)}
-            # Colorbar REAL (tira 'Ash/Dust Height km AMSL' extraida del pie de
-            # la imagen) incrustado DENTRO de la figura. El legend_url de SSEC
+            # Colorbar VERTICAL incrustado DENTRO de la figura (borde Pacifico):
+            # no tapa la cordillera ni va debajo del mapa. El legend_url de SSEC
             # era un MAPA de costa, no la escala -> por eso no se veia. (jun 2026)
-            from dashboard.views.volcat_viewer import _volcat_colorbar_strip
-            leg = _volcat_colorbar_strip(meta["image_url"])
+            from dashboard.views.volcat_viewer import (
+                _volcat_colorbar_strip_vertical)
+            leg = _volcat_colorbar_strip_vertical(meta["image_url"])
             st.plotly_chart(
                 _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
                                  time_label, height, legend_bytes=leg or None),

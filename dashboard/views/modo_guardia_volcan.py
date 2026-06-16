@@ -208,6 +208,17 @@ def _array_to_data_url(arr):
     return array_to_data_url(arr)
 
 
+def _zoom_res_label(zoom: int) -> str:
+    """Resolucion aproximada (km/px) por nivel de zoom RAMMB.
+
+    Sirve para que TODOS los productos muestren su resolucion (no solo cuando
+    hubo fallback). ~ es nominal en ecuador; en Chile austral es algo peor por
+    la geometria GOES. ZOOM_VOLCAN=4 ~1.7, ZOOM_ZONE=3 ~3.4, ZOOM_CHILE=2 ~5.1.
+    """
+    return {ZOOM_VOLCAN: "~1.7 km/px", ZOOM_ZONE: "~3.4 km/px",
+            2: "~5.1 km/px"}.get(zoom, "")
+
+
 def fetch_volcan_product(prod_id: str, volcano_name: str,
                          lat: float, lon: float, bounds: dict,
                          now: datetime) -> tuple[np.ndarray | None, str]:
@@ -253,11 +264,17 @@ def fetch_volcan_product(prod_id: str, volcano_name: str,
                 ts_dt = parse_rammb_ts(used_ts)
                 age = int((now - ts_dt).total_seconds() / 60)
                 ts_label = f"{ts_dt.strftime('%H:%M UTC')} (hace {age} min)"
+                # Mostrar SIEMPRE la resolucion del zoom usado (antes solo
+                # aparecia en fallback -> GeoColor, que suele usar el zoom
+                # preferido, no la mostraba; Ash/SO2 si). (jun 2026)
+                res = _zoom_res_label(used_zoom)
+                if res:
+                    ts_label += f" · {res}"
                 flags = []
                 if used_ts != timestamps[0]:
                     flags.append("scan previo")
-                if used_zoom == ZOOM_ZONE:
-                    flags.append(f"zoom {ZOOM_ZONE} (~3.4 km/px)")
+                if used_zoom < ZOOM_VOLCAN:
+                    flags.append("zoom reducido")
                 if flags:
                     ts_label += " ⚠ " + ", ".join(flags)
             except Exception:

@@ -291,6 +291,31 @@ def _volcat_colorbar_strip(image_url: str) -> bytes:
         return b""
 
 
+def _volcat_colorbar_strip_vertical(image_url: str) -> bytes:
+    """Igual que `_volcat_colorbar_strip` pero ROTADO 90° (vertical).
+
+    Para incrustar al COSTADO del mapa (borde Pacifico, sin volcanes): asi la
+    leyenda no tapa la cordillera ni va DEBAJO del mapa (lo que obligaba a
+    scrollear en el Modo Sala). El texto queda de costado, leyendo abajo→arriba
+    (convencion de eje vertical). Reusa el strip horizontal cacheado + rota.
+    (jun 2026, pedido OVDAS)
+    """
+    raw = _volcat_colorbar_strip(image_url)
+    if not raw:
+        return b""
+    try:
+        import io
+        from PIL import Image
+        im = Image.open(io.BytesIO(raw))
+        vert = im.rotate(90, expand=True)  # CCW: BT abajo, altura de pluma arriba
+        buf = io.BytesIO()
+        vert.save(buf, format="PNG")
+        return buf.getvalue()
+    except Exception as e:
+        logger.warning("colorbar vertical fail: %s", e)
+        return b""
+
+
 @st.cache_data(ttl=TTL_FRAME_IMAGE, show_spinner=False)
 def _volcat_image_with_overlays(image_url: str,
                                  volcanoes_url: str | None,

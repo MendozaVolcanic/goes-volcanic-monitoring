@@ -13,9 +13,10 @@ name: Hi-res visible cache build
 
 on:
   schedule:
-    # Cada 30 min en :17 y :47 (offset para no chocar con animation_cache :07).
-    # Default = color (TrueColor day + IR night).
-    - cron: '17,47 * * * *'
+    # Cada 10 min (cadencia NATIVA de GOES-19 RadF) -> loops hi-res tan fluidos
+    # como RAMMB. Antes 30 min; subido a 10 a pedido OVDAS (jun 2026). El still
+    # (snapshot) tambien se refresca; comparte la descarga de bandas con el loop.
+    - cron: '*/10 * * * *'
     # Cada 60 min en :22 (offset distinto), modo mono_05km (4× zoom real),
     # solo durante horario diurno sobre Chile (UTC 11-23 cubre amanecer
     # hasta atardecer). Un solo trigger usa el cron de arriba; el modo

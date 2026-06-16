@@ -21,6 +21,26 @@ on:
         required: false
         default: ''
         type: string
+      start_utc:
+        description: "Ventana explicita inicio YYYYMMDDHHMM (UTC). Si se da con end_utc, ignora 'hours'."
+        required: false
+        default: ''
+        type: string
+      end_utc:
+        description: "Ventana explicita fin YYYYMMDDHHMM (UTC)."
+        required: false
+        default: ''
+        type: string
+      step_min:
+        description: "Paso entre frames en minutos (10 = nativo del satelite, 30 = liviano)."
+        required: false
+        default: '30'
+        type: string
+      min_sun:
+        description: "Elevacion solar minima (grados) para incluir un frame (0 = incluye amanecer tenue)."
+        required: false
+        default: '5'
+        type: string
 
 permissions:
   contents: write
@@ -47,7 +67,11 @@ jobs:
         run: |
           python scripts/build_hires_loop_cache.py \
             --backfill-hours "${{ inputs.hours }}" \
-            --volcano "${{ inputs.volcano }}"
+            --volcano "${{ inputs.volcano }}" \
+            --start-utc "${{ inputs.start_utc }}" \
+            --end-utc "${{ inputs.end_utc }}" \
+            --step-min "${{ inputs.step_min }}" \
+            --min-sun "${{ inputs.min_sun }}"
 
       - name: Listar contenido
         run: |

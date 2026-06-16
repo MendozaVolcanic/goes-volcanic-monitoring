@@ -87,10 +87,10 @@ def _clean_raw() -> None:
         pass
 
 
-def _any_daylight(dt: datetime, priority) -> bool:
-    """True si ALGUN volcan prioritario tiene sol >= 5° (habria frame visible)."""
+def _any_daylight(dt: datetime, volcs, min_sun: float = 5.0) -> bool:
+    """True si ALGUN volcan tiene sol >= min_sun (habria frame visible)."""
     from src.process.geocolor_lite import solar_elevation
-    return any(solar_elevation(v.lat, v.lon, dt) >= 5.0 for v in priority)
+    return any(solar_elevation(v.lat, v.lon, dt) >= min_sun for v in volcs)
 
 
 def _generate_scan(dt: datetime, scopes: dict) -> tuple[str, dict[str, bytes]]:
@@ -118,6 +118,16 @@ def main() -> int:
                     help="Backfillear SOLO este volcan (nombre del CATALOG). "
                          "Los demas prioritarios se PRESERVAN del cache (no se "
                          "borran). Vacio = los 8.")
+    ap.add_argument("--start-utc", default="",
+                    help="Ventana explicita inicio YYYYMMDDHHMM. Con --end-utc "
+                         "reemplaza a --backfill-hours.")
+    ap.add_argument("--end-utc", default="",
+                    help="Ventana explicita fin YYYYMMDDHHMM.")
+    ap.add_argument("--step-min", type=int, default=30,
+                    help="Paso entre frames en minutos (30 default; 10 = nativo).")
+    ap.add_argument("--min-sun", type=float, default=5.0,
+                    help="Elevacion solar minima (°) para incluir un frame "
+                         "(5 default; 0 incluye amanecer/atardecer tenue).")
     args = ap.parse_args()
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -135,34 +145,56 @@ def main() -> int:
 
     # --volcano: generar SOLO ese (los demas se preservan al mergear el ZIP
     # existente en la fase de escritura -> no se borran del release).
+    tslug = _slug(args.volcano) if args.volcano else None
     gen_scopes = scopes
     day_volcs = list(priority)
     if args.volcano:
-        tslug = _slug(args.volcano)
         if tslug not in scopes:
             log.error("'%s' (slug %s) no es prioritario. Opciones: %s",
                       args.volcano, tslug, list(scopes))
             return 1
         gen_scopes = {tslug: scopes[tslug]}
         day_volcs = [v for v in priority if _slug(v.name) == tslug]
-        log.info("Backfill SOLO %s — los otros 7 se preservan del cache",
+        log.info("Backfill SOLO %s — los otros se preservan del cache",
                  args.volcano)
 
-    # Scans a generar (mas reciente -> atras), cada 30 min.
-    if args.backfill_hours > 0:
-        n = int(args.backfill_hours * 2)
-        dts = [base - timedelta(minutes=30 * k) for k in range(n + 1)]
-        log.info("BACKFILL %g h -> %d scans candidatos", args.backfill_hours,
-                 len(dts))
+    # Scans a generar.
+    explicit = bool(args.start_utc and args.end_utc)
+    backfill = explicit or args.backfill_hours > 0
+    if backfill:
+        # Backfill puntual -> scan EXACTO por minuto (no el ultimo de la hora)
+        # y umbral solar bajable (para incluir amanecer/atardecer si se pide).
+        import src.process.hires_pipeline as HP
+        from src.fetch.goes_s3 import download_band_at
+        HP.download_band = download_band_at
+        HP.DAY_NIGHT_THRESHOLD_DEG = args.min_sun
+
+    if explicit:
+        s = datetime.strptime(args.start_utc, "%Y%m%d%H%M").replace(
+            tzinfo=timezone.utc)
+        e = datetime.strptime(args.end_utc, "%Y%m%d%H%M").replace(
+            tzinfo=timezone.utc)
+        dts, t = [], e
+        while t >= s:
+            dts.append(t)
+            t -= timedelta(minutes=args.step_min)
+        log.info("VENTANA %s..%s cada %d min -> %d scans", args.start_utc,
+                 args.end_utc, args.step_min, len(dts))
+    elif args.backfill_hours > 0:
+        n = int(args.backfill_hours * 60 / args.step_min)
+        dts = [base - timedelta(minutes=args.step_min * k)
+               for k in range(n + 1)]
+        log.info("BACKFILL %g h cada %d min -> %d scans", args.backfill_hours,
+                 args.step_min, len(dts))
     else:
         dts = [base]
 
     # Acumular frames nuevos por volcan: {slug: {ts: png_bytes}}.
     new_frames: dict[str, dict[str, bytes]] = {s: {} for s in scopes}
     for i, dt in enumerate(dts):
-        if not _any_daylight(dt, day_volcs):
-            log.info("[%d/%d] %s noche -> skip (sin descarga)", i + 1, len(dts),
-                     dt.strftime("%H:%M"))
+        if not _any_daylight(dt, day_volcs, args.min_sun):
+            log.info("[%d/%d] %s sol<%.0f° -> skip (sin descarga)", i + 1,
+                     len(dts), dt.strftime("%H:%M"), args.min_sun)
             continue
         log.info("[%d/%d] %s -> generando...", i + 1, len(dts),
                  dt.strftime("%H:%M UTC"))
@@ -172,15 +204,20 @@ def main() -> int:
                 new_frames[slug][ts_str] = b
         except Exception as e:
             log.warning("scan %s fallo: %s", dt.isoformat(), e)
-        if args.backfill_hours > 0:
+        if backfill:
             _clean_raw()   # liberar disco entre scans
 
     cutoff = (base - timedelta(hours=ROLL_HOURS)).strftime("%Y%m%d%H%M%S")
     manifest_scopes: dict[str, dict] = {}
     total_frames = 0
     for slug, sinfo in scopes.items():
-        frames = _download_existing(slug)        # ventana rodante actual
-        frames.update(new_frames[slug])          # + nuevos / backfilleados
+        if explicit and tslug and slug == tslug:
+            # Ventana explicita de UN volcan -> REEMPLAZO limpio (no mezclar con
+            # frames viejos del cache, que pueden tener otra cadencia/scan).
+            frames = dict(new_frames[slug])
+        else:
+            frames = _download_existing(slug)    # ventana rodante actual
+            frames.update(new_frames[slug])      # + nuevos / backfilleados
         frames = {ts: b for ts, b in frames.items() if ts >= cutoff}
         if not frames:
             continue

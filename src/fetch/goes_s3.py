@@ -126,6 +126,37 @@ def download_band(dt: datetime, band: int, use_cache: bool = True) -> Path | Non
     return _download_cached(remote_path, use_cache)
 
 
+def _scan_start(remote_path: str) -> datetime | None:
+    """Inicio de scan (UTC) desde el nombre L1b: OR_..._sYYYYDDDHHMMSSs_..."""
+    name = remote_path.split("/")[-1]
+    try:
+        i = name.index("_s") + 2
+        ts = name[i:i + 13]  # YYYYDDDHHMMSSs
+        return datetime(int(ts[:4]), 1, 1, tzinfo=timezone.utc) + timedelta(
+            days=int(ts[4:7]) - 1, hours=int(ts[7:9]),
+            minutes=int(ts[9:11]), seconds=int(ts[11:13]))
+    except Exception:
+        return None
+
+
+def download_band_at(dt: datetime, band: int, use_cache: bool = True) -> Path | None:
+    """Descargar la banda del scan MÁS CERCANO a `dt` (no el último de la hora).
+
+    `download_band` toma `files[-1]` (el último de la hora) — correcto para "lo
+    más reciente" pero NO para backfill de un timestamp puntual: todos los scans
+    de la misma hora darían el mismo archivo. Acá elegimos el scan cuyo
+    `_sYYYYDDDHHMMSS` está más cerca de `dt` (RadF escanea cada 10 min).
+    """
+    cand = (list_band_files(dt - timedelta(hours=1), band)
+            + list_band_files(dt, band))
+    cand = [f for f in cand if _scan_start(f) is not None]
+    if not cand:
+        logger.error("No band %d files near %s", band, dt.isoformat())
+        return None
+    best = min(cand, key=lambda f: abs((_scan_start(f) - dt).total_seconds()))
+    return _download_cached(best, use_cache)
+
+
 def download_volcanic_bands(dt: datetime) -> dict[int, Path]:
     """Descargar todas las bandas volcánicas para una hora.
 

@@ -49,6 +49,9 @@ FRAME_OPTIONS = {
     "2 horas (12 frames)": 12,
     "3 horas (18 frames)": 18,
     "6 horas (36 frames)": 36,
+    "8 horas (48 frames)": 48,
+    "10 horas (60 frames)": 60,
+    "12 horas (72 frames)": 72,
 }
 
 PRODUCT_LABELS = {
@@ -833,7 +836,25 @@ def render():
             radius = st.slider("Radio (°)", 0.5, 3.0, VOLCANO_RADIUS_DEG, 0.5,
                                key="anim_radius")
 
+    # Rango temporal personalizado (opcional): ventana inicio/fin dentro de las
+    # ~12 h que retiene el cache, en vez del preset "ultimas N horas".
+    range_on = st.checkbox(
+        "🎚 Rango personalizado (en vez del preset de Duracion)",
+        value=False, key="anim_range_on",
+        help="Elegi una ventana hacia atras dentro de las ultimas ~12 h "
+             "(lo que retiene el cache). Apagado = usa el preset de Duracion.")
+    range_h = None
+    if range_on:
+        range_h = st.slider(
+            "Ventana del loop — horas hacia atras (reciente → antiguo)",
+            0.0, 12.0, (0.0, 2.0), 0.5, key="anim_range_h",
+            help="(0, 2) = de ahora hasta 2 h atras. (2, 4) = de 2 h a 4 h atras.")
+
     n_frames = FRAME_OPTIONS[duration_label]
+    if range_on and range_h is not None:
+        # Frames suficientes para alcanzar el borde mas antiguo + margen; luego
+        # se filtran a la ventana exacta post-fetch.
+        n_frames = max(2, int(round(range_h[1] * 6)) + 8)
     latest_ts_label = _fetch_latest_ts_label(product)
 
     # ── Info panel inicial ────────────────────────────────────────────────
@@ -879,11 +900,13 @@ def render():
         st.session_state["anim_sel"] = dict(
             product=product, n=n_frames, scope=scope,
             zone=zone_key, volc=volc_name, radius=radius,
+            range_on=range_on, range_h=range_h,
         )
 
     sel = st.session_state.get("anim_sel", dict(
         product=product, n=n_frames, scope=scope,
         zone=zone_key, volc=volc_name, radius=radius,
+        range_on=range_on, range_h=range_h,
     ))
 
     # ── Determinar bounds + zoom segun scope ──────────────────────────────
@@ -945,6 +968,21 @@ def render():
         st.error("No se pudieron descargar frames. Verifica conexion o "
                  "prueba otro producto/scope.")
         return
+
+    # Rango personalizado: recortar los frames a la ventana pedida (post-fetch).
+    if sel.get("range_on") and sel.get("range_h"):
+        from datetime import datetime, timedelta, timezone
+        h_recent, h_old = sel["range_h"]
+        tnow = datetime.now(timezone.utc)
+        t_old = tnow - timedelta(hours=h_old)
+        t_recent = tnow - timedelta(hours=h_recent)
+        frames = [f for f in frames
+                  if t_old <= parse_rammb_ts(f["ts"]) <= t_recent]
+        if not frames:
+            st.warning(
+                "No hay frames en esa ventana (el cache retiene ~12 h). "
+                "Proba un rango mas reciente o usa un preset de Duracion.")
+            return
 
     # ── KPIs (ahora con hora local ademas de UTC) ─────────────────────────
     dt_first = parse_rammb_ts(frames[0]["ts"])

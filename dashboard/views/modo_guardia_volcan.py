@@ -246,8 +246,14 @@ def fetch_volcan_product(prod_id: str, volcano_name: str,
             r = float(h_info.get("radius_deg") or 0.5)
             img = _crop_centered(h_arr, RADIUS_DEG / r) if r > 0 else h_arr
             hhmm = h_info.get("scan_ts", "")[8:12]
-            hhmm = f"{hhmm[:2]}:{hhmm[2:]} UTC" if len(hhmm) == 4 else "?"
-            return img, f"{hhmm} (hace {age} min) ✨ hi-res L1b ~0.5 km/px (visible, pan-sharp)"
+            t_utc = f"{hhmm[:2]}:{hhmm[2:]}" if len(hhmm) == 4 else "?"
+            try:
+                _sdt = datetime.fromisoformat(h_info.get("scan_dt_iso", ""))
+                t_str = f"{t_utc} UTC · {fmt_chile(_sdt)}"
+            except Exception:
+                t_str = f"{t_utc} UTC"
+            return img, (f"{t_str} (hace {age} min) · hi-res L1b ~0.5 km/px "
+                         f"(visible, pan-sharp)")
 
     # 2) RAMMB (Ash, SO2, y GeoColor nocturno / sin hi-res)
     img = None
@@ -263,7 +269,8 @@ def fetch_volcan_product(prod_id: str, volcano_name: str,
             try:
                 ts_dt = parse_rammb_ts(used_ts)
                 age = int((now - ts_dt).total_seconds() / 60)
-                ts_label = f"{ts_dt.strftime('%H:%M UTC')} (hace {age} min)"
+                ts_label = (f"{ts_dt.strftime('%H:%M')} UTC · "
+                            f"{fmt_chile(ts_dt)} (hace {age} min)")
                 # Mostrar SIEMPRE la resolucion del zoom usado (antes solo
                 # aparecia en fallback -> GeoColor, que suele usar el zoom
                 # preferido, no la mostraba; Ash/SO2 si). (jun 2026)

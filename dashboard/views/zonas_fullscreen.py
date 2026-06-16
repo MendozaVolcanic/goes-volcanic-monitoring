@@ -181,16 +181,17 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
     # paper-anchored al espacio negro afuera.
     # Label de zona + hora (UTC/local) debajo, en una sola annotation con
     # fondo para que se lea sobre la imagen.
+    # time_label ya trae su propio estilo (horas grandes/blancas + resolucion);
+    # no lo envolvemos en un span chico para que DESTAQUE. (jun 2026)
     _txt = f"<b>{label}</b>"
     if time_label:
-        _txt += (f"<br><span style='font-size:11px; color:#dfe6ee;'>"
-                 f"{time_label}</span>")
+        _txt += f"<br>{time_label}"
     fig.add_annotation(
         x=bounds["lon_min"], y=bounds["lat_max"],
         xref="x", yref="y",
         text=_txt, showarrow=False, align="left",
-        font=dict(size=14, color=ZONE_COLORS[zone_key]),
-        bgcolor="rgba(0,0,0,0.65)", borderpad=4,
+        font=dict(size=15, color=ZONE_COLORS[zone_key]),
+        bgcolor="rgba(0,0,0,0.72)", borderpad=5,
         xanchor="left", yanchor="top",
         xshift=4, yshift=-4,
     )
@@ -481,13 +482,14 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
                      constrain="domain")
     _txt = f"<b>{zona_label}</b>"
     if time_label:
-        _txt += (f"<br><span style='font-size:11px; color:#dfe6ee;'>"
-                 f"{time_label}</span>")
+        # Hora UTC + local destacada (blanca/grande). (jun 2026)
+        _txt += (f"<br><b style='font-size:17px; color:#ffffff;'>"
+                 f"{time_label}</b>")
     fig.add_annotation(
         x=view_bounds["lon_min"], y=view_bounds["lat_max"], xref="x", yref="y",
         text=_txt, showarrow=False, align="left",
-        font=dict(size=14, color="#ff6644"),
-        bgcolor="rgba(0,0,0,0.65)", borderpad=4,
+        font=dict(size=15, color="#ff6644"),
+        bgcolor="rgba(0,0,0,0.72)", borderpad=5,
         xanchor="left", yanchor="top", xshift=4, yshift=-4,
     )
     fig.update_layout(
@@ -603,14 +605,15 @@ def _compose_volcan_panels(v, radius_deg: float, panels: list, ph: int = 720):
     cos_lat = max(0.1, float(np.cos(np.radians(v.lat))))
     pw = int(round(ph * cos_lat))            # km-proporcional -> anillos = círculos
     km_per_px = (2 * radius_deg * 111.0) / ph
-    label_h = 42
+    label_h = 60  # banda mas alta: nombre grande + hora/resolucion destacada
     gap = 8
     b = {"lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
          "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg}
     lon_span = b["lon_max"] - b["lon_min"]
     lat_span = b["lat_max"] - b["lat_min"]
-    f_label = _load_font(20)
-    f_small = _load_font(13)
+    f_label = _load_font(27)
+    f_ts = _load_font(19)
+    f_small = _load_font(14)
     f_ring = _load_font(12)
 
     def _xy(lat, lon):
@@ -644,8 +647,13 @@ def _compose_volcan_panels(v, radius_deg: float, panels: list, ph: int = 720):
         d.polygon([(cx, cy - 9), (cx + 8, cy + 6), (cx - 8, cy + 6)],
                   fill=(0, 255, 255), outline=(255, 255, 255))
         d.rectangle([0, 0, pw, label_h], fill=(15, 20, 28))
-        d.text((6, 3), label, fill=(255, 102, 68), font=f_label)
-        d.text((6, 25), ts_label, fill=(150, 160, 180), font=f_small)
+        d.text((8, 2), label, fill=(255, 110, 70), font=f_label)
+        # Hora (UTC + local) + resolucion: mas grande y en blanco para que
+        # DESTAQUE; shrink-to-fit para no cortarla en paneles angostos.
+        ts_font = f_ts
+        while ts_font.size > 12 and d.textlength(ts_label, font=ts_font) > pw - 14:
+            ts_font = _load_font(ts_font.size - 1)
+        d.text((8, 34), ts_label, fill=(233, 239, 249), font=ts_font)
         tiles.append(tile)
 
     total_w = len(tiles) * pw + (len(tiles) - 1) * gap
@@ -1449,9 +1457,23 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
         for zk, img_z, used_ts_z, used_zoom_z, hs_z in ex.map(_fetch_one, all_zones):
             results[zk] = (img_z, used_ts_z, used_zoom_z, hs_z)
 
-    # Hora del scan en UTC + local Chile, para mostrar en cada panel.
-    from dashboard.utils import fmt_both
-    time_label = fmt_both(scan_dt) if scan_dt else ""
+    # Hora (UTC + local Chile) + resolucion POR ZONA, destacada en cada panel.
+    from dashboard.utils import fmt_chile, parse_rammb_ts
+    from dashboard.views.modo_guardia_volcan import _zoom_res_label
+
+    def _zone_time_html(uts: str, uzoom: int) -> str:
+        if not uts:
+            return ""
+        zdt = parse_rammb_ts(uts)
+        html = (f"<b style='font-size:18px; color:#ffffff'>"
+                f"{zdt.strftime('%H:%M')} UTC · {fmt_chile(zdt)}</b>")
+        det = _zoom_res_label(uzoom)
+        if uts != ts:
+            det += " · ⚠ scan previo"
+        if det.strip(" ·"):
+            html += (f"<br><span style='font-size:13px; color:#a8b6c4'>"
+                     f"{det}</span>")
+        return html
 
     # ── Render serial (debe correr en thread principal Streamlit) ─
     fallback_count = 0
@@ -1477,14 +1499,12 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
                 fallback_count += 1
 
             label = ZONE_LABELS[zone_key]
-            if used_ts and used_ts != ts:
-                label += " ⚠ ts cercano"
 
             with cols[i]:
                 st.plotly_chart(
                     _zone_fig(img, zone_key, label, hotspots,
                               height=height, show_volcanoes=show_volcanoes,
-                              time_label=time_label,
+                              time_label=_zone_time_html(used_ts, used_zoom),
                               bounds_override=zbounds[zone_key] if zbounds else None),
                     width='stretch',
                     # responsive=True: plotly escucha resize del iframe

@@ -1,0 +1,67 @@
+name: Hi-res loop BACKFILL (one-shot)
+
+# Recupera el HISTORICO del cache rolling de loops hi-res 0.5 km: regenera un
+# frame cada 30 min de las ultimas N horas (default 12) para los 8 volcanes
+# prioritarios y los mergea al release hires-loop-rolling. Util cuando el cache
+# recien arranco y se quiere ver "lo que paso hoy" sin esperar a que se llene.
+#
+# Solo manual (workflow_dispatch). Pesado: ~330 MB de L1b por scan DIURNO
+# (los nocturnos se saltan sin descargar). 12 h ≈ los scans de dia -> varios GB.
+
+on:
+  workflow_dispatch:
+    inputs:
+      hours:
+        description: "Horas hacia atras a recuperar (cada 30 min)"
+        required: false
+        default: '12'
+        type: string
+      volcano:
+        description: "Solo este volcan (nombre exacto del CATALOG). Vacio = los 8 prioritarios."
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements_actions.txt
+
+      - name: Backfill loop cache 0.5km
+        run: |
+          python scripts/build_hires_loop_cache.py \
+            --backfill-hours "${{ inputs.hours }}" \
+            --volcano "${{ inputs.volcano }}"
+
+      - name: Listar contenido
+        run: |
+          ls -lh out_hires_loop/ 2>/dev/null | head -12
+          python -c "import json;m=json.load(open('out_hires_loop/manifest_loop.json'));print('volcanes:',len(m['scopes']));[print(' ',k,len(v['ts']),'frames') for k,v in m['scopes'].items()]"
+
+      - name: Publicar loop cache (0.5km rolling)
+        if: ${{ hashFiles('out_hires_loop/**') != '' }}
+        uses: ./.github/actions/gh-release-snapshot
+        with:
+          tag: hires-loop-rolling
+          title: "Hi-res loop cache (rolling 0.5km)"
+          notes: "Ventana rodante de frames GeoColor 0.5km pan-sharpened para los 8 volcanes prioritarios (loops hi-res). Backfill + cron cada 30 min."
+          dir: out_hires_loop
+          prerelease: 'true'
+          batch-size: '50'
+          sleep-between-batches: '15'

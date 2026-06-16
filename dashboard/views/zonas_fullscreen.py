@@ -316,7 +316,7 @@ def _render_volcat_zone_cell(zona, sector, instr, view_bounds, product,
         SSEC completa). Modo de 3 zonas (revert).
     """
     from dashboard.views.volcat_viewer import (
-        _volcat_colorbar_strip, _volcat_colorbar_strip_vertical, _volcat_dt_obj,
+        _volcat_colorbar_split_vertical, _volcat_colorbar_strip, _volcat_dt_obj,
         _volcat_image_with_overlays, _volcat_latest_cached, _volcat_map_only,
     )
     from dashboard.utils import fmt_both
@@ -344,14 +344,14 @@ def _render_volcat_zone_cell(zona, sector, instr, view_bounds, product,
                 f"text-align:center;'>VOLCAT sin frame</div>",
                 unsafe_allow_html=True)
             return
-        # Colorbar VERTICAL incrustado en la figura (borde Pacifico, sin
-        # volcanes): NO va debajo del mapa (evita el scroll del Modo Sala) ni
-        # tapa la cordillera. (jun 2026)
-        vleg = _volcat_colorbar_strip_vertical(meta["image_url"])
+        # Dos colorbars VERTICALES incrustados (BT izquierda, altura derecha):
+        # NO van debajo del mapa (evita el scroll del Modo Sala) ni tapan la
+        # cordillera. (jun 2026)
+        vleg = _volcat_colorbar_split_vertical(meta["image_url"])
         st.plotly_chart(
             _volcat_zone_fig(data["png"], data["bounds"], view_bounds,
                              f"Zona {zona}", time_label, height,
-                             legend_bytes=vleg or None),
+                             legend_pair=vleg),
             width='stretch',
             config={"displayModeBar": False, "responsive": True},
             key=f"volcat4_{zona}_{product}",
@@ -385,15 +385,16 @@ def _render_volcat_zone_cell(zona, sector, instr, view_bounds, product,
 
 
 def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
-                     time_label, height, legend_bytes=None):
+                     time_label, height, legend_pair=None):
     """Renderiza una imagen VOLCAT con plotly, georeferenciada al sector
     SSEC, con NUESTROS volcanes (CATALOG) y la frontera de Chile encima —
     mismos volcanes que las vistas RGB, sin el overlay sobrecargado de SSEC
     ni las grids. Eje recortado a `view_bounds` (franja chilena).
 
-    legend_bytes: PNG del colorbar (altura km). Si se da, se incrusta como
-    imagen FIJA en el borde IZQUIERDO (lado del Pacifico, sin pluma) -> la
-    escala cuantitativa siempre visible, robusto (parte de la figura)."""
+    legend_pair: tupla (bt_png, height_png) de las DOS escalas VERTICALES
+    (10.3 µm BT [K] y Ash/Dust Height [km]). Se incrustan como imagenes FIJAS
+    una a cada lado del mapa (BT izquierda, altura derecha) sobre los margenes
+    / oceano -> ambas escalas siempre visibles sin tapar la cordillera."""
     import base64
     fig = go.Figure()
     if img_bytes:
@@ -406,19 +407,26 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
             sizey=sector_bounds["lat_max"] - sector_bounds["lat_min"],
             sizing="stretch", layer="below",
         )
-    # Colorbar VERTICAL incrustado al borde IZQUIERDO (lado del Pacifico, SIN
-    # volcanes): no tapa la cordillera ni va debajo del mapa (lo que obligaba a
-    # scrollear). Va DENTRO de la figura -> siempre visible, sin robar alto.
-    # (jun 2026: antes era horizontal al pie y tapaba/empujaba — pedido OVDAS)
-    if legend_bytes:
-        lb64 = base64.b64encode(legend_bytes).decode()
-        fig.add_layout_image(
-            source=f"data:image/png;base64,{lb64}",
-            xref="paper", yref="paper",
-            x=0.0, y=0.5, xanchor="left", yanchor="middle",
-            sizex=0.12, sizey=0.96, sizing="contain", layer="above",
-            opacity=0.96,
-        )
+    # Colorbars VERTICALES incrustados, UNO A CADA LADO: BT [K] a la IZQUIERDA,
+    # Ash/Dust Height [km] a la DERECHA. Van DENTRO de la figura sobre los
+    # margenes/oceano -> ambas escalas siempre visibles, sin tapar la cordillera
+    # ni ir debajo del mapa (que obligaba a scrollear). (jun 2026, pedido OVDAS)
+    if legend_pair:
+        bt_b, ht_b = legend_pair
+        if bt_b:  # 10.3 µm BT [K] -> borde izquierdo
+            fig.add_layout_image(
+                source=f"data:image/png;base64,{base64.b64encode(bt_b).decode()}",
+                xref="paper", yref="paper",
+                x=0.0, y=0.5, xanchor="left", yanchor="middle",
+                sizex=0.10, sizey=0.94, sizing="contain", layer="above",
+                opacity=0.96)
+        if ht_b:  # Ash/Dust Height [km] -> borde derecho
+            fig.add_layout_image(
+                source=f"data:image/png;base64,{base64.b64encode(ht_b).decode()}",
+                xref="paper", yref="paper",
+                x=1.0, y=0.5, xanchor="right", yanchor="middle",
+                sizex=0.10, sizey=0.94, sizing="contain", layer="above",
+                opacity=0.96)
     # Nuestros volcanes dentro del encuadre (los MISMOS que las RGB).
     vis = [v for v in CATALOG
            if view_bounds["lat_min"] <= v.lat <= view_bounds["lat_max"]
@@ -548,15 +556,15 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
                 "lat_min": sb["lat_min"], "lat_max": sb["lat_max"],
                 "lon_min": max(sb["lon_min"], -76.0),
                 "lon_max": min(sb["lon_max"], -66.0)}
-            # Colorbar VERTICAL incrustado DENTRO de la figura (borde Pacifico):
-            # no tapa la cordillera ni va debajo del mapa. El legend_url de SSEC
-            # era un MAPA de costa, no la escala -> por eso no se veia. (jun 2026)
+            # Dos colorbars VERTICALES incrustados (BT izquierda, altura
+            # derecha): no tapan la cordillera ni van debajo del mapa. El
+            # legend_url de SSEC era un MAPA de costa, no la escala. (jun 2026)
             from dashboard.views.volcat_viewer import (
-                _volcat_colorbar_strip_vertical)
-            leg = _volcat_colorbar_strip_vertical(meta["image_url"])
+                _volcat_colorbar_split_vertical)
+            leg = _volcat_colorbar_split_vertical(meta["image_url"])
             st.plotly_chart(
                 _volcat_zone_fig(data["png"], sb, vb, f"Zona {zona}",
-                                 time_label, height, legend_bytes=leg or None),
+                                 time_label, height, legend_pair=leg),
                 width='stretch',
                 config={"displayModeBar": False, "responsive": True},
                 # key fijo por zona -> update in-place, sin parpadeo.

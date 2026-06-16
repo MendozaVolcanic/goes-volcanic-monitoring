@@ -291,29 +291,43 @@ def _volcat_colorbar_strip(image_url: str) -> bytes:
         return b""
 
 
-def _volcat_colorbar_strip_vertical(image_url: str) -> bytes:
-    """Igual que `_volcat_colorbar_strip` pero ROTADO 90° (vertical).
+# Fraccion del ANCHO del strip donde cae el GAP entre la barra BT (grayscale,
+# izq) y la de altura (arcoiris, der). Medido sobre el layout SSEC (935px): BT
+# ~x[0,440], gap blanco ~[420,467], altura ~[467,935]. Cortar a 0.48 separa las
+# dos escalas sin partir numeros ni labels. (jun 2026)
+_COLORBAR_SPLIT_FRAC = 0.48
 
-    Para incrustar al COSTADO del mapa (borde Pacifico, sin volcanes): asi la
-    leyenda no tapa la cordillera ni va DEBAJO del mapa (lo que obligaba a
-    scrollear en el Modo Sala). El texto queda de costado, leyendo abajo→arriba
-    (convencion de eje vertical). Reusa el strip horizontal cacheado + rota.
-    (jun 2026, pedido OVDAS)
+
+def _volcat_colorbar_split_vertical(image_url: str) -> tuple[bytes, bytes]:
+    """Separa el colorbar VOLCAT en sus DOS escalas y las devuelve VERTICALES.
+
+    El strip SSEC trae dos escalas pegadas: '10.3 µm BT [K]' (grayscale, izq) y
+    'Ash/Dust Height [km, ASL]' (arcoiris, der). Las corto en el gap (~48% del
+    ancho) y roto cada una 90° CCW (valores abajo→arriba, label de costado).
+    Devuelve (bt_vertical, height_vertical) para incrustar una a cada lado del
+    mapa -> ninguna tapa la cordillera ni va debajo (evita scroll). Reusa el
+    strip horizontal cacheado. (jun 2026, pedido OVDAS)
     """
     raw = _volcat_colorbar_strip(image_url)
     if not raw:
-        return b""
+        return b"", b""
     try:
         import io
         from PIL import Image
-        im = Image.open(io.BytesIO(raw))
-        vert = im.rotate(90, expand=True)  # CCW: BT abajo, altura de pluma arriba
-        buf = io.BytesIO()
-        vert.save(buf, format="PNG")
-        return buf.getvalue()
+        im = Image.open(io.BytesIO(raw)).convert("RGB")
+        w, h = im.size
+        split = int(_COLORBAR_SPLIT_FRAC * w)
+        parts = (im.crop((0, 0, split, h)).rotate(90, expand=True),      # BT
+                 im.crop((split, 0, w, h)).rotate(90, expand=True))      # altura
+        out = []
+        for p in parts:
+            buf = io.BytesIO()
+            p.save(buf, format="PNG")
+            out.append(buf.getvalue())
+        return out[0], out[1]
     except Exception as e:
-        logger.warning("colorbar vertical fail: %s", e)
-        return b""
+        logger.warning("colorbar split vertical fail: %s", e)
+        return b"", b""
 
 
 @st.cache_data(ttl=TTL_FRAME_IMAGE, show_spinner=False)

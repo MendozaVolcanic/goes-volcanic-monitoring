@@ -77,50 +77,74 @@ def _img_to_b64(arr: np.ndarray) -> str:
     return base64.b64encode(buf.getvalue()).decode()
 
 
-def _annotated_pil(arr: np.ndarray, label: str, max_width: int = 1200) -> PILImage.Image:
-    """Convertir frame numpy a PIL con timestamp + branding sobre-impreso.
+def _load_font(size: int):
+    """Fuente TrueType bold con fallbacks (no garantizada en Streamlit Cloud)."""
+    for name in ("DejaVuSans-Bold.ttf", "arial.ttf", "DejaVuSans.ttf"):
+        try:
+            return ImageFont.truetype(name, size)
+        except Exception:
+            continue
+    return ImageFont.load_default()
 
-    Reduce ancho a max_width para que el GIF no quede gigante. Mantiene
-    aspect ratio. Fontsize escala con el ancho final.
+
+def _annotated_pil(arr: np.ndarray, label: str, max_width: int = 1280,
+                   min_width: int = 720) -> PILImage.Image:
+    """Convertir frame numpy a PIL con timestamp + branding, a tamano LEGIBLE.
+
+    Los frames RAMMB de un volcan (r0.5°) salen chicos (~110 px): antes el
+    GIF/MP4 quedaban diminutos y el texto se cortaba (la fuente, fija en 12 px,
+    no entraba en 110 px de ancho). Ahora:
+      - UPSCALE a min_width (LANCZOS) si el frame es chico -> animacion visible.
+      - DOWNSCALE a max_width si es gigante (nacional/zona).
+      - la fuente se AJUSTA para que el label SIEMPRE entre en el ancho.
+    (jun 2026, pedido OVDAS: se veian pequenos y con letras cortadas)
     """
     img = PILImage.fromarray(arr).convert("RGB")
-    if img.width > max_width:
-        scale = max_width / img.width
-        new_size = (max_width, int(img.height * scale))
-        img = img.resize(new_size, PILImage.LANCZOS)
+    if img.width < min_width:
+        img = img.resize((min_width, int(img.height * min_width / img.width)),
+                         PILImage.LANCZOS)
+    elif img.width > max_width:
+        img = img.resize((max_width, int(img.height * max_width / img.width)),
+                         PILImage.LANCZOS)
 
     draw = ImageDraw.Draw(img)
-    # Tamano de fuente proporcional al ancho. ~2.2% del ancho es legible.
-    fs = max(12, int(img.width * 0.022))
-    try:
-        # Fuente truetype no esta garantizada en Streamlit Cloud. Fallback.
-        font = ImageFont.truetype("DejaVuSans-Bold.ttf", fs)
-    except Exception:
-        try:
-            font = ImageFont.truetype("arial.ttf", fs)
-        except Exception:
-            font = ImageFont.load_default()
-
-    # Banner negro semi-transparente abajo con el label
+    # Fuente ~3% del ancho; luego se reduce si el label no entra (evita corte).
+    fs = max(14, int(img.width * 0.030))
     pad = max(6, fs // 3)
+    font = _load_font(fs)
+    avail = img.width - 2 * pad
+    tw = draw.textlength(label, font=font)
+    if tw > avail:
+        fs = max(9, int(fs * avail / tw))
+        font = _load_font(fs)
+        pad = max(6, fs // 3)
+
+    # Banda negra inferior con el timestamp/label.
     bbox = draw.textbbox((0, 0), label, font=font)
-    text_h = bbox[3] - bbox[1]
-    band_h = text_h + pad * 2
+    band_h = (bbox[3] - bbox[1]) + pad * 2
     y0 = img.height - band_h
-    # Cinta negra
     overlay = PILImage.new("RGBA", img.size, (0, 0, 0, 0))
     odraw = ImageDraw.Draw(overlay)
-    odraw.rectangle([0, y0, img.width, img.height], fill=(0, 0, 0, 180))
+    odraw.rectangle([0, y0, img.width, img.height], fill=(0, 0, 0, 190))
     img = PILImage.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
     draw = ImageDraw.Draw(img)
     draw.text((pad, y0 + pad), label, fill=(255, 255, 255), font=font)
 
-    # Branding arriba a la derecha (chiquito)
+    # Branding arriba-derecha (fuente mas chica, sobre cinta corta para que se
+    # lea sobre nubes brillantes). Se omite si no entra.
     brand = "GOES-19 / RAMMB-CIRA"
-    bbbox = draw.textbbox((0, 0), brand, font=font)
-    bw = bbbox[2] - bbbox[0]
-    draw.text((img.width - bw - pad, pad), brand,
-              fill=(180, 200, 220), font=font)
+    bfont = _load_font(max(11, int(fs * 0.85)))
+    bw = draw.textlength(brand, font=bfont)
+    if bw <= img.width - 2 * pad:
+        bb = draw.textbbox((0, 0), brand, font=bfont)
+        bh = (bb[3] - bb[1]) + pad
+        ov2 = PILImage.new("RGBA", img.size, (0, 0, 0, 0))
+        ImageDraw.Draw(ov2).rectangle(
+            [img.width - bw - 2 * pad, 0, img.width, bh], fill=(0, 0, 0, 140))
+        img = PILImage.alpha_composite(img.convert("RGBA"), ov2).convert("RGB")
+        draw = ImageDraw.Draw(img)
+        draw.text((img.width - bw - pad, pad // 2), brand,
+                  fill=(190, 210, 230), font=bfont)
     return img
 
 
@@ -163,7 +187,9 @@ def _build_mp4(frames: list[dict], fps: float = 1.5) -> bytes:
         logger.error("imageio no disponible: %s", e)
         return b""
 
-    pil_frames = [_annotated_pil(f["image"], f["label"]) for f in frames]
+    # MP4 (H.264 comprime muy bien) -> lo generamos mas grande/nitido que el GIF.
+    pil_frames = [_annotated_pil(f["image"], f["label"], min_width=960)
+                  for f in frames]
     if not pil_frames:
         return b""
 

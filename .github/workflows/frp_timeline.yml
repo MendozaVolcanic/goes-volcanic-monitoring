@@ -8,9 +8,10 @@ name: FRP timeline build
 
 on:
   schedule:
-    # Cada 15 min — pre-check evita re-bajar scans ya presentes; backfill de 3h
-    # da solape (auto-sanante si se saltea una corrida)
-    - cron: '*/15 * * * *'
+    # Cada 10 min (cadencia nativa del FDCF GOES-19). El pre-check evita re-bajar
+    # scans ya presentes; backfill de 3h da solape (auto-sanante si se saltea una
+    # corrida). Antes 15 min; subido a 10 a pedido OVDAS (jun 2026).
+    - cron: '*/10 * * * *'
   workflow_dispatch:
     inputs:
       backfill_hours:

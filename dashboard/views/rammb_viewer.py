@@ -94,6 +94,22 @@ def _stroke_text(draw, xy, s, font, fill=(255, 255, 255)):
               stroke_width=max(2, font.size // 9), stroke_fill=(0, 0, 0))
 
 
+def _geo_polyline(draw, pts, xy, color, width):
+    """Dibuja frontera/costa (lista de (lat,lon); (None,None)=corte) en PIL.
+
+    `xy(lat,lon)->(px,py)` proyecta al frame; PIL recorta lo que cae afuera.
+    """
+    prev = None
+    for p in pts:
+        if not p or p[0] is None:
+            prev = None
+            continue
+        cur = xy(p[0], p[1])
+        if prev is not None:
+            draw.line([prev, cur], fill=color, width=width)
+        prev = cur
+
+
 def _compose_loop_frame(frame: dict, meta: dict | None = None,
                         min_width: int = 720, max_width: int = 1280
                         ) -> PILImage.Image:
@@ -134,6 +150,27 @@ def _compose_loop_frame(frame: dict, meta: dict | None = None,
         lbl_font = _load_font(max(10, int(
             fs * (W - 2 * pad) / draw.textlength(label, font=font))))
     band_h = draw.textbbox((0, 0), label or "X", font=lbl_font)[3] + pad * 2
+
+    # Frontera de Chile (costa + limite andino) con halo, sobre la imagen. PIL
+    # recorta lo de afuera -> en un volcan inland casi no hay costa, en uno
+    # costero si; el limite andino suele cruzar el encuadre. (jun 2026, OVDAS)
+    if bounds:
+        try:
+            from dashboard.map_helpers import _load_geo
+            geo = _load_geo()
+            lon0, lon1 = bounds["lon_min"], bounds["lon_max"]
+            lat0, lat1 = bounds["lat_min"], bounds["lat_max"]
+
+            def _gxy(lat, lon):
+                return ((lon - lon0) / (lon1 - lon0) * W,
+                        (lat1 - lat) / (lat1 - lat0) * H)
+
+            wide, thin = max(3, W // 320), max(1, W // 850)
+            for _pts in (geo.get("coast", []), geo.get("border", [])):
+                _geo_polyline(draw, _pts, _gxy, (20, 24, 32), wide)
+                _geo_polyline(draw, _pts, _gxy, (236, 240, 250), thin)
+        except Exception:
+            pass
 
     # Marcadores de volcanes (prioritarios + el volcan en foco) dentro del bbox.
     if bounds:
@@ -881,9 +918,16 @@ def render():
                 "lon_min": v.lon - r, "lon_max": v.lon + r,
             }
             bt = (vb["lat_min"], vb["lat_max"], vb["lon_min"], vb["lon_max"])
+            # El cache pre-bajado es al radio DEFAULT (VOLCANO_RADIUS_DEG). Si el
+            # usuario cambia el radio, el bounds_key NO debe mapear al cache: si
+            # no, _fetch_via_cache devolveria los frames al radio viejo y el
+            # slider "no haria nada". 'vr:' no matchea v:/z: -> baja on-demand al
+            # bbox pedido. (fix jun 2026: el radio no se aplicaba en prioritarios)
+            at_default = abs(r - VOLCANO_RADIUS_DEG) < 1e-6
+            bkey = f"v:{v.name}" if at_default else f"vr:{v.name}:{r:g}"
             with st.spinner(f"Descargando {sel['n']} scans zoom para {v.name}..."):
                 frames = _fetch_bounds_frames(
-                    sel["product"], sel["n"], ZOOM_VOLCAN, f"v:{v.name}", bt,
+                    sel["product"], sel["n"], ZOOM_VOLCAN, bkey, bt,
                 )
                 if not frames:
                     # Fallback a zoom=3 si zoom=4 no esta disponible

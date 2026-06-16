@@ -1226,24 +1226,29 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
     from PIL import Image, ImageDraw
 
     from dashboard.map_helpers import _load_geo
-    from dashboard.views.modo_guardia_volcan import _load_font
+    from dashboard.utils import fmt_chile, parse_rammb_ts
+    from dashboard.views.modo_guardia_volcan import _load_font, _zoom_res_label
 
     if not timestamps:
         return None
     geo = _load_geo()  # {"coast": [...], "border": [...]} en (lat, lon)
     ub = _uniform_aspect_bounds()
     zones = ["norte", "centro", "sur", "austral"]
-    label_h = 38
+    label_h = 50  # banda mas alta: nombre + hora (UTC+local) + resolucion
     gap = 6
     # OJO: el PNG compuesto (ph=700) se AGRANDA ~1.46x al llenar pantalla, asi
     # que las fuentes hay que pedirlas chicas aca para que en pantalla queden
     # ~parejas con las de VOLCAT (plotly, que renderiza a tamano real). (jun 2026)
-    f_zone = _load_font(15)
+    f_zone = _load_font(16)
+    f_time = _load_font(15)   # hora UTC+local DESTACADA (blanca)
+    f_res = _load_font(12)    # resolucion (mas chica, gris)
     f_volc = _load_font(9)
 
     def _fetch(zk):
+        used_ts = used_zoom = None
         try:
-            img, _uts, _uz = _zone_frame_cached(product, timestamps, zk, True)
+            img, used_ts, used_zoom = _zone_frame_cached(
+                product, timestamps, zk, True)
         except Exception:
             img = None
         hs = []
@@ -1252,14 +1257,15 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
                 hs, _ = _hotspots_zone(zk)
             except Exception:
                 hs = []
-        return zk, img, hs
+        return zk, img, hs, used_ts, used_zoom
 
     with ThreadPoolExecutor(max_workers=4) as ex:
-        fetched = {zk: (img, hs) for zk, img, hs in ex.map(_fetch, zones)}
+        fetched = {zk: (img, hs, uts, uz)
+                   for zk, img, hs, uts, uz in ex.map(_fetch, zones)}
 
     tiles = []
     for zk in zones:
-        img, hs = fetched[zk]
+        img, hs, used_ts, used_zoom = fetched[zk]
         b = ub[zk]
         lon_span = b["lon_max"] - b["lon_min"]
         lat_span = b["lat_max"] - b["lat_min"]
@@ -1334,11 +1340,21 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
                 d.polygon([(hx, hy - 6), (hx + 6, hy), (hx, hy + 6),
                            (hx - 6, hy)], fill=(255, 51, 0),
                           outline=(15, 18, 24))
-        # Header de zona
+        # Header de zona: nombre + hora (UTC + local) + resolucion DESTACADOS.
         d.rectangle([0, 0, pw, label_h], fill=(15, 20, 28))
         zc = ZONE_COLORS[zk]
         rgb_c = tuple(int(zc[i:i + 2], 16) for i in (1, 3, 5))
-        d.text((6, 7), ZONE_LABELS[zk], fill=rgb_c, font=f_zone)
+        d.text((6, 2), ZONE_LABELS[zk], fill=rgb_c, font=f_zone)
+        if used_ts:
+            zdt = parse_rammb_ts(used_ts)
+            t1 = f"{zdt.strftime('%H:%M')} UTC · {fmt_chile(zdt)}"
+            d.text((6, 26), t1, fill=(236, 241, 250), font=f_time)  # horas blancas
+            det = _zoom_res_label(used_zoom)
+            if used_ts != timestamps[0]:
+                det += " · scan previo"
+            if det:
+                d.text((10 + d.textlength(t1, font=f_time), 29), det,
+                       fill=(170, 184, 198), font=f_res)
         tiles.append(tile)
 
     total_w = sum(t.width for t in tiles) + gap * (len(tiles) - 1)

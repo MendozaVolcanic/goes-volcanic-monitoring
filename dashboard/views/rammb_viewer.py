@@ -15,7 +15,7 @@ from concurrent.futures import ThreadPoolExecutor
 import numpy as np
 import plotly.graph_objects as go
 import streamlit as st
-from PIL import Image as PILImage, ImageDraw, ImageFont
+from PIL import Image as PILImage, ImageDraw, ImageFilter, ImageFont
 
 try:
     from dashboard.style import (
@@ -48,6 +48,7 @@ FRAME_OPTIONS = {
     "1 hora (6 frames)": 6,
     "2 horas (12 frames)": 12,
     "3 horas (18 frames)": 18,
+    "6 horas (36 frames)": 36,
 }
 
 PRODUCT_LABELS = {
@@ -87,73 +88,130 @@ def _load_font(size: int):
     return ImageFont.load_default()
 
 
-def _annotated_pil(arr: np.ndarray, label: str, max_width: int = 1280,
-                   min_width: int = 720) -> PILImage.Image:
-    """Convertir frame numpy a PIL con timestamp + branding, a tamano LEGIBLE.
+def _stroke_text(draw, xy, s, font, fill=(255, 255, 255)):
+    """Texto con contorno negro (legible sobre nube brillante o suelo oscuro)."""
+    draw.text(xy, s, font=font, fill=fill,
+              stroke_width=max(2, font.size // 9), stroke_fill=(0, 0, 0))
 
-    Los frames RAMMB de un volcan (r0.5°) salen chicos (~110 px): antes el
-    GIF/MP4 quedaban diminutos y el texto se cortaba (la fuente, fija en 12 px,
-    no entraba en 110 px de ancho). Ahora:
-      - UPSCALE a min_width (LANCZOS) si el frame es chico -> animacion visible.
-      - DOWNSCALE a max_width si es gigante (nacional/zona).
-      - la fuente se AJUSTA para que el label SIEMPRE entre en el ancho.
-    (jun 2026, pedido OVDAS: se veian pequenos y con letras cortadas)
+
+def _compose_loop_frame(frame: dict, meta: dict | None = None,
+                        min_width: int = 720, max_width: int = 1280
+                        ) -> PILImage.Image:
+    """Frame numpy -> PIL anotado para el loop descargable (GIF/MP4).
+
+    Mejoras (jun 2026, pedido OVDAS — se veian chicos / con letras cortadas):
+      - UPSCALE a min_width (LANCZOS + unsharp) -> grande y nitido. RAMMB del
+        volcan es ~1.7 km/px nativo (tope del slider); el unsharp recupera
+        definicion percibida. DOWNSCALE a max_width si es gigante (nacional).
+      - TITULO arriba-izq (volcan/zona · producto) para reportes.
+      - MARCADORES de volcanes (triangulo cyan + nombre) en el encuadre.
+      - BARRA DE ESCALA en km abajo-derecha.
+      - TIMESTAMP en banda inferior; branding arriba-der. Texto con contorno.
     """
+    arr = frame["image"]
+    label = frame.get("label", "")
+    bounds = frame.get("bounds")
+    meta = meta or {}
+
     img = PILImage.fromarray(arr).convert("RGB")
     if img.width < min_width:
         img = img.resize((min_width, int(img.height * min_width / img.width)),
                          PILImage.LANCZOS)
+        img = img.filter(ImageFilter.UnsharpMask(radius=2, percent=110,
+                                                 threshold=2))
     elif img.width > max_width:
         img = img.resize((max_width, int(img.height * max_width / img.width)),
                          PILImage.LANCZOS)
-
+    W, H = img.size
     draw = ImageDraw.Draw(img)
-    # Fuente ~3% del ancho; luego se reduce si el label no entra (evita corte).
-    fs = max(14, int(img.width * 0.030))
-    pad = max(6, fs // 3)
+    fs = max(15, int(W * 0.028))
+    pad = max(7, fs // 3)
     font = _load_font(fs)
-    avail = img.width - 2 * pad
-    tw = draw.textlength(label, font=font)
-    if tw > avail:
-        fs = max(9, int(fs * avail / tw))
-        font = _load_font(fs)
-        pad = max(6, fs // 3)
 
-    # Banda negra inferior con el timestamp/label.
-    bbox = draw.textbbox((0, 0), label, font=font)
-    band_h = (bbox[3] - bbox[1]) + pad * 2
-    y0 = img.height - band_h
-    overlay = PILImage.new("RGBA", img.size, (0, 0, 0, 0))
-    odraw = ImageDraw.Draw(overlay)
-    odraw.rectangle([0, y0, img.width, img.height], fill=(0, 0, 0, 190))
-    img = PILImage.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
+    # Fuente del label: reducir si no entra en el ancho (evita corte). Banda.
+    lbl_font = font
+    if label and draw.textlength(label, font=font) > W - 2 * pad:
+        lbl_font = _load_font(max(10, int(
+            fs * (W - 2 * pad) / draw.textlength(label, font=font))))
+    band_h = draw.textbbox((0, 0), label or "X", font=lbl_font)[3] + pad * 2
+
+    # Marcadores de volcanes (prioritarios + el volcan en foco) dentro del bbox.
+    if bounds:
+        lon0, lon1 = bounds["lon_min"], bounds["lon_max"]
+        lat0, lat1 = bounds["lat_min"], bounds["lat_max"]
+        focus = meta.get("focus")
+        names = set(PRIORITY_VOLCANOES)
+        if focus:
+            names.add(focus)
+        vis = [v for v in CATALOG if v.name in names and v.zone != "test"
+               and lat0 <= v.lat <= lat1 and lon0 <= v.lon <= lon1]
+        tri = max(5, fs // 2)
+        placed = []
+        for v in sorted(vis, key=lambda vv: (vv.name != focus, vv.lat)):
+            x = (v.lon - lon0) / (lon1 - lon0) * W
+            y = (lat1 - v.lat) / (lat1 - lat0) * H
+            draw.polygon([(x, y - tri), (x - tri, y + tri * 0.7),
+                          (x + tri, y + tri * 0.7)],
+                         fill=(0, 255, 255), outline=(10, 14, 20))
+            if not any(abs(y - py) < fs * 1.3 and abs(x - px) < W * 0.22
+                       for px, py in placed):
+                tw = draw.textlength(v.name, font=font)
+                tx = x - tri - 5 - tw
+                if tx < pad:
+                    tx = x + tri + 5
+                _stroke_text(draw, (tx, y - fs * 0.6), v.name, font)
+                placed.append((x, y))
+
+        # Barra de escala (km) abajo-derecha, arriba de la banda del timestamp.
+        midlat = (lat0 + lat1) / 2
+        kmpx = ((lon1 - lon0) * 111.32
+                * max(0.1, float(np.cos(np.radians(midlat)))) / W)
+        target = kmpx * W * 0.28
+        nice = [5, 10, 20, 50, 100, 200, 500, 1000]
+        barkm = max([k for k in nice if k <= target] or [nice[0]])
+        barpx = barkm / kmpx
+        x2 = W - pad
+        x1 = x2 - barpx
+        ly = H - band_h - pad - int(fs * 0.4)
+        draw.line([(x1, ly), (x2, ly)], fill=(255, 255, 255),
+                  width=max(3, fs // 6))
+        for xt in (x1, x2):
+            draw.line([(xt, ly - fs * 0.3), (xt, ly + fs * 0.3)],
+                      fill=(255, 255, 255), width=max(2, fs // 8))
+        sf = _load_font(int(fs * 0.8))
+        s = f"{barkm} km"
+        _stroke_text(draw, ((x1 + x2) / 2 - draw.textlength(s, font=sf) / 2,
+                            ly - fs * 1.15), s, sf)
+
+    # Banda inferior + timestamp.
+    ov = PILImage.new("RGBA", img.size, (0, 0, 0, 0))
+    ImageDraw.Draw(ov).rectangle([0, H - band_h, W, H], fill=(0, 0, 0, 190))
+    img = PILImage.alpha_composite(img.convert("RGBA"), ov).convert("RGB")
     draw = ImageDraw.Draw(img)
-    draw.text((pad, y0 + pad), label, fill=(255, 255, 255), font=font)
+    if label:
+        draw.text((pad, H - band_h + pad), label, fill=(255, 255, 255),
+                  font=lbl_font)
 
-    # Branding arriba-derecha (fuente mas chica, sobre cinta corta para que se
-    # lea sobre nubes brillantes). Se omite si no entra.
+    # Titulo arriba-izq + branding arriba-der.
+    head = " · ".join([s for s in (meta.get("title", ""),
+                                   meta.get("product_label", "")) if s])
+    if head:
+        _stroke_text(draw, (pad, pad), head, font)
     brand = "GOES-19 / RAMMB-CIRA"
-    bfont = _load_font(max(11, int(fs * 0.85)))
-    bw = draw.textlength(brand, font=bfont)
-    if bw <= img.width - 2 * pad:
-        bb = draw.textbbox((0, 0), brand, font=bfont)
-        bh = (bb[3] - bb[1]) + pad
-        ov2 = PILImage.new("RGBA", img.size, (0, 0, 0, 0))
-        ImageDraw.Draw(ov2).rectangle(
-            [img.width - bw - 2 * pad, 0, img.width, bh], fill=(0, 0, 0, 140))
-        img = PILImage.alpha_composite(img.convert("RGBA"), ov2).convert("RGB")
-        draw = ImageDraw.Draw(img)
-        draw.text((img.width - bw - pad, pad // 2), brand,
-                  fill=(190, 210, 230), font=bfont)
+    bf = _load_font(max(11, int(fs * 0.8)))
+    _stroke_text(draw, (W - pad - draw.textlength(brand, font=bf), pad),
+                 brand, bf, fill=(200, 220, 235))
     return img
 
 
-def _build_gif(frames: list[dict], duration_ms: int = 700) -> bytes:
+def _build_gif(frames: list[dict], meta: dict | None = None,
+               duration_ms: int = 450) -> bytes:
     """Construir GIF animado a partir de los frames.
 
-    Cada frame trae timestamp + marca sobre-impresa. Loop infinito.
+    Cada frame trae titulo + marcadores de volcan + escala + timestamp.
+    Loop infinito. 450 ms/frame (~2.2 fps) = mas fluido que el viejo 700 ms.
     """
-    pil_frames = [_annotated_pil(f["image"], f["label"]) for f in frames]
+    pil_frames = [_compose_loop_frame(f, meta, min_width=720) for f in frames]
     if not pil_frames:
         return b""
     buf = io.BytesIO()
@@ -169,8 +227,9 @@ def _build_gif(frames: list[dict], duration_ms: int = 700) -> bytes:
     return buf.getvalue()
 
 
-def _build_mp4(frames: list[dict], fps: float = 1.5) -> bytes:
-    """Construir MP4 H.264 a partir de los frames (con timestamp impreso).
+def _build_mp4(frames: list[dict], fps: float = 3.0,
+               meta: dict | None = None) -> bytes:
+    """Construir MP4 H.264 a partir de los frames (anotados).
 
     H.264 + yuv420p es el codec mas compatible (PowerPoint, navegadores,
     mac/windows/linux, Quicktime). Mucho mas liviano que GIF (~20-50% del
@@ -178,8 +237,8 @@ def _build_mp4(frames: list[dict], fps: float = 1.5) -> bytes:
 
     Requiere imageio-ffmpeg (trae binario static).
 
-    fps por defecto 1.5 (cada scan dura ~0.66s en el video). Subir a 4-6 fps
-    para playback mas rapido.
+    fps por defecto 3 (cada scan dura ~0.33s -> playback fluido). Bajar a 1.5
+    para revisar scan por scan, subir a 6 para timelapse rapido.
     """
     try:
         import imageio.v2 as iio
@@ -188,8 +247,7 @@ def _build_mp4(frames: list[dict], fps: float = 1.5) -> bytes:
         return b""
 
     # MP4 (H.264 comprime muy bien) -> lo generamos mas grande/nitido que el GIF.
-    pil_frames = [_annotated_pil(f["image"], f["label"], min_width=960)
-                  for f in frames]
+    pil_frames = [_compose_loop_frame(f, meta, min_width=960) for f in frames]
     if not pil_frames:
         return b""
 
@@ -935,15 +993,22 @@ def render():
         ts_last  = frames[-1]["ts"][:12]
         base_name = f"goes19_{prod_slug}_{scope_slug}_{ts_first}_{ts_last}"
 
-        # FPS selector compartido (afecta solo MP4; el GIF mantiene 700ms/frame).
+        # Metadata para anotar los frames (titulo, producto, volcan en foco).
+        anim_meta = {
+            "title": scope_label,
+            "product_label": PRODUCT_LABELS.get(sel["product"], sel["product"]),
+            "focus": sel.get("volc"),
+        }
+
+        # FPS selector compartido (afecta solo MP4; el GIF usa ~2.2 fps fijos).
         fps = st.slider(
             "FPS del video MP4 (frames por segundo)",
-            min_value=1.0, max_value=8.0, value=1.5, step=0.5,
+            min_value=1.0, max_value=8.0, value=3.0, step=0.5,
             key="anim_fps",
             help=(
-                "Velocidad de reproduccion del MP4. 1.5 fps = cada scan "
-                "(10 min reales) dura ~0.66s en el video. "
-                "Subir a 4-6 fps para playback mas rapido."
+                "Velocidad de reproduccion del MP4. 3 fps = playback fluido "
+                "(~0.33s por scan). Bajar a 1.5 para revisar scan por scan, "
+                "subir a 6 para timelapse rapido."
             ),
         )
 
@@ -959,7 +1024,7 @@ def render():
             if st.button("Generar MP4", key="gen_mp4",
                          width='stretch'):
                 with st.spinner("Construyendo MP4 (H.264)..."):
-                    mp4_bytes = _build_mp4(frames, fps=fps)
+                    mp4_bytes = _build_mp4(frames, fps=fps, meta=anim_meta)
                     if mp4_bytes:
                         st.session_state["_mp4_bytes"] = mp4_bytes
                         st.session_state["_mp4_name"] = (
@@ -991,7 +1056,7 @@ def render():
             if st.button("Generar GIF", key="gen_gif",
                          width='stretch'):
                 with st.spinner("Construyendo GIF..."):
-                    st.session_state["_gif_bytes"] = _build_gif(frames)
+                    st.session_state["_gif_bytes"] = _build_gif(frames, meta=anim_meta)
                     st.session_state["_gif_name"] = f"{base_name}.gif"
             if "_gif_bytes" in st.session_state and st.session_state["_gif_bytes"]:
                 size_mb = len(st.session_state["_gif_bytes"]) / 1024 / 1024

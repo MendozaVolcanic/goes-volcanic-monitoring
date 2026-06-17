@@ -78,6 +78,20 @@ jobs:
           ls -lh out_hires_loop/ 2>/dev/null | head -12
           python -c "import json;m=json.load(open('out_hires_loop/manifest_loop.json'));print('volcanes:',len(m['scopes']));[print(' ',k,len(v['ts']),'frames') for k,v in m['scopes'].items()]"
 
+      # Subir los frames generados como ARTIFACT del run (race-proof). El release
+      # rodante `hires-loop-rolling` poda todo lo >12h y last-writer-wins con el
+      # cron `hires_visible_cache`, asi que un backfill de una ventana historica
+      # (>12 h atras) NO sobrevive ahi. El artifact, en cambio, queda atado al run
+      # y no lo toca ningun cron -> es la via confiable para recuperar GIFs de dias
+      # pasados (`gh run download <run-id> -n hires-loop-frames`).
+      - name: Subir frames como artifact (race-proof, no podado)
+        if: ${{ hashFiles('out_hires_loop/**') != '' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: hires-loop-frames
+          path: out_hires_loop/
+          retention-days: 7
+
       - name: Publicar loop cache (0.5km rolling)
         if: ${{ hashFiles('out_hires_loop/**') != '' }}
         uses: ./.github/actions/gh-release-snapshot

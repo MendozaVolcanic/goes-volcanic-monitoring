@@ -214,11 +214,15 @@ def main() -> int:
         if explicit and tslug and slug == tslug:
             # Ventana explicita de UN volcan -> REEMPLAZO limpio (no mezclar con
             # frames viejos del cache, que pueden tener otra cadencia/scan).
+            # La ventana [start,end] ES la retencion: NO aplicar el cutoff
+            # rodante de 12h. Si el backfill es de un dia pasado, TODO cae fuera
+            # de las ultimas 12h y se perderia -> ese era el bug que vaciaba el
+            # scope al backfillear GIFs historicos (>12h atras).
             frames = dict(new_frames[slug])
         else:
             frames = _download_existing(slug)    # ventana rodante actual
             frames.update(new_frames[slug])      # + nuevos / backfilleados
-        frames = {ts: b for ts, b in frames.items() if ts >= cutoff}
+            frames = {ts: b for ts, b in frames.items() if ts >= cutoff}
         if not frames:
             continue
         with zipfile.ZipFile(OUT_DIR / _zip_name(slug), "w",

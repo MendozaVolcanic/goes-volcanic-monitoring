@@ -185,7 +185,7 @@ def _compose_loop_frame(frame: dict, meta: dict | None = None,
             names.add(focus)
         vis = [v for v in CATALOG if v.name in names and v.zone != "test"
                and lat0 <= v.lat <= lat1 and lon0 <= v.lon <= lon1]
-        tri = max(5, fs // 2)
+        tri = max(4, fs * 2 // 5)   # ~20% mas chico que fs//2 (pedido jun 2026)
         placed = []
         for v in sorted(vis, key=lambda vv: (vv.name != focus, vv.lat)):
             x = (v.lon - lon0) / (lon1 - lon0) * W

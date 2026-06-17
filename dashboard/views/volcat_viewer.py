@@ -48,6 +48,97 @@ ZONE_OPTIONS = {
 }
 
 
+def _overlay_volcanoes_border(fig, bounds, marker_size: int = 9):
+    """Dibuja TODOS los volcanes monitoreados (CATALOG = RNVV) dentro de
+    `bounds` como triangulos cyan + etiqueta anti-encime (prioritarios
+    primero), y la frontera Chile-Argentina con halo (oscuro ancho + claro
+    fino, visible sobre nubes/oceano).
+
+    Compartido por la vista de altura georef y los RGB SSEC -> los MISMOS
+    volcanes monitoreados + la frontera en todas las vistas VOLCAT. Antes la
+    altura no mostraba ningun volcan y ninguna de las dos tenia frontera.
+    (jun 2026, pedido OVDAS)
+    """
+    lat0, lat1 = bounds["lat_min"], bounds["lat_max"]
+    lon0, lon1 = bounds["lon_min"], bounds["lon_max"]
+    vis = [v for v in CATALOG if lat0 <= v.lat <= lat1 and lon0 <= v.lon <= lon1
+           and v.zone != "test"]
+    if vis:
+        fig.add_trace(go.Scatter(
+            x=[v.lon for v in vis], y=[v.lat for v in vis], mode="markers",
+            marker=dict(symbol="triangle-up", size=marker_size, color="#00ffff",
+                        line=dict(color="#0f1218", width=1.1)),
+            hovertext=[f"{v.name} ({v.elevation:,} m)" for v in vis],
+            hoverinfo="text", showlegend=False, name="Volcanes monitoreados",
+        ))
+        # Etiqueta a la IZQUIERDA (xanchor=right): si hay pluma se va al ESTE,
+        # asi el nombre no la tapa. Anti-encime greedy (prioritarios primero).
+        _mdlat = (lat1 - lat0) * 0.04
+        _placed: list[tuple[float, float]] = []
+        for v in sorted(vis, key=lambda v: (v.name not in PRIORITY_VOLCANOES,
+                                            v.lat)):
+            if any(abs(v.lat - pl) < _mdlat and abs(v.lon - pn) < 0.45
+                   for pl, pn in _placed):
+                continue
+            fig.add_annotation(
+                x=v.lon, y=v.lat, text=v.name, showarrow=False,
+                font=dict(size=11, color="#ffffff"), xanchor="right",
+                yanchor="middle", xshift=-7, bgcolor="rgba(8,11,16,0.42)",
+                borderpad=2,
+            )
+            _placed.append((v.lat, v.lon))
+    try:
+        from dashboard.map_helpers import add_chile_border
+        add_chile_border(fig, color="rgba(20,24,32,0.9)", width=3.2)
+        add_chile_border(fig, color="rgba(235,240,250,0.9)", width=1.2)
+    except Exception:
+        logger.warning("add_chile_border fallo en vista VOLCAT", exc_info=True)
+    return fig
+
+
+def _fig_volcat_height_geo(img_bytes, bounds, title):
+    """Producto VOLCAT (altura/carga/prob/reff) GEOREFERENCIADO + volcanes
+    monitoreados + frontera, como plotly.
+
+    `img_bytes` = recorte del mapa (sin titulo ni colorbar quemados) que
+    devuelve `_volcat_map_only`; `bounds` = sus lat/lon. Reemplaza al
+    `st.image` plano de la seccion de altura para que muestre NUESTROS
+    volcanes (RNVV) y la frontera, georeferenciados sobre el sector.
+    """
+    import base64
+    fig = go.Figure()
+    if img_bytes:
+        b64 = base64.b64encode(img_bytes).decode()
+        fig.add_layout_image(
+            source=f"data:image/png;base64,{b64}", xref="x", yref="y",
+            x=bounds["lon_min"], y=bounds["lat_max"],
+            sizex=bounds["lon_max"] - bounds["lon_min"],
+            sizey=bounds["lat_max"] - bounds["lat_min"],
+            sizing="stretch", layer="below",
+        )
+    # Scatter invisible para fijar el dominio de los ejes a los bounds.
+    fig.add_trace(go.Scatter(
+        x=[bounds["lon_min"], bounds["lon_max"]],
+        y=[bounds["lat_min"], bounds["lat_max"]],
+        mode="markers", marker=dict(opacity=0), showlegend=False,
+        hoverinfo="skip",
+    ))
+    _overlay_volcanoes_border(fig, bounds, marker_size=9)
+    cos_lat = max(0.1, float(np.cos(np.radians(
+        (bounds["lat_min"] + bounds["lat_max"]) / 2))))
+    fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
+                     showgrid=False, visible=False, constrain="domain")
+    fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
+                     showgrid=False, visible=False, scaleanchor="x",
+                     scaleratio=1.0 / cos_lat, constrain="domain")
+    fig.update_layout(
+        title=dict(text=title, font=dict(size=13, color="#ccc")),
+        height=640, margin=dict(l=0, r=0, t=34, b=0),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+    )
+    return fig
+
+
 def _fig_ssec_image(img_rgba, bounds, title, volcanoes):
     """Mostrar imagen SSEC como go.Image con volcanes."""
     fig = go.Figure()
@@ -88,24 +179,10 @@ def _fig_ssec_image(img_rgba, bounds, title, volcanoes):
         layer="below",
     )
 
-    # Volcano markers
-    lat_arr = np.array([lat_min, lat_max])
-    lon_arr = np.array([lon_min, lon_max])
-    vis = [v for v in volcanoes
-           if lat_min <= v.lat <= lat_max and lon_min <= v.lon <= lon_max]
-    if vis:
-        fig.add_trace(go.Scatter(
-            x=[v.lon for v in vis], y=[v.lat for v in vis],
-            mode="markers+text",
-            marker=dict(size=4, color=C_ACCENT, symbol="triangle-up",
-                        line=dict(width=0.8, color="white")),
-            text=[v.name for v in vis],
-            textposition="top center",
-            textfont=dict(size=8, color="rgba(255,255,255,0.7)"),
-            name="Volcanes",
-            hovertext=[f"{v.name} ({v.elevation:,} m)" for v in vis],
-            hoverinfo="text",
-        ))
+    # Volcanes monitoreados (RNVV) + frontera Chile-Argentina (helper comun
+    # con la vista de altura). marker_size chico porque la region RGB puede
+    # ser Chile completo (muchos volcanes apilados).
+    _overlay_volcanoes_border(fig, bounds, marker_size=6)
 
     fig.update_layout(
         title=dict(text=title, font=dict(size=14, color="#ccc")),
@@ -631,14 +708,33 @@ def _render_height_section(key_suffix: str = "tab") -> None:
     col_im, col_lg = st.columns([4, 1.4])
     with col_im:
         img_bytes = _volcat_image_bytes(meta["image_url"])
-        if img_bytes:
-            st.image(
-                img_bytes,
-                # Caption SOLO producto + timestamp: el volcán y el sector ya
-                # están en los 3 KPI de arriba (no los repetimos). (jun 2026)
-                caption=f"{sel_meta['label_es']} · {ts_h}",
+        # Georef + NUESTROS volcanes monitoreados (RNVV) + frontera, igual que
+        # las vistas RGB / zonas. `_volcat_map_only` recorta el mapa (saca
+        # titulo y colorbar quemados de SSEC) y da los lat/lon bounds. Si falla
+        # (sin coords o sin grid latlon detectable) -> fallback a imagen plana.
+        # (jun 2026, pedido OVDAS: "agregar el resto de los volcanes + frontera")
+        try:
+            geo = _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
+                                   meta.get("coords") or {})
+        except Exception:
+            logger.warning("VOLCAT georef fallo, uso imagen plana", exc_info=True)
+            geo = None
+        if geo and geo.get("png"):
+            st.plotly_chart(
+                _fig_volcat_height_geo(geo["png"], geo["bounds"],
+                                       f"{sel_meta['label_es']} · {ts_h}"),
                 width='stretch',
+                config={"displayModeBar": False, "responsive": True},
+                key=f"volcat_height_geo_{sector}_{prod_h}_{key_suffix}",
             )
+            st.caption("▲ cyan = volcanes monitoreados (RNVV) · línea = "
+                       "frontera Chile-Argentina · producto VOLCAT "
+                       "georreferenciado sobre el sector.")
+        elif img_bytes:
+            # Fallback: imagen SSEC plana (con su titulo/colorbar quemados).
+            st.image(img_bytes, caption=f"{sel_meta['label_es']} · {ts_h}",
+                     width='stretch')
+        if img_bytes:
             st.download_button(
                 f"⬇ Descargar PNG VOLCAT ({len(img_bytes)//1024} KB)",
                 data=img_bytes,
@@ -650,7 +746,7 @@ def _render_height_section(key_suffix: str = "tab") -> None:
                 key=f"dl_volcat_height_{prod_h}_{sector}_{key_suffix}",
                 width='stretch',
             )
-        else:
+        elif not (geo and geo.get("png")):
             st.error("No se pudo descargar la imagen.")
             st.caption(f"URL: {meta.get('image_url', '?')}")
 

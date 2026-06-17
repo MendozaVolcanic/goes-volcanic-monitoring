@@ -11,6 +11,7 @@ Documentacion completa en docs/altura_pluma/VOLCAT_api_reference.md
 from __future__ import annotations
 
 import logging
+import unicodedata
 from typing import Optional
 
 from src.fetch._http_session import get_session as _get_session
@@ -125,6 +126,61 @@ def get_sector_for_volcano(volcano_name: str) -> Optional[tuple[str, str]]:
         if vlow in k.lower() or k.lower() in vlow:
             return v
     return None
+
+
+def _norm(s: str) -> str:
+    """minuscula SIN tildes — para matchear nombres del CATALOG (sin tilde,
+    'Lascar'/'Nevados de Chillan') contra las claves de VOLCANO_TO_SECTOR
+    (con tilde, 'Láscar'/'Nevados de Chillán')."""
+    return "".join(c for c in unicodedata.normalize("NFKD", s)
+                   if not unicodedata.combining(c)).lower()
+
+
+# Sectores REGIONALES (2 km / 5 km): cubren franjas grandes y NO siempre
+# contienen al volcan que tienen mapeado (bug verificado jun 2026: Chile_South
+# arranca en lat -40.3 y se pierde Villarrica/Llaima/Lonquimay, que estan al
+# norte). Por eso para el encuadre regional elegimos por LATITUD, no por el
+# mapeo. Solo los sectores DEDICADOS chicos (250/500/1000 m) se honran tal cual.
+_REGIONAL_SECTORS = {"Chile_North_2_km", "Chile_Central_2_km",
+                     "Chile_South_2_km", "Argentina_5_km"}
+
+
+def _regional_sector_for_lat(lat: float) -> tuple[str, str]:
+    """Sector regional VOLCAT que CONTIENE esa latitud. Bounds reales medidos
+    (jun 2026): North lat[-30,-16]; Central lat[-46,-32]; South lat[-54,-40].
+    Umbrales -31 / -42 mantienen cada volcan bien adentro de su sector."""
+    if lat >= -31.0:
+        return ("Chile_North_2_km", "ABI")
+    if lat >= -42.0:
+        return ("Chile_Central_2_km", "ABI")
+    return ("Chile_South_2_km", "ABI")
+
+
+def resolve_volcat_sector(volcano) -> tuple[str, str]:
+    """(sector, instr) para CUALQUIER volcan del CATALOG — nunca None, asi que
+    TODOS son seleccionables en la vista por volcan, y el volcan SIEMPRE cae
+    dentro de la imagen del sector (necesario para el zoom).
+
+    1) Sector dedicado CHICO (250/500/1000 m) si existe — centrado en ESTE
+       volcan (match exacto ignorando tildes: 'Planchon-Peteroa' del catalogo
+       encuentra su sector 500 m). Los sectores regionales mapeados se IGNORAN
+       aca (a veces no contienen al volcan).
+    2) Si no, el sector regional por LATITUD (garantiza contencion).
+
+    `volcano` es un objeto Volcano (usa .name, .lat).
+    """
+    dedicated = None
+    if volcano.name in VOLCANO_TO_SECTOR:
+        dedicated = VOLCANO_TO_SECTOR[volcano.name]
+    else:
+        vnorm = _norm(volcano.name)
+        for k, sec in VOLCANO_TO_SECTOR.items():
+            if _norm(k) == vnorm:
+                dedicated = sec
+                break
+    if dedicated and dedicated[0] not in _REGIONAL_SECTORS:
+        return dedicated
+    return _regional_sector_for_lat(volcano.lat)
 
 
 def _query_frames(sector: str, instr: str, image_type: str,

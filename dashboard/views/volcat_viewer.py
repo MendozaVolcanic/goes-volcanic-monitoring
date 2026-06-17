@@ -27,7 +27,8 @@ try:
         get_latest_time,
     )
     from src.fetch.volcat_api import (
-        VOLCANO_TO_SECTOR, get_sector_for_volcano, volcat_latest,
+        VOLCANO_TO_SECTOR, get_sector_for_volcano, resolve_volcat_sector,
+        volcat_latest,
     )
     from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
 except Exception:
@@ -46,6 +47,14 @@ ZONE_OPTIONS = {
     "Zona Sur": VOLCANIC_ZONES["sur"],
     "Zona Austral": VOLCANIC_ZONES["austral"],
 }
+
+
+def _norm_origin_lon(origin_lon: float) -> float:
+    """ORIGIN_LON de SSEC normalizado a [-180, 180]. Los sectores regionales lo
+    dan en forma 0-360 (286 -> -74, hay que restar 360) pero algunos chicos ya
+    vienen negativos (Planchon_500m: -73.5). Restar 360 incondicionalmente daba
+    -433 y rompia el georef de esos sectores. (fix jun 2026)"""
+    return origin_lon - 360.0 if origin_lon > 180.0 else origin_lon
 
 
 def _overlay_volcanoes_border(fig, bounds, marker_size: int = 9):
@@ -96,7 +105,7 @@ def _overlay_volcanoes_border(fig, bounds, marker_size: int = 9):
     return fig
 
 
-def _fig_volcat_height_geo(img_bytes, bounds, title):
+def _fig_volcat_height_geo(img_bytes, bounds, title, view_bounds=None):
     """Producto VOLCAT (altura/carga/prob/reff) GEOREFERENCIADO + volcanes
     monitoreados + frontera, como plotly.
 
@@ -104,6 +113,11 @@ def _fig_volcat_height_geo(img_bytes, bounds, title):
     devuelve `_volcat_map_only`; `bounds` = sus lat/lon. Reemplaza al
     `st.image` plano de la seccion de altura para que muestre NUESTROS
     volcanes (RNVV) y la frontera, georeferenciados sobre el sector.
+
+    `view_bounds`: encuadre opcional (zoom). La IMAGEN siempre se coloca sobre
+    el sector completo `bounds`, pero los EJES se recortan a `view_bounds`
+    (clampeado al sector) -> zoom al volcan elegido en vez del sector regional
+    gigante. None = mostrar el sector completo (modo Zona). (jun 2026)
     """
     import base64
     fig = go.Figure()
@@ -116,19 +130,31 @@ def _fig_volcat_height_geo(img_bytes, bounds, title):
             sizey=bounds["lat_max"] - bounds["lat_min"],
             sizing="stretch", layer="below",
         )
-    # Scatter invisible para fijar el dominio de los ejes a los bounds.
+    # Encuadre de los ejes: zoom (view_bounds) clampeado al sector, o el sector
+    # completo. La imagen ya quedo colocada en `bounds` -> recortar los ejes
+    # hace el zoom sin re-descargar nada.
+    if view_bounds:
+        vb = {
+            "lat_min": max(view_bounds["lat_min"], bounds["lat_min"]),
+            "lat_max": min(view_bounds["lat_max"], bounds["lat_max"]),
+            "lon_min": max(view_bounds["lon_min"], bounds["lon_min"]),
+            "lon_max": min(view_bounds["lon_max"], bounds["lon_max"]),
+        }
+    else:
+        vb = bounds
+    # Scatter invisible para fijar el dominio de los ejes al encuadre.
     fig.add_trace(go.Scatter(
-        x=[bounds["lon_min"], bounds["lon_max"]],
-        y=[bounds["lat_min"], bounds["lat_max"]],
+        x=[vb["lon_min"], vb["lon_max"]],
+        y=[vb["lat_min"], vb["lat_max"]],
         mode="markers", marker=dict(opacity=0), showlegend=False,
         hoverinfo="skip",
     ))
-    _overlay_volcanoes_border(fig, bounds, marker_size=9)
+    _overlay_volcanoes_border(fig, vb, marker_size=9)
     cos_lat = max(0.1, float(np.cos(np.radians(
-        (bounds["lat_min"] + bounds["lat_max"]) / 2))))
-    fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
+        (vb["lat_min"] + vb["lat_max"]) / 2))))
+    fig.update_xaxes(range=[vb["lon_min"], vb["lon_max"]],
                      showgrid=False, visible=False, constrain="domain")
-    fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
+    fig.update_yaxes(range=[vb["lat_min"], vb["lat_max"]],
                      showgrid=False, visible=False, scaleanchor="x",
                      scaleratio=1.0 / cos_lat, constrain="domain")
     fig.update_layout(
@@ -524,7 +550,7 @@ def _volcat_map_only(image_url: str, latlon_url: str | None,
     try:
         dp = math.degrees(coords["SCALE_FACTOR"] / coords["EQ_RADIUS"])
         lat0 = coords["ORIGIN_LAT"] + coords.get("OFFSET_Y", 0) * dp
-        lon0 = (coords["ORIGIN_LON"] - 360) + coords.get("OFFSET_X", 0) * dp
+        lon0 = _norm_origin_lon(coords["ORIGIN_LON"]) + coords.get("OFFSET_X", 0) * dp
         bounds = {
             "lat_max": lat0 - top * dp, "lat_min": lat0 - bot * dp,
             "lon_min": lon0 + left * dp, "lon_max": lon0 + right * dp,
@@ -551,7 +577,7 @@ def _volcat_sector_bounds(coords: dict, w: int, h: int) -> dict | None:
     try:
         import math
         dp = math.degrees(coords["SCALE_FACTOR"] / coords["EQ_RADIUS"])
-        lon_min = (coords["ORIGIN_LON"] - 360) + coords.get("OFFSET_X", 0) * dp
+        lon_min = _norm_origin_lon(coords["ORIGIN_LON"]) + coords.get("OFFSET_X", 0) * dp
         lat_max = coords["ORIGIN_LAT"] + coords.get("OFFSET_Y", 0) * dp
         return {
             "lon_min": lon_min, "lon_max": lon_min + w * dp,
@@ -615,10 +641,14 @@ def _render_height_section(key_suffix: str = "tab") -> None:
              "Zona = sector regional completo (Norte/Centro/Sur).",
     )
 
-    priority_names = [v.name for v in CATALOG if v.name in PRIORITY_VOLCANOES
-                      and v.name in VOLCANO_TO_SECTOR]
-    other_names    = [v.name for v in CATALOG if v.name in VOLCANO_TO_SECTOR
-                      and v.name not in priority_names]
+    # TODOS los volcanes monitoreados (RNVV), no solo los con sector dedicado.
+    # Los que no tienen sector propio resuelven al regional por zona via
+    # resolve_volcat_sector. Antes el filtro `v.name in VOLCANO_TO_SECTOR`
+    # dejaba afuera ~la mitad (nombres con/sin tilde no matcheaban + muchos sin
+    # mapeo: Tupungatito, San Jose, Antuco, Sollipulli, Osorno...). (jun 2026)
+    _cat = [v for v in CATALOG if v.zone != "test"]
+    priority_names = [v.name for v in _cat if v.name in PRIORITY_VOLCANOES]
+    other_names    = [v.name for v in _cat if v.name not in PRIORITY_VOLCANOES]
     volc_options   = [f"★ {n}" for n in priority_names] + other_names
 
     cv1, cv2 = st.columns([1.5, 1.5])
@@ -665,18 +695,26 @@ def _render_height_section(key_suffix: str = "tab") -> None:
         unsafe_allow_html=True,
     )
 
+    # view_bounds: en modo Volcán encuadramos CERCA del volcán elegido (±_PAD)
+    # en vez del sector regional gigante. En modo Zona = sector entero (None).
+    view_bounds = None
     if modo_sel == "Zona":
-        # Sector regional directo — no pasa por get_sector_for_volcano.
+        # Sector regional directo — no pasa por resolve_volcat_sector.
         sector, instr = ZONE_TO_SECTOR[zona_sel]
     else:
-        sector_info = get_sector_for_volcano(volc_name_h)
-        if not sector_info:
-            st.error(
-                f"El volcán '{volc_name_h}' no tiene sector VOLCAT mapeado todavía. "
-                "Avisame para agregarlo a `src/fetch/volcat_api.py::VOLCANO_TO_SECTOR`."
-            )
+        v_obj = get_volcano(volc_name_h)
+        if v_obj is None:
+            st.error(f"No encontré '{volc_name_h}' en el catálogo RNVV.")
             return
-        sector, instr = sector_info
+        # Sector dedicado si existe (match exacto sin tildes), si no el regional
+        # por zona -> TODOS los volcanes resuelven a algo (nunca None).
+        sector, instr = resolve_volcat_sector(v_obj)
+        _PAD = 2.0   # zoom ~±2° (≈ 444 km): cerca del volcán pero con sitio
+                     # para ver la pluma desplazarse al este. (jun 2026, OVDAS)
+        view_bounds = {
+            "lat_min": v_obj.lat - _PAD, "lat_max": v_obj.lat + _PAD,
+            "lon_min": v_obj.lon - _PAD, "lon_max": v_obj.lon + _PAD,
+        }
     with st.spinner(
         f"Consultando VOLCAT para {volc_name_h} (sector {sector}, {prod_h})..."
     ):
@@ -722,7 +760,8 @@ def _render_height_section(key_suffix: str = "tab") -> None:
         if geo and geo.get("png"):
             st.plotly_chart(
                 _fig_volcat_height_geo(geo["png"], geo["bounds"],
-                                       f"{sel_meta['label_es']} · {ts_h}"),
+                                       f"{sel_meta['label_es']} · {ts_h}",
+                                       view_bounds=view_bounds),
                 width='stretch',
                 config={"displayModeBar": False, "responsive": True},
                 key=f"volcat_height_geo_{sector}_{prod_h}_{key_suffix}",

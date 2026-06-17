@@ -667,6 +667,18 @@ def _render_height_section(key_suffix: str = "tab") -> None:
                 help="★ = volcán prioritario (con sector dedicado en VOLCAT)",
             )
             volc_name_h = sel_raw.replace("★ ", "")
+            # Control de acercamiento: radio del encuadre alrededor del volcan.
+            # Default ±1° (~111 km) — bastante cerca; bajable a ±0.5° (~55 km)
+            # para maximo detalle. (jun 2026, pedido OVDAS "aun mas zoom")
+            zoom_pad = st.select_slider(
+                "Acercamiento",
+                options=[0.5, 0.75, 1.0, 1.5, 2.0, 3.0], value=1.0,
+                format_func=lambda d: f"±{d:g}° (~{int(round(d * 111))} km)",
+                key=f"volcat_height_zoom_{key_suffix}",
+                help="Radio del encuadre alrededor del volcán. Más cerca = más "
+                     "detalle, pero el producto VOLCAT es ~2 km/px en los "
+                     "sectores regionales (se pixela al acercar mucho).",
+            )
     with cv2:
         # Tooltip ampliado en el selectbox + descripción inline debajo.
         help_text = "\n".join(
@@ -709,8 +721,7 @@ def _render_height_section(key_suffix: str = "tab") -> None:
         # Sector dedicado si existe (match exacto sin tildes), si no el regional
         # por zona -> TODOS los volcanes resuelven a algo (nunca None).
         sector, instr = resolve_volcat_sector(v_obj)
-        _PAD = 2.0   # zoom ~±2° (≈ 444 km): cerca del volcán pero con sitio
-                     # para ver la pluma desplazarse al este. (jun 2026, OVDAS)
+        _PAD = float(zoom_pad)   # radio del encuadre, elegido en el slider
         view_bounds = {
             "lat_min": v_obj.lat - _PAD, "lat_max": v_obj.lat + _PAD,
             "lon_min": v_obj.lon - _PAD, "lon_max": v_obj.lon + _PAD,

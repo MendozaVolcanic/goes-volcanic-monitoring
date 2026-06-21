@@ -533,15 +533,22 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
     )
     from dashboard.utils import fmt_both
 
+    def _placeholder(reason):
+        # Antes, cuando data/img venian vacios (fallo transitorio de SSEC) la
+        # celda quedaba EN BLANCO los 12s del slot -> parecia que el Modo Sala
+        # "se salta la zona". Ahora siempre mostramos un cartel, asi se
+        # distingue "frame no disponible" de un bug de rotacion. (fix jun 2026,
+        # audit Modo Guardia)
+        st.markdown(
+            f"<div style='color:#7a8a9a; text-align:center; padding:3rem;'>"
+            f"VOLCAT Zona {zona} — {reason}</div>", unsafe_allow_html=True)
+
     try:
         meta = _volcat_latest_cached(sector, instr, "Ash_Height")
     except Exception:
         meta = None
     if not meta:
-        st.markdown(
-            f"<div style='color:#7a8a9a; text-align:center; padding:3rem;'>"
-            f"VOLCAT Zona {zona} — sin frame disponible</div>",
-            unsafe_allow_html=True)
+        _placeholder("sin frame disponible")
         return
     dt = _volcat_dt_obj(meta.get("datetime"))
     time_label = fmt_both(dt) if dt else ""
@@ -573,6 +580,8 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
                 config={"displayModeBar": False, "responsive": True},
                 # key fijo por zona -> update in-place, sin parpadeo.
                 key=f"tvvolcat_{zona}")
+        else:
+            _placeholder("frame no disponible (descarga SSEC)")
     else:  # ssec_overlay
         img = _volcat_image_with_overlays(
             meta["image_url"], meta.get("volcanoes_url"),
@@ -585,6 +594,8 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
             # centrado + tamano lo da el CSS del TV (margin auto sobre el
             # contenedor stImage, que toma el ancho de la imagen). (jun 2026)
             st.image(img)
+        else:
+            _placeholder("frame no disponible (descarga SSEC)")
 
 
 def _compose_volcan_panels(v, radius_deg: float, panels: list, ph: int = 720):
@@ -820,15 +831,31 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
               for zona, sector, instr, vb in _vspecs]
     slots += [("volcan", v, None) for v in TV_VOLCAN_ZOOMS]
 
-    # INDICE BASADO EN RELOJ (no en session_state): el slot es funcion del
-    # tiempo de pared -> (epoch // TV_SLOT_SECONDS) % N. CLAVE: si el watchdog
-    # de reconexion (o cualquier reconnect de Streamlit) RECARGA la pagina, el
-    # session_state se borra y con el viejo contador la rotacion VOLVIA a slot 0
-    # (Ash RGB) y parecia "trabada". Con reloj, tras una recarga retoma el slot
-    # que toca por tiempo -> la rotacion se ve continua igual. (jun 2026)
+    # INDICE: anclado al RELOJ pero con AVANCE CLAMPEADO a +1 por ventana.
+    #  - El reloj puro (epoch//SLOT % N) SALTABA slots cuando un render bloqueaba
+    #    > TV_SLOT_SECONDS (ej. VOLCAT con SSEC lento en cache-miss): el reloj
+    #    avanzaba durante el bloqueo y el proximo tick caia en un idx posterior
+    #    -> esa zona NO se mostraba = "se salta algunas zonas cuando toca VOLCAT".
+    #    (fix jun 2026, audit Modo Guardia)
+    #  - Ahora: si el reloj sigue en el MISMO slot que mostramos (reruns extra
+    #    dentro de la ventana), idempotente (no avanza -> sin parpadeo). Si el
+    #    reloj avanzo, avanzamos SOLO +1 aunque haya saltado varios -> cubre
+    #    TODOS los slots (a lo sumo la rotacion se atrasa, nunca saltea).
+    #  - Si no hay idx previo (primer load o reconnect que borra session_state),
+    #    arrancamos donde toca por RELOJ -> la rotacion sigue continua tras una
+    #    recarga (lo que el indice por reloj resolvia originalmente).
     from datetime import datetime, timezone
-    idx = int(datetime.now(timezone.utc).timestamp()
-              // TV_SLOT_SECONDS) % len(slots)
+    n = len(slots)
+    clock_idx = int(datetime.now(timezone.utc).timestamp()
+                    // TV_SLOT_SECONDS) % n
+    prev_idx = st.session_state.get(session_key)
+    if not isinstance(prev_idx, int):
+        idx = clock_idx
+    elif (clock_idx - prev_idx) % n == 0:
+        idx = prev_idx % n
+    else:
+        idx = (prev_idx + 1) % n
+    st.session_state[session_key] = idx
     kind, val, extra = slots[idx]
 
     scan_dt = None

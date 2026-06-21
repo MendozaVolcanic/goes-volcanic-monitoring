@@ -482,18 +482,20 @@ def _volcat_image_with_overlays(image_url: str,
     return buf.getvalue()
 
 
-@st.cache_data(ttl=TTL_FRAME_IMAGE, show_spinner=False)
-def _volcat_map_only(image_url: str, latlon_url: str | None,
-                     coords: dict) -> dict:
-    """Baja la imagen VOLCAT y la RECORTA al area del mapa, quitando el
-    titulo quemado (arriba) y la colorbar quemada (abajo) de SSEC.
-
-    Usa el overlay de grilla latlon como referencia robusta del extent del
-    mapa (las lineas cyan cubren SOLO el mapa, no el titulo ni la colorbar).
-    Devuelve {'png': bytes recortado, 'bounds': {lat/lon del recorte}} o {}.
-
-    Asi, al georeferenciar en plotly, el titulo no flota dentro del mapa.
+class _VolcatMapUnavailable(Exception):
+    """Fallo TRANSITORIO al bajar/recortar el frame VOLCAT (SSEC caido o coords
+    rotas). El core cacheado lo LANZA en vez de devolver {} porque st.cache_data
+    NO cachea excepciones -> la proxima llamada reintenta hasta exito, en lugar
+    de dejar la zona en blanco las 2h del TTL. (fix jun 2026, audit Modo Guardia)
     """
+
+
+@st.cache_data(ttl=TTL_FRAME_IMAGE, show_spinner=False)
+def _volcat_map_only_cached(image_url: str, latlon_url: str | None,
+                            coords: dict) -> dict:
+    """Core cacheado de _volcat_map_only. Lanza _VolcatMapUnavailable en fallo
+    (NO devuelve {}) para no envenenar la cache con el negativo. Solo los
+    EXITOS quedan cacheados. Usar via el wrapper _volcat_map_only."""
     import io
     import math
     from concurrent.futures import ThreadPoolExecutor
@@ -517,7 +519,7 @@ def _volcat_map_only(image_url: str, latlon_url: str | None,
         f_ll = ex.submit(_dl, latlon_url)
         base, ll = f_base.result(), f_ll.result()
     if base is None:
-        return {}
+        raise _VolcatMapUnavailable("descarga SSEC del frame fallo")
     w, h = base.size
 
     # Extent del mapa via lineas de grilla cyan del overlay latlon.
@@ -555,13 +557,31 @@ def _volcat_map_only(image_url: str, latlon_url: str | None,
             "lat_max": lat0 - top * dp, "lat_min": lat0 - bot * dp,
             "lon_min": lon0 + left * dp, "lon_max": lon0 + right * dp,
         }
-    except Exception:
-        return {}
+    except Exception as e:
+        raise _VolcatMapUnavailable("coords del sector invalidas") from e
 
     crop = base.crop((left, top, right + 1, bot + 1)).convert("RGB")
     buf = io.BytesIO()
     crop.save(buf, format="PNG")
     return {"png": buf.getvalue(), "bounds": bounds}
+
+
+def _volcat_map_only(image_url: str, latlon_url: str | None,
+                     coords: dict) -> dict:
+    """Baja la imagen VOLCAT y la RECORTA al area del mapa, quitando el titulo
+    quemado (arriba) y la colorbar quemada (abajo) de SSEC. Usa el overlay de
+    grilla latlon como referencia robusta del extent. Devuelve {'png','bounds'}
+    o {} si el frame no esta disponible.
+
+    Wrapper NO cacheado sobre _volcat_map_only_cached: traduce el fallo
+    transitorio (_VolcatMapUnavailable) a {} para los callers, SIN cachear el
+    negativo -> un blip de SSEC no deja la zona en blanco las 2h del TTL; se
+    reintenta en cada render hasta que SSEC responde. (fix jun 2026)
+    """
+    try:
+        return _volcat_map_only_cached(image_url, latlon_url, coords)
+    except _VolcatMapUnavailable:
+        return {}
 
 
 def _volcat_sector_bounds(coords: dict, w: int, h: int) -> dict | None:

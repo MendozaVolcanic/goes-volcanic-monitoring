@@ -117,10 +117,14 @@ with st.sidebar:
         "</div>",
         unsafe_allow_html=True,
     )
-    # ── Build version marker (verifica que Streamlit Cloud sirve la version
-    # actual del repo, no una vieja cacheada). Si no ves este texto despues
-    # de un push, la app sigue dormant y hay que hacer Reboot manual.
-    BUILD_SHA = "build-2026-06-10-backfill-villarrica"
+    # ── Build version marker. Lo INYECTA scripts/deploy_hf.sh al deployar
+    # (build-<fecha>-<git-short-sha>) -> permite ver en que build estas y
+    # confirmar que un hard-refresh actualizo el frontend. Critico para el bug
+    # "Failed to fetch dynamically imported module" (chunk JS viejo cacheado
+    # tras un redeploy): si el cartel no cambia al refrescar, el frontend sigue
+    # viejo. "dev-local" = corriendo desde el repo sin pasar por el deploy (o el
+    # sed del deploy no matcheo). (jun 2026)
+    BUILD_SHA = "dev-local"
     st.caption(f"🔖 `{BUILD_SHA}`")
     st.markdown("---")
 

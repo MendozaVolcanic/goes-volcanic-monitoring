@@ -41,8 +41,20 @@ trap cleanup EXIT
 echo "==> Asegurando que estamos en main..."
 git checkout main
 
+# SHA real del commit que estamos deployando (capturado EN main, antes del
+# orphan checkout — en el orphan HEAD es unborn y git rev-parse falla).
+BUILD_TAG="build-$(date -u +%Y%m%d-%H%M)-$(git rev-parse --short HEAD)"
+
 echo "==> Creando ORPHAN branch $TEMP_BRANCH (sin historia, evita rechazo HF por PDFs en commits viejos)..."
 git checkout --orphan "$TEMP_BRANCH"
+
+# Inyectar el build real en el cartel del sidebar (BUILD_SHA en dashboard/app.py)
+# para que el usuario VEA en que build esta y confirme que un hard-refresh lo
+# actualizo (clave para el bug "Failed to fetch dynamically imported module" =
+# frontend viejo cacheado). El sed toca el working tree del orphan -> queda en el
+# commit deployado; el trap 'git checkout main -f' lo descarta de main. (jun 2026)
+sed -i "s|^    BUILD_SHA = \".*\"|    BUILD_SHA = \"${BUILD_TAG}\"|" dashboard/app.py
+echo "==> BUILD_SHA -> ${BUILD_TAG}"
 
 echo "==> Limpiando staging (todo desaged)..."
 git rm -rf --cached . >/dev/null 2>&1 || true

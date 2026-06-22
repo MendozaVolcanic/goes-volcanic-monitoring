@@ -774,14 +774,12 @@ def _render_height_section(key_suffix: str = "tab") -> None:
         kpi_card(short_ts[:5] + " UTC" if len(short_ts) >= 5 else "—",
                  "Hora del scan")
 
-    col_im, col_lg = st.columns([4, 1.4])
-    with col_im:
-        img_bytes = _volcat_image_bytes(meta["image_url"])
+    def _render_map_block():
         # Georef + NUESTROS volcanes monitoreados (RNVV) + frontera, igual que
         # las vistas RGB / zonas. `_volcat_map_only` recorta el mapa (saca
         # titulo y colorbar quemados de SSEC) y da los lat/lon bounds. Si falla
         # (sin coords o sin grid latlon detectable) -> fallback a imagen plana.
-        # (jun 2026, pedido OVDAS: "agregar el resto de los volcanes + frontera")
+        img_bytes = _volcat_image_bytes(meta["image_url"])
         try:
             geo = _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
                                    meta.get("coords") or {})
@@ -801,7 +799,6 @@ def _render_height_section(key_suffix: str = "tab") -> None:
                        "frontera Chile-Argentina · producto VOLCAT "
                        "georreferenciado sobre el sector.")
         elif img_bytes:
-            # Fallback: imagen SSEC plana (con su titulo/colorbar quemados).
             st.image(img_bytes, caption=f"{sel_meta['label_es']} · {ts_h}",
                      width='stretch')
         if img_bytes:
@@ -820,16 +817,33 @@ def _render_height_section(key_suffix: str = "tab") -> None:
             st.error("No se pudo descargar la imagen.")
             st.caption(f"URL: {meta.get('image_url', '?')}")
 
-    with col_lg:
-        st.markdown("<b style='font-size:0.78rem; color:#8899aa;'>Colorbar "
-                    "(escala km AMSL)</b>", unsafe_allow_html=True)
-        # Colorbar REAL extraido de la imagen (legend_url era un mapa de costa,
-        # no la escala). (jun 2026)
-        leg_bytes = _volcat_colorbar_strip(meta["image_url"])
-        if leg_bytes:
-            st.image(leg_bytes, width='stretch')
-        else:
-            st.caption("(sin leyenda)")
+    # Colorbar VERTICAL dividido en dos, FLANQUEANDO el mapa (BT [K] a la izq,
+    # escala del producto a la der) como el Modo Sala -> mucho mas grande y
+    # legible que la tira horizontal chica. (jun 2026, pedido OVDAS "color bar
+    # vertical y dividida en dos"). Fallback a la tira horizontal si el split
+    # no esta disponible para este producto.
+    bt_leg, ht_leg = _volcat_colorbar_split_vertical(meta["image_url"])
+    if bt_leg and ht_leg:
+        col_bt, col_im, col_ht = st.columns([0.62, 6, 0.72],
+                                            vertical_alignment="center")
+        with col_bt:
+            st.image(bt_leg, width='stretch')   # 10.3 µm BT [K]
+        with col_im:
+            _render_map_block()
+        with col_ht:
+            st.image(ht_leg, width='stretch')   # escala del producto (km/% /…)
+    else:
+        col_im, col_lg = st.columns([4, 1.4])
+        with col_im:
+            _render_map_block()
+        with col_lg:
+            st.markdown("<b style='font-size:0.78rem; color:#8899aa;'>"
+                        "Colorbar</b>", unsafe_allow_html=True)
+            leg_bytes = _volcat_colorbar_strip(meta["image_url"])
+            if leg_bytes:
+                st.image(leg_bytes, width='stretch')
+            else:
+                st.caption("(sin leyenda)")
 
     # Panel interpretativo: usa el campo "long" de cada producto.
     with st.expander(

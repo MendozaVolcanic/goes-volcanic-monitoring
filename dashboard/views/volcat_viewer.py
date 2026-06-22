@@ -482,6 +482,91 @@ def _volcat_image_with_overlays(image_url: str,
     return buf.getvalue()
 
 
+def _volcat_reproject_ps(base, coords: dict, left: int, top: int,
+                         right: int, bot: int) -> dict | None:
+    """Reproyecta la region [left,right]x[top,bot] de una imagen VOLCAT en
+    Polar Stereographic (sector Chile_South_2_km) a una grilla regular lat/lon
+    (Plate Carree), y devuelve {'png','bounds'} listo para georeferenciar lineal
+    en plotly. None si faltan pyproj/scipy.
+
+    POR QUE: el sector sur de SSEC se sirve en PS (coords PROJECTION='PS',
+    SCALE_FACTOR en metros/pixel, ECCENT/SECOND_REF_LAT/REF_LON). La imagen es
+    lineal en el PLANO de proyeccion, NO en lat/lon, asi que el stretch lineal
+    de plotly desalinea el overlay (volcanes/frontera) hacia los bordes: medido
+    ~0.45 deg ~ 50 km abajo, vs ~ancho de linea con esta reproyeccion. El path
+    CE (Chile_North/Central) NO pasa por aca.
+
+    Convencion SSEC validada (jun 2026) contra la grilla cyan: el pixel origen
+    (col=OFFSET_X, row=OFFSET_Y) cae en (ORIGIN_LAT, ORIGIN_LON); el paso es
+    SCALE_FACTOR metros/pixel en el plano; proj stere lat_0=-90 lat_ts=
+    SECOND_REF_LAT lon_0=REF_LON sobre WGS84. -> lat enteras -42..-54 y lon
+    enteras -85..-60 caen exactas en sus lineas.
+    """
+    try:
+        import io as _io
+        import numpy as np
+        from pyproj import Transformer
+        from scipy.ndimage import map_coordinates
+    except Exception:
+        return None
+    try:
+        reflon = _norm_origin_lon(coords["REF_LON"])
+        olon = _norm_origin_lon(coords["ORIGIN_LON"])
+        olat = coords["ORIGIN_LAT"]
+        OX = coords.get("OFFSET_X", 0)
+        OY = coords.get("OFFSET_Y", 0)
+        SF = float(coords["SCALE_FACTOR"])          # metros/pixel en el plano
+        lat_ts = coords.get("SECOND_REF_LAT", -60)
+        P = Transformer.from_crs(
+            "EPSG:4326",
+            f"+proj=stere +lat_0=-90 +lat_ts={lat_ts} +lon_0={reflon} "
+            f"+ellps=WGS84 +x_0=0 +y_0=0",
+            always_xy=True)
+        Xo, Yo = P.transform(olon, olat)            # (X,Y) del pixel origen
+        # pixel (col,row) -> plano: X = Xo+(col-OX)*SF ; Y = Yo+(OY-row)*SF
+        arr = np.asarray(base.convert("RGB"))
+
+        # bounds lat/lon de la region cropeada (muestreo grueso -> min/max, PS
+        # curva los meridianos asi que no basta con las 4 esquinas).
+        cc = np.linspace(left, right, 40)
+        rr = np.linspace(top, bot, 40)
+        CC, RR = np.meshgrid(cc, rr)
+        Xg = Xo + (CC - OX) * SF
+        Yg = Yo + (OY - RR) * SF
+        lon_g, lat_g = P.transform(Xg.ravel(), Yg.ravel(), direction="INVERSE")
+        lon_g = np.asarray(lon_g); lat_g = np.asarray(lat_g)
+        bounds = {
+            "lat_min": float(np.nanmin(lat_g)), "lat_max": float(np.nanmax(lat_g)),
+            "lon_min": float(np.nanmin(lon_g)), "lon_max": float(np.nanmax(lon_g)),
+        }
+
+        # grilla de salida Plate Carree; cada pixel de salida -> pixel fuente.
+        out_w = max(64, int(right - left))
+        out_h = max(64, int(bot - top))
+        lats_out = np.linspace(bounds["lat_max"], bounds["lat_min"], out_h)
+        lons_out = np.linspace(bounds["lon_min"], bounds["lon_max"], out_w)
+        LON, LAT = np.meshgrid(lons_out, lats_out)
+        Xs, Ys = P.transform(LON.ravel(), LAT.ravel())   # latlon -> plano
+        Xs = np.asarray(Xs); Ys = np.asarray(Ys)
+        src_col = (Xs - Xo) / SF + OX                     # -> pixel original
+        src_row = OY - (Ys - Yo) / SF
+        rc = np.array([src_row, src_col])                # (2, N)
+        out = np.zeros((out_h, out_w, 3), dtype=np.uint8)
+        for ch in range(3):
+            vals = map_coordinates(arr[:, :, ch].astype(np.float32), rc,
+                                   order=1, mode="constant", cval=0.0,
+                                   prefilter=False)
+            out[:, :, ch] = np.clip(vals.reshape(out_h, out_w), 0, 255
+                                    ).astype(np.uint8)
+        from PIL import Image as _PILImg
+        buf = _io.BytesIO()
+        _PILImg.fromarray(out).save(buf, format="PNG")
+        return {"png": buf.getvalue(), "bounds": bounds}
+    except Exception as e:
+        logger.warning("VOLCAT PS reproject fallo: %s", e)
+        return None
+
+
 class _VolcatMapUnavailable(Exception):
     """Fallo TRANSITORIO al bajar/recortar el frame VOLCAT (SSEC caido o coords
     rotas). El core cacheado lo LANZA en vez de devolver {} porque st.cache_data
@@ -549,6 +634,19 @@ def _volcat_map_only_cached(image_url: str, latlon_url: str | None,
     except Exception:
         pass
 
+    # PROYECCION: Chile_South_2_km se sirve en Polar Stereographic (PS), no en
+    # Plate Carree como North/Central. En PS la imagen es lineal en el plano de
+    # proyeccion, NO en lat/lon -> reproyectamos a Plate Carree para que el
+    # stretch lineal de plotly + el overlay (volcanes/frontera) alineen (sin
+    # esto el corrimiento llega a ~0.45 deg ~50 km en los bordes). El path CE de
+    # abajo queda intacto para los demas sectores. (fix jun 2026, validado vs la
+    # grilla cyan)
+    if str(coords.get("PROJECTION", "")).upper() == "PS":
+        ps = _volcat_reproject_ps(base, coords, left, top, right, bot)
+        if ps is not None:
+            return ps
+        # sin pyproj/scipy -> caemos al path CE lineal (aproximado pero algo).
+
     try:
         dp = math.degrees(coords["SCALE_FACTOR"] / coords["EQ_RADIUS"])
         lat0 = coords["ORIGIN_LAT"] + coords.get("OFFSET_Y", 0) * dp
@@ -587,6 +685,11 @@ def _volcat_map_only(image_url: str, latlon_url: str | None,
 def _volcat_sector_bounds(coords: dict, w: int, h: int) -> dict | None:
     """Deriva los lat/lon bounds de la imagen VOLCAT desde la proyeccion
     Cylindrical Equidistant (Plate Carree) de SSEC.
+
+    OJO: SOLO vale para sectores CE (Chile_North/Central). Para PS
+    (Chile_South_2_km) la relacion pixel->lat/lon NO es lineal -> usar el
+    camino de _volcat_reproject_ps. Esta funcion hoy NO tiene call sites (el
+    georef vivo pasa por _volcat_map_only); se mantiene como utilitario CE.
 
     VALIDADO (mayo 2026) contra las lineas de grilla del overlay latlon:
     con OFFSET_Y aplicado al lat de origen, las lineas caen en enteros

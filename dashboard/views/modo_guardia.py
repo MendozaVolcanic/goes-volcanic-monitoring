@@ -424,8 +424,97 @@ def _mosaico_subtab():
     mosaico_panel()
 
 
+def _volcat_activos_panel():
+    """VOLCAT (altura de pluma) con ZOOM cerrado al volcan EN ALERTA del
+    momento (hoy Nevados de Chillan / Villarrica), default ±0.5°. Cuantifica
+    la pluma del volcan activo, complementando los RGB de zona de abajo. Es la
+    pieza nueva de la vigilancia diaria (pedido OVDAS jun 2026).
+
+    El producto VOLCAT regional (Chile_Central) es ~2 km/px -> por debajo de
+    ±0.5° solo se pixela (no hay mas detalle real; haria falta un sector
+    dedicado de alta-res en SSEC, que Chillan hoy no tiene)."""
+    from dashboard.views.volcat_viewer import (
+        VOLCAT_PRODUCTS, _volcat_colorbar_split_vertical, _volcat_dt_obj,
+        _volcat_latest_cached, _volcat_map_only,
+    )
+    from dashboard.views.zonas_fullscreen import _volcat_zone_fig
+    from dashboard.utils import fmt_both
+    from src.fetch.volcat_api import resolve_volcat_sector
+    from src.volcanos import get_volcano
+
+    # Volcanes en seguimiento estrecho — editar segun la actividad del momento.
+    ACTIVOS = ["Nevados de Chillan", "Villarrica"]
+    c1, c2, c3 = st.columns([1.5, 1.7, 1.3])
+    with c1:
+        vol = st.selectbox("Volcán en alerta", ACTIVOS, index=0,
+                           key="mg_volcat_act_vol")
+    with c2:
+        prod = st.selectbox(
+            "Producto VOLCAT", list(VOLCAT_PRODUCTS.keys()),
+            format_func=lambda k: VOLCAT_PRODUCTS[k]["label_es"], index=0,
+            key="mg_volcat_act_prod")
+    with c3:
+        pad = st.select_slider(
+            "Acercamiento", options=[0.3, 0.4, 0.5, 0.75, 1.0], value=0.5,
+            format_func=lambda d: f"±{d:g}° (~{int(round(d * 111))} km)",
+            key="mg_volcat_act_zoom",
+            help="VOLCAT regional ~2 km/px; bajo ±0.5° se pixela (sin mas "
+                 "detalle real).")
+
+    v = get_volcano(vol)
+    if v is None:
+        st.warning(f"No encuentro '{vol}' en el catálogo RNVV.")
+        return
+    sector, instr = resolve_volcat_sector(v)
+    try:
+        meta = _volcat_latest_cached(sector, instr, prod)
+    except Exception:
+        meta = None
+    if not meta:
+        st.warning(
+            f"VOLCAT sin frame para **{vol}** · {VOLCAT_PRODUCTS[prod]['label_es']} "
+            f"(sector {sector}). Sin pluma activa, Altura/Carga/Radio suelen venir "
+            "vacíos — probá **Probabilidad** (siempre disponible).")
+        return
+    data = _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
+                            meta.get("coords") or {})
+    if not (data and data.get("png")):
+        st.warning(f"VOLCAT: frame de {vol} no disponible ahora (descarga SSEC).")
+        return
+    vb = {"lat_min": v.lat - pad, "lat_max": v.lat + pad,
+          "lon_min": v.lon - pad, "lon_max": v.lon + pad}
+    dt = _volcat_dt_obj(meta.get("datetime"))
+    leg = _volcat_colorbar_split_vertical(meta["image_url"])
+    st.plotly_chart(
+        _volcat_zone_fig(data["png"], data["bounds"], vb,
+                         f"{vol} · {VOLCAT_PRODUCTS[prod]['label_es']}",
+                         fmt_both(dt) if dt else "", 560, legend_pair=leg),
+        width='stretch', config={"displayModeBar": False, "responsive": True},
+        key=f"mg_volcat_act_{vol}_{prod}")
+
+
 def _zonas_subtab():
-    """Sub-tab Por Zona Volcánica: las 4 zonas. Boton TV puro = sin chrome."""
+    """Sub-tab Vigilancia diaria: VOLCAT zoom al volcan en alerta + las 4 zonas
+    RGB. (antes 'Por Zona Volcánica'; ampliado al dia a dia del observatorio.)"""
+    # ── Pieza nueva: VOLCAT (altura de pluma) del volcan en alerta, arriba. ──
+    st.markdown(
+        "<div style='font-weight:800; color:#ff6644; font-size:1.0rem; "
+        "margin-bottom:0.1rem;'>🌋 Volcán en alerta — VOLCAT altura de pluma</div>"
+        "<div style='color:#7a8a9a; font-size:0.78rem; margin-bottom:0.4rem;'>"
+        "Cuantificación de la pluma (Pavolonis 2013) con zoom al volcán activo. "
+        "Las 4 zonas RGB para contexto regional van abajo.</div>",
+        unsafe_allow_html=True)
+    _volcat_activos_panel()
+    st.markdown("---")
+    st.markdown(
+        "<div style='font-weight:800; color:#ff6644; font-size:1.0rem; "
+        "margin-bottom:0.4rem;'>🗺 Zonas volcánicas — RGB regional</div>",
+        unsafe_allow_html=True)
+    _zonas_rgb_grid()
+
+
+def _zonas_rgb_grid():
+    """Grid RGB de las 4 zonas (lo que era el cuerpo de _zonas_subtab)."""
     from dashboard.views.zonas_fullscreen import (
         _grid_4_zonas, _rotating_grid_4_zonas, PRODUCT_OPTIONS, ROTATION_SECONDS,
     )
@@ -912,18 +1001,21 @@ def render():
         unsafe_allow_html=True,
     )
 
-    sub_chile, sub_zonas, sub_volcat, sub_mosaico, sub_volcan, sub_loop = st.tabs([
+    # "Vigilancia diaria" PRIMERA (landing): ya no es solo "por zona" — suma el
+    # VOLCAT zoom al volcan en alerta y es lo que responde al dia a dia del
+    # observatorio. (reorden + rename jun 2026, pedido OVDAS)
+    sub_zonas, sub_chile, sub_volcat, sub_mosaico, sub_volcan, sub_loop = st.tabs([
+        "🔭 Vigilancia diaria",
         "🌎 Chile (vista nacional)",
-        "🗺 Por Zona Volcánica",
         "🌋 VOLCAT por zona",
         "🗺 Mosaico 8 prioritarios",
         "🔬 Volcán (3 productos)",
         "🎞 Loop 2h",
     ])
-    with sub_chile:
-        _chile_subtab()
     with sub_zonas:
         _zonas_subtab()
+    with sub_chile:
+        _chile_subtab()
     with sub_volcat:
         _volcat_zonas_subtab()
     with sub_mosaico:

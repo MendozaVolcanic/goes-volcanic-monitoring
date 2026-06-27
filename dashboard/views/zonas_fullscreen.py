@@ -598,6 +598,55 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
             _placeholder("frame no disponible (descarga SSEC)")
 
 
+def _render_volcat_zoom_tv(volcano_name: str, height: int, pad: float = 0.5):
+    """Slot TV: VOLCAT (altura de pluma) con ZOOM ±pad° a un volcan EN ALERTA
+    (Villarrica/Chillan). Cuantifica la pluma del volcan activo en la rotacion
+    de sala, junto al zoom RGB (GOES/GeoColor). Sirve plotly desde el cache que
+    mantiene caliente el productor (ambos resuelven a Chile_Central -> un solo
+    frame). Placeholder si el frame falla (NO blanco). (jun 2026, pedido OVDAS)
+    """
+    from dashboard.views.volcat_viewer import (
+        _volcat_colorbar_split_vertical, _volcat_dt_obj, _volcat_latest_cached,
+        _volcat_map_only,
+    )
+    from dashboard.utils import fmt_both
+    from src.fetch.volcat_api import resolve_volcat_sector
+    from src.volcanos import get_volcano
+
+    def _ph(reason):
+        st.markdown(
+            f"<div style='color:#7a8a9a; text-align:center; padding:3rem;'>"
+            f"VOLCAT {volcano_name} — {reason}</div>", unsafe_allow_html=True)
+
+    v = get_volcano(volcano_name)
+    if v is None:
+        _ph("volcán no encontrado")
+        return
+    sector, instr = resolve_volcat_sector(v)
+    try:
+        meta = _volcat_latest_cached(sector, instr, "Ash_Height")
+    except Exception:
+        meta = None
+    if not meta:
+        _ph("sin frame disponible")
+        return
+    data = _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
+                            meta.get("coords") or {})
+    if not (data and data.get("png")):
+        _ph("frame no disponible (descarga SSEC)")
+        return
+    vb = {"lat_min": v.lat - pad, "lat_max": v.lat + pad,
+          "lon_min": v.lon - pad, "lon_max": v.lon + pad}
+    dt = _volcat_dt_obj(meta.get("datetime"))
+    leg = _volcat_colorbar_split_vertical(meta["image_url"])
+    st.plotly_chart(
+        _volcat_zone_fig(data["png"], data["bounds"], vb, volcano_name,
+                         fmt_both(dt) if dt else "", height, legend_pair=leg),
+        width='stretch',
+        config={"displayModeBar": False, "responsive": True},
+        key=f"tvvolcatzoom_{volcano_name}")
+
+
 def _compose_volcan_panels(v, radius_deg: float, panels: list, ph: int = 720):
     """Compone los N productos centrados en el volcán en UNA imagen (PIL).
 
@@ -830,6 +879,10 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
     slots += [("volcat", zona, (sector, instr, vb))
               for zona, sector, instr, vb in _vspecs]
     slots += [("volcan", v, None) for v in TV_VOLCAN_ZOOMS]
+    # VOLCAT con ZOOM (±0.5°) a cada volcan en alerta (Villarrica/Chillan):
+    # cuantifica la pluma del volcan activo en la rotacion de sala, junto al
+    # zoom RGB GOES/GeoColor. (jun 2026, pedido OVDAS)
+    slots += [("volcat_zoom", v, None) for v in TV_VOLCAN_ZOOMS]
 
     # INDICE: anclado al RELOJ pero con AVANCE CLAMPEADO a +1 por ventana.
     #  - El reloj puro (epoch//SLOT % N) SALTABA slots cuando un render bloqueaba
@@ -875,6 +928,19 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
         except Exception:
             scan_dt = None
         status_kwargs = dict(scan_label="VOLCAT", ok_min=60, warn_min=120)
+    elif kind == "volcat_zoom":
+        try:
+            from dashboard.views.volcat_viewer import (
+                _volcat_dt_obj, _volcat_latest_cached)
+            from src.fetch.volcat_api import resolve_volcat_sector
+            from src.volcanos import get_volcano
+            _v = get_volcano(val)
+            _sec, _ins = resolve_volcat_sector(_v)
+            _m = _volcat_latest_cached(_sec, _ins, "Ash_Height")
+            scan_dt = _volcat_dt_obj(_m.get("datetime")) if _m else None
+        except Exception:
+            scan_dt = None
+        status_kwargs = dict(scan_label="VOLCAT", ok_min=60, warn_min=120)
     _render_tv_status(scan_dt, **status_kwargs)  # reloj + edad (overlay der)
 
     if kind == "rgb":
@@ -905,6 +971,19 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
             unsafe_allow_html=True,
         )
         _render_volcan_zoom_tv(val, show_hotspots, height)
+    elif kind == "volcat_zoom":  # VOLCAT altura con zoom al volcan en alerta
+        st.markdown(
+            f"<div class='tv-legend' style='display:flex; "
+            f"justify-content:space-between; align-items:center; "
+            f"background:rgba(17,24,34,0.85); padding:0.3rem 0.8rem; "
+            f"border-radius:4px; font-size:0.82rem;'>"
+            f"<span style='color:#ff6644; font-weight:700;'>🔄 VOLCAT zoom · "
+            f"Altura de pluma (km AMSL) · {val}</span>"
+            f"<span style='color:#8899aa;'>SSEC/CIMSS · Pavolonis 2013 · "
+            f"GOES-19</span></div>",
+            unsafe_allow_html=True,
+        )
+        _render_volcat_zoom_tv(val, height)
     else:  # volcat — una zona en grande
         sector, instr, view_bounds = extra
         st.markdown(

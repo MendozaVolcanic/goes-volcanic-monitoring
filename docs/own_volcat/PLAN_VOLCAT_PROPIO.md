@@ -1,10 +1,27 @@
 # Plan: VOLCAT propio — retrieval cuantitativo de altura de pluma desde GOES-19 ABI
 
-**Fecha:** 2026-06-27
+**Fecha:** 2026-06-27 (plan) · **estado actualizado:** 2026-06-28
 **Autor:** investigación asistida (Claude) para SERNAGEOMIN/OVDAS
 **Objetivo:** evaluar y planificar generar **nuestro propio retrieval de altura de pluma
 volcánica / ceniza** desde GOES-19 ABI L1b, para reducir la dependencia del único host
 SSEC (`volcano.ssec.wisc.edu`), que tiene latencia ~30-50 min y caídas intermitentes.
+
+> ## ESTADO DE IMPLEMENTACIÓN (2026-06-28)
+> - **Fase 0 — HECHA y desplegada.** ACHA `HT` ∩ ceniza. `src/fetch/goes_acha.py` +
+>   `src/process/acha_plume_height.py` + dashboard. Ver `FASE0_ARRANQUE.md`.
+> - **Fase 2 — HECHA.** Perfil GFS T(z) + tropopausa vía Open-Meteo pressure levels:
+>   `src/fetch/gfs_profile.py` (`fetch_gfs_profile`, `height_from_temp`). Cero deps.
+> - **Fase 3a — HECHA.** BT-matching: `src/process/bt_matching_height.py`
+>   (`bt_matching_top_height`). Altura propia **independiente de SSEC y de ACHA**.
+>   Validado vs ACHA: Popocatépetl 26-jun BT 9.2 vs ACHA 10.3 km (Δ−1.1, cota
+>   inferior ✓); Láscar 27-jun BT 6.2 km/15 px donde ACHA estaba en no_plume.
+> - **Hallazgo (Chillán 27-jun, pluma SO₂):** ni ACHA ni BT-matching dan altura a
+>   plumas de **gas/SO₂** (transparente en 11 µm → altura espuria bajo el cráter).
+>   El dashboard ahora lo explica con el contexto SO₂. Ver memoria
+>   `reference_acha_so2_limit`.
+> - **Pendiente:** Fase 1 (bandas C10/C16 + detección ATBD β-ratios — bloqueada por
+>   el mismo gap RTM/clear-sky que la altura cuantitativa); Fase 3b (Wen-Rose,
+>   corrige emisividad); Fase 4 (OE con pyCRTM — NO salvo justificación).
 
 > **TL;DR para el geólogo.** El producto de referencia (VOLCAT, Pavolonis 2013) NO se mide
 > directo: la altura no es una variable de la ecuación de transferencia radiativa. Lo que

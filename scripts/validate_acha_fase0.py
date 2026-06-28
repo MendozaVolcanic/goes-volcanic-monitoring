@@ -159,7 +159,28 @@ def block3_ash_search(hours_back=36, step_h=4, radius=0.6):
     print(f"    sanity físico: cráter {crater_km:.1f} km ≤ tope "
           f"{best['top_max_km']:.1f} km ≤ 20 km → {sane}")
     _compare_volcat(best)
+    _compare_methods(best)
     return best
+
+
+def _compare_methods(acha_res) -> None:
+    """Cross-check: el BT-matching propio (Fase 3a) del MISMO scan vs ACHA.
+
+    BT-matching es independiente de la L2 de NOAA (BT 11µm → perfil GFS). Debe
+    quedar en el mismo orden y ser cota inferior (Δ ≤ ~0)."""
+    from src.process.bt_matching_height import bt_matching_top_height
+    bt = bt_matching_top_height(acha_res["scan_dt"], acha_res["volcano"],
+                                radius_deg=0.6)
+    if bt.get("status") != "ok":
+        print(f"    BT-matching propio: {bt.get('status')} "
+              f"({bt.get('reason', '')})")
+        return
+    d = bt["top_km"] - acha_res["top_km"]
+    print(f"    BT-matching propio (BT11→GFS): p95={bt['top_km']:.1f} km · "
+          f"max={bt['top_max_km']:.1f} km · trop={bt['tropopause_km']:.1f} km · "
+          f"px={bt['mask_px']}")
+    print(f"    Δ(BT − ACHA) = {d:+.1f} km "
+          f"({'✓ cota inferior (esperado)' if d <= 1.5 else '⚠ revisar'})")
 
 
 def block4_vaa_context() -> None:

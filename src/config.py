@@ -110,6 +110,23 @@ VOLCANIC_BANDS = {
     15: {"wavelength": 12.3, "name": "dirty_window",  "use": "split-window ceniza"},
 }
 
+# ── Bandas IR extendidas (VOLCAT propio Fase 1+) ─────────────────
+# C10 (7.4µm) y C16 (13.3µm) NO van en VOLCANIC_BANDS para no hacer que el
+# pipeline Ash RGB (download_volcanic_bands) baje 2 bandas que no usa (+40%
+# datos/scan). Las baja directo el código de altura propia (ACHA/BT-matching/
+# CO2-slicing) vía download_band_at cuando las necesita.
+#   - C10 (7.4µm): vapor de agua bajo / discriminación multicapa (ATBD detección).
+#   - C16 (13.3µm): banda de absorción de CO2 → sensibilidad a ALTURA (CO2-slicing).
+EXTENDED_IR_BANDS = {
+    10: {"wavelength": 7.4,  "name": "lower_water_vapor", "use": "multicapa ATBD"},
+    16: {"wavelength": 13.3, "name": "co2",               "use": "altura (CO2-slicing)"},
+}
+
+# ── SO2 indicator threshold ──────────────────────────────────────
+# BT(8.4µm) - BT(11.2µm) = C11 - C14. Muy negativo = absorción de SO2.
+# Ref: CLAUDE.md / receta SO2. Umbral indicativo, NO cuantitativo.
+SO2_INDICATOR_THRESHOLD = -3.0
+
 # ── Ash RGB Recipe (RAMMB/CIRA) ─────────────────────────────────
 # Ref: https://rammb.cira.colostate.edu/training/visit/quick_guides/GOES_Ash_RGB.pdf
 ASH_RGB = {

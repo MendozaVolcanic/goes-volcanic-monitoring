@@ -58,12 +58,17 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
   *temporal* que MODIS/VIIRS no dan; COMPLEMENTA, no sustituye, la plataforma
   VRP MODIS/VIIRS (que gana en magnitud/sensibilidad)
 - **VOLCAT** — Ash Height, Ash Loading, Ash Probability, Ash Reff (Pavolonis 2013)
-- **Altura de tope propia (INDICATIVO)** — `HT` del producto NOAA
-  `ABI-L2-ACHA2KMF` (Cloud Top Height 2 km, algoritmo ACHA/Heidinger)
-  enmascarado por nuestra detección tri-espectral de ceniza. Tope p95/max sobre
-  los píxeles de ceniza, ~13 min de latencia (vs 30-50 del VOLCAT SSEC), cero
-  deps nuevas. **No reemplaza** al VOLCAT cuantitativo; lo complementa con menor
-  latencia e independencia del host SSEC. Fase 0 de `docs/own_volcat/`.
+- **Altura de tope propia (INDICATIVO) — 2 métodos** sobre los píxeles de ceniza:
+  - **ACHA** (Fase 0): `HT` del producto NOAA `ABI-L2-ACHA2KMF` (Cloud Top
+    Height 2 km, Heidinger OE) enmascarado por nuestra detección tri-espectral.
+    ~13 min de latencia (vs 30-50 del VOLCAT SSEC).
+  - **BT-matching** (Fase 3a): BT(11 µm) del tope opaco → perfil GFS T(z)
+    (Open-Meteo) → altitud. **Independiente de SSEC y de la L2 de NOAA**; cota
+    inferior. Rescata casos donde ACHA no tiene retrieval (validado: Láscar 27-jun
+    6.2 km/15 px con ACHA en no_plume; Popocatépetl BT 9.2 vs ACHA 10.3 km).
+  Ambos cruzan resultados en el dashboard. **No miden gas/SO₂** (transparente en
+  11 µm → daría altura espuria; validado vs la pluma SO₂ de Chillán 27-jun). **No
+  reemplazan** al VOLCAT cuantitativo. Fases en `docs/own_volcat/`.
 - **VAA** — Volcanic Ash Advisories como GeoJSON
 - **Series de tiempo** — % píxeles con firma de ceniza/SO2 por volcán, ventanas 1-24h
 
@@ -107,6 +112,8 @@ streamlit run dashboard/app.py
 | Altura de pluma VOLCAT | PNG con colorbar (no NetCDF) | `src/fetch/volcat_api.py::volcat_latest(sector, ...)` | 10 min |
 | Altura de tope ACHA (INDICATIVO) | dict {top_km p95, top_max_km, field_km, lat/lon, latency} | `src/process/acha_plume_height.py::plume_top_height(dt, volcano, radius)` | 10 min |
 | HT ACHA recortada a bbox | dict {height_m, dqf, lat/lon, window, scan_dt} | `src/fetch/goes_acha.py::fetch_acha_height_at(dt, bounds)` | 10 min |
+| Altura de tope BT-matching (INDICATIVO, propio) | dict {top_km p95, top_max_km, field_km, tropopause_km, lat/lon} | `src/process/bt_matching_height.py::bt_matching_top_height(dt, volcano, radius)` | 10 min |
+| Perfil GFS T(z) + tropopausa | dict {levels[{p_hPa,z_m,T_K}], tropopause} | `src/fetch/gfs_profile.py::fetch_gfs_profile(lat, lon, dt)` | 6 h (GFS) |
 | Animación MP4 | binary MP4 H.264 | `dashboard/views/rammb_viewer.py::_build_mp4(frames)` | on-demand |
 | Animación GIF | binary GIF | `dashboard/views/rammb_viewer.py::_build_gif(frames)` | on-demand |
 | Frame estático con georef | GeoTIFF EPSG:4326 | `src/export/geotiff.py::build_geotiff_bytes(img, bounds)` | on-demand |
@@ -119,6 +126,7 @@ streamlit run dashboard/app.py
 | FDCF L2 NetCDF | xarray.Dataset | `noaa-goes19/ABI-L2-FDCF/...` (S3) | Hot spots no se muestran |
 | ACHA2KMF L2 NetCDF (Cloud Top Height) | xarray.Dataset (var `HT`, `DQF`) | `noaa-goes19/ABI-L2-ACHA2KMF/...` (S3) | Altura propia no se calcula (VOLCAT sigue) |
 | Vientos GFS | JSON | Open-Meteo `api.open-meteo.com/v1/forecast` | Vectores de viento ocultos |
+| Perfil GFS T(z) (pressure levels) | JSON | Open-Meteo `api.open-meteo.com/v1/forecast` (temperature/geopotential_height por nivel) | Altura BT-matching no se calcula |
 | VOLCAT productos | PNG + JSON metadata | `volcano.ssec.wisc.edu/imagery/get_list/json/...` | Tab "sin datos disponibles" |
 | Volcanic Ash Advisories | GeoJSON | `realearth.ssec.wisc.edu/api/shapes` | Tab VAA vacía |
 

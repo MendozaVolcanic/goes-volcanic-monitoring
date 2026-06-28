@@ -756,6 +756,21 @@ def _acha_plume_cached(volc_name: str, radius_deg: float, bucket: str) -> dict |
                             radius_deg=radius_deg)
 
 
+@st.cache_data(ttl=TTL_VOLCAT, show_spinner=False)
+def _btmatch_cached(volc_name: str, radius_deg: float, bucket: str) -> dict | None:
+    """Wrapper cacheado del 2º método de altura propia (BT-matching, Fase 3a):
+    BT(11µm) del tope de ceniza → perfil GFS T(z). Independiente de ACHA — sirve
+    de cross-check y rescata casos donde la L2 de ACHA no tiene retrieval."""
+    from datetime import datetime, timezone
+    try:
+        from src.process.bt_matching_height import bt_matching_top_height
+    except Exception:
+        logger.exception("bt_matching_height no importable")
+        return None
+    return bt_matching_top_height(datetime.now(timezone.utc), volc_name,
+                                  radius_deg=radius_deg)
+
+
 def _fig_acha_field(field_km, lat, lon, view_bounds, title: str):
     """Campo de altura del tope (km) sobre los píxeles de ceniza, georef +
     volcanes monitoreados + frontera. Heatmap plotly: las celdas sin ceniza
@@ -801,6 +816,11 @@ def _fig_acha_field(field_km, lat, lon, view_bounds, title: str):
     return fig
 
 
+# Mínimo de píxeles con firma SO2 (BT 8.4−11.2 < umbral) para etiquetar una
+# detección sin ceniza como "pluma de SO2/gas" en vez de "sin pluma". (review jun)
+_SO2_CONTEXT_MIN_PX = 6
+
+
 def _render_acha_indicative_section(v_obj, radius_deg: float,
                                     key_suffix: str) -> None:
     """Bloque de la altura propia INDICATIVA (ACHA ∩ ceniza) para UN volcán.
@@ -815,105 +835,165 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
         'border-radius:0 6px 6px 0; margin:0.5rem 0; font-size:0.78rem; '
         'line-height:1.5;">'
         '<b style="color:#ffb020;">⬆ Altura del tope · propia (INDICATIVO)</b> '
-        '<span style="color:#aabbc8;">— ACHA NOAA (<code>ABI-L2-ACHA2KMF</code>) '
-        'enmascarado por nuestra detección de ceniza tri-espectral. '
-        '<b>No es VOLCAT</b>: ACHA es altura de nube genérica, no afinada a la '
-        'microfísica de ceniza → sobre plumas semi-transparentes o con nube '
-        'meteo debajo subestima. Su valor es la <b>latencia menor</b> (~13 min '
-        'vs 30–50) e independencia del host SSEC.</span></div>',
+        '<span style="color:#aabbc8;">— dos métodos independientes sobre los '
+        'píxeles de <b>ceniza</b> del scan: <b>(1) ACHA NOAA</b> '
+        '(<code>ABI-L2-ACHA2KMF</code>) enmascarado por nuestra detección '
+        'tri-espectral, y <b>(2) BT-matching propio</b> (BT 11 µm → perfil GFS '
+        'T(z), independiente de SSEC y de ACHA, cota inferior). <b>No es '
+        'VOLCAT</b> ni mide gas/SO₂. El VOLCAT/SSEC de arriba sigue siendo el '
+        'número cuantitativo de referencia.</span></div>',
         unsafe_allow_html=True,
     )
 
     flag_key = f"acha_go_{v_obj.name}_{key_suffix}"
-    if st.button("Calcular tope de pluma propio (ACHA · ceniza)",
+    if st.button("Calcular tope de pluma propio (ACHA + BT-matching)",
                  key=f"acha_btn_{v_obj.name}_{key_suffix}"):
         st.session_state[flag_key] = True
     if not st.session_state.get(flag_key):
-        st.caption("Producto propio NRT — apretá para bajar ACHA + las 3 bandas "
-                   "de ceniza del scan y calcular el tope. El VOLCAT de arriba "
-                   "sigue siendo el número cuantitativo de referencia.")
+        st.caption("Producto propio NRT — apretá para bajar las bandas del scan, "
+                   "el gránulo ACHA y el perfil GFS, y calcular el tope por los "
+                   "dos métodos. El VOLCAT de arriba sigue siendo la referencia.")
         return
 
     from datetime import datetime, timezone
     bucket = datetime.now(timezone.utc).strftime("%Y%m%d%H") + \
         str(datetime.now(timezone.utc).minute // 10)
     acha_radius = min(float(radius_deg), 1.5)   # acotar la ventana de descarga
-    with st.spinner("Bajando ACHA + bandas de ceniza y calculando el tope..."):
-        res = _acha_plume_cached(v_obj.name, acha_radius, bucket)
+    with st.spinner("Bajando bandas + ACHA + perfil GFS y calculando el tope "
+                    "(2 métodos)..."):
+        acha = _acha_plume_cached(v_obj.name, acha_radius, bucket)
+        btm = _btmatch_cached(v_obj.name, acha_radius, bucket)
 
-    if res is None or res.get("status") == "no_data":
-        reason = (res or {}).get("reason", "sin datos accesibles")
+    acha_ok = bool(acha) and acha.get("status") == "ok"
+    btm_ok = bool(btm) and btm.get("status") == "ok"
+    acha_nd = (acha is None) or acha.get("status") == "no_data"
+    btm_nd = (btm is None) or btm.get("status") == "no_data"
+
+    if acha_nd and btm_nd:
+        reason = (acha or btm or {}).get("reason", "sin datos accesibles")
         st.warning(f"No pude calcular la altura propia: {reason}. "
-                   "Puede ser scan ABI atrasado o S3 NOAA intermitente — reintentá.")
+                   "Puede ser scan ABI atrasado o S3/Open-Meteo intermitente — "
+                   "reintentá.")
         return
 
-    scan_dt = res.get("scan_dt")
+    # scan/contexto: preferir ACHA (trae el contexto SO2), si no BT-matching.
+    primary = acha if (acha and acha.get("status") in ("ok", "no_plume")) else btm
+    scan_dt = (primary or {}).get("scan_dt")
     ts_txt = "—"
     if scan_dt is not None:
         ts_txt = f"{scan_dt.strftime('%Y-%m-%d %H:%M UTC')} ({fmt_chile(scan_dt)} Chile)"
-    lat_txt = (f"~{res['latency_min']:.0f} min"
-               if res.get("latency_min") is not None else "—")
 
-    if res.get("status") == "no_plume":
-        st.info(
-            f"ACHA disponible para el scan **{ts_txt}**, pero NUESTRA detección "
-            f"de ceniza no marcó píxeles en el encuadre (±{acha_radius:g}°) → sin "
-            "tope de pluma que reportar. Sin pluma activa esto es lo esperado; "
-            "el campo ACHA de nube genérica sí existe pero no lo mostramos para "
-            "no confundirlo con ceniza."
-        )
+    # ── Sin ceniza por ninguno de los dos métodos ───────────────────────
+    if not acha_ok and not btm_ok:
+        # El contexto SO2 puede venir de cualquiera de los dos resultados (ACHA
+        # falla a no_data sin SO2; entonces lo toma de BT-matching). (review jun)
+        so2_px = int((acha or {}).get("so2_px") or (btm or {}).get("so2_px") or 0)
+        if so2_px >= _SO2_CONTEXT_MIN_PX:
+            so2_min = (acha or {}).get("so2_min") or (btm or {}).get("so2_min")
+            so2_txt = f" (mín BT 8.4−11.2 µm ≈ {so2_min:.1f} K)" if so2_min else ""
+            st.info(
+                f"Scan **{ts_txt}**: nuestra detección marcó **pluma de SO₂/gas** "
+                f"(~{so2_px} píxeles{so2_txt}) pero **sin ceniza silicatada "
+                "IR-opaca**. La altura propia **no aplica a plumas de gas**: el "
+                "SO₂ es transparente en 11 µm, así que ACHA/BT-matching darían "
+                "alturas espurias (por debajo del cráter). Para el SO₂ usá el "
+                "**indicador SO₂** (Modo Guardia / RGB). *(Validado con la pluma "
+                "de Chillán del 27-jun.)*"
+            )
+        else:
+            st.info(
+                f"Scan **{ts_txt}**: sin firma de ceniza en el encuadre "
+                f"(±{acha_radius:g}°) → sin tope que reportar. Sin pluma activa "
+                "de ceniza esto es lo esperado."
+            )
         return
 
-    # ── status ok: hay pluma ───────────────────────────────────────────
-    # El TOPE titular es el p95 (robusto). El "pico" (máximo de 1 píxel) NO va
-    # como KPI co-igual: ACHA sesga alto en bordes de pluma delgada y la máscara
-    # admite cirros, así que el máximo crudo suele sobre-estimar el tope. Va como
-    # referencia chica abajo, con caveat explícito. (review jun 2026)
-    k1, k2, k3 = st.columns(3)
-    with k1:
-        kpi_card(f"{res['top_km']:.1f} km", f"Tope p{int(res['percentile'])} (AMSL)")
-    with k2:
-        kpi_card(f"{res['mask_px']:,}", "Píxeles de ceniza")
-    with k3:
-        kpi_card(lat_txt, "Latencia ACHA")
-    low_conf = res["mask_px"] < 3
-    st.caption(
-        f"Pico puntual: **{res['top_max_km']:.1f} km** (píxel más alto — "
-        f"referencia, *no usar como tope*; el tope robusto es el "
-        f"p{int(res['percentile'])})."
-        + ("  ⚠ Detección muy chica (&lt; 3 píxeles): confianza baja, tratar "
-           "como traza." if low_conf else "")
-    )
+    # ── Al menos un método dio tope → cross-validación ──────────────────
+    cols = st.columns(4)
+    with cols[0]:
+        if acha_ok:
+            kpi_card(f"{acha['top_km']:.1f} km", "ACHA NOAA · p95")
+        else:
+            kpi_card("—", "ACHA (sin retrieval)")
+    with cols[1]:
+        if btm_ok:
+            kpi_card(f"{btm['top_km']:.1f} km", "BT-matching · p95")
+        else:
+            kpi_card("—", "BT-matching")
+    with cols[2]:
+        mp = acha.get("mask_px") if acha_ok else (btm or {}).get("mask_px", 0)
+        kpi_card(f"{mp:,}", "Píxeles de ceniza")
+    with cols[3]:
+        lat_min = (primary or {}).get("latency_min")
+        kpi_card(f"~{lat_min:.0f} min" if lat_min is not None else "—", "Latencia")
 
+    # Acuerdo entre métodos (cross-check de confianza).
+    def _capped_txt(r):
+        nc = (r or {}).get("n_capped") or 0
+        if (r or {}).get("all_capped"):
+            return " · ⚠ todos los píxeles en la tropopausa (cirros/overshooting)"
+        return (f" · {nc} px en la tropopausa excluidos del tope" if nc else "")
+
+    if acha_ok and btm_ok:
+        d = btm["top_km"] - acha["top_km"]
+        agree = ("✓ concuerdan (|Δ| ≤ 1.5 km)" if abs(d) <= 1.5
+                 else "⚠ discrepan > 1.5 km — revisar")
+        st.caption(
+            f"|Δ(BT-matching − ACHA)| = **{abs(d):.1f} km** ({d:+.1f}) · {agree}. "
+            "Ambos métodos tienden a subestimar (BT-matching y la OE de ACHA son "
+            "cotas inferiores en plumas semi-transparentes), así que el signo de "
+            f"Δ no está garantizado.{_capped_txt(btm)}"
+        )
+    elif btm_ok and not acha_ok:
+        st.caption(
+            f"ACHA no tuvo retrieval válido sobre los píxeles de ceniza; "
+            f"el **BT-matching propio** (independiente de la L2 de NOAA) sí: "
+            f"tope p95 **{btm['top_km']:.1f} km** (máx {btm['top_max_km']:.1f} km). "
+            f"Típicamente cota inferior.{_capped_txt(btm)}"
+        )
+    elif acha_ok and not btm_ok:
+        low_conf = acha["mask_px"] < 3
+        st.caption(
+            f"Pico ACHA: {acha['top_max_km']:.1f} km (1 px, referencia)."
+            + ("  ⚠ Detección muy chica (&lt; 3 px): confianza baja."
+               if low_conf else "")
+        )
+
+    # Mapa del campo: preferir el que tenga ceniza (ACHA, si no BT-matching).
+    fld = acha if acha_ok else btm
     view_bounds = {
         "lat_min": v_obj.lat - acha_radius, "lat_max": v_obj.lat + acha_radius,
         "lon_min": v_obj.lon - acha_radius, "lon_max": v_obj.lon + acha_radius,
     }
+    method_lbl = "ACHA ∩ ceniza" if acha_ok else "BT-matching ∩ ceniza"
     st.plotly_chart(
-        _fig_acha_field(res["field_km"], res["lat"], res["lon"], view_bounds,
-                        f"Tope de pluma (ACHA ∩ ceniza) · INDICATIVO · {ts_txt}"),
+        _fig_acha_field(fld["field_km"], fld["lat"], fld["lon"], view_bounds,
+                        f"Tope de pluma ({method_lbl}) · INDICATIVO · {ts_txt}"),
         width="stretch",
         config={"displayModeBar": False, "responsive": True},
         key=f"acha_field_{v_obj.name}_{key_suffix}",
     )
     st.caption(
-        f"▲ cyan = volcanes monitoreados (RNVV) · color = altura del tope (km "
-        f"AMSL) SOLO donde hay firma de ceniza · **fuente**: {res['source']}."
+        "▲ cyan = volcanes monitoreados (RNVV) · color = altura del tope (km "
+        f"AMSL) SOLO donde hay firma de ceniza · **fuente**: {fld['source']}."
     )
-    with st.expander("Cómo se calcula y sus límites (Fase 0)", expanded=False):
+    with st.expander("Cómo se calculan y sus límites", expanded=False):
         st.markdown(
-            "- **Altura**: variable `HT` del producto NOAA `ABI-L2-ACHA2KMF` "
-            "(ACHA, Heidinger optimal estimation), 2 km nativos, filtrada por "
-            "DQF (se conservan *good* + *marginal* + *opaque*; este último es "
-            "fiable para plumas densas con emisividad ≈ 1).\n"
-            "- **Máscara de ceniza**: BTD split-window 11–12 µm + test "
-            "tri-espectral con 8.4 µm (`detect_ash_enhanced`), del MISMO scan "
-            "ABI (grilla 2 km idéntica → intersección pixel a pixel).\n"
-            "- **Tope reportado**: percentil 95 de `HT` sobre los píxeles de "
-            "ceniza (robusto a un par de outliers) + el máximo.\n"
-            "- **Límite**: ACHA es altura de nube genérica. Si la pluma es "
-            "semi-transparente al IR o hay nube meteo debajo, subestima. Para "
-            "el número cuantitativo validado, el primario sigue siendo el "
+            "**Dos métodos independientes sobre los mismos píxeles de ceniza** "
+            "(`detect_ash_enhanced`: BTD split-window 11–12 µm + tri-espectral "
+            "con 8.4 µm, del MISMO scan ABI):\n\n"
+            "1. **ACHA NOAA** (`ABI-L2-ACHA2KMF`, var `HT`): retrieval de altura "
+            "de tope de nube de NOAA (Heidinger OE), 2 km, filtrado por DQF "
+            "(*good*+*marginal*+*opaque*). Latencia ~13 min.\n"
+            "2. **BT-matching propio** (Fase 3a): la BT(11 µm) del tope opaco ≈ "
+            "su temperatura efectiva; se la busca en el **perfil GFS T(z)** "
+            "(Open-Meteo) y se interpola a altitud. Independiente de SSEC y de "
+            "la L2 de NOAA → rescata casos donde ACHA no tiene retrieval. Es "
+            "**cota inferior**: subestima plumas semi-transparentes.\n\n"
+            "- **Tope reportado**: percentil 95 (robusto) + pico de referencia.\n"
+            "- **No miden gas**: una pluma de SO₂/gas (transparente en 11 µm) NO "
+            "da altura válida — se reporta aparte.\n"
+            "- **Cuantitativo validado**: el primario sigue siendo el "
             "**VOLCAT/SSEC** de arriba (Pavolonis 2013)."
         )
 

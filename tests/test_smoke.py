@@ -40,6 +40,7 @@ FETCHERS = [
     "src.fetch.goes_s3",
     "src.fetch.goes_fdcf",
     "src.fetch.goes_acha",
+    "src.fetch.gfs_profile",
     "src.fetch.hires_cache",
     "src.fetch.hires_loop_cache",
     "src.fetch.frp_timeline",
@@ -53,6 +54,7 @@ FETCHERS = [
 PROCESSORS = [
     "src.process.ash_detection",
     "src.process.acha_plume_height",
+    "src.process.bt_matching_height",
     "src.process.ash_rgb",
     "src.process.brightness_temp",
     "src.process.geo",

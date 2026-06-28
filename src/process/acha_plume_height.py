@@ -205,6 +205,20 @@ def plume_top_height(
     mask = detect_ash_enhanced(bts[11], bts[14], bts[15]).values
     stats = _plume_top_stats(height_m, mask, percentile=percentile)
 
+    # Contexto SO2: una pluma de SO2/gas (común en Chile — p.ej. Chillán 27-jun)
+    # NO da firma de ceniza silicatada y ACHA no puede medir su altura (el gas es
+    # transparente en 11µm → daría alturas espurias bajo el cráter). Reportamos
+    # el SO2 presente para que el dashboard EXPLIQUE el no_plume en vez de un
+    # silencio. (validado vs Chillán, ver memoria reference_acha_so2_limit)
+    try:
+        from src.config import SO2_INDICATOR_THRESHOLD as _SO2_THR
+    except Exception:
+        _SO2_THR = -3.0
+    so2 = (bts[11] - bts[14]).values
+    so2_finite = np.isfinite(so2)
+    so2_px = int(np.sum(so2_finite & (so2 < _SO2_THR)))
+    so2_min = float(np.nanmin(so2)) if so2_finite.any() else None
+
     now = datetime.now(timezone.utc)
     latency_min = (now - acha_dt).total_seconds() / 60.0 if acha_dt else None
 
@@ -218,6 +232,8 @@ def plume_top_height(
         "percentile": percentile,
         "source": source,
         "product": acha["product"],
+        "so2_px": so2_px,
+        "so2_min": so2_min,
         **stats,
     }
     out["status"] = "ok" if stats["mask_px"] > 0 else "no_plume"

@@ -928,9 +928,13 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
     with cols[2]:
         if wr_ok:
             lo, hi = wr.get("top_km_lo"), wr.get("top_km_hi")
-            sub = "Wen-Rose · corregido"
+            n_corr = wr.get("n_corrected") or 0
+            # Si todo se revirtió a la cota (corrección no confiable), el headline
+            # es la cota, no un "corregido" — el sublabel lo dice.
+            base = "Wen-Rose · corregido" if n_corr > 0 else "Wen-Rose · cota (≥)"
+            sub = base
             if lo is not None and hi is not None and (hi - lo) > 0.3:
-                sub = f"Wen-Rose · {lo:.1f}–{hi:.1f} km (β)"
+                sub = f"{base} · {lo:.1f}–{hi:.1f} km"
             kpi_card(f"{wr['top_km']:.1f} km", sub)
         else:
             kpi_card("—", "Wen-Rose")
@@ -961,6 +965,14 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
                 f"(despeje de emisividad 11/12 µm, β={wr.get('beta')}). El "
                 f"BT-matching es cota inferior; Wen-Rose acerca al tope real. "
                 f"{ts_part}{lat_part}.{_capped_txt(wr)}"
+            )
+        elif (wr.get("n_reverted") or 0) > 0:
+            st.caption(
+                f"Wen-Rose **no pudo restringir la magnitud** en "
+                f"{wr['n_reverted']:,}/{wr.get('mask_px', 0):,} píxeles (pluma muy "
+                f"fina o corrección saturada en la tropopausa) → se reporta la "
+                f"**cota {wr['top_km']:.1f} km** como límite inferior (el tope real "
+                f"puede ser mayor; ver banda y CO₂). {ts_part}{lat_part}."
             )
         else:
             st.caption(

@@ -71,7 +71,7 @@ def test_solve_tc_recovers_forward_modeled_pixel():
     assert bt11 > tc_true + 5, (bt11, tc_true)
     assert bt11 - bt12 < 0, (bt11, bt12)
 
-    tc, solved = solve_tc_grid(np.array([bt11]), np.array([bt12]), ts,
+    tc, solved, _ = solve_tc_grid(np.array([bt11]), np.array([bt12]), ts,
                                COEF14, COEF15, beta=0.9)
     assert bool(solved[0]), "debió resolver un píxel semitransparente claro"
     assert abs(tc[0] - tc_true) < 2.0, (tc[0], tc_true)
@@ -87,7 +87,7 @@ def test_solve_tc_recovers_range_of_transparencies():
     tcs = np.array([215.0, 225.0, 235.0, 245.0])
     t11s = np.array([0.30, 0.45, 0.60, 0.75])
     bt11, bt12 = _synthesize_observed(tcs, t11s, ts)
-    tc, solved = solve_tc_grid(bt11, bt12, ts, COEF14, COEF15, beta=0.9)
+    tc, solved, _ = solve_tc_grid(bt11, bt12, ts, COEF14, COEF15, beta=0.9)
     assert solved.all(), solved
     np.testing.assert_allclose(tc, tcs, atol=2.0)
 
@@ -99,7 +99,7 @@ def test_wen_rose_colder_than_bt_matching():
 
     ts = 295.0
     bt11, bt12 = _synthesize_observed(np.array([220.0]), np.array([0.4]), ts)
-    tc, _ = solve_tc_grid(bt11, bt12, ts, COEF14, COEF15, beta=0.9)
+    tc, _, _ = solve_tc_grid(bt11, bt12, ts, COEF14, COEF15, beta=0.9)
     assert tc[0] <= bt11[0] + 1e-6
     assert tc[0] < bt11[0] - 3.0   # mejora apreciable
 
@@ -111,7 +111,7 @@ def test_opaque_pixel_falls_back_to_bt():
 
     ts = 295.0
     bt11, bt12 = _synthesize_observed(np.array([230.0]), np.array([0.02]), ts)
-    tc, solved = solve_tc_grid(bt11, bt12, ts, COEF14, COEF15, beta=0.9)
+    tc, solved, _ = solve_tc_grid(bt11, bt12, ts, COEF14, COEF15, beta=0.9)
     # opaco → BT11 ≈ Tc real, y el retrieval no debe alejarse mucho de BT11
     assert abs(tc[0] - bt11[0]) < 3.0, (tc[0], bt11[0])
 
@@ -123,7 +123,7 @@ def test_positive_btd_not_ash_fallback_opaque():
 
     bt11 = np.array([250.0])
     bt12 = np.array([248.0])     # BTD = +2 K → no ceniza
-    tc, solved = solve_tc_grid(bt11, bt12, 295.0, COEF14, COEF15, beta=0.9)
+    tc, solved, _ = solve_tc_grid(bt11, bt12, 295.0, COEF14, COEF15, beta=0.9)
     assert not bool(solved[0])
     assert abs(tc[0] - bt11[0]) < 1e-6   # opaco exacto
 
@@ -135,7 +135,7 @@ def test_surface_not_warmer_fallback():
 
     bt11, bt12 = _synthesize_observed(np.array([260.0]), np.array([0.4]), 290.0)
     # Ts frío (= la propia BT): sin contraste no hay solución
-    tc, solved = solve_tc_grid(bt11, bt12, float(bt11[0]) - 1.0,
+    tc, solved, _ = solve_tc_grid(bt11, bt12, float(bt11[0]) - 1.0,
                                COEF14, COEF15, beta=0.9)
     assert not bool(solved[0])
 
@@ -146,7 +146,7 @@ def test_nan_pixels_propagate_and_dont_crash():
 
     bt11 = np.array([np.nan, 230.0])
     bt12 = np.array([np.nan, 232.0])
-    tc, solved = solve_tc_grid(bt11, bt12, 295.0, COEF14, COEF15, beta=0.9)
+    tc, solved, _ = solve_tc_grid(bt11, bt12, 295.0, COEF14, COEF15, beta=0.9)
     assert not bool(solved[0])
     assert bool(solved[1])
 
@@ -177,6 +177,23 @@ def test_clear_sky_bt_too_few_clear_returns_none():
     mask = np.ones(bt.shape, dtype=bool)
     mask.ravel()[:5] = False   # solo 5 claros
     assert clear_sky_bt(bt, mask) is None
+
+
+# ── Guard de mal-condicionamiento (sin red) ─────────────────────────────────
+
+def test_underconstrained_thin_plume_flagged():
+    """Pluma MUY fina (t≈0.9): el dato no restringe el Tc (residuo plano) →
+    well_constrained False. Pluma densa (t≈0.3): mínimo agudo → True. Es el
+    guard que evita reportar un Tc frío espurio (el +10.9 km que vimos)."""
+    from src.process.wen_rose_height import solve_tc_grid
+
+    ts = 295.0
+    bt11_d, bt12_d = _synthesize_observed(np.array([225.0]), np.array([0.30]), ts)
+    bt11_t, bt12_t = _synthesize_observed(np.array([225.0]), np.array([0.90]), ts)
+    _, sol_d, wc_d = solve_tc_grid(bt11_d, bt12_d, ts, COEF14, COEF15)
+    _, sol_t, wc_t = solve_tc_grid(bt11_t, bt12_t, ts, COEF14, COEF15)
+    assert bool(sol_d[0]) and bool(wc_d[0]), "pluma densa debe quedar bien restringida"
+    assert bool(sol_t[0]) and not bool(wc_t[0]), "pluma fina NO debe quedar restringida"
 
 
 # ── Chequeo CO₂ 13.3µm de semi-transparencia (sin red) ──────────────────────

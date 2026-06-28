@@ -53,6 +53,12 @@ MIN_CLEAR_PX = 40          # mínimo de píxeles claros para estimar Ts de la es
 CLEAR_SKY_PCTL = 92        # percentil cálido = BT de superficie (cielo claro)
 DELTA_WARN_KM = 5.0        # corrección Wen-Rose ≥ esto → flag (Ts/muestra sospechosos)
 BAND_WIDE_KM = 3.0         # banda β ≥ esto → degrada la confianza
+# Detector de mal-condicionamiento: span de Tc cuyo residuo queda dentro de
+# RES_TOL del mínimo. El span crece con la transparencia; el corte cae en
+# t≈0.6 ⇄ τ≈0.5 — el régimen donde la literatura (Wen-Rose, Pavolonis) dice que
+# el retrieval deja de ser confiable. Calibrado con forward-model sintético.
+RES_TOL = 0.003            # residuo: Tc que ajustan "casi igual de bien" (transmisividad)
+TC_SPAN_MAX = 60.0         # span de Tc dentro de RES_TOL ≥ esto ⇒ mal-condicionado (τ≲0.5)
 
 
 def wen_rose_confidence(mask_px: int, band_width_km, ts_is_clear_sky: bool) -> str:
@@ -136,11 +142,15 @@ def solve_tc_grid(bt11, bt12, ts_k, coef11, coef12, beta: float = BETA_SILICATE,
     ``coef11``/``coef12`` = ``(fk1, fk2, bc1, bc2)`` de cada banda (del NetCDF).
     ``ts_k`` puede ser escalar (BT de cielo claro) o array.
 
-    Devuelve ``(tc, solved)``:
+    Devuelve ``(tc, solved, well_constrained)``:
       - ``tc``: temperatura del tope (K). En píxeles **no resueltos** cae al
         **supuesto opaco** ``Tc = BT11`` (= BT-matching); NaN donde la BT es NaN.
       - ``solved``: bool — True solo donde el píxel es candidato semitransparente
         (ceniza BTD<0 sobre fondo cálido Ts>BT11) y hubo solución física.
+      - ``well_constrained``: bool — True donde el dato **restringe** el Tc (el
+        residuo tiene mínimo agudo). En plumas muy finas (t≈1) el residuo queda
+        casi plano → el Tc no está restringido → False (la corrección es ruido,
+        el caller debe revertir esos píxeles a la cota). ⊆ ``solved``.
     Función PURA.
     """
     bt11 = np.asarray(bt11, dtype="float64")
@@ -181,10 +191,19 @@ def solve_tc_grid(bt11, bt12, ts_k, coef11, coef12, beta: float = BETA_SILICATE,
     Tc = np.take_along_axis(Tc_grid, idx[None], axis=0)[0]
     min_res = np.take_along_axis(resid, idx[None], axis=0)[0]
 
+    # ¿Cuán BIEN restringe el dato el Tc? Span del intervalo de Tc cuyo residuo
+    # queda dentro de RES_TOL del mínimo. Pluma muy fina (t≈1) → el acople β
+    # apenas depende de Tc → residuo casi plano → span ancho → Tc no confiable.
+    within = resid <= (min_res[None] + RES_TOL)
+    tc_hi = np.where(within, Tc_grid, -np.inf).max(axis=0)
+    tc_lo = np.where(within, Tc_grid, np.inf).min(axis=0)
+    tc_span = tc_hi - tc_lo
+
     solved = elig & np.isfinite(min_res)
+    well_constrained = solved & np.isfinite(tc_span) & (tc_span <= TC_SPAN_MAX)
     Tc = np.where(solved, Tc, hi)                        # fallback opaco = BT11
     Tc = np.where(finite, Tc, np.nan)
-    return Tc, solved
+    return Tc, solved, well_constrained
 
 
 # ── Orquestación (con red) ──────────────────────────────────────────────────
@@ -214,11 +233,32 @@ def _top_stats(field_km, valid, alt_m, trop, percentile=95):
     return (trop_km, trop_km, n_capped, True)
 
 
+def _revert_unreliable(tc, bt11, well_constrained, profile, trop):
+    """Revierte a la cota (BT11) los píxeles cuya corrección Wen-Rose NO es
+    confiable, por DOS modos de falla:
+      - **mal-condicionado**: el dato no restringe el Tc (``well_constrained``
+        False; residuo plano en plumas finas);
+      - **runaway**: la corrección saturó en la tropopausa (el despeje empujó el
+        Tc al cap frío → altura implausible para una detección chica).
+    Es la mejora #1 de honestidad: en vez de reportar un Tc frío espurio, esos
+    píxeles vuelven a la cota (BT-matching), conservadora. Overshooting real es
+    raro y, si lo hubiera, sería en pluma densa que ACHA/VOLCAT capturan.
+    Devuelve ``(tc_reliable, reliable_mask)``. PURA.
+    """
+    alt = altitudes_from_bt(tc, profile)
+    z_trop = trop["z_m"] if trop else np.inf
+    reliable = (np.asarray(well_constrained, dtype=bool) & np.isfinite(alt)
+                & (alt < z_trop - 1.0))
+    return np.where(reliable, tc, bt11), reliable
+
+
 def _wr_top_for_beta(bt11, bt12, ts_k, c11, c12, beta, mask, profile, trop,
                      percentile):
     """Tope p95 Wen-Rose para un β dado — para barrer el rango de microfísica y
-    construir la banda de incertidumbre del tope. Devuelve km o None."""
-    tc, _ = solve_tc_grid(bt11, bt12, ts_k, c11, c12, beta=beta)
+    construir la banda de incertidumbre del tope. Revierte los píxeles no
+    confiables a la cota (igual que el solve principal). Devuelve km o None."""
+    tc, _, wc = solve_tc_grid(bt11, bt12, ts_k, c11, c12, beta=beta)
+    tc, _ = _revert_unreliable(tc, bt11, wc, profile, trop)
     alt = altitudes_from_bt(tc, profile)
     valid = mask & np.isfinite(alt)
     field = np.where(valid, alt, np.nan) / 1000.0
@@ -403,21 +443,28 @@ def wen_rose_top_height(
     if ts_k is None:
         tc = bts[14]
         solved = np.zeros(bts[14].shape, dtype=bool)
+        well_constrained = solved
         out["ts_note"] = "sin Ts → Wen-Rose degradado a BT-matching"
     else:
-        tc, solved = solve_tc_grid(bts[14], bts[15], float(ts_k),
-                                   coefs[14], coefs[15], beta=beta)
+        tc, solved, well_constrained = solve_tc_grid(
+            bts[14], bts[15], float(ts_k), coefs[14], coefs[15], beta=beta)
 
-    alt_wr = altitudes_from_bt(tc, profile)
+    # #1 Guard de honestidad: las correcciones NO confiables (mal-condicionadas o
+    # saturadas en la tropopausa) revierten a la cota en vez de aportar un Tc frío
+    # espurio que infla el tope. Solo las confiables llevan la corrección Wen-Rose.
+    tc_top, reliable = _revert_unreliable(tc, bts[14], well_constrained, profile,
+                                          trop)
+    alt_wr = altitudes_from_bt(tc_top, profile)
     ash = mask & np.isfinite(alt_wr)
     field_wr = np.where(ash, alt_wr, np.nan) / 1000.0
     valid = np.isfinite(np.where(ash, alt_wr, np.nan))
     n = int(valid.sum())
-    n_corrected = int(np.sum(mask & solved))
+    n_corrected = int(np.sum(mask & reliable))
+    n_reverted = int(np.sum(mask & solved & ~reliable))
 
     out.update({
         "field_km": field_wr, "field_bt_km": field_bt,
-        "mask_px": n, "n_corrected": n_corrected,
+        "mask_px": n, "n_corrected": n_corrected, "n_reverted": n_reverted,
     })
 
     if n == 0:
@@ -446,11 +493,24 @@ def wen_rose_top_height(
                 for b in BETA_RANGE]
         band = [t for t in band if t is not None] + [top_wr]
         top_lo, top_hi = min(band), max(band)
+    # Si hubo píxeles REVERTIDOS (corrección no confiable) pero el CO₂ confirma
+    # semi-transparencia, el tope real está entre la cota y la tropopausa, NO en
+    # la cota → el extremo SUPERIOR de la banda es la tropopausa (incertidumbre
+    # honesta de un lado), aunque el headline siga siendo la cota conservadora.
+    if (n_reverted > 0 and trop_km is not None and top_hi is not None
+            and co2_btd is not None and co2_btd >= CO2_SEMITRANSP_MIN):
+        top_hi = max(top_hi, trop_km)
     band_width = (top_hi - top_lo) if (top_hi is not None
                                        and top_lo is not None) else None
 
     # ── #2 Guards de honestidad: corrección o Ts sospechosos ─────────────
     flags = []
+    if n_reverted > 0:
+        extra = (" — el tope real puede ser MAYOR (CO₂ confirma semitransparencia)"
+                 if (co2_btd is not None and co2_btd >= CO2_SEMITRANSP_MIN) else "")
+        flags.append(f"{n_reverted}/{n} píxeles con magnitud NO restringida "
+                     f"(pluma fina o corrección saturada en tropopausa) → "
+                     f"revertidos a la cota{extra}")
     if delta is not None and delta >= DELTA_WARN_KM:
         flags.append(f"corrección grande (+{delta:.1f} km): verificá Ts y nº de píxeles")
     if ts_source != "cielo claro (escena)":

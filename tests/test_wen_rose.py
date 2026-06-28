@@ -257,6 +257,35 @@ def test_wen_rose_confidence_levels():
     assert wen_rose_confidence(40, 4.0, False) == "muy baja"
 
 
+# ── VOLCAT colorbar reverse-map (sin red) ───────────────────────────────────
+
+def test_volcat_colorbar_reverse_map():
+    """LUT color→km y reverse-map: recupera la altura del color, y un overlay
+    (color lejos del arcoíris) queda descartado por la distancia de color."""
+    from src.process.volcat_colorbar import (build_height_lut,
+                                             extract_rainbow_bar,
+                                             heights_from_plume,
+                                             reverse_map_heights)
+    n = 100
+    bar = np.zeros((n, 3))
+    bar[:, 0] = np.linspace(0, 255, n)     # R sube
+    bar[:, 2] = np.linspace(255, 0, n)     # B baja  → gradiente inyectivo
+    lut_rgb, lut_val = build_height_lut(bar, 0.0, 20.0, low_at_left=True)
+    # color del medio → ~10 km
+    vals, dist = reverse_map_heights(bar[50][None, :], lut_rgb, lut_val)
+    assert abs(vals[0] - 10.0) < 0.5 and dist[0] < 1.0
+    # 2 píxeles de altura (bar[80]≈16 km) + 1 overlay cyan (lejos) → excluye el cyan
+    px = np.vstack([bar[80], bar[80], np.array([0.0, 255.0, 255.0])])
+    res = heights_from_plume(px, lut_rgb, lut_val, match_max=40.0)
+    assert res["n_matched"] == 2 and abs(res["max_km"] - 16.16) < 0.6
+
+    # extract_rainbow_bar: una fila saturada entre filas blancas → la encuentra
+    strip = np.full((5, n, 3), 255.0)
+    strip[2] = bar                          # fila 2 = barra saturada
+    found = extract_rainbow_bar(strip)
+    assert found is not None and found.shape[0] >= n - 2
+
+
 # ── Orquestación (short-circuit sin red) ────────────────────────────────────
 
 def test_wen_rose_unknown_volcano_no_data():

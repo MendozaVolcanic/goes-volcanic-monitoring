@@ -344,3 +344,96 @@ def volcat_available_types(sector: str, instr: str = "ABI") -> list[str]:
         return d.get("image_type") or []
     except Exception:
         return []
+
+
+def volcat_height_at(volcano, dt, radius_deg: float = 0.6) -> Optional[dict]:
+    """Reverse-map del colorbar QUEMADO de VOLCAT Ash_Height en el bbox de un
+    volcán → altura (km AMSL) como **ground-truth INDICATIVO** para cruzar con
+    nuestro retrieval propio.
+
+    HONESTIDAD: es FRÁGIL (±1-2 km extra; depende de la paleta SSEC) y SOLO sirve
+    de cross-check de validación, NUNCA como número operacional. Reconstruye el
+    valor desde el color del PNG porque SSEC no expone el NetCDF público. Devuelve:
+      - dict ``{p95_km, max_km, median_km, n_matched, frame, gap_min}`` si VOLCAT
+        SÍ tiene detección de altura en el bbox del volcán;
+      - dict ``{"note": ...}`` si no hay frame, el sector es PS (georef no-lineal),
+        o **no hay detección de VOLCAT ahí** (común en plumas chilenas finas, que
+        caen bajo el umbral de detección de VOLCAT);
+      - None si fallan dependencias.
+
+    Solo sectores CE (Chile_North/Central, equatoriales) — georef lineal. Los PS
+    (Chile_South) se omiten.
+    """
+    try:
+        import io
+        import math
+
+        import numpy as np
+        import requests
+        from PIL import Image
+
+        from src.process.volcat_colorbar import (build_height_lut,
+                                                 extract_rainbow_bar,
+                                                 heights_from_plume)
+    except Exception:
+        logger.exception("volcat_height_at: deps no disponibles")
+        return None
+
+    sector, instr = resolve_volcat_sector(volcano)
+    vc = volcat_at_time(dt, sector, instr=instr, image_type="Ash_Height",
+                        max_gap_min=40)
+    if vc is None:
+        return {"note": "sin frame VOLCAT Ash_Height en ±40 min"}
+    coords = vc["coords"]
+    if str(coords.get("PROJECTION", "")).upper() == "PS":
+        return {"note": f"sector {sector} es PS (georef no-lineal) — omitido"}
+    try:
+        raw = requests.get(vc["image_url"], timeout=30).content
+        im = Image.open(io.BytesIO(raw)).convert("RGB")
+    except Exception as e:
+        return {"note": f"descarga del frame falló ({e})"}
+    W, H = im.size
+    a = np.asarray(im).astype("float64")
+
+    # LUT desde el colorbar (strip inferior, mitad derecha = escala de altura).
+    strip = a[int(0.935 * H):H, :]
+    bar = extract_rainbow_bar(strip[:, int(0.48 * strip.shape[1]):])
+    if bar is None:
+        return {"note": "no se pudo extraer el colorbar de altura"}
+    lut_rgb, lut_val = build_height_lut(bar)
+
+    # Georef CE lineal: pixel del volcán + bbox de ±radius.
+    def _nlon(x):
+        return x - 360.0 if x > 180.0 else x
+    try:
+        dp = math.degrees(coords["SCALE_FACTOR"] / coords["EQ_RADIUS"])
+        lon0 = _nlon(coords["ORIGIN_LON"]) + coords.get("OFFSET_X", 0) * dp
+        lat0 = coords["ORIGIN_LAT"] + coords.get("OFFSET_Y", 0) * dp
+    except Exception:
+        return {"note": "coords del sector incompletas"}
+    row = (lat0 - volcano.lat) / dp
+    col = (volcano.lon - lon0) / dp
+    rpx = max(4, int(radius_deg / dp))
+    r0, r1 = max(0, int(row - rpx)), min(int(0.92 * H), int(row + rpx))
+    c0, c1 = max(0, int(col - rpx)), min(W, int(col + rpx))
+    if r1 <= r0 or c1 <= c0:
+        return {"note": "el volcán cae fuera del sector"}
+    box = a[r0:r1, c0:c1]
+
+    # Píxeles candidatos de altura: saturados (arcoíris) y NO la grilla cyan del
+    # overlay SSEC. El filtro fino (distancia a la paleta) lo hace heights_from_plume.
+    mx, mn = box.max(2), box.min(2)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        sat = np.where(mx > 0, (mx - mn) / mx, 0.0)
+    cyan = (box[:, :, 1] > 150) & (box[:, :, 2] > 150) & (box[:, :, 0] < 120)
+    px = box[(sat > 0.35) & ~cyan]
+    if len(px) < 3:
+        return {"note": "sin detección de altura VOLCAT en el bbox del volcán "
+                "(pluma fina bajo el umbral de VOLCAT, o ceniza en otro sitio)"}
+    res = heights_from_plume(px, lut_rgb, lut_val)
+    if res is None or res["n_matched"] < 3:
+        return {"note": "píxeles saturados no matchean la paleta de altura "
+                "(probable overlay del mapa, no ceniza)"}
+    res.update({"frame": vc.get("datetime"),
+                "gap_min": round(vc.get("gap_seconds", 0) / 60.0, 0)})
+    return res

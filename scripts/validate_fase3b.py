@@ -52,20 +52,22 @@ def _acha_top(scan_dt, v):
         return None
 
 
-def _volcat_cooccur(scan_dt, v) -> str:
-    """¿VOLCAT SSEC tiene un frame Ash_Height del mismo scan? (co-ocurrencia; el
-    km de SSEC está quemado en el PNG, no se extrae a nivel de píxel)."""
+def _volcat_height(scan_dt, v):
+    """Reverse-map del colorbar VOLCAT Ash_Height (ground-truth INDICATIVO, FRÁGIL
+    ±1-2 km). Devuelve (texto, km_p95 o None)."""
     try:
-        from src.fetch.volcat_api import resolve_volcat_sector, volcat_at_time
-        sector, instr = resolve_volcat_sector(v)
-        vc = volcat_at_time(scan_dt, sector, instr=instr,
-                            image_type="Ash_Height", max_gap_min=30)
-        if vc is None:
-            return "VOLCAT: sin frame en ±30 min"
-        gap = vc.get("gap_seconds", 0) / 60.0
-        return f"VOLCAT: frame {vc.get('datetime')} (gap {gap:.0f} min) — co-ocurre"
+        from src.fetch.volcat_api import volcat_height_at
+        r = volcat_height_at(v, scan_dt)
+        if r is None:
+            return "VOLCAT height: deps no disponibles", None
+        if "note" in r:
+            return f"VOLCAT height: {r['note']}", None
+        return (f"VOLCAT height (reverse-map PNG, ±1-2 km FRÁGIL): "
+                f"p95={r['p95_km']:.1f} km · máx={r['max_km']:.1f} km "
+                f"({r['n_matched']} px, frame {r['frame']} gap {r['gap_min']:.0f}min)",
+                r["p95_km"])
     except Exception as e:
-        return f"VOLCAT: no accesible ({e})"
+        return f"VOLCAT height: error ({e})", None
 
 
 def _report(res) -> None:
@@ -98,7 +100,12 @@ def _report(res) -> None:
     else:
         print("    ACHA NOAA ..................... no_plume (sin retrieval; "
               "Wen-Rose/BT rescatan el caso, pero sin 3ª fuente para triangular)")
-    print(f"    {_volcat_cooccur(res['scan_dt'], v)}")
+    vtxt, vkm = _volcat_height(res["scan_dt"], v)
+    print(f"    {vtxt}")
+    if vkm is not None:
+        dv = res["top_km"] - vkm
+        print(f"    → GROUND TRUTH: Δ(Wen-Rose − VOLCAT) = {dv:+.1f} km "
+              f"({'✓ valida la magnitud' if abs(dv) <= 3 else '⚠ discrepa >3 km'})")
     print(f"    CONFIANZA (indicativa): {res['confidence'].upper()}"
           + (f"  ⚠ {' · '.join(res['flags'])}" if res.get("flags") else ""))
     sane = crater_km - 1.0 <= res["top_max_km"] <= 20.0

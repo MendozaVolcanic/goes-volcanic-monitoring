@@ -44,10 +44,35 @@ logger = logging.getLogger(__name__)
 BT85_BAND = 11             # 8.4 µm (máscara tri-espectral)
 BT11_BAND = 14             # 11.2 µm (ventana, canal "4" de Wen-Rose)
 BT12_BAND = 15             # 12.3 µm (canal "5" de Wen-Rose)
+CO2_BAND = 16              # 13.3 µm (CO₂) — chequeo INDEPENDIENTE de semi-transp.
+CO2_SEMITRANSP_MIN = 0.5   # BTD(11−13.3) ≥ esto sobre la ceniza ⇒ semitransparente
 
 BETA_SILICATE = 0.9        # razón de prof. óptica 12/11 — andesita-dacita chilena
+BETA_RANGE = (0.85, 0.95)  # rango de β del silicato → banda de incertidumbre del tope
 MIN_CLEAR_PX = 40          # mínimo de píxeles claros para estimar Ts de la escena
 CLEAR_SKY_PCTL = 92        # percentil cálido = BT de superficie (cielo claro)
+DELTA_WARN_KM = 5.0        # corrección Wen-Rose ≥ esto → flag (Ts/muestra sospechosos)
+BAND_WIDE_KM = 3.0         # banda β ≥ esto → degrada la confianza
+
+
+def wen_rose_confidence(mask_px: int, band_width_km, ts_is_clear_sky: bool) -> str:
+    """Confianza **INDICATIVA** del tope Wen-Rose. Nunca devuelve "alta": es un
+    producto indicativo, el cuantitativo validado sigue siendo VOLCAT.
+
+    Degrada por (a) pocos píxeles de ceniza → estadístico ruidoso; (b) banda de
+    incertidumbre por β ancha → microfísica mal restringida; (c) Ts de fallback
+    (GFS, no observado) → fondo cálido peor estimado. Función PURA.
+    """
+    if mask_px < 5:
+        return "muy baja"
+    score = 2
+    if mask_px < 15:
+        score -= 1
+    if band_width_km is not None and band_width_km > BAND_WIDE_KM:
+        score -= 1
+    if not ts_is_clear_sky:
+        score -= 1
+    return "media" if score >= 2 else ("baja" if score == 1 else "muy baja")
 
 
 # ── Solver puro (sin red) ───────────────────────────────────────────────────
@@ -69,6 +94,32 @@ def clear_sky_bt(bt11_window, ash_mask, percentile: float = CLEAR_SKY_PCTL,
     if int(clear.sum()) < min_clear:
         return None
     return float(np.percentile(bt[clear], percentile))
+
+
+def co2_semitransparency(bt11, bt133, ash_mask) -> Optional[float]:
+    """Chequeo INDEPENDIENTE de semi-transparencia con el canal CO₂ (13.3 µm).
+
+    Por qué (geología → pipeline): el 13.3 µm cae en una banda de absorción de
+    CO₂, así que su radiancia viene de **más arriba** en la atmósfera que la
+    ventana de 11 µm. Sobre una pluma **semi-transparente**, el 11 µm ve más
+    suelo cálido por debajo (ventana) que el 13.3 µm (el CO₂ lo absorbe) →
+    ``BT(11) − BT(13.3) > 0``. Sobre una pluma **opaca** ambos ven el tope frío →
+    diferencia ≈ 0. Es decir: confirma, con física distinta al despeje Wen-Rose,
+    si la corrección de emisividad estaba justificada (un guard contra
+    sobre-corregir un tope que en realidad era opaco).
+
+    Devuelve la **mediana de BTD(11−13.3)** sobre los píxeles de ceniza (K), o
+    None si no hay 13.3 µm o píxeles válidos. Función PURA.
+    """
+    if bt133 is None:
+        return None
+    bt11 = np.asarray(bt11, dtype="float64")
+    bt133 = np.asarray(bt133, dtype="float64")
+    m = (np.asarray(ash_mask, dtype=bool) & np.isfinite(bt11)
+         & np.isfinite(bt133))
+    if not m.any():
+        return None
+    return float(np.median(bt11[m] - bt133[m]))
 
 
 def solve_tc_grid(bt11, bt12, ts_k, coef11, coef12, beta: float = BETA_SILICATE,
@@ -161,6 +212,17 @@ def _top_stats(field_km, valid, alt_m, trop, percentile=95):
                 n_capped, False)
     trop_km = trop["z_m"] / 1000.0 if trop else None
     return (trop_km, trop_km, n_capped, True)
+
+
+def _wr_top_for_beta(bt11, bt12, ts_k, c11, c12, beta, mask, profile, trop,
+                     percentile):
+    """Tope p95 Wen-Rose para un β dado — para barrer el rango de microfísica y
+    construir la banda de incertidumbre del tope. Devuelve km o None."""
+    tc, _ = solve_tc_grid(bt11, bt12, ts_k, c11, c12, beta=beta)
+    alt = altitudes_from_bt(tc, profile)
+    valid = mask & np.isfinite(alt)
+    field = np.where(valid, alt, np.nan) / 1000.0
+    return _top_stats(field, valid, alt, trop, percentile)[0]
 
 
 def wen_rose_top_height(
@@ -276,6 +338,22 @@ def wen_rose_top_height(
 
     mask = detect_ash_enhanced(_da(bts[11]), _da(bts[14]), _da(bts[15])).values
 
+    # ── C16 (13.3 µm CO₂) OPCIONAL: chequeo independiente de semi-transparencia ──
+    # No es requerido (graceful si falta o cae en otro scan); +1 banda SOLO en este
+    # retrieval, no en el pipeline NRT (por eso C16 vive en EXTENDED_IR_BANDS, fuera
+    # de VOLCANIC_BANDS). Confirma/desmiente la corrección Wen-Rose con física
+    # distinta (CO₂-slicing cualitativo). Ver co2_semitransparency().
+    bt133 = None
+    try:
+        p16 = download_band_at(ref, CO2_BAND)
+        if p16 is not None and _scan_start(p16.name) == scan_dt:
+            with open_band(p16) as ds16:
+                bt133 = rad_to_bt(ds16.isel(y=slice(y0, y1),
+                                            x=slice(x0, x1))).load().values
+    except Exception as e:
+        logger.warning("Wen-Rose C16 (opcional): %s", e)
+    co2_btd = co2_semitransparency(bts[14], bt133, mask)
+
     # Contexto SO2 (igual criterio que bt_matching / acha) para el dashboard.
     try:
         from src.config import SO2_INDICATOR_THRESHOLD as _SO2_THR
@@ -293,6 +371,7 @@ def wen_rose_top_height(
                 "volcano": v.name, "bounds": bounds, "scan_dt": scan_dt,
                 "so2_px": so2_px, "so2_min": so2_min, "source": source}
 
+    n_clear = int((np.isfinite(bts[14]) & ~mask).sum())
     ts_k = clear_sky_bt(bts[14], mask)
     ts_source = "cielo claro (escena)"
     if ts_k is None:
@@ -313,7 +392,7 @@ def wen_rose_top_height(
         "source": source, "tropopause_km": trop_km, "beta": beta,
         "ts_k": (float(ts_k) if ts_k is not None else None), "ts_source": ts_source,
         "profile_time": profile.get("valid_time"),
-        "so2_px": so2_px, "so2_min": so2_min,
+        "so2_px": so2_px, "so2_min": so2_min, "co2_semitransp_btd": co2_btd,
     }
 
     # Si no hay Ts utilizable, Wen-Rose no puede correr → degradar a BT-matching
@@ -353,12 +432,48 @@ def wen_rose_top_height(
         field_wr, valid, alt_wr, trop, percentile)
     valid_bt = mask & np.isfinite(alt_bt)
     top_bt, _, _, _ = _top_stats(field_bt, valid_bt, alt_bt, trop, percentile)
-
     delta = (top_wr - top_bt) if (top_wr is not None and top_bt is not None) else None
+
+    # ── #1 Banda de incertidumbre por la microfísica (β ∈ BETA_RANGE) ────
+    # β fija la razón de absorción 12/11; no la medimos (haría falta retrieval de
+    # radio efectivo). En vez de fingir un número exacto, barremos el rango del
+    # silicato (0.85-0.95) y reportamos el tope como banda. Solo si hubo
+    # corrección real (con todo opaco, β no cambia nada → banda degenerada).
+    top_lo = top_hi = top_wr
+    if ts_k is not None and n_corrected > 0 and top_wr is not None:
+        band = [_wr_top_for_beta(bts[14], bts[15], float(ts_k), coefs[14],
+                                 coefs[15], b, mask, profile, trop, percentile)
+                for b in BETA_RANGE]
+        band = [t for t in band if t is not None] + [top_wr]
+        top_lo, top_hi = min(band), max(band)
+    band_width = (top_hi - top_lo) if (top_hi is not None
+                                       and top_lo is not None) else None
+
+    # ── #2 Guards de honestidad: corrección o Ts sospechosos ─────────────
+    flags = []
+    if delta is not None and delta >= DELTA_WARN_KM:
+        flags.append(f"corrección grande (+{delta:.1f} km): verificá Ts y nº de píxeles")
+    if ts_source != "cielo claro (escena)":
+        flags.append(f"Ts de fallback ({ts_source}): fondo cálido no observado")
+    elif n_clear < 4 * MIN_CLEAR_PX:
+        flags.append(f"Ts con pocos píxeles claros ({n_clear}): fondo poco robusto")
+    # #4: el CO₂ (13.3µm) es un árbitro INDEPENDIENTE. Si dice que la pluma es
+    # opaca (BTD 11−13.3 chico) pero Wen-Rose igual corrigió, la corrección es
+    # sospechosa de ser ruido (no semi-transparencia real).
+    if (n_corrected > 0 and co2_btd is not None
+            and co2_btd < CO2_SEMITRANSP_MIN):
+        flags.append(f"CO₂ 13.3µm sugiere pluma ~opaca (BTD 11−13.3 ≈ {co2_btd:.1f} K): "
+                     "corrección Wen-Rose poco confirmada")
+
+    confidence = wen_rose_confidence(n, band_width,
+                                     ts_source == "cielo claro (escena)")
+
     out.update({
         "status": "ok",
         "top_km": top_wr, "top_max_km": top_wr_max,
+        "top_km_lo": top_lo, "top_km_hi": top_hi, "band_width_km": band_width,
         "top_bt_matching_km": top_bt, "delta_km": delta,
         "n_capped": n_capped, "all_capped": all_capped,
+        "n_clear": n_clear, "confidence": confidence, "flags": flags,
     })
     return out

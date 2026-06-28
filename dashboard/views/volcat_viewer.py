@@ -927,7 +927,11 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
                  "BT-matching · cota")
     with cols[2]:
         if wr_ok:
-            kpi_card(f"{wr['top_km']:.1f} km", "Wen-Rose · corregido")
+            lo, hi = wr.get("top_km_lo"), wr.get("top_km_hi")
+            sub = "Wen-Rose · corregido"
+            if lo is not None and hi is not None and (hi - lo) > 0.3:
+                sub = f"Wen-Rose · {lo:.1f}–{hi:.1f} km (β)"
+            kpi_card(f"{wr['top_km']:.1f} km", sub)
         else:
             kpi_card("—", "Wen-Rose")
     with cols[3]:
@@ -964,6 +968,33 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
                 f"(sin corrección de emisividad que aplicar). Tope p95 "
                 f"**{wr['top_km']:.1f} km** (máx {wr.get('top_max_km', 0):.1f} km). "
                 f"{ts_part}{lat_part}.{_capped_txt(wr)}"
+            )
+
+        # Confianza INDICATIVA (nunca "alta") + flags de honestidad. La banda β
+        # ya va en el sublabel del KPI; acá el badge de confianza y los avisos.
+        conf = wr.get("confidence")
+        conf_color = {"media": "#7fd17f", "baja": "#ffb020",
+                      "muy baja": "#ff6b6b"}.get(conf, "#aabbc8")
+        flags = wr.get("flags") or []
+        flags_html = ""
+        if flags:
+            flags_html = (' · <span style="color:#ffb020;">⚠ '
+                          + " · ".join(flags) + "</span>")
+        # Veredicto independiente del CO₂ 13.3µm (el caso ~opaco ya va en flags;
+        # acá la CONFIRMACIÓN positiva de semi-transparencia → la corrección era real).
+        co2 = wr.get("co2_semitransp_btd")
+        co2_html = ""
+        if co2 is not None and co2 >= 0.5:
+            co2_html = (f' · <span style="color:#7fd17f;">CO₂ 13.3µm ✓ '
+                        f'semitransp. ({co2:.1f} K)</span>')
+        if conf:
+            st.markdown(
+                f'<div style="font-size:0.74rem; color:#8899aa; '
+                f'margin:-0.3rem 0 0.4rem 0;">Confianza del tope: '
+                f'<b style="color:{conf_color};">{conf}</b> '
+                f'<span style="color:#66737f;">(INDICATIVO — nunca reemplaza al '
+                f'VOLCAT cuantitativo)</span>{co2_html}{flags_html}</div>',
+                unsafe_allow_html=True,
             )
 
     # Cross-check con ACHA (OE independiente de NOAA).

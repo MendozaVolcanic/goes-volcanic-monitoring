@@ -112,6 +112,27 @@ altura válida (transparentes en 11 µm → ver `reference_acha_so2_limit`).
 
 ---
 
+## 4bis. Robustez / honestidad del número (refinamientos 2026-06-28)
+
+El número Wen-Rose **no se reporta pelado** — un punto exacto engañaría a quien
+decide alerta. Cuatro capas:
+
+1. **Banda de incertidumbre por β** (`BETA_RANGE` 0.85–0.95): β fija la microfísica
+   y NO la medimos, así que se resuelve `Tc` en los extremos del silicato y se
+   reporta el tope como **banda** (`top_km_lo`/`top_km_hi`). En Láscar real la
+   banda fue 7.9–13.6 km para un central de 10.4 — la microfísica sola pesa ~6 km.
+2. **Confianza INDICATIVA** (`wen_rose_confidence`, nunca "alta"): degrada por
+   pocos píxeles, banda ancha o Ts de fallback. (Láscar 8 px → "muy baja".)
+3. **Guards de Ts/corrección** (`flags`): avisa si Δ ≥ 5 km (corrección
+   implausible), si el Ts vino de fallback GFS, o si hubo pocos píxeles claros.
+   Validado: cazó un Δ=+10.9 km (tope pegado a la tropopausa con 6 px).
+4. **Árbitro independiente CO₂ 13.3 µm** (`co2_semitransparency`, banda C16 de
+   `EXTENDED_IR_BANDS`, descarga OPCIONAL solo en este retrieval): `BTD(11−13.3)`
+   sobre la ceniza. Positivo ⇒ semi-transparencia confirmada con física DISTINTA
+   al despeje (la corrección era real); ≈0 ⇒ pluma opaca ⇒ corrección sospechosa
+   de ruido → flag. Es el primer uso honesto del C16 sin RTM (CO₂-slicing
+   cualitativo); la detección ATBD-grade con β-ratios sigue gated por el RTM.
+
 ## 5. Referencias
 
 - **Wen, S. & Rose, W.I. (1994)** *Retrieval of sizes and total masses of particles in

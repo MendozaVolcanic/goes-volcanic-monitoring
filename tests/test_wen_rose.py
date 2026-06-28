@@ -179,6 +179,51 @@ def test_clear_sky_bt_too_few_clear_returns_none():
     assert clear_sky_bt(bt, mask) is None
 
 
+# ── Chequeo CO₂ 13.3µm de semi-transparencia (sin red) ──────────────────────
+
+def test_co2_semitransparency_indicator():
+    """BTD(11−13.3) > 0 sobre la ceniza ⇒ semitransparente; ≈0 ⇒ opaca."""
+    from src.process.wen_rose_height import (CO2_SEMITRANSP_MIN,
+                                             co2_semitransparency)
+
+    mask = np.array([[True, True, False]])
+    # semitransparente: 11µm ve el suelo cálido, 13.3µm (CO2) no
+    bt11 = np.array([[250.0, 252.0, 290.0]])
+    bt133 = np.array([[243.0, 244.0, 270.0]])
+    v = co2_semitransparency(bt11, bt133, mask)
+    assert v is not None and v > CO2_SEMITRANSP_MIN, v   # ~8 K
+
+    # opaca: 11 y 13.3 ven el mismo tope frío
+    bt11o = np.array([[221.0, 220.0, 290.0]])
+    bt133o = np.array([[220.5, 220.0, 268.0]])
+    vo = co2_semitransparency(bt11o, bt133o, mask)
+    assert vo is not None and vo < CO2_SEMITRANSP_MIN, vo  # ~0.5
+
+    # sin 13.3µm → None; sin píxeles de ceniza → None
+    assert co2_semitransparency(bt11, None, mask) is None
+    assert co2_semitransparency(bt11, bt133, np.zeros_like(mask, dtype=bool)) is None
+
+
+# ── Confianza INDICATIVA (sin red) ──────────────────────────────────────────
+
+def test_wen_rose_confidence_levels():
+    """Confianza nunca 'alta'; degrada por pocos px, banda β ancha o Ts fallback."""
+    from src.process.wen_rose_height import wen_rose_confidence
+
+    # buen caso: muchos px, banda angosta, Ts de cielo claro → media (máx posible)
+    assert wen_rose_confidence(40, 1.0, True) == "media"
+    # pocos px → baja
+    assert wen_rose_confidence(10, 1.0, True) == "baja"
+    # muy pocos px → muy baja (corta de entrada)
+    assert wen_rose_confidence(3, 0.5, True) == "muy baja"
+    # banda ancha degrada
+    assert wen_rose_confidence(40, 4.0, True) == "baja"
+    # Ts de fallback degrada
+    assert wen_rose_confidence(40, 1.0, False) == "baja"
+    # combinación de penalizaciones → muy baja
+    assert wen_rose_confidence(40, 4.0, False) == "muy baja"
+
+
 # ── Orquestación (short-circuit sin red) ────────────────────────────────────
 
 def test_wen_rose_unknown_volcano_no_data():

@@ -132,6 +132,18 @@ decide alerta. Cuatro capas:
    al despeje (la corrección era real); ≈0 ⇒ pluma opaca ⇒ corrección sospechosa
    de ruido → flag. Es el primer uso honesto del C16 sin RTM (CO₂-slicing
    cualitativo); la detección ATBD-grade con β-ratios sigue gated por el RTM.
+5. **Guard de mal-condicionamiento** (`_revert_unreliable`): cuando el dato NO
+   restringe el `Tc` (pluma fina → residuo plano, τ≲0.5 vía span de Tc dentro de
+   `RES_TOL`) o la corrección **satura en la tropopausa** (runaway), esos píxeles
+   **revierten a la cota** en vez de aportar un Tc frío espurio. Si quedan
+   revertidos pero el CO₂ confirma semi-transparencia, la banda se ensancha hasta
+   la tropopausa (incertidumbre honesta de un lado) y el headline es la cota.
+   Validado: Láscar 28-jun pasó de un engañoso 16.5 km a "cota 5.6 km, banda
+   5.6–16.5, el real puede ser mayor".
+6. **Ts local + heterogeneidad** (`clear_sky_bt` con anillo, `clear_sky_heterogeneity`):
+   el Ts se estima del **anillo de cielo claro alrededor de la pluma** (mejor que
+   un percentil de toda la ventana sobre terreno mixto); flag cuando el fondo es
+   heterogéneo (costa: mar+tierra) avisando que el Ts es poco confiable.
 
 ## 5. Referencias
 

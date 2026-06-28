@@ -121,7 +121,7 @@ streamlit run dashboard/app.py
 | Altura de tope ACHA (INDICATIVO) | dict {top_km p95, top_max_km, field_km, lat/lon, latency} | `src/process/acha_plume_height.py::plume_top_height(dt, volcano, radius)` | 10 min |
 | HT ACHA recortada a bbox | dict {height_m, dqf, lat/lon, window, scan_dt} | `src/fetch/goes_acha.py::fetch_acha_height_at(dt, bounds)` | 10 min |
 | Altura de tope BT-matching (INDICATIVO, propio) | dict {top_km p95, top_max_km, field_km, tropopause_km, lat/lon} | `src/process/bt_matching_height.py::bt_matching_top_height(dt, volcano, radius)` | 10 min |
-| Altura de tope Wen-Rose (INDICATIVO, propio) | dict {top_km, top_km_lo/hi (banda β), confidence, flags, co2_semitransp_btd, top_bt_matching_km, delta_km, n_corrected, ts_k/ts_source, field_km} | `src/process/wen_rose_height.py::wen_rose_top_height(dt, volcano, radius)` | 10 min |
+| Altura de tope Wen-Rose (INDICATIVO, propio) | dict {top_km, top_km_lo/hi (banda β), confidence, flags, n_reverted, co2_semitransp_btd, bg_spread_k, top_bt_matching_km, delta_km, n_corrected, ts_k/ts_source, field_km} | `src/process/wen_rose_height.py::wen_rose_top_height(dt, volcano, radius)` | 10 min |
 | Perfil GFS T(z) + tropopausa + skin-T | dict {levels[{p_hPa,z_m,T_K}], tropopause, skin_temp_K} | `src/fetch/gfs_profile.py::fetch_gfs_profile(lat, lon, dt)` | 6 h (GFS) |
 | Animación MP4 | binary MP4 H.264 | `dashboard/views/rammb_viewer.py::_build_mp4(frames)` | on-demand |
 | Animación GIF | binary GIF | `dashboard/views/rammb_viewer.py::_build_gif(frames)` | on-demand |

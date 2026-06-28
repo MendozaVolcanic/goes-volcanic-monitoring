@@ -92,6 +92,11 @@ def fetch_gfs_profile(
     hourly_vars = ",".join(
         f"temperature_{p}hPa,geopotential_height_{p}hPa" for p in GFS_LEVELS_HPA
     )
+    # surface_temperature = skin-T radiativa de GFS (no la T2m del aire). Es el
+    # FALLBACK de fondo cálido para el retrieval Wen-Rose (Fase 3b) cuando la
+    # escena no tiene suficientes píxeles de cielo claro para estimar Ts. Ver
+    # docs/own_volcat/FASE3B_WENROSE.md §3 (por qué skin-T y no GOES LST).
+    hourly_vars += ",surface_temperature"
     params = {
         "latitude": lat,
         "longitude": lon,
@@ -138,9 +143,16 @@ def fetch_gfs_profile(
     if len(levels) < 3:
         return None
 
+    # Skin-T (°C→K) de la hora elegida; None si Open-Meteo no la trae.
+    skin_list = hourly.get("surface_temperature") or []
+    skin_k = None
+    if hour_idx < len(skin_list) and skin_list[hour_idx] is not None:
+        skin_k = float(skin_list[hour_idx]) + 273.15
+
     return {
         "levels": levels,
         "tropopause": _tropopause(levels),
+        "skin_temp_K": skin_k,
         "lat": lat,
         "lon": lon,
         "valid_time": times[hour_idx],

@@ -42,3 +42,25 @@ def rad_to_bt(ds: xr.Dataset) -> xr.DataArray:
         "bc2": bc2,
     }
     return bt
+
+
+def planck_rad_from_bt(bt, fk1: float, fk2: float, bc1: float, bc2: float):
+    """Planck **directo** (BT en K → radiancia ABI), inverso exacto de
+    :func:`rad_to_bt`.
+
+        T_eff = bc1 + bc2 · BT
+        Rad   = fk1 / (exp(fk2 / T_eff) − 1)
+
+    Por qué existe: el retrieval de altura Wen-Rose (Fase 3b) mezcla
+    **radiancias** de dos canales (no temperaturas de brillo) para despejar la
+    temperatura del tope corrigiendo emisividad — la mezcla lineal de Planck NO
+    es lineal en BT, así que hay que ir a radiancia, operar, y volver. Esta es la
+    pieza forward que faltaba (``rad_to_bt`` solo hace la inversa).
+
+    Función PURA y vectorizada: acepta escalar o ``np.ndarray`` y devuelve el
+    mismo shape. Usar los coeficientes ``fk1/fk2/bc1/bc2`` del MISMO NetCDF L1b
+    del que salió la BT (son por-banda) para que forward∘inversa = identidad.
+    """
+    bt = np.asarray(bt, dtype="float64")
+    t_eff = bc1 + bc2 * bt
+    return fk1 / (np.exp(fk2 / t_eff) - 1.0)

@@ -15,13 +15,20 @@ SSEC (`volcano.ssec.wisc.edu`), que tiene latencia ~30-50 min y caídas intermit
 >   (`bt_matching_top_height`). Altura propia **independiente de SSEC y de ACHA**.
 >   Validado vs ACHA: Popocatépetl 26-jun BT 9.2 vs ACHA 10.3 km (Δ−1.1, cota
 >   inferior ✓); Láscar 27-jun BT 6.2 km/15 px donde ACHA estaba en no_plume.
-> - **Hallazgo (Chillán 27-jun, pluma SO₂):** ni ACHA ni BT-matching dan altura a
->   plumas de **gas/SO₂** (transparente en 11 µm → altura espuria bajo el cráter).
->   El dashboard ahora lo explica con el contexto SO₂. Ver memoria
->   `reference_acha_so2_limit`.
+> - **Fase 3b — HECHA (2026-06-28).** Wen & Rose 1994: corrige emisividad con 2
+>   canales (11/12 µm) → `Tc` corregido → altura. `src/process/wen_rose_height.py`
+>   (`solve_tc_grid` puro + `clear_sky_bt` + `wen_rose_top_height`), Planck forward
+>   en `brightness_temp.py`, skin-T GFS en `gfs_profile.py`. **Ts = BT de cielo
+>   claro de la escena** (fallback GFS skin-T; **GOES LST rechazado**: NaN bajo la
+>   pluma). Validado en Láscar real 27-jun: **BT-matching 6.8 km → Wen-Rose 10.4 km
+>   (Δ+3.6 km)**, sube en semitransparente como se espera; ACHA=no_plume (Wen-Rose
+>   rescata). 108 tests verde. Detalle en `FASE3B_WENROSE.md`.
+> - **Hallazgo (Chillán 27-jun, pluma SO₂):** ni ACHA ni BT-matching ni Wen-Rose dan
+>   altura a plumas de **gas/SO₂** (transparente en 11 µm → altura espuria bajo el
+>   cráter). El dashboard lo explica con el contexto SO₂. Ver `reference_acha_so2_limit`.
 > - **Pendiente:** Fase 1 (bandas C10/C16 + detección ATBD β-ratios — bloqueada por
->   el mismo gap RTM/clear-sky que la altura cuantitativa); Fase 3b (Wen-Rose,
->   corrige emisividad); Fase 4 (OE con pyCRTM — NO salvo justificación).
+>   el mismo gap RTM/clear-sky que la altura cuantitativa); Fase 4 (OE con pyCRTM —
+>   NO salvo justificación).
 
 > **TL;DR para el geólogo.** El producto de referencia (VOLCAT, Pavolonis 2013) NO se mide
 > directo: la altura no es una variable de la ecuación de transferencia radiativa. Lo que
@@ -222,10 +229,13 @@ dar mapeo Teff→altura ambiguo (tomar rama superior, warning si Δh>2 km).
 **Qué se construye:** retrieval de altura "VOLCAT-lite físico" sin OE completo:
 - **3a (mínimo):** BT-matching directo — `Teff ≈ BT(11µm)` del tope opaco, mapeado al perfil GFS
   de Fase 2. Cota inferior, subestima en semi-transparente.
-- **3b (mejor):** **Wen & Rose 1994** de 2 canales (11/12 µm) para despejar la emisividad y obtener
-  un Teff corregido antes de mapear a altura (resuelve nube semitransparente sobre fondo cálido;
-  necesita Tsfc de GOES LST `ABI-L2-LSTC` o GFS skin-T). Módulos y parámetros ya razonados en
-  `ALTURA_COLUMNA_INVESTIGACION.md` §3.5 (~820 LOC, β=0.9 fijo para andesita-dacita chilena).
+- **3b (mejor) — ✅ HECHA:** **Wen & Rose 1994** de 2 canales (11/12 µm) para despejar la emisividad
+  y obtener un Teff corregido antes de mapear a altura (resuelve nube semitransparente sobre fondo
+  cálido). **Tsfc decidido: BT de cielo claro de la propia escena** (= la "Ts" del paper, ya en el
+  marco radiométrico de ABI), con **GFS skin-T** (`surface_temperature` de Open-Meteo) como fallback;
+  **GOES LST `ABI-L2-LSTC` rechazado** (NaN justo bajo la pluma + sobre océano + fetcher nuevo). β=0.9
+  fijo (andesita-dacita). Implementado en `src/process/wen_rose_height.py` con búsqueda en grilla del
+  mínimo residuo (robusta a tangencia en plumas finas). Ver `FASE3B_WENROSE.md`.
 **Datos/deps que faltan:** Tsfc (LST o GFS), tablas microfísicas mínimas.
 **Riesgos:** sigue subestimando plumas opacas gruesas (Calbuco primeras horas); inversiones de T
 crean ambigüedad. Es producto **research/respaldo**, etiquetado "fallback independiente", nunca
@@ -294,9 +304,11 @@ Mucho de esto ya está razonado en docs locales — leerlos antes de codear:
   Cloudflare JS; bajar con navegador real. **Es el paper canónico del retrieval.**
 - Pavolonis et al. (2015) *SECO Part 2: Volcanic ash detection retrievals.* JGR Atmos 120:7842-7870.
   doi:10.1002/2014JD022969 → OA (hybrid CC-BY-NC-ND) en Wiley pdfdirect; mismo bloqueo.
-- Wen & Rose (1994) *Retrieval of sizes and total masses of particles in volcanic clouds...* JGR
-  99(D3):5421-5431. doi:10.1029/93JD03340 → copia GREEN en `digitalcommons.mtu.edu/geo-fp/98`
-  (AWS WAF JS challenge; navegador real). **Base del método Wen-Rose de Fase 3b.**
+- Wen & Rose (1994) *Retrieval of sizes and total masses of particles in volcanic clouds using AVHRR
+  bands 4 and 5.* JGR 99(D3):5421-5431. doi:10.1029/93JD03340 → ✅ **DESCARGADO** (copia GREEN de
+  `digitalcommons.mtu.edu/geo-fp/98`, tras AWS WAF JS challenge resuelto con navegador real):
+  `WenRose_1994_VolcanicCloudParticles.pdf`. **Base del método Wen-Rose de Fase 3b** (Eq. 1-2 = modelo
+  de radiancia de 2 canales; ver `FASE3B_WENROSE.md` §2).
 - Prata (1989) *Infrared radiative transfer calculations for volcanic ash clouds.* GRL 16:1293-1296.
   doi:10.1029/GL016i011p01293 → **paywall puro**, sin OA. (Base teórica del BTD split-window.)
 

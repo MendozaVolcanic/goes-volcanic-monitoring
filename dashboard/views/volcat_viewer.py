@@ -757,18 +757,22 @@ def _acha_plume_cached(volc_name: str, radius_deg: float, bucket: str) -> dict |
 
 
 @st.cache_data(ttl=TTL_VOLCAT, show_spinner=False)
-def _btmatch_cached(volc_name: str, radius_deg: float, bucket: str) -> dict | None:
-    """Wrapper cacheado del 2º método de altura propia (BT-matching, Fase 3a):
-    BT(11µm) del tope de ceniza → perfil GFS T(z). Independiente de ACHA — sirve
-    de cross-check y rescata casos donde la L2 de ACHA no tiene retrieval."""
+def _wenrose_cached(volc_name: str, radius_deg: float, bucket: str) -> dict | None:
+    """Wrapper cacheado del retrieval propio de altura (Wen-Rose, Fase 3b):
+    despeje de emisividad de 2 canales (11/12 µm) → Tc corregido → perfil GFS.
+
+    Devuelve EN UN SOLO resultado el tope **Wen-Rose** (`top_km`, corregido) y el
+    **BT-matching** (`top_bt_matching_km`, cota opaca, Fase 3a) del MISMO scan —
+    así el dashboard muestra los dos sin descargar las bandas dos veces.
+    Independiente de SSEC y de la L2 de NOAA."""
     from datetime import datetime, timezone
     try:
-        from src.process.bt_matching_height import bt_matching_top_height
+        from src.process.wen_rose_height import wen_rose_top_height
     except Exception:
-        logger.exception("bt_matching_height no importable")
+        logger.exception("wen_rose_height no importable")
         return None
-    return bt_matching_top_height(datetime.now(timezone.utc), volc_name,
-                                  radius_deg=radius_deg)
+    return wen_rose_top_height(datetime.now(timezone.utc), volc_name,
+                               radius_deg=radius_deg)
 
 
 def _fig_acha_field(field_km, lat, lon, view_bounds, title: str):
@@ -823,7 +827,9 @@ _SO2_CONTEXT_MIN_PX = 6
 
 def _render_acha_indicative_section(v_obj, radius_deg: float,
                                     key_suffix: str) -> None:
-    """Bloque de la altura propia INDICATIVA (ACHA ∩ ceniza) para UN volcán.
+    """Bloque de la altura propia INDICATIVA para UN volcán: tres métodos sobre
+    los mismos píxeles de ceniza — ACHA NOAA, BT-matching (cota) y Wen-Rose
+    (corrección de emisividad sobre el BT-matching).
 
     Detrás de un botón (baja 3 bandas L1b + el gránulo ACHA, ~varios MB) y
     cacheado 10 min. Etiquetado sin ambigüedad: complementa, no reemplaza, al
@@ -835,24 +841,24 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
         'border-radius:0 6px 6px 0; margin:0.5rem 0; font-size:0.78rem; '
         'line-height:1.5;">'
         '<b style="color:#ffb020;">⬆ Altura del tope · propia (INDICATIVO)</b> '
-        '<span style="color:#aabbc8;">— dos métodos independientes sobre los '
-        'píxeles de <b>ceniza</b> del scan: <b>(1) ACHA NOAA</b> '
-        '(<code>ABI-L2-ACHA2KMF</code>) enmascarado por nuestra detección '
-        'tri-espectral, y <b>(2) BT-matching propio</b> (BT 11 µm → perfil GFS '
-        'T(z), independiente de SSEC y de ACHA, cota inferior). <b>No es '
-        'VOLCAT</b> ni mide gas/SO₂. El VOLCAT/SSEC de arriba sigue siendo el '
-        'número cuantitativo de referencia.</span></div>',
+        '<span style="color:#aabbc8;">— sobre los píxeles de <b>ceniza</b> del '
+        'scan: <b>(1) ACHA NOAA</b> (<code>ABI-L2-ACHA2KMF</code>) enmascarado '
+        'por nuestra detección, <b>(2) BT-matching</b> (BT 11 µm → perfil GFS, '
+        'cota inferior) y <b>(3) Wen-Rose</b> (corrige emisividad con 11/12 µm → '
+        'sube el tope en plumas semitransparentes). (2) y (3) son propios e '
+        'independientes de SSEC/NOAA. <b>No es VOLCAT</b> ni mide gas/SO₂; el '
+        'VOLCAT/SSEC de arriba sigue siendo el número de referencia.</span></div>',
         unsafe_allow_html=True,
     )
 
     flag_key = f"acha_go_{v_obj.name}_{key_suffix}"
-    if st.button("Calcular tope de pluma propio (ACHA + BT-matching)",
+    if st.button("Calcular tope de pluma propio (ACHA + BT-matching + Wen-Rose)",
                  key=f"acha_btn_{v_obj.name}_{key_suffix}"):
         st.session_state[flag_key] = True
     if not st.session_state.get(flag_key):
         st.caption("Producto propio NRT — apretá para bajar las bandas del scan, "
                    "el gránulo ACHA y el perfil GFS, y calcular el tope por los "
-                   "dos métodos. El VOLCAT de arriba sigue siendo la referencia.")
+                   "tres métodos. El VOLCAT de arriba sigue siendo la referencia.")
         return
 
     from datetime import datetime, timezone
@@ -860,42 +866,42 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
         str(datetime.now(timezone.utc).minute // 10)
     acha_radius = min(float(radius_deg), 1.5)   # acotar la ventana de descarga
     with st.spinner("Bajando bandas + ACHA + perfil GFS y calculando el tope "
-                    "(2 métodos)..."):
+                    "(3 métodos)..."):
         acha = _acha_plume_cached(v_obj.name, acha_radius, bucket)
-        btm = _btmatch_cached(v_obj.name, acha_radius, bucket)
+        wr = _wenrose_cached(v_obj.name, acha_radius, bucket)
 
     acha_ok = bool(acha) and acha.get("status") == "ok"
-    btm_ok = bool(btm) and btm.get("status") == "ok"
+    wr_ok = bool(wr) and wr.get("status") == "ok"
     acha_nd = (acha is None) or acha.get("status") == "no_data"
-    btm_nd = (btm is None) or btm.get("status") == "no_data"
+    wr_nd = (wr is None) or wr.get("status") == "no_data"
 
-    if acha_nd and btm_nd:
-        reason = (acha or btm or {}).get("reason", "sin datos accesibles")
+    if acha_nd and wr_nd:
+        reason = (acha or wr or {}).get("reason", "sin datos accesibles")
         st.warning(f"No pude calcular la altura propia: {reason}. "
                    "Puede ser scan ABI atrasado o S3/Open-Meteo intermitente — "
                    "reintentá.")
         return
 
-    # scan/contexto: preferir ACHA (trae el contexto SO2), si no BT-matching.
-    primary = acha if (acha and acha.get("status") in ("ok", "no_plume")) else btm
+    # scan/contexto: preferir ACHA (trae el contexto SO2), si no Wen-Rose.
+    primary = acha if (acha and acha.get("status") in ("ok", "no_plume")) else wr
     scan_dt = (primary or {}).get("scan_dt")
     ts_txt = "—"
     if scan_dt is not None:
         ts_txt = f"{scan_dt.strftime('%Y-%m-%d %H:%M UTC')} ({fmt_chile(scan_dt)} Chile)"
 
-    # ── Sin ceniza por ninguno de los dos métodos ───────────────────────
-    if not acha_ok and not btm_ok:
+    # ── Sin ceniza por ninguno de los métodos ───────────────────────────
+    if not acha_ok and not wr_ok:
         # El contexto SO2 puede venir de cualquiera de los dos resultados (ACHA
-        # falla a no_data sin SO2; entonces lo toma de BT-matching). (review jun)
-        so2_px = int((acha or {}).get("so2_px") or (btm or {}).get("so2_px") or 0)
+        # falla a no_data sin SO2; entonces lo toma de Wen-Rose). (review jun)
+        so2_px = int((acha or {}).get("so2_px") or (wr or {}).get("so2_px") or 0)
         if so2_px >= _SO2_CONTEXT_MIN_PX:
-            so2_min = (acha or {}).get("so2_min") or (btm or {}).get("so2_min")
+            so2_min = (acha or {}).get("so2_min") or (wr or {}).get("so2_min")
             so2_txt = f" (mín BT 8.4−11.2 µm ≈ {so2_min:.1f} K)" if so2_min else ""
             st.info(
                 f"Scan **{ts_txt}**: nuestra detección marcó **pluma de SO₂/gas** "
                 f"(~{so2_px} píxeles{so2_txt}) pero **sin ceniza silicatada "
                 "IR-opaca**. La altura propia **no aplica a plumas de gas**: el "
-                "SO₂ es transparente en 11 µm, así que ACHA/BT-matching darían "
+                "SO₂ es transparente en 11 µm, así que los tres métodos darían "
                 "alturas espurias (por debajo del cráter). Para el SO₂ usá el "
                 "**indicador SO₂** (Modo Guardia / RGB). *(Validado con la pluma "
                 "de Chillán del 27-jun.)*"
@@ -908,7 +914,7 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
             )
         return
 
-    # ── Al menos un método dio tope → cross-validación ──────────────────
+    # ── Al menos un método dio tope → cross-validación 3-vías ───────────
     cols = st.columns(4)
     with cols[0]:
         if acha_ok:
@@ -916,56 +922,75 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
         else:
             kpi_card("—", "ACHA (sin retrieval)")
     with cols[1]:
-        if btm_ok:
-            kpi_card(f"{btm['top_km']:.1f} km", "BT-matching · p95")
-        else:
-            kpi_card("—", "BT-matching")
+        bt_cota = wr.get("top_bt_matching_km") if wr_ok else None
+        kpi_card(f"{bt_cota:.1f} km" if bt_cota is not None else "—",
+                 "BT-matching · cota")
     with cols[2]:
-        mp = acha.get("mask_px") if acha_ok else (btm or {}).get("mask_px", 0)
-        kpi_card(f"{mp:,}", "Píxeles de ceniza")
+        if wr_ok:
+            kpi_card(f"{wr['top_km']:.1f} km", "Wen-Rose · corregido")
+        else:
+            kpi_card("—", "Wen-Rose")
     with cols[3]:
-        lat_min = (primary or {}).get("latency_min")
-        kpi_card(f"~{lat_min:.0f} min" if lat_min is not None else "—", "Latencia")
+        mp = wr.get("mask_px") if wr_ok else (acha or {}).get("mask_px", 0)
+        kpi_card(f"{mp:,}", "Píxeles de ceniza")
 
-    # Acuerdo entre métodos (cross-check de confianza).
     def _capped_txt(r):
         nc = (r or {}).get("n_capped") or 0
         if (r or {}).get("all_capped"):
             return " · ⚠ todos los píxeles en la tropopausa (cirros/overshooting)"
         return (f" · {nc} px en la tropopausa excluidos del tope" if nc else "")
 
-    if acha_ok and btm_ok:
-        d = btm["top_km"] - acha["top_km"]
-        agree = ("✓ concuerdan (|Δ| ≤ 1.5 km)" if abs(d) <= 1.5
-                 else "⚠ discrepan > 1.5 km — revisar")
+    # Corrección Wen-Rose sobre el BT-matching (la mejora de Fase 3b).
+    if wr_ok:
+        d = wr.get("delta_km")
+        n_corr = wr.get("n_corrected") or 0
+        ts_k = wr.get("ts_k")
+        ts_src = wr.get("ts_source", "—")
+        lat_min = wr.get("latency_min")
+        ts_part = (f"Ts fondo ≈ {ts_k:.0f} K [{ts_src}]" if ts_k is not None
+                   else "Ts no disponible")
+        lat_part = f" · latencia ~{lat_min:.0f} min" if lat_min is not None else ""
+        if n_corr > 0 and d is not None:
+            st.caption(
+                f"**Wen-Rose corrigió +{d:.1f} km** sobre el BT-matching en "
+                f"{n_corr:,}/{wr.get('mask_px', 0):,} píxeles semitransparentes "
+                f"(despeje de emisividad 11/12 µm, β={wr.get('beta')}). El "
+                f"BT-matching es cota inferior; Wen-Rose acerca al tope real. "
+                f"{ts_part}{lat_part}.{_capped_txt(wr)}"
+            )
+        else:
+            st.caption(
+                f"Todos los píxeles resultaron **opacos** → Wen-Rose = BT-matching "
+                f"(sin corrección de emisividad que aplicar). Tope p95 "
+                f"**{wr['top_km']:.1f} km** (máx {wr.get('top_max_km', 0):.1f} km). "
+                f"{ts_part}{lat_part}.{_capped_txt(wr)}"
+            )
+
+    # Cross-check con ACHA (OE independiente de NOAA).
+    if acha_ok and wr_ok:
+        da = wr["top_km"] - acha["top_km"]
+        agree = ("✓ concuerdan (|Δ| ≤ 2.5 km)" if abs(da) <= 2.5
+                 else "⚠ discrepan > 2.5 km — revisar")
         st.caption(
-            f"|Δ(BT-matching − ACHA)| = **{abs(d):.1f} km** ({d:+.1f}) · {agree}. "
-            "Ambos métodos tienden a subestimar (BT-matching y la OE de ACHA son "
-            "cotas inferiores en plumas semi-transparentes), así que el signo de "
-            f"Δ no está garantizado.{_capped_txt(btm)}"
+            f"Cross-check: Δ(Wen-Rose − ACHA NOAA) = **{da:+.1f} km** · {agree}. "
+            "ACHA es un retrieval de altura de nube genérico (OE de NOAA) — "
+            "coincidencia entre dos métodos independientes sube la confianza."
         )
-    elif btm_ok and not acha_ok:
-        st.caption(
-            f"ACHA no tuvo retrieval válido sobre los píxeles de ceniza; "
-            f"el **BT-matching propio** (independiente de la L2 de NOAA) sí: "
-            f"tope p95 **{btm['top_km']:.1f} km** (máx {btm['top_max_km']:.1f} km). "
-            f"Típicamente cota inferior.{_capped_txt(btm)}"
-        )
-    elif acha_ok and not btm_ok:
+    elif acha_ok and not wr_ok:
         low_conf = acha["mask_px"] < 3
         st.caption(
-            f"Pico ACHA: {acha['top_max_km']:.1f} km (1 px, referencia)."
+            f"Solo ACHA tuvo retrieval (pico {acha['top_max_km']:.1f} km)."
             + ("  ⚠ Detección muy chica (&lt; 3 px): confianza baja."
                if low_conf else "")
         )
 
-    # Mapa del campo: preferir el que tenga ceniza (ACHA, si no BT-matching).
-    fld = acha if acha_ok else btm
+    # Mapa del campo: preferir Wen-Rose (corregido), si no ACHA.
+    fld = wr if wr_ok else acha
+    method_lbl = "Wen-Rose ∩ ceniza" if wr_ok else "ACHA ∩ ceniza"
     view_bounds = {
         "lat_min": v_obj.lat - acha_radius, "lat_max": v_obj.lat + acha_radius,
         "lon_min": v_obj.lon - acha_radius, "lon_max": v_obj.lon + acha_radius,
     }
-    method_lbl = "ACHA ∩ ceniza" if acha_ok else "BT-matching ∩ ceniza"
     st.plotly_chart(
         _fig_acha_field(fld["field_km"], fld["lat"], fld["lon"], view_bounds,
                         f"Tope de pluma ({method_lbl}) · INDICATIVO · {ts_txt}"),
@@ -979,17 +1004,22 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
     )
     with st.expander("Cómo se calculan y sus límites", expanded=False):
         st.markdown(
-            "**Dos métodos independientes sobre los mismos píxeles de ceniza** "
+            "**Tres métodos sobre los mismos píxeles de ceniza** "
             "(`detect_ash_enhanced`: BTD split-window 11–12 µm + tri-espectral "
             "con 8.4 µm, del MISMO scan ABI):\n\n"
             "1. **ACHA NOAA** (`ABI-L2-ACHA2KMF`, var `HT`): retrieval de altura "
             "de tope de nube de NOAA (Heidinger OE), 2 km, filtrado por DQF "
             "(*good*+*marginal*+*opaque*). Latencia ~13 min.\n"
-            "2. **BT-matching propio** (Fase 3a): la BT(11 µm) del tope opaco ≈ "
+            "2. **BT-matching propio** (Fase 3a): la BT(11 µm) del tope **opaco** ≈ "
             "su temperatura efectiva; se la busca en el **perfil GFS T(z)** "
-            "(Open-Meteo) y se interpola a altitud. Independiente de SSEC y de "
-            "la L2 de NOAA → rescata casos donde ACHA no tiene retrieval. Es "
-            "**cota inferior**: subestima plumas semi-transparentes.\n\n"
+            "(Open-Meteo) y se interpola a altitud. **Cota inferior** — subestima "
+            "plumas semi-transparentes.\n"
+            "3. **Wen-Rose propio** (Fase 3b, *Wen & Rose 1994*): usa la "
+            "diferencia espectral 11 vs 12 µm para **despejar la emisividad** y "
+            "obtener una temperatura de tope corregida (más fría) antes de mapear "
+            "a altitud. **Sube** el tope respecto del BT-matching en "
+            "semi-transparentes (β=0.9 silicato; Ts de cielo claro de la escena). "
+            "Misma física que VOLCAT, sin optimal estimation ni RTM.\n\n"
             "- **Tope reportado**: percentil 95 (robusto) + pico de referencia.\n"
             "- **No miden gas**: una pluma de SO₂/gas (transparente en 11 µm) NO "
             "da altura válida — se reporta aparte.\n"

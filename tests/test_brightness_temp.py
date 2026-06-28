@@ -13,7 +13,7 @@ import xarray as xr
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from src.process.brightness_temp import rad_to_bt
+from src.process.brightness_temp import planck_rad_from_bt, rad_to_bt
 
 
 # Coeficientes Planck reales de GOES-16 ABI Band 14 (11.2 um) — referencia publica
@@ -81,6 +81,31 @@ def test_planck_monotonic():
     bts_back = rad_to_bt(ds).values.flatten()
 
     assert np.all(np.diff(bts_back) > 0), "BT recuperada no monotonica"
+
+
+def test_planck_rad_from_bt_is_inverse_of_rad_to_bt():
+    """planck_rad_from_bt (forward) ∘ rad_to_bt (inverse) = identidad.
+
+    Pinea que la pieza forward que usa Wen-Rose (Fase 3b) es exactamente la
+    inversa de rad_to_bt con los mismos coeficientes — si divergen, el retrieval
+    de altura corregido quedaría sesgado silenciosamente.
+    """
+    bt_input = np.array([[205.0, 235.0, 265.0, 295.0]])
+    rad = planck_rad_from_bt(bt_input, FK1_B14, FK2_B14, BC1_B14, BC2_B14)
+    # coincide con el ground-truth local del test (misma fórmula)
+    np.testing.assert_allclose(
+        rad, planck_forward(bt_input, FK1_B14, FK2_B14, BC1_B14, BC2_B14),
+        rtol=1e-12)
+    # y rad_to_bt la revierte exactamente
+    bt_back = rad_to_bt(_make_synthetic_ds(rad)).values
+    np.testing.assert_allclose(bt_back, bt_input, rtol=1e-6, atol=1e-4)
+
+
+def test_planck_rad_from_bt_scalar_and_monotonic():
+    """Escalar in → escalar-like out, y mayor BT → mayor radiancia."""
+    r_cold = float(planck_rad_from_bt(220.0, FK1_B14, FK2_B14, BC1_B14, BC2_B14))
+    r_warm = float(planck_rad_from_bt(290.0, FK1_B14, FK2_B14, BC1_B14, BC2_B14))
+    assert r_warm > r_cold > 0
 
 
 def test_bt_attrs_preserved():

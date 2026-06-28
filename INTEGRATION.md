@@ -58,7 +58,7 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
   *temporal* que MODIS/VIIRS no dan; COMPLEMENTA, no sustituye, la plataforma
   VRP MODIS/VIIRS (que gana en magnitud/sensibilidad)
 - **VOLCAT** — Ash Height, Ash Loading, Ash Probability, Ash Reff (Pavolonis 2013)
-- **Altura de tope propia (INDICATIVO) — 2 métodos** sobre los píxeles de ceniza:
+- **Altura de tope propia (INDICATIVO) — 3 métodos** sobre los píxeles de ceniza:
   - **ACHA** (Fase 0): `HT` del producto NOAA `ABI-L2-ACHA2KMF` (Cloud Top
     Height 2 km, Heidinger OE) enmascarado por nuestra detección tri-espectral.
     ~13 min de latencia (vs 30-50 del VOLCAT SSEC).
@@ -66,7 +66,12 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
     (Open-Meteo) → altitud. **Independiente de SSEC y de la L2 de NOAA**; cota
     inferior. Rescata casos donde ACHA no tiene retrieval (validado: Láscar 27-jun
     6.2 km/15 px con ACHA en no_plume; Popocatépetl BT 9.2 vs ACHA 10.3 km).
-  Ambos cruzan resultados en el dashboard. **No miden gas/SO₂** (transparente en
+  - **Wen-Rose** (Fase 3b, *Wen & Rose 1994*): corrige emisividad con la diferencia
+    espectral 11/12 µm → temperatura de tope corregida → **sube** la altura sobre el
+    BT-matching en plumas semitransparentes. Ts = BT de cielo claro de la escena
+    (fallback GFS skin-T). Independiente de SSEC/NOAA. Validado: Láscar 27-jun
+    BT-matching 6.8 → Wen-Rose 10.4 km (Δ+3.6, 8/8 px corregidos).
+  Los tres cruzan resultados en el dashboard. **No miden gas/SO₂** (transparente en
   11 µm → daría altura espuria; validado vs la pluma SO₂ de Chillán 27-jun). **No
   reemplazan** al VOLCAT cuantitativo. Fases en `docs/own_volcat/`.
 - **VAA** — Volcanic Ash Advisories como GeoJSON
@@ -113,7 +118,8 @@ streamlit run dashboard/app.py
 | Altura de tope ACHA (INDICATIVO) | dict {top_km p95, top_max_km, field_km, lat/lon, latency} | `src/process/acha_plume_height.py::plume_top_height(dt, volcano, radius)` | 10 min |
 | HT ACHA recortada a bbox | dict {height_m, dqf, lat/lon, window, scan_dt} | `src/fetch/goes_acha.py::fetch_acha_height_at(dt, bounds)` | 10 min |
 | Altura de tope BT-matching (INDICATIVO, propio) | dict {top_km p95, top_max_km, field_km, tropopause_km, lat/lon} | `src/process/bt_matching_height.py::bt_matching_top_height(dt, volcano, radius)` | 10 min |
-| Perfil GFS T(z) + tropopausa | dict {levels[{p_hPa,z_m,T_K}], tropopause} | `src/fetch/gfs_profile.py::fetch_gfs_profile(lat, lon, dt)` | 6 h (GFS) |
+| Altura de tope Wen-Rose (INDICATIVO, propio) | dict {top_km, top_bt_matching_km, delta_km, n_corrected, ts_k/ts_source, field_km, field_bt_km} | `src/process/wen_rose_height.py::wen_rose_top_height(dt, volcano, radius)` | 10 min |
+| Perfil GFS T(z) + tropopausa + skin-T | dict {levels[{p_hPa,z_m,T_K}], tropopause, skin_temp_K} | `src/fetch/gfs_profile.py::fetch_gfs_profile(lat, lon, dt)` | 6 h (GFS) |
 | Animación MP4 | binary MP4 H.264 | `dashboard/views/rammb_viewer.py::_build_mp4(frames)` | on-demand |
 | Animación GIF | binary GIF | `dashboard/views/rammb_viewer.py::_build_gif(frames)` | on-demand |
 | Frame estático con georef | GeoTIFF EPSG:4326 | `src/export/geotiff.py::build_geotiff_bytes(img, bounds)` | on-demand |

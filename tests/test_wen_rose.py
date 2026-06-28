@@ -179,6 +179,22 @@ def test_clear_sky_bt_too_few_clear_returns_none():
     assert clear_sky_bt(bt, mask) is None
 
 
+def test_clear_sky_heterogeneity():
+    """Spread p90−p10 del fondo: bajo si es uniforme, alto si hay mar+tierra."""
+    from src.process.wen_rose_height import clear_sky_heterogeneity
+
+    nomask = np.zeros((20, 20), dtype=bool)
+    uniform = np.full((20, 20), 290.0)
+    uniform[0, 0] = 289.0   # apenas variación
+    assert clear_sky_heterogeneity(uniform, nomask) < 5.0
+    # mitad mar (275 K) + mitad tierra (295 K) → spread grande
+    mixed = np.full((20, 20), 295.0)
+    mixed[:10, :] = 275.0
+    assert clear_sky_heterogeneity(mixed, nomask) > 15.0
+    # sin claros → None
+    assert clear_sky_heterogeneity(uniform, np.ones((20, 20), dtype=bool)) is None
+
+
 # ── Guard de mal-condicionamiento (sin red) ─────────────────────────────────
 
 def test_underconstrained_thin_plume_flagged():

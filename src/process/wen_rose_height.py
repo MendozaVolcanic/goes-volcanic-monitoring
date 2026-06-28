@@ -46,6 +46,7 @@ BT11_BAND = 14             # 11.2 µm (ventana, canal "4" de Wen-Rose)
 BT12_BAND = 15             # 12.3 µm (canal "5" de Wen-Rose)
 CO2_BAND = 16              # 13.3 µm (CO₂) — chequeo INDEPENDIENTE de semi-transp.
 CO2_SEMITRANSP_MIN = 0.5   # BTD(11−13.3) ≥ esto sobre la ceniza ⇒ semitransparente
+HETERO_WARN_K = 25.0       # spread (p90−p10) de cielo claro ≥ esto ⇒ fondo heterogéneo
 
 BETA_SILICATE = 0.9        # razón de prof. óptica 12/11 — andesita-dacita chilena
 BETA_RANGE = (0.85, 0.95)  # rango de β del silicato → banda de incertidumbre del tope
@@ -84,22 +85,53 @@ def wen_rose_confidence(mask_px: int, band_width_km, ts_is_clear_sky: bool) -> s
 # ── Solver puro (sin red) ───────────────────────────────────────────────────
 
 def clear_sky_bt(bt11_window, ash_mask, percentile: float = CLEAR_SKY_PCTL,
-                 min_clear: int = MIN_CLEAR_PX) -> Optional[float]:
+                 min_clear: int = MIN_CLEAR_PX, ring_px: int = 6) -> Optional[float]:
     """BT de **cielo claro** de la escena = percentil cálido de los píxeles
-    finitos **no-ceniza** de la ventana en BT(11 µm).
+    finitos **no-ceniza** en BT(11 µm).
 
     Es la "Ts" del modelo de Wen-Rose: la BT que el satélite ve sobre el suelo,
     ya en el marco radiométrico de ABI (atmósfera incluida). El percentil alto
-    (no el máximo) descarta píxeles calientes espurios; excluir la máscara de
-    ceniza evita contaminar con la propia pluma fría. Devuelve None si hay menos
-    de ``min_clear`` píxeles claros (pluma llena el encuadre → usar fallback GFS).
-    Función PURA.
+    (no el máximo) descarta píxeles calientes espurios; excluir la ceniza evita
+    contaminar con la propia pluma fría.
+
+    **#3 Ts local** (mejora 2026-06-28): prioriza el **anillo de píxeles claros
+    alrededor de la pluma** (dilatación de la máscara, ``ring_px``) en vez del
+    percentil de TODA la ventana — el entorno inmediato representa mejor el fondo
+    bajo la pluma que terrenos lejanos (clave en volcanes costeros / con gradiente
+    de relieve, donde un Ts global mezcla mar y tierra). Cae al percentil global
+    si el anillo no tiene suficientes píxeles. Devuelve None si tampoco el global
+    alcanza ``min_clear`` (pluma llena el encuadre → fallback GFS). Función PURA.
     """
     bt = np.asarray(bt11_window, dtype="float64")
-    clear = np.isfinite(bt) & ~np.asarray(ash_mask, dtype=bool)
+    ash = np.asarray(ash_mask, dtype=bool)
+    finite = np.isfinite(bt)
+    # Anillo local alrededor de la pluma (si hay ceniza y scipy disponible).
+    if ash.any() and ring_px > 0:
+        try:
+            from scipy.ndimage import binary_dilation
+            ring = binary_dilation(ash, iterations=ring_px) & ~ash & finite
+            if int(ring.sum()) >= min_clear:
+                return float(np.percentile(bt[ring], percentile))
+        except Exception:
+            pass
+    clear = finite & ~ash
     if int(clear.sum()) < min_clear:
         return None
     return float(np.percentile(bt[clear], percentile))
+
+
+def clear_sky_heterogeneity(bt11_window, ash_mask) -> Optional[float]:
+    """Spread (p90−p10, K) de la BT de cielo claro de la ventana — indicador de
+    **heterogeneidad del fondo**. Alto ⇒ terreno mixto (costa: mar+tierra, o
+    gradiente de relieve fuerte) ⇒ un Ts escalar es poco confiable y la
+    corrección Wen-Rose puede sesgarse. Devuelve None si no hay claros. PURA.
+    """
+    bt = np.asarray(bt11_window, dtype="float64")
+    clear = np.isfinite(bt) & ~np.asarray(ash_mask, dtype=bool)
+    if int(clear.sum()) < 10:
+        return None
+    vals = bt[clear]
+    return float(np.percentile(vals, 90) - np.percentile(vals, 10))
 
 
 def co2_semitransparency(bt11, bt133, ash_mask) -> Optional[float]:
@@ -412,6 +444,7 @@ def wen_rose_top_height(
                 "so2_px": so2_px, "so2_min": so2_min, "source": source}
 
     n_clear = int((np.isfinite(bts[14]) & ~mask).sum())
+    bg_spread = clear_sky_heterogeneity(bts[14], mask)   # #3 heterogeneidad del fondo
     ts_k = clear_sky_bt(bts[14], mask)
     ts_source = "cielo claro (escena)"
     if ts_k is None:
@@ -433,6 +466,7 @@ def wen_rose_top_height(
         "ts_k": (float(ts_k) if ts_k is not None else None), "ts_source": ts_source,
         "profile_time": profile.get("valid_time"),
         "so2_px": so2_px, "so2_min": so2_min, "co2_semitransp_btd": co2_btd,
+        "bg_spread_k": bg_spread,
     }
 
     # Si no hay Ts utilizable, Wen-Rose no puede correr → degradar a BT-matching
@@ -517,6 +551,9 @@ def wen_rose_top_height(
         flags.append(f"Ts de fallback ({ts_source}): fondo cálido no observado")
     elif n_clear < 4 * MIN_CLEAR_PX:
         flags.append(f"Ts con pocos píxeles claros ({n_clear}): fondo poco robusto")
+    if bg_spread is not None and bg_spread >= HETERO_WARN_K:
+        flags.append(f"fondo heterogéneo (spread {bg_spread:.0f} K: costa/relieve): "
+                     "Ts poco confiable, la corrección puede sesgarse")
     # #4: el CO₂ (13.3µm) es un árbitro INDEPENDIENTE. Si dice que la pluma es
     # opaca (BTD 11−13.3 chico) pero Wen-Rose igual corrigió, la corrección es
     # sospechosa de ser ruido (no semi-transparencia real).

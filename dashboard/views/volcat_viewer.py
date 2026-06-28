@@ -732,6 +732,192 @@ def _parse_volcat_dt(s: str | None) -> str:
     return f"{dt.strftime('%Y-%m-%d %H:%M UTC')} ({fmt_chile(dt)} Chile)"
 
 
+# ── Altura propia INDICATIVA: ACHA NOAA (ABI-L2-ACHA2KMF) ∩ máscara de ceniza ──
+# Complementa al VOLCAT (que sigue siendo el primario cuantitativo) con MENOR
+# latencia (~13 min vs 30-50) y de forma independiente del host SSEC. NO es el
+# producto VAA: ACHA es altura de nube genérica, la máscara de ceniza la pone
+# nuestra detección tri-espectral. Ver docs/own_volcat/FASE0_ARRANQUE.md.
+
+
+@st.cache_data(ttl=TTL_VOLCAT, show_spinner=False)
+def _acha_plume_cached(volc_name: str, radius_deg: float, bucket: str) -> dict | None:
+    """Wrapper cacheado de plume_top_height. `bucket` (cuño de 10 min) invalida
+    el cache cuando llega un scan nuevo. Lazy import por el gotcha de hot-reload.
+
+    El dict resultante trae numpy arrays (field_km/lat/lon) — picklables, ok
+    para st.cache_data. Devuelve None si el módulo no carga (deploy degradado)."""
+    from datetime import datetime, timezone
+    try:
+        from src.process.acha_plume_height import plume_top_height
+    except Exception:
+        logger.exception("acha_plume_height no importable")
+        return None
+    return plume_top_height(datetime.now(timezone.utc), volc_name,
+                            radius_deg=radius_deg)
+
+
+def _fig_acha_field(field_km, lat, lon, view_bounds, title: str):
+    """Campo de altura del tope (km) sobre los píxeles de ceniza, georef +
+    volcanes monitoreados + frontera. Heatmap plotly: las celdas sin ceniza
+    quedan transparentes (NaN), así se ve SOLO la pluma coloreada.
+
+    La grilla ACHA es geos (curva), pero sobre un encuadre de ±1° la curvatura
+    es sub-pixel → usamos los ejes 1-D del centro de la ventana (aprox. Plate
+    Carrée). Suficiente para un producto INDICATIVO. (Fase 0)
+    """
+    h, w = field_km.shape
+    # Defensivo: si _plume_top_stats recortó field_km (guard de shapes), lat/lon
+    # conservan el shape original de la ventana ACHA → alinearlos a field_km
+    # antes de derivar los ejes, o el Heatmap quedaría desfasado. (review jun 2026)
+    lat = lat[:h, :w]
+    lon = lon[:h, :w]
+    lat_1d = lat[:, w // 2]
+    lon_1d = lon[h // 2, :]
+    finite = field_km[np.isfinite(field_km)]
+    vmax = float(finite.max()) if finite.size else 12.0
+    fig = go.Figure()
+    fig.add_trace(go.Heatmap(
+        z=field_km, x=lon_1d, y=lat_1d,
+        colorscale="Turbo", zmin=0.0, zmax=max(vmax, 4.0),
+        hoverongaps=False,
+        colorbar=dict(title=dict(text="km<br>AMSL", side="right"),
+                      thickness=14, len=0.9),
+        hovertemplate="lat %{y:.2f}°, lon %{x:.2f}°<br>"
+                      "tope %{z:.1f} km<extra></extra>",
+    ))
+    _overlay_volcanoes_border(fig, view_bounds, marker_size=11)
+    cos_lat = max(0.1, float(np.cos(np.radians(
+        (view_bounds["lat_min"] + view_bounds["lat_max"]) / 2))))
+    fig.update_xaxes(range=[view_bounds["lon_min"], view_bounds["lon_max"]],
+                     showgrid=False, visible=False, constrain="domain")
+    fig.update_yaxes(range=[view_bounds["lat_min"], view_bounds["lat_max"]],
+                     showgrid=False, visible=False, scaleanchor="x",
+                     scaleratio=1.0 / cos_lat, constrain="domain")
+    fig.update_layout(
+        title=dict(text=title, font=dict(size=13, color="#ccc")),
+        height=560, margin=dict(l=0, r=0, t=34, b=0),
+        paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(8,11,16,1)",
+    )
+    return fig
+
+
+def _render_acha_indicative_section(v_obj, radius_deg: float,
+                                    key_suffix: str) -> None:
+    """Bloque de la altura propia INDICATIVA (ACHA ∩ ceniza) para UN volcán.
+
+    Detrás de un botón (baja 3 bandas L1b + el gránulo ACHA, ~varios MB) y
+    cacheado 10 min. Etiquetado sin ambigüedad: complementa, no reemplaza, al
+    VOLCAT cuantitativo de arriba.
+    """
+    st.markdown(
+        '<div style="background:rgba(255,176,32,0.08); '
+        'border-left:3px solid #ffb020; padding:0.45rem 0.75rem; '
+        'border-radius:0 6px 6px 0; margin:0.5rem 0; font-size:0.78rem; '
+        'line-height:1.5;">'
+        '<b style="color:#ffb020;">⬆ Altura del tope · propia (INDICATIVO)</b> '
+        '<span style="color:#aabbc8;">— ACHA NOAA (<code>ABI-L2-ACHA2KMF</code>) '
+        'enmascarado por nuestra detección de ceniza tri-espectral. '
+        '<b>No es VOLCAT</b>: ACHA es altura de nube genérica, no afinada a la '
+        'microfísica de ceniza → sobre plumas semi-transparentes o con nube '
+        'meteo debajo subestima. Su valor es la <b>latencia menor</b> (~13 min '
+        'vs 30–50) e independencia del host SSEC.</span></div>',
+        unsafe_allow_html=True,
+    )
+
+    flag_key = f"acha_go_{v_obj.name}_{key_suffix}"
+    if st.button("Calcular tope de pluma propio (ACHA · ceniza)",
+                 key=f"acha_btn_{v_obj.name}_{key_suffix}"):
+        st.session_state[flag_key] = True
+    if not st.session_state.get(flag_key):
+        st.caption("Producto propio NRT — apretá para bajar ACHA + las 3 bandas "
+                   "de ceniza del scan y calcular el tope. El VOLCAT de arriba "
+                   "sigue siendo el número cuantitativo de referencia.")
+        return
+
+    from datetime import datetime, timezone
+    bucket = datetime.now(timezone.utc).strftime("%Y%m%d%H") + \
+        str(datetime.now(timezone.utc).minute // 10)
+    acha_radius = min(float(radius_deg), 1.5)   # acotar la ventana de descarga
+    with st.spinner("Bajando ACHA + bandas de ceniza y calculando el tope..."):
+        res = _acha_plume_cached(v_obj.name, acha_radius, bucket)
+
+    if res is None or res.get("status") == "no_data":
+        reason = (res or {}).get("reason", "sin datos accesibles")
+        st.warning(f"No pude calcular la altura propia: {reason}. "
+                   "Puede ser scan ABI atrasado o S3 NOAA intermitente — reintentá.")
+        return
+
+    scan_dt = res.get("scan_dt")
+    ts_txt = "—"
+    if scan_dt is not None:
+        ts_txt = f"{scan_dt.strftime('%Y-%m-%d %H:%M UTC')} ({fmt_chile(scan_dt)} Chile)"
+    lat_txt = (f"~{res['latency_min']:.0f} min"
+               if res.get("latency_min") is not None else "—")
+
+    if res.get("status") == "no_plume":
+        st.info(
+            f"ACHA disponible para el scan **{ts_txt}**, pero NUESTRA detección "
+            f"de ceniza no marcó píxeles en el encuadre (±{acha_radius:g}°) → sin "
+            "tope de pluma que reportar. Sin pluma activa esto es lo esperado; "
+            "el campo ACHA de nube genérica sí existe pero no lo mostramos para "
+            "no confundirlo con ceniza."
+        )
+        return
+
+    # ── status ok: hay pluma ───────────────────────────────────────────
+    # El TOPE titular es el p95 (robusto). El "pico" (máximo de 1 píxel) NO va
+    # como KPI co-igual: ACHA sesga alto en bordes de pluma delgada y la máscara
+    # admite cirros, así que el máximo crudo suele sobre-estimar el tope. Va como
+    # referencia chica abajo, con caveat explícito. (review jun 2026)
+    k1, k2, k3 = st.columns(3)
+    with k1:
+        kpi_card(f"{res['top_km']:.1f} km", f"Tope p{int(res['percentile'])} (AMSL)")
+    with k2:
+        kpi_card(f"{res['mask_px']:,}", "Píxeles de ceniza")
+    with k3:
+        kpi_card(lat_txt, "Latencia ACHA")
+    low_conf = res["mask_px"] < 3
+    st.caption(
+        f"Pico puntual: **{res['top_max_km']:.1f} km** (píxel más alto — "
+        f"referencia, *no usar como tope*; el tope robusto es el "
+        f"p{int(res['percentile'])})."
+        + ("  ⚠ Detección muy chica (&lt; 3 píxeles): confianza baja, tratar "
+           "como traza." if low_conf else "")
+    )
+
+    view_bounds = {
+        "lat_min": v_obj.lat - acha_radius, "lat_max": v_obj.lat + acha_radius,
+        "lon_min": v_obj.lon - acha_radius, "lon_max": v_obj.lon + acha_radius,
+    }
+    st.plotly_chart(
+        _fig_acha_field(res["field_km"], res["lat"], res["lon"], view_bounds,
+                        f"Tope de pluma (ACHA ∩ ceniza) · INDICATIVO · {ts_txt}"),
+        width="stretch",
+        config={"displayModeBar": False, "responsive": True},
+        key=f"acha_field_{v_obj.name}_{key_suffix}",
+    )
+    st.caption(
+        f"▲ cyan = volcanes monitoreados (RNVV) · color = altura del tope (km "
+        f"AMSL) SOLO donde hay firma de ceniza · **fuente**: {res['source']}."
+    )
+    with st.expander("Cómo se calcula y sus límites (Fase 0)", expanded=False):
+        st.markdown(
+            "- **Altura**: variable `HT` del producto NOAA `ABI-L2-ACHA2KMF` "
+            "(ACHA, Heidinger optimal estimation), 2 km nativos, filtrada por "
+            "DQF (se conservan *good* + *marginal* + *opaque*; este último es "
+            "fiable para plumas densas con emisividad ≈ 1).\n"
+            "- **Máscara de ceniza**: BTD split-window 11–12 µm + test "
+            "tri-espectral con 8.4 µm (`detect_ash_enhanced`), del MISMO scan "
+            "ABI (grilla 2 km idéntica → intersección pixel a pixel).\n"
+            "- **Tope reportado**: percentil 95 de `HT` sobre los píxeles de "
+            "ceniza (robusto a un par de outliers) + el máximo.\n"
+            "- **Límite**: ACHA es altura de nube genérica. Si la pluma es "
+            "semi-transparente al IR o hay nube meteo debajo, subestima. Para "
+            "el número cuantitativo validado, el primario sigue siendo el "
+            "**VOLCAT/SSEC** de arriba (Pavolonis 2013)."
+        )
+
+
 def _render_height_section(key_suffix: str = "tab") -> None:
     """Render del bloque Altura/Loading/Probability/Reff.
 
@@ -947,6 +1133,13 @@ def _render_height_section(key_suffix: str = "tab") -> None:
                 st.image(leg_bytes, width='stretch')
             else:
                 st.caption("(sin leyenda)")
+
+    # ── Altura propia INDICATIVA (ACHA NOAA ∩ ceniza). Solo en modo Volcán
+    # (es el tope de UN volcán, necesita lat/lon puntual). Va DEBAJO del VOLCAT
+    # primario, claramente diferenciada. ──
+    if modo_sel == "Volcán":
+        st.markdown("---")
+        _render_acha_indicative_section(v_obj, float(zoom_pad), key_suffix)
 
     # Panel interpretativo: usa el campo "long" de cada producto.
     with st.expander(

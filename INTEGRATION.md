@@ -1,8 +1,8 @@
 ---
 slug: goes
 title: GOES Volcanic Monitoring
-last_updated: 2026-06-10
-last_commit: a825a0c
+last_updated: 2026-06-28
+last_commit: 6ffd031
 status: producción
 tier: 1
 deploy_url: "https://goesvolcanic.streamlit.app"
@@ -58,6 +58,12 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
   *temporal* que MODIS/VIIRS no dan; COMPLEMENTA, no sustituye, la plataforma
   VRP MODIS/VIIRS (que gana en magnitud/sensibilidad)
 - **VOLCAT** — Ash Height, Ash Loading, Ash Probability, Ash Reff (Pavolonis 2013)
+- **Altura de tope propia (INDICATIVO)** — `HT` del producto NOAA
+  `ABI-L2-ACHA2KMF` (Cloud Top Height 2 km, algoritmo ACHA/Heidinger)
+  enmascarado por nuestra detección tri-espectral de ceniza. Tope p95/max sobre
+  los píxeles de ceniza, ~13 min de latencia (vs 30-50 del VOLCAT SSEC), cero
+  deps nuevas. **No reemplaza** al VOLCAT cuantitativo; lo complementa con menor
+  latencia e independencia del host SSEC. Fase 0 de `docs/own_volcat/`.
 - **VAA** — Volcanic Ash Advisories como GeoJSON
 - **Series de tiempo** — % píxeles con firma de ceniza/SO2 por volcán, ventanas 1-24h
 
@@ -99,6 +105,8 @@ streamlit run dashboard/app.py
 | Hot spots FDCF | List[HotSpot] con (lat, lon, FRP_MW, T_K, area_km², confidence) | `src/fetch/goes_fdcf.py::fetch_latest_hotspots(bounds)` | 10 min |
 | Series de tiempo por volcán | List[TimeSeriesPoint] / CSV | `src/fetch/timeseries.py::fetch_volcano_timeseries(lat, lon, product)` | on-demand |
 | Altura de pluma VOLCAT | PNG con colorbar (no NetCDF) | `src/fetch/volcat_api.py::volcat_latest(sector, ...)` | 10 min |
+| Altura de tope ACHA (INDICATIVO) | dict {top_km p95, top_max_km, field_km, lat/lon, latency} | `src/process/acha_plume_height.py::plume_top_height(dt, volcano, radius)` | 10 min |
+| HT ACHA recortada a bbox | dict {height_m, dqf, lat/lon, window, scan_dt} | `src/fetch/goes_acha.py::fetch_acha_height_at(dt, bounds)` | 10 min |
 | Animación MP4 | binary MP4 H.264 | `dashboard/views/rammb_viewer.py::_build_mp4(frames)` | on-demand |
 | Animación GIF | binary GIF | `dashboard/views/rammb_viewer.py::_build_gif(frames)` | on-demand |
 | Frame estático con georef | GeoTIFF EPSG:4326 | `src/export/geotiff.py::build_geotiff_bytes(img, bounds)` | on-demand |
@@ -109,6 +117,7 @@ streamlit run dashboard/app.py
 |---|---|---|---|
 | Tiles GOES Ash RGB | PNG | RAMMB/CIRA Slider | "RAMMB no disponible" en banner |
 | FDCF L2 NetCDF | xarray.Dataset | `noaa-goes19/ABI-L2-FDCF/...` (S3) | Hot spots no se muestran |
+| ACHA2KMF L2 NetCDF (Cloud Top Height) | xarray.Dataset (var `HT`, `DQF`) | `noaa-goes19/ABI-L2-ACHA2KMF/...` (S3) | Altura propia no se calcula (VOLCAT sigue) |
 | Vientos GFS | JSON | Open-Meteo `api.open-meteo.com/v1/forecast` | Vectores de viento ocultos |
 | VOLCAT productos | PNG + JSON metadata | `volcano.ssec.wisc.edu/imagery/get_list/json/...` | Tab "sin datos disponibles" |
 | Volcanic Ash Advisories | GeoJSON | `realearth.ssec.wisc.edu/api/shapes` | Tab VAA vacía |

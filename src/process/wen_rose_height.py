@@ -426,7 +426,7 @@ def wen_rose_top_height(
         band_scans[b] = _scan_start(pb.name)
         try:
             with open_band(pb) as dsb:
-                if b == BT12_BAND:
+                if b in (BT85_BAND, BT12_BAND):   # C11(8.5) y C15(12) → β-ratios
                     coefs[b] = _coefs(dsb)
                 bts[b] = rad_to_bt(dsb.isel(y=slice(y0, y1),
                                             x=slice(x0, x1))).load().values
@@ -510,6 +510,29 @@ def wen_rose_top_height(
         "so2_px": so2_px, "so2_min": so2_min, "co2_semitransp_btd": co2_btd,
         "bg_spread_k": bg_spread,
     }
+
+    # ── β-ratios de composición (Pavolonis 2010): confirma SILICATO vs hielo/agua ──
+    # Independiente del BTD (usa el 8.5 µm, que el despeje 11/12 no usa). Modo
+    # β_tropo: T_ref = tropopausa; clear-sky por banda de la escena como proxy de
+    # R_clr (simplificación del RTM que no tenemos). Clasifica por cercanía a los
+    # anclas verificados de la Tabla 2 de Pavolonis 2010. INDICATIVO.
+    comp = None
+    if trop is not None and BT85_BAND in coefs and BT12_BAND in coefs \
+            and int(mask.sum()) > 0:
+        try:
+            from src.process.beta_ratios import beta_composition
+            clr11 = clear_sky_bt(bts[BT85_BAND], mask)
+            clr14 = (ts_k if ts_source == "cielo claro (escena)"
+                     else clear_sky_bt(bts[14], mask))
+            clr15 = clear_sky_bt(bts[BT12_BAND], mask)
+            if None not in (clr11, clr14, clr15):
+                comp = beta_composition(
+                    bts[BT85_BAND], bts[14], bts[BT12_BAND], trop["T_K"],
+                    clr11, clr14, clr15, coefs[BT85_BAND], coefs[14],
+                    coefs[BT12_BAND], ash_mask=mask)
+        except Exception as e:
+            logger.warning("β-ratios composición: %s", e)
+    out["composition"] = comp
 
     # Si no hay Ts utilizable, Wen-Rose no puede correr → degradar a BT-matching
     # puro (todo opaco) con una nota; igual reportamos el campo BT.
@@ -608,6 +631,11 @@ def wen_rose_top_height(
     near_trop = (top_wr is not None and trop_km is not None
                  and top_wr >= trop_km - 3.0)
     flags.extend(reliability_flags(top_wr, co2_btd, near_trop))
+    # β-ratios de composición: si NO clasifica como silicato, la detección BTD
+    # puede ser falso positivo (cirros/hielo) — aviso independiente (Pavolonis 2010).
+    if comp is not None and comp.get("is_ash") is False:
+        flags.append(f"β-ratios sugieren composición '{comp['composition']}' "
+                     f"(no silicato): posible falso positivo de ceniza")
 
     confidence = wen_rose_confidence(n, band_width,
                                      ts_source == "cielo claro (escena)",

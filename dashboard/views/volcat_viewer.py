@@ -999,13 +999,21 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
         if co2 is not None and co2 >= 0.5:
             co2_html = (f' · <span style="color:#7fd17f;">CO₂ 13.3µm ✓ '
                         f'semitransp. ({co2:.1f} K)</span>')
+        # Confirmación de composición por β-ratios (Pavolonis 2010): el caso
+        # "no silicato" ya va en flags; acá la confirmación positiva de ceniza.
+        comp = wr.get("composition")
+        comp_html = ""
+        if comp and comp.get("is_ash"):
+            comp_html = (f' · <span style="color:#7fd17f;">β-ratios ✓ silicato '
+                         f'(β12/11={comp["beta_12_11"]}, β8.5/11={comp["beta_85_11"]})'
+                         f'</span>')
         if conf:
             st.markdown(
                 f'<div style="font-size:0.74rem; color:#8899aa; '
                 f'margin:-0.3rem 0 0.4rem 0;">Confianza del tope: '
                 f'<b style="color:{conf_color};">{conf}</b> '
                 f'<span style="color:#66737f;">(INDICATIVO — nunca reemplaza al '
-                f'VOLCAT cuantitativo)</span>{co2_html}{flags_html}</div>',
+                f'VOLCAT cuantitativo)</span>{co2_html}{comp_html}{flags_html}</div>',
                 unsafe_allow_html=True,
             )
 

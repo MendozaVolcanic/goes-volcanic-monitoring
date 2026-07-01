@@ -73,8 +73,11 @@ The public portal, however, serves these only as PNGs with the value baked into 
 colour scale; we currently recover approximate numbers by reverse‑mapping the colour
 bar, which adds ~1–2 km of avoidable error. For quantitative cross‑validation of our
 own ash‑top‑height retrieval and for our alert workflow, access to the underlying
-**gridded values (NetCDF / data feed)** would be far more reliable. Could you tell us
-whether such access is available to a national volcano observatory — for example
+**gridded values (NetCDF / data feed)** would be far more reliable — ideally the
+VOLCAT product fields (which populate only within detected volcanic clouds), rather
+than the baseline full‑disk product, since automated detection over the complex
+Andean terrain is prone to false positives. Could you tell us whether such access is
+available to a national volcano observatory — for example
 through the operational‑partner feed, or the forthcoming NCCF distribution as VOLCAT
 transitions to NOAA operations — and what the process would be?
 

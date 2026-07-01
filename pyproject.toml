@@ -18,3 +18,5 @@ name = "goes-volcanic-monitoring"
 version = "0.1.0"
 description = "Dashboard NRT de monitoreo volcánico GOES-19 para Chile"
 requires-python = "==3.12.*"
+license = { file = "LICENSE" }
+authors = [{ name = "Nicolás Mendoza" }]

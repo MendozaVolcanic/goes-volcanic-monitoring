@@ -84,9 +84,10 @@ independiente → fix**. Dos hallazgos confirmados que cambiaron el método
 ## 6. Open source / reproducibilidad
 
 - Repo público: `MendozaVolcanic/goes-volcanic-monitoring` (GitHub).
-- **PENDIENTE: LICENSE** (sin licencia el código NO es legalmente libre).
-  Decisión del autor: MIT (máxima adopción) vs Apache-2.0 (grant de patentes,
-  institución-friendly) vs GPLv3 (copyleft).
+- **Licencia: Apache-2.0** (decisión del autor, jul-2026; LICENSE en la raíz,
+  declarada en pyproject.toml y README). El README decía "MIT" sin archivo —
+  corregido. Nota: si SERNAGEOMIN reclama copyright institucional, ajustar el
+  titular en la documentación (la licencia no cambia).
 - Deps 100% pip (sin RTM Fortran); deploy reproducible (Dockerfile + HF Space).
 - Scripts de validación reproducibles: `scripts/validate_fase3b.py`, `_fase3c.py`.
 - Datos crudos: buckets AWS públicos sin credenciales → cualquier grupo puede

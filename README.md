@@ -137,4 +137,4 @@ Setup automatizado en Windows (PowerShell):
 
 ## Licencia
 
-MIT
+[Apache-2.0](LICENSE) — código libre. Podés usarlo, modificarlo y redistribuirlo (incluso comercialmente) manteniendo la atribución y el aviso de licencia. Los datos satelitales consumidos (NOAA GOES) son de dominio público; los productos VOLCAT/SSEC requieren atribución a SSEC/CIMSS (Univ. Wisconsin–Madison).

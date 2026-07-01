@@ -54,6 +54,10 @@ MIN_CLEAR_PX = 40          # mínimo de píxeles claros para estimar Ts de la es
 CLEAR_SKY_PCTL = 92        # percentil cálido = BT de superficie (cielo claro)
 DELTA_WARN_KM = 5.0        # corrección Wen-Rose ≥ esto → flag (Ts/muestra sospechosos)
 BAND_WIDE_KM = 3.0         # banda β ≥ esto → degrada la confianza
+# Banda de altura donde el retrieval IR de 2 canales es fiable (Saint et al. 2024,
+# JGR: fuera de 3-12 km el contraste tope-superficie o la relación T(z) hacen que
+# la altura no discrimine bien). Fuera de la banda: degradar confianza + flag.
+RELIABLE_BAND_KM = (3.0, 12.0)
 # Detector de mal-condicionamiento: span de Tc cuyo residuo queda dentro de
 # RES_TOL del mínimo. El span crece con la transparencia; el corte cae en
 # t≈0.6 ⇄ τ≈0.5 — el régimen donde la literatura (Wen-Rose, Pavolonis) dice que
@@ -62,13 +66,24 @@ RES_TOL = 0.003            # residuo: Tc que ajustan "casi igual de bien" (trans
 TC_SPAN_MAX = 60.0         # span de Tc dentro de RES_TOL ≥ esto ⇒ mal-condicionado (τ≲0.5)
 
 
-def wen_rose_confidence(mask_px: int, band_width_km, ts_is_clear_sky: bool) -> str:
+def in_reliable_band(top_km) -> bool:
+    """¿El tope cae en la banda donde el retrieval IR de 2 canales es fiable
+    (``RELIABLE_BAND_KM``, Saint et al. 2024)? None → tratado como fuera. PURA."""
+    if top_km is None:
+        return False
+    return RELIABLE_BAND_KM[0] <= top_km <= RELIABLE_BAND_KM[1]
+
+
+def wen_rose_confidence(mask_px: int, band_width_km, ts_is_clear_sky: bool,
+                        top_km=None) -> str:
     """Confianza **INDICATIVA** del tope Wen-Rose. Nunca devuelve "alta": es un
     producto indicativo, el cuantitativo validado sigue siendo VOLCAT.
 
     Degrada por (a) pocos píxeles de ceniza → estadístico ruidoso; (b) banda de
     incertidumbre por β ancha → microfísica mal restringida; (c) Ts de fallback
-    (GFS, no observado) → fondo cálido peor estimado. Función PURA.
+    (GFS, no observado) → fondo cálido peor estimado; (d) tope **fuera de la banda
+    fiable 3-12 km** (Saint et al. 2024) → la altura no discrimina bien.
+    Función PURA.
     """
     if mask_px < 5:
         return "muy baja"
@@ -79,7 +94,34 @@ def wen_rose_confidence(mask_px: int, band_width_km, ts_is_clear_sky: bool) -> s
         score -= 1
     if not ts_is_clear_sky:
         score -= 1
+    if top_km is not None and not in_reliable_band(top_km):
+        score -= 1
     return "media" if score >= 2 else ("baja" if score == 1 else "muy baja")
+
+
+def reliability_flags(top_km, co2_btd, near_tropopause: bool) -> list:
+    """Flags de fiabilidad basados en la literatura (Saint 2024, Pavolonis 2020),
+    sobre el tope ya calculado. Función PURA (fácil de unit-testear).
+
+    - **Fuera de 3-12 km**: bajo 3 km el contraste tope-superficie es insuficiente;
+      sobre ~12 km (cerca/encima de la tropopausa) el retrieval IR **subestima
+      sistemáticamente** porque en la estratósfera T sube con z (Saint 2024).
+    - **Régimen opaco + alto** (CO₂ dice pluma opaca y el tope toca la tropopausa):
+      ceniza gruesa/ópticamente espesa (reff>10µm, típica recién eruptada) **borra
+      la firma 11/12 µm** (Mie) → la altura es una **cota inferior**, puede
+      subestimar plumas altas (Saint 2024, validado en Puyehue 2011).
+    """
+    flags = []
+    if top_km is not None and top_km < RELIABLE_BAND_KM[0]:
+        flags.append(f"tope < {RELIABLE_BAND_KM[0]:.0f} km: contraste tope-superficie "
+                     "bajo, altura poco fiable (Saint 2024)")
+    elif top_km is not None and top_km > RELIABLE_BAND_KM[1]:
+        flags.append(f"tope > {RELIABLE_BAND_KM[1]:.0f} km: cerca/sobre la tropopausa, "
+                     "posible subestimación sistemática (T sube en estratósfera)")
+    if (near_tropopause and co2_btd is not None and co2_btd < CO2_SEMITRANSP_MIN):
+        flags.append("régimen opaco+alto: ceniza gruesa/espesa puede borrar la firma "
+                     "11/12 µm → tope es cota inferior, puede subestimar (Saint 2024)")
+    return flags
 
 
 # ── Solver puro (sin red) ───────────────────────────────────────────────────
@@ -562,8 +604,14 @@ def wen_rose_top_height(
         flags.append(f"CO₂ 13.3µm sugiere pluma ~opaca (BTD 11−13.3 ≈ {co2_btd:.1f} K): "
                      "corrección Wen-Rose poco confirmada")
 
+    # Flags de fiabilidad de la literatura (banda 3-12 km; régimen opaco+alto).
+    near_trop = (top_wr is not None and trop_km is not None
+                 and top_wr >= trop_km - 3.0)
+    flags.extend(reliability_flags(top_wr, co2_btd, near_trop))
+
     confidence = wen_rose_confidence(n, band_width,
-                                     ts_source == "cielo claro (escena)")
+                                     ts_source == "cielo claro (escena)",
+                                     top_km=top_wr)
 
     out.update({
         "status": "ok",

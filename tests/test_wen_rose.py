@@ -286,6 +286,48 @@ def test_volcat_colorbar_reverse_map():
     assert found is not None and found.shape[0] >= n - 2
 
 
+# ── Fiabilidad por literatura (banda 3-12 km, régimen opaco+alto) ───────────
+
+def test_in_reliable_band():
+    """Banda fiable 3-12 km (Saint 2024); None → fuera."""
+    from src.process.wen_rose_height import in_reliable_band
+    assert in_reliable_band(7.0)
+    assert in_reliable_band(3.0) and in_reliable_band(12.0)   # bordes inclusivos
+    assert not in_reliable_band(2.5)
+    assert not in_reliable_band(14.0)
+    assert not in_reliable_band(None)
+
+
+def test_confidence_degrades_out_of_band():
+    """Un tope fuera de 3-12 km baja la confianza vs el mismo caso dentro."""
+    from src.process.wen_rose_height import wen_rose_confidence
+    # caso bueno DENTRO de banda → media
+    assert wen_rose_confidence(50, 1.0, True, top_km=8.0) == "media"
+    # mismo caso pero tope a 14 km → degradado
+    assert wen_rose_confidence(50, 1.0, True, top_km=14.0) == "baja"
+    # sin top_km (compat hacia atrás) no degrada
+    assert wen_rose_confidence(50, 1.0, True) == "media"
+
+
+def test_reliability_flags_band_and_opaque_high():
+    """Flags: bajo 3 km, sobre 12 km, y régimen opaco+alto."""
+    from src.process.wen_rose_height import reliability_flags
+    # dentro de banda, semitransparente → sin flags
+    assert reliability_flags(7.0, 1.5, near_tropopause=False) == []
+    # tope bajo
+    assert any("< 3 km" in f or "contraste" in f
+               for f in reliability_flags(2.0, 1.5, False))
+    # tope alto → subestimación estratosférica
+    assert any("tropopausa" in f or "estratósfera" in f
+               for f in reliability_flags(15.0, 1.5, False))
+    # opaco (CO₂ BTD < 0.5) + alto → cota inferior / posible subestimación
+    fl = reliability_flags(11.0, 0.2, near_tropopause=True)
+    assert any("opaco+alto" in f or "cota inferior" in f for f in fl)
+    # opaco pero NO alto → no dispara el flag de régimen opaco+alto
+    assert not any("opaco+alto" in f
+                   for f in reliability_flags(7.0, 0.2, near_tropopause=False))
+
+
 # ── Orquestación (short-circuit sin red) ────────────────────────────────────
 
 def test_wen_rose_unknown_volcano_no_data():

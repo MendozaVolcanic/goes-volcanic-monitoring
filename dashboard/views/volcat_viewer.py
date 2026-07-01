@@ -1066,6 +1066,11 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
             "- **Tope reportado**: percentil 95 (robusto) + pico de referencia.\n"
             "- **No miden gas**: una pluma de SO₂/gas (transparente en 11 µm) NO "
             "da altura válida — se reporta aparte.\n"
+            "- **Sesgo conocido (literatura)**: los retrievals IR de altura "
+            "**subestiman sistemáticamente ~0.4–0.8 km** (Pavolonis 2020; Saint "
+            "2024) porque el IR recibe emisión de toda la capa, no solo del tope; "
+            "el Wen-Rose corrige parte de eso. La altura es **fiable en 3–12 km**; "
+            "fuera de esa banda la confianza baja (avisos automáticos).\n"
             "- **Cuantitativo validado**: el primario sigue siendo el "
             "**VOLCAT/SSEC** de arriba (Pavolonis 2013)."
         )

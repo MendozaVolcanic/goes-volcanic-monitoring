@@ -235,3 +235,81 @@ def height_from_temp(temp_k: float, profile: dict) -> Optional[dict]:
         return {"z_m": z_trop, "capped": "tropopause"}
     z = float(altitudes_from_bt(np.array([temp_k]), profile)[0])
     return {"z_m": z, "capped": None}
+
+
+def fetch_gfs_wind_profile(
+    lat: float, lon: float, dt: Optional[datetime] = None
+) -> Optional[dict]:
+    """Perfil vertical de **viento** (u,v en m/s) por nivel de presión (GFS vía
+    Open-Meteo), para el árbitro de altura por cizalla (Fase 3c).
+
+    Por qué: una pluma volcánica se advecta al viento de SU altura. Midiendo su
+    desplazamiento entre dos scans y cruzándolo con este perfil se obtiene una
+    altura INDEPENDIENTE del método térmico (Wen-Rose/BT-matching). Requiere
+    cizalla vertical para discriminar (si el viento es uniforme, no restringe).
+
+    Devuelve ``{"levels": [{p_hPa, z_m, u_ms, v_ms}...ordenado por z], "lat",
+    "lon", "valid_time"}`` o None. Función con red (aislada del hot-path térmico).
+    """
+    if dt is None:
+        dt = datetime.now(timezone.utc)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    hourly_vars = ",".join(
+        f"wind_speed_{p}hPa,wind_direction_{p}hPa,geopotential_height_{p}hPa"
+        for p in GFS_LEVELS_HPA)
+    params = {
+        "latitude": lat, "longitude": lon, "hourly": hourly_vars,
+        "wind_speed_unit": "ms", "forecast_days": 1, "past_days": 2,
+        "models": "gfs_seamless", "timezone": "UTC",
+    }
+    try:
+        r = requests.get(OPENMETEO_URL, params=params, timeout=TIMEOUT)
+        r.raise_for_status()
+        data = r.json()
+    except Exception as e:
+        logger.warning("Open-Meteo viento (%s,%s): %s", lat, lon, e)
+        return None
+    hourly = data.get("hourly", {})
+    times = hourly.get("time") or []
+    if not times:
+        return None
+    target = dt.strftime("%Y-%m-%dT%H:00")
+    if target in times:
+        idx = times.index(target)
+    else:
+        def _gap(ts):
+            try:
+                t = datetime.strptime(ts, "%Y-%m-%dT%H:%M").replace(
+                    tzinfo=timezone.utc)
+                return abs((t - dt).total_seconds())
+            except Exception:
+                return float("inf")
+        idx = min(range(len(times)), key=lambda i: _gap(times[i]))
+    levels = _parse_wind_profile(hourly, idx)
+    if len(levels) < 3:
+        return None
+    return {"levels": levels, "lat": lat, "lon": lon,
+            "valid_time": times[idx], "source": "GFS wind (Open-Meteo)"}
+
+
+def _parse_wind_profile(hourly: dict, hour_idx: int) -> list[dict]:
+    """De speed(m/s)+direction(°, meteo=FROM)+z → niveles {p_hPa,z_m,u_ms,v_ms}
+    ordenados por altura. u=este, v=norte. Descarta niveles con faltantes. PURA."""
+    levels = []
+    for p in GFS_LEVELS_HPA:
+        s_list = hourly.get(f"wind_speed_{p}hPa") or []
+        d_list = hourly.get(f"wind_direction_{p}hPa") or []
+        z_list = hourly.get(f"geopotential_height_{p}hPa") or []
+        if max(hour_idx, 0) >= min(len(s_list), len(d_list), len(z_list)):
+            continue
+        s, d, z = s_list[hour_idx], d_list[hour_idx], z_list[hour_idx]
+        if s is None or d is None or z is None:
+            continue
+        rad = float(d) * np.pi / 180.0
+        # meteorológica: dirección = de dónde VIENE → u,v apuntan a dónde VA.
+        u = -float(s) * np.sin(rad)
+        v = -float(s) * np.cos(rad)
+        levels.append({"p_hPa": p, "z_m": float(z), "u_ms": u, "v_ms": v})
+    levels.sort(key=lambda l: l["z_m"])
+    return levels

@@ -35,6 +35,11 @@ BT12_BAND = 15
 M_PER_DEG_LAT = 111320.0    # metros por grado de latitud (WGS84 aprox.)
 MIN_SHEAR_MS = 8.0          # cizalla mínima (spread de viento) para discriminar
 AMB_TOL_MS = 3.0            # tolerancia de mismatch para la banda de ambigüedad
+# Guards revelados al validar en Láscar 27-jun (2026): plumas chicas cambian sus
+# píxeles detectados entre scans → el centroide "salta" y da advección espuria; y
+# fuera de la ventana de forecast el perfil de viento queda viejo (día equivocado).
+MAX_ADV_MS = 60.0          # advección > esto ⇒ tracking de centroide poco fiable
+MAX_WIND_AGE_H = 3.0       # perfil de viento a > esto del scan ⇒ no usar (viejo)
 
 
 # ── Núcleo puro (sin red) ───────────────────────────────────────────────────
@@ -189,11 +194,33 @@ def wind_shear_top_height(
         return {"status": "no_data", "reason": "Δt nulo entre scans",
                 "volcano": v.name, "source": source}
     u_obs, v_obs = advection_uv(c_prev[0], c_prev[1], c_now[0], c_now[1], dt_s)
+    adv_speed = math.hypot(u_obs, v_obs)
+    # Guard: advección implausible ⇒ el centroide saltó por ruido de detección
+    # (típico en plumas chicas que cambian de píxeles entre scans), no es viento real.
+    if adv_speed > MAX_ADV_MS:
+        return {"status": "no_data", "volcano": v.name, "scan_dt": cur[3],
+                "adv_speed_ms": adv_speed, "source": source,
+                "reason": f"advección implausible ({adv_speed:.0f} m/s): tracking de "
+                "centroide poco fiable (pluma chica/cambiante)"}
 
     wp = fetch_gfs_wind_profile(v.lat, v.lon, cur[3] or dt)
     if wp is None:
         return {"status": "no_data", "reason": "sin perfil de viento GFS",
                 "volcano": v.name, "scan_dt": cur[3], "source": source}
+    # Guard: perfil de viento viejo (evento fuera de la ventana de forecast de
+    # Open-Meteo) ⇒ sería el viento del día equivocado. Rechazar.
+    ref_dt = cur[3] or dt
+    try:
+        wt = datetime.strptime(wp["valid_time"], "%Y-%m-%dT%H:%M").replace(
+            tzinfo=timezone.utc)
+        age_h = abs((wt - ref_dt).total_seconds()) / 3600.0
+    except Exception:
+        age_h = 0.0
+    if age_h > MAX_WIND_AGE_H:
+        return {"status": "no_data", "volcano": v.name, "scan_dt": cur[3],
+                "adv_speed_ms": adv_speed, "source": source,
+                "reason": f"perfil de viento a {age_h:.0f} h del scan (fuera de la "
+                "ventana de forecast): usaría el viento del día equivocado"}
     wh = wind_implied_height(u_obs, v_obs, wp["levels"])
     if wh is None:
         return {"status": "no_data", "reason": "perfil de viento insuficiente",

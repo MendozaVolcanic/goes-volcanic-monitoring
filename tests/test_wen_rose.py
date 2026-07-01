@@ -206,8 +206,10 @@ def test_underconstrained_thin_plume_flagged():
     ts = 295.0
     bt11_d, bt12_d = _synthesize_observed(np.array([225.0]), np.array([0.30]), ts)
     bt11_t, bt12_t = _synthesize_observed(np.array([225.0]), np.array([0.90]), ts)
-    _, sol_d, wc_d = solve_tc_grid(bt11_d, bt12_d, ts, COEF14, COEF15)
-    _, sol_t, wc_t = solve_tc_grid(bt11_t, bt12_t, ts, COEF14, COEF15)
+    # β explícito = el del forward-model (0.9): el test pinea el guard de
+    # mal-condicionamiento, no el mismatch de β (el central cambió a 0.7 en F2).
+    _, sol_d, wc_d = solve_tc_grid(bt11_d, bt12_d, ts, COEF14, COEF15, beta=0.9)
+    _, sol_t, wc_t = solve_tc_grid(bt11_t, bt12_t, ts, COEF14, COEF15, beta=0.9)
     assert bool(sol_d[0]) and bool(wc_d[0]), "pluma densa debe quedar bien restringida"
     assert bool(sol_t[0]) and not bool(wc_t[0]), "pluma fina NO debe quedar restringida"
 
@@ -284,6 +286,45 @@ def test_volcat_colorbar_reverse_map():
     strip[2] = bar                          # fila 2 = barra saturada
     found = extract_rainbow_bar(strip)
     assert found is not None and found.shape[0] >= n - 2
+
+
+# ── Veredicto CO₂ con gate de altura (fix F1, audit jul-2026) ───────────────
+
+def test_co2_verdict_degenerate_low_top():
+    """El corazón del fix F1: con cota BAJA el BTD grande NO concluye
+    semitransparencia (una opaca a 4 km da el mismo BTD que una fina a 10 km)."""
+    from src.process.wen_rose_height import co2_verdict
+
+    # cota baja (4 km) + BTD grande (+10 K, típico de opaca baja) → no_discrimina
+    assert co2_verdict(10.0, 4.0) == "no_discrimina"
+    # cota baja + BTD chico → tampoco concluye (sigue bajo el gate)
+    assert co2_verdict(0.2, 4.0) == "no_discrimina"
+    # cota None → no_discrimina (sin altura no hay gate)
+    assert co2_verdict(10.0, None) == "no_discrimina"
+
+
+def test_co2_verdict_high_top_discriminates():
+    """Con cota ALTA el test sí discrimina: BTD grande = consistente con
+    semitransparencia; BTD chico = opaca de tope alto."""
+    from src.process.wen_rose_height import co2_verdict
+
+    assert co2_verdict(8.0, 9.0) == "consistente_semitransp"
+    assert co2_verdict(0.2, 9.0) == "opaca_alta"
+    assert co2_verdict(None, 9.0) is None      # sin C16 → sin veredicto
+
+
+def test_beta_constants_span_fine_ash():
+    """Fix F2: BETA_RANGE debe cubrir la ceniza fina (β≈0.56, ancla Pavolonis
+    Tabla 2) y el central quedar en el medio microfísico — no en gruesa."""
+    from src.process.beta_ratios import BETA_ANCHORS
+    from src.process.wen_rose_height import BETA_RANGE, BETA_SILICATE
+
+    fine_ash_beta = BETA_ANCHORS["ceniza"]["b12_11"]      # 0.564
+    assert BETA_RANGE[0] <= fine_ash_beta <= BETA_RANGE[1], \
+        "el β de ceniza fina quedó fuera de la banda de incertidumbre"
+    assert BETA_RANGE[0] < BETA_SILICATE < BETA_RANGE[1]
+    assert BETA_SILICATE < 0.85, \
+        "β central en régimen de ceniza gruesa (la cita β=0.9 era fantasma)"
 
 
 # ── Fiabilidad por literatura (banda 3-12 km, régimen opaco+alto) ───────────

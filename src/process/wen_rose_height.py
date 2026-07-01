@@ -45,11 +45,25 @@ BT85_BAND = 11             # 8.4 µm (máscara tri-espectral)
 BT11_BAND = 14             # 11.2 µm (ventana, canal "4" de Wen-Rose)
 BT12_BAND = 15             # 12.3 µm (canal "5" de Wen-Rose)
 CO2_BAND = 16              # 13.3 µm (CO₂) — chequeo INDEPENDIENTE de semi-transp.
-CO2_SEMITRANSP_MIN = 0.5   # BTD(11−13.3) ≥ esto sobre la ceniza ⇒ semitransparente
+CO2_SEMITRANSP_MIN = 0.5   # BTD(11−13.3) ≥ esto ⇒ consistente con semitransp. (ver co2_verdict)
+# El test CO₂ es DEGENERADO para topes bajos (audit jul-2026, verificado): una
+# pluma OPACA a 4 km da BTD(11−13.3) ≈ +8..14 K (media columna de CO₂ queda
+# encima, con aire frío) — indistinguible de una fina a 10 km (+10..15 K). El
+# árbitro solo discrimina cuando el tope candidato es ALTO (poca columna de CO₂
+# encima → opaca daría BTD chico). Gate por la cota BT-matching:
+CO2_ARBITER_MIN_COTA_KM = 7.0
 HETERO_WARN_K = 25.0       # spread (p90−p10) de cielo claro ≥ esto ⇒ fondo heterogéneo
 
-BETA_SILICATE = 0.9        # razón de prof. óptica 12/11 — andesita-dacita chilena
-BETA_RANGE = (0.85, 0.95)  # rango de β del silicato → banda de incertidumbre del tope
+# β = τ12/τ11 (acople t12 = t11^β) — la MISMA cantidad física que el β(12,11) de
+# Pavolonis 2010 (verificado: sec θ cancela en el ratio). Procedencia REAL de los
+# valores (fix F2, audit jul-2026 — la vieja cita "β=0.9, Wen-Rose Fig.1" era
+# FANTASMA: ese paper no define β): Pavolonis 2010 Fig.3/Tabla 2, andesita
+# r_eff 1-12 µm → β(12,11) ≈ 0.45 (1 µm) … 0.564 (2 µm) … ~1.0 (12 µm).
+# Central 0.7 ≈ r_eff 4-5 µm (medio microfísico); el rango barrido cubre de
+# ceniza fina distal a gruesa proximal. β NO se mide dentro del solver
+# (circularidad verificada); el β medido por beta_ratios solo genera un flag.
+BETA_SILICATE = 0.7        # β central (r_eff ~4-5 µm, andesita)
+BETA_RANGE = (0.55, 0.95)  # fina distal … gruesa proximal → banda del tope
 MIN_CLEAR_PX = 40          # mínimo de píxeles claros para estimar Ts de la escena
 CLEAR_SKY_PCTL = 92        # percentil cálido = BT de superficie (cielo claro)
 DELTA_WARN_KM = 5.0        # corrección Wen-Rose ≥ esto → flag (Ts/muestra sospechosos)
@@ -177,16 +191,19 @@ def clear_sky_heterogeneity(bt11_window, ash_mask) -> Optional[float]:
 
 
 def co2_semitransparency(bt11, bt133, ash_mask) -> Optional[float]:
-    """Chequeo INDEPENDIENTE de semi-transparencia con el canal CO₂ (13.3 µm).
+    """Observable BTD(11−13.3 µm) sobre la pluma — insumo del árbitro CO₂.
 
     Por qué (geología → pipeline): el 13.3 µm cae en una banda de absorción de
     CO₂, así que su radiancia viene de **más arriba** en la atmósfera que la
     ventana de 11 µm. Sobre una pluma **semi-transparente**, el 11 µm ve más
-    suelo cálido por debajo (ventana) que el 13.3 µm (el CO₂ lo absorbe) →
-    ``BT(11) − BT(13.3) > 0``. Sobre una pluma **opaca** ambos ven el tope frío →
-    diferencia ≈ 0. Es decir: confirma, con física distinta al despeje Wen-Rose,
-    si la corrección de emisividad estaba justificada (un guard contra
-    sobre-corregir un tope que en realidad era opaco).
+    suelo cálido por debajo (ventana) que el 13.3 µm → ``BT(11)−BT(13.3) > 0``.
+
+    **LÍMITE FÍSICO (audit jul-2026, verificado):** el observable es DEGENERADO
+    para topes bajos — una pluma **opaca** cuyo tope queda debajo del pico de la
+    función de peso del 13.3 µm también da BTD grande (+8..14 K a 4 km: media
+    columna de CO₂ queda encima con aire frío). "Opaca ⇒ BTD≈0" solo vale con el
+    tope cerca de la tropopausa. Por eso este valor NO se interpreta solo:
+    :func:`co2_verdict` aplica el gate de altura antes de concluir nada.
 
     Devuelve la **mediana de BTD(11−13.3)** sobre los píxeles de ceniza (K), o
     None si no hay 13.3 µm o píxeles válidos. Función PURA.
@@ -200,6 +217,28 @@ def co2_semitransparency(bt11, bt133, ash_mask) -> Optional[float]:
     if not m.any():
         return None
     return float(np.median(bt11[m] - bt133[m]))
+
+
+def co2_verdict(co2_btd, cota_km) -> Optional[str]:
+    """Veredicto del árbitro CO₂, honesto respecto de su degeneración física.
+
+    - ``None``: sin dato (no se bajó C16 o sin píxeles).
+    - ``"no_discrimina"``: la cota es BAJA (< ``CO2_ARBITER_MIN_COTA_KM``) → el
+      BTD(11−13.3) no distingue "fina y alta" de "OPACA y baja" (ambas dan
+      +8..15 K) — no se concluye nada en ningún sentido.
+    - ``"consistente_semitransp"``: cota alta y BTD grande → CONSISTENTE con
+      semitransparencia (no la *confirma*: sigue habiendo ambigüedad residual).
+    - ``"opaca_alta"``: cota alta y BTD chico → pluma opaca con tope alto (el
+      único caso donde el BTD chico es informativo).
+
+    Función PURA (unit-testeable). (Fix F1, audit jul-2026.)
+    """
+    if co2_btd is None:
+        return None
+    if cota_km is None or cota_km < CO2_ARBITER_MIN_COTA_KM:
+        return "no_discrimina"
+    return ("consistente_semitransp" if co2_btd >= CO2_SEMITRANSP_MIN
+            else "opaca_alta")
 
 
 def solve_tc_grid(bt11, bt12, ts_k, coef11, coef12, beta: float = BETA_SILICATE,
@@ -583,7 +622,8 @@ def wen_rose_top_height(
     # ── #1 Banda de incertidumbre por la microfísica (β ∈ BETA_RANGE) ────
     # β fija la razón de absorción 12/11; no la medimos (haría falta retrieval de
     # radio efectivo). En vez de fingir un número exacto, barremos el rango del
-    # silicato (0.85-0.95) y reportamos el tope como banda. Solo si hubo
+    # silicato andesítico (Pavolonis 2010 Fig.3: β(12,11) ~0.45-1.0 para r_eff
+    # 1-12 µm; barremos 0.55-0.95) y reportamos el tope como banda. Solo si hubo
     # corrección real (con todo opaco, β no cambia nada → banda degenerada).
     top_lo = top_hi = top_wr
     if ts_k is not None and n_corrected > 0 and top_wr is not None:
@@ -592,12 +632,18 @@ def wen_rose_top_height(
                 for b in BETA_RANGE]
         band = [t for t in band if t is not None] + [top_wr]
         top_lo, top_hi = min(band), max(band)
-    # Si hubo píxeles REVERTIDOS (corrección no confiable) pero el CO₂ confirma
-    # semi-transparencia, el tope real está entre la cota y la tropopausa, NO en
-    # la cota → el extremo SUPERIOR de la banda es la tropopausa (incertidumbre
-    # honesta de un lado), aunque el headline siga siendo la cota conservadora.
+    # Veredicto del árbitro CO₂ con gate de altura (fix F1, audit jul-2026): el
+    # BTD(11−13.3) solo discrimina con cota ALTA; con cota baja una pluma opaca
+    # da el mismo BTD que una fina → "no_discrimina", sin conclusión.
+    verdict = co2_verdict(co2_btd, top_bt)
+    # Si hubo píxeles REVERTIDOS (corrección no confiable) y el CO₂ es
+    # CONSISTENTE con semitransparencia (cota alta + BTD grande), el tope real
+    # puede estar entre la cota y la tropopausa → el extremo SUPERIOR de la banda
+    # es la tropopausa (incertidumbre honesta de un lado; el headline sigue
+    # siendo la cota conservadora). Con cota baja NO se extiende: sería inventar
+    # techo con un observable degenerado.
     if (n_reverted > 0 and trop_km is not None and top_hi is not None
-            and co2_btd is not None and co2_btd >= CO2_SEMITRANSP_MIN):
+            and verdict == "consistente_semitransp"):
         top_hi = max(top_hi, trop_km)
     band_width = (top_hi - top_lo) if (top_hi is not None
                                        and top_lo is not None) else None
@@ -605,8 +651,14 @@ def wen_rose_top_height(
     # ── #2 Guards de honestidad: corrección o Ts sospechosos ─────────────
     flags = []
     if n_reverted > 0:
-        extra = (" — el tope real puede ser MAYOR (CO₂ confirma semitransparencia)"
-                 if (co2_btd is not None and co2_btd >= CO2_SEMITRANSP_MIN) else "")
+        if verdict == "consistente_semitransp":
+            extra = (" — el tope real PODRÍA ser mayor (CO₂ consistente con "
+                     "semitransparencia; no la confirma)")
+        elif verdict == "no_discrimina":
+            extra = (" — el CO₂ no discrimina a esta altura (fina-alta y "
+                     "opaca-baja dan el mismo BTD)")
+        else:
+            extra = ""
         flags.append(f"{n_reverted}/{n} píxeles con magnitud NO restringida "
                      f"(pluma fina o corrección saturada en tropopausa) → "
                      f"revertidos a la cota{extra}")
@@ -619,13 +671,21 @@ def wen_rose_top_height(
     if bg_spread is not None and bg_spread >= HETERO_WARN_K:
         flags.append(f"fondo heterogéneo (spread {bg_spread:.0f} K: costa/relieve): "
                      "Ts poco confiable, la corrección puede sesgarse")
-    # #4: el CO₂ (13.3µm) es un árbitro INDEPENDIENTE. Si dice que la pluma es
-    # opaca (BTD 11−13.3 chico) pero Wen-Rose igual corrigió, la corrección es
-    # sospechosa de ser ruido (no semi-transparencia real).
-    if (n_corrected > 0 and co2_btd is not None
-            and co2_btd < CO2_SEMITRANSP_MIN):
-        flags.append(f"CO₂ 13.3µm sugiere pluma ~opaca (BTD 11−13.3 ≈ {co2_btd:.1f} K): "
-                     "corrección Wen-Rose poco confirmada")
+    # #4: el CO₂ como árbitro inverso — SOLO informativo con cota alta (BTD chico
+    # implica opaca únicamente cuando el tope está alto; ver co2_verdict).
+    if n_corrected > 0 and verdict == "opaca_alta":
+        flags.append(f"CO₂ 13.3µm sugiere pluma opaca de tope alto (BTD 11−13.3 ≈ "
+                     f"{co2_btd:.1f} K): corrección Wen-Rose poco justificada")
+    # F2 (audit jul-2026): β medido por composición como selector CUALITATIVO —
+    # NUNCA dentro del solver (circularidad exacta verificada: Tc=tropopausa se
+    # vuelve raíz del acople). β(12,11) < 0.7 ⇒ ceniza fina (r_eff ≲ 4 µm) ⇒ la
+    # corrección real es MENOR que la del β central ⇒ el tope probablemente cae
+    # en la mitad BAJA de la banda reportada.
+    if (n_corrected > 0 and comp is not None
+            and comp.get("beta_12_11") is not None
+            and comp["beta_12_11"] < BETA_SILICATE):
+        flags.append(f"β(12,11) medido ≈ {comp['beta_12_11']:.2f} (ceniza fina): "
+                     "el tope probablemente en la mitad BAJA de la banda")
 
     # Flags de fiabilidad de la literatura (banda 3-12 km; régimen opaco+alto).
     near_trop = (top_wr is not None and trop_km is not None
@@ -636,6 +696,8 @@ def wen_rose_top_height(
     if comp is not None and comp.get("is_ash") is False:
         flags.append(f"β-ratios sugieren composición '{comp['composition']}' "
                      f"(no silicato): posible falso positivo de ceniza")
+
+    out["co2_verdict"] = verdict
 
     confidence = wen_rose_confidence(n, band_width,
                                      ts_source == "cielo claro (escena)",

@@ -992,13 +992,18 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
         if flags:
             flags_html = (' · <span style="color:#ffb020;">⚠ '
                           + " · ".join(flags) + "</span>")
-        # Veredicto independiente del CO₂ 13.3µm (el caso ~opaco ya va en flags;
-        # acá la CONFIRMACIÓN positiva de semi-transparencia → la corrección era real).
+        # Veredicto del árbitro CO₂ 13.3µm — HONESTO respecto de su degeneración
+        # (fix F1, audit jul-2026): con cota baja el BTD no distingue fina-alta de
+        # opaca-baja → "n/c", nunca un ✓ verde que "confirme" de más.
         co2 = wr.get("co2_semitransp_btd")
+        cv = wr.get("co2_verdict")
         co2_html = ""
-        if co2 is not None and co2 >= 0.5:
-            co2_html = (f' · <span style="color:#7fd17f;">CO₂ 13.3µm ✓ '
-                        f'semitransp. ({co2:.1f} K)</span>')
+        if cv == "consistente_semitransp":
+            co2_html = (f' · <span style="color:#7fd17f;">CO₂ 13.3µm consistente '
+                        f'c/ semitransp. ({co2:.1f} K)</span>')
+        elif cv == "no_discrimina" and co2 is not None:
+            co2_html = (' · <span style="color:#8899aa;">CO₂ 13.3µm n/c '
+                        '(tope bajo: no distingue fina-alta de opaca-baja)</span>')
         # Confirmación de composición por β-ratios (Pavolonis 2010): el caso
         # "no silicato" ya va en flags; acá la confirmación positiva de ceniza.
         comp = wr.get("composition")
@@ -1042,9 +1047,15 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
         "lat_min": v_obj.lat - acha_radius, "lat_max": v_obj.lat + acha_radius,
         "lon_min": v_obj.lon - acha_radius, "lon_max": v_obj.lon + acha_radius,
     }
+    # El timestamp del título debe ser el del CAMPO ploteado (fld), no el de
+    # `primary` — el gránulo ACHA L2 puede diferir un scan del L1b de Wen-Rose.
+    # (fix C3, audit jul-2026)
+    fld_dt = fld.get("scan_dt")
+    fld_ts_txt = (f"{fld_dt.strftime('%Y-%m-%d %H:%M UTC')} "
+                  f"({fmt_chile(fld_dt)} Chile)") if fld_dt else ts_txt
     st.plotly_chart(
         _fig_acha_field(fld["field_km"], fld["lat"], fld["lon"], view_bounds,
-                        f"Tope de pluma ({method_lbl}) · INDICATIVO · {ts_txt}"),
+                        f"Tope de pluma ({method_lbl}) · INDICATIVO · {fld_ts_txt}"),
         width="stretch",
         config={"displayModeBar": False, "responsive": True},
         key=f"acha_field_{v_obj.name}_{key_suffix}",

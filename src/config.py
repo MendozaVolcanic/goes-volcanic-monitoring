@@ -168,8 +168,15 @@ VOLCANIC_ZONES = {
     # del bbox 'sur' y el bbox 'austral' (-56…-46) quedaba VACÍO (solo fiordos).
     # Corregido para que cada bbox CONTENGA los volcanes de su zona (validado en
     # tests/test_smoke.py::test_zone_bboxes_contain_their_volcanoes).
+    # AUSTRAL (pedido jul-2026): el bbox anterior cortaba en -46.5 y dejaba
+    # afuera el TERRITORIO de Aysén sur + Magallanes (Chile llega a ~-56),
+    # aunque no haya volcanes monitoreados al sur de Hudson (-45.9). Se
+    # extiende lat a -56 y se ensancha lon a 10°: a ~-50° el cos(lat)
+    # comprime la longitud, así que el aspect VISUAL del panel (~2.3) queda
+    # igual al de Norte y el grid 1x4 no se deforma. Los 13 volcanes
+    # australes siguen contenidos (test_zone_bboxes_contain_their_volcanoes).
     "norte":   {"lat_min": -28.0, "lat_max": -17.5, "lon_min": -71.5, "lon_max": -66.5},
     "centro":  {"lat_min": -39.0, "lat_max": -28.0, "lon_min": -73.0, "lon_max": -68.0},
     "sur":     {"lat_min": -41.5, "lat_max": -36.0, "lon_min": -75.0, "lon_max": -70.0},
-    "austral": {"lat_min": -46.5, "lat_max": -41.0, "lon_min": -76.0, "lon_max": -71.0},
+    "austral": {"lat_min": -56.0, "lat_max": -41.0, "lon_min": -76.0, "lon_max": -66.0},
 }

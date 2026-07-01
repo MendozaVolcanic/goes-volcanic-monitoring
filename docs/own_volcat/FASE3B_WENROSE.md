@@ -50,11 +50,18 @@ con reflectividad de scattering R_i y `ε = 1 − R − t`:
 
 **Acople de canales** (reduce 2 incógnitas de transparencia a 1):
 
-    t12 = t11^β ,   β = 0.9   (silicato andesita-dacita chilena; Wen-Rose Fig.1, Pavolonis 2010)
+    t12 = t11^β ,   β central = 0.7 · banda barrida (0.55, 0.95)
 
-> β < 1 codifica la **absorción inversa** de la ceniza (ε11 > ε12 → BTD 11−12 < 0).
-> β no se expone en UI: variarlo sin un retrieval de radio efectivo es engañoso
-> (`CLAUDE.md`: no inventar microfísica). Fijo, documentado.
+> **Procedencia de β (corregida en audit jul-2026):** β = τ12/τ11 es la MISMA
+> cantidad que el β(12,11) de **Pavolonis 2010** (Fig. 3/Tabla 2: andesita
+> r_eff 1–12 µm → β ≈ 0.45…1.0; ceniza fina 2 µm = 0.564; el central 0.7 ≈
+> r_eff 4-5 µm). La cita anterior "β=0.9 (Wen-Rose Fig.1)" era **fantasma** —
+> Wen & Rose 1994 no definen β (usan LUT de Mie; la parametrización t5=t4^β es
+> del linaje cirrus Inoue/Parol). β < 1 codifica la **absorción inversa** de la
+> ceniza (ε11 > ε12 → BTD 11−12 < 0). β NO se mide dentro del solver
+> (circularidad verificada: con β medido en modo β_tropo, Tc=tropopausa se
+> vuelve raíz exacta); el β(12,11) medido por `beta_ratios` solo genera un flag
+> cualitativo ("ceniza fina → tope en la mitad baja de la banda").
 
 **Despeje** (lo que implementamos): dados `I11, I12` (forward-Planck de las BT
 observadas), `Ts` (→ `B_i(Ts)`) y β:

@@ -134,16 +134,26 @@ def _ash_mask_at(dt: datetime, v, radius_deg: float):
     ref = scan_dt or dt
     lat, lon = _window_latlon(xw, yw, sat_lon=sat_lon, H=H)
     bts = {14: bt14}
+    band_scans = {14: scan_dt}
     for b in (BT85_BAND, BT12_BAND):
         pb = download_band_at(ref, b)
         if pb is None:
             return None
+        band_scans[b] = _scan_start(pb.name)
         try:
             with open_band(pb) as dsb:
                 bts[b] = rad_to_bt(dsb.isel(y=slice(y0, y1),
                                             x=slice(x0, x1))).load().values
         except Exception:
             return None
+    # Guard (fix C1, audit jul-2026): las 3 bandas deben ser del MISMO scan —
+    # con S3 a medio subir, mezclar scans da una máscara de ceniza espuria →
+    # centroide falso → advección inventada que puede pasar MAX_ADV_MS. Mismo
+    # guard que wen_rose_height.
+    scans = {s for s in band_scans.values() if s is not None}
+    if len(scans) > 1:
+        logger.warning("wind-shear: bandas de scans distintos: %s", band_scans)
+        return None
 
     def _da(a):
         return xr.DataArray(a, dims=("y", "x"))
@@ -215,7 +225,13 @@ def wind_shear_top_height(
             tzinfo=timezone.utc)
         age_h = abs((wt - ref_dt).total_seconds()) / 3600.0
     except Exception:
-        age_h = 0.0
+        # Fix C2 (audit jul-2026): un valid_time no parseable NO se trata como
+        # "fresco" — si Open-Meteo cambia el formato, asumir edad 0 anularía el
+        # guard silenciosamente y se usaría viento del día equivocado. Rechazar.
+        return {"status": "no_data", "volcano": v.name, "scan_dt": cur[3],
+                "adv_speed_ms": adv_speed, "source": source,
+                "reason": f"valid_time del perfil de viento no parseable "
+                f"({wp.get('valid_time')!r}): no se puede verificar frescura"}
     if age_h > MAX_WIND_AGE_H:
         return {"status": "no_data", "volcano": v.name, "scan_dt": cur[3],
                 "adv_speed_ms": adv_speed, "source": source,

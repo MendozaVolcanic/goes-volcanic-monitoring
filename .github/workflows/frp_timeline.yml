@@ -19,6 +19,10 @@ on:
         required: false
         default: '3'
 
+concurrency:
+  group: frp-timeline
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -56,6 +60,15 @@ jobs:
           else
             TS=$(date -u +'%Y-%m-%dT%H:%MZ')
             git commit -m "frp: rolling intraday timeline $TS"
-            git pull origin main --rebase -X ours 2>/dev/null || true
-            git push origin main || true
+            # Fix audit jul-2026 (W3): en REBASE, -X ours favorece a UPSTREAM
+            # (descartaria el JSON recien construido); -X theirs conserva el
+            # nuestro. Retry x3 y warning visible (no fallo rojo: el ciclo
+            # siguiente se auto-sana por la ventana rodante).
+            ok=""
+            for i in 1 2 3; do
+              git pull origin main --rebase -X theirs && git push origin main && ok=1 && break
+              git rebase --abort 2>/dev/null || true
+              sleep $((i*5))
+            done
+            [ -n "$ok" ] || echo "::warning::frp_timeline: push fallo tras 3 intentos (se recupera en el proximo ciclo)"
           fi

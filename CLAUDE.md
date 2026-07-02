@@ -1,9 +1,16 @@
 # GOES Volcanic Monitoring Dashboard
 
+> ⚖️ **Este proyecto es un SDA en producción bajo Resolución CPLT N°372**: al crear
+> o editar código que clasifique/prediga/decida, aplicar la convención de la
+> `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` (cabecera "FICHA SDA" Nivel 1 +
+> comentarios qué+por qué) y mantener `docs/FICHA_SDA_GOES.md` al día (mismo
+> commit que el cambio de lógica).
+
 ## Qué es este proyecto
 Dashboard NRT de monitoreo volcánico para Chile usando GOES-19 (GOES-East).
 Genera Ash RGB, detección de ceniza (BTD split-window), indicador SO2, y visualiza
-hot spots y color real para 43 volcanes chilenos.
+hot spots y color real para 43 volcanes chilenos. **Licencia Apache-2.0** (código
+libre); registro pre-paper en `docs/paper/REGISTRO_PAPER.md`.
 
 ## Stack técnico
 - **Datos**: AWS S3 `noaa-goes19` (sin credenciales)
@@ -61,12 +68,14 @@ hot spots y color real para 43 volcanes chilenos.
 - **Calbuco 2015 NO sirve para test de plataforma**: RAMMB no archiva GOES-13. Usar eventos recientes (Sangay, Reventador, Sabancaya) del archive GOES-19 ~28 días.
 
 ## Comandos comunes
-- `python -m pytest tests/ -q` — smoke imports, Planck round-trip, geo subsatélite, FRP rollup
-- Workflow `goes.yml` corre cada 10 min, escribe `STATUS_NRT.md` (NO `STATUS.md`)
-- Workflow `frp_timeline.yml` corre cada hora, regenera `data/frp_timeline.json` (pulso
-  intradía de FRP + roll-up diario para el Heatmap — FUENTE ÚNICA, reemplazó al viejo
-  `hotspots_daily.yml` que tenía el bug de "conteo de 1 solo scan", junio 2026)
-- Workflow `lascar_pdf.yml` corre 11:00 UTC, genera reporte PDF en `reports/lascar/`
+- `python -m pytest tests/ -q` — física round-trip (Planck, Wen-Rose, β, viento), geo, FRP rollup
+- Workflow `goes.yml`: **cron DESACTIVADO desde 2026-05-15** (fallaba con "workflow
+  file issue" y nadie consume `STATUS_NRT.md`); queda `workflow_dispatch` manual.
+  Si se reactiva: escribe `STATUS_NRT.md`, NUNCA `STATUS.md` (curado por humanos)
+- Workflow `frp_timeline.yml` corre **cada 10 min**, regenera `data/frp_timeline.json`
+  (pulso intradía de FRP + roll-up diario para el Heatmap — FUENTE ÚNICA, reemplazó
+  al viejo `hotspots_daily.yml` que tenía el bug de "conteo de 1 solo scan", jun 2026)
+- Workflow `lascar_pdf.yml`: **manual** (`workflow_dispatch`), genera PDF en `reports/lascar/`
 
 ## Testing
 - Verificar contra eventos conocidos: Calbuco 2015 (sólo para Wen-Rose con L1b GOES-13, no RAMMB), Puyehue 2011

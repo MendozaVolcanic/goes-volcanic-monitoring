@@ -3,7 +3,6 @@
 Lógica pura (vectorización BT→altitud) determinística; el camino con red
 (bandas L1b + perfil GFS) hace skip si S3/Open-Meteo no responden.
 """
-import functools
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -12,16 +11,6 @@ import numpy as np
 import pytest
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
-
-
-@functools.lru_cache(maxsize=1)
-def _net_ok() -> bool:
-    try:
-        import s3fs
-        s3fs.S3FileSystem(anon=True).ls("noaa-goes19/ABI-L1b-RadF/", detail=False)
-        return True
-    except Exception:
-        return False
 
 
 def _synthetic_profile():

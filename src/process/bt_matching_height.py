@@ -1,3 +1,14 @@
+# ════════════════════════════════════════════════════════════════════
+# FICHA SDA · bt_matching_height.py  ·  SDA: Monitoreo Volcánico GOES-19 · ID: SDA-GOES-01
+# Objetivo      : estimar la altura del tope de pluma (cota inferior) como insumo INDICATIVO
+# Lógica        : el tope opaco emite como su temperatura → se busca esa temperatura en el perfil vertical GFS
+# Modelo/método : reglas determinísticas: BT(11 µm) → interpolación en T(z)
+# Datos entrada : BT GOES-19 + perfil GFS T(z) (Open-Meteo) — SIN datos personales
+# Variables     : BT(11 µm) del tope, perfil T(z), tropopausa (cota superior del mapeo)
+# Limitaciones  : COTA INFERIOR: subestima plumas semitransparentes; ambiguo con inversiones térmicas (mitigado con rama monótona)
+# Refs/datos    : estándar BT-matching; validación en docs/paper/REGISTRO_PAPER.md §3
+# Ficha completa: docs/FICHA_SDA_GOES.md
+# ════════════════════════════════════════════════════════════════════
 """Altura del tope de pluma por **BT-matching** — propia, independiente de SSEC
 Y de NOAA-ACHA (Fase 3a del VOLCAT propio).
 

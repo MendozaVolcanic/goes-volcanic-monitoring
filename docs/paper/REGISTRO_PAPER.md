@@ -51,16 +51,26 @@
 | Láscar 2026-06-27 09:50 | BT-matching 6.8 → Wen-Rose 10.4 km (Δ+3.6; 8/8 px corregidos; Ts=268 K cielo claro; banda β 7.9–13.6 km) · ACHA=no_plume | la corrección de emisividad sube el tope en semitransparente; el método rescata casos sin retrieval L2; banda honesta domina el número |
 | Chillán 2026-06-27 (pluma SO₂) | BTD nunca cruza −1 K → no_plume; SO₂ −3.2 K | correcto: gas transparente en 11 µm NO recibe altura (límite documentado) |
 | Láscar (wind-shear targeted) | advección 151 m/s (imposible) + viento a 41 h → **inputs rotos detectados** → guards MAX_ADV_MS/MAX_WIND_AGE_H | validación negativa útil: reveló 2 modos de fallo |
-| Suite | 132 tests (round-trips de física con coeficientes ABI reales) | forward∘inverse = identidad pineada |
+| Suite | 140 tests (round-trips de física + orquestación end-to-end sintética con anti-band-swap) | forward∘inverse = identidad pineada; swap de bandas ahora rompe la suite |
+| **GFS vs radiosondas (4 estaciones chilenas, 2026-07-01 12Z)** | **T(z) en 5–12 km: RMSE 0.3–1.1 K, bias ≤0.4 K ⇒ ≤60 m de error de altura equivalente** (Pto Montt, Antofagasta, Sto Domingo, Pta Arenas; `scripts/validate_gfs_vs_radiosonde.py`) | el mapeo Tc→altura queda validado contra medición real — el perfil NO es el eslabón débil |
+| Viento GFS vs radiosondas (ídem) | RMSE vectorial 8–17 m/s en 1–15 km | insumo de calibración del árbitro de cizalla: su tolerancia de ambigüedad (3 m/s) es optimista — recalibrar durante la validación con evento real |
 
 ## 4. Fuentes de datos (todas gratuitas, verificadas)
 
 GOES-19 ABI L1b (S3 `noaa-goes19`, C07/11/13/14/15 + C10/16 on-demand) ·
 ABI-L2-ACHA2KMF, FDCF · VOLCAT/SSEC (PNG) · Open-Meteo GFS (T(z), viento,
-skin-T) · **pendientes de integrar (verificadas jul-2026)**: ABI-L2-LVTPF
-(perfil T(z) del propio GOES, mismo bucket), radiosondas Wyoming (endpoint
-`/wsgi/`, Pto Montt 85799), archivo GFS AWS `noaa-gfs-bdp-pds` (≥2021, para
-validación histórica).
+skin-T) · **radiosondas Wyoming YA integradas como validador** (endpoint
+`/wsgi/`, 4 estaciones; `scripts/validate_gfs_vs_radiosonde.py`).
+
+**LVTPF — recon hecho (jul-2026), integración pendiente:** `ABI-L2-LVTPF`
+verificado en el bucket: `LVT(y, x, pressure)` en K, **101 niveles** (vs 19 de
+Open-Meteo), grilla 10 km (1086²), misma proyección geos (reusar
+`_geos_index_bbox`), 45 MB/gránulo cada 10 min. LIMITACIÓN: retrieval de
+**cielo claro** — bajo la pluma está fill → extraer el perfil de los píxeles
+claros del entorno (análogo al clear-sky Ts). Plan: `src/fetch/goes_lvtp.py`
+punto-perfil por volcán como ALTERNATIVA/cross-check del Open-Meteo (mismo
+patrón fetch que goes_acha). Archivo GFS AWS `noaa-gfs-bdp-pds` (≥2021,
+byte-range) pendiente para validación histórica.
 
 ## 5. Lecciones de la auditoría adversarial (material de paper: robustez)
 

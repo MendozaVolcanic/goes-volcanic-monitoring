@@ -1,0 +1,25 @@
+name: Keepalive HF Space
+
+# Reemplaza a keepalive_streamlit.yml (audit jul-2026, W2): aquel era un ZOMBIE
+# — pingueaba goesvolcanic.streamlit.app con Playwright (~90 min/mes de Actions)
+# cuando el deploy es SOLO Hugging Face desde jun-2026. HF Spaces free duerme
+# tras ~48 h sin trafico, pero (a diferencia de Streamlit Cloud) despierta con
+# un simple request HTTP: alcanza un curl liviano cada 6 h, sin browser.
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Ping HF Space
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 90 \
+            "https://mendozavolcanic-goes-volcanic-monitoring.hf.space")
+          echo "HTTP $code"
+          # 200 = despierto; 5xx durante cold-start tambien lo despierta.
+          # Solo alertar si el host no responde en absoluto.
+          [ "$code" != "000" ] || echo "::warning::HF Space no responde (code 000)"

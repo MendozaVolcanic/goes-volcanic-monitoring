@@ -26,9 +26,18 @@ SSEC (`volcano.ssec.wisc.edu`), que tiene latencia ~30-50 min y caídas intermit
 > - **Hallazgo (Chillán 27-jun, pluma SO₂):** ni ACHA ni BT-matching ni Wen-Rose dan
 >   altura a plumas de **gas/SO₂** (transparente en 11 µm → altura espuria bajo el
 >   cráter). El dashboard lo explica con el contexto SO₂. Ver `reference_acha_so2_limit`.
-> - **Pendiente:** Fase 1 (bandas C10/C16 + detección ATBD β-ratios — bloqueada por
->   el mismo gap RTM/clear-sky que la altura cuantitativa); Fase 4 (OE con pyCRTM —
->   NO salvo justificación).
+> - **β-ratios de composición — HECHOS (jul-2026, parcial de Fase 1):** `src/process/
+>   beta_ratios.py` (Pavolonis 2010 modo β_tropo, anclas Tabla 2) confirma silicato
+>   vs hielo/agua en el dashboard. C16 (13.3 µm) ya se descarga (árbitro CO₂ con
+>   gate de altura, `co2_verdict`). El β-DETECTOR completo sigue bloqueado por RTM.
+> - **Fase 3c — CORE HECHO (jul-2026):** árbitro de altura por cizalla de viento
+>   (`src/process/wind_shear_height.py` + `fetch_gfs_wind_profile`), con guards de
+>   advección implausible/viento viejo/mismo-scan. NO cableado al dashboard hasta
+>   validar en evento real.
+> - **Audit jul-2026** (`AUDIT_REPORT_2026-07.md`): F1 CO₂ degenerado y F2 β cita
+>   fantasma CONFIRMADOS y corregidos (β central 0.7, banda 0.55-0.95).
+> - **Pendiente:** resto de Fase 1 (detección β-ratios ATBD-grade — RTM); Fase 4
+>   (OE con pyCRTM — NO salvo justificación).
 
 > **TL;DR para el geólogo.** El producto de referencia (VOLCAT, Pavolonis 2013) NO se mide
 > directo: la altura no es una variable de la ecuación de transferencia radiativa. Lo que

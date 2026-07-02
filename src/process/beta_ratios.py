@@ -1,3 +1,14 @@
+# ════════════════════════════════════════════════════════════════════
+# FICHA SDA · beta_ratios.py  ·  SDA: Monitoreo Volcánico GOES-19 · ID: SDA-GOES-01
+# Objetivo      : confirmar que la pluma detectada es silicato (ceniza) y no hielo/agua — reduce falsas alarmas
+# Lógica        : la razón de absorciones entre canales IR depende solo de la composición de la nube
+# Modelo/método : reglas determinísticas: β-ratios clasificados por cercanía a anclas publicadas
+# Datos entrada : BT GOES-19 C11/C14/C15 + temperatura de tropopausa GFS — SIN datos personales
+# Variables     : β(12,11) y β(8.5,11) vs anclas (ceniza 0.564/0.705, hielo 1.07/0.836, agua 1.21/0.981)
+# Limitaciones  : no separa ceniza de polvo; modo β_tropo aproximado (sin RTM); distancia sin normalizar (audit F5)
+# Refs/datos    : Pavolonis 2010 (Tabla 2, Fig. 3)
+# Ficha completa: docs/FICHA_SDA_GOES.md
+# ════════════════════════════════════════════════════════════════════
 """β-ratios de composición (Pavolonis 2010) — confirmación INDICATIVA de que la
 pluma es **silicato (ceniza)** y no hielo/agua, complementaria a la detección BTD.
 

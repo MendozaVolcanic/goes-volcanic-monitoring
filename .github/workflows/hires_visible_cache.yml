@@ -30,6 +30,12 @@ on:
         type: choice
         options: ['color', 'mono_05km']
 
+concurrency:
+  # Fix audit jul-2026 (W1): cron 10 min + timeout 15 min sin concurrency
+  # permitia runs solapados mutando el mismo release rolling (frames perdidos).
+  group: hires-cache
+  cancel-in-progress: false
+
 permissions:
   contents: write
 

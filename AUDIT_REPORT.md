@@ -1,3 +1,8 @@
+> **NOTA (jul-2026):** los hallazgos CRÍTICOS/ALTOS de este reporte están
+> arreglados de facto (triage verificado en `AUDIT_REPORT_2026-07.md`); el
+> residuo low/medium sigue vigente como backlog. La 2ª auditoría (jul-2026)
+> cubrió la cadena VOLCAT propia + compliance + fuentes.
+
 # Auditoría GOES — Hallazgos (multi-agente, verificados)
 
 **114 hallazgos** · 3 críticos · 16 altos · 35 medios · 60 bajos

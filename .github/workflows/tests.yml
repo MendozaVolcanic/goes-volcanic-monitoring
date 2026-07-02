@@ -8,6 +8,8 @@ on:
       - 'dashboard/**'
       - 'tests/**'
       - 'requirements.txt'
+      - 'requirements_actions.txt'
+      - 'scripts/**'
       - '.github/workflows/tests.yml'
   pull_request:
     branches: [main]
@@ -25,7 +27,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.11'
+          python-version: '3.12'   # = produccion (pyproject requires-python ==3.12.*; fix audit W5)
           cache: 'pip'
 
       - name: Instalar dependencias runtime + pytest

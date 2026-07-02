@@ -66,38 +66,40 @@ jobs:
 
           now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
-          status = f"""# STATUS NRT — GOES Volcanic Monitor (auto-generado)
-
-> Este archivo lo escribe el workflow `goes.yml` cada 10 min con el estado
-> del ultimo ciclo NRT. Para el roadmap y backlog de features ver
-> [`STATUS.md`](STATUS.md) (curado por humanos).
-
-## Ultimo ciclo NRT
-- **Ejecutado**: {now}
-- **Imagen exportada**: {producto_ts}
-- **Productos**: {n_productos} (ash_rgb, ash_so2_rgb)
-- **Dashboard**: https://goesvolcanic.streamlit.app
-
-## Fuentes de datos activas
-| Fuente | Cadencia | Estado |
-|--------|----------|--------|
-| NOAA S3 (L1b ABI) | 10 min | Activo |
-| RealEarth SSEC | ~10 min | Activo |
-| RAMMB Slider | 10 min | Activo |
-
-## GitHub Actions
-- Cron: cada 10 minutos
-- Pipeline: descarga 4 bandas IR → Ash RGB + Ash/SO2 RGB + metadata
-- Historial: ultimas 48 imagenes (~8h) en docs/goes/history/
-
-## Arquitectura
-```
-docs/goes/ash_rgb_latest.png       ← imagen mas reciente
-docs/goes/ash_so2_rgb_latest.png
-docs/goes/meta_latest.json         ← timestamp + historial
-docs/goes/history/                 ← ultimas 48 imagenes
-```
-"""
+          status = chr(10).join([
+              "# STATUS NRT — GOES Volcanic Monitor (auto-generado)",
+              "",
+              "> Este archivo lo escribe el workflow `goes.yml` cada 10 min con el estado",
+              "> del ultimo ciclo NRT. Para el roadmap y backlog de features ver",
+              "> [`STATUS.md`](STATUS.md) (curado por humanos).",
+              "",
+              "## Ultimo ciclo NRT",
+              f"- **Ejecutado**: {now}",
+              f"- **Imagen exportada**: {producto_ts}",
+              f"- **Productos**: {n_productos} (ash_rgb, ash_so2_rgb)",
+              "- **Dashboard**: https://goesvolcanic.streamlit.app",
+              "",
+              "## Fuentes de datos activas",
+              "| Fuente | Cadencia | Estado |",
+              "|--------|----------|--------|",
+              "| NOAA S3 (L1b ABI) | 10 min | Activo |",
+              "| RealEarth SSEC | ~10 min | Activo |",
+              "| RAMMB Slider | 10 min | Activo |",
+              "",
+              "## GitHub Actions",
+              "- Cron: cada 10 minutos",
+              "- Pipeline: descarga 4 bandas IR -> Ash RGB + Ash/SO2 RGB + metadata",
+              "- Historial: ultimas 48 imagenes (~8h) en docs/goes/history/",
+              "",
+              "## Arquitectura",
+              "```",
+              "docs/goes/ash_rgb_latest.png       <- imagen mas reciente",
+              "docs/goes/ash_so2_rgb_latest.png",
+              "docs/goes/meta_latest.json         <- timestamp + historial",
+              "docs/goes/history/                 <- ultimas 48 imagenes",
+              "```",
+              "",
+          ]) + chr(10)
           status_path.write_text(status, encoding="utf-8")
           print(f"STATUS.md actualizado: {now}")
           EOF

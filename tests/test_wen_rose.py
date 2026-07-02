@@ -7,7 +7,6 @@ Tc y una transparencia t conocidas, sintetizo las BT que el satélite vería
 verifico que el solver recupera Tc. Eso pinea la física del despeje sin depender
 de la red. El camino con red (bandas L1b + GFS) hace skip si S3/Open-Meteo fallan.
 """
-import functools
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -23,16 +22,6 @@ from src.process.brightness_temp import planck_rad_from_bt
 # 11−12 lleve información espectral (sin eso no hay despeje de 2 canales).
 COEF14 = (8510.22, 1286.67, 0.07635, 0.99964)   # C14 11.2 µm
 COEF15 = (6454.62, 1173.03, 0.16640, 0.99931)   # C15 12.3 µm
-
-
-@functools.lru_cache(maxsize=1)
-def _net_ok() -> bool:
-    try:
-        import s3fs
-        s3fs.S3FileSystem(anon=True).ls("noaa-goes19/ABI-L1b-RadF/", detail=False)
-        return True
-    except Exception:
-        return False
 
 
 def _bt_from_rad(rad, coef):

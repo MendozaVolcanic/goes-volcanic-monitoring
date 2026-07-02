@@ -1,3 +1,14 @@
+# ════════════════════════════════════════════════════════════════════
+# FICHA SDA · ash_detection.py  ·  SDA: Monitoreo Volcánico GOES-19 · ID: SDA-GOES-01
+# Objetivo      : detectar píxeles con ceniza volcánica para apoyar la evaluación de alerta (decisión final humana)
+# Lógica        : la ceniza silicatada absorbe MÁS a 11 que a 12 µm (absorción inversa) — lo contrario que el hielo
+# Modelo/método : reglas determinísticas: umbral BTD(11−12) < −1 K + test tri-espectral con 8.4 µm
+# Datos entrada : temperaturas de brillo GOES-19 ABI (NOAA, dominio público) — SIN datos personales
+# Variables     : BTD split-window (dispara), BTD tri-espectral (filtra), BT mínima 200 K
+# Limitaciones  : falsos positivos por cirros/nieve (30-60% en invierno chileno, mitigado por tri-espectral); no detecta gas/SO₂
+# Refs/datos    : Prata 1989; ATBD GOES-R VolAsh v3.0
+# Ficha completa: docs/FICHA_SDA_GOES.md
+# ════════════════════════════════════════════════════════════════════
 """Detección de ceniza volcánica mediante BTD split-window.
 
 Implementa la técnica clásica de Prata (1989) adaptada para ABI GOES-R.

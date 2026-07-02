@@ -1,6 +1,6 @@
 # Fase 3b — Retrieval de altura Wen & Rose 1994 (corrección de emisividad 2 canales)
 
-**Fecha:** 2026-06-28 · **Estado:** diseño + implementación
+**Fecha:** 2026-06-28 · **Estado:** DESPLEGADO y validado (Láscar 27-jun) · actualizado post-audit jul-2026 (F1 CO₂ gate, F2 β)
 **Depende de:** Fase 2 (`src/fetch/gfs_profile.py`, perfil GFS T(z)) y Fase 3a
 (`src/process/bt_matching_height.py`, BT-matching). **Mantiene** VOLCAT/SSEC como
 primario cuantitativo; esto es **INDICATIVO**.
@@ -67,13 +67,18 @@ con reflectividad de scattering R_i y `ε = 1 − R − t`:
 observadas), `Ts` (→ `B_i(Ts)`) y β:
 
     t_i(Tc) = ( I_i − B_i(Tc) ) / ( B_i(Ts) − B_i(Tc) )            (de la Eq. anterior)
-    g(Tc)   = t12(Tc) − [ t11(Tc) ]^β
-    resolver  g(Tc) = 0   en  Tc ∈ [T_tropopausa , BT11_obs]
+    minimizar  |t12(Tc) − [t11(Tc)]^β|   en  Tc ∈ [180 K, BT11_obs]
 
-Bisección vectorizada (numpy, determinística). En `Tc = BT11_obs` ⇒ `t11 = 0` (límite
-opaco = BT-matching); el root verdadero está más frío. **Si no hay cambio de signo**
-(píxel no semi-transparente, BTD ≥ 0, o ruido) → **fallback opaco** `Tc = BT11_obs`
-(= BT-matching). Luego `Tc → altitud` con `gfs_profile.altitudes_from_bt` (reusado).
+**Búsqueda en grilla del mínimo residuo** (220 puntos, vectorizada, determinística
+— NO bisección: el residuo es tangente en plumas finas y la bisección exigiría
+bracketing que no siempre existe; actualizado en el audit jul-2026, el texto
+anterior describía una bisección que ya no es el mecanismo). En `Tc = BT11_obs`
+⇒ `t11 = 0` (límite opaco = BT-matching); el mínimo verdadero está más frío. Si
+el píxel no es candidato (BTD ≥ 0, Ts sin contraste) → **fallback opaco**
+`Tc = BT11_obs`. El floor de 180 K permite mínimos bajo la tropopausa que el
+guard `_revert_unreliable` revierte (runaway + mal-condicionamiento, span de Tc
+con residuo ≈ mínimo > 60 K). Luego `Tc → altitud` con
+`gfs_profile.altitudes_from_bt` (reusado).
 
 **Garantía física:** `Tc_WenRose ≤ BT11_obs` siempre (la mezcla con el suelo cálido
 solo puede subir la BT por encima del Tc real) → la altura Wen-Rose **≥** BT-matching.
@@ -135,10 +140,13 @@ decide alerta. Cuatro capas:
    Validado: cazó un Δ=+10.9 km (tope pegado a la tropopausa con 6 px).
 4. **Árbitro independiente CO₂ 13.3 µm** (`co2_semitransparency`, banda C16 de
    `EXTENDED_IR_BANDS`, descarga OPCIONAL solo en este retrieval): `BTD(11−13.3)`
-   sobre la ceniza. Positivo ⇒ semi-transparencia confirmada con física DISTINTA
-   al despeje (la corrección era real); ≈0 ⇒ pluma opaca ⇒ corrección sospechosa
-   de ruido → flag. Es el primer uso honesto del C16 sin RTM (CO₂-slicing
-   cualitativo); la detección ATBD-grade con β-ratios sigue gated por el RTM.
+   sobre la ceniza. **OJO (audit jul-2026, F1): el observable es DEGENERADO para
+   topes bajos** — una opaca a 4 km da el mismo BTD que una fina a 10 km. Por eso
+   `co2_verdict` aplica un gate de cota ≥ 7 km y el lenguaje es "consistente
+   con" (nunca "confirma"). Los **β-ratios de composición** (Pavolonis 2010,
+   modo β_tropo) SÍ están implementados (`src/process/beta_ratios.py`, anclas
+   Tabla 2) como confirmador de silicato; el β-DETECTOR completo (reemplazar el
+   BTD) sigue gated por el RTM clear-sky + umbrales de Pavolonis Part II.
 5. **Guard de mal-condicionamiento** (`_revert_unreliable`): cuando el dato NO
    restringe el `Tc` (pluma fina → residuo plano, τ≲0.5 vía span de Tc dentro de
    `RES_TOL`) o la corrección **satura en la tropopausa** (runaway), esos píxeles

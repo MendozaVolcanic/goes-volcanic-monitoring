@@ -1,3 +1,14 @@
+# ════════════════════════════════════════════════════════════════════
+# FICHA SDA · acha_plume_height.py  ·  SDA: Monitoreo Volcánico GOES-19 · ID: SDA-GOES-01
+# Objetivo      : cruzar la altura propia con el producto oficial de nubes de NOAA (referencia externa)
+# Lógica        : se toma la altura de tope de nube de NOAA solo donde NUESTRA detección ve ceniza
+# Modelo/método : reglas determinísticas: máscara propia ∩ producto L2 ACHA (filtrado por calidad DQF)
+# Datos entrada : ABI-L2-ACHA2KMF (NOAA) + BT GOES-19 para la máscara — SIN datos personales
+# Variables     : HT (altura ACHA), DQF (calidad), percentil 95 del tope
+# Limitaciones  : ACHA es retrieval de nube GENÉRICA (no afinado a ceniza); sin retrieval en plumas finas
+# Refs/datos    : Heidinger ACHA (NOAA); validación cruzada en REGISTRO_PAPER §3
+# Ficha completa: docs/FICHA_SDA_GOES.md
+# ════════════════════════════════════════════════════════════════════
 """Altura del tope de pluma volcánica — producto propio **INDICATIVO**.
 
 Idea (Fase 0 del "VOLCAT propio", ver ``docs/own_volcat/FASE0_ARRANQUE.md``):

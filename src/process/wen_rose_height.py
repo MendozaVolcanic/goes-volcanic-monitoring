@@ -1,3 +1,14 @@
+# ════════════════════════════════════════════════════════════════════
+# FICHA SDA · wen_rose_height.py  ·  SDA: Monitoreo Volcánico GOES-19 · ID: SDA-GOES-01
+# Objetivo      : corregir la altura de pluma por semitransparencia (el número propio principal, INDICATIVO)
+# Lógica        : con 2 canales (11/12 µm) se separa cuánto del brillo viene del suelo a través de la ceniza y cuánto del tope
+# Modelo/método : inversión radiativa simple (grid-search del residuo), sin ML
+# Datos entrada : BT GOES-19 C11/C14/C15 (+C16 opcional) + perfil GFS + BT de cielo claro de la escena — SIN datos personales
+# Variables     : β (microfísica, banda 0.55-0.95 → incertidumbre), Ts (fondo cálido), umbrales de confianza
+# Limitaciones  : sesgo IR −0.4..−0.8 km; banda fiable 3-12 km; NO mide gas/SO₂; banda ancha en ceniza fina (honesto)
+# Refs/datos    : Wen & Rose 1994; Pavolonis 2010; Saint 2024; audit jul-2026 (F1/F2)
+# Ficha completa: docs/FICHA_SDA_GOES.md
+# ════════════════════════════════════════════════════════════════════
 """Altura del tope de pluma por **Wen & Rose 1994** — corrección de emisividad de
 2 canales (11/12 µm) sobre el BT-matching (Fase 3b del VOLCAT propio).
 

@@ -1,3 +1,14 @@
+# ════════════════════════════════════════════════════════════════════
+# FICHA SDA · wind_shear_height.py  ·  SDA: Monitoreo Volcánico GOES-19 · ID: SDA-GOES-01
+# Objetivo      : estimar altura de pluma por el viento que la mueve — árbitro independiente del método térmico (NO en producción aún)
+# Lógica        : la pluma se mueve al viento de SU altura: el desplazamiento entre 2 scans revela a qué altura está
+# Modelo/método : reglas determinísticas: advección del centroide vs perfil de viento GFS
+# Datos entrada : máscaras de ceniza GOES-19 (2 scans) + perfil de viento GFS (Open-Meteo) — SIN datos personales
+# Variables     : advección observada (u,v), cizalla mínima 8 m/s, guards de advección implausible y viento viejo
+# Limitaciones  : requiere cizalla; falla con pluma adjunta en emisión continua (guard pendiente); sin validar en evento real
+# Refs/datos    : Pavolonis et al. 2020 (idea); guards del audit jul-2026
+# Ficha completa: docs/FICHA_SDA_GOES.md
+# ════════════════════════════════════════════════════════════════════
 """Altura del tope de pluma por **cizalla de viento** — árbitro INDEPENDIENTE del
 método térmico (Fase 3c del VOLCAT propio, idea de Pavolonis et al. 2020).
 

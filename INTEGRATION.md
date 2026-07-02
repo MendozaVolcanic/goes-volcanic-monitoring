@@ -1,7 +1,7 @@
 ---
 slug: goes
 title: GOES Volcanic Monitoring
-last_updated: 2026-07-01
+last_updated: 2026-07-02
 last_commit: 6ffd031
 status: producción
 tier: 1
@@ -125,6 +125,7 @@ streamlit run dashboard/app.py
 | Composición de pluma β-ratios (INDICATIVO) | dict {beta_12_11, beta_85_11, composition, is_ash, n_px} | `src/process/beta_ratios.py::beta_composition(...)` (integrado en wen_rose) | 10 min |
 | Altura por cizalla de viento (Fase 3c, NO en dashboard aún) | dict {top_km, band_lo/hi_km, adv_speed_ms, shear_ms} | `src/process/wind_shear_height.py::wind_shear_top_height(dt, volcano)` | on-demand |
 | Perfil GFS T(z) + tropopausa + skin-T | dict {levels[{p_hPa,z_m,T_K}], tropopause, skin_temp_K} | `src/fetch/gfs_profile.py::fetch_gfs_profile(lat, lon, dt)` | 6 h (GFS) |
+| Perfil T(z) LVTPF del propio GOES (cross-check) | dict {levels[{p_hPa,z_m,T_K}], tropopause, n_clear_px, scan_dt, source} — MISMA forma que GFS | `src/fetch/goes_lvtp.py::fetch_lvtp_profile(lat, lon, dt)` | 10 min |
 | Animación MP4 | binary MP4 H.264 | `dashboard/views/rammb_viewer.py::_build_mp4(frames)` | on-demand |
 | Animación GIF | binary GIF | `dashboard/views/rammb_viewer.py::_build_gif(frames)` | on-demand |
 | Frame estático con georef | GeoTIFF EPSG:4326 | `src/export/geotiff.py::build_geotiff_bytes(img, bounds)` | on-demand |
@@ -136,6 +137,7 @@ streamlit run dashboard/app.py
 | Tiles GOES Ash RGB | PNG | RAMMB/CIRA Slider | "RAMMB no disponible" en banner |
 | FDCF L2 NetCDF | xarray.Dataset | `noaa-goes19/ABI-L2-FDCF/...` (S3) | Hot spots no se muestran |
 | ACHA2KMF L2 NetCDF (Cloud Top Height) | xarray.Dataset (var `HT`, `DQF`) | `noaa-goes19/ABI-L2-ACHA2KMF/...` (S3) | Altura propia no se calcula (VOLCAT sigue) |
+| LVTPF L2 NetCDF (perfil vertical de T) | xarray.Dataset (var `LVT(y,x,pressure)`, `DQF_Overall/Retrieval`) | `noaa-goes19/ABI-L2-LVTPF/...` (S3) | Cross-check de perfil no disponible (GFS sigue) |
 | Vientos GFS | JSON | Open-Meteo `api.open-meteo.com/v1/forecast` | Vectores de viento ocultos |
 | Perfil GFS T(z) (pressure levels) | JSON | Open-Meteo `api.open-meteo.com/v1/forecast` (temperature/geopotential_height por nivel) | Altura BT-matching no se calcula |
 | VOLCAT productos | PNG + JSON metadata | `volcano.ssec.wisc.edu/imagery/get_list/json/...` | Tab "sin datos disponibles" |

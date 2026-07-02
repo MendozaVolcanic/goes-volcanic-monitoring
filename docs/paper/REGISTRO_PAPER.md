@@ -27,6 +27,7 @@
 |---|---|---|---|
 | Detección de ceniza | BTD split-window (11.2−12.3 < −1 K) + tri-espectral 8.4 µm | Prata 1989; ATBD GOES-R VolAsh v3.0 | `src/process/ash_detection.py` |
 | Perfil T(z) + tropopausa | GFS vía Open-Meteo pressure levels; tropopausa = punto frío 6-20 km; rama monótona (envolvente fría) para inversiones | — | `src/fetch/gfs_profile.py` |
+| Perfil T(z) alternativo (cross-check) | LVTPF del PROPIO GOES-19 (sondeo IR ABI, 101 niveles); mediana de cielo claro del entorno (DQF_Overall==0 & DQF_Retrieval==0); z(p) derivada por integración hipsométrica anclada a ISA | producto NOAA ABI-L2-LVTPF; ec. hipsométrica | `src/fetch/goes_lvtp.py` |
 | Altura cota (3a) | BT-matching: BT(11 µm) del tope → T(z) → z. Cota inferior | estándar | `src/process/bt_matching_height.py` |
 | Altura corregida (3b) | Wen-Rose 2 canales: I_i=(1−t_i)B_i(Tc)+t_i·B_i(Ts), t12=t11^β; grid-argmin del residuo \|t12−t11^β\| en Tc∈[180 K, BT11]; Ts = BT de cielo claro de la escena (p92 de píxeles no-ceniza) | Wen & Rose 1994 (modelo); Pavolonis 2010 (β) | `src/process/wen_rose_height.py` |
 | Composición (β-ratios) | ε=(R−R_clr)/(B(T_trop)−R_clr); β=ln(1−ε₁)/ln(1−ε₂); clasificación por cercanía a anclas Tabla 2 (ceniza 0.564/0.705, hielo 1.07/0.836, agua 1.21/0.981) | Pavolonis 2010 (modo β_tropo) | `src/process/beta_ratios.py` |
@@ -54,6 +55,7 @@
 | Suite | 140 tests (round-trips de física + orquestación end-to-end sintética con anti-band-swap) | forward∘inverse = identidad pineada; swap de bandas ahora rompe la suite |
 | **GFS vs radiosondas (4 estaciones chilenas, 2026-07-01 12Z)** | **T(z) en 5–12 km: RMSE 0.3–1.1 K, bias ≤0.4 K ⇒ ≤60 m de error de altura equivalente** (Pto Montt, Antofagasta, Sto Domingo, Pta Arenas; `scripts/validate_gfs_vs_radiosonde.py`) | el mapeo Tc→altura queda validado contra medición real — el perfil NO es el eslabón débil |
 | Viento GFS vs radiosondas (ídem) | RMSE vectorial 8–17 m/s en 1–15 km | insumo de calibración del árbitro de cizalla: su tolerancia de ambigüedad (3 m/s) es optimista — recalibrar durante la validación con evento real |
+| **LVTPF (propio GOES) vs GFS** (4 volcanes, 2026-07-02 05:20Z; `scripts/compare_lvtp_vs_gfs.py`) | **T(z) 5–12 km: RMSE medio 0.66 K (0.34–0.98), bias −0.53 K**; mapeo Tc→altura para BT 220–230 K concuerda dentro de **±0.2 km**; divergencia solo en/sobre la tropopausa (BT 215 K, +1.3 km en Villarrica/Chillán) — región ya marcada no fiable (>12 km) | **dos perfiles independientes (satélite propio vs modelo) concuerdan al mismo nivel que GFS concuerda con la radiosonda ⇒ la altura queda doblemente respaldada.** Sesgo frío sistemático ~0.5 K de LVTPF vs GFS (posible bias del sondeador IR / anclaje hipsométrico), a documentar. LVTPF sirve como cross-check NRT sin depender de Open-Meteo |
 
 ## 4. Fuentes de datos (todas gratuitas, verificadas)
 
@@ -62,15 +64,18 @@ ABI-L2-ACHA2KMF, FDCF · VOLCAT/SSEC (PNG) · Open-Meteo GFS (T(z), viento,
 skin-T) · **radiosondas Wyoming YA integradas como validador** (endpoint
 `/wsgi/`, 4 estaciones; `scripts/validate_gfs_vs_radiosonde.py`).
 
-**LVTPF — recon hecho (jul-2026), integración pendiente:** `ABI-L2-LVTPF`
-verificado en el bucket: `LVT(y, x, pressure)` en K, **101 niveles** (vs 19 de
-Open-Meteo), grilla 10 km (1086²), misma proyección geos (reusar
-`_geos_index_bbox`), 45 MB/gránulo cada 10 min. LIMITACIÓN: retrieval de
-**cielo claro** — bajo la pluma está fill → extraer el perfil de los píxeles
-claros del entorno (análogo al clear-sky Ts). Plan: `src/fetch/goes_lvtp.py`
-punto-perfil por volcán como ALTERNATIVA/cross-check del Open-Meteo (mismo
-patrón fetch que goes_acha). Archivo GFS AWS `noaa-gfs-bdp-pds` (≥2021,
-byte-range) pendiente para validación histórica.
+**LVTPF — INTEGRADO (jul-2026):** `src/fetch/goes_lvtp.py` (`fetch_lvtp_profile`)
+baja el gránulo `ABI-L2-LVTPF` (`LVT(y,x,pressure)` en K, **101 niveles** vs 19
+de Open-Meteo, grilla 10 km 1086², misma proyección geos → reusa
+`_geos_index_bbox`; 45 MB/gránulo cada 10 min), recorta el entorno del volcán,
+arma el perfil de **cielo claro** (mediana de píxeles `DQF_Overall==0 &
+DQF_Retrieval==0`; bajo la pluma `DQF_Overall==4` → ignorados, análogo al
+clear-sky Ts) y **deriva la altura geopotencial por integración hipsométrica**
+(LVTPF NO trae z; se ancla al absoluto AMSL con la atmósfera estándar en el
+nivel base — offset constante ~0.1 km). Salida drop-in de `fetch_gfs_profile`.
+Validado como cross-check del GFS (ver §3). 10 tests (`tests/test_lvtp.py`).
+Archivo GFS AWS `noaa-gfs-bdp-pds` (≥2021, byte-range) pendiente para
+validación histórica.
 
 ## 5. Lecciones de la auditoría adversarial (material de paper: robustez)
 
@@ -113,7 +118,9 @@ en evento real (guard de pluma adjunta pendiente).
 
 ## 8. Candidatos a trabajo futuro (ya scopeados)
 
-CO₂-slicing por cociente de radiancias (Menzel 1983) como Fase 3d · perfil
-LVTPF del propio GOES · validación con radiosondas Wyoming · corrección de
-parallax de 1er orden (h·tanθ) · libRadtran para training data (Fase 4, solo
-con justificación).
+CO₂-slicing por cociente de radiancias (Menzel 1983) como Fase 3d · ~~perfil
+LVTPF del propio GOES~~ (HECHO, §4) · ~~validación con radiosondas Wyoming~~
+(HECHA, §3) · corrección de parallax de 1er orden (h·tanθ) · libRadtran para
+training data (Fase 4, solo con justificación) · cablear LVTPF al dashboard
+como cross-check visible del perfil GFS (opcional, junto a la tab "Altura
+propia").

@@ -159,6 +159,59 @@ CO₂-slicing por cociente de radiancias (Menzel 1983) como Fase 3d · ~~perfil
 LVTPF del propio GOES~~ (HECHO, §4) · ~~validación con radiosondas Wyoming~~
 (HECHA, §3) · ~~GFS archivado para validación histórica~~ (HECHO, §4) ·
 ~~corrección de parallax de 1er orden (h·tanθ)~~ (HECHO, §2/§7 — falta cablear
-al mapa) · libRadtran para training data
+al mapa) · fetcher de mesoescala ABI (`ABI-L1b-RadM`, 1 min) cuando un sector
+meso cae sobre un volcán objetivo — para detección de inicio y loops RGB, NO
+para la altura (ver §9) · libRadtran para training data
 (Fase 4, solo con justificación) · cablear LVTPF al dashboard como cross-check
 visible del perfil GFS (opcional, junto a la tab "Altura propia").
+
+## 9. Resolución y cadencia — el techo del ABI y el diseño operacional
+
+Esta sección preempta dos preguntas de revisor ("¿por qué 2 km si VOLCAT tiene
+sectores de 250 m?" y "¿por qué no más frecuente?") y fija el argumento de
+diseño: **el producto compite en cadencia, disponibilidad y honestidad, NO en
+resolución** — porque en resolución no hay margen físico que ganar sobre el ABI.
+
+### 9.1 Resolución: la grilla del sector ≠ la resolución nativa del retrieval
+
+- Las bandas IR del ABI que hacen detección de ceniza y altura (C07/11/13/14/15/16,
+  3.9–13.3 µm) son **2 km en el nadir** — techo físico del sondeador. Solo la banda
+  visible C02 es 0.5 km y C01/03/05 son 1 km, pero el visible NO da altura de ceniza
+  (se necesita IR térmico, día y noche). Por lo tanto **toda** altura de ceniza
+  derivada del ABI es información de 2 km, sea de SSEC o nuestra.
+- Los sectores VOLCAT rotulados "250 m / 500 m / 1 km / 2 km" nombran la **grilla del
+  raster de salida**, elegida según el sensor MÁS FINO asignado a ese sector — **no**
+  la resolución del retrieval de ceniza. Prueba limpia: `Villarrica_250_m` es
+  **VIIRS-only** (sin ABI); el 250 m tiene sentido ahí porque la banda I de VIIRS es
+  ~375 m nativa. En cambio `Copahue_250_m` tiene ABI + VIIRS: cuando pasa el VIIRS el
+  250 m es real, pero cuando alimenta el ABI su ceniza de 2 km se **re-muestrea** a la
+  misma grilla de 250 m para co-registrar con el VIIRS — los píxeles extra son
+  interpolación, no información nueva. La altura de ceniza desde ABI sigue siendo de
+  2 km cualquiera sea la grilla del raster.
+- Nuestra cadena entrega en la grilla nativa 2 km del ABI. Re-muestrear a un raster de
+  250 m sería una línea de `interp` (cosmético, cero información nueva) → **no lo
+  hacemos, por honestidad**. Para 250 m REAL habría que ingerir VIIRS polar (375 m),
+  pero a ~12 h de revisita por satélite — lo que contradice el objetivo NRT.
+- **Trade-off central del producto:** resolución espacial (polar, VIIRS 375 m, ~12 h)
+  vs cadencia (geo, ABI 2 km, 10 min). Elegimos cadencia: una decisión de alerta
+  necesita frescura, no píxeles.
+
+### 9.2 Cadencia: qué permite el ABI (verificado en `noaa-goes19`, jul-2026)
+
+| Modo ABI | Cadencia | Cobertura |
+|---|---|---|
+| Full Disk (`RadF`, el que usamos) | 10 min (6 scans/h) | hemisferio, incluye Chile |
+| CONUS (`RadC`) | 5 min | solo Norteamérica |
+| Mesoescala (`RadM1`/`RadM2`) | **1 min** (60 scans/h) | 1000×1000 km, apuntable |
+
+- La cadencia de **1 min existe** en el mismo bucket sin credenciales (10× sobre el
+  Full Disk). Pero hay **solo 2 sectores meso** para todo el hemisferio de GOES-East
+  y **NOAA decide adónde apuntan**: verificado jul-2026, ambos sobre EE.UU. (M1 sobre
+  Indiana, M2 sobre Iowa). Sobre Chile es **oportunista / pedible** (vía VAAC / NOAA
+  durante un evento mayor — mismo mecanismo que pedir cobertura de sector VOLCAT).
+- **Matiz físico contraintuitivo:** 1 min **rompe** el árbitro de viento — una pluma a
+  20 m/s se mueve 12 km en 10 min (6 px, rastreable) pero solo 1.2 km en 1 min (<1 px,
+  no rastreable). O sea, más cadencia sirve para **detección de inicio y loops RGB**,
+  pero le quita la señal al método de altura por advección. No es universalmente mejor.
+- La **latencia** (~13 min) está limitada por cuándo aparece el archivo en S3, no por
+  la cadencia: subir la cadencia no baja la latencia.

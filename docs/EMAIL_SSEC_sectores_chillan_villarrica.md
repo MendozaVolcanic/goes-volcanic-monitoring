@@ -51,12 +51,15 @@ Reventador, Sabancaya, Nevado del Ruiz, Ubinas, Tungurahua, Cotopaxi, Chiles,
 Puracé — has an active high‑resolution sector. Given that Villarrica is one of the
 most persistently active volcanoes in the Andes (near‑continuous lava lake and
 frequent Strombolian activity), **could this sector be reactivated?** We would value
-it primarily for the **VIIRS** retrievals (M‑band ash‑top‑height at 750 m, I‑band
-masking at 375 m), which resolve small, crater‑scale plumes far better than the
-2 km ABI product we can generate ourselves — a genuine high‑resolution cross‑check
-for our own retrievals. If GOES‑19 ABI can also be assigned to the sector for
-continuity between polar overpasses, all the better, though we understand that on
-ABI the sector remains at the ~2 km native IR resolution.
+it for the **VIIRS** retrievals (M‑band ash‑top‑height at 750 m, I‑band masking at
+375 m), which genuinely resolve small, crater‑scale plumes at a native resolution
+the 2 km GOES‑ABI cannot reach. Concretely, your validated, operational VIIRS
+product would give us (a) a trusted reference to cross‑validate our own
+ash‑top‑height retrievals — currently from GOES‑ABI, and a VIIRS 750 m retrieval we
+are now developing in‑house — and (b) the mass‑loading, effective‑radius and
+probability fields we do not compute. If GOES‑19 ABI can also be assigned to the
+sector for continuity between polar overpasses, all the better, though we understand
+that on ABI the sector remains at the ~2 km native IR resolution.
 
 **2 — A new dedicated sector for Nevados de Chillán.**
 Nevados de Chillán (−36.86, −71.38) is currently in eruption and under active
@@ -88,7 +91,11 @@ than the baseline full‑disk product, since automated detection over the comple
 Andean terrain is prone to false positives. Could you tell us whether such access is
 available to a national volcano observatory — for example
 through the operational‑partner feed, or the forthcoming NCCF distribution as VOLCAT
-transitions to NOAA operations — and what the process would be?
+transitions to NOAA operations — and what the process would be? **Of the three
+requests, this gridded‑data access is the one we would prioritise:** as we develop
+our own open‑source retrievals, a validated VOLCAT ground‑truth is what we most need
+to benchmark them against, and it would benefit every sector you already run rather
+than a single volcano.
 
 This work supports SERNAGEOMIN's volcanic‑alert decision‑making. Both Villarrica and
 Nevados de Chillán rank among Chile's highest‑hazard volcanoes and are currently at
@@ -116,14 +123,16 @@ OVDAS — Observatorio Volcanológico de los Andes del Sur, SERNAGEOMIN, Chile
   ocasional en Villarrica) ≈ #2 (Chillán, **solo si es VIIRS-enabled o con detección tuneada**). La
   carta mantiene el orden fácil→grande por retórica, pero si hay que priorizar en un follow-up, el
   gridded es el que mueve la aguja.
-- **Por qué pedimos VIIRS a SSEC en vez de ingerirlo nosotros (decisión jul-2026):** NO vamos a
-  construir un pipeline VIIRS propio. El dato VIIRS es gratis en AWS (`noaa-jpss`: SNPP/NOAA20;
-  `noaa-nesdis-n21-pds`: NOAA-21), pero es un modelo POLAR (gránulos con geolocalización propia
-  VNP03, bowtie, ángulo de vista variable) totalmente distinto de la grilla geos fija del ABI sobre
-  la que está construido TODO nuestro código — integrarlo es un 2º pipeline geométrico completo, para
-  ~2 ventanas/día, cuando el retrieval VIIRS ya existe tuneado en SSEC. Por eso la palanca correcta
-  es su salida gridded, no rehacer la física polar. (La única excepción: un "Fase 5" polar propio por
-  soberanía, solo si el acceso vía SSEC se cae.)
+- **Estado VIIRS propio (ACTUALIZADO jul-2026):** SÍ estamos construyendo un retrieval de ALTURA
+  VIIRS 750 m propio (`src/process/viirs_wen_rose.py`, Fases 1-2 hechas + testeadas, validación en
+  vivo pendiente de un EARTHDATA_TOKEN). Resultó de días —no meses— porque **reusamos la infra de
+  VRP Chile** (auth NASA, geolocalización de swath, calibración BT), que ya tenía resuelta la parte
+  cara de la geometría polar. NO construimos VIIRS térmico (eso es VRP Chile). Entonces, ¿por qué
+  seguir pidiéndole VIIRS a SSEC? Porque su producto está **validado y operacional** (el nuestro es
+  prototipo), da **carga/reff/probabilidad/máscara 375 m** que no calculamos, y es el **ground-truth**
+  para validar el nuestro. Por eso el correo ahora menciona el retrieval propio "en desarrollo" (nos
+  posiciona como colaborador serio) y refuerza el #3 (gridded) como prioridad — es lo que más
+  necesitamos para benchmarkear lo que construimos.
 - **OJO — el 250 m ABI "pelado" NO ayuda:** la ganancia de resolución en un sector viene de VIIRS
   (375/750 m) o de detección tuneada, NO de la grilla del raster: un sector alimentado solo con ABI
   sigue siendo 2 km nativo re-muestreado (ver `REGISTRO_PAPER §9`). Por eso los pedidos #1 y #2 ahora

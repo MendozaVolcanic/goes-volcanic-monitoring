@@ -28,7 +28,7 @@ Dos piezas:
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from typing import Optional
 
 import numpy as np
@@ -45,6 +45,7 @@ from src.fetch.goes_fdcf import (
     _parse_scan_time,
     _SAT_LON_DEFAULT,
 )
+from src.fetch.granule_select import nearest_granule_key
 
 logger = logging.getLogger(__name__)
 
@@ -186,17 +187,13 @@ def fetch_scan_sliced(
         dt = dt.replace(tzinfo=timezone.utc)
 
     s3 = s3fs.S3FileSystem(anon=True)
-    keys = _list_files_at_hour(s3, dt)
-    if not keys:
-        keys = _list_files_at_hour(s3, dt - timedelta(hours=1))
-    if not keys:
+    # Unión [dt-1h, dt, dt+1h]: en el borde de hora el scan más cercano al target
+    # puede caer en la hora adyacente; elegir solo dentro de la hora de dt lo
+    # mal-atribuiría a un bucket de 10 min equivocado en la timeline intradía.
+    chosen = nearest_granule_key(lambda h: _list_files_at_hour(s3, h),
+                                 _parse_scan_time, dt)
+    if chosen is None:
         return [], None
-
-    def _delta(k):
-        ts = _parse_scan_time(k)
-        return float("inf") if ts is None else abs((ts - dt).total_seconds())
-
-    chosen = min(keys, key=_delta)
     try:
         with s3.open(chosen, "rb") as f:
             ds = xr.open_dataset(f, engine="h5netcdf")

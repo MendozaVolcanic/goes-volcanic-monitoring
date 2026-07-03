@@ -95,6 +95,18 @@ independiente → fix**. Dos hallazgos confirmados que cambiaron el método
   **Anti-fix documentado:** alimentar el β medido (modo β_tropo) al solver es
   circular de forma exacta (Tc=tropopausa se vuelve raíz) — verificado antes
   de implementarlo.
+- **F3 — selección de gránulo en el borde de hora (reproducibilidad de la
+  validación histórica):** un 2º bug hunt multi-agente (jul-2026) halló que los
+  5 fetchers S3 (`goes_s3`, `frp_timeline`, `goes_fdcf`, `goes_acha`,
+  `goes_lvtp`) elegían el "scan más cercano a `dt`" listando solo la carpeta
+  horaria de `dt` con la previa como *fallback* — nunca la hora SIGUIENTE. En un
+  borde de hora (p.ej. `dt`=HH:56, cuyo vecino real es (HH+1):00) eso selecciona
+  un gránulo temporalmente más lejano y sesga el frame usado para altura/ceniza,
+  o mal-atribuye el FRP a un bucket de 10 min adyacente. Fix: helper único
+  `src/fetch/granule_select.py` que elige el de menor \|Δt\| sobre la **unión**
+  `[dt-1h, dt, dt+1h]` (puro, testeado sin red). Implicancia para el paper:
+  al reportar casos de validación por fecha/hora, la cadena ahora garantiza el
+  gránulo verdaderamente más cercano al instante objetivo.
 
 ## 6. Open source / reproducibilidad
 

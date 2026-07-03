@@ -385,6 +385,11 @@ def volcat_height_at(volcano, dt, radius_deg: float = 0.6) -> Optional[dict]:
     if vc is None:
         return {"note": "sin frame VOLCAT Ash_Height en ±40 min"}
     coords = vc["coords"]
+    # El API puede devolver frames (endtime) pero sin 'coordinates' (respuesta
+    # parcial de SSEC / sector recién creado): coords=None. Degradar a note como
+    # el resto de la función, en vez de reventar con AttributeError en coords.get.
+    if not coords:
+        return {"note": f"sector {sector} sin coordenadas de georef en VOLCAT"}
     if str(coords.get("PROJECTION", "")).upper() == "PS":
         return {"note": f"sector {sector} es PS (georef no-lineal) — omitido"}
     try:

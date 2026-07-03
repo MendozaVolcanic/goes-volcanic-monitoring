@@ -912,6 +912,14 @@ def render():
             zone=zone_key, volc=volc_name, radius=radius,
             range_on=range_on, range_h=range_h, hires_loop=hires_loop,
         )
+        # Invalidar los binarios de descarga cacheados del scope ANTERIOR: viven
+        # en claves globales de sesion (no llevan scope/producto), asi que sin
+        # esto el boton de descarga seguiria sirviendo el GIF/MP4/ZIP del volcan
+        # viejo bajo la animacion nueva — se archivaria/compartiria el archivo
+        # equivocado (integridad de export en un SDA). (bug hunt jul-2026)
+        for _k in ("_gif_bytes", "_gif_name", "_mp4_bytes", "_mp4_name",
+                   "_zip_bytes", "_zip_name"):
+            st.session_state.pop(_k, None)
 
     sel = st.session_state.get("anim_sel", dict(
         product=product, n=n_frames, scope=scope,
@@ -1051,13 +1059,18 @@ def render():
 
     st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
 
-    # Status banner con scope + hora UTC+CLT
+    # Status banner con scope + hora UTC+CLT. OJO: el label del producto sale de
+    # sel["product"] (el CARGADO), así que la hora debe recomputarse para ESE
+    # producto, no para el valor vivo del selector `product` (que puede diferir
+    # si el usuario lo cambió sin re-presionar "Cargar"): si no, el banner
+    # mostraría "Ash RGB · <hora del último scan de SO2>". Cacheado (ttl 300).
+    latest_ts_label_loaded = _fetch_latest_ts_label(sel["product"])
     st.markdown(
         f'<div class="status-banner ok">'
         f'<b>&#10003; {len(frames)} frames &middot; '
         f'{PRODUCT_LABELS[sel["product"]]} &middot; {scope_label}</b>'
         f'<span style="color:#556677; font-size:0.78rem;">'
-        f'{latest_ts_label}</span>'
+        f'{latest_ts_label_loaded}</span>'
         f'</div>',
         unsafe_allow_html=True,
     )

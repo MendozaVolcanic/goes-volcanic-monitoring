@@ -71,4 +71,5 @@
 **Mantenimiento de esta ficha:** revisar cuando cambie la lógica/método (regla:
 mismo commit que el cambio). Módulos con cabecera "FICHA SDA" (Nivel 1):
 `src/process/ash_detection.py`, `bt_matching_height.py`, `wen_rose_height.py`,
-`beta_ratios.py`, `wind_shear_height.py`, `acha_plume_height.py`.
+`beta_ratios.py`, `wind_shear_height.py`, `acha_plume_height.py`,
+`parallax.py` (corrige la georef de la pluma por su altura).

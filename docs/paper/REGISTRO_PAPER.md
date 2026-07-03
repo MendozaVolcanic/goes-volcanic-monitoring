@@ -34,6 +34,7 @@
 | Árbitro CO₂ | BTD(11−13.3) con **gate de altura** (solo discrimina con cota ≥ 7 km; ver §5 F1) | Menzel 1983 (heritage); audit propio | `co2_verdict` en wen_rose |
 | Altura por viento (3c) | Advección del centroide entre 2 scans → perfil de viento GFS → z; requiere cizalla ≥8 m/s; banda de ambigüedad ±8 m/s (= RMSE del viento GFS, no ±3 optimista); guards de advección implausible (>60 m/s), **advección casi nula con cizalla fuerte → pluma adjunta al cráter, `adv_ambiguous`**, viento viejo (>3 h) y mismo-scan | Pavolonis et al. 2020 (idea) | `src/process/wind_shear_height.py` (no en producción aún) |
 | Referencia externa | ACHA NOAA (ABI-L2-ACHA2KMF ∩ máscara de ceniza) | Heidinger OE | `src/process/acha_plume_height.py` |
+| Parallax (georef) | Corre la pluma hacia el subsatélite Δ = h·tan(θ_zenit) (1er orden); ~1 km/km a −40°S. NO cambia el tope, solo su posición en el mapa | Vicente et al. 2002; geometría geos | `src/process/parallax.py` |
 
 **Cuantificación de incertidumbre (la contribución central del paper):**
 1. Banda por microfísica: β barrido en (0.55, 0.95) → tope como [lo, hi].
@@ -133,9 +134,10 @@ independiente → fix**. Dos hallazgos confirmados que cambiaron el método
 ## 7. Límites declarados (sección "limitations" ya redactada)
 
 Resolución 2 km (techo físico IR ABI) · sesgo IR sistemático −0.4..−0.8 km ·
-banda fiable 3-12 km · sin altura para plumas de gas/SO₂ · sin corrección de
-parallax en georef (~1.2 km por km de altura a −40°S; hallazgo F4, pendiente) ·
-sin RTM (β_tropo aproximado con clear-sky de escena) · wind-shear con banda de
+banda fiable 3-12 km · sin altura para plumas de gas/SO₂ · parallax de georef
+corregido a 1er orden (Δ = h·tanθ, ~1 km/km a −40°S; `parallax.py`; falta
+cablearlo al render del mapa) · sin RTM (β_tropo aproximado con clear-sky de
+escena) · wind-shear con banda de
 ambigüedad recalibrada al RMSE del viento GFS (±8 m/s) y guard de pluma adjunta
 (`adv_ambiguous`) implementados, pero el NÚMERO aún sin validar en evento real.
 
@@ -144,6 +146,7 @@ ambigüedad recalibrada al RMSE del viento GFS (±8 m/s) y guard de pluma adjunt
 CO₂-slicing por cociente de radiancias (Menzel 1983) como Fase 3d · ~~perfil
 LVTPF del propio GOES~~ (HECHO, §4) · ~~validación con radiosondas Wyoming~~
 (HECHA, §3) · ~~GFS archivado para validación histórica~~ (HECHO, §4) ·
-corrección de parallax de 1er orden (h·tanθ) · libRadtran para training data
+~~corrección de parallax de 1er orden (h·tanθ)~~ (HECHO, §2/§7 — falta cablear
+al mapa) · libRadtran para training data
 (Fase 4, solo con justificación) · cablear LVTPF al dashboard como cross-check
 visible del perfil GFS (opcional, junto a la tab "Altura propia").

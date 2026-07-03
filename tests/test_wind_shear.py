@@ -168,6 +168,39 @@ def test_guard_pluma_adjunta_emision_continua(monkeypatch):
     assert r["shear_ms"] >= ws.MIN_SHEAR_MS
 
 
+def test_wind_profile_fn_injection(monkeypatch):
+    """El proveedor de viento es inyectable (para validación histórica con GFS de
+    archivo): si paso un ``wind_profile_fn`` propio, se usa ESE y NO Open-Meteo."""
+    import src.process.wind_shear_height as ws
+
+    lat = np.array([[-38.0]]); lon = np.array([[-71.5]])
+    t_cur = datetime(2026, 6, 15, 12, 0, 0, tzinfo=timezone.utc)
+    t_prev = datetime(2026, 6, 15, 11, 50, 0, tzinfo=timezone.utc)
+
+    def fake_mask_at(dt, v, radius_deg):
+        # Pluma que se MUEVE: centroide desplazado ~15 km al este entre scans.
+        shift = 0.0 if dt >= t_cur - timedelta(minutes=1) else 0.17  # ~15 km/lon
+        return np.array([[True]]), lat, lon - shift, (
+            t_cur if dt >= t_cur - timedelta(minutes=1) else t_prev)
+
+    monkeypatch.setattr(ws, "_ash_mask_at", fake_mask_at)
+
+    calls = {"n": 0}
+
+    def my_wind(la, lo, dt):
+        calls["n"] += 1
+        return {"levels": [
+            {"z_m": 2000.0, "u_ms": 0.0, "v_ms": 0.0},
+            {"z_m": 6000.0, "u_ms": 25.0, "v_ms": 0.0},     # ~15km/600s ≈ 25 m/s este
+            {"z_m": 12000.0, "u_ms": -20.0, "v_ms": 30.0},
+        ], "valid_time": "2026-06-15T12:00", "lat": la, "lon": lo, "source": "inj"}
+
+    r = ws.wind_shear_top_height(t_cur, _FakeVolcano(), prev_gap_min=10,
+                                 wind_profile_fn=my_wind)
+    assert calls["n"] == 1, "el proveedor inyectado debe ser el usado"
+    assert r["status"] == "ok" and abs(r["top_km"] - 6.0) < 0.01, r
+
+
 if __name__ == "__main__":
     test_plume_centroid()
     test_advection_uv_recovers_velocity()

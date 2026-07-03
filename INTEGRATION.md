@@ -1,7 +1,7 @@
 ---
 slug: goes
 title: GOES Volcanic Monitoring
-last_updated: 2026-07-02
+last_updated: 2026-07-03
 last_commit: 6ffd031
 status: producción
 tier: 1
@@ -37,7 +37,8 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
 | Fuente primaria | RAMMB/CIRA Slider (`slider.cira.colostate.edu`) |
 | Fuente secundaria | NOAA AWS S3 (`noaa-goes19` bucket) |
 | Fuente VOLCAT | SSEC/CIMSS portal (`volcano.ssec.wisc.edu`) |
-| Fuente vientos | Open-Meteo API (modelo GFS, niveles 300/500/850 hPa) |
+| Fuente vientos | Open-Meteo API (modelo GFS) + GFS archivado GRIB2 (`noaa-gfs-bdp-pds`, byte-range, validación histórica) |
+| Fuente VIIRS | NASA GIBS WMS (`gibs.earthdata.nasa.gov`) — imagen 375 m + anomalías térmicas para volcanes australes sin monitoreo GOES dedicado (complemento, no NRT) |
 | Cadencia GOES-19 ABI | 10 min Full Disk |
 | Latencia RAMMB | 3-5 min después del scan |
 | Latencia detección | ≤ 60 s desde publicación RAMMB |
@@ -126,6 +127,8 @@ streamlit run dashboard/app.py
 | Altura por cizalla de viento (Fase 3c, NO en dashboard aún) | dict {top_km, band_lo/hi_km, adv_speed_ms, shear_ms} | `src/process/wind_shear_height.py::wind_shear_top_height(dt, volcano)` | on-demand |
 | Perfil GFS T(z) + tropopausa + skin-T | dict {levels[{p_hPa,z_m,T_K}], tropopause, skin_temp_K} | `src/fetch/gfs_profile.py::fetch_gfs_profile(lat, lon, dt)` | 6 h (GFS) |
 | Perfil T(z) LVTPF del propio GOES (cross-check) | dict {levels[{p_hPa,z_m,T_K}], tropopause, n_clear_px, scan_dt, source} — MISMA forma que GFS | `src/fetch/goes_lvtp.py::fetch_lvtp_profile(lat, lon, dt)` | 10 min |
+| Perfil GFS ARCHIVADO (T(z) + viento, validación histórica) | dict MISMA forma que gfs_profile | `src/fetch/gfs_archive.py::fetch_gfs_profile_archive / fetch_gfs_wind_profile_archive` (GRIB2 byte-range; dep opcional `eccodes`) | 6 h (archivo ≥2021) |
+| Imagen VIIRS georreferenciada (complemento australes) | dict {image HxWx3, bounds, layer, date, coverage_frac} | `src/fetch/viirs_gibs.py::fetch_viirs_image(lat, lon, when, layer)` (True Color / térmico 375 m / Day-Night, vía NASA GIBS) | ~2 pasadas/día |
 | Animación MP4 | binary MP4 H.264 | `dashboard/views/rammb_viewer.py::_build_mp4(frames)` | on-demand |
 | Animación GIF | binary GIF | `dashboard/views/rammb_viewer.py::_build_gif(frames)` | on-demand |
 | Frame estático con georef | GeoTIFF EPSG:4326 | `src/export/geotiff.py::build_geotiff_bytes(img, bounds)` | on-demand |

@@ -32,7 +32,7 @@
 | Altura corregida (3b) | Wen-Rose 2 canales: I_i=(1−t_i)B_i(Tc)+t_i·B_i(Ts), t12=t11^β; grid-argmin del residuo \|t12−t11^β\| en Tc∈[180 K, BT11]; Ts = BT de cielo claro de la escena (p92 de píxeles no-ceniza) | Wen & Rose 1994 (modelo); Pavolonis 2010 (β) | `src/process/wen_rose_height.py` |
 | Composición (β-ratios) | ε=(R−R_clr)/(B(T_trop)−R_clr); β=ln(1−ε₁)/ln(1−ε₂); clasificación por cercanía a anclas Tabla 2 (ceniza 0.564/0.705, hielo 1.07/0.836, agua 1.21/0.981) | Pavolonis 2010 (modo β_tropo) | `src/process/beta_ratios.py` |
 | Árbitro CO₂ | BTD(11−13.3) con **gate de altura** (solo discrimina con cota ≥ 7 km; ver §5 F1) | Menzel 1983 (heritage); audit propio | `co2_verdict` en wen_rose |
-| Altura por viento (3c) | Advección del centroide entre 2 scans → perfil de viento GFS → z; requiere cizalla ≥8 m/s; guards de advección implausible (>60 m/s), viento viejo (>3 h) y mismo-scan | Pavolonis et al. 2020 (idea) | `src/process/wind_shear_height.py` (no en producción aún) |
+| Altura por viento (3c) | Advección del centroide entre 2 scans → perfil de viento GFS → z; requiere cizalla ≥8 m/s; banda de ambigüedad ±8 m/s (= RMSE del viento GFS, no ±3 optimista); guards de advección implausible (>60 m/s), **advección casi nula con cizalla fuerte → pluma adjunta al cráter, `adv_ambiguous`**, viento viejo (>3 h) y mismo-scan | Pavolonis et al. 2020 (idea) | `src/process/wind_shear_height.py` (no en producción aún) |
 | Referencia externa | ACHA NOAA (ABI-L2-ACHA2KMF ∩ máscara de ceniza) | Heidinger OE | `src/process/acha_plume_height.py` |
 
 **Cuantificación de incertidumbre (la contribución central del paper):**
@@ -125,8 +125,9 @@ independiente → fix**. Dos hallazgos confirmados que cambiaron el método
 Resolución 2 km (techo físico IR ABI) · sesgo IR sistemático −0.4..−0.8 km ·
 banda fiable 3-12 km · sin altura para plumas de gas/SO₂ · sin corrección de
 parallax en georef (~1.2 km por km de altura a −40°S; hallazgo F4, pendiente) ·
-sin RTM (β_tropo aproximado con clear-sky de escena) · wind-shear sin validar
-en evento real (guard de pluma adjunta pendiente).
+sin RTM (β_tropo aproximado con clear-sky de escena) · wind-shear con banda de
+ambigüedad recalibrada al RMSE del viento GFS (±8 m/s) y guard de pluma adjunta
+(`adv_ambiguous`) implementados, pero el NÚMERO aún sin validar en evento real.
 
 ## 8. Candidatos a trabajo futuro (ya scopeados)
 

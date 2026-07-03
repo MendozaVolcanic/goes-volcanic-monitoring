@@ -4,8 +4,8 @@
 # Lógica        : la pluma se mueve al viento de SU altura: el desplazamiento entre 2 scans revela a qué altura está
 # Modelo/método : reglas determinísticas: advección del centroide vs perfil de viento GFS
 # Datos entrada : máscaras de ceniza GOES-19 (2 scans) + perfil de viento GFS (Open-Meteo) — SIN datos personales
-# Variables     : advección observada (u,v), cizalla mínima 8 m/s, guards de advección implausible y viento viejo
-# Limitaciones  : requiere cizalla; falla con pluma adjunta en emisión continua (guard pendiente); sin validar en evento real
+# Variables     : advección observada (u,v), cizalla mínima 8 m/s, banda de ambigüedad ±8 m/s (RMSE viento GFS), guards de advección implausible/nula y viento viejo
+# Limitaciones  : requiere cizalla; pluma adjunta en emisión continua → adv_ambiguous (guard); número aún sin validar en evento real
 # Refs/datos    : Pavolonis et al. 2020 (idea); guards del audit jul-2026
 # Ficha completa: docs/FICHA_SDA_GOES.md
 # ════════════════════════════════════════════════════════════════════
@@ -45,7 +45,22 @@ BT11_BAND = 14
 BT12_BAND = 15
 M_PER_DEG_LAT = 111320.0    # metros por grado de latitud (WGS84 aprox.)
 MIN_SHEAR_MS = 8.0          # cizalla mínima (spread de viento) para discriminar
-AMB_TOL_MS = 3.0            # tolerancia de mismatch para la banda de ambigüedad
+# Tolerancia de mismatch para la banda de ambigüedad. Antes 3 m/s (optimista): la
+# validación con radiosondas (jul-2026, scripts/validate_gfs_vs_radiosonde.py)
+# midió que el viento GFS tiene RMSE VECTORIAL 8–17 m/s en 1–15 km. Con una banda
+# de ±3 m/s alrededor del mejor nivel, cualquier nivel cuyo viento diste <3 m/s del
+# observado se marcaba "ambiguo", PERO el propio viento del modelo ya erra ≥8 m/s →
+# la banda subestimaba la incertidumbre real (mismo sesgo que el β de F2). La atamos
+# al piso de ruido del viento (= MIN_SHEAR_MS): dos niveles cuyo viento difiere menos
+# que ese ruido NO son distinguibles. Es el EXTREMO INFERIOR del RMSE medido (hasta
+# 17 m/s), así que la banda reportada es una COTA INFERIOR de la ambigüedad real.
+AMB_TOL_MS = 8.0
+# Advección casi nula: una pluma en emisión CONTINUA queda anclada al cráter (se
+# realimenta desde abajo) → su centroide no se mueve aunque haya viento fuerte
+# arriba. Ese caso es INDISTINGUIBLE por advección de una pluma real en un nivel
+# calmo, y el árbitro le asignaría el nivel de viento nulo (altura baja FALSA; F3
+# del audit jul-2026). Si adv < esto y ADEMÁS hay cizalla fuerte, se rechaza.
+MIN_ADV_MS = 3.0
 # Guards revelados al validar en Láscar 27-jun (2026): plumas chicas cambian sus
 # píxeles detectados entre scans → el centroide "salta" y da advección espuria; y
 # fuera de la ventana de forecast el perfil de viento queda viejo (día equivocado).
@@ -258,6 +273,19 @@ def wind_shear_top_height(
         "mismatch_ms": wh["mismatch_ms"], "shear_ms": wh["shear_ms"],
         "source": source,
     }
+    # Guard de pluma ADJUNTA (F3): advección casi nula CON cizalla fuerte arriba ⇒
+    # el centroide está anclado (emisión continua, realimentada desde el cráter),
+    # no flotando en aire calmo. El árbitro le daría el nivel de viento nulo →
+    # altura baja FALSA. Como la advección sola no distingue "anclada" de "en un
+    # nivel calmo real", declinamos dar altura (honestidad, análogo a la
+    # degeneración CO₂ de F1). Si NO hay cizalla, cae abajo en no_shear.
+    if adv_speed < MIN_ADV_MS and wh["shear_ms"] >= MIN_SHEAR_MS:
+        out.update({"status": "adv_ambiguous", "top_km": None,
+                    "reason": f"advección casi nula ({adv_speed:.1f} m/s) con "
+                    f"cizalla fuerte ({wh['shear_ms']:.0f} m/s): pluma posiblemente "
+                    "adjunta al cráter (emisión continua) — indistinguible de un "
+                    "nivel calmo, no se asigna altura"})
+        return out
     if not wh["discriminates"]:
         out.update({"status": "no_shear", "top_km": None,
                     "reason": f"cizalla insuficiente ({wh['shear_ms']:.0f} m/s): "

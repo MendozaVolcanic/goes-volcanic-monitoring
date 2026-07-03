@@ -40,9 +40,9 @@ def main(hours_back=48, step_h=6, radius=0.6):
             dt = now - timedelta(hours=back)
             ws = wind_shear_top_height(dt, v, radius_deg=radius)
             st = ws.get("status")
-            if st in ("ok", "no_shear"):
+            if st in ("ok", "no_shear", "adv_ambiguous"):
                 print(f"  {v.name:22} {dt:%Y-%m-%d %H:%M} → {st} "
-                      f"(adv {ws.get('adv_speed_ms', 0):.0f} m/s, cizalla "
+                      f"(adv {ws.get('adv_speed_ms', 0):.1f} m/s, cizalla "
                       f"{ws.get('shear_ms', 0):.0f} m/s)")
                 if st == "ok" and best is None:
                     best = (v, dt, ws)

@@ -50,8 +50,13 @@ sector currently dormant**: every other major Andean volcano you cover — Copah
 Reventador, Sabancaya, Nevado del Ruiz, Ubinas, Tungurahua, Cotopaxi, Chiles,
 Puracé — has an active high‑resolution sector. Given that Villarrica is one of the
 most persistently active volcanoes in the Andes (near‑continuous lava lake and
-frequent Strombolian activity), **could this sector be reactivated?** It looks like
-it may only need to be switched on for GOES‑19.
+frequent Strombolian activity), **could this sector be reactivated?** We would value
+it primarily for the **VIIRS** retrievals (M‑band ash‑top‑height at 750 m, I‑band
+masking at 375 m), which resolve small, crater‑scale plumes far better than the
+2 km ABI product we can generate ourselves — a genuine high‑resolution cross‑check
+for our own retrievals. If GOES‑19 ABI can also be assigned to the sector for
+continuity between polar overpasses, all the better, though we understand that on
+ABI the sector remains at the ~2 km native IR resolution.
 
 **2 — A new dedicated sector for Nevados de Chillán.**
 Nevados de Chillán (−36.86, −71.38) is currently in eruption and under active
@@ -59,9 +64,13 @@ surveillance, but it has **no dedicated sector** — it is only covered by the
 regional `Chile_Central_2_km` (2 km/pixel). Its plumes are typically crater‑scale
 and low‑altitude (lava‑dome degassing, modest ash columns), so at 2 km the plume
 occupies only a few mixed pixels, near the effective detection scale of the regional
-product. A dedicated **250 m (or 500 m)** sector — like those you already produce for
-comparable volcanoes — would let us resolve the incipient, low‑altitude plumes we
-currently miss. We would gladly provide preferred bounds and event history.
+product. A dedicated sector — like those you already produce for comparable
+volcanoes — would help, and to be concrete about where the benefit comes from: the
+real gain for these small plumes would be **VIIRS coverage** on the sector (375 m /
+750 m, which genuinely resolves incipient plumes) and/or **detection thresholds
+tuned** for a crater‑scale source, rather than the sector grid spacing per se — we
+recognise that an ABI‑only sector stays at the ~2 km native IR resolution regardless
+of the output grid. We would gladly provide preferred bounds and event history.
 
 **3 — Access to the gridded (NetCDF) values behind the imagery.**
 As documented in the GOES‑R Volcanic Ash ATBD (v3.0, 2012), Pavolonis et al. (2013),
@@ -101,6 +110,24 @@ OVDAS — Observatorio Volcanológico de los Andes del Sur, SERNAGEOMIN, Chile
   *switch on* de algo ya definido y es el ÚNICO dormido de Sudamérica (pedido quirúrgico, muestra
   que hicimos la tarea); (2) Chillán es un sector nuevo; (3) datos gridded como consulta. Abrir
   reconociendo que YA usamos sus sectores activos chilenos da credibilidad.
+- **RANKING de valor real para nosotros (jul-2026, decidido):** el pedido de mayor impacto es el
+  **#3 (datos gridded NetCDF)** — nos saca el error de ±1-2 km del reverse-mapping del PNG en TODOS
+  los sectores y TODO el tiempo, no solo cuando pasa un satélite polar. Después #1 (VIIRS alta-res
+  ocasional en Villarrica) ≈ #2 (Chillán, **solo si es VIIRS-enabled o con detección tuneada**). La
+  carta mantiene el orden fácil→grande por retórica, pero si hay que priorizar en un follow-up, el
+  gridded es el que mueve la aguja.
+- **Por qué pedimos VIIRS a SSEC en vez de ingerirlo nosotros (decisión jul-2026):** NO vamos a
+  construir un pipeline VIIRS propio. El dato VIIRS es gratis en AWS (`noaa-jpss`: SNPP/NOAA20;
+  `noaa-nesdis-n21-pds`: NOAA-21), pero es un modelo POLAR (gránulos con geolocalización propia
+  VNP03, bowtie, ángulo de vista variable) totalmente distinto de la grilla geos fija del ABI sobre
+  la que está construido TODO nuestro código — integrarlo es un 2º pipeline geométrico completo, para
+  ~2 ventanas/día, cuando el retrieval VIIRS ya existe tuneado en SSEC. Por eso la palanca correcta
+  es su salida gridded, no rehacer la física polar. (La única excepción: un "Fase 5" polar propio por
+  soberanía, solo si el acceso vía SSEC se cae.)
+- **OJO — el 250 m ABI "pelado" NO ayuda:** la ganancia de resolución en un sector viene de VIIRS
+  (375/750 m) o de detección tuneada, NO de la grilla del raster: un sector alimentado solo con ABI
+  sigue siendo 2 km nativo re-muestreado (ver `REGISTRO_PAPER §9`). Por eso los pedidos #1 y #2 ahora
+  dicen explícito "VIIRS / detección tuneada" — para no pedir algo que no nos serviría.
 - **Todo verificado contra la API viva** (campo `sat`/`image_type` por sector). Villarrica_250_m
   tiene coordenadas válidas pero `sat:[]` → definido pero sin producción. Re-chequear antes de enviar:
   `python -c "from src.fetch.volcat_api import _query_frames; print(len(_query_frames('Villarrica_250_m','ABI','BT11um','all')[0]))"`

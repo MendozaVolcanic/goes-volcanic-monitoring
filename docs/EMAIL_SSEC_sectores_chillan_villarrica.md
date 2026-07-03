@@ -31,93 +31,190 @@ people.ssec.wisc.edu antes de enviar. Opcional: contacto del VAAC Buenos Aires.
 
 Dear Dr. Pavolonis and the VOLCAT team,
 
-I am [name], a geologist at the Southern Andes Volcano Observatory (OVDAS),
-SERNAGEOMIN, the agency responsible for Chile's National Volcano Surveillance
-Network (RNVV). We operate a near‑real‑time GOES‑19 monitoring dashboard that
-routinely ingests your VOLCAT products (ash cloud height, loading, probability and
-effective radius), including your active dedicated Chilean sectors —
-`Copahue_250_m`, `Calbuco_1_km` and `Planchon-Peteroa_500_m`. They are a valuable
-complement to our own ABI ash retrievals, and we are grateful for them.
+My name is [name] and I'm a geologist at the Southern Andes Volcano Observatory
+(OVDAS), part of SERNAGEOMIN, the agency in charge of Chile's National Volcano
+Surveillance Network (RNVV). We run a near real time GOES-19 monitoring dashboard
+that uses your VOLCAT products every day (ash cloud height, loading, probability and
+effective radius), among them your active Chilean sectors: Copahue_250_m,
+Calbuco_1_km and Planchon-Peteroa_500_m. They work really well alongside our own ABI
+ash retrievals, and we're grateful to have them.
 
-In the interest of transparency about what "our own retrievals" means: we are a
-small observatory team, and we build these pipelines as open‑source, largely
-AI‑assisted software (we make heavy use of large‑language‑model coding assistants).
-We regard the result as a modest, deliberately *indicative* complement — not an
-equivalent — to the operational, physically rigorous retrieval that your group has
-developed and matured over more than a decade. We are keenly aware of the difference,
-and being able to cross‑check against VOLCAT is exactly what keeps our own products
-honest. It is in that spirit — as users and would‑be validators of your work, not as
-peers reimplementing it — that we write with two coverage requests for Chile and one
-question about data access.
+I'd like to be candid about what "our own retrievals" actually are. We're a small
+observatory team, and we build these pipelines as open source software, a lot of it
+written with the help of AI coding assistants (large language models). We think of
+the result as a modest, deliberately indicative complement to VOLCAT, not an
+equivalent to it. Your group developed and refined an operational, physically
+rigorous retrieval over more than a decade, and we're well aware of the distance
+between that and what we do. Being able to check our numbers against VOLCAT is really
+what keeps them honest. It's in that spirit, as grateful users and hopeful validators
+of your work rather than peers reimplementing it, that I'm writing with two coverage
+requests for Chile and one question about data access.
 
-**1 — Reactivating the existing `Villarrica_250_m` sector.**
-While reviewing your sector list we noticed that a `Villarrica_250_m` sector is
-already defined (with valid coordinates), but it does not appear to be producing
-imagery — its satellite and product lists are empty, and we find no BT11µm or
-Ash_Height frames for it. As far as we can tell it is the **only South American
-sector currently dormant**: every other major Andean volcano you cover — Copahue,
-Reventador, Sabancaya, Nevado del Ruiz, Ubinas, Tungurahua, Cotopaxi, Chiles,
-Puracé — has an active high‑resolution sector. Given that Villarrica is one of the
-most persistently active volcanoes in the Andes (near‑continuous lava lake and
-frequent Strombolian activity), **could this sector be reactivated?** We would value
-it for the **VIIRS** retrievals (M‑band ash‑top‑height at 750 m, I‑band masking at
-375 m), which genuinely resolve small, crater‑scale plumes at a native resolution
-the 2 km GOES‑ABI cannot reach. Concretely, your validated, operational VIIRS
-product would give us (a) a trusted reference to cross‑validate our own
-ash‑top‑height retrievals — currently from GOES‑ABI, and a VIIRS 750 m retrieval we
-are now developing in‑house — and (b) the mass‑loading, effective‑radius and
-probability fields we do not compute. If GOES‑19 ABI can also be assigned to the
-sector for continuity between polar overpasses, all the better, though we understand
-that on ABI the sector remains at the ~2 km native IR resolution.
+**1. Reactivating the existing Villarrica_250_m sector.**
+Going through your sector list, we noticed that a Villarrica_250_m sector is already
+defined, with valid coordinates, but it doesn't seem to be producing imagery. Its
+satellite and product lists are empty, and we can't find any BT11µm or Ash_Height
+frames for it. As far as we can tell, it's the only sector still dormant in South
+America. Every other major Andean volcano you cover (Copahue, Reventador, Sabancaya,
+Nevado del Ruiz, Ubinas, Tungurahua, Cotopaxi, Chiles, Puracé) has an active high
+resolution sector. Villarrica is one of the most persistently active volcanoes in
+the Andes, with a near continuous lava lake and frequent Strombolian activity, so we
+wanted to ask whether it could be switched back on. What we'd value most is the VIIRS
+side of it (M-band ash top height at 750 m, I-band masking at 375 m), which really
+does resolve small, crater scale plumes at a native resolution the 2 km GOES-ABI
+can't reach. Your validated, operational VIIRS product would give us two things: a
+trusted reference to cross-check our own ash top height retrievals against (today
+from GOES-ABI, and soon from a VIIRS 750 m retrieval we're developing in house), and
+the mass loading, effective radius and probability fields that we don't compute
+ourselves. If GOES-19 ABI could also be assigned to the sector to fill the gaps
+between polar overpasses, so much the better, though we realise that on ABI the
+sector stays at roughly 2 km native IR resolution.
 
-**2 — A new dedicated sector for Nevados de Chillán.**
-Nevados de Chillán (−36.86, −71.38) is currently in eruption and under active
-surveillance, but it has **no dedicated sector** — it is only covered by the
-regional `Chile_Central_2_km` (2 km/pixel). Its plumes are typically crater‑scale
-and low‑altitude (lava‑dome degassing, modest ash columns), so at 2 km the plume
-occupies only a few mixed pixels, near the effective detection scale of the regional
-product. A dedicated sector — like those you already produce for comparable
-volcanoes — would help, and to be concrete about where the benefit comes from: the
-real gain for these small plumes would be **VIIRS coverage** on the sector (375 m /
-750 m, which genuinely resolves incipient plumes) and/or **detection thresholds
-tuned** for a crater‑scale source, rather than the sector grid spacing per se — we
-recognise that an ABI‑only sector stays at the ~2 km native IR resolution regardless
-of the output grid. We would gladly provide preferred bounds and event history.
+**2. A new dedicated sector for Nevados de Chillán.**
+Nevados de Chillán (−36.86, −71.38) is erupting at the moment and under active
+surveillance, but it has no dedicated sector. It's only covered by the regional
+Chile_Central_2_km product at 2 km/pixel. Its plumes tend to be crater scale and low
+altitude (lava dome degassing, modest ash columns), so at 2 km the plume fills only a
+handful of mixed pixels, close to the effective detection limit of the regional
+product. A dedicated sector, like the ones you already run for comparable volcanoes,
+would help here. To be clear about where the benefit actually comes from: for these
+small plumes it would come from VIIRS coverage on the sector (375 m / 750 m, which
+really does resolve incipient plumes), or from detection thresholds tuned for a
+crater scale source, rather than from the output grid spacing on its own. We know
+that an ABI-only sector stays at about 2 km native IR resolution no matter how fine
+the output grid is. We'd gladly send preferred bounds and event history.
 
-**3 — Access to the gridded (NetCDF) values behind the imagery.**
-As documented in the GOES‑R Volcanic Ash ATBD (v3.0, 2012), Pavolonis et al. (2013),
-and the GOES‑R Series volume chapter "Remote Sensing of Volcanic Ash with the GOES‑R
-Series" (Pavolonis et al., 2020), the retrieval produces per‑pixel gridded fields —
-ash cloud top height (a geopotential height, in metres), mass loading, effective
-radius and quality flags.
-The public portal, however, serves these only as PNGs with the value baked into a
-colour scale; we currently recover approximate numbers by reverse‑mapping the colour
-bar, which adds ~1–2 km of avoidable error. For quantitative cross‑validation of our
-own ash‑top‑height retrieval and for our alert workflow, access to the underlying
-**gridded values (NetCDF / data feed)** would be far more reliable — ideally the
-VOLCAT product fields (which populate only within detected volcanic clouds), rather
-than the baseline full‑disk product, since automated detection over the complex
-Andean terrain is prone to false positives. Could you tell us whether such access is
-available to a national volcano observatory — for example
-through the operational‑partner feed, or the forthcoming NCCF distribution as VOLCAT
-transitions to NOAA operations — and what the process would be? **Of the three
-requests, this gridded‑data access is the one we would prioritise:** as we develop
-our own open‑source retrievals, a validated VOLCAT ground‑truth is what we most need
-to benchmark them against, and it would benefit every sector you already run rather
-than a single volcano.
+**3. Access to the gridded (NetCDF) values behind the imagery.**
+As documented in the GOES-R Volcanic Ash ATBD (v3.0, 2012), in Pavolonis et al.
+(2013), and in the GOES-R Series chapter "Remote Sensing of Volcanic Ash with the
+GOES-R Series" (Pavolonis et al., 2020), the retrieval produces gridded per-pixel
+fields: ash cloud top height (a geopotential height in metres), mass loading,
+effective radius and quality flags. The public portal, though, serves these only as
+PNGs with the value baked into a colour scale, so we currently recover approximate
+numbers by reverse mapping the colour bar, which adds one to two kilometres of
+avoidable error. For proper cross validation of our own ash top height retrieval, and
+for our alert workflow, access to the underlying gridded values (NetCDF or a data
+feed) would be far more reliable. Ideally we'd want the VOLCAT product fields, which
+only populate inside detected volcanic clouds, rather than the baseline full disk
+product, since automated detection over the complex Andean terrain tends to throw
+false positives. Could you let us know whether that kind of access is available to a
+national volcano observatory, for example through the operational partner feed or the
+upcoming NCCF distribution as VOLCAT moves to NOAA operations, and what the process
+would be? Of the three requests, this gridded data access is the one we'd put first.
+As we build our own open source retrievals, a validated VOLCAT ground truth is
+exactly what we need to benchmark them against, and it would help across every sector
+you already run rather than just one volcano.
 
-This work supports SERNAGEOMIN's volcanic‑alert decision‑making. Both Villarrica and
-Nevados de Chillán rank among Chile's highest‑hazard volcanoes and are currently at
-elevated alert levels. We would be happy to share event histories, typical plume
+This work feeds directly into SERNAGEOMIN's volcanic alert decisions. Both Villarrica
+and Nevados de Chillán are among Chile's highest hazard volcanoes, and both are at
+elevated alert levels right now. We'd be glad to share event histories, typical plume
 heights and preferred sector extents, and to coordinate on validation.
 
-Thank you very much for considering this, and for maintaining VOLCAT — it is a
-genuinely valuable resource for us.
+Thank you very much for considering this, and for keeping VOLCAT running. It's
+genuinely valuable to us.
 
 Best regards,
 [name]
-[role / e‑mail / phone]
-OVDAS — Observatorio Volcanológico de los Andes del Sur, SERNAGEOMIN, Chile
+[role / e-mail / phone]
+OVDAS, Observatorio Volcanológico de los Andes del Sur, SERNAGEOMIN, Chile
+
+---
+
+## Versión en español (mismo contenido)
+
+Estimado Dr. Pavolonis y equipo de VOLCAT,
+
+Mi nombre es [nombre] y soy geólogo del Observatorio Volcanológico de los Andes del
+Sur (OVDAS), parte de SERNAGEOMIN, el organismo a cargo de la Red Nacional de
+Vigilancia Volcánica (RNVV) de Chile. Operamos un panel de monitoreo GOES-19 en
+tiempo casi real que usa sus productos VOLCAT todos los días (altura de la nube de
+ceniza, carga, probabilidad y radio efectivo), entre ellos sus sectores chilenos
+activos: Copahue_250_m, Calbuco_1_km y Planchon-Peteroa_500_m. Nos son de gran ayuda
+junto a nuestros propios retrievals de ceniza con ABI, y estamos agradecidos de
+contar con ellos.
+
+Quisiera ser franco sobre qué son en realidad "nuestros propios retrievals". Somos un
+equipo pequeño de observatorio, y construimos estos pipelines como software de código
+abierto, buena parte escrito con ayuda de asistentes de código con IA (modelos de
+lenguaje). Consideramos el resultado un complemento modesto y deliberadamente
+indicativo de VOLCAT, no un equivalente. Su grupo desarrolló y refinó un retrieval
+operacional y físicamente riguroso a lo largo de más de una década, y somos muy
+conscientes de la distancia entre eso y lo que hacemos. Poder contrastar nuestros
+números contra VOLCAT es justamente lo que los mantiene honestos. Es en ese espíritu,
+como usuarios agradecidos y aspirantes a validadores de su trabajo, más que como
+pares que lo reimplementan, que les escribo con dos pedidos de cobertura para Chile y
+una consulta sobre acceso a datos.
+
+**1. Reactivar el sector existente Villarrica_250_m.**
+Revisando su lista de sectores, notamos que el sector Villarrica_250_m ya está
+definido, con coordenadas válidas, pero no parece estar generando imágenes. Sus
+listas de satélite y de productos están vacías, y no encontramos ningún cuadro de
+BT11µm ni de Ash_Height. Hasta donde vemos, es el único sector aún dormido en
+Sudamérica. Todos los demás volcanes andinos importantes que cubren (Copahue,
+Reventador, Sabancaya, Nevado del Ruiz, Ubinas, Tungurahua, Cotopaxi, Chiles, Puracé)
+tienen un sector de alta resolución activo. Villarrica es uno de los volcanes más
+persistentemente activos de los Andes, con un lago de lava casi continuo y actividad
+estromboliana frecuente, así que queríamos preguntar si se podría reactivar. Lo que
+más valoraríamos es la parte VIIRS (altura de tope de ceniza con bandas M a 750 m,
+enmascarado con bandas I a 375 m), que sí resuelve plumas pequeñas a escala de cráter
+con una resolución nativa que los 2 km del GOES-ABI no alcanzan. Su producto VIIRS,
+validado y operacional, nos daría dos cosas: una referencia confiable para contrastar
+nuestros propios retrievals de altura de tope (hoy desde GOES-ABI, y pronto desde un
+retrieval VIIRS 750 m que estamos desarrollando internamente), y los campos de carga,
+radio efectivo y probabilidad que no calculamos. Si además se pudiera asignar GOES-19
+ABI al sector para llenar los huecos entre pasadas polares, mejor aún, aunque
+entendemos que en ABI el sector se mantiene en unos 2 km de resolución IR nativa.
+
+**2. Un sector nuevo dedicado a Nevados de Chillán.**
+Nevados de Chillán (-36.86, -71.38) está en erupción actualmente y bajo vigilancia
+activa, pero no tiene sector dedicado. Solo lo cubre el producto regional
+Chile_Central_2_km a 2 km/píxel. Sus plumas suelen ser de escala de cráter y baja
+altura (desgasificación del domo, columnas de ceniza modestas), así que a 2 km la
+pluma ocupa apenas unos pocos píxeles mezclados, cerca del límite efectivo de
+detección del producto regional. Un sector dedicado, como los que ya operan para
+volcanes comparables, ayudaría acá. Para ser claros sobre de dónde viene realmente el
+beneficio: en estas plumas chicas vendría de la cobertura VIIRS del sector (375 m /
+750 m, que sí resuelve plumas incipientes), o de umbrales de detección afinados para
+una fuente a escala de cráter, más que del espaciado de la grilla de salida por sí
+solo. Sabemos que un sector alimentado solo con ABI se mantiene en unos 2 km de
+resolución IR nativa por más fina que sea la grilla. Con gusto enviaríamos los
+límites preferidos y el historial de eventos.
+
+**3. Acceso a los valores en grilla (NetCDF) detrás de las imágenes.**
+Como se documenta en el ATBD de Ceniza Volcánica de GOES-R (v3.0, 2012), en Pavolonis
+et al. (2013) y en el capítulo "Remote Sensing of Volcanic Ash with the GOES-R
+Series" (Pavolonis et al., 2020), el retrieval produce campos en grilla por píxel:
+altura de tope de ceniza (una altura geopotencial en metros), carga másica, radio
+efectivo y flags de calidad. El portal público, sin embargo, sirve esto solo como PNG
+con el valor incrustado en una escala de color, así que hoy recuperamos números
+aproximados mapeando la barra de color al revés, lo que agrega uno a dos kilómetros
+de error evitable. Para una validación cruzada seria de nuestro propio retrieval de
+altura, y para nuestro flujo de alerta, el acceso a los valores en grilla subyacentes
+(NetCDF o un feed de datos) sería mucho más confiable. Idealmente querríamos los
+campos del producto VOLCAT, que solo se pueblan dentro de las nubes volcánicas
+detectadas, en lugar del producto base de disco completo, ya que la detección
+automática sobre el terreno andino complejo tiende a dar falsos positivos. ¿Podrían
+indicarnos si ese tipo de acceso está disponible para un observatorio volcánico
+nacional, por ejemplo a través del feed de socios operacionales o de la próxima
+distribución NCCF cuando VOLCAT pase a operaciones de NOAA, y cuál sería el proceso?
+De los tres pedidos, este acceso a los datos en grilla es el que pondríamos primero.
+A medida que construimos nuestros propios retrievals de código abierto, un
+ground-truth validado de VOLCAT es justo lo que necesitamos para compararlos, y
+ayudaría en todos los sectores que ya operan, no en un solo volcán.
+
+Este trabajo alimenta directamente las decisiones de alerta volcánica de SERNAGEOMIN.
+Tanto Villarrica como Nevados de Chillán están entre los volcanes de mayor
+peligrosidad de Chile, y ambos están en niveles de alerta elevados en este momento.
+Con gusto compartiríamos historiales de eventos, alturas típicas de columna y
+extensiones de sector preferidas, y coordinaríamos la validación.
+
+Muchas gracias por considerar esto, y por mantener VOLCAT funcionando. Es
+genuinamente valioso para nosotros.
+
+Saludos cordiales,
+[nombre]
+[cargo / correo / teléfono]
+OVDAS, Observatorio Volcanológico de los Andes del Sur, SERNAGEOMIN, Chile
 
 ---
 

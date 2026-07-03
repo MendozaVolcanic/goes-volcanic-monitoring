@@ -37,6 +37,34 @@ def _get_fs() -> s3fs.S3FileSystem:
     return _fs
 
 
+# Reintentos de S3: la conexión a noaa-goes19 se cae de forma INTERMITENTE
+# (EndpointConnectionError, read timeout) al bajar/listar muchos objetos seguidos
+# — sin retry, un corte transitorio tumbaba una descarga NRT o un barrido entero
+# (mismo patrón que el fetcher GFS-archive). FileNotFoundError NO se reintenta: es
+# "el objeto no existe", no un fallo de red.
+_S3_RETRIES = 4
+
+
+def _retry_s3(fn, *args, what: str = "", **kwargs):
+    """Ejecutar una operación S3 reintentando fallos TRANSITORIOS de red.
+
+    Propaga ``FileNotFoundError`` de inmediato (no es transitorio). Tras agotar los
+    reintentos, relanza la última excepción. Función utilitaria (testeable con un
+    ``fn`` falso que falla N veces).
+    """
+    last = None
+    for attempt in range(_S3_RETRIES):
+        try:
+            return fn(*args, **kwargs)
+        except FileNotFoundError:
+            raise
+        except Exception as e:
+            last = e
+            logger.warning("S3 %s intento %d/%d: %s", what or getattr(fn, "__name__", "op"),
+                           attempt + 1, _S3_RETRIES, e)
+    raise last
+
+
 # Locks por-archivo para descarga ATÓMICA. Antes download_band/mcmip/fdc hacían
 # fs.get() directo sobre el path final (s3fs escribe in-place, sin tmp+rename) y
 # luego use_cache lo daba por válido por el solo hecho de existir. Con descargas
@@ -73,7 +101,10 @@ def _download_cached(remote_path: str, use_cache: bool = True) -> Path:
         RAW_DIR.mkdir(parents=True, exist_ok=True)
         tmp = local_path.with_name(f"{filename}.part-{uuid.uuid4().hex[:8]}")
         try:
-            _get_fs().get(remote_path, str(tmp))
+            # Reintento en la descarga: un corte transitorio a mitad de un scan no
+            # debe abortar (la .get reescribe el tmp; el os.replace atómico solo
+            # ocurre si terminó OK). FileNotFoundError (no existe) no se reintenta.
+            _retry_s3(_get_fs().get, remote_path, str(tmp), what=f"get {filename}")
             os.replace(str(tmp), str(local_path))
         finally:
             try:
@@ -95,7 +126,7 @@ def list_files(product: str, dt: datetime) -> list[str]:
     fs = _get_fs()
     path = _time_to_s3_path(product, dt)
     try:
-        return sorted(fs.ls(path))
+        return sorted(_retry_s3(fs.ls, path, what=f"ls {path}"))
     except FileNotFoundError:
         logger.warning("No files found at %s", path)
         return []

@@ -36,6 +36,8 @@ from typing import Optional
 
 import numpy as np
 
+from src.fetch.granule_select import nearest_granule_key
+
 # Constantes fisicas canonical desde src/config (con try/except fallback,
 # mismo patron que MOSAICO_RADIUS_DEG en dashboard/views/).
 try:
@@ -311,22 +313,15 @@ def fetch_hotspots_at_time(
         dt = dt.replace(tzinfo=timezone.utc)
 
     s3 = s3fs.S3FileSystem(anon=True)
-    keys = _list_files_at_hour(s3, dt)
-    # Si no hay en la hora exacta, probar hora previa
-    if not keys:
-        keys = _list_files_at_hour(s3, dt - timedelta(hours=1))
-    if not keys:
-        logger.warning("FDCF: no hay archivos en %s ni hora previa", dt.isoformat())
+    # Unión [dt-1h, dt, dt+1h]: el scan más cercano al borde de hora puede caer
+    # en la hora adyacente (el comentario viejo prometía esto pero solo hacía
+    # fallback a la previa). Elige la key de menor |Δt| sobre las tres horas.
+    chosen = nearest_granule_key(lambda h: _list_files_at_hour(s3, h),
+                                 _parse_scan_time, dt)
+    if chosen is None:
+        logger.warning("FDCF: no hay archivos cerca de %s", dt.isoformat())
         return [], None
 
-    # Elegir archivo cuyo timestamp parseado este mas cerca de dt
-    def _delta(k):
-        ts = _parse_scan_time(k)
-        if ts is None:
-            return float("inf")
-        return abs((ts - dt).total_seconds())
-
-    chosen = min(keys, key=_delta)
     logger.info("FDCF: ts=%s, archivo elegido: %s",
                 dt.isoformat(), chosen.split("/")[-1])
 

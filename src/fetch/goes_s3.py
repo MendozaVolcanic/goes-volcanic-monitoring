@@ -21,6 +21,7 @@ from src.config import (
     RAW_DIR,
     VOLCANIC_BANDS,
 )
+from src.fetch.granule_select import nearest_granule_key
 
 logger = logging.getLogger(__name__)
 
@@ -147,13 +148,12 @@ def download_band_at(dt: datetime, band: int, use_cache: bool = True) -> Path | 
     de la misma hora darían el mismo archivo. Acá elegimos el scan cuyo
     `_sYYYYDDDHHMMSS` está más cerca de `dt` (RadF escanea cada 10 min).
     """
-    cand = (list_band_files(dt - timedelta(hours=1), band)
-            + list_band_files(dt, band))
-    cand = [f for f in cand if _scan_start(f) is not None]
-    if not cand:
+    # Unión de [dt-1h, dt, dt+1h]: el scan más cercano al borde de hora puede
+    # caer en la hora siguiente (HH:56 → (HH+1):00), no solo en la previa.
+    best = nearest_granule_key(lambda h: list_band_files(h, band), _scan_start, dt)
+    if best is None:
         logger.error("No band %d files near %s", band, dt.isoformat())
         return None
-    best = min(cand, key=lambda f: abs((_scan_start(f) - dt).total_seconds()))
     return _download_cached(best, use_cache)
 
 

@@ -40,7 +40,7 @@ Cadencia: 10 min. Latencia: ~13 min (timestamp ``c`` = creación del archivo).
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timezone
 from typing import Optional
 
 import numpy as np
@@ -51,6 +51,7 @@ from src.fetch.goes_acha import (
     _geos_index_bbox,
     _parse_scan_time,
 )
+from src.fetch.granule_select import nearest_granule_key
 # Tropopausa = punto frío 6–20 km, MISMA definición que GFS → cross-check justo.
 from src.fetch.gfs_profile import _tropopause
 
@@ -254,16 +255,13 @@ def fetch_lvtp_profile(
               "lon_min": lon - pad_deg, "lon_max": lon + pad_deg}
 
     s3 = s3fs.S3FileSystem(anon=True)
-    keys = _list_lvtp_files(s3, dt) or _list_lvtp_files(s3, dt - timedelta(hours=1))
-    if not keys:
-        logger.warning("LVTPF: sin gránulos en %s ni hora previa", dt.isoformat())
+    # Unión [dt-1h, dt, dt+1h]: el gránulo más cercano al borde de hora puede
+    # caer en la hora adyacente, no solo en la previa (fallback viejo).
+    chosen = nearest_granule_key(lambda h: _list_lvtp_files(s3, h),
+                                 _parse_scan_time, dt)
+    if chosen is None:
+        logger.warning("LVTPF: sin gránulos cerca de %s", dt.isoformat())
         return None
-
-    def _delta(k: str) -> float:
-        ts = _parse_scan_time(k)
-        return float("inf") if ts is None else abs((ts - dt).total_seconds())
-
-    chosen = min(keys, key=_delta)
     scan_dt = _parse_scan_time(chosen)
     logger.info("LVTPF: dt=%s, gránulo: %s", dt.isoformat(), chosen.split("/")[-1])
 

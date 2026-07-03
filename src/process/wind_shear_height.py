@@ -190,17 +190,25 @@ def _ash_mask_at(dt: datetime, v, radius_deg: float):
 
 def wind_shear_top_height(
     dt: datetime, volcano: Union[str, object], radius_deg: float = 0.75,
-    prev_gap_min: int = 10,
+    prev_gap_min: int = 10, wind_profile_fn=None,
 ) -> dict:
     """Altura del tope por cizalla de viento: desplazamiento del centroide de
     ceniza entre el scan en ``dt`` y otro ``prev_gap_min`` minutos antes, cruzado
     con el perfil de viento GFS. INDICATIVO, árbitro independiente del térmico.
 
-    Returns dict con ``status`` (ok/no_shear/no_plume/no_data) y, si ok:
-    ``top_km`` (altura implícita), ``band_lo_km``/``band_hi_km``, ``adv_speed_ms``,
-    ``mismatch_ms``, ``shear_ms``, ``scan_dt``, ``source``.
+    ``wind_profile_fn``: proveedor del perfil de viento ``fn(lat, lon, dt) → dict``
+    (mismo contrato que ``fetch_gfs_wind_profile``). Default = Open-Meteo (NRT).
+    Para VALIDACIÓN HISTÓRICA, inyectar ``fetch_gfs_wind_profile_archive`` (GFS de
+    archivo): Open-Meteo da null/viento viejo en fechas pasadas — ese fue el modo
+    de fallo real en Láscar 27-jun (viento a 41 h del scan).
+
+    Returns dict con ``status`` (ok/no_shear/no_plume/adv_ambiguous/no_data) y, si
+    ok: ``top_km`` (altura implícita), ``band_lo_km``/``band_hi_km``,
+    ``adv_speed_ms``, ``mismatch_ms``, ``shear_ms``, ``scan_dt``, ``source``.
     """
-    from src.fetch.gfs_profile import fetch_gfs_wind_profile
+    if wind_profile_fn is None:
+        from src.fetch.gfs_profile import fetch_gfs_wind_profile
+        wind_profile_fn = fetch_gfs_wind_profile
     source = ("Cizalla de viento (advección de la pluma entre 2 scans → perfil de "
               "viento GFS) · INDICATIVO · independiente del método térmico")
     if isinstance(volcano, str):
@@ -239,7 +247,7 @@ def wind_shear_top_height(
                 "reason": f"advección implausible ({adv_speed:.0f} m/s): tracking de "
                 "centroide poco fiable (pluma chica/cambiante)"}
 
-    wp = fetch_gfs_wind_profile(v.lat, v.lon, cur[3] or dt)
+    wp = wind_profile_fn(v.lat, v.lon, cur[3] or dt)
     if wp is None:
         return {"status": "no_data", "reason": "sin perfil de viento GFS",
                 "volcano": v.name, "scan_dt": cur[3], "source": source}

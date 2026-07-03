@@ -27,3 +27,8 @@ authors = [{ name = "Nicolás Mendoza" }]
 # lo importan): `pip install -e ".[archive]"` solo en la máquina de validación.
 [project.optional-dependencies]
 archive = ["cfgrib>=0.9", "eccodes>=2.40"]
+# Extra OPCIONAL para el retrieval de altura con VIIRS (bandas M 750m). Baja
+# gránulos L1b de NASA Earthdata (src/fetch/viirs_l1b.py, requiere credenciales
+# Earthdata). h5py ya es dep base. NO va en el deploy de la app hoy (retrieval de
+# validación/investigación); `pip install -e ".[viirs]"` en la máquina que lo corre.
+viirs = ["earthaccess>=0.14"]

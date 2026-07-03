@@ -201,6 +201,42 @@ def test_wind_profile_fn_injection(monkeypatch):
     assert r["status"] == "ok" and abs(r["top_km"] - 6.0) < 0.01, r
 
 
+def test_guard_banda_ancha_no_restringe(monkeypatch):
+    """Cizalla presente PERO advección consistente con casi toda la columna →
+    status 'band_unconstrained' sin top_km (hallazgo de la validación Láscar).
+
+    Pluma que se mueve ~11 m/s al este; el perfil tiene viento parecido en una
+    franja ancha (2–12 km) + un nivel lejano que da cizalla → banda >8 km."""
+    import src.process.wind_shear_height as ws
+
+    lat = np.array([[-38.0]])
+    t_cur = datetime(2026, 6, 15, 12, 0, 0, tzinfo=timezone.utc)
+    t_prev = datetime(2026, 6, 15, 11, 50, 0, tzinfo=timezone.utc)
+    dlon = 0.07524   # ~11 m/s al este en 600 s a lat −38
+
+    def fake_mask_at(dt, v, radius_deg):
+        cur = dt >= t_cur - timedelta(minutes=1)
+        lon = np.array([[-71.5]]) if cur else np.array([[-71.5 - dlon]])
+        return np.array([[True]]), lat, lon, (t_cur if cur else t_prev)
+
+    monkeypatch.setattr(ws, "_ash_mask_at", fake_mask_at)
+    monkeypatch.setattr(
+        __import__("src.fetch.gfs_profile", fromlist=["fetch_gfs_wind_profile"]),
+        "fetch_gfs_wind_profile",
+        lambda la, lo, dt: {"levels": [
+            {"z_m": 2000.0, "u_ms": 10.0, "v_ms": 0.0},
+            {"z_m": 6000.0, "u_ms": 12.0, "v_ms": 0.0},
+            {"z_m": 10000.0, "u_ms": 14.0, "v_ms": 0.0},
+            {"z_m": 12000.0, "u_ms": 16.0, "v_ms": 0.0},   # banda 2–12 km (10 km)
+            {"z_m": 16000.0, "u_ms": 40.0, "v_ms": 0.0},   # cizalla lejana
+        ], "valid_time": "2026-06-15T12:00", "lat": la, "lon": lo, "source": "t"})
+
+    r = ws.wind_shear_top_height(t_cur, _FakeVolcano(), prev_gap_min=10)
+    assert r["status"] == "band_unconstrained", r
+    assert r["top_km"] is None
+    assert (r["band_hi_km"] - r["band_lo_km"]) > ws.MAX_BAND_KM
+
+
 if __name__ == "__main__":
     test_plume_centroid()
     test_advection_uv_recovers_velocity()

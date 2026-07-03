@@ -5,7 +5,7 @@
 # Modelo/método : reglas determinísticas: advección del centroide vs perfil de viento GFS
 # Datos entrada : máscaras de ceniza GOES-19 (2 scans) + perfil de viento GFS (Open-Meteo) — SIN datos personales
 # Variables     : advección observada (u,v), cizalla mínima 8 m/s, banda de ambigüedad ±8 m/s (RMSE viento GFS), guards de advección implausible/nula y viento viejo
-# Limitaciones  : requiere cizalla; pluma adjunta en emisión continua → adv_ambiguous (guard); número aún sin validar en evento real
+# Limitaciones  : requiere cizalla Y banda estrecha (≤8 km); pluma adjunta → adv_ambiguous, banda ancha → band_unconstrained; validado en Láscar: pluma chica no restringe
 # Refs/datos    : Pavolonis et al. 2020 (idea); guards del audit jul-2026
 # Ficha completa: docs/FICHA_SDA_GOES.md
 # ════════════════════════════════════════════════════════════════════
@@ -61,6 +61,16 @@ AMB_TOL_MS = 8.0
 # calmo, y el árbitro le asignaría el nivel de viento nulo (altura baja FALSA; F3
 # del audit jul-2026). Si adv < esto y ADEMÁS hay cizalla fuerte, se rechaza.
 MIN_ADV_MS = 3.0
+# Ancho máximo de la banda de ambigüedad para que la altura sea USABLE. Revelado
+# al validar en Láscar 27-jun 2026 con el viento CORRECTO (GFS de archivo): en 5
+# scans seguidos la banda cubría casi toda la columna (0.2–23.9 km) y el valor
+# puntual saltaba caótico (0.9→4.4→3.2→23.9→7.5 km). Con cizalla presente el test
+# `discriminates` (cizalla ≥ 8) daba True, pero la advección observada de una pluma
+# chica/incoherente es consistente con casi cualquier altitud → NO restringe nada.
+# `discriminates` es necesario pero NO suficiente: el ancho de banda es la medida
+# real. Si la banda supera esto, se reporta `band_unconstrained` (sin altura), no
+# un `ok` engañoso. (mismo espíritu de honestidad que los guards F1/F2/adjunta.)
+MAX_BAND_KM = 8.0
 # Guards revelados al validar en Láscar 27-jun (2026): plumas chicas cambian sus
 # píxeles detectados entre scans → el centroide "salta" y da advección espuria; y
 # fuera de la ventana de forecast el perfil de viento queda viejo (día equivocado).
@@ -202,9 +212,11 @@ def wind_shear_top_height(
     archivo): Open-Meteo da null/viento viejo en fechas pasadas — ese fue el modo
     de fallo real en Láscar 27-jun (viento a 41 h del scan).
 
-    Returns dict con ``status`` (ok/no_shear/no_plume/adv_ambiguous/no_data) y, si
-    ok: ``top_km`` (altura implícita), ``band_lo_km``/``band_hi_km``,
-    ``adv_speed_ms``, ``mismatch_ms``, ``shear_ms``, ``scan_dt``, ``source``.
+    Returns dict con ``status`` (ok/no_shear/no_plume/adv_ambiguous/
+    band_unconstrained/no_data) y, si ok: ``top_km`` (altura implícita),
+    ``band_lo_km``/``band_hi_km``, ``adv_speed_ms``, ``mismatch_ms``, ``shear_ms``,
+    ``scan_dt``, ``source``. ``band_unconstrained`` reporta la banda cruda sin
+    ``top_km`` (la advección no restringe la altura pese a haber cizalla).
     """
     if wind_profile_fn is None:
         from src.fetch.gfs_profile import fetch_gfs_wind_profile
@@ -299,8 +311,20 @@ def wind_shear_top_height(
                     "reason": f"cizalla insuficiente ({wh['shear_ms']:.0f} m/s): "
                     "el viento no discrimina altura"})
         return out
+    # Guard de banda ancha (F-Láscar): hay cizalla, pero la advección observada es
+    # consistente con casi toda la columna → la altura NO está restringida. No dar
+    # un valor puntual engañoso; reportar la banda cruda y declinar.
+    band_lo_km, band_hi_km = wh["z_lo_m"] / 1000.0, wh["z_hi_m"] / 1000.0
+    if (band_hi_km - band_lo_km) > MAX_BAND_KM:
+        out.update({"status": "band_unconstrained", "top_km": None,
+                    "band_lo_km": band_lo_km, "band_hi_km": band_hi_km,
+                    "reason": f"banda de ambigüedad demasiado ancha "
+                    f"({band_hi_km - band_lo_km:.0f} km): la advección observada "
+                    "es consistente con casi toda la columna — altura no restringida "
+                    "(típico de pluma chica/incoherente)"})
+        return out
     out.update({
         "status": "ok", "top_km": wh["z_m"] / 1000.0,
-        "band_lo_km": wh["z_lo_m"] / 1000.0, "band_hi_km": wh["z_hi_m"] / 1000.0,
+        "band_lo_km": band_lo_km, "band_hi_km": band_hi_km,
     })
     return out

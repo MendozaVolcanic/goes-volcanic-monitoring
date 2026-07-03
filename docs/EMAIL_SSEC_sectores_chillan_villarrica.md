@@ -39,7 +39,16 @@ effective radius), including your active dedicated Chilean sectors —
 `Copahue_250_m`, `Calbuco_1_km` and `Planchon-Peteroa_500_m`. They are a valuable
 complement to our own ABI ash retrievals, and we are grateful for them.
 
-I am writing with two coverage requests for Chile and one question about data access.
+In the interest of transparency about what "our own retrievals" means: we are a
+small observatory team, and we build these pipelines as open‑source, largely
+AI‑assisted software (we make heavy use of large‑language‑model coding assistants).
+We regard the result as a modest, deliberately *indicative* complement — not an
+equivalent — to the operational, physically rigorous retrieval that your group has
+developed and matured over more than a decade. We are keenly aware of the difference,
+and being able to cross‑check against VOLCAT is exactly what keeps our own products
+honest. It is in that spirit — as users and would‑be validators of your work, not as
+peers reimplementing it — that we write with two coverage requests for Chile and one
+question about data access.
 
 **1 — Reactivating the existing `Villarrica_250_m` sector.**
 While reviewing your sector list we noticed that a `Villarrica_250_m` sector is
@@ -117,6 +126,12 @@ OVDAS — Observatorio Volcanológico de los Andes del Sur, SERNAGEOMIN, Chile
   *switch on* de algo ya definido y es el ÚNICO dormido de Sudamérica (pedido quirúrgico, muestra
   que hicimos la tarea); (2) Chillán es un sector nuevo; (3) datos gridded como consulta. Abrir
   reconociendo que YA usamos sus sectores activos chilenos da credibilidad.
+- **Transparencia IA + humildad (decisión de Nicolás, jul-2026):** el párrafo de la intro declara
+  explícito que construimos los pipelines con desarrollo asistido por IA (LLMs) y que lo nuestro es
+  un complemento INDICATIVO modesto, NO un par de su sistema operacional (que ellos maduraron una
+  década sin esa ayuda). Doble propósito: honestidad + desarmar cualquier impresión de sobre-claim.
+  Nos posiciona como usuarios/validadores agradecidos, no como pares reimplementando lo suyo — tono
+  correcto para pedir un favor a un científico senior de NOAA.
 - **RANKING de valor real para nosotros (jul-2026, decidido):** el pedido de mayor impacto es el
   **#3 (datos gridded NetCDF)** — nos saca el error de ±1-2 km del reverse-mapping del PNG en TODOS
   los sectores y TODO el tiempo, no solo cuando pasa un satélite polar. Después #1 (VIIRS alta-res

@@ -129,6 +129,7 @@ streamlit run dashboard/app.py
 | Perfil T(z) LVTPF del propio GOES (cross-check) | dict {levels[{p_hPa,z_m,T_K}], tropopause, n_clear_px, scan_dt, source} — MISMA forma que GFS | `src/fetch/goes_lvtp.py::fetch_lvtp_profile(lat, lon, dt)` | 10 min |
 | Perfil GFS ARCHIVADO (T(z) + viento, validación histórica) | dict MISMA forma que gfs_profile | `src/fetch/gfs_archive.py::fetch_gfs_profile_archive / fetch_gfs_wind_profile_archive` (GRIB2 byte-range; dep opcional `eccodes`) | 6 h (archivo ≥2021) |
 | Imagen VIIRS georreferenciada (complemento australes) | dict {image HxWx3, bounds, layer, date, coverage_frac} | `src/fetch/viirs_gibs.py::fetch_viirs_image(lat, lon, when, layer)` (True Color / térmico 375 m / Day-Night, vía NASA GIBS) | ~2 pasadas/día |
+| Hot spots térmicos VIIRS 375 m (complemento australes) | List[dict {lat, lon, frp_mw, bright_ti4/5_k, confidence, acq_date, satellite}] | `src/fetch/viirs_firms.py::fetch_viirs_firms_hotspots(bounds, days)` (NASA FIRMS; requiere MAP_KEY gratis en env `FIRMS_MAP_KEY`) | ~2 pasadas/día |
 | Animación MP4 | binary MP4 H.264 | `dashboard/views/rammb_viewer.py::_build_mp4(frames)` | on-demand |
 | Animación GIF | binary GIF | `dashboard/views/rammb_viewer.py::_build_gif(frames)` | on-demand |
 | Frame estático con georef | GeoTIFF EPSG:4326 | `src/export/geotiff.py::build_geotiff_bytes(img, bounds)` | on-demand |

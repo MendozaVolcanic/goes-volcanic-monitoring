@@ -74,8 +74,18 @@ clear-sky Ts) y **deriva la altura geopotencial por integración hipsométrica**
 (LVTPF NO trae z; se ancla al absoluto AMSL con la atmósfera estándar en el
 nivel base — offset constante ~0.1 km). Salida drop-in de `fetch_gfs_profile`.
 Validado como cross-check del GFS (ver §3). 10 tests (`tests/test_lvtp.py`).
-Archivo GFS AWS `noaa-gfs-bdp-pds` (≥2021, byte-range) pendiente para
-validación histórica.
+
+**GFS-archive — HECHO (jul-03):** `src/fetch/gfs_archive.py` baja el perfil GFS
+**archivado** (T(z) y viento) del bucket público `noaa-gfs-bdp-pds` (≥2021
+verificado) por **byte-range GRIB2**: cada gránulo pesa 508 MB pero el `.idx` de
+texto da el offset de cada registro → bajamos solo TMP/HGT/UGRD/VGRD en los 19
+niveles de interés (~38–57 MB) y los decodifica `eccodes`. Salida **drop-in** de
+`fetch_gfs_profile`/`fetch_gfs_wind_profile`. Destraba la validación de eventos
+históricos (Open-Meteo da null en niveles pasados). Verificado en vivo sobre
+Láscar: 19 niveles, tropopausa 16.5 km/206 K, jet 33 m/s en 400 hPa; solapamiento
+con Open-Meteo reproduce el perfil NRT ya validado vs radiosondas. `eccodes` es
+**dep opcional** (extra `.[archive]` en pyproject), NO va en el deploy de la app.
+9 tests (`tests/test_gfs_archive.py`); script `scripts/validate_gfs_archive.py`.
 
 ## 5. Lecciones de la auditoría adversarial (material de paper: robustez)
 
@@ -133,7 +143,7 @@ ambigüedad recalibrada al RMSE del viento GFS (±8 m/s) y guard de pluma adjunt
 
 CO₂-slicing por cociente de radiancias (Menzel 1983) como Fase 3d · ~~perfil
 LVTPF del propio GOES~~ (HECHO, §4) · ~~validación con radiosondas Wyoming~~
-(HECHA, §3) · corrección de parallax de 1er orden (h·tanθ) · libRadtran para
-training data (Fase 4, solo con justificación) · cablear LVTPF al dashboard
-como cross-check visible del perfil GFS (opcional, junto a la tab "Altura
-propia").
+(HECHA, §3) · ~~GFS archivado para validación histórica~~ (HECHO, §4) ·
+corrección de parallax de 1er orden (h·tanθ) · libRadtran para training data
+(Fase 4, solo con justificación) · cablear LVTPF al dashboard como cross-check
+visible del perfil GFS (opcional, junto a la tab "Altura propia").

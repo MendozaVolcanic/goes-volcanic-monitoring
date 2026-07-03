@@ -20,3 +20,10 @@ description = "Dashboard NRT de monitoreo volcánico GOES-19 para Chile"
 requires-python = "==3.12.*"
 license = { file = "LICENSE" }
 authors = [{ name = "Nicolás Mendoza" }]
+
+# Extra OPCIONAL — solo para validación histórica con GFS archivado (GRIB2 del
+# bucket noaa-gfs-bdp-pds, ver src/fetch/gfs_archive.py). Es un decodificador
+# GRIB2 (eccodes, binario) que NO va en el deploy de la app (dashboard/crons no
+# lo importan): `pip install -e ".[archive]"` solo en la máquina de validación.
+[project.optional-dependencies]
+archive = ["cfgrib>=0.9", "eccodes>=2.40"]

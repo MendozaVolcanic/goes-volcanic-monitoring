@@ -53,6 +53,7 @@
 | Láscar 2026-06-27 09:50 | BT-matching 6.8 → Wen-Rose 10.4 km (Δ+3.6; 8/8 px corregidos; Ts=268 K cielo claro; banda β 7.9–13.6 km) · ACHA=no_plume | la corrección de emisividad sube el tope en semitransparente; el método rescata casos sin retrieval L2; banda honesta domina el número |
 | Chillán 2026-06-27 (pluma SO₂) | BTD nunca cruza −1 K → no_plume; SO₂ −3.2 K | correcto: gas transparente en 11 µm NO recibe altura (límite documentado) |
 | Láscar (wind-shear targeted) | advección 151 m/s (imposible) + viento a 41 h → **inputs rotos detectados** → guards MAX_ADV_MS/MAX_WIND_AGE_H | validación negativa útil: reveló 2 modos de fallo |
+| **Láscar 2026-06-27 09:00–10:20 (wind-shear con GFS de ARCHIVO)** | con el viento CORRECTO del día (ya no "41 h off"), 5 scans dan `top` caótico (0.9→4.4→3.2→23.9→7.5 km) y **banda = columna entera** (0.2–23.9 km) casi siempre | **validación negativa que reveló un hueco de honestidad**: `discriminates` (cizalla ≥8) es necesario pero NO suficiente → nuevo guard `band_unconstrained` (banda >8 km ⇒ sin altura). Confirma que el árbitro necesita una pluma **grande y coherente**; la de Láscar es chica y su centroide se mueve por ruido, no por advección |
 | Suite | 140 tests (round-trips de física + orquestación end-to-end sintética con anti-band-swap) | forward∘inverse = identidad pineada; swap de bandas ahora rompe la suite |
 | **GFS vs radiosondas (4 estaciones chilenas, 2026-07-01 12Z)** | **T(z) en 5–12 km: RMSE 0.3–1.1 K, bias ≤0.4 K ⇒ ≤60 m de error de altura equivalente** (Pto Montt, Antofagasta, Sto Domingo, Pta Arenas; `scripts/validate_gfs_vs_radiosonde.py`) | el mapeo Tc→altura queda validado contra medición real — el perfil NO es el eslabón débil |
 | Viento GFS vs radiosondas (ídem) | RMSE vectorial 8–17 m/s en 1–15 km | insumo de calibración del árbitro de cizalla: su tolerancia de ambigüedad (3 m/s) es optimista — recalibrar durante la validación con evento real |
@@ -106,6 +107,17 @@ independiente → fix**. Dos hallazgos confirmados que cambiaron el método
   **Anti-fix documentado:** alimentar el β medido (modo β_tropo) al solver es
   circular de forma exacta (Tc=tropopausa se vuelve raíz) — verificado antes
   de implementarlo.
+- **F-Láscar — el ancho de banda es el verdadero discriminador del árbitro de
+  viento:** al validar sobre Láscar 27-jun con el viento correcto (GFS de
+  archivo), el árbitro devolvía `status=ok` con un tope puntual que saltaba
+  caóticamente entre scans (0.9→23.9 km), mientras la banda de ambigüedad cubría
+  toda la columna. El test de cizalla (`discriminates`, spread ≥ 8 m/s) daba True
+  —hay cizalla en el perfil— pero la advección de una pluma chica es consistente
+  con casi cualquier altitud. Fix: guard `band_unconstrained` (banda > 8 km ⇒ sin
+  altura). Implicancia general: en un árbitro geométrico, la existencia de la
+  señal discriminante (cizalla) no garantiza que el observable la restrinja; hay
+  que medir el ANCHO de la solución, no solo su existencia. También validó, por
+  la negativa, que el método necesita una pluma grande y coherente.
 - **F3 — selección de gránulo en el borde de hora (reproducibilidad de la
   validación histórica):** un 2º bug hunt multi-agente (jul-2026) halló que los
   5 fetchers S3 (`goes_s3`, `frp_timeline`, `goes_fdcf`, `goes_acha`,

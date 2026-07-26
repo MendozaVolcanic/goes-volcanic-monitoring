@@ -647,6 +647,29 @@ def _render_volcat_zoom_tv(volcano_name: str, height: int, pad: float = 0.5):
         key=f"tvvolcatzoom_{volcano_name}")
 
 
+def _render_volcat_zoom_row_tv(volcano_names: list, height: int, pad: float = 0.45):
+    """Slot TV: los N volcanes en alerta con VOLCAT (altura de pluma) en UNA FILA.
+
+    Un `st.columns(N)` con el zoom VOLCAT de cada volcan lado a lado (reusa el
+    render por-volcan `_render_volcat_zoom_tv`, que ya elige el mejor sector via
+    `resolve_volcat_sector`: dedicado 1 km si existe —Calbuco—, si no regional
+    2 km). Pensado para ver los 5 en una vista sin rotar. La altura por celda se
+    baja (fila angosta) para que entren los N. (jul-2026, pedido OVDAS)
+    """
+    if not volcano_names:
+        return
+    cols = st.columns(len(volcano_names))
+    cell_h = max(320, int(height * 0.62))   # fila mas baja que un slot fullscreen
+    for col, name in zip(cols, volcano_names):
+        with col:
+            st.markdown(
+                f"<div style='color:#ffffff; font-weight:800; font-size:0.95rem; "
+                f"text-align:center; text-shadow:0 1px 4px #000; "
+                f"margin-bottom:0.15rem;'>{name}</div>",
+                unsafe_allow_html=True)
+            _render_volcat_zoom_tv(name, cell_h, pad=pad)
+
+
 def _compose_volcan_panels(v, radius_deg: float, panels: list, ph: int = 720):
     """Compone los N productos centrados en el volcán en UNA imagen (PIL).
 
@@ -814,8 +837,11 @@ TV_SLOT_SECONDS = 12
 # Volcanes con slot de zoom dedicado en la rotacion TV (3 productos centrados,
 # con switch hi-res en GeoColor). Orden = orden de aparicion en la rotacion.
 # Nombres EXACTOS del CATALOG (sin tilde: "Nevados de Chillan"). Agregar mas
-# sumando nombres aca.
-TV_VOLCAN_ZOOMS = ["Villarrica", "Nevados de Chillan"]
+# sumando nombres aca. (jul-2026, pedido OVDAS: sumar Puyehue/Calbuco/Llaima).
+# La MISMA lista alimenta el zoom RGB de 3 productos (un volcan por slot, rotando)
+# Y la fila VOLCAT de 5 volcanes (todos en un slot, ver _render_volcat_zoom_row_tv).
+TV_VOLCAN_ZOOMS = ["Villarrica", "Nevados de Chillan",
+                   "Puyehue-Cordon Caulle", "Calbuco", "Llaima"]
 
 
 def _render_tv_status(scan_dt=None, scan_label="scan",
@@ -876,13 +902,15 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
     # VOLCAT: 4 zonas con VOLCAT_ZONAS_4 (Austral=recorte sur), 3 si no.
     _vspecs = _volcat_zone_specs()
     slots: list[tuple] = [("rgb", p, None) for p in PRODUCT_LIST]
-    slots += [("volcat", zona, (sector, instr, vb))
-              for zona, sector, instr, vb in _vspecs]
+    # VOLCAT: las 4 zonas (Norte/Centro/Sur/Austral) LADO A LADO en UN solo slot,
+    # igual que el grid RGB — antes rotaba una zona por slot. (jul-2026, OVDAS)
+    slots += [("volcat_zonas", None, None)]
     slots += [("volcan", v, None) for v in TV_VOLCAN_ZOOMS]
-    # VOLCAT con ZOOM (±0.5°) a cada volcan en alerta (Villarrica/Chillan):
-    # cuantifica la pluma del volcan activo en la rotacion de sala, junto al
-    # zoom RGB GOES/GeoColor. (jun 2026, pedido OVDAS)
-    slots += [("volcat_zoom", v, None) for v in TV_VOLCAN_ZOOMS]
+    # VOLCAT con ZOOM a los volcanes en alerta, los 5 en UNA FILA (un solo slot):
+    # cuantifica la pluma de cada volcan activo lado a lado, mejor resolucion
+    # disponible por volcan (sector dedicado si existe, si no regional 2 km).
+    # (jul-2026, pedido OVDAS: los 5 en una vista en vez de rotar de a uno)
+    slots += [("volcat_row", TV_VOLCAN_ZOOMS, None)]
 
     # INDICE: anclado al RELOJ pero con AVANCE CLAMPEADO a +1 por ventana.
     #  - El reloj puro (epoch//SLOT % N) SALTABA slots cuando un render bloqueaba
@@ -916,27 +944,31 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
     if kind == "rgb":
         ts_for_status = _recent_ts(val, n=1)
         scan_dt = parse_rammb_ts(ts_for_status[0]) if ts_for_status else None
-    elif kind == "volcat":
-        # Mostrar la edad REAL del frame VOLCAT (latencia externa SSEC ~40 min,
-        # normal). Umbrales propios para no marcarlo en rojo de más.
-        sector, instr, _vb = extra
+    elif kind == "volcat_zonas":
+        # Edad del frame de la PRIMERA zona (todas comparten cadencia VOLCAT
+        # ~40 min). Umbrales propios para no marcarlo en rojo de más.
         try:
             from dashboard.views.volcat_viewer import (
                 _volcat_dt_obj, _volcat_latest_cached)
-            _m = _volcat_latest_cached(sector, instr, "Ash_Height")
+            _sec0 = _vspecs[0][1] if _vspecs else None
+            _ins0 = _vspecs[0][2] if _vspecs else None
+            _m = (_volcat_latest_cached(_sec0, _ins0, "Ash_Height")
+                  if _sec0 else None)
             scan_dt = _volcat_dt_obj(_m.get("datetime")) if _m else None
         except Exception:
             scan_dt = None
         status_kwargs = dict(scan_label="VOLCAT", ok_min=60, warn_min=120)
-    elif kind == "volcat_zoom":
+    elif kind == "volcat_row":
+        # Edad del frame del PRIMER volcan de la fila (todos comparten cadencia
+        # VOLCAT ~40 min; con uno alcanza para el semaforo de la sala).
         try:
             from dashboard.views.volcat_viewer import (
                 _volcat_dt_obj, _volcat_latest_cached)
             from src.fetch.volcat_api import resolve_volcat_sector
             from src.volcanos import get_volcano
-            _v = get_volcano(val)
-            _sec, _ins = resolve_volcat_sector(_v)
-            _m = _volcat_latest_cached(_sec, _ins, "Ash_Height")
+            _v = get_volcano(val[0]) if val else None
+            _sec, _ins = resolve_volcat_sector(_v) if _v else (None, None)
+            _m = _volcat_latest_cached(_sec, _ins, "Ash_Height") if _sec else None
             scan_dt = _volcat_dt_obj(_m.get("datetime")) if _m else None
         except Exception:
             scan_dt = None
@@ -971,34 +1003,32 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
             unsafe_allow_html=True,
         )
         _render_volcan_zoom_tv(val, show_hotspots, height)
-    elif kind == "volcat_zoom":  # VOLCAT altura con zoom al volcan en alerta
+    elif kind == "volcat_row":  # VOLCAT altura, los N volcanes en alerta en fila
         st.markdown(
             f"<div class='tv-legend' style='display:flex; "
             f"justify-content:space-between; align-items:center; "
             f"background:rgba(17,24,34,0.85); padding:0.3rem 0.8rem; "
             f"border-radius:4px; font-size:0.82rem;'>"
             f"<span style='color:#ff6644; font-weight:700;'>🔄 VOLCAT zoom · "
-            f"Altura de pluma (km AMSL) · {val}</span>"
+            f"Altura de pluma (km AMSL) · {len(val)} volcanes</span>"
             f"<span style='color:#8899aa;'>SSEC/CIMSS · Pavolonis 2013 · "
             f"GOES-19</span></div>",
             unsafe_allow_html=True,
         )
-        _render_volcat_zoom_tv(val, height)
-    else:  # volcat — una zona en grande
-        sector, instr, view_bounds = extra
+        _render_volcat_zoom_row_tv(val, height)
+    else:  # volcat_zonas — las 4 zonas VOLCAT lado a lado (grid, como RGB)
         st.markdown(
             f"<div class='tv-legend' style='display:flex; "
             f"justify-content:space-between; align-items:center; "
             f"background:rgba(17,24,34,0.85); padding:0.3rem 0.8rem; "
             f"border-radius:4px; font-size:0.82rem;'>"
             f"<span style='color:#ff6644; font-weight:700;'>🔄 VOLCAT · "
-            f"Altura de pluma (km AMSL) · Zona {val}</span>"
+            f"Altura de pluma (km AMSL) · 4 zonas (N/C/S/Austral)</span>"
             f"<span style='color:#8899aa;'>SSEC/CIMSS · Pavolonis 2013 · "
             f"GOES-19</span></div>",
             unsafe_allow_html=True,
         )
-        _render_volcat_one_zona_tv(val, sector, instr, height,
-                                   view_bounds=view_bounds)
+        _render_volcat_zonas_tv(height)
 
     # NOTA: antes habia un PRE-FETCH SINCRONO del proximo slot aca. Se quito
     # (jun 2026): bloqueaba el thread del fragment DESPUES del render. El

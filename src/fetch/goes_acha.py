@@ -43,7 +43,7 @@ from typing import Optional
 
 import numpy as np
 
-from src.fetch.granule_select import nearest_granule_key
+from src.fetch.granule_select import nearest_granule_key, get_s3 as _get_s3
 
 # Constantes físicas canónicas desde src/config (con fallback, mismo patrón que
 # goes_fdcf.py).
@@ -229,7 +229,7 @@ def fetch_acha_height_at(
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
 
-    s3 = s3fs.S3FileSystem(anon=True)
+    s3 = _get_s3()
     # Unión [dt-1h, dt, dt+1h]: el gránulo más cercano al borde de hora puede
     # caer en la hora adyacente, no solo en la previa (fallback viejo).
     chosen = nearest_granule_key(lambda h: _list_files_at_hour(s3, h),

@@ -21,7 +21,7 @@ from src.config import (
     RAW_DIR,
     VOLCANIC_BANDS,
 )
-from src.fetch.granule_select import nearest_granule_key
+from src.fetch.granule_select import get_s3, nearest_granule_key
 
 logger = logging.getLogger(__name__)
 
@@ -30,10 +30,16 @@ _fs = None
 
 
 def _get_fs() -> s3fs.S3FileSystem:
-    """Obtener filesystem S3 (singleton)."""
+    """Obtener filesystem S3 (singleton).
+
+    Delega en `granule_select.get_s3`, que fija `listings_expiry_time`: sin eso el
+    `DirCache` de s3fs NUNCA expira y el listado de la hora en curso queda congelado
+    para todo el proceso — en el deploy de larga vida, el "scan más reciente" podía
+    quedar hasta ~1 h atrasado presentándose como vigente. (audit ago-2026)
+    """
     global _fs
     if _fs is None:
-        _fs = s3fs.S3FileSystem(anon=True)
+        _fs = get_s3()
     return _fs
 
 

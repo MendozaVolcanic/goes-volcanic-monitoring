@@ -51,7 +51,7 @@ from src.fetch.goes_acha import (
     _geos_index_bbox,
     _parse_scan_time,
 )
-from src.fetch.granule_select import nearest_granule_key
+from src.fetch.granule_select import nearest_granule_key, get_s3 as _get_s3
 # Tropopausa = punto frío 6–20 km, MISMA definición que GFS → cross-check justo.
 from src.fetch.gfs_profile import _tropopause
 
@@ -254,7 +254,7 @@ def fetch_lvtp_profile(
     bounds = {"lat_min": lat - pad_deg, "lat_max": lat + pad_deg,
               "lon_min": lon - pad_deg, "lon_max": lon + pad_deg}
 
-    s3 = s3fs.S3FileSystem(anon=True)
+    s3 = _get_s3()
     # Unión [dt-1h, dt, dt+1h]: el gránulo más cercano al borde de hora puede
     # caer en la hora adyacente, no solo en la previa (fallback viejo).
     chosen = nearest_granule_key(lambda h: _list_lvtp_files(s3, h),

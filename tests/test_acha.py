@@ -197,13 +197,20 @@ def test_plume_top_height_unknown_volcano_no_data():
 @pytest.mark.skipif(not _s3_ok(), reason="S3 noaa-goes19 no accesible")
 def test_acha_granule_contract():
     """Bajar un gránulo ACHA2KMF reciente y verificar el contrato del dato:
-    HT existe, dims 5424×5424, units 'm', rango físico 0–18000 m."""
+    HT existe, dims 5424×5424, units 'm', y rango físico dentro del techo que
+    aplica PRODUCCIÓN (``HT_MAX_PLAUSIBLE_M``).
+
+    El techo se toma de la constante del módulo, no de un número hardcodeado: con
+    18000 m el test falló contra un gránulo real de 18374 m (overshooting top
+    legítimo — la tropopausa tropical ronda 16-17 km), contradiciendo el clamp de
+    20 km que el propio fetcher considera plausible. (audit ago-2026)
+    """
     from datetime import timedelta
 
     import s3fs
     import xarray as xr
 
-    from src.fetch.goes_acha import S3_BUCKET, S3_PRODUCT
+    from src.fetch.goes_acha import (HT_MAX_PLAUSIBLE_M, S3_BUCKET, S3_PRODUCT)
 
     s3 = s3fs.S3FileSystem(anon=True)
     now = datetime.now(timezone.utc)
@@ -233,7 +240,7 @@ def test_acha_granule_contract():
         vals = ht.values
         finite = np.isfinite(vals)
         assert finite.any(), "HT sin píxeles finitos"
-        assert 0.0 <= np.nanmin(vals) and np.nanmax(vals) <= 18000.0, (
+        assert 0.0 <= np.nanmin(vals) and np.nanmax(vals) <= HT_MAX_PLAUSIBLE_M, (
             np.nanmin(vals), np.nanmax(vals))
 
 
@@ -241,7 +248,7 @@ def test_acha_granule_contract():
 def test_fetch_acha_height_at_crops_to_bounds():
     """fetch_acha_height_at recorta a un bbox de volcán y devuelve la ventana
     georreferenciada con HT en metros y DQF aplicado."""
-    from src.fetch.goes_acha import fetch_acha_height_at
+    from src.fetch.goes_acha import HT_MAX_PLAUSIBLE_M, fetch_acha_height_at
 
     vlat, vlon = -39.42, -71.93   # Villarrica
     pad = 0.75
@@ -263,7 +270,7 @@ def test_fetch_acha_height_at_crops_to_bounds():
     # HT válida (no-NaN) dentro de rango físico de nube (0–18 km).
     finite = h[np.isfinite(h)]
     if finite.size:
-        assert finite.min() >= 0.0 and finite.max() <= 18000.0
+        assert finite.min() >= 0.0 and finite.max() <= HT_MAX_PLAUSIBLE_M
     assert isinstance(res["scan_dt"], datetime)
 
 

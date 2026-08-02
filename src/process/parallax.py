@@ -3,9 +3,9 @@
 # Objetivo      : corregir la georef de la pluma por su altura (parallax geoestacionario) — dónde está la pluma en el mapa
 # Lógica        : una pluma a altura h se ve corrida hacia afuera del subsatélite; se la devuelve hacia adentro Δ=h·tan(θ_zenit)
 # Modelo/método : geometría determinística (ángulo cenital del satélite + desplazamiento de 1er orden)
-# Datos entrada : lat/lon del pixel + altura del tope (km, de la cadena propia o VOLCAT) — SIN datos personales
+# Datos entrada : lat/lon del pixel + altura del tope sobre el ELIPSOIDE/AMSL (de la cadena propia o VOLCAT) — SIN datos personales
 # Variables     : ángulo cenital del satélite, desplazamiento horizontal h·tan(θ), azimut hacia el subsatélite
-# Limitaciones  : 1er orden (ignora curvatura fina y elipsoide); NO cambia el tope, solo su posición en el mapa
+# Limitaciones  : 1er orden (ignora curvatura fina y elipsoide); NO cambia el tope, solo su posición en el mapa; la altura DEBE ser AMSL (restar el terreno subcorrige ~50% sobre los Andes)
 # Refs/datos    : Vicente et al. 2002 (parallax GOES); geometría geos estándar; hallazgo F4 del audit jul-2026
 # Ficha completa: docs/FICHA_SDA_GOES.md
 # ════════════════════════════════════════════════════════════════════
@@ -13,7 +13,7 @@
 
 Por qué importa (geología → pipeline): GOES-19 es geoestacionario sobre el ecuador
 a −75°. Mira Chile "de reojo" (ángulo cenital ~45–55°). Una pluma a altura ``h``
-sobre el terreno se proyecta en la grilla fija del ABI en un punto **más alejado
+sobre el elipsoide se proyecta en la grilla fija del ABI en un punto **más alejado
 del subsatélite** que su posición vertical real: la línea de visión oblicua
 intercepta el tope de la pluma antes de llegar al suelo, y ese pixel se rotula con
 la coordenada de suelo de más allá. El corrimiento crece con la altura y con el
@@ -74,7 +74,14 @@ def parallax_shift(lat, lon, height_m, sat_lon=_SAT_LON_DEFAULT,
 
     Args:
         lat, lon:      posición aparente del pixel (grados; escalar o array).
-        height_m:      altura del tope sobre el terreno (m).
+        height_m:      altura del tope sobre el ELIPSOIDE / AMSL (m) — el mismo datum
+                       que devuelven `top_km`/`field_km` de la cadena propia y VOLCAT.
+                       **NO restar la elevación del terreno**: la navegación del ABI
+                       proyecta la línea de visión sobre el elipsoide GRS80, así que el
+                       corrimiento aparente es h_elipsoide·tanθ. Pasar altura sobre el
+                       terreno subcorrige gravemente donde el terreno es alto — en
+                       Láscar (tope 10.6 km AMSL, terreno 5.6 km) corregiría 2.7 km en
+                       vez de 5.8 km, dejando 3.1 km de error silencioso.
         sat_lon:       longitud subsatélite (−75° GOES-19).
         sat_height_m:  altura de perspectiva del satélite (del NetCDF L1b).
     """
@@ -116,7 +123,9 @@ def parallax_correct_field(lat, lon, height_m, sat_lon=_SAT_LON_DEFAULT,
     Pensado para la georef del mapa (``lat``/``lon`` 2D de la ventana + campo de
     altura por pixel). Donde la altura es NaN (sin pluma) el pixel queda **intacto**
     (desplazamiento 0), así solo se corren los píxeles de la pluma y el resto de la
-    grilla no se mueve. ``height_m`` en metros (NaN = sin corrección). PURA.
+    grilla no se mueve. ``height_m`` en metros sobre el ELIPSOIDE/AMSL — el mismo datum
+    de ``field_km`` de los retrievals (NO restar la elevación del terreno; ver
+    :func:`parallax_shift`). NaN = sin corrección. PURA.
     """
     h = np.asarray(height_m, dtype="float64")
     h = np.where(np.isfinite(h), h, 0.0)     # sin altura → sin desplazamiento

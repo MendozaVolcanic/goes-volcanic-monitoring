@@ -71,6 +71,12 @@ MIN_ADV_MS = 3.0
 # real. Si la banda supera esto, se reporta `band_unconstrained` (sin altura), no
 # un `ok` engañoso. (mismo espíritu de honestidad que los guards F1/F2/adjunta.)
 MAX_BAND_KM = 8.0
+# Desajuste máximo del MEJOR nivel para aceptar el matching. `argmin` siempre devuelve
+# un nivel: sin este umbral, una advección que ningún viento de la columna explica
+# (p.ej. 35 m/s observados con máximo de 20 m/s en el perfil) igual salía como `ok`.
+# Se ata al mismo piso de ruido del viento GFS que la banda de ambigüedad (AMB_TOL_MS):
+# si el residuo del mejor nivel supera el error propio del modelo, no hay detección.
+MAX_MISMATCH_MS = AMB_TOL_MS
 # Guards revelados al validar en Láscar 27-jun (2026): plumas chicas cambian sus
 # píxeles detectados entre scans → el centroide "salta" y da advección espuria; y
 # fuera de la ventana de forecast el perfil de viento queda viejo (día equivocado).
@@ -213,7 +219,7 @@ def wind_shear_top_height(
     de fallo real en Láscar 27-jun (viento a 41 h del scan).
 
     Returns dict con ``status`` (ok/no_shear/no_plume/adv_ambiguous/
-    band_unconstrained/no_data) y, si ok: ``top_km`` (altura implícita),
+    band_unconstrained/adv_inconsistent/no_data) y, si ok: ``top_km`` (altura implícita),
     ``band_lo_km``/``band_hi_km``, ``adv_speed_ms``, ``mismatch_ms``, ``shear_ms``,
     ``scan_dt``, ``source``. ``band_unconstrained`` reporta la banda cruda sin
     ``top_km`` (la advección no restringe la altura pese a haber cizalla).
@@ -322,6 +328,23 @@ def wind_shear_top_height(
                     f"({band_hi_km - band_lo_km:.0f} km): la advección observada "
                     "es consistente con casi toda la columna — altura no restringida "
                     "(típico de pluma chica/incoherente)"})
+        return out
+    # Guard de matching inconsistente (audit ago-2026, confirmado adversarialmente):
+    # `argmin` SIEMPRE devuelve un nivel, aunque el mínimo del residuo esté muy por
+    # encima del piso de ruido. Escenario real: advección observada de 35 m/s cuando el
+    # viento máximo de TODA la columna es 20 m/s (centroide que salta por ruido de
+    # detección, aún bajo MAX_ADV_MS) → el "mejor" nivel tiene mismatch 15 m/s y hasta
+    # ahora salía como status ok con altura puntual. Físicamente ningún nivel explica
+    # ese movimiento: el mínimo de una función que no baja del ruido NO es una
+    # detección. Reusamos AMB_TOL_MS (el piso de ruido del viento GFS, 8 m/s) como
+    # umbral: si ni el mejor nivel entra en esa tolerancia, declinamos.
+    if wh["mismatch_ms"] > MAX_MISMATCH_MS:
+        out.update({"status": "adv_inconsistent", "top_km": None,
+                    "band_lo_km": band_lo_km, "band_hi_km": band_hi_km,
+                    "reason": f"la advección observada ({adv_speed:.0f} m/s) no es "
+                    f"consistente con ningún nivel del perfil (mejor desajuste "
+                    f"{wh['mismatch_ms']:.0f} m/s > {MAX_MISMATCH_MS:.0f}): tracking "
+                    "espurio o proceso no advectivo — no se asigna altura"})
         return out
     out.update({
         "status": "ok", "top_km": wh["z_m"] / 1000.0,

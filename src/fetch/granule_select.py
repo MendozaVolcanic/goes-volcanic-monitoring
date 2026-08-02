@@ -32,6 +32,33 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from typing import Callable, Optional
 
+# Expiración del cache de LISTADOS de s3fs, en segundos.
+#
+# Por qué existe (audit ago-2026, verificado en vivo): `s3fs.S3FileSystem(anon=True)`
+# es *cacheable* — todas las construcciones con los mismos kwargs devuelven LA MISMA
+# instancia — y su `DirCache` nace con `listings_expiry_time=None`, o sea NUNCA expira.
+# Efecto: la primera vez que se lista la carpeta de la hora en curso
+# (`.../YYYY/DDD/HH/`), ese listado queda congelado para todo el proceso; los gránulos
+# que NOAA publica después en esa misma hora son invisibles hasta que el reloj cruza a
+# la hora siguiente. En GitHub Actions (proceso efímero) no se nota, pero en el deploy
+# de larga vida el "scan más reciente" podía quedar hasta ~1 h atrasado y presentarse
+# como vigente — para un SDA de alerta, dato viejo disfrazado de actual.
+#
+# Pasar este kwarg en TODAS las construcciones mantiene la instancia compartida (mismo
+# juego de kwargs) y además le da caducidad al listado.
+S3_LISTINGS_EXPIRY_S = 60
+
+
+def get_s3(anon: bool = True):
+    """`s3fs.S3FileSystem` compartido con cache de listados que EXPIRA.
+
+    Usar en vez de `s3fs.S3FileSystem(anon=True)` pelado: garantiza que todos los
+    fetchers compartan una única instancia y que ningún listado horario quede
+    congelado (ver ``S3_LISTINGS_EXPIRY_S``).
+    """
+    import s3fs
+    return s3fs.S3FileSystem(anon=anon, listings_expiry_time=S3_LISTINGS_EXPIRY_S)
+
 
 def nearest_granule_key(
     list_hour: Callable[[datetime], list],

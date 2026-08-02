@@ -30,6 +30,8 @@ viento en los scripts de validación histórica.
 from __future__ import annotations
 
 import logging
+
+from src.fetch.granule_select import get_s3 as _get_s3
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
@@ -242,7 +244,7 @@ def fetch_gfs_profile_archive(
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
 
-    s3 = s3fs.S3FileSystem(anon=True)
+    s3 = _get_s3()
     res = _resolve(s3, dt)
     if res is None:
         logger.warning("GFS archive: sin gránulo para %s", dt.isoformat())
@@ -301,7 +303,7 @@ def fetch_gfs_wind_profile_archive(
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
 
-    s3 = s3fs.S3FileSystem(anon=True)
+    s3 = _get_s3()
     res = _resolve(s3, dt)
     if res is None:
         logger.warning("GFS archive viento: sin gránulo para %s", dt.isoformat())

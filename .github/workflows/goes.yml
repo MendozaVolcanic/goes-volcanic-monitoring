@@ -122,6 +122,15 @@ jobs:
               print(d.get('label', ''))
           " 2>/dev/null || date -u +'%Y-%m-%d %H:%M UTC')
             git commit -m "goes: $TS"
-            git pull origin main --rebase -X ours 2>/dev/null || true
-            git push origin main || true
+            # Fix audit ago-2026: en REBASE, -X ours favorece al UPSTREAM y
+            # descartaria el STATUS_NRT recien generado (mismo bug W3 que ya se
+            # corrigio en frp_timeline.yml). -X theirs conserva lo nuestro; retry
+            # x3 porque el bot de FRP commitea cada ~10 min y la colision es probable.
+            ok=""
+            for i in 1 2 3; do
+              git pull origin main --rebase -X theirs && git push origin main && ok=1 && break
+              git rebase --abort 2>/dev/null || true
+              sleep $((i*5))
+            done
+            [ -n "$ok" ] || echo "::warning::no pude pushear STATUS_NRT tras 3 intentos"
           fi

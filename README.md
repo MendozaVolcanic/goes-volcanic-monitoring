@@ -11,19 +11,15 @@ short_description: Monitoreo volcanico NRT con GOES-19 para SERNAGEOMIN
 
 # GOES Volcanic Monitoring - Chile
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://goesvolcanic.streamlit.app)
 [![Hugging Face Space](https://huggingface.co/datasets/huggingface/badges/resolve/main/open-in-hf-spaces-sm-dark.svg)](https://mendozavolcanic-goes-volcanic-monitoring.hf.space)
 
-> El YAML al inicio de este README es metadata para [Hugging Face Spaces](https://huggingface.co/docs/hub/spaces-config-reference) (mirror del deploy primario). GitHub lo renderiza como texto plano arriba — no es bug.
+> El YAML al inicio de este README es metadata para [Hugging Face Spaces](https://huggingface.co/docs/hub/spaces-config-reference), donde corre el deploy. GitHub lo renderiza como texto plano arriba — no es bug.
 
 Dashboard de monitoreo volcánico en tiempo casi-real usando imágenes del satélite geoestacionario **GOES-19** (GOES-East).
 
-**Demos públicas (mismo código, dos hosts para redundancia):**
+**Demo pública:** 🤗 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
-- 🎈 Streamlit Cloud: https://goesvolcanic.streamlit.app
-- 🤗 Hugging Face Spaces: https://mendozavolcanic-goes-volcanic-monitoring.hf.space
-
-Si una está caída (sleep mode, mantención), usar la otra. HF Spaces tiende a ser más estable (16 GB RAM, 48 h sleep) que Streamlit Cloud free (~6 h sleep, crashes intermitentes con Python 3.14).
+> **Nota histórica:** hasta jun-2026 hubo un mirror en Streamlit Cloud (`goesvolcanic.streamlit.app`). Se abandonó por inestabilidad (sleep ~6 h, `KeyError` intermitentes con Python 3.14) y **ya no se actualiza** — Hugging Face Spaces es hoy el único deploy oficial.
 
 Genera productos **Ash RGB**, **detección de ceniza** (BTD split-window) y **SO2** para los **43 volcanes activos de Chile** monitoreados por SERNAGEOMIN.
 
@@ -47,7 +43,7 @@ Genera productos **Ash RGB**, **detección de ceniza** (BTD split-window) y **SO
 ## Instalación
 
 ```bash
-git clone https://github.com/nmendozam/goes-volcanic-monitoring.git
+git clone https://github.com/MendozaVolcanic/goes-volcanic-monitoring.git
 cd goes-volcanic-monitoring
 pip install -r requirements.txt
 ```
@@ -76,10 +72,7 @@ rgb = generate_ash_rgb(bt11, bt13, bt14, bt15)
 
 ## Dashboard
 
-**Versiones públicas:**
-
-- Streamlit Cloud — https://goesvolcanic.streamlit.app
-- Hugging Face Spaces (mirror) — https://mendozavolcanic-goes-volcanic-monitoring.hf.space
+**Versión pública:** Hugging Face Spaces — https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 Para correr localmente:
 
@@ -113,7 +106,7 @@ dashboard/
 | Cadencia | ~6 horas | **10 minutos** |
 | Detecta | Anomalías térmicas (lava, fumarolas) | **Plumas de ceniza y SO2** |
 
-## Deploy en servidor SERNAGEOMIN (alternativa a Streamlit Cloud)
+## Deploy en servidor SERNAGEOMIN (alternativa al Space público)
 
 Para uptime garantizado y acceso desde la LAN del observatorio sin
 depender de Streamlit Cloud free, ver guía completa:

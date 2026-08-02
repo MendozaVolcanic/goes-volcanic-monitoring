@@ -36,7 +36,7 @@ from typing import Optional
 
 import numpy as np
 
-from src.fetch.granule_select import nearest_granule_key
+from src.fetch.granule_select import nearest_granule_key, get_s3 as _get_s3
 
 # Constantes fisicas canonical desde src/config (con try/except fallback,
 # mismo patron que MOSAICO_RADIUS_DEG en dashboard/views/).
@@ -193,7 +193,7 @@ def fetch_latest_hotspots(
         logger.error("s3fs/xarray no disponible: %s", e)
         return [], None
 
-    s3 = s3fs.S3FileSystem(anon=True)
+    s3 = _get_s3()
     keys = _list_recent_files(s3, hours_back=hours_back)
     if not keys:
         logger.warning("FDCF: no hay archivos en las ultimas %dh", hours_back)
@@ -312,7 +312,7 @@ def fetch_hotspots_at_time(
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
 
-    s3 = s3fs.S3FileSystem(anon=True)
+    s3 = _get_s3()
     # Unión [dt-1h, dt, dt+1h]: el scan más cercano al borde de hora puede caer
     # en la hora adyacente (el comentario viejo prometía esto pero solo hacía
     # fallback a la previa). Elige la key de menor |Δt| sobre las tres horas.

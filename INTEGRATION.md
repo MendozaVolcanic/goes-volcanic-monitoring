@@ -1,11 +1,11 @@
 ---
 slug: goes
 title: GOES Volcanic Monitoring
-last_updated: 2026-07-03
-last_commit: 6ffd031
+last_updated: 2026-08-02
+last_commit: 4eafc38
 status: producción
 tier: 1
-deploy_url: "https://goesvolcanic.streamlit.app"
+deploy_url: "https://mendozavolcanic-goes-volcanic-monitoring.hf.space"
 repo_url: "https://github.com/MendozaVolcanic/goes-volcanic-monitoring"
 ---
 
@@ -28,7 +28,7 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
 - Procesamiento: xarray + numpy (Planck conversion, BTD, RGB compositing, reproject)
 - Frontend: Streamlit + Plotly (`@st.fragment` para auto-refresh, `@st.cache_data`)
 - Otros: pyproj, scipy, rasterio (GeoTIFF), Pillow, imageio-ffmpeg (MP4)
-- Deploy: Streamlit Community Cloud + GitHub Actions
+- Deploy: Hugging Face Spaces (Docker) + GitHub Actions
 
 ## Datos
 
@@ -83,18 +83,20 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
 
 ## Vistas del dashboard
 
-1. **🔴 En Vivo** — último scan, auto-refresh 60s. Tres tabs principales:
-   - **Nacional**: sub-tabs GeoColor / Ash RGB / SO2 (3 productos lado a lado).
-   - **Por Zona Volcánica**: sub-tabs por producto, cada uno mostrando grid 4-zonas (Norte/Centro/Sur/Austral) en paralelo.
-   - **Volcán**: selector + botón Cargar + sub-tabs por producto (zoom=4).
-   - Toggles globales: viento GFS, hot spots FDCF.
-2. **Mapa General** — overview con todos los volcanes.
-3. **Ash RGB Viewer** — versión propia desde L1b.
-4. **Detalle Volcán** — vista detallada con 3 productos + altura VOLCAT.
-5. **VOLCAT (SSEC)** — Ash RGB / SO2 RGB pre-procesados + 📏 **Altura de pluma** (4 productos VOLCAT con cheat-sheet visual) + VAA.
-6. **Animación (RAMMB)** — loops 1-3h con scope Nacional/Zona/Volcán. Export GIF/MP4/ZIP.
-7. **📈 Series de tiempo** — tendencia por volcán con KPIs + **thumbnails contextuales** (PICO + ÚLTIMO con triángulo rojo en el volcán).
-8. **📅 Backfill histórico** — revisión día/hora de eventos pasados desde GitHub Releases (`backfill-<fecha>-<volcán>`). Slider temporal con grid de productos + hot spots overlay + **altura de pluma VOLCAT** cuantitativa (imagen de sector + colorbar). Generado por `scripts/build_backfill.py`. **Desbloqueo L1b**: con `--l1b-fallback`, los productos (GeoColor TrueColor aprox, Ash/SO2/BTD) se regeneran desde bandas L1b crudas de S3 cuando la fecha cae fuera del archive RAMMB (~9-10 meses) — `src/process/historic_l1b_rgb.py`.
+Permalink: `?vista=<slug>` (los slugs viejos `live`/`zonas`/`animacion` redirigen por
+compatibilidad). Fuente de verdad: `PAGE_OPTIONS`/`PAGE_SLUGS` en `dashboard/app.py`.
+
+1. **🌎 Vista Operacional** (`operacional`) — último scan, auto-refresh 60s. Tabs Nacional / Por Zona Volcánica (grid 4-zonas) / Volcán, con toggles de viento GFS y hot spots FDCF.
+2. **🛡 Modo Guardia** (`guardia`) — vista de turno de sala: sub-tabs Vigilancia diaria (4 zonas RGB), Chile, VOLCAT por zona (4 zonas lado a lado), Mosaico, Volcán (3 productos) y Loop 2h. Con `?tv=1` entra en **Modo Sala TV** (rotación fullscreen sin controles, pensada para monitor 24/7).
+3. **🔀 Comparador** (`comparador`) — dos frames lado a lado (baseline histórico vs actual, o dos productos).
+4. **🚨 Modo Evento** (`evento`) — foco en un volcán en crisis, con productos y altura.
+5. **📅 Heatmap actividad** (`heatmap`) — pulso térmico intradía de FRP (serie pre-cocinada `data/frp_timeline.json`) + heatmap semanal día × volcán.
+6. **🔁 Replay reciente** (`replay`) — repetición de las últimas horas.
+7. **📅 Backfill histórico** (`backfill`) — revisión día/hora de eventos pasados desde GitHub Releases (`backfill-<fecha>-<volcán>`). Slider temporal + grid de productos + hot spots + altura VOLCAT. Generado por `scripts/build_backfill.py`. Con `--l1b-fallback` los productos se regeneran desde bandas L1b crudas cuando la fecha cae fuera del archive RAMMB (~9-10 meses) — `src/process/historic_l1b_rgb.py`.
+8. **🌡 Ash + BTD (temperaturas K)** (`ash`) — versión propia desde L1b con temperaturas de brillo.
+9. **📏 VOLCAT (altura pluma)** (`volcat`) — productos SSEC (Ash Height/Loading/Probability/Reff) con cheat-sheet visual + VAA + cruce con la altura propia.
+10. **🎞 Loops descargables** (`loops`) — animaciones 1-3h por scope. Export GIF/MP4/ZIP.
+11. **📈 Series de tiempo** (`series`) — tendencia por volcán con KPIs + thumbnails contextuales (PICO y ÚLTIMO).
 
 ## Volcanes monitoreados
 

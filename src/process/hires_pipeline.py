@@ -180,8 +180,13 @@ def build_hires_for_scopes(
                 bands_to_download, dt.strftime("%Y-%m-%d %H:%M UTC"), mode)
     band_paths = _download_bands_parallel(dt, bands_to_download)
     if 2 not in band_paths:
+        # Contrato: SIEMPRE 2-tupla (images, meta) — todos los callers desempacan
+        # (build_hires_cache.py, build_hires_loop_cache.py). Antes este error path
+        # devolvía el dict pelado y el workflow de cache crasheaba con ValueError en
+        # vez de degradar. Misma forma que el error path de abajo. (audit ago-2026)
         logger.error("Banda 2 indispensable no disponible")
-        return {sid: None for sid in scopes}
+        return ({sid: None for sid in scopes},
+                {sid: {"render": "no_data", "sun_alt": None} for sid in scopes})
 
     # 2. Abrir datasets en modo LAZY (no materializamos Rad full-disk).
     #    AMBOS modes hacen super-bbox slicing: jamas allocamos full-disk ni

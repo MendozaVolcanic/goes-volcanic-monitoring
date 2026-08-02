@@ -53,7 +53,7 @@
   perfiles meteorológicos GFS (Open-Meteo), productos L2 de NOAA (ACHA, FDCF) y
   CIMSS (VOLCAT). **¿Datos personales?: No. ¿Sensibles?: No.**
 - **Datos de entrenamiento/validación/prueba:** No aplica (sin ML). Validación
-  física: 132 tests automatizados (round-trips con coeficientes reales del
+  física: >200 tests automatizados en CI (round-trips con coeficientes reales del
   sensor) + casos reales documentados (Láscar 27-jun-2026, Popocatépetl
   26-jun-2026, Chillán 27-jun-2026) en `docs/paper/REGISTRO_PAPER.md` §3.
 - **Evaluaciones de impacto / sesgos y mitigaciones:** auditoría adversarial

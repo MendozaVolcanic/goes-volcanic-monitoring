@@ -501,6 +501,48 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
     return fig
 
 
+def _prewarm_volcat_specs(specs, product: str = "Ash_Height") -> None:
+    """Calentar en PARALELO las caches VOLCAT de una lista de specs de zona.
+
+    Cada celda VOLCAT encadena `_volcat_latest_cached` (API SSEC) + `_volcat_map_only`
+    (2 descargas) + el colorbar; hechas en serie, N zonas con cache fría suman
+    N×(20s+30s+30s) en el peor caso. Acá se disparan todas a la vez sobre las MISMAS
+    `@st.cache_data`, así el render posterior solo lee.
+
+    En el Modo Sala TV el hilo productor ya mantiene calientes estos sectores, así que
+    esto es casi un no-op; donde de verdad paga es en el sub-tab INTERACTIVO de Modo
+    Guardia, que renderiza las mismas 4 celdas en serie y NO tiene productor detrás
+    (además puede pedir un producto distinto de Ash_Height). (audit ago-2026)
+
+    Best-effort: cualquier fallo se ignora (la celda mostrará su placeholder).
+    """
+    from concurrent.futures import ThreadPoolExecutor
+
+    def _warm(spec):
+        try:
+            from dashboard.views.volcat_viewer import (
+                _volcat_colorbar_strip, _volcat_latest_cached, _volcat_map_only)
+            _zona, sector, instr, view_bounds = spec
+            meta = _volcat_latest_cached(sector, instr, product)
+            if not meta:
+                return
+            if view_bounds is not None:
+                _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
+                                 meta.get("coords") or {})
+            _volcat_colorbar_strip(meta["image_url"])
+        except Exception:
+            pass
+
+    specs = list(specs)
+    if not specs:
+        return
+    try:
+        with ThreadPoolExecutor(max_workers=min(4, len(specs))) as ex:
+            list(ex.map(_warm, specs))
+    except Exception:
+        pass
+
+
 def _render_volcat_zonas_tv(height: int):
     """Render de las zonas VOLCAT (altura de pluma) en fila, para el Modo
     Sala TV. 4 zonas con VOLCAT_ZONAS_4 (Austral=recorte sur), 3 si no.
@@ -512,6 +554,12 @@ def _render_volcat_zonas_tv(height: int):
       nuestros volcanes + frontera. Mas limpio (activable mas adelante).
     """
     specs = _volcat_zone_specs()
+    # Prefetch PARALELO antes de abrir las columnas (audit ago-2026). El render por
+    # celda es serial y cada una encadena API SSEC (timeout 20s) + 2 descargas (30s
+    # c/u): con cache frio tras un restart, 4 zonas en serie podian congelar la sala
+    # varios minutos. Calentando las mismas @st.cache_data en paralelo, el loop de
+    # abajo pega contra cache caliente. Mismo patron que _compose_4_zonas_png.
+    _prewarm_volcat_specs(specs)
     cols = st.columns(len(specs))
     for col, (zona, sector, instr, view_bounds) in zip(cols, specs):
         with col:
@@ -659,14 +707,15 @@ def _render_volcat_zoom_row_tv(volcano_names: list, height: int, pad: float = 0.
     if not volcano_names:
         return
     cols = st.columns(len(volcano_names))
-    cell_h = max(320, int(height * 0.62))   # fila mas baja que un slot fullscreen
+    # OJO (audit ago-2026): NO agregar aqui un <div> con el nombre del volcan. El CSS
+    # del Modo Sala fuerza height:calc(100vh - 6px)!important a todo stPlotlyChart, asi
+    # que cualquier elemento EN FLUJO sobre el chart empuja la columna por encima del
+    # viewport -> scrollbar en una pantalla 24/7. El nombre ya viaja DENTRO de la figura
+    # como annotation (_volcat_zone_fig lo recibe como zona_label desde
+    # _render_volcat_zoom_tv), de modo que no hace falta y ademas se duplicaba.
+    cell_h = max(320, int(height * 0.62))
     for col, name in zip(cols, volcano_names):
         with col:
-            st.markdown(
-                f"<div style='color:#ffffff; font-weight:800; font-size:0.95rem; "
-                f"text-align:center; text-shadow:0 1px 4px #000; "
-                f"margin-bottom:0.15rem;'>{name}</div>",
-                unsafe_allow_html=True)
             _render_volcat_zoom_tv(name, cell_h, pad=pad)
 
 
@@ -1130,8 +1179,9 @@ def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
         # -> imagen SSEC completa con overlays (_volcat_image_with_overlays).
         try:
             from dashboard.views.volcat_viewer import (
-                _volcat_colorbar_strip, _volcat_image_with_overlays,
-                _volcat_latest_cached, _volcat_map_only)
+                _volcat_colorbar_split_vertical, _volcat_colorbar_strip,
+                _volcat_image_with_overlays, _volcat_latest_cached,
+                _volcat_map_only)
             for _zona, sector, instr, _vb in _volcat_zone_specs():
                 meta = _volcat_latest_cached(sector, instr, "Ash_Height")
                 if not meta:
@@ -1144,6 +1194,32 @@ def prewarm_tv_caches(show_hotspots: bool = True, volcan_zooms=None):
                     _volcat_image_with_overlays(
                         meta["image_url"], meta.get("volcanoes_url"),
                         meta.get("latlon_url"))
+            # Sectores del slot volcat_row (zoom VOLCAT a los N volcanes en fila):
+            # resolve_volcat_sector puede devolver un sector DEDICADO que no está en
+            # _volcat_zone_specs (hoy Calbuco -> Calbuco_1_km). Sin calentarlo, esa
+            # celda hacía la API + 2 descargas SSEC en el foreground del fragment cada
+            # vez que expiraba el TTL — bloqueo visible en la sala 24/7. (audit ago-2026)
+            from src.fetch.volcat_api import resolve_volcat_sector
+            from src.volcanos import get_volcano
+            _zone_sectors = {s for _z, s, _i, _v in _volcat_zone_specs()}
+            _zoom_sectors = set()
+            for name in zooms:
+                v = get_volcano(name)
+                if v is None:
+                    continue
+                try:
+                    _zoom_sectors.add(resolve_volcat_sector(v))
+                except Exception:
+                    continue
+            for sector, instr in _zoom_sectors:
+                if sector in _zone_sectors:
+                    continue          # ya calentado arriba
+                meta = _volcat_latest_cached(sector, instr, "Ash_Height")
+                if not meta:
+                    continue
+                _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
+                                 meta.get("coords") or {})
+                _volcat_colorbar_split_vertical(meta["image_url"])
         except Exception:
             pass
         # Volcan zoom: PNG compuesto.

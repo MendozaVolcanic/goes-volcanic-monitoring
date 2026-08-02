@@ -9,7 +9,6 @@ numpy>=1.26.0
 
 # Visualization & mapping
 matplotlib>=3.8.0
-cartopy>=0.22.0
 plotly>=5.18.0
 
 # Dashboard
@@ -25,8 +24,6 @@ streamlit==1.56.0           # PIN EXACTO (no rango) — critico para el frontend
                             # aun trae st.components.v1.html (removido recien >=1.60,
                             # lo usamos en live_viewer). Subir solo tras migrar eso
                             # y re-testear el frontend. (fix jun 2026, audit Bug B)
-folium>=0.15.0
-streamlit-folium>=0.17.0
 
 # Processing
 scipy>=1.12.0

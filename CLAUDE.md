@@ -15,7 +15,8 @@ libre); registro pre-paper en `docs/paper/REGISTRO_PAPER.md`.
 ## Stack técnico
 - **Datos**: AWS S3 `noaa-goes19` (sin credenciales)
 - **Procesamiento**: xarray + numpy (conversión Planck, BTD, Ash RGB)
-- **Dashboard**: Streamlit + Plotly + Folium
+- **Dashboard**: Streamlit + Plotly (el frontend es Plotly puro + PNG; Folium se
+  quitó del stack en el audit ago-2026 — no había un solo import)
 - **Automatización**: GitHub Actions
 
 ## Productos volcánicos

@@ -542,9 +542,14 @@ def _volcat_zonas_subtab():
     # Austral = recorte sur de Chile_South); si no, las 3 clasicas. La fuente
     # unica de specs + render es zonas_fullscreen (compartida con el Modo Sala).
     from dashboard.views.zonas_fullscreen import (
-        _render_volcat_zone_cell, _volcat_zone_specs,
+        _prewarm_volcat_specs, _render_volcat_zone_cell, _volcat_zone_specs,
     )
     specs = _volcat_zone_specs()
+    # Prefetch PARALELO (audit ago-2026): a diferencia del Modo Sala TV, este sub-tab
+    # NO tiene hilo productor calentando las caches, así que las 4 celdas se resolvían
+    # en serie — cada una API SSEC (20s) + 2 descargas (30s c/u) con cache fría, o al
+    # cambiar de producto en el selector. Calentar en paralelo deja el loop en solo-lectura.
+    _prewarm_volcat_specs(specs, product=prod)
     cols = st.columns(len(specs))
     for col, (zona, sector, instr, view_bounds) in zip(cols, specs):
         with col:

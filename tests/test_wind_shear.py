@@ -201,6 +201,45 @@ def test_wind_profile_fn_injection(monkeypatch):
     assert r["status"] == "ok" and abs(r["top_km"] - 6.0) < 0.01, r
 
 
+def test_guard_adveccion_inconsistente_con_el_perfil(monkeypatch):
+    """Advección más rápida que TODO el viento de la columna → 'adv_inconsistent'.
+
+    `argmin` siempre devuelve un nivel: sin guard de mismatch, una advección de
+    35 m/s con viento máximo de 20 m/s salía como `ok` con altura puntual, aunque
+    ningún nivel explique el movimiento (audit ago-2026, confirmado adversarialmente).
+    """
+    import src.process.wind_shear_height as ws
+
+    lat = np.array([[-38.0]])
+    t_cur = datetime(2026, 6, 15, 12, 0, 0, tzinfo=timezone.utc)
+    t_prev = datetime(2026, 6, 15, 11, 50, 0, tzinfo=timezone.utc)
+    # 35 m/s al este en 600 s a lat −38 → ~0.2394° de longitud.
+    dlon = 35.0 * 600.0 / (111320.0 * math.cos(math.radians(-38.0)))
+
+    def fake_mask_at(dt, v, radius_deg):
+        cur = dt >= t_cur - timedelta(minutes=1)
+        lon = np.array([[-71.5]]) if cur else np.array([[-71.5 - dlon]])
+        return np.array([[True]]), lat, lon, (t_cur if cur else t_prev)
+
+    monkeypatch.setattr(ws, "_ash_mask_at", fake_mask_at)
+
+    def my_wind(la, lo, dt):
+        # Cizalla clara (0→20 m/s) pero NINGÚN nivel llega a 35 m/s.
+        return {"levels": [
+            {"z_m": 0.0, "u_ms": 0.0, "v_ms": 0.0},
+            {"z_m": 5000.0, "u_ms": 7.0, "v_ms": 0.0},
+            {"z_m": 10000.0, "u_ms": 14.0, "v_ms": 0.0},
+            {"z_m": 15000.0, "u_ms": 20.0, "v_ms": 0.0},
+        ], "valid_time": "2026-06-15T12:00", "lat": la, "lon": lo, "source": "t"}
+
+    r = ws.wind_shear_top_height(t_cur, _FakeVolcano(), prev_gap_min=10,
+                                 wind_profile_fn=my_wind)
+    assert r["status"] == "adv_inconsistent", r
+    assert r["top_km"] is None
+    assert r["mismatch_ms"] > ws.MAX_MISMATCH_MS
+    assert r["adv_speed_ms"] > 30
+
+
 def test_guard_banda_ancha_no_restringe(monkeypatch):
     """Cizalla presente PERO advección consistente con casi toda la columna →
     status 'band_unconstrained' sin top_km (hallazgo de la validación Láscar).

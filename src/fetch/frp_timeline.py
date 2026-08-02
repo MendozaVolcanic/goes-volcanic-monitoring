@@ -45,7 +45,7 @@ from src.fetch.goes_fdcf import (
     _parse_scan_time,
     _SAT_LON_DEFAULT,
 )
-from src.fetch.granule_select import nearest_granule_key
+from src.fetch.granule_select import nearest_granule_key, get_s3 as _get_s3
 
 logger = logging.getLogger(__name__)
 
@@ -186,7 +186,7 @@ def fetch_scan_sliced(
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
 
-    s3 = s3fs.S3FileSystem(anon=True)
+    s3 = _get_s3()
     # Unión [dt-1h, dt, dt+1h]: en el borde de hora el scan más cercano al target
     # puede caer en la hora adyacente; elegir solo dentro de la hora de dt lo
     # mal-atribuiría a un bucket de 10 min equivocado en la timeline intradía.

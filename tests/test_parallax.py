@@ -89,6 +89,36 @@ def test_vectorized_arrays():
     assert np.all(np.hypot(clat - lat, clon - lon) > 0)
 
 
+def test_datum_es_amsl_no_altura_sobre_terreno():
+    """La altura de entrada es AMSL/elipsoide, NO altura sobre el terreno.
+
+    Pinea el contrato que el audit de ago-2026 encontró mal documentado: en Láscar
+    (tope 10.6 km AMSL sobre terreno de 5.6 km) la corrección debe usar los 10.6 km
+    completos. Si alguien pasara la altura sobre el terreno (5.0 km) el corrimiento
+    sería ~la mitad, dejando kilómetros de error silencioso.
+    """
+    lat0, lon0 = -23.37, -67.73          # Láscar
+    top_amsl_m = 10600.0
+    terreno_m = 5600.0
+
+    def _shift_km(h_m):
+        lat, lon = parallax_shift(lat0, lon0, h_m, SAT_LON, H)
+        dn = math.radians(lat - lat0) * 6378137.0
+        de = math.radians(lon - lon0) * 6378137.0 * math.cos(math.radians(lat0))
+        return math.hypot(dn, de) / 1000.0
+
+    d_amsl = _shift_km(top_amsl_m)
+    d_terreno = _shift_km(top_amsl_m - terreno_m)
+
+    # Con AMSL el corrimiento es del orden de 5-6 km (tanθ ≈ 0.55 a esa latitud).
+    assert 4.5 < d_amsl < 7.0, d_amsl
+    # Usar altura sobre terreno perdería más de 2 km de corrección: el error que
+    # el contrato ambiguo podía inducir.
+    assert d_amsl - d_terreno > 2.0, (d_amsl, d_terreno)
+    # Linealidad exacta en la altura (1er orden): la razón es la de las alturas.
+    assert abs(d_terreno / d_amsl - (top_amsl_m - terreno_m) / top_amsl_m) < 1e-6
+
+
 def test_field_leaves_non_plume_pixels_intact():
     """En un campo, los píxeles con altura NaN (sin pluma) NO se mueven; solo se
     corren los de la pluma (altura finita)."""

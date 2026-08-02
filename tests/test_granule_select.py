@@ -13,6 +13,8 @@ que ejercitan el contrato sin tocar la red.
 """
 
 import sys
+
+import pytest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -115,6 +117,36 @@ def test_naive_dt_treated_as_utc():
     dt_naive = datetime(2026, 6, 15, 12, 56, 0)  # sin tz
     chosen = nearest_granule_key(_lister(scans), _parse, dt_naive)
     assert _parse(chosen) == datetime(2026, 6, 15, 13, 0, 0, tzinfo=timezone.utc)
+
+
+def test_get_s3_tiene_expiracion_de_listados():
+    """El filesystem compartido DEBE tener `listings_expiry_time` finito.
+
+    `s3fs.S3FileSystem(anon=True)` es cacheable (misma instancia para todos los
+    fetchers) y su DirCache nace SIN expiración: el listado de la hora en curso
+    quedaba congelado para todo el proceso, así que los gránulos que NOAA publica
+    después en esa misma hora eran invisibles y el "scan más reciente" podía
+    atrasarse hasta ~1 h presentándose como vigente. (audit ago-2026)
+    """
+    pytest.importorskip("s3fs")
+    from src.fetch.granule_select import S3_LISTINGS_EXPIRY_S, get_s3
+
+    fs = get_s3()
+    expiry = fs.dircache.listings_expiry_time
+    assert expiry is not None, "el DirCache no debe ser eterno"
+    assert 0 < float(expiry) <= 300, expiry
+    assert float(expiry) == float(S3_LISTINGS_EXPIRY_S)
+
+
+def test_todos_los_fetchers_comparten_el_mismo_filesystem():
+    """Los 6 fetchers S3 deben resolver a UNA instancia (misma cache, misma
+    expiración). Si alguno vuelve a construir `S3FileSystem(anon=True)` pelado,
+    se crea una segunda instancia con DirCache eterno y el bug vuelve por ahí."""
+    pytest.importorskip("s3fs")
+    import src.fetch.goes_s3 as goes_s3
+    from src.fetch.granule_select import get_s3
+
+    assert goes_s3._get_fs() is get_s3()
 
 
 def test_unparseable_keys_skipped():

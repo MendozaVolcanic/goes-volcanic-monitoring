@@ -35,6 +35,18 @@ LOOKBACK_DAYS = 7
 RADIUS_KM = 50
 FRP_TIMELINE_PATH = Path(__file__).parent.parent.parent / "data" / "frp_timeline.json"
 
+# El cron `frp_timeline.yml` commitea data/frp_timeline.json a main cada 10 min, pero
+# el deploy de HF es un SNAPSHOT (deploy_hf.sh copia el archivo al orphan branch): sin
+# esta descarga remota, el panel mostraría eternamente el pulso térmico del día del
+# último deploy manual, y semanas de atraso se leerían como "calma térmica". Bajamos el
+# JSON de raw.githubusercontent (el bot lo mantiene fresco en main) con fallback al
+# archivo local. Mismo espíritu que el cache hi-res, que ya se sirve del release.
+FRP_TIMELINE_URL = ("https://raw.githubusercontent.com/MendozaVolcanic/"
+                    "goes-volcanic-monitoring/main/data/frp_timeline.json")
+# Edad del pre-cocinado a partir de la cual el panel deja de afirmar "calma" y avisa
+# que el dato está vencido (el cron corre cada 10 min; 3 h ya es una anomalía real).
+FRP_STALE_HOURS = 3.0
+
 # Paleta estable por volcán prioritario (para el timeline intradía).
 _VOLCANO_COLORS = {
     "Villarrica": "#ff5252", "Lascar": "#ffb74d", "Copahue": "#ba68c8",
@@ -77,15 +89,59 @@ def _build_heatmap(counts_by_day: list[dict], today: datetime) -> go.Figure:
     return fig
 
 
-def _load_frp_timeline() -> dict:
-    """Lee frp_timeline.json (pre-cocinado por GitHub Action incremental)."""
+def _load_frp_timeline_local() -> dict:
+    """Lee el frp_timeline.json del disco (snapshot del deploy). Fallback."""
     if not FRP_TIMELINE_PATH.exists():
         return {}
     try:
         return json.loads(FRP_TIMELINE_PATH.read_text())
     except Exception as e:
-        logger.warning("frp_timeline.json corrupto: %s", e)
+        logger.warning("frp_timeline.json local corrupto: %s", e)
         return {}
+
+
+@st.cache_data(ttl=300, show_spinner=False)
+def _load_frp_timeline() -> dict:
+    """Serie pre-cocinada de FRP, preferentemente la VIVA del repo.
+
+    Baja el JSON que el cron mantiene fresco en `main` (cache-buster para saltear
+    el CDN de raw.githubusercontent) y cae al archivo local si la red falla. El
+    dict devuelto lleva ``_source`` ('remoto'/'local') para que la vista pueda
+    decir de dónde salió el dato. Cacheado 5 min: el cron corre cada 10.
+    """
+    try:
+        import time as _t
+
+        from src.fetch._http_session import get_session
+
+        r = get_session().get(f"{FRP_TIMELINE_URL}?_={int(_t.time())}", timeout=12)
+        r.raise_for_status()
+        data = r.json()
+        if isinstance(data, dict) and data.get("scans") is not None:
+            data["_source"] = "remoto"
+            return data
+        logger.warning("frp_timeline remoto sin 'scans'; uso el local")
+    except Exception as e:
+        logger.warning("frp_timeline remoto falló (%s); uso el local", e)
+
+    data = _load_frp_timeline_local()
+    if data:
+        data["_source"] = "local"
+    return data
+
+
+def _frp_age_hours(tl: dict) -> float | None:
+    """Antigüedad en horas de ``last_updated_utc``. None si falta o no parsea."""
+    raw = (tl or {}).get("last_updated_utc")
+    if not raw:
+        return None
+    try:
+        ts = datetime.fromisoformat(str(raw).replace("Z", "+00:00"))
+        if ts.tzinfo is None:
+            ts = ts.replace(tzinfo=timezone.utc)
+        return (datetime.now(timezone.utc) - ts).total_seconds() / 3600.0
+    except Exception:
+        return None
 
 
 def _build_frp_timeline_fig(scans: list[dict]) -> tuple[go.Figure, dict]:
@@ -167,6 +223,19 @@ def _render_frp_timeline_section():
     radius = tl.get("radius_km", RADIUS_KM)
     last_upd = tl.get("last_updated_utc", "?")
 
+    # Guard de frescura: con el pre-cocinado vencido, "0 MW" NO significa calma —
+    # significa que nadie actualizó la serie. Avisar ANTES de cualquier lectura, para
+    # que un guardia no interprete dato viejo como ausencia de actividad.
+    age_h = _frp_age_hours(tl)
+    stale = age_h is not None and age_h > FRP_STALE_HOURS
+    if stale:
+        st.warning(
+            f"⚠️ **Serie vencida**: el pre-cocinado tiene {age_h:.0f} h de antigüedad "
+            f"(el cron corre cada 10 min). Lo de abajo NO refleja la actividad actual — "
+            "la ausencia de señal aquí no equivale a calma térmica. Revisar el workflow "
+            "`frp_timeline.yml`."
+        )
+
     if stats["active"]:
         peak = stats["peak"]
         st.plotly_chart(fig, width="stretch",
@@ -184,7 +253,7 @@ def _render_frp_timeline_section():
         calmos = [n for n in PRIORITY_VOLCANOES if n not in stats["active"]]
         if calmos:
             st.caption(f"✅ Sin señal en la ventana: {', '.join(calmos)}")
-    else:
+    elif not stale:
         st.success(
             f"✅ **Calma térmica**: 0 MW en los {len(PRIORITY_VOLCANOES)} "
             f"volcanes prioritarios durante las últimas "
@@ -192,9 +261,16 @@ def _render_frp_timeline_section():
             "Normal — este panel se *enciende* durante actividad efusiva con "
             "lava expuesta (típico: Villarrica, Láscar, Nevados de Chillán)."
         )
+    else:
+        # Vencida y sin señal: el warning de arriba ya explicó por qué no se puede
+        # concluir calma. No repetir el mensaje verde que afirmaría lo contrario.
+        st.info("Sin señal en la serie disponible — dato vencido, ver aviso arriba.")
 
-    st.caption(f"⏱️ Última actualización del pre-cocinado: {last_upd} · "
-               f"radio de atribución {radius:.0f} km · fuente NOAA FDCF GOES-19")
+    src = tl.get("_source", "?")
+    age_txt = f" · hace {age_h:.1f} h" if age_h is not None else ""
+    st.caption(f"⏱️ Última actualización del pre-cocinado: {last_upd}{age_txt} "
+               f"({src}) · radio de atribución {radius:.0f} km · "
+               f"fuente NOAA FDCF GOES-19")
 
 
 def render():

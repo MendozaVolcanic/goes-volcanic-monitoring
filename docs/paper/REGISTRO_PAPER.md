@@ -26,6 +26,7 @@
 | Etapa | Método | Ref. física | Módulo |
 |---|---|---|---|
 | Detección de ceniza | BTD split-window (11.2−12.3 < −1 K) + tri-espectral 8.4 µm | Prata 1989; ATBD GOES-R VolAsh v3.0 | `src/process/ash_detection.py` |
+| Adquisición de escena (común a 3a/3b y a la referencia externa) | Ventana geos desde C14 → C11/C14/C15 del **mismo scan** → máscara + contexto SO₂ (+ perfil GFS). Criterios de degradación (no reportar): banda ausente, bbox fuera del disco, bandas de scans distintos, sin perfil | — (guards propios; ver §5 C1) | `src/process/scene.py` |
 | Perfil T(z) + tropopausa | GFS vía Open-Meteo pressure levels; tropopausa = punto frío 6-20 km; rama monótona (envolvente fría) para inversiones | — | `src/fetch/gfs_profile.py` |
 | Perfil T(z) alternativo (cross-check) | LVTPF del PROPIO GOES-19 (sondeo IR ABI, 101 niveles); mediana de cielo claro del entorno (DQF_Overall==0 & DQF_Retrieval==0); z(p) derivada por integración hipsométrica anclada a ISA | producto NOAA ABI-L2-LVTPF; ec. hipsométrica | `src/fetch/goes_lvtp.py` |
 | Altura cota (3a) | BT-matching: BT(11 µm) del tope → T(z) → z. Cota inferior | estándar | `src/process/bt_matching_height.py` |
@@ -130,6 +131,19 @@ independiente → fix**. Dos hallazgos confirmados que cambiaron el método
   `[dt-1h, dt, dt+1h]` (puro, testeado sin red). Implicancia para el paper:
   al reportar casos de validación por fecha/hora, la cadena ahora garantiza el
   gránulo verdaderamente más cercano al instante objetivo.
+- **G1 — un guard duplicado es un guard sin probar (ola 2, audit ago-2026):** el
+  preámbulo de adquisición estaba escrito tres veces (wen_rose / bt_matching /
+  acha) y con él los criterios de "no reportar". El guard de mismo-scan (C1,
+  jun-2026) nació en ACHA y se replicó a mano a los otros dos; el audit encontró
+  que **ninguna de las tres copias tenía test** —el fixture sintético pineaba
+  `_scan_start` a una constante, así que la rama nunca se ejecutaba—. Se unificó
+  en `src/process/scene.py` y se pineó con un test que falla si se desactiva el
+  guard (verificado por mutación). Los métodos NO cambiaron: la suite completa
+  (212 tests previos) pasa sin modificar un solo assert, y los 19 tests nuevos
+  cubren guards + orquestación de `bt_matching_top_height` y `plume_top_height`,
+  que hasta ahora solo se probaban con un volcán inexistente. Implicancia para
+  la reproducibilidad: los criterios de degradación del retrieval son ahora
+  auditables en un único archivo, no inferidos de tres copias divergentes.
 
 ## 6. Open source / reproducibilidad
 

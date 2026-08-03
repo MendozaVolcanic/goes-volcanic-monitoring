@@ -24,7 +24,7 @@ libre); registro pre-paper en `docs/paper/REGISTRO_PAPER.md`.
 - **BTD Split-Window**: BT(11.2um) - BT(12.3um). Negativo = ceniza
 - **Detección tri-espectral**: BTD + (BT8.4-BT11.2)+(BT12.3-BT11.2) < 0
 - **SO2 indicator**: BT(8.4um) - BT(11.2um). Muy negativo = SO2
-- **Hot spots**: Producto FDCF L2 (NOAA pre-procesado) — NRT vía `fetch_latest_hotspots`, histórico vía `fetch_hotspots_at_time(dt, bounds)` (S3 NOAA L2 indefinido).
+- **Hot spots**: Producto FDCF L2 (NOAA pre-procesado) — NRT vía `fetch_latest_hotspots`, histórico vía `fetch_hotspots_at_time(dt, bounds)` (S3 NOAA L2 indefinido). Ambos comparten `goes_fdcf.extract_hotspots`, que con `bounds` recorta el grid ABI al sub-bloque (~15× más rápido, sin el pico de RAM del full-disk); `frp_timeline.fetch_scan_sliced` quedó como alias con default `CHILE_BBOX`.
 - **VOLCAT**: Producto SSEC con altura de pluma cuantitativa — vía RealEarth API (`fetch_image(time=...)` acepta histórico).
 - **GeoColor hi-res NOAA L1b**: 0.5 km/px banda 2 (4× zoom vs RAMMB). Pipeline `src/process/hires_pipeline.py` con day/night switch (visible diurno + IR pseudo-color nocturno). Modos `color` (1km/px aligned) y `mono_05km` (0.5km/px nativo sepia).
 
@@ -58,6 +58,7 @@ libre); registro pre-paper en `docs/paper/REGISTRO_PAPER.md`.
 - **Sidebar routing + permalinks**: `PAGE_OPTIONS` list + `PAGE_SLUGS` dict en `dashboard/app.py`. URL `?vista=<slug>` setea inicial, escribe el slug al cambiar.
 - **Modo fullscreen global**: `?fullscreen=1` oculta sidebar via CSS, padding 0.4rem, max-width 100%.
 - **RAMMB resiliente**: `fetch_frame_robust(product, timestamps, bounds, zoom_preferred, zoom_fallback)` en `src/fetch/rammb_slider.py` — RAMMB falla intermitente en `eumetsat_ash`/`jma_so2` zoom=4. Devuelve `(img, ts_usado, zoom_usado)`.
+- **Adquisición de escena única (SDA)**: los 3 retrievals de altura (wen_rose / bt_matching / acha) NO bajan bandas por su cuenta — llaman a `acquire_ash_scene()` en `src/process/scene.py`, que devuelve `AshScene` o un dict de error listo para retornar. **Todo guard de "no reportar" (banda ausente, bbox fuera del disco, bandas de scans distintos, sin perfil GFS) va ahí y en ningún otro lado**: estaba triplicado y por eso ninguna copia tenía test. Tests en `tests/test_scene.py`, escena sintética compartida en `tests/conftest.py`.
 
 ## Gotchas conocidos
 - **Python version pin en Streamlit Cloud — `runtime.txt` YA NO ALCANZA** (lección 2026-05-14): Desde que Streamlit Cloud migró a `uv` para instalar deps, **`runtime.txt` es ignorado en muchos deploys**. La doc oficial dice que la ÚNICA forma soportada es el UI Advanced Settings al momento del deploy (https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app/upgrade-python). Para cambiar versión hay que **borrar y re-deployar** la app. El log del 14-may confirma `Using Python 3.14.4 environment` aunque teníamos `runtime.txt` con `python-3.12`. Workaround triple (lo tenemos): `runtime.txt` + `.python-version` (pyenv format) + `pyproject.toml` con `requires-python="==3.12.*"`. Aún así, lo MÁS seguro es elegir Python 3.12 en el UI del Advanced Settings al primer deploy y nunca cambiar.

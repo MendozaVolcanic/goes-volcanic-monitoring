@@ -167,6 +167,141 @@ def _abi_to_latlon(
     return lat, lon
 
 
+def xy_index_range(
+    x_rad: np.ndarray, y_rad: np.ndarray, sat_lon: float,
+    bbox: dict, margin_rad: float = 0.003,
+) -> Optional[tuple[int, int, int, int]]:
+    """Índices ``(c0, c1, r0, r1)`` del sub-bloque ABI que cubre ``bbox``.
+
+    Por qué: el grid fijo del ABI es 5424×5424, pero un bbox de un volcán son
+    unas decenas de píxeles. Proyectando las esquinas del bbox a coords
+    fixed-grid (radianes) se obtiene el rango de columnas (x) y filas (y) que lo
+    contienen, con un margen generoso (0.003 rad ≈ 50 px de 2 km) para absorber
+    la curvatura del bbox lat/lon en la grilla geos.
+
+    Devuelve None si el bbox cae fuera del disco visible (el caller lee full).
+    """
+    try:
+        from pyproj import Proj
+    except ImportError:
+        logger.error("pyproj requerido para recorte de región")
+        return None
+
+    p = Proj(proj="geos", lon_0=sat_lon, h=_H_DEFAULT, ellps="GRS80", sweep="x")
+    lon_grid, lat_grid = np.meshgrid(
+        np.linspace(bbox["lon_min"], bbox["lon_max"], 6),
+        np.linspace(bbox["lat_min"], bbox["lat_max"], 6),
+    )
+    x_m, y_m = p(lon_grid.ravel(), lat_grid.ravel())
+    x_r = np.asarray(x_m) / _H_DEFAULT
+    y_r = np.asarray(y_m) / _H_DEFAULT
+    finite = np.isfinite(x_r) & np.isfinite(y_r)
+    if not finite.any():
+        return None
+    x_r, y_r = x_r[finite], y_r[finite]
+    xmin, xmax = x_r.min() - margin_rad, x_r.max() + margin_rad
+    ymin, ymax = y_r.min() - margin_rad, y_r.max() + margin_rad
+
+    c_idx = np.where((x_rad >= xmin) & (x_rad <= xmax))[0]
+    r_idx = np.where((y_rad >= ymin) & (y_rad <= ymax))[0]
+    if c_idx.size == 0 or r_idx.size == 0:
+        return None
+    return int(c_idx[0]), int(c_idx[-1]), int(r_idx[0]), int(r_idx[-1])
+
+
+def _read_block(ds, name: str, rng: Optional[tuple]) -> np.ndarray:
+    """Materializar una variable 2D del FDCF, recortada al sub-bloque si lo hay.
+
+    Punto único donde se pasa de lazy a numpy: con ``rng`` se evita traer los
+    5424² valores. (Los tests espían esta función para verificar el recorte.)
+    """
+    if rng is None:
+        return ds[name].values
+    c0, c1, r0, r1 = rng
+    return ds[name][r0:r1 + 1, c0:c1 + 1].values
+
+
+def extract_hotspots(
+    ds,
+    bounds: Optional[dict] = None,
+    high_conf_only: bool = False,
+    allow_slice: bool = True,
+) -> list[HotSpot]:
+    """Extraer los hotspots de un dataset FDCF ya abierto, filtrados por bbox.
+
+    Camino ÚNICO compartido por los tres lectores (NRT, histórico y timeline):
+    antes cada uno repetía este bloque y sólo la timeline recortaba. Con
+    ``bounds`` se lee sólo el sub-bloque que cubre el bbox (~15× más rápido y
+    sin el pico de RAM del full-disk, que importa en el Space de HF).
+
+    Args:
+        ds:              Dataset FDCF abierto (Mask/Power/Temp/Area + x/y).
+        bounds:          bbox lat/lon; None = disco entero, sin filtrar.
+        high_conf_only:  sólo Mask ∈ HIGH_CONF_MASK.
+        allow_slice:     False fuerza el camino full-disk (para comparar).
+
+    Returns:
+        lista de HotSpot ordenada por FRP descendente ([] si no hay).
+    """
+    x_rad = ds["x"].values
+    y_rad = ds["y"].values
+    sat_lon = float(
+        ds["goes_imager_projection"].attrs.get(
+            "longitude_of_projection_origin", _SAT_LON_DEFAULT
+        )
+    )
+
+    rng = None
+    if bounds is not None and allow_slice:
+        rng = xy_index_range(x_rad, y_rad, sat_lon, bounds)
+
+    mask = _read_block(ds, "Mask", rng)
+    power = _read_block(ds, "Power", rng)
+    if rng is None:
+        xs, ys = x_rad, y_rad
+    else:
+        c0, c1, r0, r1 = rng
+        xs, ys = x_rad[c0:c1 + 1], y_rad[r0:r1 + 1]
+
+    valid_mask_set = HIGH_CONF_MASK if high_conf_only else HOTSPOT_MASK_VALUES
+    hot_idx = np.isin(mask, list(valid_mask_set)) & np.isfinite(power)
+    if not hot_idx.any():
+        return []
+
+    rows, cols = np.where(hot_idx)
+    # x_rad indexa columnas, y_rad filas: se proyectan SOLO los índices
+    # calientes (mucho más barato que reconstruir la grilla completa).
+    lats, lons = _abi_to_latlon(xs[cols], ys[rows], sat_lon=sat_lon)
+
+    if bounds is not None:
+        keep = (
+            (lats >= bounds["lat_min"]) & (lats <= bounds["lat_max"]) &
+            (lons >= bounds["lon_min"]) & (lons <= bounds["lon_max"])
+        )
+        if not keep.any():
+            return []
+        rows, cols = rows[keep], cols[keep]
+        lats, lons = lats[keep], lons[keep]
+
+    # Temp/Area sólo se materializan si HAY hotspots que describir.
+    temp = _read_block(ds, "Temp", rng)
+    area = _read_block(ds, "Area", rng)
+
+    hotspots = []
+    for i in range(len(rows)):
+        r, c = int(rows[i]), int(cols[i])
+        m_v = int(mask[r, c])
+        hotspots.append(HotSpot(
+            lat=float(lats[i]), lon=float(lons[i]),
+            frp_mw=float(power[r, c]) if np.isfinite(power[r, c]) else 0.0,
+            temp_k=float(temp[r, c]) if np.isfinite(temp[r, c]) else 0.0,
+            area_km2=float(area[r, c]) if np.isfinite(area[r, c]) else 0.0,
+            mask=m_v, confidence=_confidence_from_mask(m_v),
+        ))
+    hotspots.sort(key=lambda h: h.frp_mw, reverse=True)
+    return hotspots
+
+
 def fetch_latest_hotspots(
     bounds: Optional[dict] = None,
     high_conf_only: bool = False,
@@ -205,65 +340,15 @@ def fetch_latest_hotspots(
     try:
         with s3.open(latest, "rb") as f:
             ds = xr.open_dataset(f, engine="h5netcdf")
-            mask = ds["Mask"].values
-            power = ds["Power"].values
-            temp = ds["Temp"].values
-            area = ds["Area"].values
-            x_rad = ds["x"].values
-            y_rad = ds["y"].values
-            # sat_lon del proyectado
-            sat_lon = float(
-                ds["goes_imager_projection"].attrs.get(
-                    "longitude_of_projection_origin", _SAT_LON_DEFAULT
-                )
-            )
             # Time del scan — parsear del nombre del archivo (mas robusto que
             # decodificar variable 't' en J2000 segundos)
             scan_dt = _parse_scan_time(latest)
+            hotspots = extract_hotspots(ds, bounds=bounds,
+                                        high_conf_only=high_conf_only)
     except Exception as e:
         logger.exception("Error leyendo FDCF %s: %s", latest, e)
         return [], None
 
-    # ── Filtrar mascara por categoria fire ───────────────────────────────
-    valid_mask_set = HIGH_CONF_MASK if high_conf_only else HOTSPOT_MASK_VALUES
-    hot_idx = np.isin(mask, list(valid_mask_set)) & np.isfinite(power)
-    if not hot_idx.any():
-        return [], scan_dt
-
-    rows, cols = np.where(hot_idx)
-    # x_rad es 1D (cols), y_rad es 1D (rows). Hacer meshgrid solo para los
-    # indices encontrados — mucho mas barato que sacar full grid.
-    x_pts = x_rad[cols]
-    y_pts = y_rad[rows]
-    lats, lons = _abi_to_latlon(x_pts, y_pts, sat_lon=sat_lon)
-
-    # Filtrar por bbox si pidieron
-    if bounds is not None:
-        keep = (
-            (lats >= bounds["lat_min"]) & (lats <= bounds["lat_max"]) &
-            (lons >= bounds["lon_min"]) & (lons <= bounds["lon_max"])
-        )
-        if not keep.any():
-            return [], scan_dt
-        rows = rows[keep]; cols = cols[keep]
-        lats = lats[keep]; lons = lons[keep]
-
-    hotspots = []
-    for i in range(len(rows)):
-        r, c = int(rows[i]), int(cols[i])
-        m_v = int(mask[r, c])
-        hotspots.append(HotSpot(
-            lat=float(lats[i]),
-            lon=float(lons[i]),
-            frp_mw=float(power[r, c]) if np.isfinite(power[r, c]) else 0.0,
-            temp_k=float(temp[r, c]) if np.isfinite(temp[r, c]) else 0.0,
-            area_km2=float(area[r, c]) if np.isfinite(area[r, c]) else 0.0,
-            mask=m_v,
-            confidence=_confidence_from_mask(m_v),
-        ))
-
-    # Ordenar por FRP descendente (los mas intensos arriba)
-    hotspots.sort(key=lambda h: h.frp_mw, reverse=True)
     return hotspots, scan_dt
 
 
@@ -328,54 +413,11 @@ def fetch_hotspots_at_time(
     try:
         with s3.open(chosen, "rb") as f:
             ds = xr.open_dataset(f, engine="h5netcdf")
-            mask = ds["Mask"].values
-            power = ds["Power"].values
-            temp = ds["Temp"].values
-            area = ds["Area"].values
-            x_rad = ds["x"].values
-            y_rad = ds["y"].values
-            sat_lon = float(
-                ds["goes_imager_projection"].attrs.get(
-                    "longitude_of_projection_origin", _SAT_LON_DEFAULT
-                )
-            )
             scan_dt = _parse_scan_time(chosen)
+            hotspots = extract_hotspots(ds, bounds=bounds,
+                                        high_conf_only=high_conf_only)
     except Exception as e:
         logger.exception("Error leyendo FDCF historico %s: %s", chosen, e)
         return [], None
 
-    valid_mask_set = HIGH_CONF_MASK if high_conf_only else HOTSPOT_MASK_VALUES
-    hot_idx = np.isin(mask, list(valid_mask_set)) & np.isfinite(power)
-    if not hot_idx.any():
-        return [], scan_dt
-
-    rows, cols = np.where(hot_idx)
-    x_pts = x_rad[cols]
-    y_pts = y_rad[rows]
-    lats, lons = _abi_to_latlon(x_pts, y_pts, sat_lon=sat_lon)
-
-    if bounds is not None:
-        keep = (
-            (lats >= bounds["lat_min"]) & (lats <= bounds["lat_max"]) &
-            (lons >= bounds["lon_min"]) & (lons <= bounds["lon_max"])
-        )
-        if not keep.any():
-            return [], scan_dt
-        rows = rows[keep]; cols = cols[keep]
-        lats = lats[keep]; lons = lons[keep]
-
-    hotspots = []
-    for i in range(len(rows)):
-        r, c = int(rows[i]), int(cols[i])
-        m_v = int(mask[r, c])
-        hotspots.append(HotSpot(
-            lat=float(lats[i]),
-            lon=float(lons[i]),
-            frp_mw=float(power[r, c]) if np.isfinite(power[r, c]) else 0.0,
-            temp_k=float(temp[r, c]) if np.isfinite(temp[r, c]) else 0.0,
-            area_km2=float(area[r, c]) if np.isfinite(area[r, c]) else 0.0,
-            mask=m_v,
-            confidence=_confidence_from_mask(m_v),
-        ))
-    hotspots.sort(key=lambda h: h.frp_mw, reverse=True)
     return hotspots, scan_dt

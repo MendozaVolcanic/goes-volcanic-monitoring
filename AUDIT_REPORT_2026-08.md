@@ -3,6 +3,11 @@
 > bugs med/high. **La ola 1 ya está desplegada** (PR #16, commit 8356ae8, 211 tests,
 > HF RUNNING) — los ítems marcados ✅ están arreglados; el resto es el backlog de la
 > ola 2. Prioridades y contexto en la memoria `project_pending_ola2`.
+>
+> **Ola 2 en curso** (ago-2026): hechos los dos ítems estructurales de mayor
+> valor — el preámbulo de adquisición triplicado (ahora `src/process/scene.py`)
+> y el recorte por bbox del FDCF (`goes_fdcf.extract_hotspots`, compartido por
+> los 3 lectores). 231 tests (+19).
 
 **96 hallazgos únicos** — 33 bugs, 63 mejoras.
 
@@ -284,7 +289,7 @@ fetch_gfs_profile_archive hace vmap = dict(zip(got, vals)) (líneas 262 y 320): 
 
 *Fix sugerido:* Test puro de _collect_raw con un fake s3 cuyo cat_file registre (start,end) pedidos y devuelva payloads distinguibles: verificar (a) got preserva el orden de needed saltando claves ausentes, (b) el último registro usa end=size-1, (c) raw es la concatenación en el mismo orden que got. Complementar con un test de _decode_values_at_point usando 2-3 mensajes GRIB2 mínimos pregrabados si eccodes está disponible (skipif local).
 
-### `src/fetch/goes_fdcf.py:208` — high/conf=high · eficiencia-memoria-cpu
+### ✅ `src/fetch/goes_fdcf.py:208` — high/conf=high · eficiencia-memoria-cpu
 
 **fetch_latest_hotspots y fetch_hotspots_at_time leen Mask/Power/Temp/Area del full disk (5424×5424) aunque el caller pida un bbox chico, cuando frp_timeline.fetch_scan_sliced ya demuestra la lectura recortada ~15× más rápida**
 
@@ -292,7 +297,7 @@ Las líneas 206-213 (y 329-336 en la variante histórica) hacen `.values` sobre 
 
 *Fix sugerido:* Unificar en UNA implementación en goes_fdcf: (1) helper `_extract_hotspots(mask, power, temp, area, xs, ys, sat_lon, bounds, high_conf_only)` compartido por las 3 funciones; (2) cuando bounds no es None, recortar con la ventana geos ANTES de `.values` (patrón fetch_scan_sliced/ACHA). fetch_scan_sliced puede quedar como alias delgado. Las 6 vistas se benefician sin tocarlas.
 
-### `src/process/wen_rose_height.py:437` — high/conf=high · duplicacion-nucleo-cientifico
+### ✅ `src/process/wen_rose_height.py:437` — high/conf=high · duplicacion-nucleo-cientifico
 
 **El preámbulo de adquisición de escena (~100 líneas: C14→ventana geos→C11/C15→guard mismo-scan→máscara→contexto SO2→perfil GFS) está triplicado en wen_rose_height, bt_matching_height y acha_plume_height**
 

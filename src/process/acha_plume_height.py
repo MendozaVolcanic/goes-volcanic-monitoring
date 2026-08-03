@@ -39,9 +39,12 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime, timezone
-from typing import Optional, Union
+from typing import Union
 
 import numpy as np
+
+# El bbox del volcán vive en scene.py junto al resto de la adquisición común.
+from src.process.scene import bounds_for as _bounds_for  # noqa: F401 (re-export)
 
 logger = logging.getLogger(__name__)
 
@@ -99,13 +102,6 @@ def _plume_top_stats(
     }
 
 
-def _bounds_for(volcano, radius_deg: float) -> dict:
-    return {
-        "lat_min": volcano.lat - radius_deg, "lat_max": volcano.lat + radius_deg,
-        "lon_min": volcano.lon - radius_deg, "lon_max": volcano.lon + radius_deg,
-    }
-
-
 def plume_top_height(
     dt: datetime,
     volcano: Union[str, object],
@@ -139,18 +135,12 @@ def plume_top_height(
     # Imports perezosos — evita cadenas frágiles en hot-reload de Streamlit y
     # mantiene este módulo importable sin red (para los tests puros).
     from src.fetch.goes_acha import DQF_KEEP_DEFAULT, fetch_acha_height_at
-    from src.fetch.goes_s3 import download_band_at, open_band
-    from src.process.ash_detection import detect_ash_enhanced
-    from src.process.brightness_temp import rad_to_bt
+    from src.process.scene import acquire_ash_scene, resolve_volcano
 
     if keep_dqf is None:
         keep_dqf = DQF_KEEP_DEFAULT
 
-    if isinstance(volcano, str):
-        from src.volcanos import get_volcano
-        v = get_volcano(volcano)
-    else:
-        v = volcano
+    v = resolve_volcano(volcano)
     if v is None:
         return {"status": "no_data", "reason": "volcán no encontrado",
                 "volcano": str(volcano)}
@@ -166,9 +156,6 @@ def plume_top_height(
         return {"status": "no_data", "reason": "sin gránulo ACHA accesible",
                 "volcano": v.name, "bounds": bounds, "source": source}
 
-    from src.fetch.goes_s3 import _scan_start
-
-    y0, y1, x0, x1 = acha["window"]
     height_m = acha["height_m"]
     acha_dt = acha["scan_dt"]
     # Sin timestamp del gránulo ACHA no podemos garantizar que las bandas caigan
@@ -178,74 +165,21 @@ def plume_top_height(
                 "reason": "no pude datar el gránulo ACHA (alineación de bandas "
                           "no garantizada)",
                 "volcano": v.name, "bounds": bounds, "source": source}
-    ref_dt = acha_dt   # alinear las bandas al MISMO scan que ACHA
 
-    # ── Máscara de ceniza en la misma ventana (grilla idéntica) ──────────
-    bts = {}
-    band_scans = {}
-    for b in ASH_BANDS:
-        path = download_band_at(ref_dt, b)
-        if path is None:
-            return {"status": "no_data", "reason": f"sin banda C{b:02d}",
-                    "volcano": v.name, "bounds": bounds, "scan_dt": acha_dt,
-                    "source": source}
-        band_scans[b] = _scan_start(path.name)
-        try:
-            # context manager → cierra el handle HDF5; .load() materializa la BT
-            # antes de cerrar el dataset.
-            with open_band(path) as ds:
-                ds_win = ds.isel(y=slice(y0, y1), x=slice(x0, x1))
-                bts[b] = rad_to_bt(ds_win).load()
-        except Exception as e:
-            logger.exception("Error BT banda C%02d: %s", b, e)
-            return {"status": "no_data", "reason": f"error procesando C{b:02d}",
-                    "volcano": v.name, "bounds": bounds, "scan_dt": acha_dt,
-                    "source": source}
+    # Adquisición común, pero con la ventana y el scan que IMPONE el gránulo
+    # ACHA: ACHA2KMF y L1b 2 km comparten la misma grilla geos (verificado), así
+    # que la intersección es pixel a pixel sin remuestrear. Sin perfil GFS: la
+    # altura la pone ACHA, no el mapeo BT→z.
+    scene = acquire_ash_scene(
+        dt, v, radius_deg, bands=ASH_BANDS, with_profile=False, source=source,
+        label="ACHA", window=acha["window"], ref_dt=acha_dt,
+        latlon=(acha["lat"], acha["lon"]), bounds=bounds)
+    if isinstance(scene, dict):
+        return scene
 
-    # Las 3 bandas deben ser del MISMO scan; si S3 tenía un hueco y alguna cayó
-    # en un scan vecino (±10 min), la máscara mezclaría tiempos → degradar a
-    # no_data en vez de un misregistro silencioso. (review jun 2026)
-    scans = {s for s in band_scans.values() if s is not None}
-    if len(scans) > 1:
-        logger.warning("Bandas de ceniza de scans distintos: %s", band_scans)
-        return {"status": "no_data",
-                "reason": "bandas C11/C14/C15 de scans distintos (S3 incompleto)",
-                "volcano": v.name, "bounds": bounds, "scan_dt": acha_dt,
-                "source": source}
+    stats = _plume_top_stats(height_m, scene.mask, percentile=percentile)
 
-    mask = detect_ash_enhanced(bts[11], bts[14], bts[15]).values
-    stats = _plume_top_stats(height_m, mask, percentile=percentile)
-
-    # Contexto SO2: una pluma de SO2/gas (común en Chile — p.ej. Chillán 27-jun)
-    # NO da firma de ceniza silicatada y ACHA no puede medir su altura (el gas es
-    # transparente en 11µm → daría alturas espurias bajo el cráter). Reportamos
-    # el SO2 presente para que el dashboard EXPLIQUE el no_plume en vez de un
-    # silencio. (validado vs Chillán, ver memoria reference_acha_so2_limit)
-    try:
-        from src.config import SO2_INDICATOR_THRESHOLD as _SO2_THR
-    except Exception:
-        _SO2_THR = -3.0
-    so2 = (bts[11] - bts[14]).values
-    so2_finite = np.isfinite(so2)
-    so2_px = int(np.sum(so2_finite & (so2 < _SO2_THR)))
-    so2_min = float(np.nanmin(so2)) if so2_finite.any() else None
-
-    now = datetime.now(timezone.utc)
-    latency_min = (now - acha_dt).total_seconds() / 60.0 if acha_dt else None
-
-    out = {
-        "volcano": v.name,
-        "bounds": bounds,
-        "lat": acha["lat"],
-        "lon": acha["lon"],
-        "scan_dt": acha_dt,
-        "latency_min": latency_min,
-        "percentile": percentile,
-        "source": source,
-        "product": acha["product"],
-        "so2_px": so2_px,
-        "so2_min": so2_min,
-        **stats,
-    }
+    out = scene.base_out(percentile, source)
+    out.update({"product": acha["product"], **stats})
     out["status"] = "ok" if stats["mask_px"] > 0 else "no_plume"
     return out

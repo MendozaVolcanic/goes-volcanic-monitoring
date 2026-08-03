@@ -40,7 +40,7 @@ plumas de gas/SO₂ (transparentes en 11 µm). Detalle en
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+from datetime import datetime
 from typing import Optional, Union
 
 import numpy as np
@@ -332,16 +332,6 @@ def solve_tc_grid(bt11, bt12, ts_k, coef11, coef12, beta: float = BETA_SILICATE,
 
 # ── Orquestación (con red) ──────────────────────────────────────────────────
 
-def _bounds_for(v, r: float) -> dict:
-    return {"lat_min": v.lat - r, "lat_max": v.lat + r,
-            "lon_min": v.lon - r, "lon_max": v.lon + r}
-
-
-def _coefs(ds) -> tuple:
-    return (float(ds["planck_fk1"].values), float(ds["planck_fk2"].values),
-            float(ds["planck_bc1"].values), float(ds["planck_bc2"].values))
-
-
 def _top_stats(field_km, valid, alt_m, trop, percentile=95):
     """Tope (percentil) + máx sobre los píxeles NO 'capped' en la tropopausa
     (cirros mal detectados / overshooting no deben fijar el tope). Misma semántica
@@ -410,97 +400,26 @@ def wen_rose_top_height(
     corregidos), ``field_km`` (Wen-Rose) y ``field_bt_km``, además de
     ``mask_px``, ``so2_px/min``, ``scan_dt``, ``lat``/``lon``, ``tropopause_km``.
     """
-    from src.config import (GOES19_PERSPECTIVE_POINT_HEIGHT as _H,
-                            GOES19_SAT_LON as _SLON)
-    from src.fetch.gfs_profile import fetch_gfs_profile
-    from src.fetch.goes_acha import _geos_index_bbox, _window_latlon
     from src.fetch.goes_s3 import _scan_start, download_band_at, open_band
-    from src.process.ash_detection import detect_ash_enhanced
     from src.process.brightness_temp import rad_to_bt
+    from src.process.scene import acquire_ash_scene
 
     source = ("Wen-Rose 1994 (corrección emisividad 2 canales 11/12µm → Tc) → "
               "perfil GFS T(z) · INDICATIVO · corrige el BT-matching en plumas "
               "semitransparentes · independiente de SSEC")
 
-    if isinstance(volcano, str):
-        from src.volcanos import get_volcano
-        v = get_volcano(volcano)
-    else:
-        v = volcano
-    if v is None:
-        return {"status": "no_data", "reason": "volcán no encontrado",
-                "volcano": str(volcano), "source": source}
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=timezone.utc)
-    bounds = _bounds_for(v, radius_deg)
+    # Adquisición común (bandas del mismo scan + máscara + SO₂ + perfil GFS);
+    # los guards de honestidad viven en scene.acquire_ash_scene. Wen-Rose sí
+    # necesita los coeficientes Planck: mezcla RADIANCIAS, no temperaturas.
+    scene = acquire_ash_scene(dt, volcano, radius_deg, with_coefs=True,
+                              source=source, label="Wen-Rose")
+    if isinstance(scene, dict):
+        return scene
 
-    # ── Ventana geos + coef Planck de C14 ────────────────────────────────
-    p14 = download_band_at(dt, BT11_BAND)
-    if p14 is None:
-        return {"status": "no_data", "reason": "sin banda C14",
-                "volcano": v.name, "bounds": bounds, "source": source}
-    try:
-        with open_band(p14) as ds14:
-            x = ds14["x"].values
-            y = ds14["y"].values
-            proj = ds14["goes_imager_projection"].attrs
-            sat_lon = float(proj.get("longitude_of_projection_origin", _SLON))
-            H = float(proj.get("perspective_point_height", _H))
-            win = _geos_index_bbox(x, y, bounds, sat_lon=sat_lon, H=H)
-            if win is None:
-                return {"status": "no_data", "reason": "bbox fuera del disco",
-                        "volcano": v.name, "bounds": bounds, "source": source}
-            y0, y1, x0, x1 = win
-            coef14 = _coefs(ds14)
-            bt14 = rad_to_bt(ds14.isel(y=slice(y0, y1), x=slice(x0, x1))).load().values
-            xw, yw = x[x0:x1], y[y0:y1]
-    except Exception as e:
-        logger.exception("Wen-Rose C14: %s", e)
-        return {"status": "no_data", "reason": "error leyendo C14",
-                "volcano": v.name, "bounds": bounds, "source": source}
-
-    scan_dt = _scan_start(p14.name)
-    ref = scan_dt or dt
-    lat, lon = _window_latlon(xw, yw, sat_lon=sat_lon, H=H)
-
-    # ── C11/C15 del MISMO scan (C15 con sus coef) ────────────────────────
-    bts = {14: bt14}
-    coefs = {14: coef14}
-    band_scans = {14: scan_dt}
-    for b in (BT85_BAND, BT12_BAND):
-        pb = download_band_at(ref, b)
-        if pb is None:
-            return {"status": "no_data", "reason": f"sin banda C{b:02d}",
-                    "volcano": v.name, "bounds": bounds, "scan_dt": scan_dt,
-                    "source": source}
-        band_scans[b] = _scan_start(pb.name)
-        try:
-            with open_band(pb) as dsb:
-                if b in (BT85_BAND, BT12_BAND):   # C11(8.5) y C15(12) → β-ratios
-                    coefs[b] = _coefs(dsb)
-                bts[b] = rad_to_bt(dsb.isel(y=slice(y0, y1),
-                                            x=slice(x0, x1))).load().values
-        except Exception as e:
-            logger.exception("Wen-Rose C%02d: %s", b, e)
-            return {"status": "no_data", "reason": f"error leyendo C{b:02d}",
-                    "volcano": v.name, "bounds": bounds, "scan_dt": scan_dt,
-                    "source": source}
-
-    # Las 3 bandas deben ser del MISMO scan (igual guard que bt_matching).
-    scans = {s for s in band_scans.values() if s is not None}
-    if len(scans) > 1:
-        logger.warning("Wen-Rose: bandas de scans distintos: %s", band_scans)
-        return {"status": "no_data",
-                "reason": "bandas C11/C14/C15 de scans distintos (S3 incompleto)",
-                "volcano": v.name, "bounds": bounds, "scan_dt": scan_dt,
-                "source": source}
-
-    import xarray as xr
-
-    def _da(a):
-        return xr.DataArray(a, dims=("y", "x"))
-
-    mask = detect_ash_enhanced(_da(bts[11]), _da(bts[14]), _da(bts[15])).values
+    bts, coefs, mask = scene.bts, scene.coefs, scene.mask
+    scan_dt, ref = scene.scan_dt, scene.ref_dt
+    y0, y1, x0, x1 = scene.window
+    profile = scene.profile
 
     # ── C16 (13.3 µm CO₂) OPCIONAL: chequeo independiente de semi-transparencia ──
     # No es requerido (graceful si falta o cae en otro scan); +1 banda SOLO en este
@@ -518,23 +437,7 @@ def wen_rose_top_height(
         logger.warning("Wen-Rose C16 (opcional): %s", e)
     co2_btd = co2_semitransparency(bts[14], bt133, mask)
 
-    # Contexto SO2 (igual criterio que bt_matching / acha) para el dashboard.
-    try:
-        from src.config import SO2_INDICATOR_THRESHOLD as _SO2_THR
-    except Exception:
-        _SO2_THR = -3.0
-    so2 = bts[11] - bts[14]
-    so2_finite = np.isfinite(so2)
-    so2_px = int(np.sum(so2_finite & (so2 < _SO2_THR)))
-    so2_min = float(np.nanmin(so2)) if so2_finite.any() else None
-
-    # ── Perfil GFS + temperatura de superficie (Ts) ──────────────────────
-    profile = fetch_gfs_profile(v.lat, v.lon, ref)
-    if profile is None:
-        return {"status": "no_data", "reason": "sin perfil GFS (Open-Meteo)",
-                "volcano": v.name, "bounds": bounds, "scan_dt": scan_dt,
-                "so2_px": so2_px, "so2_min": so2_min, "source": source}
-
+    # ── Temperatura de superficie (Ts) sobre el perfil GFS ya adquirido ──
     n_clear = int((np.isfinite(bts[14]) & ~mask).sum())
     bg_spread = clear_sky_heterogeneity(bts[14], mask)   # #3 heterogeneidad del fondo
     ts_k = clear_sky_bt(bts[14], mask)
@@ -548,18 +451,13 @@ def wen_rose_top_height(
 
     trop = profile.get("tropopause")
     trop_km = trop["z_m"] / 1000.0 if trop else None
-    now = datetime.now(timezone.utc)
-    latency_min = (now - scan_dt).total_seconds() / 60.0 if scan_dt else None
 
-    out = {
-        "volcano": v.name, "bounds": bounds, "lat": lat, "lon": lon,
-        "scan_dt": scan_dt, "latency_min": latency_min, "percentile": percentile,
-        "source": source, "tropopause_km": trop_km, "beta": beta,
+    out = scene.base_out(percentile, source)
+    out.update({
+        "beta": beta,
         "ts_k": (float(ts_k) if ts_k is not None else None), "ts_source": ts_source,
-        "profile_time": profile.get("valid_time"),
-        "so2_px": so2_px, "so2_min": so2_min, "co2_semitransp_btd": co2_btd,
-        "bg_spread_k": bg_spread,
-    }
+        "co2_semitransp_btd": co2_btd, "bg_spread_k": bg_spread,
+    })
 
     # ── β-ratios de composición (Pavolonis 2010): confirma SILICATO vs hielo/agua ──
     # Independiente del BTD (usa el 8.5 µm, que el despeje 11/12 no usa). Modo

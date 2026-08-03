@@ -70,6 +70,15 @@
 
 **Mantenimiento de esta ficha:** revisar cuando cambie la lógica/método (regla:
 mismo commit que el cambio). Módulos con cabecera "FICHA SDA" (Nivel 1):
-`src/process/ash_detection.py`, `bt_matching_height.py`, `wen_rose_height.py`,
-`beta_ratios.py`, `wind_shear_height.py`, `acha_plume_height.py`,
-`parallax.py` (corrige la georef de la pluma por su altura).
+`src/process/ash_detection.py`, `scene.py`, `bt_matching_height.py`,
+`wen_rose_height.py`, `beta_ratios.py`, `wind_shear_height.py`,
+`acha_plume_height.py`, `parallax.py` (corrige la georef de la pluma por su
+altura).
+
+**Dónde viven los guards de adquisición (ago-2026):** los tres retrievals de
+altura comparten `src/process/scene.py` (`acquire_ash_scene`). Ahí —y sólo ahí—
+se decide *no reportar*: banda ausente, bbox fuera del disco, bandas de scans
+distintos (misregistro) y falta de perfil GFS. Hasta la ola 2 del audit ago-2026
+ese bloque estaba duplicado en los tres módulos, con el riesgo de que un fix a
+un guard se aplicara sólo a uno. Cualquier cambio a un criterio de degradación
+va en `scene.py` y en esta ficha, mismo commit.

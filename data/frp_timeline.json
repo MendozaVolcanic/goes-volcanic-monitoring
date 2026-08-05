@@ -1,193 +1,9 @@
 {
-  "last_updated_utc": "2026-08-04T23:39:00Z",
+  "last_updated_utc": "2026-08-05T01:00:00Z",
   "window_hours": 48.0,
   "radius_km": 50.0,
   "step_min": 10,
   "scans": [
-    {
-      "t": "2026-08-02T23:40:00Z",
-      "frp": {
-        "Lascar": 0.0,
-        "Nevados de Chillan": 0.0,
-        "Copahue": 0.0,
-        "Llaima": 0.0,
-        "Villarrica": 0.0,
-        "Puyehue-Cordon Caulle": 0.0,
-        "Calbuco": 0.0,
-        "Hudson": 0.0
-      },
-      "n": {
-        "Lascar": 0,
-        "Nevados de Chillan": 0,
-        "Copahue": 0,
-        "Llaima": 0,
-        "Villarrica": 0,
-        "Puyehue-Cordon Caulle": 0,
-        "Calbuco": 0,
-        "Hudson": 0
-      }
-    },
-    {
-      "t": "2026-08-02T23:50:00Z",
-      "frp": {
-        "Lascar": 0.0,
-        "Nevados de Chillan": 0.0,
-        "Copahue": 0.0,
-        "Llaima": 0.0,
-        "Villarrica": 0.0,
-        "Puyehue-Cordon Caulle": 0.0,
-        "Calbuco": 0.0,
-        "Hudson": 0.0
-      },
-      "n": {
-        "Lascar": 0,
-        "Nevados de Chillan": 0,
-        "Copahue": 0,
-        "Llaima": 0,
-        "Villarrica": 0,
-        "Puyehue-Cordon Caulle": 0,
-        "Calbuco": 0,
-        "Hudson": 0
-      }
-    },
-    {
-      "t": "2026-08-03T00:00:00Z",
-      "frp": {
-        "Lascar": 0.0,
-        "Nevados de Chillan": 0.0,
-        "Copahue": 0.0,
-        "Llaima": 0.0,
-        "Villarrica": 0.0,
-        "Puyehue-Cordon Caulle": 0.0,
-        "Calbuco": 0.0,
-        "Hudson": 0.0
-      },
-      "n": {
-        "Lascar": 0,
-        "Nevados de Chillan": 0,
-        "Copahue": 0,
-        "Llaima": 0,
-        "Villarrica": 0,
-        "Puyehue-Cordon Caulle": 0,
-        "Calbuco": 0,
-        "Hudson": 0
-      }
-    },
-    {
-      "t": "2026-08-03T00:10:00Z",
-      "frp": {
-        "Lascar": 0.0,
-        "Nevados de Chillan": 0.0,
-        "Copahue": 0.0,
-        "Llaima": 0.0,
-        "Villarrica": 0.0,
-        "Puyehue-Cordon Caulle": 0.0,
-        "Calbuco": 0.0,
-        "Hudson": 0.0
-      },
-      "n": {
-        "Lascar": 0,
-        "Nevados de Chillan": 0,
-        "Copahue": 0,
-        "Llaima": 0,
-        "Villarrica": 0,
-        "Puyehue-Cordon Caulle": 0,
-        "Calbuco": 0,
-        "Hudson": 0
-      }
-    },
-    {
-      "t": "2026-08-03T00:20:00Z",
-      "frp": {
-        "Lascar": 0.0,
-        "Nevados de Chillan": 0.0,
-        "Copahue": 0.0,
-        "Llaima": 0.0,
-        "Villarrica": 0.0,
-        "Puyehue-Cordon Caulle": 0.0,
-        "Calbuco": 0.0,
-        "Hudson": 0.0
-      },
-      "n": {
-        "Lascar": 0,
-        "Nevados de Chillan": 0,
-        "Copahue": 0,
-        "Llaima": 0,
-        "Villarrica": 0,
-        "Puyehue-Cordon Caulle": 0,
-        "Calbuco": 0,
-        "Hudson": 0
-      }
-    },
-    {
-      "t": "2026-08-03T00:30:00Z",
-      "frp": {
-        "Lascar": 0.0,
-        "Nevados de Chillan": 0.0,
-        "Copahue": 0.0,
-        "Llaima": 0.0,
-        "Villarrica": 0.0,
-        "Puyehue-Cordon Caulle": 0.0,
-        "Calbuco": 0.0,
-        "Hudson": 0.0
-      },
-      "n": {
-        "Lascar": 0,
-        "Nevados de Chillan": 0,
-        "Copahue": 0,
-        "Llaima": 0,
-        "Villarrica": 0,
-        "Puyehue-Cordon Caulle": 0,
-        "Calbuco": 0,
-        "Hudson": 0
-      }
-    },
-    {
-      "t": "2026-08-03T00:40:00Z",
-      "frp": {
-        "Lascar": 0.0,
-        "Nevados de Chillan": 0.0,
-        "Copahue": 0.0,
-        "Llaima": 0.0,
-        "Villarrica": 0.0,
-        "Puyehue-Cordon Caulle": 0.0,
-        "Calbuco": 0.0,
-        "Hudson": 0.0
-      },
-      "n": {
-        "Lascar": 0,
-        "Nevados de Chillan": 0,
-        "Copahue": 0,
-        "Llaima": 0,
-        "Villarrica": 0,
-        "Puyehue-Cordon Caulle": 0,
-        "Calbuco": 0,
-        "Hudson": 0
-      }
-    },
-    {
-      "t": "2026-08-03T00:50:00Z",
-      "frp": {
-        "Lascar": 0.0,
-        "Nevados de Chillan": 0.0,
-        "Copahue": 0.0,
-        "Llaima": 0.0,
-        "Villarrica": 0.0,
-        "Puyehue-Cordon Caulle": 0.0,
-        "Calbuco": 0.0,
-        "Hudson": 0.0
-      },
-      "n": {
-        "Lascar": 0,
-        "Nevados de Chillan": 0,
-        "Copahue": 0,
-        "Llaima": 0,
-        "Villarrica": 0,
-        "Puyehue-Cordon Caulle": 0,
-        "Calbuco": 0,
-        "Hudson": 0
-      }
-    },
     {
       "t": "2026-08-03T01:30:00Z",
       "frp": {
@@ -6328,10 +6144,216 @@
         "Calbuco": 0,
         "Hudson": 0
       }
+    },
+    {
+      "t": "2026-08-04T23:30:00Z",
+      "frp": {
+        "Lascar": 0.0,
+        "Nevados de Chillan": 0.0,
+        "Copahue": 0.0,
+        "Llaima": 0.0,
+        "Villarrica": 0.0,
+        "Puyehue-Cordon Caulle": 0.0,
+        "Calbuco": 0.0,
+        "Hudson": 0.0
+      },
+      "n": {
+        "Lascar": 0,
+        "Nevados de Chillan": 0,
+        "Copahue": 0,
+        "Llaima": 0,
+        "Villarrica": 0,
+        "Puyehue-Cordon Caulle": 0,
+        "Calbuco": 0,
+        "Hudson": 0
+      }
+    },
+    {
+      "t": "2026-08-04T23:40:00Z",
+      "frp": {
+        "Lascar": 0.0,
+        "Nevados de Chillan": 0.0,
+        "Copahue": 0.0,
+        "Llaima": 0.0,
+        "Villarrica": 0.0,
+        "Puyehue-Cordon Caulle": 0.0,
+        "Calbuco": 0.0,
+        "Hudson": 0.0
+      },
+      "n": {
+        "Lascar": 0,
+        "Nevados de Chillan": 0,
+        "Copahue": 0,
+        "Llaima": 0,
+        "Villarrica": 0,
+        "Puyehue-Cordon Caulle": 0,
+        "Calbuco": 0,
+        "Hudson": 0
+      }
+    },
+    {
+      "t": "2026-08-04T23:50:00Z",
+      "frp": {
+        "Lascar": 0.0,
+        "Nevados de Chillan": 0.0,
+        "Copahue": 0.0,
+        "Llaima": 0.0,
+        "Villarrica": 0.0,
+        "Puyehue-Cordon Caulle": 0.0,
+        "Calbuco": 0.0,
+        "Hudson": 0.0
+      },
+      "n": {
+        "Lascar": 0,
+        "Nevados de Chillan": 0,
+        "Copahue": 0,
+        "Llaima": 0,
+        "Villarrica": 0,
+        "Puyehue-Cordon Caulle": 0,
+        "Calbuco": 0,
+        "Hudson": 0
+      }
+    },
+    {
+      "t": "2026-08-05T00:00:00Z",
+      "frp": {
+        "Lascar": 0.0,
+        "Nevados de Chillan": 0.0,
+        "Copahue": 0.0,
+        "Llaima": 0.0,
+        "Villarrica": 0.0,
+        "Puyehue-Cordon Caulle": 0.0,
+        "Calbuco": 0.0,
+        "Hudson": 0.0
+      },
+      "n": {
+        "Lascar": 0,
+        "Nevados de Chillan": 0,
+        "Copahue": 0,
+        "Llaima": 0,
+        "Villarrica": 0,
+        "Puyehue-Cordon Caulle": 0,
+        "Calbuco": 0,
+        "Hudson": 0
+      }
+    },
+    {
+      "t": "2026-08-05T00:10:00Z",
+      "frp": {
+        "Lascar": 0.0,
+        "Nevados de Chillan": 0.0,
+        "Copahue": 0.0,
+        "Llaima": 0.0,
+        "Villarrica": 0.0,
+        "Puyehue-Cordon Caulle": 0.0,
+        "Calbuco": 0.0,
+        "Hudson": 0.0
+      },
+      "n": {
+        "Lascar": 0,
+        "Nevados de Chillan": 0,
+        "Copahue": 0,
+        "Llaima": 0,
+        "Villarrica": 0,
+        "Puyehue-Cordon Caulle": 0,
+        "Calbuco": 0,
+        "Hudson": 0
+      }
+    },
+    {
+      "t": "2026-08-05T00:20:00Z",
+      "frp": {
+        "Lascar": 0.0,
+        "Nevados de Chillan": 0.0,
+        "Copahue": 0.0,
+        "Llaima": 0.0,
+        "Villarrica": 0.0,
+        "Puyehue-Cordon Caulle": 0.0,
+        "Calbuco": 0.0,
+        "Hudson": 0.0
+      },
+      "n": {
+        "Lascar": 0,
+        "Nevados de Chillan": 0,
+        "Copahue": 0,
+        "Llaima": 0,
+        "Villarrica": 0,
+        "Puyehue-Cordon Caulle": 0,
+        "Calbuco": 0,
+        "Hudson": 0
+      }
+    },
+    {
+      "t": "2026-08-05T00:30:00Z",
+      "frp": {
+        "Lascar": 0.0,
+        "Nevados de Chillan": 0.0,
+        "Copahue": 0.0,
+        "Llaima": 0.0,
+        "Villarrica": 0.0,
+        "Puyehue-Cordon Caulle": 0.0,
+        "Calbuco": 0.0,
+        "Hudson": 0.0
+      },
+      "n": {
+        "Lascar": 0,
+        "Nevados de Chillan": 0,
+        "Copahue": 0,
+        "Llaima": 0,
+        "Villarrica": 0,
+        "Puyehue-Cordon Caulle": 0,
+        "Calbuco": 0,
+        "Hudson": 0
+      }
+    },
+    {
+      "t": "2026-08-05T00:40:00Z",
+      "frp": {
+        "Lascar": 0.0,
+        "Nevados de Chillan": 0.0,
+        "Copahue": 0.0,
+        "Llaima": 0.0,
+        "Villarrica": 0.0,
+        "Puyehue-Cordon Caulle": 0.0,
+        "Calbuco": 0.0,
+        "Hudson": 0.0
+      },
+      "n": {
+        "Lascar": 0,
+        "Nevados de Chillan": 0,
+        "Copahue": 0,
+        "Llaima": 0,
+        "Villarrica": 0,
+        "Puyehue-Cordon Caulle": 0,
+        "Calbuco": 0,
+        "Hudson": 0
+      }
+    },
+    {
+      "t": "2026-08-05T00:50:00Z",
+      "frp": {
+        "Lascar": 0.0,
+        "Nevados de Chillan": 0.0,
+        "Copahue": 0.0,
+        "Llaima": 0.0,
+        "Villarrica": 0.0,
+        "Puyehue-Cordon Caulle": 0.0,
+        "Calbuco": 0.0,
+        "Hudson": 0.0
+      },
+      "n": {
+        "Lascar": 0,
+        "Nevados de Chillan": 0,
+        "Copahue": 0,
+        "Llaima": 0,
+        "Villarrica": 0,
+        "Puyehue-Cordon Caulle": 0,
+        "Calbuco": 0,
+        "Hudson": 0
+      }
     }
   ],
   "daily": {
-    "2026-07-05": {},
     "2026-07-06": {},
     "2026-07-07": {},
     "2026-07-08": {},
@@ -6363,6 +6385,7 @@
     "2026-08-01": {},
     "2026-08-02": {},
     "2026-08-03": {},
-    "2026-08-04": {}
+    "2026-08-04": {},
+    "2026-08-05": {}
   }
 }

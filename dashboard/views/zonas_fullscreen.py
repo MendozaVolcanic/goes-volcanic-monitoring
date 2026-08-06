@@ -1025,7 +1025,11 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
 
     if kind == "rgb":
         render_compact_legend(
-            val,
+            val, tv=True,
+            # sólo los glifos que este render dibuja de verdad (los toggles
+            # de la sala pueden apagar volcanes u hot spots)
+            symbols=(("volcano",) if show_volcanoes else ())
+                    + (("hotspot",) if show_hotspots else ()),
             extra_left="<span style='color:#ff6644; font-weight:700; "
                        "margin-right:0.2rem;'>🔄</span>",
         )
@@ -1320,7 +1324,7 @@ def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
         ts_for_status = _recent_ts(current, n=1)
         scan_dt_status = parse_rammb_ts(ts_for_status[0]) if ts_for_status else None
         render_compact_legend(
-            current,
+            current, tv=True, symbols=("volcano", "hotspot"),
             extra_left=(f"<span style='color:#ff6644; font-weight:700; "
                         f"margin-right:0.2rem;'>🔄</span>"),
             extra_right=render_scan_status_badge(scan_dt_status, ROTATION_SECONDS),
@@ -1651,6 +1655,14 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
             f"<span style='color:{bnr_color}; font-weight:600;'>{bnr_msg}</span>"
             f"</div>",
             unsafe_allow_html=True,
+        )
+        # Leyenda compacta bajo el banner. En modo TV (minimal=True) NO va acá:
+        # la pone el rotador como overlay, para no restarle alto al grid.
+        from dashboard.map_helpers import render_compact_legend
+        render_compact_legend(
+            product,
+            symbols=(("volcano",) if show_volcanoes else ())
+                    + (("hotspot",) if show_hotspots else ()),
         )
 
     # Layout configurable

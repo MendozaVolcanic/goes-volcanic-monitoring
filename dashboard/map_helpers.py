@@ -262,19 +262,37 @@ _LEGEND_ITEMS = {
         ("#88aacc", "Superficie"),
         ("#445566", "Nubes met."),
     ],
-    "geocolor": [
-        ("#ffffff", "Nubes / nieve"),
-        ("#88bb44", "Vegetación"),
-        ("#aa8855", "Suelo desnudo"),
-        ("#3344aa", "Agua / océano"),
-        ("#222244", "Noche (IR)"),
+    # BTD split-window (11.2−12.3): versión de una línea de style.btd_legend,
+    # para el backfill, que muestra varios productos lado a lado.
+    "split_window_difference_10_3-12_3": [
+        ("#CC3311", "< −1 K = posible ceniza"),
+        ("#EE7733", "−1 a 0 K = ambiguo"),
+        ("#0077BB", "> 0 K = nubes met."),
     ],
+    # VOLCAT: producto cuantitativo con barra de color propia por variable.
+    "volcat": [],
+    # GeoColor NO lleva código de color: son los colores reales de cualquier
+    # imagen satelital y un swatch "blanco = nubes" solo gasta la tira. Lo
+    # único que sí hay que decir es que de noche NO es color real (ver
+    # _PRODUCT_NOTES): el visible no existe sin sol, así que CIRA compone IR +
+    # luces de ciudad y la escena cambia de naturaleza al anochecer.
+    "geocolor": [],
+}
+
+# Nota corta en vez de swatches, para los productos sin código de color.
+_PRODUCT_NOTES = {
+    "geocolor": "color real de día · IR + luces de ciudad de noche",
+    # VOLCAT trae su propia barra de color por producto (altura, carga,
+    # probabilidad, radio): repetirla acá la duplicaría con distinta escala.
+    "volcat": "escala cuantitativa en la barra de color de cada panel",
 }
 
 _PRODUCT_LABELS_TV = {
     "eumetsat_ash": "Ash RGB · EUMETSAT B15-B14 / B14-B11 / B13",
     "jma_so2": "SO2 RGB · JMA B07-B09 / B09-B11",
     "geocolor": "GeoColor · Visible mejorado (CIRA)",
+    "volcat": "VOLCAT · SSEC/CIMSS (Pavolonis 2013)",
+    "split_window_difference_10_3-12_3": "BTD split-window · 11.2 − 12.3 µm",
 }
 
 
@@ -329,27 +347,92 @@ def render_scan_status_badge(scan_dt, refresh_seconds: int,
     )
 
 
+# ── Simbología del mapa ─────────────────────────────────────────────────
+# Los colores del RGB explican la IMAGEN; estos glifos explican lo que el
+# dashboard DIBUJA ENCIMA. Hasta ago-2026 no estaban documentados en ninguna
+# vista: que el diamante rojo es un hot spot de NOAA, o que su tamaño codifica
+# el FRP, se aprendía preguntando — inaceptable para una sala de turno.
+# Los glifos se dibujan en SVG para que sean EL MISMO símbolo del mapa (el
+# triángulo hueco, el diamante relleno), no un emoji parecido.
+
+# Niveles de viento GFS y su color. CANÓNICO: lo comparten el overlay de las
+# vistas y esta leyenda, para que no puedan divergir.
+WIND_LEVELS_VIZ = [
+    ("300hPa", "300 hPa (~9 km)", "#ff4444"),    # plumas explosivas altas
+    ("500hPa", "500 hPa (~5.5 km)", "#ffaa44"),  # circulación media
+    ("850hPa", "850 hPa (~1.5 km)", "#44dd88"),  # capa límite
+]
+
+HOTSPOT_COLOR = "#ff3300"
+VOLCANO_COLOR = "#00ffff"
+
+
+def _svg(inner: str, size: int = 13) -> str:
+    return (f'<svg width="{size}" height="{size}" viewBox="0 0 12 12" '
+            f'style="flex:none;">{inner}</svg>')
+
+
+def _symbol_html(key: str) -> str:
+    """Glifo + texto de un símbolo del mapa. '' si la clave no existe."""
+    if key == "volcano":
+        return (_svg(f'<polygon points="6,1.6 10.8,10.4 1.2,10.4" fill="none" '
+                     f'stroke="{VOLCANO_COLOR}" stroke-width="1.4"/>')
+                + "Volcán (coord. del cráter)")
+    if key in ("hotspot", "hotspot_frp"):
+        txt = ("Hot spot NOAA FDCF" if key == "hotspot"
+               else "Hot spot NOAA FDCF · tamaño = FRP")
+        return (_svg(f'<polygon points="6,1 11,6 6,11 1,6" '
+                     f'fill="{HOTSPOT_COLOR}" stroke="#fff" '
+                     f'stroke-width="0.9"/>') + txt)
+    if key == "rings":
+        return (_svg('<circle cx="6" cy="6" r="4.6" fill="none" '
+                     'stroke="rgba(255,255,255,0.75)" stroke-width="1" '
+                     'stroke-dasharray="2 1.6"/>')
+                + "Anillos 5/10/25/50 km")
+    if key == "wind":
+        arrows = "".join(
+            _svg(f'<path d="M1,6 L9,6 M6.5,3.2 L9.6,6 L6.5,8.8" fill="none" '
+                 f'stroke="{c}" stroke-width="1.5"/>', size=14)
+            for _lvl, _lbl, c in WIND_LEVELS_VIZ)
+        return arrows + "Viento GFS 300/500/850 hPa"
+    return ""
+
+
 def render_compact_legend(product: str, extra_left: str = "",
                           extra_right: str = "",
-                          height_px: int = 36) -> None:
-    """Renderiza una leyenda compacta horizontal para el modo TV.
+                          height_px: int = 36,
+                          symbols: tuple = (),
+                          tv: bool = False) -> None:
+    """Leyenda compacta horizontal: cómo leer el producto y sus símbolos.
 
-    Aprovecha el espacio negro arriba de los mapas con swatches +
-    labels cortos. Cambia segun el producto actual (Ash / SO2 / GeoColor).
+    Una sola tira, arriba del mapa, con el mínimo para interpretar lo que se
+    está viendo. Es el formato que el operador puede leer sin desplegar nada
+    (a diferencia de las leyendas largas de la vista Ash + BTD).
 
-    `extra_left`: HTML opcional para agregar a la izquierda (ej. el
-    marcador '🔄 Mosaico ·' que ya existe).
+    Args:
+        product:     clave RAMMB ('eumetsat_ash' | 'jma_so2' | 'geocolor').
+                     Los productos sin código de color propio (GeoColor) no
+                     llevan swatches, sólo su nota — ver _PRODUCT_NOTES.
+        extra_left:  HTML opcional a la izquierda (ej. el marcador '🔄').
+        extra_right: HTML opcional a la derecha (ej. el badge de scan).
+        symbols:     glifos del mapa a explicar — 'volcano', 'hotspot',
+                     'hotspot_frp', 'rings', 'wind'. Pasar SÓLO los que la
+                     vista dibuja de verdad: una leyenda que explica algo que
+                     no está en pantalla hace dudar de la que sí está.
+        tv:          True en Modo Sala — agrega la clase `tv-legend`, que el
+                     CSS de TV convierte en overlay translúcido sobre el mapa
+                     para no restarle alto al grid.
     """
     import streamlit as st
     items = _LEGEND_ITEMS.get(product, [])
+    note = _PRODUCT_NOTES.get(product, "")
     label = _PRODUCT_LABELS_TV.get(product, product)
+    cls = "compact-legend tv-legend" if tv else "compact-legend"
     html = (
-        # clase tv-legend: el CSS del Modo Sala TV la convierte en overlay
-        # translucido sobre el top del mapa para no restar alto al grid.
-        f'<div class="tv-legend" style="display:flex; gap:0.8rem; '
+        f'<div class="{cls}" style="display:flex; gap:0.8rem; '
         f'align-items:center; '
         f'background:rgba(0,0,0,0.65); padding:6px 14px; border-radius:4px; '
-        f'margin-bottom:0.3rem; height:{height_px}px; '
+        f'margin-bottom:0.3rem; min-height:{height_px}px; '
         f'font-size:0.76rem; color:#e0e0e0; flex-wrap:wrap;">'
     )
     if extra_left:
@@ -366,6 +449,19 @@ def render_compact_legend(product: str, extra_left: str = "",
             f'background:{color}; border:1px solid rgba(255,255,255,0.3); '
             f'border-radius:2px;"></span>{txt}</span>'
         )
+    if note:
+        html += (f'<span style="color:#9fb0c0; font-style:italic;">'
+                 f'{note}</span>')
+    if symbols:
+        html += ('<span style="border-left:1px solid #334; '
+                 'padding-left:0.7rem; display:flex; gap:0.8rem; '
+                 'align-items:center; flex-wrap:wrap;">')
+        for key in symbols:
+            frag = _symbol_html(key)
+            if frag:
+                html += (f'<span style="display:flex; align-items:center; '
+                         f'gap:4px;">{frag}</span>')
+        html += '</span>'
     if extra_right:
         html += (
             f'<span style="margin-left:auto; padding-left:0.8rem;">'

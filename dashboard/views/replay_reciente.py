@@ -232,6 +232,8 @@ def render():
     if used_zoom == ZOOM_ZONE:
         label += " ⚠ zoom 3"
 
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(product, symbols=("volcano",))
     st.plotly_chart(
         _plot_frame(img, v.lat, v.lon, v.name, label, height=720),
         width='stretch',

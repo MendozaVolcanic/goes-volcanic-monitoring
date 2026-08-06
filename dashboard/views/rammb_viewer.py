@@ -426,11 +426,7 @@ def _wind_arrow_traces(center_lat: float, center_lon: float,
     """
     if not wind_data:
         return []
-    LEVEL_VIZ = [
-        ("300hPa", "300 hPa", "#ff4444"),
-        ("500hPa", "500 hPa", "#ffaa44"),
-        ("850hPa", "850 hPa", "#44dd88"),
-    ]
+    from dashboard.map_helpers import WIND_LEVELS_VIZ as LEVEL_VIZ
     traces = []
     # Escala: longitud proporcional a la velocidad (saturada en 100 km/h)
     bbox_w = bounds["lon_max"] - bounds["lon_min"]
@@ -1094,6 +1090,11 @@ def render():
         wind_center = (cy, cx)
     fig = _build_animation(frames, bounds, height=height,
                            wind_data=wind_data, wind_center=wind_center)
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(
+        sel["product"],
+        symbols=("volcano",) + (("wind",) if wind_data else ()),
+    )
     st.plotly_chart(fig, width='stretch')
 
     # ── Descargas ─────────────────────────────────────────────────────────

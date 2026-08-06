@@ -21,6 +21,9 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
+    # WIND_LEVELS_VIZ: CANONICO en map_helpers, compartido con la leyenda
+    # compacta (con una copia por vista, la leyenda podria mentir).
+    from dashboard.map_helpers import WIND_LEVELS_VIZ
     from dashboard.style import volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.fetch.goes_fdcf import fetch_latest_hotspots
@@ -44,13 +47,6 @@ EVENT_BBOX_KM = 50  # radio para hot spots considerados del evento
 
 # Anillos de distancia para estimar largo de pluma
 RING_RADII_KM = [5, 10, 25, 50, 100]
-
-# Niveles de viento para overlay (mismos que modo_guardia_volcan)
-WIND_LEVELS_VIZ = [
-    ("300hPa", "300 hPa (~9 km)", "#ff4444"),
-    ("500hPa", "500 hPa (~5.5 km)", "#ffaa44"),
-    ("850hPa", "850 hPa (~1.5 km)", "#44dd88"),
-]
 
 PRODUCTS_GRID = [
     ("eumetsat_ash", "🌋 Ash RGB", "#ff6644"),
@@ -322,6 +318,21 @@ def _live_panel(volcan_name: str, show_rings: bool = True,
             f"{now.strftime('%H:%M:%S')} <span style='color:#7a8a9a;'>/</span> "
             f"{fmt_chile(now)}</div></div>", unsafe_allow_html=True,
         )
+
+    # Leyenda por columna, alineada con la grilla de abajo. El viento se dibuja
+    # SÓLO sobre Ash RGB (panel principal), los anillos en los 3 — la leyenda
+    # declara exactamente eso para no explicar algo que no está en pantalla.
+    from dashboard.map_helpers import render_compact_legend
+    _leg_cols = st.columns(3)
+    for _c, (_pid, _lbl, _col) in zip(_leg_cols, PRODUCTS_GRID):
+        with _c:
+            render_compact_legend(
+                _pid, height_px=32,
+                symbols=("volcano",)
+                        + (("rings",) if show_rings else ())
+                        + (("wind",) if (show_wind and wind
+                                         and _pid == "eumetsat_ash") else ()),
+            )
 
     # Grilla de 3 productos
     cols = st.columns(3)

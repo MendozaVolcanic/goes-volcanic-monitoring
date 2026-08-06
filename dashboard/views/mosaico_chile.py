@@ -271,6 +271,11 @@ def _grid_fragment(product: str, use_hires: bool = False,
         unsafe_allow_html=True,
     )
 
+    # Leyenda compacta (la tira existía sólo en el Modo Sala del mismo grid).
+    # Los anillos van siempre en el mosaico; hot spots no se dibujan acá.
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(product, symbols=("volcano", "rings"))
+
     # Grid 2 filas x 4 columnas
     fallback_ts = 0
     fallback_zoom = 0
@@ -380,7 +385,7 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
     # Cambia con el producto rotante. Status badge a la derecha con scan + refresh.
     from dashboard.map_helpers import render_compact_legend, render_scan_status_badge
     render_compact_legend(
-        current,
+        current, tv=True, symbols=("volcano",),
         extra_left=(f"<span style='color:#ff6644; font-weight:700; "
                     f"margin-right:0.2rem;'>🔄 Mosaico 8 ·</span>"),
         extra_right=render_scan_status_badge(scan_dt, ROTATION_SECONDS),

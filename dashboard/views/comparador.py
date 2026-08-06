@@ -251,6 +251,8 @@ def _mode_antes_despues(now: datetime):
             flags.append("zoom 3")
         return " ⚠ " + ", ".join(flags) if flags else ""
 
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(product, symbols=("volcano",))
     c1, c2 = st.columns(2)
     with c1:
         st.plotly_chart(
@@ -334,6 +336,8 @@ def _mode_dos_volcanes(now: datetime):
     img1, _, _ = _frame_robust(product, ts, all_ts, vo1.lat, vo1.lon)
     img2, _, _ = _frame_robust(product, ts, all_ts, vo2.lat, vo2.lon)
 
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(product, symbols=("volcano",))
     c1, c2 = st.columns(2)
     with c1:
         st.plotly_chart(
@@ -462,6 +466,8 @@ def _mode_baseline(now: datetime):
         except Exception:
             pass
 
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(product, symbols=("volcano",))
     c1, c2 = st.columns(2)
     with c1:
         st.plotly_chart(
@@ -544,6 +550,8 @@ def _mode_diff_temporal(now: datetime):
     diff = _compute_diff(img_a, img_b)
 
     # 3 paneles: antes / despues / diff (diff ocupando mas espacio)
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(product, symbols=("volcano",))
     c1, c2 = st.columns(2)
     with c1:
         st.plotly_chart(

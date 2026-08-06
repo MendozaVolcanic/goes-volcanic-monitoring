@@ -293,6 +293,13 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
         )
 
     # ── Mapa principal Chile + hotspots ──
+    # Leyenda ARRIBA del mapa: el operador la lee antes de mirar la imagen.
+    # Hasta ago-2026 esta tira existía sólo en el Modo Sala TV del MISMO mapa.
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(
+        product,
+        symbols=("volcano", "hotspot_frp") + (("rings",) if show_rings else ()),
+    )
     if frame is not None:
         st.plotly_chart(
             _render_chile_with_hotspots(frame, hotspots, volcan_name, product,
@@ -335,7 +342,8 @@ def _rotating_chile_tv(volcan_name: str, show_rings: bool = True,
 
     from dashboard.map_helpers import render_compact_legend, render_scan_status_badge
     render_compact_legend(
-        current,
+        current, tv=True,
+        symbols=("volcano", "hotspot_frp") + (("rings",) if show_rings else ()),
         extra_left=("<span style='color:#ff6644; font-weight:700; "
                     "margin-right:0.4rem;'>🔄</span>"),
         extra_right=render_scan_status_badge(
@@ -550,6 +558,10 @@ def _volcat_zonas_subtab():
     # en serie — cada una API SSEC (20s) + 2 descargas (30s c/u) con cache fría, o al
     # cambiar de producto en el selector. Calentar en paralelo deja el loop en solo-lectura.
     _prewarm_volcat_specs(specs, product=prod)
+    # Simbología del mapa (el código de color cuantitativo lo pone la barra de
+    # cada panel, por eso VOLCAT no lleva swatches acá).
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend("volcat", symbols=("volcano",))
     cols = st.columns(len(specs))
     for col, (zona, sector, instr, view_bounds) in zip(cols, specs):
         with col:
@@ -770,7 +782,9 @@ def render():
                     ["eumetsat_ash", "geocolor", "jma_so2"])):
                 with col:
                     render_compact_legend(
-                        prod, height_px=34,
+                        prod, height_px=34, tv=True,
+                        symbols=(("volcano", "hotspot", "rings")
+                                 if prod == "eumetsat_ash" else ("volcano",)),
                         extra_right=render_scan_status_badge(
                             scan_dt, REFRESH_SECONDS,
                         ) if i == 2 else "",

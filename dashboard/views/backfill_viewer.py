@@ -477,6 +477,14 @@ def render():
                     label = PRODUCT_LABELS.get(prod, prod)
                 fig = _render_product_panel(arr, bounds, label, height=360,
                                              hotspots=hotspots_for_ts)
+                # Leyenda por panel: acá cada columna es un producto DISTINTO
+                # (el multiselect los mezcla), así que una tira única mentiría.
+                from dashboard.map_helpers import render_compact_legend
+                render_compact_legend(
+                    prod, height_px=30,
+                    symbols=("volcano",)
+                            + (("hotspot",) if hotspots_for_ts else ()),
+                )
                 st.plotly_chart(fig, width='stretch',
                                 config={"displayModeBar": False})
 

@@ -226,6 +226,8 @@ def render_subtab():
         st.error("No se pudo construir animación.")
         return
 
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(product, symbols=("volcano",))
     st.plotly_chart(fig, width='stretch', config={"displayModeBar": False})
 
     try:

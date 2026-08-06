@@ -29,6 +29,9 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
+    # WIND_LEVELS_VIZ: CANONICO en map_helpers, compartido con la leyenda
+    # compacta (con una copia por vista, la leyenda podria mentir).
+    from dashboard.map_helpers import WIND_LEVELS_VIZ
     from dashboard.style import volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.fetch.goes_fdcf import HotSpot, fetch_latest_hotspots
@@ -60,13 +63,6 @@ PRODUCTS = [
     ("eumetsat_ash", "Ash RGB", "EUMETSAT B15-B14 / B14-B11 / B13"),
     ("geocolor", "GeoColor", "Visible mejorado (CIRA)"),
     ("jma_so2", "SO2 RGB", "JMA B07-B09 / B09-B11"),
-]
-
-# Niveles de presion para overlay viento, con color
-WIND_LEVELS_VIZ = [
-    ("300hPa", "300 hPa (~9 km)", "#ff4444"),    # plumas explosivas altas
-    ("500hPa", "500 hPa (~5.5 km)", "#ffaa44"),  # circulacion media
-    ("850hPa", "850 hPa (~1.5 km)", "#44dd88"),  # capa limite
 ]
 
 # Anillos de distancia (km)
@@ -574,6 +570,23 @@ def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
         f"{fmt_chile(now)}</div></div></div>",
         unsafe_allow_html=True,
     )
+
+    # Leyenda por columna, alineada con el grid de 3 productos de abajo (mismo
+    # patrón que el Modo Sala TV). Sólo la de Ash lleva el diamante: los hot
+    # spots se dibujan únicamente sobre ese producto. El viento va en las tres
+    # porque es info universal, y sólo si el toggle está activo.
+    from dashboard.map_helpers import render_compact_legend
+    _sym_comunes = ((("rings",) if show_rings else ())
+                    + (("wind",) if (show_wind and wind) else ()))
+    _leg_cols = st.columns(3)
+    for _c, (_pid, _lbl, _rec) in zip(_leg_cols, PRODUCTS):
+        with _c:
+            render_compact_legend(
+                _pid, height_px=32,
+                symbols=("volcano",)
+                        + (("hotspot",) if _pid == "eumetsat_ash" else ())
+                        + _sym_comunes,
+            )
 
     # Bajar los 3 productos (con switch hi-res en GeoColor — ver
     # fetch_volcan_product, reutilizado por la rotación del Modo Sala TV).

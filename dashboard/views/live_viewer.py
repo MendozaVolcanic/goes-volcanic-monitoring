@@ -15,7 +15,8 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
-    from dashboard.map_helpers import add_chile_border, hotspot_distance_km
+    from dashboard.map_helpers import (add_chile_border, hotspot_distance_km,
+                                       render_compact_legend)
     from dashboard.style import (C_ACCENT, header, info_panel, kpi_card,
                                  refresh_info_badge, volcano_marker)
     from dashboard.utils import (
@@ -1164,6 +1165,12 @@ def _live_content():
                                autorange=False, scaleanchor="x", scaleratio=1),
                     margin=dict(t=40, b=35, l=45, r=15),
                 )
+                render_compact_legend(
+                    prod_id,
+                    symbols=("volcano",)
+                            + (("hotspot",)
+                               if (show_hotspots and hotspots_nacional) else ()),
+                )
                 st.plotly_chart(fig, width='stretch')
 
                 # Botones de descarga (PNG con timestamp + GeoTIFF georeferenciado)
@@ -1279,6 +1286,8 @@ def _live_content():
                             height=760,
                             margin=dict(l=10, r=10, t=30, b=10),
                         )
+                        render_compact_legend(prod_zona,
+                                              symbols=("volcano",))
                         st.plotly_chart(fig_z, width='stretch')
 
                         # Descarga PNG + GeoTIFF por zona
@@ -1452,6 +1461,8 @@ def _live_content():
                             height=820,
                             margin=dict(l=10, r=10, t=30, b=10),
                         )
+                        render_compact_legend(prod_volc,
+                                              symbols=("volcano",))
                         st.plotly_chart(fig_v, width='stretch')
 
                         # Descarga PNG + GeoTIFF

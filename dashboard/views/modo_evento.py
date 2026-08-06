@@ -21,6 +21,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
+    from dashboard.style import volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.fetch.goes_fdcf import fetch_latest_hotspots
     from src.fetch.rammb_slider import (
@@ -180,8 +181,7 @@ def _ash_fig(img: np.ndarray | None, lat: float, lon: float, label: str,
 
     fig.add_trace(go.Scatter(
         x=[lon], y=[lat], mode="markers",
-        marker=dict(symbol="triangle-up", size=18, color="#00ffff",
-                    line=dict(color="white", width=2)),
+        marker=volcano_marker("focus"),
         showlegend=False, hoverinfo="skip",
     ))
     cos_lat = max(0.1, float(np.cos(np.radians(lat))))

@@ -19,6 +19,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
+    from dashboard.style import volcano_marker
     from dashboard.utils import parse_rammb_ts
     from src.fetch.rammb_slider import (
         fetch_frame_for_bounds, get_latest_timestamps,
@@ -115,8 +116,7 @@ def _build_loop_figure(frames: list[dict], v, height: int = 720) -> go.Figure:
                    mode="markers", marker=dict(opacity=0),
                    showlegend=False, hoverinfo="skip"),
         go.Scatter(x=[v.lon], y=[v.lat], mode="markers",
-                   marker=dict(symbol="triangle-up", size=14, color="#00ffff",
-                               line=dict(color="white", width=1.5)),
+                   marker=volcano_marker("focus"),
                    showlegend=False, hovertemplate=f"<b>{v.name}</b><extra></extra>"),
     ]
 

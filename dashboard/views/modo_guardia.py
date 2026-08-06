@@ -29,6 +29,7 @@ import streamlit as st
 
 try:
     from dashboard.map_helpers import add_chile_border
+    from dashboard.style import volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.fetch.goes_fdcf import HotSpot, fetch_latest_hotspots
     from src.fetch.rammb_slider import (
@@ -165,8 +166,7 @@ def _render_chile_with_hotspots(frame: dict, hotspots: list[HotSpot],
             _add_distance_rings(fig, v.lat, v.lon)
         fig.add_trace(go.Scatter(
             x=[v.lon], y=[v.lat], mode="markers+text",
-            marker=dict(symbol="triangle-up", size=18, color="#00ffff",
-                        line=dict(color="white", width=2)),
+            marker=volcano_marker("focus"),
             text=[volcan_name], textposition="top center",
             textfont=dict(size=14, color="#00ffff"), name=volcan_name,
             hovertemplate=f"<b>{volcan_name}</b><br>Lat {v.lat}<br>Lon {v.lon}<extra></extra>",

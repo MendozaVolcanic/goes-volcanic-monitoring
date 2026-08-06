@@ -16,7 +16,7 @@ import streamlit as st
 
 try:
     from dashboard.style import (
-        C_ACCENT, C_ASH, C_SO2,
+        C_ACCENT, C_ASH, C_SO2, volcano_marker,
         ash_legend, ash_so2_legend, header, info_panel, kpi_card, refresh_info_badge,
     )
     from dashboard.utils import fmt_chile
@@ -57,7 +57,7 @@ def _norm_origin_lon(origin_lon: float) -> float:
     return origin_lon - 360.0 if origin_lon > 180.0 else origin_lon
 
 
-def _overlay_volcanoes_border(fig, bounds, marker_size: int = 9):
+def _overlay_volcanoes_border(fig, bounds, level: str = "zone"):
     """Dibuja TODOS los volcanes monitoreados (CATALOG = RNVV) dentro de
     `bounds` como triangulos cyan + etiqueta anti-encime (prioritarios
     primero), y la frontera Chile-Argentina con halo (oscuro ancho + claro
@@ -75,8 +75,7 @@ def _overlay_volcanoes_border(fig, bounds, marker_size: int = 9):
     if vis:
         fig.add_trace(go.Scatter(
             x=[v.lon for v in vis], y=[v.lat for v in vis], mode="markers",
-            marker=dict(symbol="triangle-up", size=marker_size, color="#00ffff",
-                        line=dict(color="#0f1218", width=1.1)),
+            marker=volcano_marker(level),
             hovertext=[f"{v.name} ({v.elevation:,} m)" for v in vis],
             hoverinfo="text", showlegend=False, name="Volcanes monitoreados",
         ))
@@ -149,7 +148,7 @@ def _fig_volcat_height_geo(img_bytes, bounds, title, view_bounds=None):
         mode="markers", marker=dict(opacity=0), showlegend=False,
         hoverinfo="skip",
     ))
-    _overlay_volcanoes_border(fig, vb, marker_size=9)
+    _overlay_volcanoes_border(fig, vb, level="zone")
     cos_lat = max(0.1, float(np.cos(np.radians(
         (vb["lat_min"] + vb["lat_max"]) / 2))))
     fig.update_xaxes(range=[vb["lon_min"], vb["lon_max"]],
@@ -208,7 +207,7 @@ def _fig_ssec_image(img_rgba, bounds, title, volcanoes):
     # Volcanes monitoreados (RNVV) + frontera Chile-Argentina (helper comun
     # con la vista de altura). marker_size chico porque la region RGB puede
     # ser Chile completo (muchos volcanes apilados).
-    _overlay_volcanoes_border(fig, bounds, marker_size=6)
+    _overlay_volcanoes_border(fig, bounds, level="region")
 
     fig.update_layout(
         title=dict(text=title, font=dict(size=14, color="#ccc")),
@@ -804,7 +803,7 @@ def _fig_acha_field(field_km, lat, lon, view_bounds, title: str):
         hovertemplate="lat %{y:.2f}°, lon %{x:.2f}°<br>"
                       "tope %{z:.1f} km<extra></extra>",
     ))
-    _overlay_volcanoes_border(fig, view_bounds, marker_size=11)
+    _overlay_volcanoes_border(fig, view_bounds, level="focus")
     cos_lat = max(0.1, float(np.cos(np.radians(
         (view_bounds["lat_min"] + view_bounds["lat_max"]) / 2))))
     fig.update_xaxes(range=[view_bounds["lon_min"], view_bounds["lon_max"]],

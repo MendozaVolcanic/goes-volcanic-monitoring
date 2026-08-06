@@ -10,7 +10,7 @@ import streamlit as st
 try:
     from dashboard.style import (
         BTD_COLORSCALE, CONF_COLORSCALE, SO2_COLORSCALE,
-        C_ACCENT, C_ASH, C_SO2,
+        C_ACCENT, C_ASH, C_SO2, volcano_marker,
         ash_legend, ash_so2_legend, btd_legend, so2_legend,
         header, info_panel, kpi_card, refresh_info_badge,
     )
@@ -45,8 +45,7 @@ def _volcano_markers(fig, lat, lon, volcanoes):
     fig.add_trace(go.Scatter(
         x=[v.lon for v in vis], y=[v.lat for v in vis],
         mode="markers+text",
-        marker=dict(size=4, color=C_ACCENT, symbol="triangle-up",
-                    line=dict(width=0.6, color="white")),
+        marker=volcano_marker("wide", color=C_ACCENT),
         text=[v.name for v in vis],
         textposition="top center",
         textfont=dict(size=8, color="rgba(255,255,255,0.7)"),

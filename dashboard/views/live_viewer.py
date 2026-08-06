@@ -16,7 +16,8 @@ import streamlit as st
 
 try:
     from dashboard.map_helpers import add_chile_border, hotspot_distance_km
-    from dashboard.style import C_ACCENT, header, info_panel, kpi_card, refresh_info_badge
+    from dashboard.style import (C_ACCENT, header, info_panel, kpi_card,
+                                 refresh_info_badge, volcano_marker)
     from dashboard.utils import (
         fmt_both_long, fmt_chile, now_utc, parse_rammb_ts, utc_to_chile,
     )
@@ -247,8 +248,7 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str,
         fig.add_trace(go.Scatter(
             x=[v.lon for v in vis], y=[v.lat for v in vis],
             mode="markers+text",
-            marker=dict(size=4, color=C_ACCENT, symbol="triangle-up",
-                        line=dict(width=0.6, color="white")),
+            marker=volcano_marker("wide", color=C_ACCENT),
             text=[v.name for v in vis],
             textposition="top center",
             textfont=dict(size=7, color="rgba(255,255,255,0.75)"),
@@ -269,8 +269,7 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str,
         fig.add_trace(go.Scatter(
             x=[highlight_volcano.lon], y=[highlight_volcano.lat],
             mode="markers+text",
-            marker=dict(size=14, color="#ff4444", symbol="triangle-up",
-                        line=dict(width=2, color="white")),
+            marker=volcano_marker("focus", color="#ff4444"),
             text=[highlight_volcano.name],
             textposition="top center",
             textfont=dict(size=10, color="white", family="Arial Black"),

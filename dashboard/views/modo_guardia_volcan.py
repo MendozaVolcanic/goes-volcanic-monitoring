@@ -29,6 +29,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
+    from dashboard.style import volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.fetch.goes_fdcf import HotSpot, fetch_latest_hotspots
     from src.fetch.rammb_slider import (
@@ -330,8 +331,7 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
     # Triangulo crater
     fig.add_trace(go.Scatter(
         x=[volcan_lon], y=[volcan_lat], mode="markers",
-        marker=dict(symbol="triangle-up", size=16, color="#00ffff",
-                    line=dict(color="white", width=1.5)),
+        marker=volcano_marker("focus"),
         hovertemplate=f"<b>{volcan_name}</b><br>%{{x:.3f}}, %{{y:.3f}}<extra></extra>",
         showlegend=False,
     ))

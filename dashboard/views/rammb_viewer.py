@@ -19,7 +19,7 @@ from PIL import Image as PILImage, ImageDraw, ImageFilter, ImageFont
 
 try:
     from dashboard.style import (
-        C_ACCENT, C_ASH, C_SO2,
+        C_ACCENT, C_ASH, C_SO2, volcano_marker,
         header, info_panel, kpi_card, refresh_info_badge,
     )
     from dashboard.utils import fmt_both, fmt_both_long, fmt_chile, parse_rammb_ts
@@ -396,8 +396,7 @@ def _volcano_scatter(bounds: dict, highlight=None) -> go.Scatter:
     return go.Scatter(
         x=[v.lon for v in vis], y=[v.lat for v in vis],
         mode="markers+text",
-        marker=dict(size=4, color=C_ACCENT, symbol="triangle-up",
-                    line=dict(width=0.6, color="white")),
+        marker=volcano_marker("wide", color=C_ACCENT),
         text=[v.name for v in vis],
         textposition="top center",
         textfont=dict(size=7, color="rgba(255,255,255,0.8)"),

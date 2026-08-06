@@ -15,6 +15,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
+    from dashboard.style import volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.fetch.rammb_slider import (
         fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
@@ -152,8 +153,7 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
             )
     fig.add_trace(go.Scatter(
         x=[lon], y=[lat], mode="markers",
-        marker=dict(symbol="triangle-up", size=12, color="#00ffff",
-                    line=dict(color="white", width=1)),
+        marker=volcano_marker("zone"),
         hovertemplate=f"<b>{name}</b><extra></extra>",
         showlegend=False,
     ))

@@ -25,6 +25,7 @@ import streamlit as st
 
 try:
     from dashboard.map_helpers import add_chile_border
+    from dashboard.style import volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.config import VOLCANIC_ZONES
     from src.fetch.goes_fdcf import HotSpot, fetch_latest_hotspots
@@ -136,8 +137,7 @@ def _zone_fig(img: np.ndarray | None, zone_key: str, label: str,
                 x=[v.lon for v in zone_volcs],
                 y=[v.lat for v in zone_volcs],
                 mode="markers+text",
-                marker=dict(symbol="triangle-up", size=10, color="#00ffff",
-                            line=dict(color="white", width=1)),
+                marker=volcano_marker("zone"),
                 text=[v.name for v in zone_volcs],
                 textposition="middle right",
                 textfont=dict(size=9, color="rgba(255,255,255,0.85)"),
@@ -443,8 +443,7 @@ def _volcat_zone_fig(img_bytes, sector_bounds, view_bounds, zona_label,
         fig.add_trace(go.Scatter(
             x=[v.lon for v in vis], y=[v.lat for v in vis],
             mode="markers",
-            marker=dict(symbol="triangle-up", size=10, color="#00ffff",
-                        line=dict(color="#0f1218", width=1.2)),
+            marker=volcano_marker("zone"),
             hovertext=[f"{v.name} ({v.elevation:,} m)" for v in vis],
             hoverinfo="text", showlegend=False,
         ))

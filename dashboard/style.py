@@ -29,6 +29,56 @@ C_WARN = "#EE7733"      # warning = naranja
 C_ACCENT = "#33BBEE"    # accent = cyan
 C_MUTED = "#667788"     # texto secundario
 
+# ── Tamaño del marcador de volcán (triángulo) ─────────────────────
+# FUENTE ÚNICA para TODAS las vistas. El triángulo marca la POSICIÓN del
+# cráter: es una referencia geográfica, NO un dato. Si es grande tapa
+# justamente lo que se está mirando — un frente de lava o un hotspot
+# sub-kilométrico cae entero bajo el glifo, porque Plotly centra el símbolo en
+# la coordenada (el cráter queda bajo el centro de masa del triángulo, el peor
+# lugar posible). Escala física: en un encuadre de ±0.75° a −39°S el plot cubre
+# ~130 km en ~700 px ⇒ ~5 px/km, así que un size=18 tapaba ~3.5 km de terreno,
+# casi dos píxeles GOES completos. Reducido ~35% en ago-2026 a pedido de
+# operaciones (SERNAGEOMIN).
+#
+# Al agregar una vista nueva: usar SIEMPRE una de estas claves, nunca un
+# literal (`tests/test_marker_sizes.py` lo verifica).
+VOLCANO_MARKER = {
+    "wide":   3,   # país / disco completo, los 43 del catálogo   (antes 4)
+    "region": 5,   # región amplia con RGB de fondo               (antes 6)
+    "zone":   7,   # zona o panel del mosaico                     (antes 9-12)
+    "focus":  11,  # zoom sobre UN volcán                         (antes 14-18)
+}
+
+# HUECO, no relleno. Reducir el tamaño achica el área tapada pero no la elimina:
+# el cráter siempre cae bajo el centro del glifo, que es exactamente donde
+# aparece la anomalía térmica. Con el contorno abierto el operador ve el dato A
+# TRAVÉS del marcador — la referencia geográfica queda, la oclusión no.
+VOLCANO_SYMBOL = "triangle-up-open"
+
+# Grosor del contorno. En los símbolos `-open` Plotly no rellena: dibuja el
+# trazo con `marker.color`, así que este ancho es lo único que da presencia
+# visual y hay que compensar la falta de relleno (~1.5× el trazo que llevaba
+# el marcador sólido).
+VOLCANO_MARKER_LINE = {"wide": 1.0, "region": 1.2, "zone": 1.4, "focus": 1.8}
+
+
+def volcano_marker(level: str = "focus", color: str = "#00ffff",
+                   width: float = None) -> dict:
+    """``marker`` de Plotly para el triángulo de volcán — FUENTE ÚNICA.
+
+    Args:
+        level: "wide" | "region" | "zone" | "focus" (ver VOLCANO_MARKER).
+        color: color del contorno (en símbolos `-open` es ``marker.color``).
+        width: grosor del contorno; None = el canónico del nivel.
+    """
+    return dict(
+        symbol=VOLCANO_SYMBOL,
+        size=VOLCANO_MARKER[level],
+        color=color,
+        line=dict(color=color,
+                  width=VOLCANO_MARKER_LINE[level] if width is None else width),
+    )
+
 # Zonas volcanicas
 ZONE_HEX = {
     "norte":  "#CC3311",

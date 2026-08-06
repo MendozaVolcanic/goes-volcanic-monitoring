@@ -31,7 +31,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
-    from dashboard.style import header
+    from dashboard.style import header, volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.fetch.rammb_slider import (
         fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
@@ -101,8 +101,7 @@ def _plot_frame(img: np.ndarray | None, lat: float, lon: float,
         )
     fig.add_trace(go.Scatter(
         x=[lon], y=[lat], mode="markers+text",
-        marker=dict(symbol="triangle-up", size=18, color="#00ffff",
-                    line=dict(color="white", width=2)),
+        marker=volcano_marker("focus"),
         text=[volcan_name], textposition="top center",
         textfont=dict(color="#00ffff", size=12),
         showlegend=False, hoverinfo="skip",

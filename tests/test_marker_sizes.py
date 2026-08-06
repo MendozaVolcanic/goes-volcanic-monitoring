@@ -52,9 +52,18 @@ def test_volcano_marker_is_hollow():
     for level in VOLCANO_MARKER_LINE:
         m = volcano_marker(level)
         assert m["symbol"].endswith("-open"), (level, m["symbol"])
-        assert m["line"]["width"] >= 1.0, (level, m["line"])
+        # Ventana estrecha a propósito: por debajo de 0.5 px el trazo se diluye
+        # en el antialiasing y el marcador desaparece sobre fondo claro; por
+        # encima de ~1.4 el contorno vuelve a tapar terreno (el borde ocupa
+        # área igual que un relleno, que es lo que el hueco vino a evitar).
+        assert 0.5 <= m["line"]["width"] <= 1.4, (level, m["line"])
         # el trazo hereda el color del marcador (si no, se dibuja invisible)
         assert m["line"]["color"] == m["color"], (level, m)
+
+    # el trazo acompaña al tamaño: nunca un contorno grueso en un glifo chico
+    widths = [VOLCANO_MARKER_LINE[k]
+              for k in ("wide", "region", "zone", "focus")]
+    assert widths == sorted(widths), widths
 
     assert volcano_marker("focus", color="#ff4444")["color"] == "#ff4444"
     assert volcano_marker("zone", width=3.0)["line"]["width"] == 3.0

@@ -56,10 +56,12 @@ VOLCANO_MARKER = {
 VOLCANO_SYMBOL = "triangle-up-open"
 
 # Grosor del contorno. En los símbolos `-open` Plotly no rellena: dibuja el
-# trazo con `marker.color`, así que este ancho es lo único que da presencia
-# visual y hay que compensar la falta de relleno (~1.5× el trazo que llevaba
-# el marcador sólido).
-VOLCANO_MARKER_LINE = {"wide": 1.0, "region": 1.2, "zone": 1.4, "focus": 1.8}
+# trazo con `marker.color`, así que este ancho es lo único que ocupa área. Un
+# trazo grueso reintroduce por el borde el problema que el hueco vino a
+# resolver: a size=11 y 1.8 px de trazo, el contorno solo ya se comía ~0.7 km
+# de cada lado. Afinado a ~0.6× en ago-2026 (2º pedido de operaciones) — el
+# cian saturado se lee bien incluso con trazo delgado sobre Ash RGB y GeoColor.
+VOLCANO_MARKER_LINE = {"wide": 0.7, "region": 0.8, "zone": 0.9, "focus": 1.1}
 
 
 def volcano_marker(level: str = "focus", color: str = "#00ffff",

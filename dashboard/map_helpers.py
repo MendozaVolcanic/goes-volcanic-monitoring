@@ -366,6 +366,15 @@ WIND_LEVELS_VIZ = [
 HOTSPOT_COLOR = "#ff3300"
 VOLCANO_COLOR = "#00ffff"
 
+# Los 3 RGB que el turno compara lado a lado, con su receta de bandas.
+# CANONICO: lo usan el sub-tab "Volcán (3 productos)" y el mosaico, para que
+# ambos muestren los mismos productos en el mismo orden.
+RGB_PRODUCTS = [
+    ("eumetsat_ash", "Ash RGB", "EUMETSAT B15-B14 / B14-B11 / B13"),
+    ("geocolor", "GeoColor", "Visible mejorado (CIRA)"),
+    ("jma_so2", "SO2 RGB", "JMA B07-B09 / B09-B11"),
+]
+
 
 def draw_volcano_marker_pil(draw, cx: float, cy: float, size: float = 6,
                             color: tuple = (0, 255, 255),

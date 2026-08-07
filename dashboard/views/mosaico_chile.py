@@ -1,10 +1,17 @@
-"""Mosaico Chile: los 8 volcanes prioritarios en grilla 4x2.
+"""Mosaico Modo Guardia: 5 volcanes prioritarios x 3 productos.
 
-FILOSOFIA: barrer todo Chile en un golpe de vista. Una mini-imagen
-Ash RGB por volcan, zoom volcan, sin numeros, sin alertas. El experto
-ve los 8 cuadros y decide si algo merece zoom adicional.
+FILOSOFIA: barrer de un golpe de vista los volcanes que el turno mira todos
+los dias, y hacerlo con los TRES RGB a la vez — Ash detecta ceniza, SO2
+detecta el gas y GeoColor da el contexto visible. Una fila por volcan, una
+columna por producto. Sin numeros, sin alertas: el experto ve los 15 cuadros
+y decide si algo merece zoom.
 
-Auto-refresh 60s. Cada miniatura usa el ultimo scan disponible.
+Por que 5 y no 8 (pedido OVDAS, ago-2026): con 3 productos, 8 filas no entran
+en pantalla y cada panel queda demasiado chico para distinguir una pluma. Los
+5 estan en config.MOSAICO_VOLCANOES; para cualquier otro volcan del catalogo
+esta el sub-tab "Volcan (3 productos)".
+
+Auto-refresh 60s. Cada celda usa el ultimo scan de SU producto.
 """
 
 import logging
@@ -20,7 +27,8 @@ try:
     from src.fetch.rammb_slider import (
         fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
     )
-    from src.volcanos import PRIORITY_VOLCANOES, get_volcano
+    from dashboard.map_helpers import RGB_PRODUCTS
+    from src.volcanos import get_volcano
 except Exception:
     # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.
     # Si esto se ejecuta, hay un bug — log y reraise para que Streamlit muestre el error.
@@ -39,13 +47,15 @@ try:
     from src.config import MOSAICO_RADIUS_DEG as RADIUS_DEG
 except Exception:
     RADIUS_DEG = 0.5  # ver src/config.py para canonical
+# Los 5 volcanes del mosaico. Canonical en src/config (MOSAICO_VOLCANOES).
+try:
+    from src.config import MOSAICO_VOLCANOES
+except Exception:
+    MOSAICO_VOLCANOES = ["Nevados de Chillan", "Villarrica", "Calbuco",
+                         "Llaima", "Puyehue-Cordon Caulle"]
+# Orden de rotación del Modo Sala (arranca en GeoColor, el más legible de un
+# vistazo). Los labels y recetas salen de map_helpers.RGB_PRODUCTS.
 PRODUCT_LIST_TV = ["geocolor", "eumetsat_ash", "jma_so2"]
-
-PRODUCT_OPTIONS = {
-    "eumetsat_ash": "Ash RGB",
-    "geocolor": "GeoColor",
-    "jma_so2": "SO2 RGB",
-}
 
 
 @st.cache_data(ttl=30, show_spinner=False)
@@ -240,30 +250,39 @@ def _hires_for_volcano_cached(volcano_name: str, mode: str = "color"):
 
 
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
-def _grid_fragment(product: str, use_hires: bool = False,
-                   hires_mode: str = "color"):
-    """Solo el grid se auto-refresca cada 60s. El selector queda afuera."""
-    timestamps = _recent_timestamps(product, n=5)
+def _grid_fragment(use_hires: bool = False, hires_mode: str = "color"):
+    """Grid 5 volcanes × 3 productos, auto-refresh cada 60s.
+
+    Una FILA por volcán y una COLUMNA por producto (Ash / GeoColor / SO2),
+    igual que el sub-tab "Volcán (3 productos)" pero para los 5 volcanes que
+    el turno mira a diario. Antes eran 8 volcanes × 1 producto seleccionable:
+    con 3 productos, 8 filas no entran en pantalla y cada panel queda
+    demasiado chico para distinguir una pluma. (pedido OVDAS, ago-2026)
+    """
     now = datetime.now(timezone.utc)
-    if not timestamps:
+    # Timestamps por producto: cada RGB de RAMMB publica a su propio ritmo, así
+    # que pedir uno solo y reusarlo forzaría fallbacks innecesarios.
+    ts_by_prod = {pid: _recent_timestamps(pid, n=5) for pid, _l, _r in RGB_PRODUCTS}
+    if not any(ts_by_prod.values()):
         st.error("RAMMB no respondió. Reintentá en unos segundos.")
         return
 
-    ts = timestamps[0]
+    ref_ts = ts_by_prod.get("eumetsat_ash") or next(
+        (t for t in ts_by_prod.values() if t), [])
     try:
-        scan_dt = parse_rammb_ts(ts)
+        scan_dt = parse_rammb_ts(ref_ts[0])
         age_min = int((now - scan_dt).total_seconds() / 60)
         scan_label = f"{scan_dt.strftime('%H:%M UTC')} (hace {age_min} min)"
     except Exception:
-        scan_label = ts
+        scan_label = ref_ts[0] if ref_ts else "—"
 
     rings_str = " / ".join(str(r) for r in RING_RADII_KM)
     st.markdown(
         f"<div style='background:#0f1418; border-left:4px solid #ff6644; "
         f"padding:0.6rem 1rem; border-radius:4px; margin-bottom:0.8rem; "
         f"display:flex; justify-content:space-between; align-items:center;'>"
-        f"<div style='color:#e0e0e0;'>{PRODUCT_OPTIONS[product]} · "
-        f"8 volcanes prioritarios &middot; "
+        f"<div style='color:#e0e0e0;'>{len(MOSAICO_VOLCANOES)} prioritarios "
+        f"× 3 productos &middot; "
         f"<span style='color:#9aaabb; font-size:0.85rem;'>"
         f"⊙ anillos {rings_str} km desde el crater</span></div>"
         f"<div style='color:#9aaabb; font-size:0.85rem;'>Scan {scan_label} · "
@@ -271,60 +290,89 @@ def _grid_fragment(product: str, use_hires: bool = False,
         unsafe_allow_html=True,
     )
 
-    # Leyenda compacta (la tira existía sólo en el Modo Sala del mismo grid).
-    # Los anillos van siempre en el mosaico; hot spots no se dibujan acá.
+    # Una leyenda por columna, alineada con el grid (mismo patrón que el
+    # sub-tab "Volcán (3 productos)"). Los anillos van siempre en el mosaico;
+    # hot spots no se dibujan acá.
     from dashboard.map_helpers import render_compact_legend
-    render_compact_legend(product, symbols=("volcano", "rings"))
+    _leg_cols = st.columns(3)
+    for _c, (_pid, _lbl, _rec) in zip(_leg_cols, RGB_PRODUCTS):
+        with _c:
+            render_compact_legend(_pid, height_px=32,
+                                  symbols=("volcano", "rings"))
 
-    # Grid 2 filas x 4 columnas
+    # ── Descarga PARALELA de las 15 celdas ───────────────────────────
+    # En serie son 15 requests RAMMB encadenados (~20 s con cache fría); el
+    # pool las resuelve en ~el tiempo de la más lenta. fetch_frame_robust es
+    # thread-safe (mismo patrón que el grid de 4 zonas).
+    from concurrent.futures import ThreadPoolExecutor
+
     fallback_ts = 0
     fallback_zoom = 0
     hires_used = 0
     hires_fallback = 0
-    rows = [PRIORITY_VOLCANOES[:4], PRIORITY_VOLCANOES[4:8]]
-    for row_volcanos in rows:
-        cols = st.columns(4)
-        for i, name in enumerate(row_volcanos):
-            v = get_volcano(name)
-            if v is None:
-                continue
 
-            # Intento hi-res primero si toggle activo
-            img = None
-            used_zoom = 0  # 0 = RAMMB normal con zoom 4
-            hires_render = None  # 'visible_color' | 'visible_mono' | 'ir_pseudo' | None
-            hires_sun_alt = None
-            if use_hires:
-                hires_arr, hires_info = _hires_for_volcano_cached(name, mode=hires_mode)
-                if hires_arr is not None:
-                    img = hires_arr
-                    # -2 = mono_05km (4× zoom), -1 = color 1km/px
-                    used_zoom = -2 if hires_mode == "mono_05km" else -1
-                    if hires_info:
-                        hires_render = hires_info.get("render")
-                        hires_sun_alt = hires_info.get("sun_alt")
-                    hires_used += 1
-                else:
-                    hires_fallback += 1
+    volcs = [(n, get_volcano(n)) for n in MOSAICO_VOLCANOES]
+    volcs = [(n, v) for n, v in volcs if v is not None]
+    jobs = [(n, v, pid) for n, v in volcs for pid, _l, _r in RGB_PRODUCTS]
 
-            # Fallback a RAMMB si no hi-res
-            if img is None:
-                img, used_ts, used_zoom = _volcano_frame_with_fallback(
-                    product, timestamps, v.lat, v.lon,
-                )
-                if used_ts and used_ts != ts:
-                    fallback_ts += 1
-                if used_zoom == ZOOM_ZONE:
-                    fallback_zoom += 1
+    def _one(job):
+        name, v, pid = job
+        # Hi-res sólo aplica al panel GeoColor: el cache NOAA es color real /
+        # IR, no tiene equivalente de las recetas Ash ni SO2.
+        if use_hires and pid == "geocolor":
+            arr, info = _hires_for_volcano_cached(name, mode=hires_mode)
+            if arr is not None:
+                return job, arr, None, (-2 if hires_mode == "mono_05km" else -1), info
+        tss = ts_by_prod.get(pid) or []
+        if not tss:
+            return job, None, None, 0, None
+        img, used_ts, used_zoom = _volcano_frame_with_fallback(
+            pid, tss, v.lat, v.lon)
+        return job, img, used_ts, used_zoom, None
+
+    with ThreadPoolExecutor(max_workers=6) as ex:
+        results = {(n, pid): (img, uts, uz, info)
+                   for (n, _v, pid), img, uts, uz, info in ex.map(_one, jobs)}
+
+    for name, v in volcs:
+        cols = st.columns(3)
+        for i, (pid, label, recipe) in enumerate(RGB_PRODUCTS):
+            img, used_ts, used_zoom, hires_info = results.get(
+                (name, pid), (None, None, 0, None))
+            if hires_info is not None or used_zoom in (-1, -2):
+                hires_used += 1
+            elif use_hires and pid == "geocolor":
+                hires_fallback += 1
+            tss = ts_by_prod.get(pid) or []
+            if used_ts and tss and used_ts != tss[0]:
+                fallback_ts += 1
+            if used_zoom == ZOOM_ZONE:
+                fallback_zoom += 1
             with cols[i]:
                 st.plotly_chart(
-                    _render_mini(img, v.lat, v.lon, name,
+                    # La fila ya identifica al volcán: sólo la primera celda
+                    # repite el nombre, las otras dos llevan el producto. Así
+                    # un panel suelto nunca queda sin decir QUÉ es.
+                    _render_mini(img, v.lat, v.lon,
+                                 f"{name} · {label}" if i == 0 else label,
+                                 # De este valor sale el ALTO (× cos lat); el
+                                 # ANCHO lo pone el contenedor, así que pasarse
+                                 # deja banda negra arriba y abajo. Se mantiene
+                                 # el 380 histórico: el panel igual queda más
+                                 # grande que antes porque son 3 columnas en
+                                 # vez de 4.
                                  target_width_px=380, show_rings=True,
                                  zoom_used=used_zoom,
-                                 hires_render=hires_render,
-                                 hires_sun_alt=hires_sun_alt),
+                                 hires_render=(hires_info or {}).get("render"),
+                                 hires_sun_alt=(hires_info or {}).get("sun_alt")),
                     width='stretch',
                     config={"displayModeBar": False},
+                    key=f"mosaico_{name}_{pid}",
+                )
+                st.markdown(
+                    f"<div style='font-size:0.68rem; color:#556; "
+                    f"margin-top:-0.6rem;'>{recipe}</div>",
+                    unsafe_allow_html=True,
                 )
 
     if use_hires:
@@ -345,13 +393,16 @@ def _grid_fragment(product: str, use_hires: bool = False,
                 )
             else:
                 st.warning(
-                    f"⚠ **Hi-res color sin datos disponibles** ({hires_fallback}/8 "
-                    "fallback a RAMMB). El cache puede estar viejo o el cron tardó. "
+                    f"⚠ **Hi-res color sin datos disponibles** "
+                    f"({hires_fallback}/{len(MOSAICO_VOLCANOES)} paneles GeoColor "
+                    "cayeron a RAMMB). El cache puede estar viejo o el cron tardó. "
                     "Re-trigger del workflow `hires_visible_cache.yml` en GitHub Actions."
                 )
         else:
-            st.caption(f"🔬 Hi-res NOAA activo · {hires_used}/8 usaron hi-res, "
-                       f"{hires_fallback}/8 fallback a RAMMB")
+            st.caption(
+                f"🔬 Hi-res NOAA activo (sólo GeoColor) · {hires_used}/"
+                f"{len(MOSAICO_VOLCANOES)} paneles con hi-res, "
+                f"{hires_fallback} con RAMMB")
 
     notes = []
     if fallback_ts:
@@ -364,13 +415,15 @@ def _grid_fragment(product: str, use_hires: bool = False,
 
 @st.fragment(run_every=f"{ROTATION_SECONDS}s")
 def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
-    """Modo TV puro: 8 prioritarios en grid 4x2, paneles grandes,
+    """Modo TV puro: los 5 prioritarios en UNA fila, paneles grandes,
     rotando productos GeoColor -> Ash -> SO2 cada 10s, con anillos.
+
+    En la sala se proyecta un producto a la vez y rota: por eso acá los 5
+    entran en una sola fila (mas ancho por panel que el viejo grid 4x2) en vez
+    de mostrar los 3 productos como hace el panel interactivo.
 
     Sin chrome (toolbar, banner status). Solo etiqueta minimal flotante.
     """
-    import io
-    import base64
     if session_key not in st.session_state:
         st.session_state[session_key] = 0
     idx = st.session_state[session_key] % len(PRODUCT_LIST_TV)
@@ -387,7 +440,8 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
     render_compact_legend(
         current, tv=True, symbols=("volcano",),
         extra_left=(f"<span style='color:#ff6644; font-weight:700; "
-                    f"margin-right:0.2rem;'>🔄 Mosaico 8 ·</span>"),
+                    f"margin-right:0.2rem;'>🔄 Mosaico "
+                    f"{len(MOSAICO_VOLCANOES)} ·</span>"),
         extra_right=render_scan_status_badge(scan_dt, ROTATION_SECONDS),
     )
 
@@ -395,10 +449,10 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
         st.error("RAMMB no respondió.")
         return
 
-    # Grid 2 filas x 4 columnas, paneles grandes (450 px)
-    rows = [PRIORITY_VOLCANOES[:4], PRIORITY_VOLCANOES[4:8]]
+    # Una fila con los 5, paneles grandes
+    rows = [MOSAICO_VOLCANOES]
     for row_volcanos in rows:
-        cols = st.columns(4)
+        cols = st.columns(len(row_volcanos))
         for i, name in enumerate(row_volcanos):
             v = get_volcano(name)
             if v is None:
@@ -417,16 +471,13 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
 
 
 def _live_panel():
-    """Selector de producto + grid con auto-refresh."""
-    cols_top = st.columns([2, 2.5, 2.5])
+    """Toolbar + grid con auto-refresh.
+
+    Ya no hay selector de producto: el grid muestra los TRES a la vez (una
+    columna cada uno), que es el punto de la vista.
+    """
+    cols_top = st.columns([3.5, 3])
     with cols_top[0]:
-        product = st.selectbox(
-            "Producto",
-            options=list(PRODUCT_OPTIONS.keys()),
-            format_func=lambda k: PRODUCT_OPTIONS[k],
-            index=0, key="mosaico_product",
-        )
-    with cols_top[1]:
         hires_mode = st.radio(
             "Resolucion",
             ["RAMMB normal", "Hi-res color (1 km/px)",
@@ -438,22 +489,24 @@ def _live_panel():
                  "⚠ ACTUALMENTE NO DISPONIBLE en cloud (OOM workflow GH free) — "
                  "cae a RAMMB normal. Requiere localhost del observatorio.",
         )
-    with cols_top[2]:
+    with cols_top[1]:
         if "mono" in hires_mode:
             st.caption("⚠ Mono 0.5km/px no disponible cloud — vas a ver RAMMB. "
                        "Requiere correr local desde el observatorio.")
         elif hires_mode == "Hi-res color (1 km/px)":
             st.caption("ℹ Color 1km/px = TrueColor diurno o IR nocturno · "
-                       "1.7x mejor que RAMMB.")
+                       "1.7x mejor que RAMMB. Aplica sólo a la columna "
+                       "GeoColor (Ash y SO2 no tienen equivalente hi-res).")
 
     use_hires = hires_mode != "RAMMB normal"
     hires_mode_arg = "mono_05km" if "mono" in hires_mode else "color"
-    _grid_fragment(product, use_hires=use_hires, hires_mode=hires_mode_arg)
+    _grid_fragment(use_hires=use_hires, hires_mode=hires_mode_arg)
     st.markdown(
         "<div style='text-align:center; color:#445566; font-size:0.75rem; "
         "margin-top:0.8rem; padding-top:0.5rem; border-top:1px solid #223;'>"
         "<i>Sin metricas automaticas. Si algo llama la atencion en una "
-        "miniatura, ir a 'Modo Guardia → Volcán' para ver con detalle.</i></div>",
+        "celda, ir a 'Modo Guardia → Volcán (3 productos)' para ver ese "
+        "volcán con anillos, viento y captura.</i></div>",
         unsafe_allow_html=True,
     )
 
@@ -474,7 +527,7 @@ def render():
         "<div style='font-size:1.5rem; font-weight:800; color:#ff6644;'>"
         "🗺 MOSAICO CHILE</div>"
         "<div style='font-size:0.85rem; color:#7a8a9a;'>"
-        "8 prioritarios · Ash RGB · zoom volcan</div></div>",
+        "5 prioritarios × 3 productos · zoom volcan</div></div>",
         unsafe_allow_html=True,
     )
     _live_panel()

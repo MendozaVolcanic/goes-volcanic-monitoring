@@ -64,8 +64,10 @@ siempre cruzando con hot spots NOAA FDCF y movimiento en loop.
 zonas, pensada para turno de sala. Sub-tabs:
 - **Por Zona Volcánica** — grid de las 4 zonas (Norte, Centro, Sur,
   Austral) lado a lado, mismo producto, mismo timestamp.
-- **Mosaico (8 prioritarios)** — Lascar, Villarrica, Lonquimay,
-  Calbuco, Llaima, Copahue, Nevados de Chillán, Planchón-Peteroa.
+- **Mosaico (5 prioritarios)** — Nevados de Chillán, Villarrica,
+  Calbuco, Llaima y Cordón Caulle, cada uno con sus **3 productos**
+  (Ash RGB, GeoColor, SO2) en la misma fila. Son los que el turno
+  mira a diario; para cualquier otro volcán está "Volcán (3 productos)".
 - **Por Volcán** — 3 productos (Ash, GeoColor, SO2) lado a lado para
   un volcán con anillos de distancia y overlay de viento opcional.
 

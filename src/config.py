@@ -90,6 +90,20 @@ ABI_MAX_SCAN_ANGLE = 0.151872  # radianes
 # rammb_slider, mosaico_chile, replay_reciente, hires_pipeline. ────────
 VOLCANO_RADIUS_DEG_FULL = 1.5      # Vista volcán amplia (rammb_viewer)
 MOSAICO_RADIUS_DEG = 0.5           # Mosaico Modo Guardia (~55 km)
+
+# Volcanes del mosaico de Modo Guardia. Es un subconjunto DELIBERADO de
+# PRIORITY_VOLCANOES (8): con 3 productos por volcán, 8 filas no entran en
+# pantalla y cada panel queda demasiado chico para ver una pluma. Estos 5 son
+# los que el turno mira todos los días (pedido OVDAS, ago-2026); para
+# cualquier otro está el sub-tab "Volcán (3 productos)", que cubre el catálogo
+# completo. Orden = el que pidió el observatorio, no geográfico.
+MOSAICO_VOLCANOES = [
+    "Nevados de Chillan",
+    "Villarrica",
+    "Calbuco",
+    "Llaima",
+    "Puyehue-Cordon Caulle",
+]
 HIRES_RADIUS_DEG = 0.5             # Hi-res NOAA por volcán
 REPLAY_RADIUS_DEG = 0.4            # Replay reciente
 

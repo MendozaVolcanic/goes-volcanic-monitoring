@@ -57,6 +57,22 @@ except Exception:
 # vistazo). Los labels y recetas salen de map_helpers.RGB_PRODUCTS.
 PRODUCT_LIST_TV = ["geocolor", "eumetsat_ash", "jma_so2"]
 
+# Tamaño de celda del mosaico. De este valor sale el ALTO del plot
+# (× MEDIAN_COS_LAT_PRIORITY); el ANCHO lo pone el contenedor de la columna,
+# que depende del viewport. Medido en vivo:
+#   alto  <  ancho de columna  ->  banda negra a los lados (desperdicia)
+#   alto  >  ancho de columna  ->  Plotly RECORTA el frame a los lados
+# El óptimo es alto ≈ ancho, y con 3 columnas ese ancho es ~267 px a 1280,
+# ~373 a 1600 y ~470 a 1920 (con la barra lateral abierta). Como Streamlit no
+# expone el viewport, la elección queda en manos del operador — cada sala
+# tiene su pantalla. (pedido OVDAS: paneles más grandes, el scroll no molesta)
+CELL_SIZES = {
+    "Mediano": 380,    # pantalla ~1280
+    "Grande": 490,     # pantalla ~1600  (default)
+    "Máximo": 620,     # pantalla ~1920 o modo pantalla completa
+}
+DEFAULT_CELL_SIZE = "Grande"
+
 
 @st.cache_data(ttl=30, show_spinner=False)
 def _recent_timestamps(product: str, n: int = 5) -> list[str]:
@@ -250,7 +266,8 @@ def _hires_for_volcano_cached(volcano_name: str, mode: str = "color"):
 
 
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
-def _grid_fragment(use_hires: bool = False, hires_mode: str = "color"):
+def _grid_fragment(cell_px: int = None, use_hires: bool = False,
+                   hires_mode: str = "color"):
     """Grid 5 volcanes × 3 productos, auto-refresh cada 60s.
 
     Una FILA por volcán y una COLUMNA por producto (Ash / GeoColor / SO2),
@@ -259,6 +276,7 @@ def _grid_fragment(use_hires: bool = False, hires_mode: str = "color"):
     con 3 productos, 8 filas no entran en pantalla y cada panel queda
     demasiado chico para distinguir una pluma. (pedido OVDAS, ago-2026)
     """
+    cell_px = cell_px or CELL_SIZES[DEFAULT_CELL_SIZE]
     now = datetime.now(timezone.utc)
     # Timestamps por producto: cada RGB de RAMMB publica a su propio ritmo, así
     # que pedir uno solo y reusarlo forzaría fallbacks innecesarios.
@@ -355,13 +373,7 @@ def _grid_fragment(use_hires: bool = False, hires_mode: str = "color"):
                     # un panel suelto nunca queda sin decir QUÉ es.
                     _render_mini(img, v.lat, v.lon,
                                  f"{name} · {label}" if i == 0 else label,
-                                 # De este valor sale el ALTO (× cos lat); el
-                                 # ANCHO lo pone el contenedor, así que pasarse
-                                 # deja banda negra arriba y abajo. Se mantiene
-                                 # el 380 histórico: el panel igual queda más
-                                 # grande que antes porque son 3 columnas en
-                                 # vez de 4.
-                                 target_width_px=380, show_rings=True,
+                                 target_width_px=cell_px, show_rings=True,
                                  zoom_used=used_zoom,
                                  hires_render=(hires_info or {}).get("render"),
                                  hires_sun_alt=(hires_info or {}).get("sun_alt")),
@@ -476,7 +488,7 @@ def _live_panel():
     Ya no hay selector de producto: el grid muestra los TRES a la vez (una
     columna cada uno), que es el punto de la vista.
     """
-    cols_top = st.columns([3.5, 3])
+    cols_top = st.columns([3, 1.5, 2.6])
     with cols_top[0]:
         hires_mode = st.radio(
             "Resolucion",
@@ -490,6 +502,20 @@ def _live_panel():
                  "cae a RAMMB normal. Requiere localhost del observatorio.",
         )
     with cols_top[1]:
+        # El tamaño óptimo depende del ANCHO de la pantalla (ver CELL_SIZES):
+        # Streamlit no expone el viewport, así que lo elige el operador.
+        size_label = st.radio(
+            "Tamaño",
+            list(CELL_SIZES.keys()),
+            index=list(CELL_SIZES).index(DEFAULT_CELL_SIZE),
+            key="mosaico_cell_size", horizontal=True,
+            help="Alto de cada celda. Si ves los bordes del recuadro "
+                 "RECORTADOS, bajá un paso; si ves franjas negras a los "
+                 "lados, subí uno. Depende del ancho de tu pantalla: "
+                 "Mediano ~1280 px · Grande ~1600 · Máximo ~1920 o "
+                 "modo pantalla completa.",
+        )
+    with cols_top[2]:
         if "mono" in hires_mode:
             st.caption("⚠ Mono 0.5km/px no disponible cloud — vas a ver RAMMB. "
                        "Requiere correr local desde el observatorio.")
@@ -500,7 +526,8 @@ def _live_panel():
 
     use_hires = hires_mode != "RAMMB normal"
     hires_mode_arg = "mono_05km" if "mono" in hires_mode else "color"
-    _grid_fragment(use_hires=use_hires, hires_mode=hires_mode_arg)
+    _grid_fragment(cell_px=CELL_SIZES[size_label], use_hires=use_hires,
+                   hires_mode=hires_mode_arg)
     st.markdown(
         "<div style='text-align:center; color:#445566; font-size:0.75rem; "
         "margin-top:0.8rem; padding-top:0.5rem; border-top:1px solid #223;'>"

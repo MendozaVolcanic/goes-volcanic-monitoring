@@ -65,7 +65,25 @@ def test_el_grid_ya_no_recibe_un_producto():
               if isinstance(n, ast.FunctionDef) and n.name == "_grid_fragment")
     args = [a.arg for a in fn.args.args]
     assert "product" not in args, args
-    assert args == ["use_hires", "hires_mode"], args
+    assert args == ["cell_px", "use_hires", "hires_mode"], args
+
+
+def test_tamano_de_celda_es_elegible_y_creciente():
+    """El alto de la celda lo elige el operador: el óptimo depende del ANCHO
+    de su pantalla y Streamlit no expone el viewport.
+
+    Medido en vivo con 3 columnas: si el alto queda por debajo del ancho de
+    columna sobran franjas negras a los lados; si lo supera, Plotly RECORTA el
+    frame (a 620 px sobre una columna de 373 se perdían 110 px de imagen). Por
+    eso los tres pasos y no un valor fijo.
+    """
+    import dashboard.views.mosaico_chile as mosaico
+
+    vals = list(mosaico.CELL_SIZES.values())
+    assert vals == sorted(vals) and len(vals) == 3, mosaico.CELL_SIZES
+    assert mosaico.DEFAULT_CELL_SIZE in mosaico.CELL_SIZES
+    # el default tiene que ser mayor que el tamaño viejo de 4 columnas (380)
+    assert mosaico.CELL_SIZES[mosaico.DEFAULT_CELL_SIZE] > 380
 
 
 def test_el_producto_hires_solo_aplica_a_geocolor():

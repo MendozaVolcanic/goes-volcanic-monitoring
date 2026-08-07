@@ -17,6 +17,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
+    from dashboard.map_helpers import draw_volcano_marker_pil
     from dashboard.style import (
         C_ACCENT, C_ASH, C_SO2,
         header, info_panel, kpi_card, refresh_info_badge,
@@ -109,10 +110,11 @@ def _thumb_with_marker(
     cx, cy = int(fx * w), int(fy * h)
 
     draw = ImageDraw.Draw(pil)
-    # Triangulo rojo invertido apuntando al volcan
+    # Triangulo HUECO: el relleno tapaba el pixel del crater (ver
+    # map_helpers.draw_volcano_marker_pil).
     s = max(8, w // 50)
-    tri = [(cx, cy - s), (cx - s, cy + s // 2), (cx + s, cy + s // 2)]
-    draw.polygon(tri, fill=(255, 60, 60), outline=(255, 255, 255))
+    draw_volcano_marker_pil(draw, cx, cy, size=s, color=(255, 60, 60),
+                            halo=(255, 255, 255))
     # Cruz central pequeña en el vertice del triangulo (la coordenada exacta)
     draw.line([(cx - 3, cy), (cx + 3, cy)], fill=(255, 255, 255), width=1)
     draw.line([(cx, cy - 3), (cx, cy + 3)], fill=(255, 255, 255), width=1)

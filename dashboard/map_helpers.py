@@ -367,6 +367,36 @@ HOTSPOT_COLOR = "#ff3300"
 VOLCANO_COLOR = "#00ffff"
 
 
+def draw_volcano_marker_pil(draw, cx: float, cy: float, size: float = 6,
+                            color: tuple = (0, 255, 255),
+                            halo: tuple = (15, 18, 24)) -> None:
+    """Triángulo HUECO de volcán sobre un ``ImageDraw`` (PIL).
+
+    Gemelo de ``dashboard.style.volcano_marker`` para los renders PNG del lado
+    servidor: el Modo Sala en modo imagen, el GIF/PNG de los loops y el
+    thumbnail de Series. Sin este helper esos caminos se quedaron con el
+    triángulo RELLENO cuando el resto pasó a hueco (ago-2026) — y son
+    justamente los que se proyectan en la sala.
+
+    Mismo criterio que en Plotly: el glifo se centra en la coordenada, así que
+    relleno taparía el píxel del cráter, que es donde aparece la lava.
+
+    Args:
+        draw:  ImageDraw activo.
+        cx/cy: centro en píxeles de la imagen.
+        size:  medio-ancho del triángulo en píxeles.
+        color: color del trazo.
+        halo:  color del contorno exterior de contraste (None = sin halo).
+               Necesario sobre nubes blancas, donde el cian fino se pierde.
+    """
+    pts = [(cx, cy - size), (cx + size, cy + size * 0.75),
+           (cx - size, cy + size * 0.75)]
+    w = max(1, int(round(size * 0.22)))
+    if halo is not None:
+        draw.polygon(pts, fill=None, outline=halo, width=w + 2)
+    draw.polygon(pts, fill=None, outline=color, width=w)
+
+
 def _svg(inner: str, size: int = 13) -> str:
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 12 12" '
             f'style="flex:none;">{inner}</svg>')

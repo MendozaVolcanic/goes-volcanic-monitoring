@@ -24,7 +24,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
-    from dashboard.map_helpers import add_chile_border
+    from dashboard.map_helpers import add_chile_border, draw_volcano_marker_pil
     from dashboard.style import volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.config import VOLCANIC_ZONES
@@ -777,8 +777,7 @@ def _compose_volcan_panels(v, radius_deg: float, panels: list, ph: int = 720):
                 d.polygon([(hx, hy - 6), (hx + 6, hy), (hx, hy + 6),
                            (hx - 6, hy)], fill=(255, 51, 0),
                           outline=(255, 255, 255))
-        d.polygon([(cx, cy - 9), (cx + 8, cy + 6), (cx - 8, cy + 6)],
-                  fill=(0, 255, 255), outline=(255, 255, 255))
+        draw_volcano_marker_pil(d, cx, cy, size=8)
         d.rectangle([0, 0, pw, label_h], fill=(15, 20, 28))
         d.text((8, 2), label, fill=(255, 110, 70), font=f_label)
         # Hora (UTC + local) + resolucion: mas grande y en blanco para que
@@ -1522,8 +1521,7 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
                        and b["lon_min"] <= v.lon <= b["lon_max"]]
             for v in in_zone:
                 vx, vy = _xy(v.lat, v.lon)
-                d.polygon([(vx, vy - 6), (vx + 5, vy + 4), (vx - 5, vy + 4)],
-                          fill=(0, 255, 255), outline=(15, 18, 24))
+                draw_volcano_marker_pil(d, vx, vy, size=6)
             placed = []
 
             def _hit(a):

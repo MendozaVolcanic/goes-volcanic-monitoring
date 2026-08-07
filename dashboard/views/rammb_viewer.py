@@ -18,6 +18,7 @@ import streamlit as st
 from PIL import Image as PILImage, ImageDraw, ImageFilter, ImageFont
 
 try:
+    from dashboard.map_helpers import draw_volcano_marker_pil
     from dashboard.style import (
         C_ACCENT, C_ASH, C_SO2, volcano_marker,
         header, info_panel, kpi_card, refresh_info_badge,
@@ -190,9 +191,8 @@ def _compose_loop_frame(frame: dict, meta: dict | None = None,
         for v in sorted(vis, key=lambda vv: (vv.name != focus, vv.lat)):
             x = (v.lon - lon0) / (lon1 - lon0) * W
             y = (lat1 - v.lat) / (lat1 - lat0) * H
-            draw.polygon([(x, y - tri), (x - tri, y + tri * 0.7),
-                          (x + tri, y + tri * 0.7)],
-                         fill=(0, 255, 255), outline=(10, 14, 20))
+            draw_volcano_marker_pil(draw, x, y, size=tri,
+                                    halo=(10, 14, 20))
             if not any(abs(y - py) < fs * 1.3 and abs(x - px) < W * 0.22
                        for px, py in placed):
                 tw = draw.textlength(v.name, font=font)

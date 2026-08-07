@@ -82,6 +82,81 @@ def test_no_view_builds_its_own_volcano_marker():
         + "\n  ".join(offenders))
 
 
+def test_no_view_draws_a_solid_triangle_in_pil():
+    """Tampoco a mano en los renders PNG del lado servidor.
+
+    Este hueco es real y costó una segunda pasada (ago-2026): el Modo Sala de
+    las 4 zonas, el zoom del volcán en alerta, el GIF de los loops y el
+    thumbnail de Series NO usan Plotly — componen la imagen con PIL. Cuando el
+    marcador de Plotly pasó a hueco, esos cuatro se quedaron RELLENOS, y son
+    justamente los que se proyectan en la sala.
+
+    Un `draw.polygon` de TRES vértices es un triángulo dibujado a mano: tiene
+    que ir por `map_helpers.draw_volcano_marker_pil`. Los diamantes de hot spot
+    (cuatro vértices) sí se dibujan localmente — son el dato, no una
+    referencia, y van rellenos a propósito.
+    """
+    # `d.polygon([...])` con exactamente 3 tuplas en el literal
+    tri_call = re.compile(
+        r"\.polygon\(\s*\[\s*(\([^)]*\)\s*,\s*){2}\([^)]*\)\s*,?\s*\]", re.S)
+    offenders = []
+    for path in sorted(VIEWS.glob("*.py")):
+        src = path.read_text(encoding="utf-8")
+        for m in tri_call.finditer(src):
+            offenders.append(f"{path.name}:{src[:m.start()].count(chr(10)) + 1}")
+        # y la variante con la lista en una variable llamada `tri`
+        for m in re.finditer(r"\.polygon\(\s*tri\b", src):
+            offenders.append(f"{path.name}:{src[:m.start()].count(chr(10)) + 1}")
+
+    assert not offenders, (
+        "triángulo dibujado a mano en PIL — usar "
+        "map_helpers.draw_volcano_marker_pil():\n  " + "\n  ".join(offenders))
+
+
+def test_no_solid_triangle_marker_in_matplotlib():
+    """Y tampoco en los PDF/PNG de matplotlib (reportes de `scripts/`).
+
+    En matplotlib el triángulo se rellena por default: `"r^"` pinta el glifo
+    entero. Hueco = `markerfacecolor="none"`.
+    """
+    scripts = Path(__file__).parent.parent / "scripts"
+    offenders = []
+    for path in sorted(scripts.glob("*.py")):
+        # Sin comentarios: si no, el propio comentario que explica el fix
+        # ("usar markerfacecolor=none") hace pasar el test — falso verde
+        # verificado por mutación.
+        lines = [re.sub(r"#.*$", "", ln)
+                 for ln in path.read_text(encoding="utf-8").splitlines()]
+        src = "\n".join(lines)
+        for m in re.finditer(r'"[a-z]?\^"|marker\s*=\s*[\'"]\^[\'"]', src):
+            # la llamada completa (hasta el paréntesis de cierre de la línea
+            # lógica) es donde tiene que estar el facecolor
+            window = src[m.start():m.start() + 400].split(")\n")[0]
+            if "markerfacecolor" not in window and "mfc" not in window:
+                line = src[:m.start()].count("\n") + 1
+                offenders.append(f"{path.name}:{line}")
+
+    assert not offenders, (
+        'triángulo relleno en matplotlib — usar markerfacecolor="none":\n  '
+        + "\n  ".join(offenders))
+
+
+def test_pil_volcano_marker_is_hollow():
+    """El helper PIL no rellena y deja halo de contraste (sobre nube blanca un
+    trazo cian fino desaparece)."""
+    from PIL import Image, ImageDraw
+
+    from dashboard.map_helpers import draw_volcano_marker_pil
+
+    img = Image.new("RGB", (41, 41), (255, 255, 255))
+    draw_volcano_marker_pil(ImageDraw.Draw(img), 20, 20, size=12)
+    # el centro (donde cae el cráter) sigue siendo el fondo, no el marcador
+    assert img.getpixel((20, 20)) == (255, 255, 255), img.getpixel((20, 20))
+    # y el trazo existe: hay píxeles cian en el borde inferior del triángulo
+    row = [img.getpixel((x, 28)) for x in range(41)]
+    assert (0, 255, 255) in row, "no se dibujó el contorno cian"
+
+
 def test_every_view_uses_a_known_level():
     """Los niveles que pasan las vistas existen en la escala (un typo como
     `volcano_marker("zoom")` reventaría recién al renderizar esa vista)."""

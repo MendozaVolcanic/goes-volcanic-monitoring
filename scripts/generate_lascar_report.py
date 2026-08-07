@@ -159,8 +159,12 @@ def render_pdf(out_path: Path, report_date: datetime) -> None:
             LASCAR.lon - FRAME_RADIUS_DEG, LASCAR.lon + FRAME_RADIUS_DEG,
             LASCAR.lat - FRAME_RADIUS_DEG, LASCAR.lat + FRAME_RADIUS_DEG,
         ])
-        ax_ash.plot(LASCAR.lon, LASCAR.lat, "r^", markersize=10,
-                    markeredgecolor="white", markeredgewidth=1.5)
+        # Triángulo HUECO (markerfacecolor="none"): relleno taparía el píxel
+        # del cráter, que es donde aparece la anomalía térmica. Mismo criterio
+        # que dashboard.style.volcano_marker y map_helpers en PIL.
+        ax_ash.plot(LASCAR.lon, LASCAR.lat, "^", markersize=10,
+                    markerfacecolor="none", markeredgecolor="#ff3333",
+                    markeredgewidth=1.4)
         ax_ash.set_title(f"Ash RGB — scan {ash_ts}", fontsize=10)
         ax_ash.set_xlabel("Longitud", fontsize=8)
         ax_ash.set_ylabel("Latitud", fontsize=8)

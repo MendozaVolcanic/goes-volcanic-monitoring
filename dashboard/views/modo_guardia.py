@@ -421,11 +421,11 @@ def _activate_tv(tv_value: str, **extra):
 
 
 def _mosaico_subtab():
-    """Sub-tab Mosaico: 8 prioritarios en grid 4x2."""
+    """Sub-tab Mosaico: los 5 prioritarios x 3 productos (config.MOSAICO_VOLCANOES)."""
     from dashboard.views.mosaico_chile import _live_panel as mosaico_panel
     from dashboard.map_helpers import render_top_navigation_button
     render_top_navigation_button(
-        "🖥 Modo Sala · Mosaico (rotando productos cada 10s)",
+        "🖥 Modo Sala · Mosaico 5 (rotando productos cada 10s)",
         "vista=guardia&fullscreen=1&tv=mosaico",
         key="btn_sala_mosaico",
     )
@@ -624,7 +624,7 @@ def render():
       ?tv=1       o ?tv=zonas    -> 4 zonas rotando productos (default)
       ?tv=chile&volcan=X         -> Chile completo rotando productos + anillos
                                     alrededor del volcan seleccionado
-      ?tv=mosaico                -> 8 prioritarios rotando productos + anillos
+      ?tv=mosaico                -> los 5 prioritarios rotando productos + anillos
       ?tv=volcan&volcan=X        -> 1 volcan con 3 productos (sin rotacion,
                                     los 3 productos ya estan lado a lado)
     """
@@ -942,7 +942,7 @@ def render():
         "🔭 Vigilancia diaria",
         "🌎 Chile (vista nacional)",
         "🌋 VOLCAT por zona",
-        "🗺 Mosaico 8 prioritarios",
+        "🗺 Mosaico 5 prioritarios",
         "🔬 Volcán (3 productos)",
         "🎞 Loop 2h",
     ])

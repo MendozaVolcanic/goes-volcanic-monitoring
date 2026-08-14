@@ -43,11 +43,28 @@ C_MUTED = "#667788"     # texto secundario
 # Al agregar una vista nueva: usar SIEMPRE una de estas claves, nunca un
 # literal (`tests/test_marker_sizes.py` lo verifica).
 VOLCANO_MARKER = {
-    "wide":   3,   # país / disco completo, los 43 del catálogo   (antes 4)
-    "region": 5,   # región amplia con RGB de fondo               (antes 6)
+    "wide":   5,   # país / disco completo, los 43 del catálogo   (4 → 3 → 5)
+    "region": 6,   # región amplia con RGB de fondo               (antes 5)
     "zone":   7,   # zona o panel del mosaico                     (antes 9-12)
     "focus":  11,  # zoom sobre UN volcán                         (antes 14-18)
 }
+
+# El piso de la escala NO es estético: es el tamaño mínimo con el que el hueco
+# existe (ago-2026, 3ª pasada). Plotly dibuja `triangle-up` con alto = 0.75·size,
+# así que el alto útil del hueco es 0.75·size − 2·trazo. A `wide` = 3 con trazo
+# 0.7 eso daba 0.85 px: el antialiasing lo cerraba y el marcador se leía como un
+# punto RELLENO en Ash RGB, Live y RAMMB — el bug que reportó operaciones.
+#
+# Por qué importa el centro y no el área: la anomalía nace en el cráter, y el
+# glifo se centra ahí. Un triángulo chico y opaco tapa el vent; uno más grande
+# pero hueco mueve lo opaco al borde y deja una ventana sobre el vent. A escala
+# país (~7 km/px) `wide` = 5 abre ~2.2 px ≈ 18 km de pluma temprana visible.
+#
+# Regla para cualquier nivel nuevo: 0.75·size − 2·trazo >= 2.0 px.
+# (A esa escala un píxel GOES mide 0.29 px de pantalla: un hot spot aislado es
+# invisible en el encuadre país con marcador o sin él. Lo que el hueco rescata
+# acá es la pluma, no el punto caliente.)
+VOLCANO_HOLE_MIN_PX = 2.0
 
 # HUECO, no relleno. Reducir el tamaño achica el área tapada pero no la elimina:
 # el cráter siempre cae bajo el centro del glifo, que es exactamente donde

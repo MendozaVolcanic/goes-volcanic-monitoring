@@ -41,6 +41,37 @@ def test_volcano_marker_scale_is_sane():
             < VOLCANO_MARKER["zone"] < VOLCANO_MARKER["focus"])
 
 
+def test_el_hueco_es_visible_en_pantalla():
+    """No basta con que el símbolo sea `-open`: el hueco tiene que MEDIR algo.
+
+    Es el bug de la 3ª pasada (ago-2026). El marcador era hueco en las 12
+    vistas —verificado en el SVG que emite Plotly, `fill: none`— y aun así en
+    Ash RGB, Live y RAMMB se leía RELLENO. La causa no estaba en el símbolo
+    sino en la escala: `wide` valía 3 px y el trazo 0.7 por lado, así que el
+    alto interior quedaba en 0.75·3 − 1.4 = 0.85 px. Por debajo de ~2 px el
+    antialiasing cierra el hueco y el glifo vuelve a ser un punto opaco sobre
+    el cráter, que es justo donde nace la anomalía.
+
+    Plotly dibuja `triangle-up` con ancho = 1.1547·size y alto = 0.75·size
+    (medido sobre el path real: size 3 -> "M-1.73,0.75H1.73L0,-1.5Z"). El alto
+    manda porque es la dimensión chica.
+    """
+    from dashboard.style import (VOLCANO_HOLE_MIN_PX, VOLCANO_MARKER,
+                                 VOLCANO_MARKER_LINE)
+
+    flacos = {}
+    for level, size in VOLCANO_MARKER.items():
+        hueco = 0.75 * size - 2 * VOLCANO_MARKER_LINE[level]
+        if hueco < VOLCANO_HOLE_MIN_PX:
+            flacos[level] = round(hueco, 2)
+
+    assert not flacos, (
+        f"hueco por debajo de {VOLCANO_HOLE_MIN_PX} px — el marcador se lee "
+        f"relleno aunque el símbolo sea `-open`: {flacos}. Subir el size o "
+        "afinar el trazo hasta que 0.75·size − 2·trazo >= "
+        f"{VOLCANO_HOLE_MIN_PX}.")
+
+
 def test_volcano_marker_is_hollow():
     """El marcador NO debe rellenar: el hotspot bajo el cráter tiene que verse.
 

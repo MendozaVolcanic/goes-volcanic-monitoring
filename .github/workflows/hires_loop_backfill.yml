@@ -45,6 +45,19 @@ on:
 permissions:
   contents: write
 
+# Fix audit ago-2026: este backfill publica al MISMO tag `hires-loop-rolling`
+# que el cron `hires_visible_cache` (*/10), que hasta ahora era el unico con
+# grupo. Sin grupo compartido, lanzar el backfill a mano mientras corria el
+# cron BORRABA la ventana rodante ya acumulada y dejaba solo la ventana
+# historica del backfill -> otras ~8 h para reconstruirla frame a frame.
+# Mismo grupo que hires_visible_cache = los dos escritores del tag se serializan.
+# Costo aceptado: durante un backfill largo (timeout 110 min) los runs del cron
+# quedan encolados y GitHub descarta los pendientes intermedios, asi que el
+# still `hires-rolling` tampoco se refresca hasta que el backfill termina.
+concurrency:
+  group: hires-cache
+  cancel-in-progress: false
+
 jobs:
   backfill:
     runs-on: ubuntu-latest
@@ -84,6 +97,12 @@ jobs:
       # (>12 h atras) NO sobrevive ahi. El artifact, en cambio, queda atado al run
       # y no lo toca ningun cron -> es la via confiable para recuperar GIFs de dias
       # pasados (`gh run download <run-id> -n hires-loop-frames`).
+      #
+      # Lo que este comentario NO decia (audit ago-2026): ademas de no sobrevivir,
+      # el backfill DESTRUIA lo que el cron ya tenia acumulado, porque publica un
+      # snapshot completo del release. Eso se arreglo con el `concurrency: group:
+      # hires-cache` de arriba (serializa los dos escritores) + el paso de publicar
+      # que ahora sube-con-clobber y recien despues borra huerfanos.
       - name: Subir frames como artifact (race-proof, no podado)
         if: ${{ hashFiles('out_hires_loop/**') != '' }}
         uses: actions/upload-artifact@v4

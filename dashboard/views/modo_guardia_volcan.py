@@ -65,6 +65,55 @@ PRODUCTS = [
     ("jma_so2", "SO2 RGB", "JMA B07-B09 / B09-B11"),
 ]
 
+# ── Grilla 2x2 de la vista de volcan ─────────────────────────────────
+#
+# Los 4 productos de IMAGEN que tenemos, juntos en pantalla. En una emergencia
+# el operador no puede ir tab por tab: la secuencia de lectura es GeoColor
+# (hay columna?) -> Ash RGB (es ceniza?) -> SO2 (es gas fresco?) -> VOLCAT
+# (que altura?), y por eso ese es el orden de la grilla.
+#
+# `refresh_s` es el poll de CADA panel, no un refresh global. Los cuatro son
+# ABI 10 min, pero VOLCAT publica despues porque pasa por el procesamiento de
+# SSEC: pegarle cada 60 s es gasto sin dato nuevo.
+#
+# `kind` decide el renderer: "rammb" pasa por fetch_volcan_product (que ya trae
+# el switch hi-res de GeoColor); "volcat" reusa el panel del Modo Sala.
+#
+# RAMMB_REFRESH_S / VOLCAT_REFRESH_S van aparte y ANTES de GRID_PANELS porque el
+# decorador @st.fragment se evalua al importar el modulo: no puede leer
+# GRID_PANELS por indice en tiempo de llamada. Referenciarlas desde el dict
+# evita que queden dos fuentes de verdad.
+RAMMB_REFRESH_S = 60
+VOLCAT_REFRESH_S = 120
+
+GRID_PANELS = [
+    {"id": "geocolor",     "label": "GeoColor",
+     "recipe": "Visible mejorado (CIRA) · hi-res 0.5 km de dia",
+     "kind": "rammb", "refresh_s": RAMMB_REFRESH_S},
+    {"id": "eumetsat_ash", "label": "Ash RGB",
+     "recipe": "EUMETSAT B15-B14 / B14-B11 / B13",
+     "kind": "rammb", "refresh_s": RAMMB_REFRESH_S},
+    {"id": "jma_so2",      "label": "SO2 RGB",
+     "recipe": "JMA B07-B09 / B09-B11",
+     "kind": "rammb", "refresh_s": RAMMB_REFRESH_S},
+    {"id": "volcat",       "label": "VOLCAT · altura de pluma",
+     "recipe": "SSEC/CIMSS (Pavolonis 2013) · solo dibuja si detecta ceniza",
+     "kind": "volcat", "refresh_s": VOLCAT_REFRESH_S},
+]
+
+# El MODO SALA (slot `tv=volcan`) se queda con los 3 de RAMMB en UNA fila: se
+# proyecta en la sala de turno y su llamador arma a mano una leyenda de 3
+# columnas que tiene que calzar con el grid de abajo (modo_guardia.py:771).
+# Es una VISTA de GRID_PANELS, no una copia: si cambia una receta o una
+# cadencia, cambia en los dos lados a la vez.
+GRID_PANELS_TV = [p for p in GRID_PANELS if p["kind"] == "rammb"]
+
+# Alto por panel en la grilla 2x2. Fullscreen reparte la ventana entre 2 filas;
+# el modo normal deja el panel mas bajo para que entren las dos filas sin
+# scroll en un portatil.
+PANEL_HEIGHT_NORMAL = 380
+PANEL_HEIGHT_FULLSCREEN = 460
+
 # Anillos de distancia (km)
 RING_RADII_KM = [5, 10, 25, 50]
 

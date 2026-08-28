@@ -295,7 +295,8 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
                     volcan_lat: float, volcan_lon: float, volcan_name: str,
                     hotspots: list[HotSpot] | None = None,
                     show_wind: bool = False, wind_data: dict | None = None,
-                    show_rings: bool = False):
+                    show_rings: bool = False,
+                    height: int = 620):
     fig = go.Figure()
     if img is not None:
         fig.add_layout_image(
@@ -380,7 +381,7 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
                      scaleanchor="x", scaleratio=1.0 / cos_lat)
     fig.update_layout(
         title=dict(text=product_label, font=dict(size=13, color="#e0e0e0"), x=0.02),
-        height=620, margin=dict(l=0, r=0, t=28, b=0),
+        height=height, margin=dict(l=0, r=0, t=28, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
     )
     if img is None:

@@ -75,7 +75,7 @@ PRODUCTS = [
 # La CADENCIA de cada panel vive en RAMMB_REFRESH_S / VOLCAT_REFRESH_S, no en
 # este dict: el decorador @st.fragment necesita el numero en un nombre legible
 # en su propia linea, no agarrado por indice de una lista de abajo. Un campo
-# `refresh_s` aca séria decorativo — el poll de verdad lo gobierna el
+# `refresh_s` aca sería decorativo — el poll de verdad lo gobierna el
 # decorador — asi que no lo declaramos, para no dar a entender que cambiarlo
 # cambia algo.
 #

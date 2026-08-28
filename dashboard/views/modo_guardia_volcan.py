@@ -633,6 +633,46 @@ def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
     )
 
 
+@st.fragment(run_every=f"{VOLCAT_REFRESH_S}s")
+def _panel_volcat(volcan_name: str, height: int):
+    """Panel VOLCAT: altura de pluma cuantitativa de SSEC/CIMSS.
+
+    Reusa `zonas_fullscreen._render_volcat_zoom_tv` (import perezoso entre
+    vistas, mismo patron que modo_guardia._mosaico_subtab): ese helper ya
+    resuelve el sector, baja el frame y arma el plotly con las dos barras de
+    color. Duplicarlo aca seria una tercera copia de la misma logica.
+
+    Dos honestidades que el panel TIENE que mostrar:
+    - Que sector esta usando. Solo Copahue, Calbuco y Planchon-Peteroa tienen
+      sector dedicado (250-500 m); los otros 40 caen en un regional de 2 km,
+      donde la pluma se ve mucho mas gruesa y la altura es mas incierta.
+    - Que el panel vacio es lo NORMAL: VOLCAT solo dibuja cuando detecta
+      ceniza.
+    """
+    from dashboard.map_helpers import render_compact_legend
+    from src.fetch.volcat_api import resolve_volcat_sector
+
+    v = get_volcano(volcan_name)
+    if v is None:
+        st.error(f"Volcan {volcan_name} no esta en el catalogo.")
+        return
+
+    sector, _instr = resolve_volcat_sector(v)
+    dedicado = sector not in ("Chile_North_2_km", "Chile_Central_2_km",
+                              "Chile_South_2_km", "Argentina_5_km")
+    render_compact_legend("volcat", height_px=30, symbols=("volcano",))
+    st.markdown(
+        f"<div style='font-size:0.7rem; color:#7a8a9a; margin-bottom:0.2rem;'>"
+        f"Sector <b>{sector.replace('_', ' ')}</b>"
+        f"{' (dedicado)' if dedicado else ' (regional 2 km)'}"
+        f" · sin dibujo = VOLCAT no detecta ceniza, no es una falla</div>",
+        unsafe_allow_html=True,
+    )
+
+    from dashboard.views.zonas_fullscreen import _render_volcat_zoom_tv
+    _render_volcat_zoom_tv(volcan_name, height=height, pad=RADIUS_DEG)
+
+
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
 def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
                 enable_capture: bool):

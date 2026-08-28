@@ -153,3 +153,44 @@ def test_los_paneles_no_reciben_el_timestamp_por_argumento():
                                               "scan_ts", "meta", "img")]
             assert not malos, f"{node.name} recibe {malos} por argumento"
     assert vistos == 2, "faltan paneles por revisar"
+
+
+def test_todos_los_volcanes_del_catalogo_tienen_sector_volcat():
+    """El panel VOLCAT no puede quedar en blanco para ningun volcan del RNVV.
+
+    resolve_volcat_sector cae al sector regional por LATITUD cuando no hay uno
+    dedicado, asi que nunca devuelve None. Si alguien cambia los umbrales de
+    latitud y deja un hueco, se cae aca.
+    """
+    from src.fetch.volcat_api import resolve_volcat_sector
+    from src.volcanos import CATALOG
+
+    for v in CATALOG:
+        sector, instr = resolve_volcat_sector(v)
+        assert sector and instr, v.name
+
+
+def test_el_panel_volcat_dice_que_sector_usa():
+    """Solo Copahue, Calbuco y Planchon-Peteroa tienen sector dedicado; el
+    resto cae en un regional de 2 km, donde la pluma se ve mucho mas gruesa.
+    El operador tiene que saber cual esta mirando antes de sacar conclusiones
+    de la altura."""
+    cuerpo = _func_source(VIEW, "_panel_volcat")
+    assert "resolve_volcat_sector" in cuerpo
+    assert "sector" in cuerpo
+
+
+def test_el_panel_volcat_explica_que_vacio_es_normal():
+    """VOLCAT solo dibuja cuando detecta ceniza. Sin decirlo, un operador lee
+    el panel vacio como 'se cayo el servicio' — y en una emergencia eso manda
+    a buscar un problema que no existe."""
+    cuerpo = _func_source(VIEW, "_panel_volcat")
+    assert re.search(r"no es una falla|no detecta ceniza", cuerpo)
+
+
+def test_el_panel_volcat_pone_su_leyenda():
+    """_render_volcat_zoom_tv esta en la lista DELEGATED de
+    test_legend_coverage: delega la leyenda en quien lo llama. Ese llamador
+    somos nosotros."""
+    cuerpo = _func_source(VIEW, "_panel_volcat")
+    assert re.search(r'render_compact_legend\(\s*["\']volcat["\']', cuerpo)

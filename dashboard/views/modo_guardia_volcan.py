@@ -576,6 +576,63 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
 
 # ── Render principal ─────────────────────────────────────────────────
 
+@st.fragment(run_every=f"{RAMMB_REFRESH_S}s")
+def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
+                 show_wind: bool, show_rings: bool, height: int):
+    """Un panel RAMMB con su propio poll.
+
+    NO recibe timestamp ni imagen por argumento: los args de un fragment con
+    `run_every` quedan congelados en el ultimo full-rerun (ver
+    live_viewer.py:564-575), asi que un `ts` pasado desde afuera nunca
+    detectaria un scan nuevo. `fetch_volcan_product` consulta adentro, y su
+    cache (TTL 7200 s por ts) evita la re-descarga.
+    """
+    v = get_volcano(volcan_name)
+    if v is None:
+        st.error(f"Volcan {volcan_name} no esta en el catalogo.")
+        return
+
+    bounds = {
+        "lat_min": v.lat - RADIUS_DEG, "lat_max": v.lat + RADIUS_DEG,
+        "lon_min": v.lon - RADIUS_DEG, "lon_max": v.lon + RADIUS_DEG,
+    }
+    now = datetime.now(timezone.utc)
+
+    # Hot spots SOLO sobre Ash RGB: son el dato termico, y ponerlos en los tres
+    # paneles triplica el ruido sin agregar informacion.
+    hs = None
+    if prod_id == "eumetsat_ash":
+        hs, _ = _hotspots_volcan(bounds["lat_min"], bounds["lat_max"],
+                                 bounds["lon_min"], bounds["lon_max"])
+    wind = _wind_at_volcano(v.lat, v.lon) if show_wind else {}
+
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(
+        prod_id, height_px=30,
+        symbols=(("volcano",)
+                 + (("hotspot",) if prod_id == "eumetsat_ash" else ())
+                 + (("rings",) if show_rings else ())
+                 + (("wind",) if (show_wind and wind) else ())),
+    )
+
+    img, ts_label = fetch_volcan_product(
+        prod_id, v.name, v.lat, v.lon, bounds, now)
+    st.plotly_chart(
+        _render_product(img, bounds, f"{label} · {ts_label}",
+                        v.lat, v.lon, v.name,
+                        hotspots=hs, show_wind=show_wind, wind_data=wind,
+                        show_rings=show_rings, height=height),
+        width='stretch',
+        config={"displayModeBar": False, "responsive": True},
+        key=f"vgrid_{prod_id}_{volcan_name}",
+    )
+    st.markdown(
+        f"<div style='font-size:0.7rem; color:#556; margin-top:-0.5rem;'>"
+        f"{recipe}</div>",
+        unsafe_allow_html=True,
+    )
+
+
 @st.fragment(run_every=f"{REFRESH_SECONDS}s")
 def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
                 enable_capture: bool):

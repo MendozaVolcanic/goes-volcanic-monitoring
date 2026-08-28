@@ -109,3 +109,47 @@ def test_modo_sala_conserva_su_fila_de_tres():
     # un cambio de receta o cadencia no quede aplicado en una sola de las dos
     for p in GRID_PANELS_TV:
         assert p in GRID_PANELS
+
+
+def _fragment_run_every(path: Path, func_name: str) -> str | None:
+    """run_every declarado en el decorador @st.fragment de `func_name`."""
+    src = path.read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.FunctionDef) or node.name != func_name:
+            continue
+        for dec in node.decorator_list:
+            if not isinstance(dec, ast.Call):
+                continue
+            for kw in dec.keywords:
+                if kw.arg == "run_every":
+                    return ast.unparse(kw.value)
+    return None
+
+
+def test_hay_un_fragment_por_panel_no_uno_global():
+    """Si un producto se cuelga, los otros tres tienen que seguir refrescando.
+
+    Con un solo fragment global, RAMMB lento en SO2 congelaba el redibujo de
+    Ash RGB.
+    """
+    assert _fragment_run_every(VIEW, "_panel_rammb") is not None
+    assert _fragment_run_every(VIEW, "_panel_volcat") is not None
+
+
+def test_los_paneles_no_reciben_el_timestamp_por_argumento():
+    """Gotcha documentado en live_viewer.py:564-575 — los args de un fragment
+    con run_every quedan CONGELADOS en el ultimo full-rerun. Un panel que
+    reciba `ts` nunca veria un scan nuevo: tiene que pedirlo adentro."""
+    src = VIEW.read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    vistos = 0
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef) and node.name in (
+                "_panel_rammb", "_panel_volcat"):
+            vistos += 1
+            args = [a.arg for a in node.args.args]
+            malos = [a for a in args if a in ("ts", "timestamp", "ts_label",
+                                              "scan_ts", "meta", "img")]
+            assert not malos, f"{node.name} recibe {malos} por argumento"
+    assert vistos == 2, "faltan paneles por revisar"

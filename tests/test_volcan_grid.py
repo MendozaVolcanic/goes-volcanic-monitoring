@@ -70,16 +70,19 @@ def test_la_grilla_declara_los_cuatro_productos():
 def test_volcat_pollea_mas_lento_que_rammb():
     """VOLCAT pasa por el procesamiento de SSEC y publica despues del scan ABI.
 
-    Pegarle al API de SSEC al mismo ritmo que a RAMMB es gasto sin dato nuevo.
+    Se lee del DECORADOR, no de una constante suelta: es el decorador el que
+    gobierna el poll de verdad, y un campo declarativo aparte se desincroniza
+    sin que nadie se entere.
     """
-    from dashboard.views.modo_guardia_volcan import GRID_PANELS
+    from dashboard.views.modo_guardia_volcan import (RAMMB_REFRESH_S,
+                                                     VOLCAT_REFRESH_S)
 
-    cad = {p["id"]: p["refresh_s"] for p in GRID_PANELS}
-    assert cad["volcat"] > cad["eumetsat_ash"]
-    # ningun panel por debajo de 30 s: la cadencia del satelite es 10 min,
-    # pollear mas rapido solo suma carga sin traer un scan nuevo
-    for pid, s in cad.items():
-        assert s >= 30, (pid, s)
+    assert _fragment_run_every(VIEW, "_panel_rammb") == "f'{RAMMB_REFRESH_S}s'"
+    assert _fragment_run_every(VIEW, "_panel_volcat") == "f'{VOLCAT_REFRESH_S}s'"
+    assert VOLCAT_REFRESH_S > RAMMB_REFRESH_S
+    # la cadencia del satelite es 10 min: pollear mas rapido que 30 s solo
+    # suma carga sin traer un scan nuevo
+    assert RAMMB_REFRESH_S >= 30
 
 
 def test_cada_panel_tiene_leyenda_declarable():
@@ -93,22 +96,26 @@ def test_cada_panel_tiene_leyenda_declarable():
 
 
 def test_modo_sala_conserva_su_fila_de_tres():
-    """El slot `tv=volcan` se PROYECTA en la sala de turno y arma su leyenda de
-    3 columnas a mano (modo_guardia.py:771). Si la grilla le cambia el layout
-    por debajo, la leyenda queda desalineada del grid que explica.
+    """El slot `tv=volcan` se PROYECTA en la sala de turno y su leyenda de 3
+    columnas se arma en modo_guardia.py. Si la grilla le cambia el ORDEN por
+    debajo, la leyenda rotula "Ash RGB" sobre el panel GeoColor.
 
-    Por eso el Modo Sala pasa un juego de paneles propio: los 3 de RAMMB, sin
-    VOLCAT, en una fila.
+    Por eso la sala conserva el orden historico de PRODUCTS (Ash primero),
+    distinto al orden de lectura de emergencia de la grilla 2x2.
     """
     from dashboard.views.modo_guardia_volcan import (GRID_PANELS,
-                                                     GRID_PANELS_TV)
+                                                     GRID_PANELS_TV, PRODUCTS)
 
-    assert [p["id"] for p in GRID_PANELS_TV] == [
-        "geocolor", "eumetsat_ash", "jma_so2"]
-    # y no es una copia a mano: son los mismos objetos de GRID_PANELS, para que
-    # un cambio de receta o cadencia no quede aplicado en una sola de las dos
+    ids_tv = [p["id"] for p in GRID_PANELS_TV]
+    assert ids_tv == ["eumetsat_ash", "geocolor", "jma_so2"]
+    # el orden de la sala es el de PRODUCTS, que es lo que hoy se proyecta
+    assert ids_tv == [pid for pid, _l, _r in PRODUCTS]
+    # y NO el de la grilla 2x2: si algun dia coinciden, que sea una decision
+    assert ids_tv != [p["id"] for p in GRID_PANELS if p["kind"] == "rammb"]
+    # identidad, no igualdad: `in` sobre dicts compara CONTENIDO, asi que una
+    # copia literal a mano pasaria el test y romperia la fuente unica
     for p in GRID_PANELS_TV:
-        assert p in GRID_PANELS
+        assert any(p is q for q in GRID_PANELS)
 
 
 def _fragment_run_every(path: Path, func_name: str) -> str | None:
@@ -128,10 +135,13 @@ def _fragment_run_every(path: Path, func_name: str) -> str | None:
 
 
 def test_hay_un_fragment_por_panel_no_uno_global():
-    """Si un producto se cuelga, los otros tres tienen que seguir refrescando.
+    """Cada panel necesita su propia cadencia y su propio rerun PARCIAL.
 
-    Con un solo fragment global, RAMMB lento en SO2 congelaba el redibujo de
-    Ash RGB.
+    Streamlit serializa los reruns de fragment en el script runner de la
+    sesion: un fragment colgado en una llamada de red igual bloquea a los
+    demas. Lo que gana un fragment por panel es cadencia independiente (RAMMB
+    a 60 s, VOLCAT a 120 s) y que el rerun de uno no redibuje la pagina
+    entera — no aislamiento de fallas.
     """
     assert _fragment_run_every(VIEW, "_panel_rammb") is not None
     assert _fragment_run_every(VIEW, "_panel_volcat") is not None
@@ -170,14 +180,22 @@ def test_todos_los_volcanes_del_catalogo_tienen_sector_volcat():
         assert sector and instr, v.name
 
 
-def test_el_panel_volcat_dice_que_sector_usa():
-    """Solo Copahue, Calbuco y Planchon-Peteroa tienen sector dedicado; el
-    resto cae en un regional de 2 km, donde la pluma se ve mucho mas gruesa.
-    El operador tiene que saber cual esta mirando antes de sacar conclusiones
-    de la altura."""
+def test_la_etiqueta_de_sector_distingue_dedicado_de_regional():
+    """Solo Copahue, Calbuco y Planchon-Peteroa tienen sector dedicado. El
+    resto cae en un regional, donde la pluma se ve mas gruesa: si el rotulo no
+    lo dice, una altura de 2 km de grilla se lee con confianza de 250 m."""
+    from dashboard.views.modo_guardia_volcan import etiqueta_sector_volcat
+
+    assert "dedicado" in etiqueta_sector_volcat("Copahue_250_m")
+    assert "dedicado" in etiqueta_sector_volcat("Calbuco_1_km")
+    assert "regional 2 km" in etiqueta_sector_volcat("Chile_South_2_km")
+    # y la resolucion sale del nombre, no de un literal clavado en "2 km"
+    assert "regional 5 km" in etiqueta_sector_volcat("Argentina_5_km")
+
+
+def test_el_panel_volcat_usa_la_etiqueta_de_sector():
     cuerpo = _func_source(VIEW, "_panel_volcat")
-    assert "resolve_volcat_sector" in cuerpo
-    assert "sector" in cuerpo
+    assert "etiqueta_sector_volcat" in cuerpo
 
 
 def test_el_panel_volcat_explica_que_vacio_es_normal():

@@ -72,41 +72,47 @@ PRODUCTS = [
 # (hay columna?) -> Ash RGB (es ceniza?) -> SO2 (es gas fresco?) -> VOLCAT
 # (que altura?), y por eso ese es el orden de la grilla.
 #
-# `refresh_s` es el poll de CADA panel, no un refresh global. Los cuatro son
-# ABI 10 min, pero VOLCAT publica despues porque pasa por el procesamiento de
-# SSEC: pegarle cada 60 s es gasto sin dato nuevo.
+# La CADENCIA de cada panel vive en RAMMB_REFRESH_S / VOLCAT_REFRESH_S, no en
+# este dict: el decorador @st.fragment necesita el numero en un nombre legible
+# en su propia linea, no agarrado por indice de una lista de abajo. Un campo
+# `refresh_s` aca séria decorativo — el poll de verdad lo gobierna el
+# decorador — asi que no lo declaramos, para no dar a entender que cambiarlo
+# cambia algo.
 #
 # `kind` decide el renderer: "rammb" pasa por fetch_volcan_product (que ya trae
 # el switch hi-res de GeoColor); "volcat" reusa el panel del Modo Sala.
-#
-# RAMMB_REFRESH_S / VOLCAT_REFRESH_S van aparte y ANTES de GRID_PANELS porque el
-# decorador @st.fragment se evalua al importar el modulo: no puede leer
-# GRID_PANELS por indice en tiempo de llamada. Referenciarlas desde el dict
-# evita que queden dos fuentes de verdad.
 RAMMB_REFRESH_S = 60
 VOLCAT_REFRESH_S = 120
 
 GRID_PANELS = [
     {"id": "geocolor",     "label": "GeoColor",
      "recipe": "Visible mejorado (CIRA) · hi-res 0.5 km de dia",
-     "kind": "rammb", "refresh_s": RAMMB_REFRESH_S},
+     "kind": "rammb"},
     {"id": "eumetsat_ash", "label": "Ash RGB",
      "recipe": "EUMETSAT B15-B14 / B14-B11 / B13",
-     "kind": "rammb", "refresh_s": RAMMB_REFRESH_S},
+     "kind": "rammb"},
     {"id": "jma_so2",      "label": "SO2 RGB",
      "recipe": "JMA B07-B09 / B09-B11",
-     "kind": "rammb", "refresh_s": RAMMB_REFRESH_S},
+     "kind": "rammb"},
     {"id": "volcat",       "label": "VOLCAT · altura de pluma",
      "recipe": "SSEC/CIMSS (Pavolonis 2013) · solo dibuja si detecta ceniza",
-     "kind": "volcat", "refresh_s": VOLCAT_REFRESH_S},
+     "kind": "volcat"},
 ]
 
-# El MODO SALA (slot `tv=volcan`) se queda con los 3 de RAMMB en UNA fila: se
-# proyecta en la sala de turno y su llamador arma a mano una leyenda de 3
-# columnas que tiene que calzar con el grid de abajo (modo_guardia.py:771).
-# Es una VISTA de GRID_PANELS, no una copia: si cambia una receta o una
-# cadencia, cambia en los dos lados a la vez.
-GRID_PANELS_TV = [p for p in GRID_PANELS if p["kind"] == "rammb"]
+# El MODO SALA (slot `tv=volcan`) se queda con los 3 de RAMMB en UNA fila.
+#
+# OJO con el ORDEN: es distinto al de GRID_PANELS a proposito. La grilla 2x2
+# ordena por secuencia de lectura de emergencia (GeoColor primero: hay columna?).
+# La sala de turno conserva el orden historico de PRODUCTS —Ash RGB primero—
+# porque su leyenda de 3 columnas se arma en modo_guardia.py y la gente de turno
+# ya tiene esa pared interiorizada. Cambiarselo sin que nadie lo pida rotularia
+# "Ash RGB" sobre el panel GeoColor.
+#
+# Son los MISMOS objetos que GRID_PANELS (no copias): si cambia una receta,
+# cambia en los dos lados a la vez.
+_PANEL_POR_ID = {p["id"]: p for p in GRID_PANELS}
+GRID_PANELS_TV = [_PANEL_POR_ID[pid]
+                  for pid in ("eumetsat_ash", "geocolor", "jma_so2")]
 
 # Alto por panel en la grilla 2x2. Fullscreen reparte la ventana entre 2 filas;
 # el modo normal deja el panel mas bajo para que entren las dos filas sin
@@ -633,6 +639,28 @@ def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
     )
 
 
+def etiqueta_sector_volcat(sector: str) -> str:
+    """Rotulo del sector VOLCAT: cual es y con que resolucion de grilla.
+
+    El operador tiene que saber si esta mirando un sector DEDICADO (250-500 m,
+    solo Copahue, Calbuco y Planchon-Peteroa) o el REGIONAL que le toca por
+    latitud, donde la pluma se ve mucho mas gruesa y la altura es mas incierta.
+    Sin ese rotulo, una altura de sector regional se lee con la confianza de
+    una de sector dedicado.
+
+    La resolucion sale del nombre del sector, no de un literal: asi un sector
+    nuevo (o el de 5 km de Argentina) no queda rotulado con un numero que no
+    le corresponde.
+    """
+    from src.fetch.volcat_api import _REGIONAL_SECTORS
+
+    nombre = sector.replace("_", " ")
+    if sector not in _REGIONAL_SECTORS:
+        return f"{nombre} (dedicado)"
+    res = sector.rsplit("_", 2)[-2:]          # ("2", "km") / ("5", "km")
+    return f"{nombre} (regional {' '.join(res)})"
+
+
 @st.fragment(run_every=f"{VOLCAT_REFRESH_S}s")
 def _panel_volcat(volcan_name: str, height: int):
     """Panel VOLCAT: altura de pluma cuantitativa de SSEC/CIMSS.
@@ -643,9 +671,10 @@ def _panel_volcat(volcan_name: str, height: int):
     color. Duplicarlo aca seria una tercera copia de la misma logica.
 
     Dos honestidades que el panel TIENE que mostrar:
-    - Que sector esta usando. Solo Copahue, Calbuco y Planchon-Peteroa tienen
-      sector dedicado (250-500 m); los otros 40 caen en un regional de 2 km,
-      donde la pluma se ve mucho mas gruesa y la altura es mas incierta.
+    - Que sector esta usando (via `etiqueta_sector_volcat`). Solo Copahue,
+      Calbuco y Planchon-Peteroa tienen sector dedicado; los otros 40 caen en
+      un regional, donde la pluma se ve mucho mas gruesa y la altura es mas
+      incierta.
     - Que el panel vacio es lo NORMAL: VOLCAT solo dibuja cuando detecta
       ceniza.
     """
@@ -658,13 +687,10 @@ def _panel_volcat(volcan_name: str, height: int):
         return
 
     sector, _instr = resolve_volcat_sector(v)
-    dedicado = sector not in ("Chile_North_2_km", "Chile_Central_2_km",
-                              "Chile_South_2_km", "Argentina_5_km")
     render_compact_legend("volcat", height_px=30, symbols=("volcano",))
     st.markdown(
         f"<div style='font-size:0.7rem; color:#7a8a9a; margin-bottom:0.2rem;'>"
-        f"Sector <b>{sector.replace('_', ' ')}</b>"
-        f"{' (dedicado)' if dedicado else ' (regional 2 km)'}"
+        f"Sector <b>{etiqueta_sector_volcat(sector)}</b>"
         f" · sin dibujo = VOLCAT no detecta ceniza, no es una falla</div>",
         unsafe_allow_html=True,
     )

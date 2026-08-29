@@ -442,3 +442,162 @@ def test_el_hires_solo_se_usa_si_cubre_el_bbox_pedido(monkeypatch):
     _img2, label2 = MGV.fetch_volcan_product(
         "geocolor", "Lascar", lat, lon, _bounds(lat, lon, 2.0), now)
     assert "hi-res L1b" not in label2, label2
+
+
+# ── La leyenda no se pinta dos veces en la pared ──────────────────────
+#
+# El slot `tv=volcan` del Modo Sala arma SU propia fila de 3 leyendas (una por
+# columna, derivada de GRID_PANELS_TV) y ademas cada panel pintaba la suya
+# adentro: dos tiras identicas, ~60 px de alto en una pantalla proyectada donde
+# cada pixel es imagen de satelite que el operador no ve.
+
+ZONAS = (Path(__file__).parent.parent / "dashboard" / "views"
+         / "zonas_fullscreen.py")
+
+VIEWS_DIR = Path(__file__).parent.parent / "dashboard" / "views"
+
+
+def _func_node(path: Path, name: str) -> ast.FunctionDef:
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef) and node.name == name:
+            return node
+    raise AssertionError(f"no existe la funcion {name} en {path.name}")
+
+
+def _llamadas(node, nombre: str) -> list[ast.Call]:
+    out = []
+    for n in ast.walk(node):
+        if not isinstance(n, ast.Call):
+            continue
+        f = n.func
+        if (isinstance(f, ast.Attribute) and f.attr == nombre) or (
+                isinstance(f, ast.Name) and f.id == nombre):
+            out.append(n)
+    return out
+
+
+def test_el_panel_dibuja_su_leyenda_salvo_que_el_llamador_ya_la_puso():
+    """`show_legend` apaga la leyenda del panel, y por DEFECTO esta prendida.
+
+    El default importa tanto como el flag: `_panel_rammb` se llama desde tres
+    vistas y solo una (la sala) pone su propia fila. Si el default fuera False,
+    las otras dos quedarian mostrando Ash RGB sin decir que significa cada
+    color — que es justo el agujero que test_legend_coverage vino a tapar.
+    """
+    import inspect
+
+    from dashboard.views.modo_guardia_volcan import _panel_rammb, volcan_grid
+
+    for fn in (_panel_rammb, volcan_grid):
+        params = inspect.signature(fn).parameters
+        assert "show_legend" in params, fn.__name__
+        assert params["show_legend"].default is True, fn.__name__
+
+    # la unica leyenda del panel vive DENTRO del `if show_legend`: si quedara
+    # suelta, el flag no apagaria nada y la pared seguiria con dos tiras.
+    panel = _func_node(VIEW, "_panel_rammb")
+    total = _llamadas(panel, "render_compact_legend")
+    assert len(total) == 1, "una sola leyenda por panel"
+    guardadas = [
+        c for n in ast.walk(panel) if isinstance(n, ast.If)
+        and any(isinstance(x, ast.Name) and x.id == "show_legend"
+                for x in ast.walk(n.test))
+        for b in n.body for c in _llamadas(b, "render_compact_legend")
+    ]
+    assert len(guardadas) == 1, "la leyenda del panel no esta bajo show_legend"
+
+    # y el compositor lo PROPAGA: si se queda con el flag sin pasarlo, el slot
+    # de sala lo pide y no pasa nada.
+    assert "show_legend=show_legend" in _func_source(VIEW, "volcan_grid")
+
+
+def test_el_slot_de_sala_apaga_la_leyenda_de_los_paneles():
+    """La sala pinta su fila de 3 (con `tv=True`, que es overlay) ANTES del
+    grid. Los paneles no tienen que repetirla."""
+    tree = ast.parse(GUARDIA.read_text(encoding="utf-8"))
+    llamadas = [c for c in _llamadas(tree, "volcan_grid")
+                if any(kw.arg == "panels" for kw in c.keywords)]
+    assert len(llamadas) == 1, "el slot tv=volcan es el unico que pide panels"
+    kw = {k.arg: k.value for k in llamadas[0].keywords}
+    assert "show_legend" in kw, "el slot de sala duplica la leyenda"
+    assert isinstance(kw["show_legend"], ast.Constant)
+    assert kw["show_legend"].value is False
+
+
+def test_apagar_la_leyenda_solo_vale_si_el_llamador_pone_la_suya():
+    """Tapa el agujero que test_legend_coverage NO puede ver.
+
+    Ese test es analisis estatico: le basta con que la funcion CONTENGA una
+    llamada a `render_compact_legend`, aunque en runtime quede bajo un `if` que
+    nunca se cumple. O sea que `show_legend=False` lo deja verde igual. Este
+    guard exige que quien apaga la leyenda del panel dibuje una el mismo.
+    """
+    for path in sorted(VIEWS_DIR.glob("*.py")):
+        src = path.read_text(encoding="utf-8")
+        if "show_legend=False" not in src:
+            continue
+        assert "render_compact_legend" in src, (
+            f"{path.stem} apaga la leyenda del panel y no pone ninguna")
+
+
+def test_volcat_no_lleva_el_flag_porque_la_sala_no_lo_proyecta():
+    """YAGNI con evidencia: `_panel_volcat` tambien pinta leyenda, pero el
+    unico llamador que apaga leyendas es el slot de sala, y ese usa
+    GRID_PANELS_TV, que NO incluye VOLCAT. Darle el flag seria codigo muerto.
+
+    Si algun dia VOLCAT entra a la fila de la sala, este test se pone rojo y
+    avisa que ahi si hace falta.
+    """
+    import inspect
+
+    from dashboard.views.modo_guardia_volcan import (GRID_PANELS_TV,
+                                                     _panel_volcat)
+
+    assert "volcat" not in [p["id"] for p in GRID_PANELS_TV]
+    assert "show_legend" not in inspect.signature(_panel_volcat).parameters
+
+
+def test_apagar_la_leyenda_le_devuelve_ese_alto_al_encuadre():
+    """Sacar la tira duplicada no alcanza si el CSS la sigue reservando.
+
+    En fullscreen el alto de cada panel es `(100vh - cromo) / filas`, y el
+    cromo por fila incluye la leyenda compacta. Con `show_legend=False` esa
+    tira ya no existe: si el reparto no lo sabe, la pared cambia una tira
+    duplicada por una franja muerta del mismo alto, y el grid queda empujado
+    contra el borde de arriba en vez de centrado.
+
+    Lo que NO gana (medido, para que nadie lo prometa de nuevo): la imagen no
+    crece. A 3 columnas el que manda es el ancho — Lascar 540x588 px, Hudson
+    412x592 —, muy por debajo del alto disponible en las dos versiones.
+    """
+    from dashboard.views.modo_guardia_volcan import (GRID_CHROME_LEGEND_PX,
+                                                     GRID_CHROME_ROW_PX,
+                                                     _row_chrome_px)
+
+    assert _row_chrome_px(True) == GRID_CHROME_ROW_PX
+    assert _row_chrome_px(False) == GRID_CHROME_ROW_PX - GRID_CHROME_LEGEND_PX
+    assert GRID_CHROME_LEGEND_PX > 0
+
+    # el CSS de verdad: no alcanza con recibir el flag, tiene que ENTRAR en la
+    # cuenta del reparto. Se captura el <style> que se inyecta.
+    import dashboard.views.modo_guardia_volcan as MGV
+
+    emitido = []
+    orig = MGV.st.markdown
+    MGV.st.markdown = lambda cuerpo, **kw: emitido.append(cuerpo)
+    try:
+        MGV._inject_fullscreen_css(1, con_cabecera=False, con_leyenda=True)
+        MGV._inject_fullscreen_css(1, con_cabecera=False, con_leyenda=False)
+    finally:
+        MGV.st.markdown = orig
+
+    reservado = [int(re.search(r"100vh - (\d+)px", css).group(1))
+                 for css in emitido]
+    assert reservado[0] - reservado[1] == GRID_CHROME_LEGEND_PX, reservado
+
+    # y el compositor se lo dice al CSS: si `_inject_fullscreen_css` se entera
+    # de las filas pero no de la leyenda, el reparto queda con el cromo viejo.
+    cuerpo = _func_source(VIEW, "volcan_grid")
+    assert re.search(r"_inject_fullscreen_css\(.*?con_leyenda=show_legend",
+                     cuerpo, re.S), cuerpo

@@ -149,6 +149,22 @@ PANEL_HEIGHT_TV_ROW = 620
 GRID_CHROME_PAGE_PX = 470
 GRID_CHROME_TV_PX = 100
 GRID_CHROME_ROW_PX = 105
+# De esos 105, la leyenda compacta se lleva 64 (medido en el DOM a 1920x1080).
+# El slot de sala la apaga (`show_legend=False`, pone la suya como overlay
+# arriba del grid), y si el reparto no se entera sigue reservando esos 64 px.
+#
+# OJO con lo que esto gana y lo que NO: a 3 columnas la IMAGEN no crece, porque
+# el que manda es el ancho (medido: Lascar 540x588 px, Hudson —el mas austral,
+# donde el scaleratio 1/cos(lat) mas estira— 412x592, los dos muy por debajo
+# del alto disponible). Lo que se corrige es el encuadre: sin esto el grid
+# queda empujado contra el borde de arriba y la pared proyectada termina con
+# una franja muerta de ~100 px abajo, en vez de la escena centrada.
+GRID_CHROME_LEGEND_PX = 64
+
+
+def _row_chrome_px(con_leyenda: bool) -> int:
+    """Cromo vertical por fila de la grilla, en px."""
+    return GRID_CHROME_ROW_PX - (0 if con_leyenda else GRID_CHROME_LEGEND_PX)
 
 # Anillos de distancia (km)
 RING_RADII_KM = [5, 10, 25, 50]
@@ -624,7 +640,7 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
 @st.fragment(run_every=f"{RAMMB_REFRESH_S}s")
 def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
                  show_wind: bool, show_rings: bool, height: int,
-                 radius_deg: float = RADIUS_DEG):
+                 radius_deg: float = RADIUS_DEG, show_legend: bool = True):
     """Un panel RAMMB con su propio poll.
 
     NO recibe timestamp ni imagen por argumento: los args de un fragment con
@@ -632,6 +648,14 @@ def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
     live_viewer.py:564-575), asi que un `ts` pasado desde afuera nunca
     detectaria un scan nuevo. `fetch_volcan_product` consulta adentro, y su
     cache (TTL 7200 s por ts) evita la re-descarga.
+
+    `show_legend=False` es para el slot `tv=volcan` del Modo Sala, que ya
+    dibuja SU fila de 3 leyendas (una por columna, overlay `tv=True`) antes de
+    llamar a la grilla. Prendida en los dos lados, la pared proyectada gastaba
+    dos tiras identicas —~60 px de alto— en decir lo mismo, y ahi cada pixel
+    es imagen de satelite que el operador no ve. Por defecto va PRENDIDA: los
+    otros dos llamadores (Vista Operacional y sub-tab de Modo Guardia) no
+    ponen ninguna leyenda propia.
     """
     v = get_volcano(volcan_name)
     if v is None:
@@ -652,14 +676,15 @@ def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
                                  bounds["lon_min"], bounds["lon_max"])
     wind = _wind_at_volcano(v.lat, v.lon) if show_wind else {}
 
-    from dashboard.map_helpers import render_compact_legend
-    render_compact_legend(
-        prod_id, height_px=30,
-        symbols=(("volcano",)
-                 + (("hotspot",) if prod_id == "eumetsat_ash" else ())
-                 + (("rings",) if show_rings else ())
-                 + (("wind",) if (show_wind and wind) else ())),
-    )
+    if show_legend:
+        from dashboard.map_helpers import render_compact_legend
+        render_compact_legend(
+            prod_id, height_px=30,
+            symbols=(("volcano",)
+                     + (("hotspot",) if prod_id == "eumetsat_ash" else ())
+                     + (("rings",) if show_rings else ())
+                     + (("wind",) if (show_wind and wind) else ())),
+        )
 
     img, ts_label = fetch_volcan_product(
         prod_id, v.name, v.lat, v.lon, bounds, now)
@@ -865,7 +890,8 @@ def _panel_height(fullscreen: bool, filas: int) -> int:
     return PANEL_HEIGHT_TV_ROW if filas <= 1 else PANEL_HEIGHT_FULLSCREEN
 
 
-def _inject_fullscreen_css(filas: int, con_cabecera: bool = True) -> None:
+def _inject_fullscreen_css(filas: int, con_cabecera: bool = True,
+                           con_leyenda: bool = True) -> None:
     """CSS que hace que la grilla ocupe la ventana del operador.
 
     POR QUE: el pedido de operaciones fue "que ocupen todo el espacio que
@@ -887,7 +913,7 @@ def _inject_fullscreen_css(filas: int, con_cabecera: bool = True) -> None:
        fullscreen la vista queda igual.
     """
     base = GRID_CHROME_PAGE_PX if con_cabecera else GRID_CHROME_TV_PX
-    alto = (f"calc((100vh - {base + GRID_CHROME_ROW_PX * filas}px)"
+    alto = (f"calc((100vh - {base + _row_chrome_px(con_leyenda) * filas}px)"
             f" / {filas})")
     st.markdown(
         f"""
@@ -930,7 +956,7 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
                 show_rings: bool = False, enable_capture: bool = False,
                 fullscreen: bool = False, panels: list | None = None,
                 per_row: int | None = None, show_header: bool = True,
-                radius_deg: float = RADIUS_DEG):
+                radius_deg: float = RADIUS_DEG, show_legend: bool = True):
     """Grilla de productos del volcan, todos a la vez.
 
     FUENTE UNICA de esta vista — la usan el sub-tab Volcan del Modo Guardia,
@@ -950,7 +976,13 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
     de turno con su propia leyenda de 3 columnas armada por el llamador. Ese
     slot sigue con los 3 RAMMB en una fila y en SU orden (Ash primero):
     cambiarle el layout por debajo le desalinearia la leyenda.
-    `show_header=False` ahi mismo, porque el rotador TV ya pone su cabecera.
+    `show_header=False` ahi mismo, porque el rotador TV ya pone su cabecera, y
+    `show_legend=False` por lo mismo: la sala arma su fila de 3 leyendas antes
+    de llamar aca, y prendidas en los dos lados la pared gastaba dos tiras
+    identicas en decir lo mismo. Solo llega a `_panel_rammb`: `_panel_volcat`
+    no lo recibe porque el unico llamador que apaga leyendas es el slot de
+    sala, y ese usa `GRID_PANELS_TV`, que NO incluye VOLCAT — darle el flag
+    seria un parametro que nadie puede poner en False.
 
     `radius_deg` lo ajusta la Vista Operacional: una pluma de ceniza en
     emergencia viaja cientos de km y a RADIUS_DEG (~38 km) se sale del cuadro
@@ -973,7 +1005,8 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
     # distingue la pagina (que arrastra tabs y toolbars) de la sala (que no
     # tiene nada arriba).
     if fullscreen:
-        _inject_fullscreen_css(len(filas), con_cabecera=show_header)
+        _inject_fullscreen_css(len(filas), con_cabecera=show_header,
+                               con_leyenda=show_legend)
     if show_header:
         _grid_header(volcan_name, show_wind, radius_deg=radius_deg)
 
@@ -987,7 +1020,8 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
                 else:
                     _panel_rammb(panel["id"], panel["label"], panel["recipe"],
                                  volcan_name, show_wind, show_rings, height,
-                                 radius_deg=radius_deg)
+                                 radius_deg=radius_deg,
+                                 show_legend=show_legend)
 
     if enable_capture:
         _capture_button(v, show_wind, radius_deg=radius_deg)

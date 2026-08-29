@@ -804,7 +804,12 @@ def render():
             # proyecta 24/7 en la sala de turno.
             volcan_grid(volcan_name, show_wind=False, show_rings=True,
                         enable_capture=False, panels=GRID_PANELS_TV,
-                        per_row=3, show_header=False, fullscreen=True)
+                        per_row=3, show_header=False, fullscreen=True,
+                        # La fila de 3 leyendas de arriba ya dice todo lo que
+                        # dirian las de adentro: con las dos prendidas la
+                        # pared proyectada gastaba ~60 px de alto repitiendose,
+                        # y ese alto es imagen de satelite que se pierde.
+                        show_legend=False)
             return
         else:  # default = zonas
             # CSS especifico TV 4 zonas: fuerza cada plot a llenar el

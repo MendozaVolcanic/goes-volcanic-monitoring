@@ -15,6 +15,10 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
+    # Botones PNG / GeoTIFF: viven en dashboard/exports.py porque los
+    # comparte la grilla de volcan (modo_guardia_volcan). Una vista no
+    # importa de otra vista solo para bajar un archivo.
+    from dashboard.exports import download_buttons
     from dashboard.map_helpers import add_chile_border, render_compact_legend
     from dashboard.style import (C_ACCENT, header, info_panel, kpi_card,
                                  refresh_info_badge, volcano_marker)
@@ -264,116 +268,6 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str,
         plot_bgcolor="rgba(0,0,0,0)",
     )
     return fig
-
-
-def _img_to_png_bytes(arr: np.ndarray, label: str | None = None) -> bytes:
-    """numpy array -> PNG bytes (con label opcional sobre-impreso al pie).
-
-    Usado por los botones de descarga. label deberia ser el timestamp UTC + scope
-    para que el archivo descargado sea autoexplicativo (no perdes el contexto
-    si solo guardaste el PNG).
-    """
-    import io as _io
-    from PIL import Image as _PIL, ImageDraw as _ID, ImageFont as _IF
-
-    img = _PIL.fromarray(arr).convert("RGB")
-    if label:
-        # Cinta inferior con timestamp
-        draw = _ID.Draw(img)
-        fs = max(11, int(img.width * 0.018))
-        try:
-            font = _IF.truetype("DejaVuSans-Bold.ttf", fs)
-        except Exception:
-            try:
-                font = _IF.truetype("arial.ttf", fs)
-            except Exception:
-                font = _IF.load_default()
-        bbox = draw.textbbox((0, 0), label, font=font)
-        th = bbox[3] - bbox[1]
-        pad = max(5, fs // 3)
-        band_h = th + pad * 2
-        y0 = img.height - band_h
-        overlay = _PIL.new("RGBA", img.size, (0, 0, 0, 0))
-        odraw = _ID.Draw(overlay)
-        odraw.rectangle([0, y0, img.width, img.height], fill=(0, 0, 0, 180))
-        img = _PIL.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
-        draw = _ID.Draw(img)
-        draw.text((pad, y0 + pad), label, fill=(255, 255, 255), font=font)
-        # Marca arriba-derecha
-        brand = "GOES-19 / RAMMB-CIRA"
-        bb = draw.textbbox((0, 0), brand, font=font)
-        bw = bb[2] - bb[0]
-        draw.text((img.width - bw - pad, pad), brand,
-                  fill=(180, 200, 220), font=font)
-
-    buf = _io.BytesIO()
-    img.save(buf, format="PNG", optimize=True)
-    return buf.getvalue()
-
-
-def _png_download_button(arr: np.ndarray, filename: str, label_overlay: str,
-                         button_label: str, key: str) -> None:
-    """Boton de descarga compacto para un frame estatico."""
-    if arr is None:
-        return
-    png = _img_to_png_bytes(arr, label_overlay)
-    size_kb = len(png) / 1024
-    size_str = f"{size_kb/1024:.1f} MB" if size_kb >= 1024 else f"{size_kb:.0f} KB"
-    st.download_button(
-        f"⬇ {button_label} ({size_str})",
-        data=png,
-        file_name=filename,
-        mime="image/png",
-        key=key,
-        width='stretch',
-    )
-
-
-def _download_buttons(arr: np.ndarray, bounds: dict, base_filename: str,
-                      label_overlay: str, prod_label: str, key_prefix: str) -> None:
-    """Pareja de botones PNG + GeoTIFF en columnas.
-
-    PNG: visualizacion (con timestamp impreso en banda inferior, ideal para
-    informes / mail).
-    GeoTIFF: archivo georeferenciado para QGIS / analisis posterior. CRS
-    EPSG:4326, 3 bandas RGB, sin overlay de texto.
-    """
-    if arr is None:
-        return
-    from src.export.geotiff import build_geotiff_bytes
-
-    col_png, col_tif = st.columns(2)
-    with col_png:
-        _png_download_button(
-            arr,
-            filename=f"{base_filename}.png",
-            label_overlay=label_overlay,
-            button_label=f"PNG · {prod_label}",
-            key=f"{key_prefix}_png",
-        )
-    with col_tif:
-        try:
-            tif_bytes = build_geotiff_bytes(
-                arr, bounds, description=label_overlay,
-            )
-        except Exception as e:
-            logger.warning("GeoTIFF build failed: %s", e)
-            tif_bytes = b""
-        if tif_bytes:
-            size_mb = len(tif_bytes) / 1024 / 1024
-            st.download_button(
-                f"⬇ GeoTIFF · {prod_label} ({size_mb:.1f} MB)",
-                data=tif_bytes,
-                file_name=f"{base_filename}.tif",
-                mime="image/tiff",
-                key=f"{key_prefix}_tif",
-                width='stretch',
-                help=(
-                    "Imagen georeferenciada (EPSG:4326, RGB). Abre directo en "
-                    "QGIS, ArcGIS o cualquier viewer GIS. Conserva las "
-                    "coordenadas exactas de cada pixel."
-                ),
-            )
 
 
 @st.cache_data(ttl=3600, show_spinner=False)
@@ -1145,7 +1039,7 @@ def _live_content():
                     f"GOES-19 {prod_label} - Chile - "
                     f"{frame['label_utc']} ({frame['label_local']} CL)"
                 )
-                _download_buttons(
+                download_buttons(
                     frame["image"],
                     bounds=bounds,
                     base_filename=f"goes19_{prod_id}_chile_{ts}",
@@ -1265,7 +1159,7 @@ def _live_content():
                             f"{_dt_zona.strftime('%Y-%m-%d %H:%M UTC')}"
                             f" ({fmt_chile(_dt_zona)} CL)"
                         )
-                        _download_buttons(
+                        download_buttons(
                             img_zona,
                             bounds=zone_bounds,
                             base_filename=(f"goes19_{prod_zona}_{zone_key}_"

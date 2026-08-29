@@ -38,6 +38,7 @@ import streamlit as st
 try:
     # WIND_LEVELS_VIZ: CANONICO en map_helpers, compartido con la leyenda
     # compacta (con una copia por vista, la leyenda podria mentir).
+    from dashboard.exports import download_buttons
     from dashboard.map_helpers import WIND_LEVELS_VIZ
     from dashboard.style import volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
@@ -531,7 +532,8 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
                        elevation: int, region: str,
                        product_imgs: list[tuple[str, np.ndarray | None, str]],
                        wind_data: dict, hotspots_count: int,
-                       generated_utc: datetime) -> bytes:
+                       generated_utc: datetime,
+                       radius_deg: float = RADIUS_DEG) -> bytes:
     """Compone una imagen A4-landscape con los 3 productos + header.
 
     No usa kaleido (evitamos dep ~80MB). Hace composite directo con PIL.
@@ -555,8 +557,11 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
               f"{region} · {volcan_lat:.3f}°, {volcan_lon:.3f}° · "
               f"elev {elevation} m",
               fill=(180, 180, 200), font=f_sub)
+    # El ENCUADRE va impreso: el radio es ajustable, y sin el nadie puede decir
+    # despues a que escena corresponde este PNG cuando aparece en un informe.
     draw.text((40, 115),
               f"Captura UTC: {generated_utc.strftime('%Y-%m-%d %H:%M:%S')} · "
+              f"Encuadre {etiqueta_encuadre(radius_deg)} · "
               f"Hot spots NOAA en bbox: {hotspots_count}",
               fill=(150, 160, 180), font=f_small)
 
@@ -813,6 +818,96 @@ def _grid_header(volcan_name: str, show_wind: bool,
     )
 
 
+# ── Trazabilidad del encuadre ────────────────────────────────────────
+#
+# Con el radio ajustable (0.35-3 grados) dos capturas del MISMO minuto a radios
+# distintos son indistinguibles por nombre y por contenido. Estas imagenes
+# terminan en informes de un SDA: quien las mire despues tiene que poder decir
+# a que encuadre corresponden sin volver al dashboard. Por eso el radio va en
+# el nombre del archivo Y sobre-impreso en la imagen.
+#
+# Todo en ASCII a proposito: el label se dibuja con PIL sobre el PNG y tambien
+# viaja como tag del GeoTIFF, y ahi los grados / mas-menos tipograficos
+# dependen de que fuente encontro el sistema.
+
+def etiqueta_encuadre(radius_deg: float) -> str:
+    """Encuadre legible: medio-lado en grados y su equivalente en km.
+
+    Los km importan mas que los grados para leer una pluma: 1 grado de latitud
+    son ~111 km, y esa es la escala mental del turno.
+    """
+    return f"+/-{radius_deg:.2f} deg (~{radius_deg * 111:.0f} km)"
+
+
+def sufijo_encuadre(radius_deg: float) -> str:
+    """Fragmento del encuadre apto para nombre de archivo (r0p35)."""
+    return "r" + f"{radius_deg:.2f}".replace(".", "p")
+
+
+def _slug(texto: str) -> str:
+    """Nombre de volcan -> token de archivo sin acentos ni espacios."""
+    acentos = str.maketrans("áéíóúñÁÉÍÓÚÑ", "aeiounAEIOUN")
+    limpio = texto.translate(acentos).lower().replace(" ", "-")
+    return "".join(c for c in limpio if c.isalnum() or c in "-_")
+
+
+def _download_expander(v, radius_deg: float = RADIUS_DEG):
+    """PNG + GeoTIFF por producto, en un expander CERRADO.
+
+    Por que existe: antes de migrar a la grilla, el tab Volcan ofrecia este par
+    de botones por producto, y es la unica via para llevar el encuadre de un
+    volcan a QGIS. Al migrar se perdio.
+
+    Por que cerrado: la grilla se mira en una emergencia. Seis botones sueltos
+    abajo le comen alto a los mapas, que es lo que importa. Quien necesita el
+    archivo lo abre.
+
+    Por que solo los 3 de RAMMB: VOLCAT NO va. Su panel es un PNG que compone
+    SSEC/CIMSS, no tenemos el array georreferenciado detras, y fabricarle un
+    GeoTIFF seria inventar una georreferencia que no controlamos — un archivo
+    que abre en QGIS y ubica la pluma donde nosotros supusimos, no donde SSEC
+    la puso. Su PNG se baja de su propio panel, con su barra de color.
+
+    Las imagenes salen de `fetch_volcan_product`, que las sirve de su cache
+    (igual que `_capture_button`): abrir el expander no dispara descargas.
+    """
+    now = datetime.now(timezone.utc)
+    bounds = {
+        "lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
+        "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
+    }
+    encuadre = etiqueta_encuadre(radius_deg)
+    with st.expander("⬇ Descargar por producto (PNG / GeoTIFF para QGIS)",
+                     expanded=False):
+        st.caption(
+            f"Encuadre {encuadre} centrado en {v.name}. El PNG lleva el "
+            "timestamp y el encuadre impresos; el GeoTIFF va limpio, "
+            "georreferenciado en EPSG:4326."
+        )
+        for panel in GRID_PANELS_TV:
+            img, ts_label = fetch_volcan_product(
+                panel["id"], v.name, v.lat, v.lon, bounds, now)
+            if img is None:
+                st.caption(f"{panel['label']}: sin imagen disponible")
+                continue
+            download_buttons(
+                img,
+                bounds=bounds,
+                base_filename=(
+                    f"goes19_{panel['id']}_{_slug(v.name)}_"
+                    f"{now.strftime('%Y%m%d_%H%M')}Z_"
+                    f"{sufijo_encuadre(radius_deg)}"
+                ),
+                label_overlay=(f"GOES-19 {panel['label']} - {v.name} "
+                               f"({encuadre}) - {ts_label}"),
+                prod_label=panel["label"],
+                # El radio entra en la key: dos radios son dos widgets. Si no,
+                # Streamlit reusa el primero y el boton baja el encuadre viejo.
+                key_prefix=(f"dlvg_{panel['id']}_{_slug(v.name)}_"
+                            f"{sufijo_encuadre(radius_deg)}"),
+            )
+
+
 def _capture_button(v, show_wind: bool, radius_deg: float = RADIUS_DEG):
     """Boton de captura PNG con los 3 productos RAMMB + header.
 
@@ -837,12 +932,15 @@ def _capture_button(v, show_wind: bool, radius_deg: float = RADIUS_DEG):
     try:
         png_bytes = _build_capture_png(
             v.name, v.lat, v.lon, v.elevation, v.region,
-            captured, wind, len(hotspots), now,
+            captured, wind, len(hotspots), now, radius_deg,
         )
         st.download_button(
             label="📸 Descargar captura PNG (este momento)",
             data=png_bytes,
-            file_name=f"{v.name}_{now.strftime('%Y%m%d_%H%M')}_UTC.png",
+            # El encuadre va en el nombre: dos capturas del mismo minuto a
+            # radios distintos no pueden pisarse en la carpeta de descargas.
+            file_name=(f"{_slug(v.name)}_{now.strftime('%Y%m%d_%H%M')}_UTC_"
+                       f"{sufijo_encuadre(radius_deg)}.png"),
             mime="image/png",
             width='stretch',
         )
@@ -1024,6 +1122,9 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
 
     if enable_capture:
         _capture_button(v, show_wind, radius_deg=radius_deg)
+        # Debajo de la captura compuesta: el archivo por producto, incluido el
+        # GeoTIFF que se usa para analizar el evento en QGIS.
+        _download_expander(v, radius_deg=radius_deg)
 
     st.markdown(
         "<div style='text-align:center; color:#445566; font-size:0.75rem; "

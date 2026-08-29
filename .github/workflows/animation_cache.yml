@@ -15,6 +15,14 @@ on:
 permissions:
   contents: write   # necesario para crear/actualizar releases
 
+# El cron horario no puede solaparse consigo mismo (timeout 25 min), pero un
+# workflow_dispatch manual SI puede caer encima de el, y los dos publican el
+# snapshot completo de `animations-rolling`. Grupo propio: este tag no lo
+# escribe nadie mas, asi que no comparte grupo con hires-cache.
+concurrency:
+  group: animation-cache
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest

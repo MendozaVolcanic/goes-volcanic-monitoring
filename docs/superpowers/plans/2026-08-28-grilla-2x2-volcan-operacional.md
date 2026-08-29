@@ -1084,3 +1084,30 @@ git commit -m "docs: patron de la grilla de volcan + costo del retrieval propio"
 | `_render_volcat_zoom_tv` vive en `zonas_fullscreen` (dependencia cruzada entre vistas) | Import perezoso dentro de la función, patrón ya usado en `modo_guardia._mosaico_subtab`. Si aparece un tercer llamador, ahí conviene moverlo a un `dashboard/panels.py`. |
 | El nivel del marcador de volcán en paneles de 380-460 px | Siguen siendo zoom de UN volcán → nivel `focus`, que ya cumple `0.75·size − 2·trazo ≥ 2.0 px`. `tests/test_marker_sizes.py` lo cubre. |
 | El slot TV del Modo Sala hereda el 2×2 sin querer | La Task 6 le pasa `panels=GRID_PANELS_TV, per_row=3` explícitos, y `test_el_slot_tv_pide_su_layout_explicito` lo pinea. El import de ese slot es perezoso: ningún test de import lo cubre, por eso la Task 6 incluye abrirlo a ojo. |
+
+---
+
+# Cómo terminó (post-mortem, 2026-08-29)
+
+El plan se ejecutó completo, pero **se desvió en cinco puntos**. Se dejan escritos porque un plan que miente sobre lo que pasó es peor que ninguno.
+
+**1. Las Tasks 5 y 6 se hicieron en un solo commit.** Separarlas dejaba un commit intermedio con `_live_panel` borrado y sus dos llamadores de `modo_guardia.py` rotos: una vista caída en producción. Sacar una función y migrar a quien la llama es un solo cambio.
+
+**2. `GRID_PANELS_TV` tenía el orden equivocado.** El plan lo definía como `[p for p in GRID_PANELS if p["kind"] == "rammb"]`, o sea el orden de lectura de emergencia (GeoColor primero). Pero la leyenda de 3 columnas del Modo Sala itera el orden histórico de `PRODUCTS` (Ash primero). Al migrar el slot `tv=volcan`, **la pared que se proyecta en la sala de turno habría rotulado "Ash RGB" sobre el panel GeoColor**. Lo atrapó la revisión de las Tasks 1-4, antes de llegar a la sala. Ahora el orden de la sala es explícito y su leyenda se deriva de la misma lista que el grid.
+
+**3. El Step 4 de la Task 3 estaba mal.** Decía que `test_los_paneles_no_reciben_el_timestamp_por_argumento` pasaba al terminar esa tarea, pero el test exige `vistos == 2` y `_panel_volcat` recién nace en la Task 4. El test queda en rojo a propósito entre las dos tareas.
+
+**4. Tres tests del plan no probaban nada.** Demostrado mutando el código de producción y viéndolos seguir verdes:
+- `assert "sector" in cuerpo` era subconjunto de `"resolve_volcat_sector"`, así que pasaba aunque el panel no mostrara el sector. Reemplazado por `etiqueta_sector_volcat`, una función pura testeada con entradas reales.
+- `assert p in GRID_PANELS` compara **contenido** de dicts, no identidad: una copia literal a mano pasaba. Ahora es `any(p is q for q in GRID_PANELS)`.
+- El campo `refresh_s` de `GRID_PANELS` era **inerte** — el poll lo gobierna el decorador `@st.fragment`, que lee las constantes de módulo. El campo se borró y el test ahora lee el decorador real vía `_fragment_run_every`.
+
+**5. Faltaba el radio ajustable.** El plan no lo contemplaba, y al migrar el tab de Vista Operacional se perdió el slider de 0.5–3° que ese tab tenía: la vista quedaba clavada en el `RADIUS_DEG = 0.35` (~38 km) de Modo Guardia. Una pluma de ceniza en emergencia viaja cientos de km, así que eso achicaba justo el caso de uso que motivó el plan. Se agregó `radius_deg` como parámetro que se propaga a las cinco funciones que arman bbox.
+
+Al hacerlo apareció un bug de georreferencia que el radio fijo tapaba: el caché hi-res de GeoColor cubre ~0.5° y `_crop_centered` clampea la fracción a 1.0, así que a radio 2° habría pintado la imagen de 0.5° entera sobre un bbox 4× más grande — **la pluma dibujada a 4× de donde está**. El guard `r_view <= r` cae a RAMMB en ese caso.
+
+## Deuda que queda anotada
+
+- **`PRODUCTS` sobrevive** porque `zonas_fullscreen.py:814` la importa para componer el PNG del rotador TV. Quedan dos fuentes de verdad de las recetas hasta que esa vista migre a `GRID_PANELS_TV`.
+- **Leyenda duplicada en el slot de sala**: `modo_guardia.py` pinta su fila de 3 leyendas y además cada `_panel_rammb` pinta la suya. Verificado en la app corriendo. Es **preexistente** (el `_live_panel` viejo hacía lo mismo), pero en una pared proyectada son ~30 px de alto desperdiciados. Se arregla con un `show_legend` en `_panel_rammb`, análogo al `show_header` que ya existe.
+- **Sin GeoTIFF al zoom de volcán**: el tab viejo ofrecía PNG + GeoTIFF por producto. La grilla ofrece un PNG compuesto. La exportación georreferenciada sigue disponible desde los tabs Nacional y Zona (`live_viewer._download_buttons`), así que no desapareció de la app.

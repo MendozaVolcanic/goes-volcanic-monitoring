@@ -34,10 +34,10 @@ def _load_workflows() -> dict[str, dict]:
 def _release_writers() -> dict[str, set[tuple[str, str | None]]]:
     """tag -> {(workflow, grupo de concurrency)} para cada publicacion al release.
 
-    Los tags dinamicos (`${{ ... }}`, caso `backfill_build`) quedan fuera: el tag
-    depende de inputs del run, asi que dos runs solo colisionan si el usuario pide
-    a mano la misma fecha y el mismo volcan. No es la clase de carrera que este
-    test vigila.
+    Los tags dinamicos (`${{ ... }}`, caso `backfill_build`) quedan fuera de ESTE
+    mapa porque el tag no se puede resolver leyendo el YAML: depende de inputs
+    del run. Que tengan grupo igual lo exige
+    `test_todo_publicador_declara_grupo_incluso_con_tag_dinamico`.
     """
     writers: dict[str, set[tuple[str, str | None]]] = {}
     for name, wf in _load_workflows().items():
@@ -51,6 +51,25 @@ def _release_writers() -> dict[str, set[tuple[str, str | None]]]:
                     continue
                 writers.setdefault(tag, set()).add((name, grupo))
     return writers
+
+
+def test_todo_publicador_declara_grupo_incluso_con_tag_dinamico():
+    """Un tag dinamico no exime de grupo: exime del chequeo de UN grupo por tag.
+
+    `backfill_build` publica a `backfill-<fecha>-<volcan>`, asi que dos runs
+    solo chocan si alguien pide a mano el mismo evento dos veces. Pero cuando
+    chocan, chocan igual: la accion publica un snapshot completo y los dos runs
+    se borran los assets entre si. Sin grupo, nada los serializa.
+    """
+    sin_grupo = []
+    for name, wf in _load_workflows().items():
+        grupo = (wf.get("concurrency") or {}).get("group")
+        for job in (wf.get("jobs") or {}).values():
+            for step in job.get("steps") or []:
+                if step.get("uses") == ACTION and grupo is None:
+                    sin_grupo.append(name)
+    assert not sorted(set(sin_grupo)), (
+        f"publican al release sin `concurrency.group`: {sorted(set(sin_grupo))}")
 
 
 def test_hay_escritores_de_releases_rolling():

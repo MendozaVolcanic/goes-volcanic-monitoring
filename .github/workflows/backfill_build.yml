@@ -37,6 +37,26 @@ on:
         type: boolean
         default: true
 
+# El tag es dinamico (`backfill-<fecha>-<volcan>`), asi que dos runs solo se
+# pisan si alguien pide a mano la MISMA fecha y el MISMO volcan — no es la
+# carrera cron-vs-manual que le paso a `hires-loop-rolling`. Pero cuando pasa,
+# pasa igual: la accion publica un snapshot completo del release, y dos runs
+# concurrentes sobre el mismo tag se borran los assets entre si. El grupo se
+# arma con los mismos inputs que forman el tag, para no serializar backfills de
+# eventos distintos, que es el caso normal.
+#
+# Limite conocido: el tag slugifica el nombre (`tr '[:upper:]' '[:lower:]'` +
+# no-alfanumerico -> `_`) y el grupo usa el input CRUDO, porque las expresiones
+# de `concurrency` se evaluan antes de que corra ningun shell y no hay forma de
+# normalizar ahi. Dos grafias que slugifiquen igual —"Nevados de Chillan" y
+# "Nevados-de-Chillan"— darian el MISMO tag con grupos distintos, o sea la
+# carrera que esto viene a evitar. Requiere que alguien escriba el mismo volcan
+# de dos formas dentro de la misma ventana de ejecucion; si algun dia pasa, la
+# salida es un input de tipo `choice` con los nombres del CATALOG.
+concurrency:
+  group: backfill-${{ inputs.date }}-${{ inputs.volcan }}
+  cancel-in-progress: false
+
 permissions:
   contents: write
 

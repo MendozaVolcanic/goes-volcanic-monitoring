@@ -691,7 +691,11 @@ def _render_volcat_zoom_tv(volcano_name: str, height: int, pad: float = 0.5):
                          fmt_both(dt) if dt else "", height, legend_pair=leg),
         width='stretch',
         config={"displayModeBar": False, "responsive": True},
-        key=f"tvvolcatzoom_{volcano_name}")
+        # El pad va en la key igual que en _panel_rammb: dos renders del
+        # mismo volcan a radios distintos son figuras distintas, y con la
+        # key compartida Plotly reusa el zoom/pan de la anterior. Desde
+        # que la grilla tiene radio ajustable, ese caso pasa de verdad.
+        key=f"tvvolcatzoom_{volcano_name}_{pad:.2f}")
 
 
 def _render_volcat_zoom_row_tv(volcano_names: list, height: int, pad: float = 0.45):

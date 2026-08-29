@@ -1,8 +1,18 @@
 name: 'GH Release Snapshot Upload'
 description: |
-  Crea/actualiza un GitHub Release como snapshot rolling: borra todos los
-  assets viejos y sube los nuevos en batches con sleep para evitar el
-  secondary rate limit (HTTP 403) de uploads masivos.
+  Crea/actualiza un GitHub Release como snapshot rolling: sube los assets
+  nuevos con --clobber en batches (con sleep para evitar el secondary rate
+  limit HTTP 403 de uploads masivos) y RECIEN DESPUES borra los huerfanos,
+  es decir los assets que quedaron del snapshot anterior y que este ya no
+  publica.
+
+  Por que en ese orden (fix audit ago-2026): antes se borraba TODO primero y
+  se subia despues. Entre el borrado y el fin del ultimo batch pasan minutos
+  (batches de 50 con sleep de 15-30 s), y en esa ventana el consumidor —el
+  dashboard, que lee el release por HTTP— veia el release vacio o a medio
+  poblar. Con cron cada 10 min eso ocurria en CADA corrida, sin necesidad de
+  ninguna carrera entre workflows. Subiendo primero, el release nunca queda
+  vacio: en el peor momento tiene el set viejo y el nuevo conviviendo.
 
   Uso tipico desde animation_cache, hires_visible_cache, backfill_build:
     - uses: ./.github/actions/gh-release-snapshot
@@ -63,33 +73,38 @@ runs:
           echo "Release $TAG ya existe — se reutilizara."
         fi
 
-    - name: Borrar assets viejos
+    - name: Subir assets en batches y podar huerfanos
       shell: bash
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
-        set -e
-        TAG="${{ inputs.tag }}"
-        echo "Borrando assets actuales de $TAG..."
-        gh release view "$TAG" --json assets --jq '.assets[].name' \
-          | while read -r asset; do
-              gh release delete-asset "$TAG" "$asset" --yes 2>/dev/null || true
-            done
-        echo "Listo, release vacio."
-
-    - name: Subir assets en batches
-      shell: bash
-      env:
-        GH_TOKEN: ${{ github.token }}
-      run: |
-        set -e
+        set -euo pipefail
         TAG="${{ inputs.tag }}"
         DIR="${{ inputs.dir }}"
         BATCH_SIZE=${{ inputs.batch-size }}
         SLEEP=${{ inputs.sleep-between-batches }}
 
-        ALL_FILES=("$DIR"/*)
+        # Solo archivos regulares del primer nivel. El glob viejo ("$DIR"/*) no
+        # se expandia si el dir estaba vacio y dejaba el literal "$DIR/*" como
+        # unico "archivo". Ahora ademas es un guard duro: con el orden invertido,
+        # un dir vacio significaria "todo es huerfano" -> borrar el release entero.
+        # Preferimos fallar sin tocar nada.
+        mapfile -t ALL_FILES < <(find "$DIR" -maxdepth 1 -type f | sort)
         TOTAL=${#ALL_FILES[@]}
+        if [ "$TOTAL" -eq 0 ]; then
+          echo "ERROR: $DIR no contiene archivos — no se toca el release $TAG."
+          exit 1
+        fi
+
+        # Snapshot de lo publicado ANTES de subir + marca de tiempo previa, para
+        # distinguir despues lo viejo de lo que acabamos de escribir.
+        mapfile -t OLD_ASSETS < <(gh release view "$TAG" --json assets --jq '.assets[].name')
+        # Margen de 2 min hacia atras por si el reloj del runner adelanta al de
+        # la API: prefiere dejar vivo un huerfano (se limpia en la corrida
+        # siguiente) antes que borrar un asset recien subido.
+        SINCE=$(date -u -d '-2 minutes' +%Y-%m-%dT%H:%M:%SZ)
+        echo "Assets previos en $TAG: ${#OLD_ASSETS[@]}. Corte de frescura: $SINCE"
+
         echo "Subiendo $TOTAL assets en batches de $BATCH_SIZE..."
         for ((i=0; i<TOTAL; i+=BATCH_SIZE)); do
           BATCH=("${ALL_FILES[@]:i:BATCH_SIZE}")
@@ -113,4 +128,26 @@ runs:
             sleep "$SLEEP"
           fi
         done
+        echo "Upload completo. Podando huerfanos del snapshot anterior..."
+
+        # Huerfano = asset que sigue en el release pero (a) no esta en el set que
+        # acabamos de publicar Y (b) no fue tocado por este upload. Las dos
+        # condiciones son redundantes a proposito: (a) cubre el caso de que la API
+        # haya saneado el nombre del archivo al subirlo, (b) cubre el desfase de
+        # reloj entre runner y API. Basta que una sea correcta para no borrar de mas.
+        if [ "${#OLD_ASSETS[@]}" -gt 0 ]; then
+          declare -A PUBLICADOS=()
+          for f in "${ALL_FILES[@]}"; do PUBLICADOS["$(basename "$f")"]=1; done
+
+          BORRADOS=0
+          while read -r asset; do
+            [ -z "$asset" ] && continue
+            if [ -n "${PUBLICADOS[$asset]:-}" ]; then continue; fi
+            echo "  huerfano: $asset"
+            gh release delete-asset "$TAG" "$asset" --yes 2>/dev/null || true
+            BORRADOS=$((BORRADOS+1))
+          done < <(gh release view "$TAG" --json assets \
+                     --jq ".assets[] | select(.updatedAt < \"$SINCE\") | .name")
+          echo "Huerfanos borrados: $BORRADOS"
+        fi
         echo "DONE. Tag: $TAG"

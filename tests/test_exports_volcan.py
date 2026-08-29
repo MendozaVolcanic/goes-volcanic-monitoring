@@ -89,6 +89,37 @@ def test_el_label_se_imprime_de_verdad_sobre_el_png():
     assert np.array_equal(sin[30:50, :60], con[30:50, :60])
 
 
+def test_download_buttons_ofrece_las_dos_salidas(monkeypatch):
+    """PNG **y** GeoTIFF: son dos usos distintos (informe / QGIS) y perder
+    uno de los dos es exactamente la regresion que esta rama repara.
+
+    Cubre el modulo movido de punta a punta: si el traslado hubiera roto el
+    armado del PNG o la llamada al GeoTIFF, aca se ve.
+    """
+    from dashboard import exports
+
+    stub = _StubSt()
+    monkeypatch.setattr(exports, "st", stub)
+    lat, lon, r = -39.42, -71.93, 0.35
+    exports.download_buttons(
+        np.zeros((16, 16, 3), dtype=np.uint8),
+        bounds={"lat_min": lat - r, "lat_max": lat + r,
+                "lon_min": lon - r, "lon_max": lon + r},
+        base_filename="goes19_eumetsat_ash_villarrica_r0p35",
+        label_overlay="GOES-19 Ash RGB - Villarrica",
+        prod_label="Ash RGB",
+        key_prefix="dlvg_eumetsat_ash",
+    )
+    mimes = [d["mime"] for d in stub.downloads]
+    assert "image/png" in mimes and "image/tiff" in mimes, stub.downloads
+    nombres = [d["file_name"] for d in stub.downloads]
+    assert "goes19_eumetsat_ash_villarrica_r0p35.png" in nombres
+    assert "goes19_eumetsat_ash_villarrica_r0p35.tif" in nombres
+    # bytes de verdad, no un boton vacio
+    for d in stub.downloads:
+        assert len(d["data"]) > 100, d["file_name"]
+
+
 # ── 3. El GeoTIFF del encuadre de volcan ─────────────────────────────
 
 def test_el_geotiff_del_encuadre_de_volcan_queda_georreferenciado():
@@ -130,6 +161,13 @@ def test_el_encuadre_se_lee_distinto_a_radios_distintos():
 
     assert etiqueta_encuadre(0.35) != etiqueta_encuadre(2.0)
     assert sufijo_encuadre(0.35) != sufijo_encuadre(2.0)
+    # y tambien DOS PASOS SEGUIDOS del slider (paso 0.05): si el encuadre se
+    # redondea a grados, medio rango del slider colapsa en el mismo nombre de
+    # archivo y la trazabilidad se pierde justo entre encuadres parecidos,
+    # que son los dificiles de distinguir a ojo.
+    pasos = [round(0.35 + 0.05 * i, 2) for i in range(54)]
+    assert len({sufijo_encuadre(r) for r in pasos}) == len(pasos)
+    assert len({etiqueta_encuadre(r) for r in pasos}) == len(pasos)
     # el sufijo va en un nombre de archivo: nada de puntos ni signos
     for r in (0.35, 1.0, 2.5):
         s = sufijo_encuadre(r)

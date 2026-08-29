@@ -1288,7 +1288,7 @@ def _live_content():
     with tab5:
         from dashboard.views.modo_guardia_volcan import volcan_grid
 
-        col_vsel, col_vw, col_vr = st.columns([2.4, 1, 1])
+        col_vsel, col_vrad, col_vw, col_vr = st.columns([2.2, 1.2, 1, 1])
         with col_vsel:
             priority_names = [v.name for v in CATALOG
                               if v.name in PRIORITY_VOLCANOES]
@@ -1298,6 +1298,15 @@ def _live_content():
             sel_raw = st.selectbox("Volcán", volc_options, index=0,
                                    key="volc_sel")
             sel_name = sel_raw.replace("★ ", "")
+        with col_vrad:
+            # El radio manda sobre los 4 paneles a la vez (parametro de
+            # volcan_grid). Sin esto la vista queda clavada en el radio de
+            # Modo Guardia (~38 km) y una pluma que ya se desplazo se sale
+            # del cuadro justo cuando hay que seguirla.
+            _vg_radius = st.slider(
+                "Radio (°)", 0.35, 3.0, 0.35, 0.05, key="vg_radius",
+                help="±radio en grados lat/lon (~111 km por grado). Súbelo "
+                     "para seguir una pluma que ya se alejó del cráter.")
         with col_vw:
             _vg_wind = st.toggle("💨 Viento", value=False, key="vg_wind",
                                  help="Vectores GFS 300/500/850 hPa sobre el "
@@ -1312,6 +1321,7 @@ def _live_content():
             show_rings=_vg_rings,
             enable_capture=True,
             fullscreen=st.query_params.get("fullscreen") == "1",
+            radius_deg=_vg_radius,
         )
 
     st.markdown(

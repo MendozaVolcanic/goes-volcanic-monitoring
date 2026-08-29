@@ -292,3 +292,40 @@ def test_vista_operacional_reusa_la_grilla_compartida():
     src = LIVE.read_text(encoding="utf-8")
     assert "from dashboard.views.modo_guardia_volcan import volcan_grid" in src
     assert "volcan_grid(" in src
+
+
+def test_el_radio_es_ajustable_y_llega_a_todos_los_paneles():
+    """Una pluma de ceniza en emergencia viaja cientos de km: la vista de
+    volcan no puede quedar clavada en +-0.35 grados (~38 km).
+
+    Y el radio tiene que llegar a las CUATRO funciones que arman bbox, o los
+    paneles se desalinean entre si y la grilla deja de leerse como una escena.
+    """
+    import inspect
+
+    from dashboard.views import modo_guardia_volcan as MGV
+
+    for nombre in ("volcan_grid", "_grid_header", "_panel_rammb",
+                   "_panel_volcat", "_capture_button"):
+        sig = inspect.signature(getattr(MGV, nombre))
+        assert "radius_deg" in sig.parameters, nombre
+        assert sig.parameters["radius_deg"].default == MGV.RADIUS_DEG, nombre
+
+
+def test_el_slider_de_radio_vuelve_a_vista_operacional():
+    """La regresion concreta: al migrar a la grilla se perdio el slider."""
+    src = LIVE.read_text(encoding="utf-8")
+    assert 'key="vg_radius"' in src
+    assert "radius_deg=_vg_radius" in src
+
+
+def test_los_cuatro_paneles_encuadran_con_el_mismo_radio():
+    """Si un solo lugar se queda con la constante, ese panel sale mas cerrado
+    que los otros tres y se ve al toque en pantalla. Ningun bbox de la grilla
+    puede seguir armandose con RADIUS_DEG literal."""
+    src = GUARDIA.read_text(encoding="utf-8")
+    for linea in src.splitlines():
+        if "lat_min" in linea and "lat_max" in linea:
+            assert "RADIUS_DEG" not in linea, linea.strip()
+    # el crop del hi-res GeoColor tampoco (usaba la constante)
+    assert "_crop_centered(h_arr, RADIUS_DEG" not in src

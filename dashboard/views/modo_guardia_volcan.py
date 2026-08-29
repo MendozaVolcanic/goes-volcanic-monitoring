@@ -300,11 +300,20 @@ def fetch_volcan_product(prod_id: str, volcano_name: str,
         except Exception:
             h_arr, h_info = None, None
         age = _hires_age_min(h_info, now) if h_info else None
+        # El radio EFECTIVO sale de los bounds, no de la constante: con radio
+        # ajustable los dos pueden diferir, y recortar por la constante dejaria
+        # el panel GeoColor mas cerrado que los otros tres.
+        r_view = (bounds["lat_max"] - bounds["lat_min"]) / 2.0
+        r = float((h_info or {}).get("radius_deg") or 0.5)
+        # El cache hi-res cubre un radio fijo (~0.5°). Si la vista pide MAS que
+        # eso no hay que estirarlo: la imagen se pintaria sobre un bbox que no
+        # cubre y mentiria la georreferencia. En ese caso cae a RAMMB, que baja
+        # los tiles que hagan falta.
         if (h_arr is not None and h_info
                 and h_info.get("render") == "visible_color"
-                and age is not None and age <= HIRES_MAX_AGE_MIN):
-            r = float(h_info.get("radius_deg") or 0.5)
-            img = _crop_centered(h_arr, RADIUS_DEG / r) if r > 0 else h_arr
+                and age is not None and age <= HIRES_MAX_AGE_MIN
+                and r > 0 and r_view <= r):
+            img = _crop_centered(h_arr, r_view / r)
             hhmm = h_info.get("scan_ts", "")[8:12]
             t_utc = f"{hhmm[:2]}:{hhmm[2:]}" if len(hhmm) == 4 else "?"
             try:
@@ -590,7 +599,8 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
 
 @st.fragment(run_every=f"{RAMMB_REFRESH_S}s")
 def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
-                 show_wind: bool, show_rings: bool, height: int):
+                 show_wind: bool, show_rings: bool, height: int,
+                 radius_deg: float = RADIUS_DEG):
     """Un panel RAMMB con su propio poll.
 
     NO recibe timestamp ni imagen por argumento: los args de un fragment con
@@ -605,8 +615,8 @@ def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
         return
 
     bounds = {
-        "lat_min": v.lat - RADIUS_DEG, "lat_max": v.lat + RADIUS_DEG,
-        "lon_min": v.lon - RADIUS_DEG, "lon_max": v.lon + RADIUS_DEG,
+        "lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
+        "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
     }
     now = datetime.now(timezone.utc)
 
@@ -636,7 +646,10 @@ def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
                         show_rings=show_rings, height=height),
         width='stretch',
         config={"displayModeBar": False, "responsive": True},
-        key=f"vgrid_{prod_id}_{volcan_name}",
+        # El radio va en la key: dos renders del mismo volcan a radios
+        # distintos son figuras distintas, y con la key compartida Plotly
+        # reusaria el estado (zoom/pan) de la anterior.
+        key=f"vgrid_{prod_id}_{volcan_name}_{radius_deg:.2f}",
     )
     st.markdown(
         f"<div style='font-size:0.7rem; color:#556; margin-top:-0.5rem;'>"
@@ -668,7 +681,8 @@ def etiqueta_sector_volcat(sector: str) -> str:
 
 
 @st.fragment(run_every=f"{VOLCAT_REFRESH_S}s")
-def _panel_volcat(volcan_name: str, height: int):
+def _panel_volcat(volcan_name: str, height: int,
+                  radius_deg: float = RADIUS_DEG):
     """Panel VOLCAT: altura de pluma cuantitativa de SSEC/CIMSS.
 
     Reusa `zonas_fullscreen._render_volcat_zoom_tv` (import perezoso entre
@@ -702,11 +716,12 @@ def _panel_volcat(volcan_name: str, height: int):
     )
 
     from dashboard.views.zonas_fullscreen import _render_volcat_zoom_tv
-    _render_volcat_zoom_tv(volcan_name, height=height, pad=RADIUS_DEG)
+    _render_volcat_zoom_tv(volcan_name, height=height, pad=radius_deg)
 
 
 @st.fragment(run_every=f"{RAMMB_REFRESH_S}s")
-def _grid_header(volcan_name: str, show_wind: bool):
+def _grid_header(volcan_name: str, show_wind: bool,
+                 radius_deg: float = RADIUS_DEG):
     """Cabecera: nombre, coords, viento, conteo de hot spots, hora de render.
 
     Fragment aparte y liviano: se refresca al ritmo de RAMMB sin arrastrar el
@@ -716,8 +731,8 @@ def _grid_header(volcan_name: str, show_wind: bool):
     if v is None:
         return
     bounds = {
-        "lat_min": v.lat - RADIUS_DEG, "lat_max": v.lat + RADIUS_DEG,
-        "lon_min": v.lon - RADIUS_DEG, "lon_max": v.lon + RADIUS_DEG,
+        "lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
+        "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
     }
     now = datetime.now(timezone.utc)
     hotspots, _ = _hotspots_volcan(bounds["lat_min"], bounds["lat_max"],
@@ -750,7 +765,7 @@ def _grid_header(volcan_name: str, show_wind: bool):
     )
 
 
-def _capture_button(v, show_wind: bool):
+def _capture_button(v, show_wind: bool, radius_deg: float = RADIUS_DEG):
     """Boton de captura PNG con los 3 productos RAMMB + header.
 
     Re-pide las imagenes a `fetch_volcan_product`, que las sirve de su cache
@@ -760,8 +775,8 @@ def _capture_button(v, show_wind: bool):
     """
     now = datetime.now(timezone.utc)
     bounds = {
-        "lat_min": v.lat - RADIUS_DEG, "lat_max": v.lat + RADIUS_DEG,
-        "lon_min": v.lon - RADIUS_DEG, "lon_max": v.lon + RADIUS_DEG,
+        "lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
+        "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
     }
     hotspots, _ = _hotspots_volcan(bounds["lat_min"], bounds["lat_max"],
                                    bounds["lon_min"], bounds["lon_max"])
@@ -790,7 +805,8 @@ def _capture_button(v, show_wind: bool):
 def volcan_grid(volcan_name: str, show_wind: bool = False,
                 show_rings: bool = False, enable_capture: bool = False,
                 fullscreen: bool = False, panels: list | None = None,
-                per_row: int = 2, show_header: bool = True):
+                per_row: int = 2, show_header: bool = True,
+                radius_deg: float = RADIUS_DEG):
     """Grilla de productos del volcan, todos a la vez.
 
     FUENTE UNICA de esta vista — la usan el sub-tab Volcan del Modo Guardia,
@@ -810,6 +826,12 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
     slot sigue con los 3 RAMMB en una fila y en SU orden (Ash primero):
     cambiarle el layout por debajo le desalinearia la leyenda.
     `show_header=False` ahi mismo, porque el rotador TV ya pone su cabecera.
+
+    `radius_deg` lo ajusta la Vista Operacional: una pluma de ceniza en
+    emergencia viaja cientos de km y a RADIUS_DEG (~38 km) se sale del cuadro
+    a los pocos minutos. Va a los CUATRO paneles y a la cabecera desde aca —
+    si un solo lugar se quedara con la constante, ese panel encuadraria
+    distinto y la grilla dejaria de leerse como una sola escena.
     """
     v = get_volcano(volcan_name)
     if v is None:
@@ -819,7 +841,7 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
     panels = GRID_PANELS if panels is None else panels
     height = PANEL_HEIGHT_FULLSCREEN if fullscreen else PANEL_HEIGHT_NORMAL
     if show_header:
-        _grid_header(volcan_name, show_wind)
+        _grid_header(volcan_name, show_wind, radius_deg=radius_deg)
 
     filas = [panels[i:i + per_row] for i in range(0, len(panels), per_row)]
     for fila in filas:
@@ -827,13 +849,15 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
         for col, panel in zip(cols, fila):
             with col:
                 if panel["kind"] == "volcat":
-                    _panel_volcat(volcan_name, height=height)
+                    _panel_volcat(volcan_name, height=height,
+                                  radius_deg=radius_deg)
                 else:
                     _panel_rammb(panel["id"], panel["label"], panel["recipe"],
-                                 volcan_name, show_wind, show_rings, height)
+                                 volcan_name, show_wind, show_rings, height,
+                                 radius_deg=radius_deg)
 
     if enable_capture:
-        _capture_button(v, show_wind)
+        _capture_button(v, show_wind, radius_deg=radius_deg)
 
     st.markdown(
         "<div style='text-align:center; color:#445566; font-size:0.75rem; "

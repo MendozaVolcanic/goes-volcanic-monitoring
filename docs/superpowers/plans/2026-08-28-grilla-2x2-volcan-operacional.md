@@ -1111,3 +1111,29 @@ Al hacerlo apareció un bug de georreferencia que el radio fijo tapaba: el cach�
 - **`PRODUCTS` sobrevive** porque `zonas_fullscreen.py:814` la importa para componer el PNG del rotador TV. Quedan dos fuentes de verdad de las recetas hasta que esa vista migre a `GRID_PANELS_TV`.
 - **Leyenda duplicada en el slot de sala**: `modo_guardia.py` pinta su fila de 3 leyendas y además cada `_panel_rammb` pinta la suya. Verificado en la app corriendo. Es **preexistente** (el `_live_panel` viejo hacía lo mismo), pero en una pared proyectada son ~30 px de alto desperdiciados. Se arregla con un `show_legend` en `_panel_rammb`, análogo al `show_header` que ya existe.
 - **Sin GeoTIFF al zoom de volcán**: el tab viejo ofrecía PNG + GeoTIFF por producto. La grilla ofrece un PNG compuesto. La exportación georreferenciada sigue disponible desde los tabs Nacional y Zona (`live_viewer._download_buttons`), así que no desapareció de la app.
+
+---
+
+# Corrección posterior: el layout depende del encuadre (2026-08-29)
+
+El plan (y el título de este archivo) dan el **2×2 por fijo**. Ya no lo es, y el
+argumento que lo sostenía estaba **mal**: decía que "cuatro columnas dejan cada
+mapa angosto y desperdician el alto de la ventana". Con una escena **cuadrada**
+(±radio en lat y lon) en una pantalla 16:9, lo que escasea es el **alto**, no el
+ancho. Apilar dos filas parte justo la dimensión que falta.
+
+Medido en el DOM a 1920×1080, `?vista=operacional&fullscreen=1`:
+
+| layout | panel | lado de la imagen |
+|---|---|---|
+| 2×2 | 946 × 245 | ~217 px, con ~700 px de ancho vacío al costado |
+| 1×4 | 465 × 505 | **465 px — 2.1×** |
+
+Desde el 2026-08-29 el layout sale de `_resolve_per_row(per_row, fullscreen)`:
+**4 en una fila en fullscreen, 2×2 en modo normal** (ahí hay sidebar, el ancho
+baja a ~1400 px y el 2×2 vuelve a ganar: 352 contra ~330 px de lado), y un
+`per_row` explícito se respeta — el slot de sala sigue pidiendo 3.
+
+La lógica vive **adentro de `volcan_grid`**, no en los llamadores: duplicarla en
+la Vista Operacional y en el sub-tab de Modo Guardia es exactamente la
+desincronización que esta rama vino a evitar.

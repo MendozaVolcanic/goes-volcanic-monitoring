@@ -63,7 +63,8 @@ def test_la_grilla_declara_los_cuatro_productos():
 
     ids = [p["id"] for p in GRID_PANELS]
     assert ids == ["geocolor", "eumetsat_ash", "jma_so2", "volcat"], ids
-    # 2x2 exacto: si alguien agrega un 5to hay que decidir el layout a mano
+    # cuatro exactos: un 5to obliga a decidir el layout a mano (hoy sale de
+    # _resolve_per_row: 4 en una fila en fullscreen, 2x2 en modo normal)
     assert len(GRID_PANELS) == 4
 
 
@@ -220,22 +221,44 @@ def test_el_compositor_no_es_fragment():
     assert _fragment_run_every(VIEW, "volcan_grid") is None
 
 
-def test_la_grilla_es_2x2_por_default():
-    """El encuadre del volcan es cuadrado (+-RADIUS_DEG en lat y lon). Cuatro
-    paneles en una fila los deja angostos y desperdician el alto de la
-    ventana, que es justo lo que se quiere aprovechar en una emergencia.
+def test_el_layout_lo_decide_el_encuadre_disponible():
+    """La escena es CUADRADA (+-radio en lat y lon), asi que en una pantalla
+    16:9 la dimension que escasea es el ALTO.
 
-    El default tiene que ser 2: el Modo Sala pide 3 explicitamente, y si el
-    default se corriera a 3 o 4 la vista operacional cambiaria sin que nadie
-    lo pida.
+    En fullscreen, apilar dos filas parte justo esa dimension: medido a
+    1920x1080, la imagen quedaba en ~245 px de lado con ~700 px de ancho VACIO
+    al costado de cada panel. Cuatro columnas gastan el ancho, que sobra, y la
+    imagen sube a ~462 px de lado (2.1x). En modo normal hay sidebar, el ancho
+    baja a ~1400 px y ahi el 2x2 vuelve a ganar.
+
+    Se pinea el COMPORTAMIENTO, no el valor del default: el default es None y
+    lo que importa es a que resuelve en cada caso.
     """
     import inspect
 
-    from dashboard.views.modo_guardia_volcan import volcan_grid
+    from dashboard.views.modo_guardia_volcan import (_resolve_per_row,
+                                                     volcan_grid)
+
+    assert _resolve_per_row(None, fullscreen=True) == 4
+    assert _resolve_per_row(None, fullscreen=False) == 2
+    # un per_row explicito manda: el slot de sala pide 3 porque su leyenda de
+    # 3 columnas la arma el llamador
+    assert _resolve_per_row(3, fullscreen=True) == 3
+    assert _resolve_per_row(2, fullscreen=False) == 2
 
     sig = inspect.signature(volcan_grid)
-    assert sig.parameters["per_row"].default == 2
-    assert sig.parameters["panels"].default is None  # -> GRID_PANELS
+    assert sig.parameters["per_row"].default is None   # -> lo decide el modo
+    assert sig.parameters["panels"].default is None    # -> GRID_PANELS
+
+
+def test_el_alto_de_la_sala_no_paga_el_cromo_de_la_pagina():
+    """El slot `tv=volcan` no tiene tabs, toolbars ni badges arriba: su primer
+    plot arranca en y=165 contra y~505 de la pagina. Descontarle el cromo de
+    la pagina le sacaria ~350 px de imagen a la pared por nada."""
+    from dashboard.views.modo_guardia_volcan import (GRID_CHROME_PAGE_PX,
+                                                     GRID_CHROME_TV_PX)
+
+    assert GRID_CHROME_TV_PX < GRID_CHROME_PAGE_PX
 
 
 def test_la_grilla_recorre_los_paneles_declarados():

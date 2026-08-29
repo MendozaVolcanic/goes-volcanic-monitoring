@@ -1279,7 +1279,7 @@ def _live_content():
                 if prod_zona in LEYENDAS_HTML:
                     st.markdown(LEYENDAS_HTML[prod_zona], unsafe_allow_html=True)
 
-    # ── Tab 5: Volcán — grilla 2×2 con los 4 productos ────────────────────
+    # ── Tab 5: Volcán — los 4 productos a la vez ──────────────────────────
     # Delega en `modo_guardia_volcan.volcan_grid`, la MISMA grilla que usan el
     # sub-tab Volcán del Modo Guardia y el slot tv=volcan del Modo Sala. Antes
     # esto era un botón "Cargar volcán" + 3 sub-tabs: dos clics por producto,

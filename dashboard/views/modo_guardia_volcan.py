@@ -1,4 +1,4 @@
-"""Modo Guardia VOLCAN: zoom a un volcan, sus 4 productos en grilla 2x2.
+"""Modo Guardia VOLCAN: zoom a un volcan, sus 4 productos a la vez.
 
 FILOSOFIA: igual que Modo Guardia (Chile) — solo imagen, sin metricas
 automaticas. Aca el zoom es del volcan (~30 km radio) y mostramos los 4
@@ -120,9 +120,8 @@ _PANEL_POR_ID = {p["id"]: p for p in GRID_PANELS}
 GRID_PANELS_TV = [_PANEL_POR_ID[pid]
                   for pid in ("eumetsat_ash", "geocolor", "jma_so2")]
 
-# Alto por panel en la grilla 2x2. Fullscreen reparte la ventana entre 2 filas;
-# el modo normal deja el panel mas bajo para que entren las dos filas sin
-# scroll en un portatil.
+# Alto por panel. En modo normal (2x2) el panel va bajo para que entren las
+# dos filas sin scroll en un portatil.
 #
 # OJO: en fullscreen estos numeros son solo el alto INICIAL de la figura
 # Plotly. El alto que se ve lo manda el CSS de `_inject_fullscreen_css`
@@ -130,21 +129,25 @@ GRID_PANELS_TV = [_PANEL_POR_ID[pid]
 # el servidor no sabe cuanto mide la pantalla del operador.
 PANEL_HEIGHT_NORMAL = 380
 PANEL_HEIGHT_FULLSCREEN = 460
-# Una sola fila (el slot `tv=volcan` del Modo Sala, 3 productos proyectados)
+# Una sola fila (los 4 productos en fullscreen, o los 3 del slot `tv=volcan`)
 # no reparte la ventana con nadie: conserva el alto historico que tenia el
 # default de `_render_product`. Pasarle el de 2 filas le sacaba 39% del alto
 # a la pared que se proyecta 24/7 en la sala de turno.
 PANEL_HEIGHT_TV_ROW = 620
 
 # Cromo (px) que NO es imagen cuando la grilla va en fullscreen, medido en el
-# DOM a 1920x1080 (ago-2026):
-#   - arriba del primer panel: boton Salir, badge de latencia, barra de
-#     auto-refresh, toggles, barra de tabs, toolbar del volcan y cabecera;
-#   - por cada fila: la leyenda compacta del producto, la linea de receta y
-#     el gap entre bloques de Streamlit.
+# DOM a 1920x1080 (ago-2026). Son dos situaciones distintas:
+#   - PAGINA (Vista Operacional, sub-tab del Modo Guardia): arriba del primer
+#     panel van el boton Salir, el badge de latencia, la barra de auto-refresh,
+#     los toggles, la barra de tabs, la toolbar del volcan y la cabecera. El
+#     primer plot arranca en y=505..549 segun el alto de cada leyenda.
+#   - SALA (`tv=volcan`): no hay nada de eso, el primer plot arranca en y=165.
+#     Con el cromo de pagina la pared perderia ~350 px de imagen por nada.
+# Y por cada fila se suman la leyenda compacta, la linea de receta y el gap.
 # Son una ESTIMACION. Si sobra o falta, el panel queda un poco mas alto o mas
 # bajo, nunca una fila bajo el fold: `min-height` frena la division.
-GRID_CHROME_TOP_PX = 380
+GRID_CHROME_PAGE_PX = 470
+GRID_CHROME_TV_PX = 100
 GRID_CHROME_ROW_PX = 105
 
 # Anillos de distancia (km)
@@ -823,6 +826,29 @@ def _capture_button(v, show_wind: bool, radius_deg: float = RADIUS_DEG):
         st.warning(f"No se pudo construir captura: {e}")
 
 
+def _resolve_per_row(per_row: int | None, fullscreen: bool) -> int:
+    """Cuantas columnas usa la grilla cuando el llamador no lo dice.
+
+    EL LAYOUT DEPENDE DEL ENCUADRE DISPONIBLE, NO DEL GUSTO. La escena es
+    CUADRADA (±radio en lat y lon), asi que en una pantalla 16:9 la dimension
+    que escasea es el ALTO. Dos filas lo parten en dos: medido a 1920x1080, la
+    imagen quedaba en ~245 px de lado con ~700 px de ancho VACIO al costado de
+    cada panel. Cuatro columnas gastan el ancho, que es lo que sobra, y la
+    imagen sube a ~462 px de lado — 2.1x mas grande, que es justo el objetivo
+    (ver mejor la anomalia).
+
+    En modo normal hay sidebar y el ancho baja a ~1400 px: ahi las cuatro
+    columnas quedan mas chicas que el 2x2 (~350 contra 380 px de lado) y el
+    2x2 vuelve a ganar.
+
+    Un `per_row` explicito se respeta tal cual: el slot de sala pide 3 porque
+    su leyenda de 3 columnas la arma el llamador.
+    """
+    if per_row is not None:
+        return per_row
+    return 4 if fullscreen else 2
+
+
 def _panel_height(fullscreen: bool, filas: int) -> int:
     """Alto inicial en px de cada figura Plotly de la grilla.
 
@@ -839,7 +865,7 @@ def _panel_height(fullscreen: bool, filas: int) -> int:
     return PANEL_HEIGHT_TV_ROW if filas <= 1 else PANEL_HEIGHT_FULLSCREEN
 
 
-def _inject_fullscreen_css(filas: int) -> None:
+def _inject_fullscreen_css(filas: int, con_cabecera: bool = True) -> None:
     """CSS que hace que la grilla ocupe la ventana del operador.
 
     POR QUE: el pedido de operaciones fue "que ocupen todo el espacio que
@@ -860,7 +886,8 @@ def _inject_fullscreen_css(filas: int) -> None:
        gaps de 16 px entre bloques. Nada de esto saca funcionalidad: fuera de
        fullscreen la vista queda igual.
     """
-    alto = (f"calc((100vh - {GRID_CHROME_TOP_PX + GRID_CHROME_ROW_PX * filas}px)"
+    base = GRID_CHROME_PAGE_PX if con_cabecera else GRID_CHROME_TV_PX
+    alto = (f"calc((100vh - {base + GRID_CHROME_ROW_PX * filas}px)"
             f" / {filas})")
     st.markdown(
         f"""
@@ -902,7 +929,7 @@ def _inject_fullscreen_css(filas: int) -> None:
 def volcan_grid(volcan_name: str, show_wind: bool = False,
                 show_rings: bool = False, enable_capture: bool = False,
                 fullscreen: bool = False, panels: list | None = None,
-                per_row: int = 2, show_header: bool = True,
+                per_row: int | None = None, show_header: bool = True,
                 radius_deg: float = RADIUS_DEG):
     """Grilla de productos del volcan, todos a la vez.
 
@@ -914,9 +941,10 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
     paneles de adentro ya son fragments, cada uno con su cadencia. Este nivel
     solo compone, y se re-ejecuta en el full-rerun (cambio de volcan o toggle).
 
-    Default 2x2 y no una fila de 4 porque el encuadre es cuadrado
-    (+-RADIUS_DEG en lat y lon): cuatro columnas dejan cada mapa angosto y
-    desperdician el alto de la ventana.
+    El layout sale de `_resolve_per_row`: 4 en una fila en fullscreen, 2x2 en
+    modo normal. Depende del encuadre disponible, no del gusto — la escena es
+    cuadrada, asi que en 16:9 lo que escasea es el alto y apilar filas parte
+    justo la dimension que falta.
 
     `panels` y `per_row` existen para el MODO SALA, que se proyecta en la sala
     de turno con su propia leyenda de 3 columnas armada por el llamador. Ese
@@ -936,13 +964,16 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
         return
 
     panels = GRID_PANELS if panels is None else panels
+    per_row = _resolve_per_row(per_row, fullscreen)
     filas = [panels[i:i + per_row] for i in range(0, len(panels), per_row)]
     height = _panel_height(fullscreen, len(filas))
     # En fullscreen el alto lo reparte el CSS entre las filas que haya: es la
     # unica forma de "ocupar la ventana" sin saber cuanto mide (mismo patron
-    # que el grid de 4 zonas del Modo Sala, modo_guardia.py).
+    # que el grid de 4 zonas del Modo Sala, modo_guardia.py). `show_header`
+    # distingue la pagina (que arrastra tabs y toolbars) de la sala (que no
+    # tiene nada arriba).
     if fullscreen:
-        _inject_fullscreen_css(len(filas))
+        _inject_fullscreen_css(len(filas), con_cabecera=show_header)
     if show_header:
         _grid_header(volcan_name, show_wind, radius_deg=radius_deg)
 
@@ -987,7 +1018,7 @@ def render():
         "<div style='font-size:1.5rem; font-weight:800; color:#ff6644;'>"
         "🛡 MODO GUARDIA — VOLCAN</div>"
         "<div style='font-size:0.85rem; color:#7a8a9a;'>"
-        "Zoom volcan · 4 productos en grilla 2×2 · GOES-19</div></div>",
+        "Zoom volcan · 4 productos a la vez · GOES-19</div></div>",
         unsafe_allow_html=True,
     )
 

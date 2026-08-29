@@ -815,7 +815,8 @@ def _volcan_zoom_png(volcano_name: str, bucket: str, show_hotspots: bool):
     from datetime import datetime, timezone
 
     from dashboard.views.modo_guardia_volcan import (
-        PRODUCTS, RADIUS_DEG as V_RADIUS, _hotspots_volcan, fetch_volcan_product,
+        GRID_PANELS_TV, RADIUS_DEG as V_RADIUS, _hotspots_volcan,
+        fetch_volcan_product,
     )
     from src.volcanos import get_volcano
 
@@ -837,14 +838,17 @@ def _volcan_zoom_png(volcano_name: str, bucket: str, show_hotspots: bool):
         except Exception:
             hotspots = []
 
-    def _one(item):
-        prod_id, label, _recipe = item
+    def _one(panel):
         img, ts_label = fetch_volcan_product(
-            prod_id, v.name, v.lat, v.lon, bounds, now)
-        return prod_id, label, img, ts_label
+            panel["id"], v.name, v.lat, v.lon, bounds, now)
+        return panel["id"], panel["label"], img, ts_label
 
+    # GRID_PANELS_TV es la MISMA lista que recorre el slot `tv=volcan` en vivo,
+    # y existe justamente para conservar el orden que la sala tiene
+    # interiorizado (Ash primero). Los rotulos van DENTRO de este PNG, asi que
+    # reordenarla pone "Ash RGB" sobre el panel GeoColor en la pared.
     with ThreadPoolExecutor(max_workers=3) as ex:
-        results = list(ex.map(_one, PRODUCTS))   # preserva orden de PRODUCTS
+        results = list(ex.map(_one, GRID_PANELS_TV))  # preserva el orden
 
     panels = []
     for prod_id, label, img, ts_label in results:

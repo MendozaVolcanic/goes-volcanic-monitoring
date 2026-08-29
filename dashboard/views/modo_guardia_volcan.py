@@ -65,12 +65,6 @@ RADIUS_DEG = 0.35  # ~38 km — un volcan + sus alrededores
 # que el GeoColor nocturno de RAMMB con luces de ciudad). Y solo si está fresco.
 HIRES_MAX_AGE_MIN = 90
 
-PRODUCTS = [
-    ("eumetsat_ash", "Ash RGB", "EUMETSAT B15-B14 / B14-B11 / B13"),
-    ("geocolor", "GeoColor", "Visible mejorado (CIRA)"),
-    ("jma_so2", "SO2 RGB", "JMA B07-B09 / B09-B11"),
-]
-
 # ── Grilla 2x2 de la vista de volcan ─────────────────────────────────
 #
 # Los 4 productos de IMAGEN que tenemos, juntos en pantalla. En una emergencia
@@ -109,10 +103,15 @@ GRID_PANELS = [
 #
 # OJO con el ORDEN: es distinto al de GRID_PANELS a proposito. La grilla 2x2
 # ordena por secuencia de lectura de emergencia (GeoColor primero: hay columna?).
-# La sala de turno conserva el orden historico de PRODUCTS —Ash RGB primero—
-# porque su leyenda de 3 columnas se arma en modo_guardia.py y la gente de turno
-# ya tiene esa pared interiorizada. Cambiarselo sin que nadie lo pida rotularia
+# La sala de turno conserva su orden historico —Ash RGB primero— porque su
+# leyenda de 3 columnas se arma en modo_guardia.py y la gente de turno ya tiene
+# esa pared interiorizada. Cambiarselo sin que nadie lo pida rotularia
 # "Ash RGB" sobre el panel GeoColor.
+#
+# Esta lista es tambien la que compone el PNG del rotador TV
+# (`zonas_fullscreen._volcan_zoom_png`), que antes iteraba una segunda lista
+# `PRODUCTS` con los mismos campos. Eran dos fuentes de verdad de lo que se
+# rotula encima de un mapa de ceniza, y los textos YA habian divergido.
 #
 # Son los MISMOS objetos que GRID_PANELS (no copias): si cambia una receta,
 # cambia en los dos lados a la vez.

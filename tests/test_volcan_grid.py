@@ -101,16 +101,20 @@ def test_modo_sala_conserva_su_fila_de_tres():
     columnas se arma en modo_guardia.py. Si la grilla le cambia el ORDEN por
     debajo, la leyenda rotula "Ash RGB" sobre el panel GeoColor.
 
-    Por eso la sala conserva el orden historico de PRODUCTS (Ash primero),
-    distinto al orden de lectura de emergencia de la grilla 2x2.
+    Por eso la sala conserva su orden historico (Ash primero), distinto al
+    orden de lectura de emergencia de la grilla 2x2.
     """
     from dashboard.views.modo_guardia_volcan import (GRID_PANELS,
-                                                     GRID_PANELS_TV, PRODUCTS)
+                                                     GRID_PANELS_TV)
 
+    # Este literal ES el orden que la sala tiene interiorizado, no un detalle
+    # de implementacion: hasta ago-2026 se comparaba contra la lista `PRODUCTS`,
+    # que era la segunda fuente de verdad que este trabajo borro. Al quedarse
+    # sin donde compararse, el orden se pinea aca a mano y a proposito —
+    # cambiarlo es una decision operativa, no un refactor.
+    assert [p["id"] for p in GRID_PANELS_TV] == ["eumetsat_ash", "geocolor",
+                                                 "jma_so2"]
     ids_tv = [p["id"] for p in GRID_PANELS_TV]
-    assert ids_tv == ["eumetsat_ash", "geocolor", "jma_so2"]
-    # el orden de la sala es el de PRODUCTS, que es lo que hoy se proyecta
-    assert ids_tv == [pid for pid, _l, _r in PRODUCTS]
     # y NO el de la grilla 2x2: si algun dia coinciden, que sea una decision
     assert ids_tv != [p["id"] for p in GRID_PANELS if p["kind"] == "rammb"]
     # identidad, no igualdad: `in` sobre dicts compara CONTENIDO, asi que una
@@ -601,3 +605,39 @@ def test_apagar_la_leyenda_le_devuelve_ese_alto_al_encuadre():
     cuerpo = _func_source(VIEW, "volcan_grid")
     assert re.search(r"_inject_fullscreen_css\(.*?con_leyenda=show_legend",
                      cuerpo, re.S), cuerpo
+
+
+# ── Una sola fuente de las recetas ───────────────────────────────────
+
+
+def test_no_quedo_una_segunda_lista_de_productos():
+    """`PRODUCTS` convivia con `GRID_PANELS` con los mismos campos, y los
+    textos YA habian divergido (la receta de GeoColor decia una cosa en cada
+    lista). Dos fuentes de verdad de lo que se rotula sobre un mapa de ceniza.
+    """
+    src = VIEW.read_text(encoding="utf-8")
+    assert not re.search(r"^PRODUCTS\s*=", src, re.M)
+    for path in (ZONAS, GUARDIA, LIVE):
+        cuerpo = path.read_text(encoding="utf-8")
+        assert not re.search(
+            r"modo_guardia_volcan import[^)]*\bPRODUCTS\b", cuerpo, re.S), (
+            f"{path.stem} sigue importando PRODUCTS de modo_guardia_volcan")
+
+
+def test_el_png_del_rotador_conserva_el_orden_de_la_sala():
+    """El PNG del rotador TV se PROYECTA. Componia sus 3 paneles iterando
+    `PRODUCTS`; ahora itera `GRID_PANELS_TV`, que existe justamente para
+    conservar ese orden (Ash primero). Los rotulos van dentro del PNG, asi que
+    un reordenamiento pone "Ash RGB" sobre el panel GeoColor en la pared.
+    """
+    from dashboard.views.modo_guardia_volcan import GRID_PANELS_TV
+
+    assert [p["id"] for p in GRID_PANELS_TV] == ["eumetsat_ash", "geocolor",
+                                                 "jma_so2"]
+    assert [p["label"] for p in GRID_PANELS_TV] == ["Ash RGB", "GeoColor",
+                                                    "SO2 RGB"]
+    # el `map` ITERA la lista compartida, no una copia local: un literal a mano
+    # deja la mencion en un comentario y el orden se va igual.
+    compositor = _func_source(ZONAS, "_volcan_zoom_png")
+    assert re.search(r"ex\.map\(_one,\s*GRID_PANELS_TV\)", compositor), compositor
+    assert "PRODUCTS" not in compositor

@@ -322,10 +322,100 @@ def test_el_slider_de_radio_vuelve_a_vista_operacional():
 def test_los_cuatro_paneles_encuadran_con_el_mismo_radio():
     """Si un solo lugar se queda con la constante, ese panel sale mas cerrado
     que los otros tres y se ve al toque en pantalla. Ningun bbox de la grilla
-    puede seguir armandose con RADIUS_DEG literal."""
-    src = GUARDIA.read_text(encoding="utf-8")
+    puede seguir armandose con RADIUS_DEG literal.
+
+    Lee VIEW (modo_guardia_volcan.py), que es donde viven los bbox de la
+    grilla. Apuntaba a GUARDIA (modo_guardia.py), que no tiene ni un
+    RADIUS_DEG ni un _crop_centered: el bucle quedaba vacio y los dos asserts
+    pasaban por construccion (falso verde, ago-2026)."""
+    src = VIEW.read_text(encoding="utf-8")
     for linea in src.splitlines():
         if "lat_min" in linea and "lat_max" in linea:
             assert "RADIUS_DEG" not in linea, linea.strip()
     # el crop del hi-res GeoColor tampoco (usaba la constante)
     assert "_crop_centered(h_arr, RADIUS_DEG" not in src
+
+
+def _volcan_grid_call(path: Path, marca: str) -> ast.Call:
+    """Llamada a volcan_grid que contiene `marca` entre sus keywords."""
+    tree = ast.parse(path.read_text(encoding="utf-8"))
+    for node in ast.walk(tree):
+        if (isinstance(node, ast.Call)
+                and getattr(node.func, "id", "") == "volcan_grid"
+                and marca in ast.unparse(node)):
+            return node
+    raise AssertionError(f"no hay llamada a volcan_grid con {marca}")
+
+
+def test_el_slot_de_sala_conserva_su_alto():
+    """El slot `tv=volcan` se proyecta 24/7 en la sala de turno.
+
+    Al migrarlo a la grilla se le omitio `fullscreen`, asi que caia en
+    PANEL_HEIGHT_NORMAL (380) cuando en main usaba el default de
+    `_render_product` (620): 39% menos de alto en la pared. En ese camino el
+    query param `fullscreen` SIEMPRE vale "1" (lo setea `_go_tv`), asi que la
+    llamada tiene que pasarlo fijo.
+    """
+    from dashboard.views.modo_guardia_volcan import _panel_height
+
+    call = _volcan_grid_call(GUARDIA, "GRID_PANELS_TV")
+    kw = {k.arg: ast.unparse(k.value) for k in call.keywords}
+    assert kw.get("fullscreen") == "True", kw
+
+    # y con una sola fila (los 3 de RAMMB) el alto no baja del historico
+    assert _panel_height(True, 1) >= 620
+    # dos filas reparten la ventana, no pueden pedir 620 cada una
+    assert _panel_height(True, 2) < _panel_height(True, 1)
+    assert _panel_height(False, 2) == 380
+
+
+def _hires_scene(monkeypatch, now):
+    """Escena hi-res fresca de radio 0.5° + ruta RAMMB mockeada (sin red)."""
+    import src.fetch.hires_cache as hires_cache
+    from dashboard.views import modo_guardia_volcan as MGV
+
+    arr = np.zeros((100, 100, 3), dtype=np.uint8)
+    info = {"radius_deg": 0.5, "render": "visible_color",
+            "scan_dt_iso": now.isoformat(),
+            "scan_ts": now.strftime("%Y%m%d%H%M%S")}
+    monkeypatch.setattr(hires_cache, "fetch_hires_for_volcano",
+                        lambda name, mode="color": (arr, info))
+    ts = now.strftime("%Y%m%d%H%M%S")
+    monkeypatch.setattr(MGV, "_recent_timestamps", lambda p, n=3: [ts])
+    monkeypatch.setattr(
+        MGV, "_frame_with_fallback",
+        lambda *a, **k: (np.zeros((4, 4, 3), dtype=np.uint8), ts,
+                         MGV.ZOOM_VOLCAN))
+    return MGV
+
+
+def _bounds(lat, lon, r):
+    return {"lat_min": lat - r, "lat_max": lat + r,
+            "lon_min": lon - r, "lon_max": lon + r}
+
+
+def test_el_hires_solo_se_usa_si_cubre_el_bbox_pedido(monkeypatch):
+    """El guard `r_view <= r` de fetch_volcan_product es una cuestion de
+    GEORREFERENCIA, no de estetica.
+
+    El cache hi-res de GeoColor cubre ~0.5° alrededor del crater. Si la vista
+    pide 2°, `_crop_centered` clampea la fraccion a 1.0 y devuelve la imagen de
+    0.5° ENTERA, que el llamador pinta estirada sobre el bbox de 2°: la pluma
+    queda dibujada a 4x de donde esta. Ahi hay que caer a RAMMB, que si baja
+    los tiles del area pedida.
+    """
+    from datetime import datetime, timezone
+
+    now = datetime.now(timezone.utc)
+    MGV = _hires_scene(monkeypatch, now)
+    lat, lon = -23.37, -67.73
+
+    # radio 0.35° (el de Modo Guardia): cabe en el cache -> usa hi-res
+    _img, label = MGV.fetch_volcan_product(
+        "geocolor", "Lascar", lat, lon, _bounds(lat, lon, 0.35), now)
+    assert "hi-res L1b" in label, label
+
+    # radio 2° (siguiendo una pluma lejos del crater): NO cabe -> RAMMB
+    _img2, label2 = MGV.fetch_volcan_product(
+        "geocolor", "Lascar", lat, lon, _bounds(lat, lon, 2.0), now)
+    assert "hi-res L1b" not in label2, label2

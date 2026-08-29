@@ -15,8 +15,7 @@ import plotly.graph_objects as go
 import streamlit as st
 
 try:
-    from dashboard.map_helpers import (add_chile_border, hotspot_distance_km,
-                                       render_compact_legend)
+    from dashboard.map_helpers import add_chile_border, render_compact_legend
     from dashboard.style import (C_ACCENT, header, info_panel, kpi_card,
                                  refresh_info_badge, volcano_marker)
     from dashboard.utils import (
@@ -27,11 +26,11 @@ try:
         CHILE_REPROJECTED_BOUNDS, CHILE_TILE_BOUNDS, CHILE_TILES_Z2, PRODUCTS,
         fetch_stitched_frame, fetch_frame_for_bounds,
         get_latest_timestamps, reproject_to_latlon,
-        ZOOM_ZONE, ZOOM_VOLCAN, VOLCANO_RADIUS_DEG,
+        ZOOM_ZONE,
     )
     from src.fetch.wind_data import WIND_LEVELS, fetch_wind_grid, fetch_wind_diagnostic
     from src.fetch.goes_fdcf import fetch_latest_hotspots, HotSpot
-    from src.volcanos import CATALOG, get_priority, get_volcano, PRIORITY_VOLCANOES
+    from src.volcanos import CATALOG, get_priority, PRIORITY_VOLCANOES
 except Exception:
     # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.
     # Si esto se ejecuta, hay un bug — log y reraise para que Streamlit muestre el error.
@@ -130,38 +129,6 @@ def _fetch_zone_frame(
     """Descargar frame para una zona volcánica a zoom=3 (cache 2h por ts+zona)."""
     bounds = VOLCANIC_ZONES[zone_key]
     return fetch_frame_for_bounds(product, ts, bounds, zoom=ZOOM_ZONE)
-
-
-@st.cache_data(ttl=7200, show_spinner=False)
-def _fetch_volcano_frame(
-    product: str, ts: str, volcano_name: str,
-    radius: float = VOLCANO_RADIUS_DEG,
-    _v: str = _REPROJECT_VERSION,
-) -> tuple[np.ndarray | None, int]:
-    """Descargar frame centrado en un volcan (zoom=4 con fallback a zoom=3).
-
-    Returns:
-        (img, zoom_usado). Si falla todo, (None, 0).
-    """
-    v = get_volcano(volcano_name)
-    if v is None:
-        return None, 0
-    bounds = {
-        "lat_min": v.lat - radius,
-        "lat_max": v.lat + radius,
-        "lon_min": v.lon - radius,
-        "lon_max": v.lon + radius,
-    }
-    # Intento 1: zoom=4 (~1.7 km/px). RAMMB no siempre tiene zoom=4 para
-    # todos los productos/timestamps — puede tardar mas en publicarse.
-    img = fetch_frame_for_bounds(product, ts, bounds, zoom=ZOOM_VOLCAN)
-    if img is not None:
-        return img, ZOOM_VOLCAN
-    # Intento 2: fallback a zoom=3 (~3.4 km/px), siempre disponible.
-    img = fetch_frame_for_bounds(product, ts, bounds, zoom=ZOOM_ZONE)
-    if img is not None:
-        return img, ZOOM_ZONE
-    return None, 0
 
 
 @st.cache_data(ttl=15, show_spinner=False)
@@ -1312,185 +1279,40 @@ def _live_content():
                 if prod_zona in LEYENDAS_HTML:
                     st.markdown(LEYENDAS_HTML[prod_zona], unsafe_allow_html=True)
 
-    # ── Tab 5: Volcán zoom=4 — sub-tabs por producto ──────────────────────
+    # ── Tab 5: Volcán — grilla 2×2 con los 4 productos ────────────────────
+    # Delega en `modo_guardia_volcan.volcan_grid`, la MISMA grilla que usan el
+    # sub-tab Volcán del Modo Guardia y el slot tv=volcan del Modo Sala. Antes
+    # esto era un botón "Cargar volcán" + 3 sub-tabs: dos clics por producto,
+    # justo lo que no se puede hacer con un volcán en crisis. Import perezoso
+    # (gotcha de hot-reload de Streamlit, documentado en la cabecera del módulo).
     with tab5:
-        col_vsel, col_vrad, col_vbtn = st.columns([2.4, 1.2, 1])
+        from dashboard.views.modo_guardia_volcan import volcan_grid
+
+        col_vsel, col_vw, col_vr = st.columns([2.4, 1, 1])
         with col_vsel:
-            priority_names = [v.name for v in CATALOG if v.name in
-                              [p for p in PRIORITY_VOLCANOES]]
-            other_names    = [v.name for v in CATALOG if v.name not in priority_names]
-            volc_options   = (
-                [f"★ {n}" for n in priority_names] + other_names
-            )
-            sel_raw = st.selectbox("Volcán", volc_options, index=0, key="volc_sel")
+            priority_names = [v.name for v in CATALOG
+                              if v.name in PRIORITY_VOLCANOES]
+            other_names = [v.name for v in CATALOG
+                           if v.name not in priority_names]
+            volc_options = [f"★ {n}" for n in priority_names] + other_names
+            sel_raw = st.selectbox("Volcán", volc_options, index=0,
+                                   key="volc_sel")
             sel_name = sel_raw.replace("★ ", "")
-        with col_vrad:
-            radius = st.slider("Radio (°)", 0.5, 3.0, VOLCANO_RADIUS_DEG, 0.5,
-                               key="volc_radius",
-                               help="±radio en grados lat/lon (~111 km por grado)")
-        with col_vbtn:
-            st.markdown("<div style='height:1.2rem'></div>", unsafe_allow_html=True)
-            cargar_volc = st.button(
-                "Cargar volcán",
-                key="btn_cargar_volc", type="primary",
-                width='stretch',
-                help="Descarga zoom=4 (~1.7 km/px) para el volcán seleccionado.",
-            )
+        with col_vw:
+            _vg_wind = st.toggle("💨 Viento", value=False, key="vg_wind",
+                                 help="Vectores GFS 300/500/850 hPa sobre el "
+                                      "cráter. Cache 1h.")
+        with col_vr:
+            _vg_rings = st.toggle("⊙ Anillos", value=False, key="vg_rings",
+                                  help="Anillos 5/10/25/50 km desde el cráter.")
 
-        if not cargar_volc and not st.session_state.get("volc_cargado"):
-            st.info(
-                "Presiona **Cargar volcán** para descargar zoom=4 "
-                "(~1.7 km/px) del volcán seleccionado. Después podés alternar "
-                "entre los 3 productos sin re-descargar."
-            )
-        else:
-            st.session_state["volc_cargado"] = True
-            volcano = get_volcano(sel_name)
-            if volcano is None:
-                st.error(f"Volcan '{sel_name}' no encontrado en el catalogo.")
-            else:
-                volc_bounds = {
-                    "lat_min": volcano.lat - radius,
-                    "lat_max": volcano.lat + radius,
-                    "lon_min": volcano.lon - radius,
-                    "lon_max": volcano.lon + radius,
-                }
-
-                # Sub-tabs por producto. Cache por (producto, ts, volcano, radius)
-                # asi alternar tabs no re-descarga lo ya visto.
-                _v_geo, _v_ash, _v_so2 = st.tabs(SUBTAB_LABELS)
-                volc_sub_tabs = dict(zip(SUBTAB_PRODS, [_v_geo, _v_ash, _v_so2]))
-
-                for prod_volc, sub_tab_v in volc_sub_tabs.items():
-                    with sub_tab_v:
-                        ts_volc = _get_latest_ts(prod_volc)
-                        if ts_volc is None:
-                            st.error(f"No se pudo obtener timestamp de {PRODUCT_LABELS.get(prod_volc, prod_volc)}.")
-                            continue
-
-                        with st.spinner(
-                            f"Cargando {PRODUCT_LABELS.get(prod_volc, prod_volc)} "
-                            f"para {volcano.name} ({ts_volc[8:10]}:{ts_volc[10:12]} UTC)..."
-                        ):
-                            img_volc, zoom_used = _fetch_volcano_frame(
-                                prod_volc, ts_volc, sel_name, radius,
-                            )
-
-                        if img_volc is None or zoom_used == 0:
-                            st.error(
-                                f"RAMMB no tiene tiles de **{prod_volc}** ni en zoom=4 "
-                                f"ni en zoom=3 para el scan {ts_volc[8:10]}:{ts_volc[10:12]} UTC. "
-                                "Probá otro producto o esperá el próximo scan."
-                            )
-                            continue
-
-                        zoom_label = (f"Zoom=4 (~1.7 km/px)" if zoom_used == ZOOM_VOLCAN
-                                      else f"Zoom=3 (~3.4 km/px, zoom 4 no disponible)")
-                        st.markdown(
-                            f'<div style="font-size:0.9rem; color:#c0ccd8; margin-bottom:0.4rem; '
-                            f'padding:0.3rem 0.6rem; background:rgba(17,24,34,0.5); '
-                            f'border-radius:6px; border-left:3px solid #CC3311;">'
-                            f'<b style="color:#e6edf3;">{volcano.name}</b>'
-                            f'<span style="color:#99aabb; margin-left:0.5rem; font-size:0.8rem;">'
-                            f'{volcano.lat:.2f}°, {volcano.lon:.2f}° · '
-                            f'{volcano.elevation:,} m</span>'
-                            f'<span style="color:#667788; margin-left:0.6rem; font-size:0.78rem;">'
-                            f'· Scan <b style="font-family:monospace;">{ts_volc[8:10]}:{ts_volc[10:12]} UTC</b> '
-                            f'· {zoom_label}</span></div>',
-                            unsafe_allow_html=True,
-                        )
-                        fig_v = _make_fig(
-                            img_volc, volc_bounds,
-                            f"{volcano.name} · {prod_volc} · "
-                            f"±{radius}° ({radius*111:.0f} km)",
-                            highlight_volcano=volcano,
-                            volc_layer=volc_layer,
-                        )
-
-                        # Hot spots NOAA FDCF en zoom de volcan
-                        if show_hotspots:
-                            _hs_volc, _hs_ts_v = _fetch_hotspots_cached(
-                                volc_bounds["lat_min"], volc_bounds["lat_max"],
-                                volc_bounds["lon_min"], volc_bounds["lon_max"],
-                            )
-                            if _hs_volc:
-                                _add_hotspots(
-                                    fig_v, _hs_volc,
-                                    scan_label=(_hs_ts_v[11:16] + " UTC"
-                                                if _hs_ts_v else None),
-                                )
-                                # Distancia con cos(lat): formula plana sin cos
-                                # subestimaba ~75% en sur de Chile (lat -45).
-                                _min_d = min(
-                                    hotspot_distance_km(
-                                        volcano.lat, volcano.lon,
-                                        h['lat'], h['lon'],
-                                    )
-                                    for h in _hs_volc
-                                )
-                                st.caption(
-                                    f"🔥 {len(_hs_volc)} hot spot(s) cerca de "
-                                    f"{volcano.name}. Distancia mínima al vent: "
-                                    f"{_min_d:.1f} km"
-                                )
-
-                        # Viento sobre la vista del volcan
-                        if show_wind:
-                            from src.fetch.wind_data import fetch_wind_grid as _fwg
-                            vlats = [volcano.lat - radius*0.6,
-                                     volcano.lat,
-                                     volcano.lat + radius*0.6]
-                            vlons = [volcano.lon - radius*0.6,
-                                     volcano.lon,
-                                     volcano.lon + radius*0.6]
-                            wind_v = _fwg(vlats, vlons, level=WIND_LEVELS[wind_level])
-                            if wind_v:
-                                _add_wind_arrows(fig_v, wind_v, scale=0.012,
-                                                 level_label=wind_level)
-                                st.caption(
-                                    f"🌬 {len(wind_v)} vectores GFS @ {wind_level} "
-                                    f"(grilla 3×3 local)"
-                                )
-                            else:
-                                st.warning(
-                                    f"No se pudo obtener viento a {wind_level} para "
-                                    f"la posicion del volcan."
-                                )
-
-                        fig_v.update_layout(
-                            height=820,
-                            margin=dict(l=10, r=10, t=30, b=10),
-                        )
-                        render_compact_legend(prod_volc,
-                                              symbols=("volcano",))
-                        st.plotly_chart(fig_v, width='stretch')
-
-                        # Descarga PNG + GeoTIFF
-                        _dt_volc = parse_rammb_ts(ts_volc)
-                        _volc_label = (
-                            f"GOES-19 {PRODUCT_LABELS.get(prod_volc, prod_volc)} - "
-                            f"{volcano.name} (+/-{radius} deg) - "
-                            f"{_dt_volc.strftime('%Y-%m-%d %H:%M UTC')}"
-                            f" ({fmt_chile(_dt_volc)} CL)"
-                        )
-                        _safe_volc = (volcano.name.lower()
-                                      .replace(" ", "-").replace(",", "")
-                                      .replace("á","a").replace("é","e")
-                                      .replace("í","i").replace("ó","o")
-                                      .replace("ú","u").replace("ñ","n"))
-                        _download_buttons(
-                            img_volc,
-                            bounds=volc_bounds,
-                            base_filename=(f"goes19_{prod_volc}_{_safe_volc}_"
-                                           f"{ts_volc}_z{zoom_used}"),
-                            label_overlay=_volc_label,
-                            prod_label=volcano.name,
-                            key_prefix=f"dl_volc_{_safe_volc}_{prod_volc}",
-                        )
-
-                        # Leyenda interpretativa
-                        if prod_volc in LEYENDAS_HTML:
-                            st.markdown(LEYENDAS_HTML[prod_volc], unsafe_allow_html=True)
+        volcan_grid(
+            sel_name,
+            show_wind=_vg_wind,
+            show_rings=_vg_rings,
+            enable_capture=True,
+            fullscreen=st.query_params.get("fullscreen") == "1",
+        )
 
     st.markdown(
         '<div style="font-size:0.72rem; color:#334455; margin-top:1rem; '

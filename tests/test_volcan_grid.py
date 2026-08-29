@@ -271,3 +271,24 @@ def test_la_leyenda_de_sala_sale_del_mismo_orden_que_el_grid():
     assert "GRID_PANELS_TV" in src
     # el literal viejo ya no gobierna la leyenda
     assert '["eumetsat_ash", "geocolor", "jma_so2"]' not in src
+
+
+def test_vista_operacional_no_esconde_productos_en_subtabs():
+    """En emergencia no se navega tab por tab.
+
+    El tab Volcan tenia `st.tabs(SUBTAB_LABELS)` (un producto a la vez) y un
+    boton "Cargar volcan" antes de mostrar nada. Los dos se van: la grilla
+    carga sola y muestra los 4 juntos.
+    """
+    src = LIVE.read_text(encoding="utf-8")
+    assert "_v_geo, _v_ash, _v_so2 = st.tabs" not in src
+    assert "btn_cargar_volc" not in src
+
+
+def test_vista_operacional_reusa_la_grilla_compartida():
+    """Una sola implementacion: si se duplica en live_viewer, las dos copias se
+    desincronizan (paso con el preambulo de scene.py y con los tres caminos del
+    marcador de volcan)."""
+    src = LIVE.read_text(encoding="utf-8")
+    assert "from dashboard.views.modo_guardia_volcan import volcan_grid" in src
+    assert "volcan_grid(" in src

@@ -570,8 +570,8 @@ def _volcat_zonas_subtab():
 
 
 def _volcan_subtab():
-    """Sub-tab Volcan: zoom volcan con 3 productos + viento + anillos + captura."""
-    from dashboard.views.modo_guardia_volcan import _live_panel as volcan_panel
+    """Sub-tab Volcan: grilla 2x2 del volcan + viento + anillos + captura."""
+    from dashboard.views.modo_guardia_volcan import volcan_grid
     # Toolbar
     cols = st.columns([2, 1, 1, 1, 1])
     with cols[0]:
@@ -611,7 +611,8 @@ def _volcan_subtab():
             "Refresh 60s</div>",
             unsafe_allow_html=True,
         )
-    volcan_panel(volcan, show_wind, show_rings, enable_capture)
+    volcan_grid(volcan, show_wind, show_rings, enable_capture,
+                fullscreen=st.query_params.get("fullscreen") == "1")
 
 
 def render():
@@ -768,7 +769,7 @@ def render():
             _grid_fragment_tv()
             return
         elif tv_mode == "volcan":
-            from dashboard.views.modo_guardia_volcan import _live_panel as volcan_panel
+            from dashboard.views.modo_guardia_volcan import GRID_PANELS_TV, volcan_grid
             from dashboard.map_helpers import render_compact_legend, render_scan_status_badge
             volcan_name = st.query_params.get("volcan", "Villarrica")
             # Leyenda combinada: muestra los 3 productos uno al lado del otro
@@ -778,8 +779,11 @@ def render():
             cols = st.columns(3)
             ts = _latest_ts("eumetsat_ash")
             scan_dt = parse_rammb_ts(ts) if ts else None
-            for i, (col, prod) in enumerate(zip(cols,
-                    ["eumetsat_ash", "geocolor", "jma_so2"])):
+            # La lista sale de GRID_PANELS_TV, la MISMA que recorre el grid
+            # de abajo: dos literales separados calzaban por casualidad y
+            # cualquier reordenamiento rotulaba un producto encima de otro.
+            for i, (col, prod) in enumerate(zip(
+                    cols, [p["id"] for p in GRID_PANELS_TV])):
                 with col:
                     render_compact_legend(
                         prod, height_px=34, tv=True,
@@ -789,8 +793,9 @@ def render():
                             scan_dt, REFRESH_SECONDS,
                         ) if i == 2 else "",
                     )
-            volcan_panel(volcan_name, show_wind=False, show_rings=True,
-                         enable_capture=False)
+            volcan_grid(volcan_name, show_wind=False, show_rings=True,
+                        enable_capture=False, panels=GRID_PANELS_TV,
+                        per_row=3, show_header=False)
             return
         else:  # default = zonas
             # CSS especifico TV 4 zonas: fuerza cada plot a llenar el

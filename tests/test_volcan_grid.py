@@ -212,3 +212,62 @@ def test_el_panel_volcat_pone_su_leyenda():
     somos nosotros."""
     cuerpo = _func_source(VIEW, "_panel_volcat")
     assert re.search(r'render_compact_legend\(\s*["\']volcat["\']', cuerpo)
+
+
+def test_el_compositor_no_es_fragment():
+    """Streamlit no permite fragments anidados: el que arma la grilla y llama
+    a los paneles NO puede llevar decorador."""
+    assert _fragment_run_every(VIEW, "volcan_grid") is None
+
+
+def test_la_grilla_es_2x2_por_default():
+    """El encuadre del volcan es cuadrado (+-RADIUS_DEG en lat y lon). Cuatro
+    paneles en una fila los deja angostos y desperdician el alto de la
+    ventana, que es justo lo que se quiere aprovechar en una emergencia.
+
+    El default tiene que ser 2: el Modo Sala pide 3 explicitamente, y si el
+    default se corriera a 3 o 4 la vista operacional cambiaria sin que nadie
+    lo pida.
+    """
+    import inspect
+
+    from dashboard.views.modo_guardia_volcan import volcan_grid
+
+    sig = inspect.signature(volcan_grid)
+    assert sig.parameters["per_row"].default == 2
+    assert sig.parameters["panels"].default is None  # -> GRID_PANELS
+
+
+def test_la_grilla_recorre_los_paneles_declarados():
+    """Sin hardcodear: agregar un panel a GRID_PANELS debe bastar."""
+    cuerpo = _func_source(VIEW, "volcan_grid")
+    assert "GRID_PANELS" in cuerpo
+    assert "_panel_rammb" in cuerpo and "_panel_volcat" in cuerpo
+
+
+GUARDIA = (Path(__file__).parent.parent / "dashboard" / "views"
+           / "modo_guardia.py")
+
+
+def test_modo_guardia_no_quedo_importando_una_funcion_que_no_existe():
+    """_live_panel se fue en el refactor. Sus DOS llamadores en modo_guardia
+    tienen que haber migrado, o la vista revienta con ImportError en runtime
+    —y como el import es perezoso, no lo atrapa el smoke test de imports."""
+    src = GUARDIA.read_text(encoding="utf-8")
+    assert "modo_guardia_volcan import _live_panel" not in src
+    assert src.count("volcan_grid") >= 2
+
+
+def test_la_leyenda_de_sala_sale_del_mismo_orden_que_el_grid():
+    """El slot `tv=volcan` se PROYECTA en la sala de turno. Su leyenda de 3
+    columnas y el grid de abajo tienen que recorrer la MISMA lista, o la
+    leyenda rotula un producto encima de otro.
+
+    Antes eran dos literales separados (`["eumetsat_ash", "geocolor",
+    "jma_so2"]` en modo_guardia y el orden de PRODUCTS en el panel): calzaban
+    por casualidad.
+    """
+    src = GUARDIA.read_text(encoding="utf-8")
+    assert "GRID_PANELS_TV" in src
+    # el literal viejo ya no gobierna la leyenda
+    assert '["eumetsat_ash", "geocolor", "jma_so2"]' not in src

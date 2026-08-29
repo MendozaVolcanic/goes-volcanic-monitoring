@@ -1,23 +1,30 @@
-"""Modo Guardia VOLCAN: zoom a un volcan, 3 productos lado a lado.
+"""Modo Guardia VOLCAN: zoom a un volcan, sus 4 productos en grilla 2x2.
 
 FILOSOFIA: igual que Modo Guardia (Chile) — solo imagen, sin metricas
-automaticas. Aca el zoom es del volcan (~30 km radio) y mostramos 3
-composiciones distintas para que el experto compare:
+automaticas. Aca el zoom es del volcan (~30 km radio) y mostramos los 4
+productos de imagen A LA VEZ, en el orden en que se lee una emergencia
+(pedido de operaciones, ago-2026: no se puede ir producto por producto):
 
-  1. Ash RGB (EUMETSAT receta) — tipico para detectar ceniza
-  2. GeoColor — visible/IR, util de dia
-  3. SO2 (JMA receta) — destaca SO2 en plumas frescas
+  1. GeoColor — visible/IR: hay columna?
+  2. Ash RGB (EUMETSAT receta) — es ceniza?
+  3. SO2 (JMA receta) — es gas fresco?
+  4. VOLCAT (SSEC/CIMSS) — que altura tiene la pluma?
 
-Hot spots NOAA FDCF dentro del bbox se overlayean en la primera vista.
+`volcan_grid` es la FUENTE UNICA de esta vista: la comparten el sub-tab
+Volcan del Modo Guardia y el slot `tv=volcan` del Modo Sala (que pide los 3
+de RAMMB en una fila, con su propio orden y su propia leyenda).
+
+Hot spots NOAA FDCF dentro del bbox se overlayean solo sobre el Ash RGB.
 
 Overlays opt-in (toggles en barra superior):
 - Viento GFS direccional (300/500/850 hPa) sobre el crater
 - Anillos de distancia 5/10/25/50 km
 
 Captura PNG del momento actual: boton de descarga construye una imagen
-compuesta con los 3 productos + header de timestamp/coords/viento.
+compuesta con los 3 productos RAMMB + header de timestamp/coords/viento
+(VOLCAT queda fuera: su PNG se baja aparte, con su barra de color).
 
-Auto-refresh 60s. Sin %, sin alertas.
+Cada panel tiene su propio poll (RAMMB 60 s, VOLCAT 120 s). Sin %, sin alertas.
 """
 
 import io
@@ -50,7 +57,6 @@ except Exception:
 
 logger = logging.getLogger(__name__)
 
-REFRESH_SECONDS = 60
 DEFAULT_VOLCANO = "Villarrica"
 RADIUS_DEG = 0.35  # ~38 km — un volcan + sus alrededores
 
@@ -699,112 +705,136 @@ def _panel_volcat(volcan_name: str, height: int):
     _render_volcat_zoom_tv(volcan_name, height=height, pad=RADIUS_DEG)
 
 
-@st.fragment(run_every=f"{REFRESH_SECONDS}s")
-def _live_panel(volcan_name: str, show_wind: bool, show_rings: bool,
-                enable_capture: bool):
+@st.fragment(run_every=f"{RAMMB_REFRESH_S}s")
+def _grid_header(volcan_name: str, show_wind: bool):
+    """Cabecera: nombre, coords, viento, conteo de hot spots, hora de render.
+
+    Fragment aparte y liviano: se refresca al ritmo de RAMMB sin arrastrar el
+    redibujo de los cuatro mapas.
+    """
     v = get_volcano(volcan_name)
     if v is None:
-        st.error(f"Volcan {volcan_name} no esta en el catalogo.")
         return
-
     bounds = {
         "lat_min": v.lat - RADIUS_DEG, "lat_max": v.lat + RADIUS_DEG,
         "lon_min": v.lon - RADIUS_DEG, "lon_max": v.lon + RADIUS_DEG,
     }
     now = datetime.now(timezone.utc)
-
-    hotspots, _ = _hotspots_volcan(
-        bounds["lat_min"], bounds["lat_max"],
-        bounds["lon_min"], bounds["lon_max"],
-    )
+    hotspots, _ = _hotspots_volcan(bounds["lat_min"], bounds["lat_max"],
+                                   bounds["lon_min"], bounds["lon_max"])
     wind = _wind_at_volcano(v.lat, v.lon) if show_wind else {}
-
-    # Cabecera info
     wind_summary = ""
     if wind:
         bits = []
-        for level_id, label, _c in WIND_LEVELS_VIZ:
+        for level_id, _label, _c in WIND_LEVELS_VIZ:
             w = wind.get(level_id)
             if w:
-                bits.append(f"{level_id} {w['speed']:.0f} km/h@{w['direction']:.0f}°")
+                bits.append(
+                    f"{level_id} {w['speed']:.0f} km/h@{w['direction']:.0f}°")
         if bits:
             wind_summary = " · " + " · ".join(bits)
-
     st.markdown(
         f"<div style='background:#0f1418; border-left:4px solid #ff6644; "
         f"padding:0.7rem 1rem; border-radius:4px; margin-bottom:0.8rem;'>"
-        f"<div style='display:flex; justify-content:space-between; align-items:center;'>"
+        f"<div style='display:flex; justify-content:space-between; "
+        f"align-items:center;'>"
         f"<div><span style='font-size:1.4rem; font-weight:800; color:#ff6644;'>"
         f"{v.name}</span> &nbsp;"
         f"<span style='color:#7a8a9a; font-size:0.85rem;'>"
-        f"{v.region} · elev {v.elevation} m · {v.lat}°, {v.lon}°{wind_summary}</span></div>"
+        f"{v.region} · elev {v.elevation} m · {v.lat}°, {v.lon}°{wind_summary}"
+        f"</span></div>"
         f"<div style='font-size:0.85rem; color:#9aaabb;'>"
         f"Hot spots {len(hotspots)} · Render {now.strftime('%H:%M:%S')} UTC / "
         f"{fmt_chile(now)}</div></div></div>",
         unsafe_allow_html=True,
     )
 
-    # Leyenda por columna, alineada con el grid de 3 productos de abajo (mismo
-    # patrón que el Modo Sala TV). Sólo la de Ash lleva el diamante: los hot
-    # spots se dibujan únicamente sobre ese producto. El viento va en las tres
-    # porque es info universal, y sólo si el toggle está activo.
-    from dashboard.map_helpers import render_compact_legend
-    _sym_comunes = ((("rings",) if show_rings else ())
-                    + (("wind",) if (show_wind and wind) else ()))
-    _leg_cols = st.columns(3)
-    for _c, (_pid, _lbl, _rec) in zip(_leg_cols, PRODUCTS):
-        with _c:
-            render_compact_legend(
-                _pid, height_px=32,
-                symbols=("volcano",)
-                        + (("hotspot",) if _pid == "eumetsat_ash" else ())
-                        + _sym_comunes,
-            )
 
-    # Bajar los 3 productos (con switch hi-res en GeoColor — ver
-    # fetch_volcan_product, reutilizado por la rotación del Modo Sala TV).
-    captured = []   # (label, img, ts_label) para captura
-    cols = st.columns(3)
-    for i, (prod_id, label, recipe) in enumerate(PRODUCTS):
+def _capture_button(v, show_wind: bool):
+    """Boton de captura PNG con los 3 productos RAMMB + header.
+
+    Re-pide las imagenes a `fetch_volcan_product`, que las sirve de su cache
+    (TTL 7200 s por ts) — no hace falta compartir estado entre los fragments.
+    VOLCAT queda fuera de la captura: su PNG se descarga aparte desde su propio
+    panel, con su barra de color.
+    """
+    now = datetime.now(timezone.utc)
+    bounds = {
+        "lat_min": v.lat - RADIUS_DEG, "lat_max": v.lat + RADIUS_DEG,
+        "lon_min": v.lon - RADIUS_DEG, "lon_max": v.lon + RADIUS_DEG,
+    }
+    hotspots, _ = _hotspots_volcan(bounds["lat_min"], bounds["lat_max"],
+                                   bounds["lon_min"], bounds["lon_max"])
+    wind = _wind_at_volcano(v.lat, v.lon) if show_wind else {}
+    captured = []
+    for panel in GRID_PANELS_TV:
         img, ts_label = fetch_volcan_product(
-            prod_id, v.name, v.lat, v.lon, bounds, now)
-        captured.append((label, img, ts_label))
+            panel["id"], v.name, v.lat, v.lon, bounds, now)
+        captured.append((panel["label"], img, ts_label))
+    try:
+        png_bytes = _build_capture_png(
+            v.name, v.lat, v.lon, v.elevation, v.region,
+            captured, wind, len(hotspots), now,
+        )
+        st.download_button(
+            label="📸 Descargar captura PNG (este momento)",
+            data=png_bytes,
+            file_name=f"{v.name}_{now.strftime('%Y%m%d_%H%M')}_UTC.png",
+            mime="image/png",
+            width='stretch',
+        )
+    except Exception as e:
+        st.warning(f"No se pudo construir captura: {e}")
 
-        # Hotspots overlay solo en Ash; viento en los 3 (es info universal)
-        hs = hotspots if prod_id == "eumetsat_ash" else None
-        full_label = f"{label} · {ts_label}"
-        with cols[i]:
-            st.plotly_chart(
-                _render_product(img, bounds, full_label, v.lat, v.lon, v.name,
-                                hotspots=hs, show_wind=show_wind, wind_data=wind,
-                                show_rings=show_rings),
-                width='stretch',
-                config={"displayModeBar": False},
-            )
-            st.markdown(
-                f"<div style='font-size:0.7rem; color:#556; margin-top:-0.5rem;'>"
-                f"{recipe}</div>",
-                unsafe_allow_html=True,
-            )
 
-    # Boton de captura
+def volcan_grid(volcan_name: str, show_wind: bool = False,
+                show_rings: bool = False, enable_capture: bool = False,
+                fullscreen: bool = False, panels: list | None = None,
+                per_row: int = 2, show_header: bool = True):
+    """Grilla de productos del volcan, todos a la vez.
+
+    FUENTE UNICA de esta vista — la usan el sub-tab Volcan del Modo Guardia,
+    el tab Volcan de Vista Operacional y el slot `tv=volcan` del Modo Sala.
+    No duplicarla.
+
+    NO lleva @st.fragment: Streamlit no permite fragments anidados y los
+    paneles de adentro ya son fragments, cada uno con su cadencia. Este nivel
+    solo compone, y se re-ejecuta en el full-rerun (cambio de volcan o toggle).
+
+    Default 2x2 y no una fila de 4 porque el encuadre es cuadrado
+    (+-RADIUS_DEG en lat y lon): cuatro columnas dejan cada mapa angosto y
+    desperdician el alto de la ventana.
+
+    `panels` y `per_row` existen para el MODO SALA, que se proyecta en la sala
+    de turno con su propia leyenda de 3 columnas armada por el llamador. Ese
+    slot sigue con los 3 RAMMB en una fila y en SU orden (Ash primero):
+    cambiarle el layout por debajo le desalinearia la leyenda.
+    `show_header=False` ahi mismo, porque el rotador TV ya pone su cabecera.
+    """
+    v = get_volcano(volcan_name)
+    if v is None:
+        st.error(f"Volcan {volcan_name} no esta en el catalogo.")
+        return
+
+    panels = GRID_PANELS if panels is None else panels
+    height = PANEL_HEIGHT_FULLSCREEN if fullscreen else PANEL_HEIGHT_NORMAL
+    if show_header:
+        _grid_header(volcan_name, show_wind)
+
+    filas = [panels[i:i + per_row] for i in range(0, len(panels), per_row)]
+    for fila in filas:
+        cols = st.columns(per_row)
+        for col, panel in zip(cols, fila):
+            with col:
+                if panel["kind"] == "volcat":
+                    _panel_volcat(volcan_name, height=height)
+                else:
+                    _panel_rammb(panel["id"], panel["label"], panel["recipe"],
+                                 volcan_name, show_wind, show_rings, height)
+
     if enable_capture:
-        try:
-            png_bytes = _build_capture_png(
-                v.name, v.lat, v.lon, v.elevation, v.region,
-                captured, wind, len(hotspots), now,
-            )
-            st.download_button(
-                label="📸 Descargar captura PNG (este momento)",
-                data=png_bytes,
-                file_name=f"{v.name}_{now.strftime('%Y%m%d_%H%M')}_UTC.png",
-                mime="image/png",
-                width='stretch',
-            )
-        except Exception as e:
-            st.warning(f"No se pudo construir captura: {e}")
+        _capture_button(v, show_wind)
 
-    # Footer filosofia
     st.markdown(
         "<div style='text-align:center; color:#445566; font-size:0.75rem; "
         "margin-top:1rem; padding-top:0.5rem; border-top:1px solid #223;'>"
@@ -873,8 +903,9 @@ def render():
     with cols[4]:
         st.markdown(
             "<div style='font-size:0.7rem; color:#556; padding-top:0.5rem;'>"
-            "Refresh 60s</div>",
+            f"RAMMB {RAMMB_REFRESH_S}s · VOLCAT {VOLCAT_REFRESH_S}s</div>",
             unsafe_allow_html=True,
         )
 
-    _live_panel(volcan, show_wind, show_rings, enable_capture)
+    volcan_grid(volcan, show_wind, show_rings, enable_capture,
+                fullscreen=st.query_params.get("fullscreen") == "1")

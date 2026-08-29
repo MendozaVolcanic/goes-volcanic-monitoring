@@ -571,7 +571,9 @@ def _volcat_zonas_subtab():
 
 def _volcan_subtab():
     """Sub-tab Volcan: grilla 2x2 del volcan + viento + anillos + captura."""
-    from dashboard.views.modo_guardia_volcan import volcan_grid
+    from dashboard.views.modo_guardia_volcan import (RAMMB_REFRESH_S,
+                                                     VOLCAT_REFRESH_S,
+                                                     volcan_grid)
     # Toolbar
     cols = st.columns([2, 1, 1, 1, 1])
     with cols[0]:
@@ -607,8 +609,11 @@ def _volcan_subtab():
         )
     with cols[4]:
         st.markdown(
+            # La grilla tiene DOS cadencias (RAMMB 60 s, VOLCAT 120 s):
+            # "Refresh 60s" prometia que el panel VOLCAT se actualiza el doble
+            # de rapido de lo que se actualiza.
             "<div style='font-size:0.7rem; color:#556; padding-top:0.5rem;'>"
-            "Refresh 60s</div>",
+            f"RAMMB {RAMMB_REFRESH_S}s · VOLCAT {VOLCAT_REFRESH_S}s</div>",
             unsafe_allow_html=True,
         )
     volcan_grid(volcan, show_wind, show_rings, enable_capture,
@@ -793,9 +798,13 @@ def render():
                             scan_dt, REFRESH_SECONDS,
                         ) if i == 2 else "",
                     )
+            # fullscreen=True FIJO: en este camino el query param siempre
+            # vale "1" (lo setea _go_tv) y sin pasarlo la grilla caia en
+            # PANEL_HEIGHT_NORMAL, o sea 39% menos de alto en la pared que se
+            # proyecta 24/7 en la sala de turno.
             volcan_grid(volcan_name, show_wind=False, show_rings=True,
                         enable_capture=False, panels=GRID_PANELS_TV,
-                        per_row=3, show_header=False)
+                        per_row=3, show_header=False, fullscreen=True)
             return
         else:  # default = zonas
             # CSS especifico TV 4 zonas: fuerza cada plot a llenar el

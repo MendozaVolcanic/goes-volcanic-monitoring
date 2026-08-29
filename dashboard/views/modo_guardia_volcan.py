@@ -123,8 +123,29 @@ GRID_PANELS_TV = [_PANEL_POR_ID[pid]
 # Alto por panel en la grilla 2x2. Fullscreen reparte la ventana entre 2 filas;
 # el modo normal deja el panel mas bajo para que entren las dos filas sin
 # scroll en un portatil.
+#
+# OJO: en fullscreen estos numeros son solo el alto INICIAL de la figura
+# Plotly. El alto que se ve lo manda el CSS de `_inject_fullscreen_css`
+# (`calc(100vh …)`), porque un alto fijo en px no puede "ocupar la ventana":
+# el servidor no sabe cuanto mide la pantalla del operador.
 PANEL_HEIGHT_NORMAL = 380
 PANEL_HEIGHT_FULLSCREEN = 460
+# Una sola fila (el slot `tv=volcan` del Modo Sala, 3 productos proyectados)
+# no reparte la ventana con nadie: conserva el alto historico que tenia el
+# default de `_render_product`. Pasarle el de 2 filas le sacaba 39% del alto
+# a la pared que se proyecta 24/7 en la sala de turno.
+PANEL_HEIGHT_TV_ROW = 620
+
+# Cromo (px) que NO es imagen cuando la grilla va en fullscreen, medido en el
+# DOM a 1920x1080 (ago-2026):
+#   - arriba del primer panel: boton Salir, badge de latencia, barra de
+#     auto-refresh, toggles, barra de tabs, toolbar del volcan y cabecera;
+#   - por cada fila: la leyenda compacta del producto, la linea de receta y
+#     el gap entre bloques de Streamlit.
+# Son una ESTIMACION. Si sobra o falta, el panel queda un poco mas alto o mas
+# bajo, nunca una fila bajo el fold: `min-height` frena la division.
+GRID_CHROME_TOP_PX = 380
+GRID_CHROME_ROW_PX = 105
 
 # Anillos de distancia (km)
 RING_RADII_KM = [5, 10, 25, 50]
@@ -802,6 +823,82 @@ def _capture_button(v, show_wind: bool, radius_deg: float = RADIUS_DEG):
         st.warning(f"No se pudo construir captura: {e}")
 
 
+def _panel_height(fullscreen: bool, filas: int) -> int:
+    """Alto inicial en px de cada figura Plotly de la grilla.
+
+    En fullscreen el alto final lo pone el CSS, pero Plotly necesita arrancar
+    con uno: si arranca muy bajo, el primer paint se ve achatado hasta que
+    `responsive` lo refita.
+
+    UNA fila es el slot de sala: no reparte la ventana con nadie y conserva el
+    alto historico. DOS o mas filas se reparten el alto, asi que cada panel
+    arranca mas bajo.
+    """
+    if not fullscreen:
+        return PANEL_HEIGHT_NORMAL
+    return PANEL_HEIGHT_TV_ROW if filas <= 1 else PANEL_HEIGHT_FULLSCREEN
+
+
+def _inject_fullscreen_css(filas: int) -> None:
+    """CSS que hace que la grilla ocupe la ventana del operador.
+
+    POR QUE: el pedido de operaciones fue "que ocupen todo el espacio que
+    puedan". Un alto fijo en px no puede cumplirlo — el servidor no sabe si
+    enfrente hay un portatil o la pared de la sala. Medido a 1920x1080, la
+    segunda fila arrancaba en y=1258: el operador veia 2 de 4 productos sin
+    scrollear. Mismo patron que el grid de 4 zonas del Modo Sala.
+
+    Dos cosas separadas:
+    1. El alto por panel = (ventana - cromo) / filas. Va acotado a los
+       contenedores CON KEY de la grilla (`st-key-vgrid_*`,
+       `st-key-tvvolcatzoom_*`) y NO a todo `stPlotlyChart`: en Vista
+       Operacional los tabs Nacional y Zona estan en el DOM aunque esten
+       ocultos, y un selector global les cambiaria el alto de sus mapas.
+    2. Achicar el cromo, que era la mayor parte del problema (~697 px antes
+       de la primera imagen). Se esconde SOLO lo que no se lee proyectado —
+       la guia de interpretacion y el titulo decorativo — y se comprimen los
+       gaps de 16 px entre bloques. Nada de esto saca funcionalidad: fuera de
+       fullscreen la vista queda igual.
+    """
+    alto = (f"calc((100vh - {GRID_CHROME_TOP_PX + GRID_CHROME_ROW_PX * filas}px)"
+            f" / {filas})")
+    st.markdown(
+        f"""
+        <style>
+          /* 1) cromo que no se lee en una pared proyectada */
+          [data-testid="stExpander"], .main-header {{ display: none !important; }}
+          /* los gaps de Streamlit suman >100 px antes del primer panel */
+          [data-testid="stVerticalBlock"] {{ gap: 0.4rem !important; }}
+          /* 2) la ventana repartida entre las filas que haya */
+          /* La cadena ENTERA: el contenedor con key, el frame de pantalla
+             completa y el chart. Streamlit le clava al contenedor el alto que
+             pidio la figura, asi que achicar solo el chart deja un hueco del
+             alto viejo y la segunda fila igual arranca bajo el fold. */
+          [class*="st-key-vgrid_"],
+          [class*="st-key-vgrid_"] [data-testid="stFullScreenFrame"],
+          [class*="st-key-vgrid_"] [data-testid="stPlotlyChart"],
+          [class*="st-key-vgrid_"] [data-testid="stPlotlyChart"] > div,
+          [class*="st-key-tvvolcatzoom_"],
+          [class*="st-key-tvvolcatzoom_"] [data-testid="stFullScreenFrame"],
+          [class*="st-key-tvvolcatzoom_"] [data-testid="stPlotlyChart"],
+          [class*="st-key-tvvolcatzoom_"] [data-testid="stPlotlyChart"] > div {{
+            height: {alto} !important;
+            min-height: 180px !important;
+          }}
+          /* Streamlit le pone `flex: 0 0 460px` al contenedor con key, y en
+             una columna flex el flex-basis GANA sobre height: sin esto el
+             hueco del alto viejo queda igual y la 2a fila sigue bajo el
+             fold, aunque el chart de adentro ya mida bien. */
+          [class*="st-key-vgrid_"],
+          [class*="st-key-tvvolcatzoom_"] {{
+            flex: 0 0 {alto} !important;
+          }}
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
 def volcan_grid(volcan_name: str, show_wind: bool = False,
                 show_rings: bool = False, enable_capture: bool = False,
                 fullscreen: bool = False, panels: list | None = None,
@@ -839,11 +936,16 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
         return
 
     panels = GRID_PANELS if panels is None else panels
-    height = PANEL_HEIGHT_FULLSCREEN if fullscreen else PANEL_HEIGHT_NORMAL
+    filas = [panels[i:i + per_row] for i in range(0, len(panels), per_row)]
+    height = _panel_height(fullscreen, len(filas))
+    # En fullscreen el alto lo reparte el CSS entre las filas que haya: es la
+    # unica forma de "ocupar la ventana" sin saber cuanto mide (mismo patron
+    # que el grid de 4 zonas del Modo Sala, modo_guardia.py).
+    if fullscreen:
+        _inject_fullscreen_css(len(filas))
     if show_header:
         _grid_header(volcan_name, show_wind, radius_deg=radius_deg)
 
-    filas = [panels[i:i + per_row] for i in range(0, len(panels), per_row)]
     for fila in filas:
         cols = st.columns(per_row)
         for col, panel in zip(cols, fila):
@@ -885,7 +987,7 @@ def render():
         "<div style='font-size:1.5rem; font-weight:800; color:#ff6644;'>"
         "🛡 MODO GUARDIA — VOLCAN</div>"
         "<div style='font-size:0.85rem; color:#7a8a9a;'>"
-        "Zoom volcan · 3 productos lado a lado · GOES-19</div></div>",
+        "Zoom volcan · 4 productos en grilla 2×2 · GOES-19</div></div>",
         unsafe_allow_html=True,
     )
 

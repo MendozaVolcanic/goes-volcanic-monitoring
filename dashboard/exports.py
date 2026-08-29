@@ -27,6 +27,17 @@ import streamlit as st
 logger = logging.getLogger(__name__)
 
 
+def _fmt_size(n_bytes: int) -> str:
+    """Tamano legible: KB debajo de 1 MB.
+
+    Por que: el encuadre de un volcan pesa decenas de KB, no megas como el
+    nacional. Con "MB" fijo el boton rotulaba "0.0 MB" y parecia que no iba a
+    bajar nada.
+    """
+    kb = n_bytes / 1024
+    return f"{kb/1024:.1f} MB" if kb >= 1024 else f"{kb:.0f} KB"
+
+
 def img_to_png_bytes(arr: np.ndarray, label: str | None = None) -> bytes:
     """numpy array -> PNG bytes (con label opcional sobre-impreso al pie).
 
@@ -78,10 +89,8 @@ def png_download_button(arr: np.ndarray, filename: str, label_overlay: str,
     if arr is None:
         return
     png = img_to_png_bytes(arr, label_overlay)
-    size_kb = len(png) / 1024
-    size_str = f"{size_kb/1024:.1f} MB" if size_kb >= 1024 else f"{size_kb:.0f} KB"
     st.download_button(
-        f"⬇ {button_label} ({size_str})",
+        f"⬇ {button_label} ({_fmt_size(len(png))})",
         data=png,
         file_name=filename,
         mime="image/png",
@@ -122,9 +131,8 @@ def download_buttons(arr: np.ndarray, bounds: dict, base_filename: str,
             logger.warning("GeoTIFF build failed: %s", e)
             tif_bytes = b""
         if tif_bytes:
-            size_mb = len(tif_bytes) / 1024 / 1024
             st.download_button(
-                f"⬇ GeoTIFF · {prod_label} ({size_mb:.1f} MB)",
+                f"⬇ GeoTIFF · {prod_label} ({_fmt_size(len(tif_bytes))})",
                 data=tif_bytes,
                 file_name=f"{base_filename}.tif",
                 mime="image/tiff",

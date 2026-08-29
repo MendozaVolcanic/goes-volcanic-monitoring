@@ -118,6 +118,10 @@ def test_download_buttons_ofrece_las_dos_salidas(monkeypatch):
     # bytes de verdad, no un boton vacio
     for d in stub.downloads:
         assert len(d["data"]) > 100, d["file_name"]
+    # y el peso se rotula en KB: un encuadre de volcan pesa decenas de KB, y
+    # con "MB" fijo los dos botones decian "0.0 MB" (visto en la app, ago-2026)
+    assert all("0.0 MB" not in d["label"] for d in stub.downloads), stub.downloads
+    assert all("KB" in d["label"] for d in stub.downloads), stub.downloads
 
 
 # ── 3. El GeoTIFF del encuadre de volcan ─────────────────────────────

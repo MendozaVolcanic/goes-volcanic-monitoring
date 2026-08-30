@@ -617,7 +617,11 @@ def _volcan_subtab():
             unsafe_allow_html=True,
         )
     volcan_grid(volcan, show_wind, show_rings, enable_capture,
-                fullscreen=st.query_params.get("fullscreen") == "1")
+                fullscreen=st.query_params.get("fullscreen") == "1",
+                # Sub-tab de pagina: hay operador delante que puede atender la
+                # tira de altura propia (y su descarga de ~78 MB). El slot
+                # `tv=volcan` de mas abajo NO la lleva.
+                mostrar_altura=True)
 
 
 def render():

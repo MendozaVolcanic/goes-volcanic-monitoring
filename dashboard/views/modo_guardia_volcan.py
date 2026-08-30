@@ -40,7 +40,7 @@ try:
     # compacta (con una copia por vista, la leyenda podria mentir).
     from dashboard.exports import download_buttons
     from dashboard.map_helpers import WIND_LEVELS_VIZ
-    from dashboard.style import volcano_marker
+    from dashboard.style import kpi_card, volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.fetch.goes_fdcf import HotSpot, fetch_latest_hotspots
     from src.fetch.rammb_slider import (
@@ -772,6 +772,168 @@ def _panel_volcat(volcan_name: str, height: int,
     _render_volcat_zoom_tv(volcan_name, height=height, pad=radius_deg)
 
 
+# ── Tira de altura de tope (calculo propio) ──────────────────────────
+#
+# FICHA SDA (Nivel 1) — magnitud fisica calculada que se muestra al operador
+#   Que decide: NADA por si sola. Muestra la altura de tope de la pluma de
+#     ceniza estimada por tres retrievals propios (Wen-Rose corregido por
+#     emisividad 11/12 um, BT-matching contra perfil GFS, y ACHA NOAA
+#     interseccion mascara de ceniza tri-espectral). La interpretacion y la
+#     decision de alerta quedan en el geologo de turno.
+#   Entradas: bandas L1b ABI C11/C14/C15 del scan (S3 noaa-goes19), perfil
+#     vertical GFS (Open-Meteo), granulo ABI-L2-ACHA2KMF, hot spots FDCF.
+#   Limite conocido y declarado en pantalla: SOLO mide ceniza IR-opaca. A una
+#     pluma de gas/SO2 le devuelve un tope por debajo del crater (validado
+#     contra Chillan, 27-jun-2026).
+#   Trazabilidad: src/process/wen_rose_height.py, src/process/acha_plume_height.py,
+#     src/process/scene.py (guards de "no reportar"), docs/FICHA_SDA_GOES.md.
+#
+# Costo REAL de una escena, medido contra S3 con cache frio (ago-2026):
+# C11 25.8 MB / 35.4 s + C14 25.9 MB / 25.8 s + C15 25.6 MB / 28.7 s, mas el
+# perfil GFS y el granulo ACHA. Va en pantalla ANTES de gastarlo.
+ALTURA_COSTO_TXT = "~78 MB y ~90 s"
+
+# El retrieval acota la ventana de descarga: la grilla puede pedir hasta 3 de
+# radio y bajar esa ventana en tres bandas L1b multiplicaria el costo medido.
+# Mismo tope que usa la pagina VOLCAT (volcat_viewer.py:867).
+ALTURA_MAX_RADIUS_DEG = 1.5
+
+
+@st.fragment
+def _tira_altura_propia(volcan_name: str, radius_deg: float = RADIUS_DEG):
+    """Altura de tope calculada por nosotros, debajo de la grilla.
+
+    Es una TIRA y no un 5o panel: los otros cuatro son mapas y esto es un
+    numero con su incertidumbre. Ademas la grilla se afino midiendo (4 en una
+    fila que entran justo en 1080p); un quinto elemento devuelve el scroll que
+    acabamos de sacar.
+
+    Fragment SIN `run_every`: el fragment existe para que apretar el boton no
+    re-renderice los cuatro mapas, no para auto-refrescar. El retrieval cuesta
+    ALTURA_COSTO_TXT por escena, o sea ~11 GB/dia por usuario si se poleara a
+    la cadencia de los otros paneles, casi siempre para concluir que no hay
+    ceniza.
+
+    DISPARO: automatico si hay hot spot NOAA FDCF en el encuadre (ya esta en
+    memoria, cache 300 s, lo valida NOAA); boton explicito el resto del tiempo.
+    Se descarto el gatillo por color (la fraccion de rojo del Ash RGB, en
+    src/fetch/timeseries.py): medido sobre los 8 prioritarios SIN actividad da
+    9.9-95.5% (mediana 76%) en este encuadre, asi que cualquier umbral absoluto
+    dispara siempre o nunca.
+
+    El hot spot detecta anomalia termica en el CRATER, no pluma: una erupcion
+    freatica (Villarrica, Chillan) puede dar columna de ceniza sin ninguno, y
+    ese caso lo dispara el ojo del operador con el boton.
+    """
+    v = get_volcano(volcan_name)
+    if v is None:
+        return
+
+    bounds = {
+        "lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
+        "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
+    }
+    hotspots, _ = _hotspots_volcan(bounds["lat_min"], bounds["lat_max"],
+                                   bounds["lon_min"], bounds["lon_max"])
+
+    st.markdown(
+        "<div style='margin-top:0.6rem; padding-top:0.5rem; "
+        "border-top:1px solid #223; font-size:0.85rem; color:#9aaabb;'>"
+        "<b style='color:#e6edf3;'>Altura de tope · cálculo propio</b> "
+        "<span style='font-size:0.75rem;'>independiente de SSEC — "
+        "Wen-Rose + BT-matching + ACHA</span></div>",
+        unsafe_allow_html=True,
+    )
+
+    key = f"altura_{volcan_name}_{radius_deg:.2f}"
+    auto = bool(hotspots)
+    if auto:
+        st.caption(
+            f"▶ Disparado automáticamente: {len(hotspots)} hot spot(s) NOAA "
+            f"FDCF en el encuadre. El hot spot marca anomalía térmica en el "
+            f"cráter, no pluma — el retrieval dirá si hay ceniza que medir.")
+    correr = auto or st.button(
+        "Calcular altura de tope",
+        key=f"btn_{key}",
+        help=f"Baja las bandas L1b del scan, el gránulo ACHA y el perfil GFS, "
+             f"y resuelve el tope por los tres métodos. Cuesta "
+             f"{ALTURA_COSTO_TXT}. Sin hot spot no se dispara solo: una "
+             f"erupción freática puede dar columna sin anomalía térmica.")
+
+    if not correr:
+        st.caption(
+            f"Sin hot spot en el encuadre. Si ves columna en los mapas de "
+            f"arriba, aprieta el botón — el cálculo cuesta {ALTURA_COSTO_TXT}.")
+        return
+
+    # Import perezoso entre vistas (gotcha Streamlit Cloud, ver CLAUDE.md) y
+    # ademas reuso deliberado: estos dos wrappers ya tienen el cache por cuño
+    # de 10 min de la pagina VOLCAT, asi que abrir las dos vistas en el mismo
+    # scan no baja las bandas dos veces.
+    from dashboard.views.volcat_viewer import _acha_plume_cached, _wenrose_cached
+
+    ahora = datetime.now(timezone.utc)
+    # Cuño de 10 min: es la cadencia del Full Disk, asi que invalida el cache
+    # justo cuando puede haber un scan nuevo y no antes.
+    bucket = ahora.strftime("%Y%m%d%H") + str(ahora.minute // 10)
+    r_ret = min(float(radius_deg), ALTURA_MAX_RADIUS_DEG)
+    with st.spinner(f"Bajando bandas L1b + ACHA + perfil GFS "
+                    f"({ALTURA_COSTO_TXT})..."):
+        wr = _wenrose_cached(v.name, r_ret, bucket)
+        acha = _acha_plume_cached(v.name, r_ret, bucket)
+
+    _render_altura(v, wr, acha, r_ret)
+
+
+def _render_altura(v, wr: dict | None, acha: dict | None,
+                   radius_deg: float = RADIUS_DEG):
+    """Presenta el resultado de los 3 metodos con sus honestidades.
+
+    La honestidad que NO se puede omitir: estos retrievals solo miden ceniza
+    **IR-opaca**. A una pluma de gas/SO2 le dan un tope por debajo del crater
+    (validado contra Chillan, 27-jun-2026: el SO2 es transparente en 11 um).
+    Un numero por debajo de la cota del volcan significa "no encontro ceniza
+    IR-opaca", NO "la pluma es baja" — sin ese aviso el operador lee un
+    imposible fisico como si fuera una medicion.
+
+    `Volcano.elevation` esta en METROS (src/volcanos.py:16), por eso /1000.
+    """
+    wr_ok = bool(wr) and wr.get("status") == "ok"
+    acha_ok = bool(acha) and acha.get("status") == "ok"
+
+    if not (wr_ok or acha_ok):
+        st.info(
+            f"Sin firma de ceniza IR-opaca en el encuadre (±{radius_deg:g}°) → "
+            "no hay tope que reportar. **Es el estado esperado sin pluma "
+            "activa.** Ojo: una pluma de gas/SO₂ tampoco da tope por este "
+            "camino; para eso mira el indicador SO₂ de la grilla.")
+        return
+
+    cima_km = (v.elevation or 0) / 1000.0
+    cols = st.columns(4)
+    with cols[0]:
+        kpi_card(f"{wr['top_km']:.1f} km" if wr_ok else "—",
+                 "Wen-Rose · corregido")
+    with cols[1]:
+        bt = wr.get("top_bt_matching_km") if wr_ok else None
+        kpi_card(f"{bt:.1f} km" if bt is not None else "—",
+                 "BT-matching · cota")
+    with cols[2]:
+        kpi_card(f"{acha['top_km']:.1f} km" if acha_ok else "—",
+                 "ACHA NOAA · p95")
+    with cols[3]:
+        kpi_card(f"{cima_km:.1f} km", f"Cima de {v.name}")
+
+    topes = [r["top_km"] for r, ok in ((wr, wr_ok), (acha, acha_ok))
+             if ok and r.get("top_km") is not None]
+    if topes and max(topes) < cima_km:
+        st.warning(
+            f"Todos los topes quedan **bajo la cima** ({cima_km:.1f} km). Eso "
+            "NO significa que la pluma sea baja: significa que el retrieval no "
+            "encontró ceniza IR-opaca. Es lo típico de una pluma de gas/SO₂ "
+            "(validado contra Chillán, 27-jun-2026).")
+
+
 @st.fragment(run_every=f"{RAMMB_REFRESH_S}s")
 def _grid_header(volcan_name: str, show_wind: bool,
                  radius_deg: float = RADIUS_DEG):
@@ -1053,7 +1215,8 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
                 show_rings: bool = False, enable_capture: bool = False,
                 fullscreen: bool = False, panels: list | None = None,
                 per_row: int | None = None, show_header: bool = True,
-                radius_deg: float = RADIUS_DEG, show_legend: bool = True):
+                radius_deg: float = RADIUS_DEG, show_legend: bool = True,
+                mostrar_altura: bool = False):
     """Grilla de productos del volcan, todos a la vez.
 
     FUENTE UNICA de esta vista — la usan el sub-tab Volcan del Modo Guardia,
@@ -1086,6 +1249,13 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
     a los pocos minutos. Va a los CUATRO paneles y a la cabecera desde aca —
     si un solo lugar se quedara con la constante, ese panel encuadraria
     distinto y la grilla dejaria de leerse como una sola escena.
+
+    `mostrar_altura` agrega la TIRA de altura de tope propia debajo de los
+    mapas. Default False A PROPOSITO: la enciende quien la puede atender. La
+    prenden Vista Operacional y el sub-tab Volcan del Modo Guardia, que tienen
+    un operador delante; el slot `tv=volcan` del Modo Sala NO, porque se
+    proyecta 24/7 sin nadie mirando y ahi una descarga de ALTURA_COSTO_TXT
+    disparada sola por un hot spot no la ve venir nadie.
     """
     v = get_volcano(volcan_name)
     if v is None:
@@ -1119,6 +1289,13 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
                                  volcan_name, show_wind, show_rings, height,
                                  radius_deg=radius_deg,
                                  show_legend=show_legend)
+
+    # Debajo de los mapas, no como quinto panel: la grilla se afino midiendo
+    # (4 en una fila que entran justo en 1080p) y un quinto elemento devuelve
+    # el scroll. Ademas no es del mismo tipo — los cuatro son mapas y esto es
+    # un numero con su incertidumbre.
+    if mostrar_altura:
+        _tira_altura_propia(volcan_name, radius_deg=radius_deg)
 
     if enable_capture:
         _capture_button(v, show_wind, radius_deg=radius_deg)

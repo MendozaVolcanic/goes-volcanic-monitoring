@@ -1216,6 +1216,9 @@ def _live_content():
             enable_capture=True,
             fullscreen=st.query_params.get("fullscreen") == "1",
             radius_deg=_vg_radius,
+            # Hay operador delante: la tira de altura propia puede ofrecer su
+            # boton y disparar sola con hot spot.
+            mostrar_altura=True,
         )
 
     st.markdown(

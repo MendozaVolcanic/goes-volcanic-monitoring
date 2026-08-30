@@ -61,6 +61,56 @@ def _kw(call: ast.Call, nombre: str):
     return None
 
 
+def _texto_en_pantalla(path: Path, name: str) -> str:
+    """Todo el texto que la funcion `name` le PONE DELANTE al operador.
+
+    Junta los literales de cadena que viajan como argumento de una llamada a
+    `st.*` (st.info, st.warning, st.caption, st.button, st.markdown, ...),
+    incluidas las partes constantes de las f-strings.
+
+    POR QUE no basta con leer el fuente entero de la funcion (que es lo que
+    hacia la primera version de estos tests): el DOCSTRING tambien es fuente.
+    Verificado por mutacion (ago-2026): sacando "IR-opaca", "gas/SO2" y el
+    costo de los `st.info` / `st.button` —o sea, de todo lo que el operador
+    llega a leer— y dejandolos solo en el docstring, los tres tests seguian en
+    VERDE. Un aviso que vive unicamente en el docstring no le avisa a nadie.
+    """
+    src = path.read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    fn = next((n for n in ast.walk(tree)
+               if isinstance(n, ast.FunctionDef) and n.name == name), None)
+    if fn is None:
+        raise AssertionError(f"no existe la funcion {name} en {path.name}")
+    trozos: list[str] = []
+    for nodo in ast.walk(fn):
+        if not isinstance(nodo, ast.Call):
+            continue
+        f = nodo.func
+        if not (isinstance(f, ast.Attribute) and getattr(f.value, "id", "") == "st"):
+            continue
+        for arg in list(nodo.args) + [k.value for k in nodo.keywords]:
+            for sub in ast.walk(arg):
+                if isinstance(sub, ast.Constant) and isinstance(sub.value, str):
+                    trozos.append(sub.value)
+                elif isinstance(sub, ast.Name):
+                    # `ALTURA_COSTO_TXT` interpolado en una f-string: el texto
+                    # real vive en la constante del modulo, y sustituirlo aca
+                    # deja el assert mirando lo que el operador ve de verdad.
+                    trozos.append(_constante_modulo(src, sub.id) or "")
+    return " ".join(trozos)
+
+
+def _constante_modulo(src: str, nombre: str) -> str | None:
+    """Valor de una constante de modulo `NOMBRE = "..."`, si es una cadena."""
+    for nodo in ast.parse(src).body:
+        if (isinstance(nodo, ast.Assign)
+                and any(getattr(t, "id", None) == nombre for t in nodo.targets)
+                and isinstance(nodo.value, ast.Constant)
+                and isinstance(nodo.value.value, str)):
+            return nodo.value.value
+    return None
+
+
 def test_la_tira_no_se_refresca_sola():
     """El retrieval cuesta ~78 MB y ~90 s. Un `run_every` lo dispararia cada
     ciclo: del orden de 11 GB/dia por usuario para concluir casi siempre que no
@@ -97,13 +147,14 @@ def test_la_tira_avisa_el_costo_antes_de_gastarlo():
     """78 MB y 90 s no se gastan a ciegas: el operador tiene que saberlo antes
     de apretar."""
     fuente = VIEW.read_text(encoding="utf-8")
-    cuerpo = _func_source(VIEW, "_tira_altura_propia")
-    # El texto del costo puede vivir en una constante compartida, pero la
-    # funcion tiene que USARLO: sin eso el operador aprieta a ciegas.
     assert re.search(r"78\s*MB", fuente), "el costo medido tiene que estar escrito"
     assert re.search(r"~?90\s*s", fuente)
-    assert re.search(r"78\s*MB|~?90\s*s|ALTURA_COSTO_TXT", cuerpo), (
-        "la tira tiene que mostrar el costo antes de gastarlo")
+    # Y tiene que llegar A LA PANTALLA, no quedarse en el docstring: el costo
+    # puede vivir en ALTURA_COSTO_TXT, pero interpolado en algo que se muestra.
+    pantalla = _texto_en_pantalla(VIEW, "_tira_altura_propia")
+    assert re.search(r"78\s*MB", pantalla), (
+        f"el operador tiene que ver el costo antes de apretar: {pantalla!r}")
+    assert re.search(r"~?90\s*s", pantalla)
 
 
 def test_la_tira_dice_que_solo_mide_ceniza_ir_opaca():
@@ -112,14 +163,15 @@ def test_la_tira_dice_que_solo_mide_ceniza_ir_opaca():
     significa 'no encontro ceniza IR-opaca', no 'la pluma es baja'. Sin ese
     aviso, un operador lee un imposible fisico como una medicion.
 
-    El aviso vive en `_render_altura`, que es quien presenta el numero.
+    El aviso vive en `_render_altura`, que es quien presenta el numero, y se
+    mide sobre lo que llega A LA PANTALLA: dejarlo solo en el docstring
+    satisfacia la primera version de este test sin avisarle a nadie.
     """
-    cuerpo = _func_source(VIEW, "_render_altura")
-    assert re.search(r"IR-opaca|IR opaca", cuerpo)
-    assert re.search(r"gas|SO2|SO₂", cuerpo)
-    assert re.search(r"bajo la cima|bajo el cr[áa]ter|\*\*bajo la cima\*\*",
-                     cuerpo), (
-        "tiene que avisar explicitamente el caso 'tope bajo la cima'")
+    pantalla = _texto_en_pantalla(VIEW, "_render_altura")
+    assert re.search(r"IR-opaca|IR opaca", pantalla), pantalla
+    assert re.search(r"gas|SO2|SO₂", pantalla), pantalla
+    assert re.search(r"bajo la cima|bajo el cr[áa]ter", pantalla), (
+        f"tiene que avisar explicitamente el caso 'tope bajo la cima': {pantalla!r}")
 
 
 def test_la_tira_no_la_usa_la_pared_de_la_sala():

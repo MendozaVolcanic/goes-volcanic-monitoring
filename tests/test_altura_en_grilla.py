@@ -133,6 +133,34 @@ def test_la_tira_no_la_usa_la_pared_de_la_sala():
         "por defecto apagada: la enciende quien la puede atender")
 
 
+def test_la_grilla_dibuja_la_tira_cuando_se_la_piden():
+    """El flag no vale nada si `volcan_grid` no lo honra: los llamadores
+    pueden pasar `mostrar_altura=True` y la tira no aparecer nunca. Este caso
+    sobrevivio a la primera tanda de mutaciones (M10, ago-2026).
+
+    Y la llamada tiene que ir GUARDADA por el flag: sin el `if`, la tira
+    apareceria tambien en la pared de la sala.
+    """
+    tree = ast.parse(VIEW.read_text(encoding="utf-8"))
+    grid = next(n for n in ast.walk(tree)
+                if isinstance(n, ast.FunctionDef) and n.name == "volcan_grid")
+
+    guardadas = [
+        nodo for nodo in ast.walk(grid)
+        if isinstance(nodo, ast.If)
+        and "mostrar_altura" in ast.unparse(nodo.test)
+        and "_tira_altura_propia(" in "".join(
+            ast.unparse(s) for s in nodo.body)
+    ]
+    assert guardadas, (
+        "volcan_grid tiene que llamar a _tira_altura_propia bajo `if "
+        "mostrar_altura`")
+    # El radio tiene que viajar: la tira arma el bbox de la descarga, y con la
+    # constante calcularia la altura sobre un encuadre distinto al que se ve.
+    llamada = "".join(ast.unparse(s) for s in guardadas[0].body)
+    assert "radius_deg=radius_deg" in llamada, llamada
+
+
 def test_la_enciende_vista_operacional():
     """Vista Operacional (tab Volcan) tiene operador delante: la enciende."""
     calls = _llamadas_volcan_grid(LIVE)

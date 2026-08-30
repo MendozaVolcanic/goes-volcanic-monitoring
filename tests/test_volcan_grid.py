@@ -332,8 +332,11 @@ def test_el_radio_es_ajustable_y_llega_a_todos_los_paneles():
 
     from dashboard.views import modo_guardia_volcan as MGV
 
+    # `_tira_altura_propia` arma bbox igual que los paneles: es la ventana que
+    # se le pide a S3 para el retrieval de altura. Con la constante clavada,
+    # la altura se calcularia sobre un encuadre distinto al que se ve arriba.
     for nombre in ("volcan_grid", "_grid_header", "_panel_rammb",
-                   "_panel_volcat", "_capture_button"):
+                   "_panel_volcat", "_capture_button", "_tira_altura_propia"):
         sig = inspect.signature(getattr(MGV, nombre))
         assert "radius_deg" in sig.parameters, nombre
         assert sig.parameters["radius_deg"].default == MGV.RADIUS_DEG, nombre

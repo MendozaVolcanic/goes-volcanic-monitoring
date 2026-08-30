@@ -160,6 +160,16 @@ números del paper. **Todo verificado en la app corriendo, no sólo con tests.**
 | D | Ficha SDA y docs | ✅ Ficha **v2.0**: saca los componentes no cableados, agrega el indicador SO₂ y el filtro de hot spots, y declara los 7 límites (incluido el uso aeronáutico excluido). `STATUS.md` y la guía de turno actualizadas. |
 | E | Falsos verdes | ✅ Los seis corregidos y **validados por mutación**. Suite: **~357 tests** verdes (antes 312). |
 
+### Segunda tanda — los tres pendientes, cerrados
+
+| Ítem | Qué se hizo | Verificación |
+|---|---|---|
+| Heatmap **semanal** | El guard de frescura ahora se comparte con la sección intradía, y `daily_rollup` guarda el **denominador** (`_scans`). La vista ya no afirma calma con cobertura < 50%. | En vivo dice *"sin detección FDCF, pero el pre-cocinado no registra cuántos scans se revisaron hoy. **No se puede concluir calma: falta dato**"* — y es cierto: la serie actual la generó el productor viejo. |
+| Huecos de la serie FRP | Nuevo `--gap-fill` (default 12) que rellena los faltantes de **toda** la ventana, no sólo las últimas 3 h. El comentario "auto-sanante" del YAML era falso y ahora dice lo que de verdad pasa. | Tests con mutación sobre el roll-up. |
+| `st.components.v1.html` | Helper `render_html_iframe` que prefiere `st.iframe` y cae a la API vieja sólo si no existe. | **El warning desapareció de los logs** y los dos iframes siguen vivos. |
+
+**Un detalle que costó encontrar:** `st.iframe` **rechaza `height=0`**, que es justo lo que pide el watchdog invisible. El helper "migrado" seguía cayendo al fallback deprecado y el server seguía avisando en cada carga. Se vio sólo porque revisé los logs después de migrar, no porque algún test lo dijera.
+
 ### Lo que NO se hizo, y por qué
 
 - **El guard de opacidad de los β-ratios (§3.1) queda pendiente a propósito.** Es

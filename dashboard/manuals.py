@@ -40,8 +40,12 @@ RGB, GeoColor, SO2 RGB y otros productos satelitales.
   **verde-amarillo**; nubes meteorológicas en **azul/celeste**.
 - **GeoColor**: imagen color real diurna útil para confirmar plumas
   visibles. De noche cambia a IR pseudo-color.
-- **SO2 RGB** (JMA): plumas de SO2 en magenta brillante sobre fondo
-  verdoso.
+- **SO2 RGB** (JMA): el SO2 absorbe fuerte en 8.6 µm y eso levanta el
+  canal verde de la receta, así que las plumas de SO2 salen en **verde
+  intenso** (verde-amarillo cuando vienen mezcladas con ceniza). El
+  **rosado/magenta** de este producto **no es SO2: es ceniza**, la
+  misma firma térmica del Ash RGB. Es exactamente lo que rotula la
+  leyenda en pantalla (verde = SO2, magenta = ceniza + SO2).
 - **Toggle 💨 Viento GFS**: superpone vectores de viento a 300/500/850 hPa
   (Open-Meteo) para predecir dirección de pluma.
 
@@ -67,20 +71,25 @@ zonas, pensada para turno de sala. Sub-tabs:
 - **Mosaico (5 prioritarios)** — Nevados de Chillán, Villarrica,
   Calbuco, Llaima y Cordón Caulle, cada uno con sus **3 productos**
   (Ash RGB, GeoColor, SO2) en la misma fila. Son los que el turno
-  mira a diario; para cualquier otro volcán está "Volcán (3 productos)".
-- **Por Volcán** — 3 productos (Ash, GeoColor, SO2) lado a lado para
-  un volcán con anillos de distancia y overlay de viento opcional.
+  mira a diario; para cualquier otro volcán está "Volcán (4 productos)".
+- **Volcán (4 productos)** — GeoColor, Ash RGB, SO2 RGB y VOLCAT a la
+  vez para un volcán, con anillos de distancia y overlay de viento
+  opcional. El orden es el de lectura de una emergencia: ¿hay columna?
+  (GeoColor) → ¿es ceniza? (Ash RGB) → ¿es gas fresco? (SO2) → ¿qué
+  altura? (VOLCAT). **El panel VOLCAT vacío es el estado normal**: solo
+  dibuja cuando detecta ceniza, así que su ausencia no es una falla.
 
 **Cómo usarlo**:
 - Comparar visualmente entre zonas o productos sin cambiar de vista.
 - El **botón Modo Sala** (rojo, arriba) entra a fullscreen rotando
-  productos cada 10 s — para proyectar en pared de sala 24/7.
+  productos cada pocos segundos — para proyectar en pared de sala 24/7.
+  (El intervalo exacto lo muestra el propio botón de cada vista.)
 - Hot spots NOAA FDCF (diamantes rojos) aparecen automáticamente
   cuando hay detecciones recientes.
 
-**Tip operacional**: si Ash RGB muestra rojo en una zona, validá saltando
-a "Por Volcán" sobre el volcán sospechoso — el grid de 3 productos
-descarta cirros con más confianza que el composite solo.
+**Tip operacional**: si Ash RGB muestra rojo en una zona, valida saltando
+a "Volcán (4 productos)" sobre el volcán sospechoso — el grid descarta
+cirros con más confianza que el composite solo.
 
 **Referencias**:
 - [NOAA FDCF (Fire/Hot Spots) product](https://www.star.nesdis.noaa.gov/goesr/product_fire_fhs.php)
@@ -302,7 +311,7 @@ bandas L1b GOES-19. NO es composite RGB — son números físicos.
 **Por qué importa la versión cuantitativa**: el Ash RGB es muy útil
 para reconocer pluma de un vistazo, pero los falsos positivos en
 Chile invierno (cirros 30-60 %) requieren cuantificar. Aquí ves el
-**valor real** y podés decidir umbrales por evento.
+**valor real** y puedes decidir umbrales por evento.
 
 **Referencias**:
 - [Prata 1989 — Observations of volcanic ash clouds using AVHRR](https://doi.org/10.1080/01431168908903916)
@@ -325,8 +334,9 @@ cuantitativa** (km sobre nivel del mar) y carga de ceniza (g/m²).
 
 **Cómo leerlo**:
 - **Altura (km)**: usa diferencia entre BT observada y perfil
-  atmosférico vertical (GFS) para resolver altura. Útil para alerta
-  aeronáutica (FL flight levels).
+  atmosférico vertical (GFS) para resolver altura. Sirve para
+  **dimensionar la columna y priorizar el turno**, no para operar
+  aviación (ver el recuadro de abajo).
 - **Mass loading (g/m²)**: integral vertical de masa de ceniza por
   unidad de área. Para cuantificar emisión total combinar con área
   de pluma.
@@ -337,6 +347,26 @@ cuantitativa** (km sobre nivel del mar) y carga de ceniza (g/m²).
 **Limitación**: solo funciona cuando hay pluma claramente detectada
 sobre fondo frío. Plumas finas o muy frías (>10 km alt) pueden ser
 sub-detectadas.
+
+**⛔ Este sistema NO se usa para alerta aeronáutica ni para definir
+niveles de vuelo (FL).** No es una limitación de trámite: la altura
+**propia** de este dashboard está declarada **INDICATIVA**, tiene banda
+fiable sólo entre **3 y 12 km** y arrastra un **sesgo IR sistemático de
+−0,4 a −0,8 km** (los retrievals infrarrojos reciben emisión de toda la
+capa, no sólo del tope), además de no ver la pluma de gas/SO₂ ni la
+ceniza no opaca en 11 µm. Un FL emitido sobre ese número tendría un
+error del orden del espaciamiento entre niveles de vuelo. Lo mismo vale
+para el VOLCAT que se muestra acá: es un **render PNG** del producto,
+no el dato gridded certificado.
+
+**A quién corresponde**: la información aeronáutica oficial la emite el
+**VAAC Buenos Aires** (SMN Argentina, área de responsabilidad que cubre
+Chile) mediante Volcanic Ash Advisories, y el producto cuantitativo de
+referencia es **VOLCAT (NOAA/CIMSS)**. Este dashboard es apoyo a la
+decisión **humana** de alerta técnica volcánica de SERNAGEOMIN; para
+aviación, remitir al VAAC.
+
+- VAAC Buenos Aires — https://www.smn.gob.ar/vaac/buenosaires/inicio.php
 
 **Referencias**:
 - [Pavolonis et al. 2013 — Automated volcanic cloud detection (JGR)](https://doi.org/10.1002/jgrd.50173)
@@ -361,7 +391,7 @@ comunicar evento a público.
    compone, y entrega:
    - **MP4** (h264) — compatible con todo, recomendado para informes.
    - **GIF** — para web, peso mayor.
-   - **ZIP de PNGs** — frames individuales si querés post-procesar.
+   - **ZIP de PNGs** — frames individuales si quieres post-procesar.
 
 **Tip**: para erupciones largas (>6 h), generá varios loops de 2 h y
 encadenalos en editor — un GIF/MP4 de 24 h pesa demasiado.

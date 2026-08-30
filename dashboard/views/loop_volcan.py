@@ -152,9 +152,13 @@ def _build_loop_figure(frames: list[dict], v, height: int = 720) -> go.Figure:
                 sizing="stretch", layer="below",
             )],
             title=dict(text=frames[0]["label"], font=dict(size=12, color="#ccc")),
-            xaxis=dict(range=[lon_min, lon_max], showgrid=False, visible=False),
+            # constrain="domain": sin esto Plotly ensancha el RANGO para cumplir
+            # el aspecto de scaleanchor, en vez de encoger el area de dibujo.
+            xaxis=dict(range=[lon_min, lon_max], showgrid=False, visible=False,
+                       constrain="domain"),
             yaxis=dict(range=[lat_min, lat_max], showgrid=False, visible=False,
-                       scaleanchor="x", scaleratio=1.0 / cos_lat),
+                       scaleanchor="x", scaleratio=1.0 / cos_lat,
+                       constrain="domain"),
             height=height,
             margin=dict(t=40, b=10, l=10, r=10),
             paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",

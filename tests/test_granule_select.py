@@ -12,6 +12,7 @@ Todos los tests son PUROS: la E/S entra por un ``list_hour`` falso en memoria, a
 que ejercitan el contrato sin tocar la red.
 """
 
+import ast
 import sys
 
 import pytest
@@ -138,15 +139,69 @@ def test_get_s3_tiene_expiracion_de_listados():
     assert float(expiry) == float(S3_LISTINGS_EXPIRY_S)
 
 
-def test_todos_los_fetchers_comparten_el_mismo_filesystem():
-    """Los 6 fetchers S3 deben resolver a UNA instancia (misma cache, misma
-    expiración). Si alguno vuelve a construir `S3FileSystem(anon=True)` pelado,
-    se crea una segunda instancia con DirCache eterno y el bug vuelve por ahí."""
+# Los consumidores S3 del repo y el nombre por el que cada uno pide el
+# filesystem. La lista es explicita a proposito: si aparece un fetcher nuevo,
+# el guard de fuente de mas abajo lo obliga a pasar por `granule_select`, y
+# sumarlo aca lo somete tambien al test de identidad.
+_CONSUMIDORES_S3 = [
+    ("src.fetch.goes_s3", "_get_fs"),
+    ("src.fetch.goes_fdcf", "_get_s3"),
+    ("src.fetch.goes_acha", "_get_s3"),
+    ("src.fetch.goes_lvtp", "_get_s3"),
+    ("src.fetch.gfs_archive", "_get_s3"),
+    ("src.process.historic_l1b_rgb", "_get_fs"),
+]
+
+
+@pytest.mark.parametrize("modname,attr", _CONSUMIDORES_S3)
+def test_todos_los_fetchers_comparten_el_mismo_filesystem(modname, attr):
+    """Cada consumidor S3 debe resolver a LA MISMA instancia (misma cache,
+    misma expiración). Si alguno vuelve a construir `S3FileSystem(anon=True)`
+    pelado, s3fs le da otra instancia —los kwargs difieren— cuyo DirCache nace
+    eterno, y el bug del "scan más reciente" atrasado hasta ~1 h vuelve por ahí.
+
+    Por qué se ejerce la FUNCION y no se lee el fuente: la version anterior de
+    este test decia cubrir "los 6 fetchers S3" y solo tocaba `goes_s3`. Darle
+    a `goes_fdcf` un `_get_s3()` propio con `S3FileSystem(anon=True)` la dejaba
+    verde (verificado por mutacion, ago-2026).
+    """
     pytest.importorskip("s3fs")
-    import src.fetch.goes_s3 as goes_s3
+    import importlib
+
     from src.fetch.granule_select import get_s3
 
-    assert goes_s3._get_fs() is get_s3()
+    mod = importlib.import_module(modname)
+    fn = getattr(mod, attr, None)
+    assert callable(fn), f"{modname} no expone {attr}()"
+    fs = fn()
+    assert fs is get_s3(), (
+        f"{modname}.{attr}() devuelve otra instancia de S3FileSystem: su "
+        f"DirCache no comparte la expiracion de granule_select")
+    assert fs.dircache.listings_expiry_time is not None, modname
+
+
+def test_nadie_construye_un_s3filesystem_por_su_cuenta():
+    """Guard de fuente: `S3FileSystem(` solo puede aparecer en el modulo que
+    centraliza la construccion. Complementa al test de identidad: agarra al
+    fetcher NUEVO que todavia no esta en `_CONSUMIDORES_S3` y a los caminos que
+    construyen el filesystem inline, sin funcion que ejercer."""
+    raiz = Path(__file__).parent.parent
+    permitidos = {raiz / "src" / "fetch" / "granule_select.py"}
+    culpables = []
+    for py in list((raiz / "src").rglob("*.py")) + list((raiz / "dashboard").rglob("*.py")):
+        if py in permitidos:
+            continue
+        src = py.read_text(encoding="utf-8")
+        # Solo el codigo: un comentario que explique el bug no es una violacion.
+        for nodo in ast.walk(ast.parse(src)):
+            if not isinstance(nodo, ast.Call):
+                continue
+            nombre = getattr(nodo.func, "attr", getattr(nodo.func, "id", ""))
+            if nombre == "S3FileSystem":
+                culpables.append(f"{py.relative_to(raiz)}:{nodo.lineno}")
+    assert not culpables, (
+        "construir S3FileSystem fuera de granule_select crea una instancia con "
+        f"DirCache eterno: {culpables}")
 
 
 def test_unparseable_keys_skipped():

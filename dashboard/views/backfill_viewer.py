@@ -209,11 +209,16 @@ def _render_product_panel(arr: np.ndarray | None, bounds: dict,
     cos_lat = max(0.1, float(np.cos(np.radians(
         (bounds["lat_min"] + bounds["lat_max"]) / 2
     ))))
+    # constrain="domain" en AMBOS ejes: con scaleanchor y sin esto, el default
+    # de Plotly es constrain="range" y ENSANCHA el rango para cumplir el aspecto,
+    # ignorando el range que se pide aca. Con el contenedor angosto del primer
+    # render la escena se dispara y no vuelve. (audit 2026-08-30)
     fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
-                     showgrid=False, visible=False)
+                     showgrid=False, visible=False, constrain="domain")
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
                      showgrid=False, visible=False,
-                     scaleanchor="x", scaleratio=1.0 / cos_lat)
+                     scaleanchor="x", scaleratio=1.0 / cos_lat,
+                     constrain="domain")
     # Title como overlay para no perder pixeles arriba
     fig.add_annotation(
         x=bounds["lon_min"], y=bounds["lat_max"],

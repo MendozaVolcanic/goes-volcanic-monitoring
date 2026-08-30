@@ -91,11 +91,12 @@ def _hotspots_chile() -> tuple[list[HotSpot], datetime | None]:
         "lon_min": CHILE_REPROJECTED_BOUNDS["lon_min"],
         "lon_max": CHILE_REPROJECTED_BOUNDS["lon_max"],
     }
-    try:
-        return fetch_latest_hotspots(bounds=chile_bbox, hours_back=1)
-    except Exception as e:
-        logger.warning("hotspots fallo: %s", e)
-        return [], None
+    # `hotspots_verificados` LANZA si scan_dt is None (FDCF no consultable), y
+    # una funcion cacheada que lanza NO guarda resultado: asi el fallo no queda
+    # congelado 5 min ni se saltea el scan siguiente. El llamador lo atrapa.
+    from dashboard.map_helpers import hotspots_verificados
+    return hotspots_verificados(
+        *fetch_latest_hotspots(bounds=chile_bbox, hours_back=1))
 
 
 # nearest_hotspot vive en dashboard.map_helpers. Lazy import (definicion
@@ -188,10 +189,15 @@ def _render_chile_with_hotspots(frame: dict, hotspots: list[HotSpot],
     # Frontera de Chile (overlay en blanco semi-transparente)
     add_chile_border(fig)
 
+    # constrain="domain" en AMBOS ejes: con scaleanchor y sin esto, el default
+    # de Plotly es constrain="range" y ENSANCHA el rango para cumplir el aspecto,
+    # ignorando el range que se pide aca. Con el contenedor angosto del primer
+    # render la escena se dispara y no vuelve. (audit 2026-08-30)
     fig.update_xaxes(range=[b["lon_min"], b["lon_max"]],
-                     showgrid=False, title="")
+                     showgrid=False, title="", constrain="domain")
     fig.update_yaxes(range=[b["lat_min"], b["lat_max"]],
-                     showgrid=False, title="", scaleanchor="x", scaleratio=1)
+                     showgrid=False, title="", scaleanchor="x", scaleratio=1,
+                     constrain="domain")
     fig.update_layout(
         height=900, margin=dict(l=0, r=0, t=5, b=0),
         paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
@@ -212,7 +218,13 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
         return
 
     frame = _chile_frame(product, ts)
-    hotspots, _hs_dt = _hotspots_chile()
+    from dashboard.map_helpers import FDCFNoVerificable, estado_hotspots
+    try:
+        hotspots, hs_dt = _hotspots_chile()
+    except FDCFNoVerificable:
+        # No es "cero hot spots": es que no pudimos preguntar. Se distingue en
+        # el KPI de mas abajo, nunca se pinta como calma.
+        hotspots, hs_dt = [], None
     v = get_volcano(volcan_name)
 
     now = datetime.now(timezone.utc)
@@ -243,17 +255,22 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
     # acá: ya vive (con color + estado) en el banner de arriba. (jun 2026: dedup)
     c1, c2, c3 = st.columns(3)
 
-    # KPI: hot spots Chile (producto NOAA FDCF, validado)
-    n_hs = len(hotspots)
-    hs_color = "#ff4444" if n_hs > 0 else "#44dd88"
+    # KPI: hot spots Chile (producto NOAA FDCF, validado).
+    # El criterio de color y de que numero mostrar sale de `estado_hotspots`,
+    # compartido con las otras vistas: un cero VERDE solo si NOAA miro de
+    # verdad. Si el producto no se pudo consultar va gris y con guion, porque
+    # ese cero seria ausencia de informacion, no de anomalia termica.
+    est_hs = estado_hotspots(hotspots, hs_dt)
     with c1:
         st.markdown(
-            f"<div style='background:#0f1418; border-left:4px solid {hs_color}; "
+            f"<div style='background:#0f1418; border-left:4px solid {est_hs['color']}; "
             f"padding:0.8rem 1rem; border-radius:4px;'>"
             f"<div style='font-size:0.7rem; color:#7a8a9a; text-transform:uppercase; "
             f"letter-spacing:0.1em;'>Hot spots Chile (NOAA FDCF)</div>"
-            f"<div style='font-size:1.6rem; font-weight:700; color:{hs_color};'>"
-            f"{n_hs}</div></div>",
+            f"<div style='font-size:1.6rem; font-weight:700; color:{est_hs['color']};'>"
+            f"{est_hs['valor']}</div>"
+            f"<div style='font-size:0.68rem; color:#7a8a9a;'>{est_hs['detalle']}</div>"
+            f"</div>",
             unsafe_allow_html=True,
         )
 
@@ -325,7 +342,7 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
 @st.fragment(run_every=f"{ROTATION_SECONDS}s")
 def _rotating_chile_tv(volcan_name: str, show_rings: bool = True,
                         session_key: str = "tv_chile_rot_idx"):
-    """Modo Sala Chile: rota productos cada 10s sobre Chile completo.
+    """Modo Sala Chile: rota productos sobre Chile completo.
 
     chrome=False: solo el mapa, sin banners (TV puro). Leyenda compacta
     arriba que cambia con el producto.
@@ -423,9 +440,10 @@ def _activate_tv(tv_value: str, **extra):
 def _mosaico_subtab():
     """Sub-tab Mosaico: los 5 prioritarios x 3 productos (config.MOSAICO_VOLCANOES)."""
     from dashboard.views.mosaico_chile import _live_panel as mosaico_panel
+    from dashboard.views.mosaico_chile import ROTATION_SECONDS as ROT_MOSAICO
     from dashboard.map_helpers import render_top_navigation_button
     render_top_navigation_button(
-        "🖥 Modo Sala · Mosaico 5 (rotando productos cada 10s)",
+        f"🖥 Modo Sala · Mosaico 5 (rotando productos cada {ROT_MOSAICO}s)",
         "vista=guardia&fullscreen=1&tv=mosaico",
         key="btn_sala_mosaico",
     )
@@ -444,7 +462,7 @@ def _zonas_subtab():
 
     from dashboard.map_helpers import render_top_navigation_button
     render_top_navigation_button(
-        "🖥 Modo Sala (4 zonas, rotando productos cada 10s)",
+        f"🖥 Modo Sala (4 zonas, rotando productos cada {ROTATION_SECONDS}s)",
         "vista=guardia&fullscreen=1&tv=1",
         key="btn_sala_zonas",
     )
@@ -459,9 +477,9 @@ def _zonas_subtab():
     with cols[0]:
         rotate = st.toggle(
             f"🔄 Auto-rotate ({ROTATION_SECONDS}s)", value=False, key="mg_zonas_rotate",
-            help="Cicla GeoColor → Ash → SO2 cada 10s. Util para preview "
-                 "de lo que se vera en el monitor de sala antes de mandarlo "
-                 "a TV puro.",
+            help=f"Cicla GeoColor → Ash → SO2 cada {ROTATION_SECONDS}s. Util "
+                 "para preview de lo que se vera en el monitor de sala antes "
+                 "de mandarlo a TV puro.",
         )
     with cols[1]:
         if not rotate:
@@ -961,12 +979,20 @@ def render():
     # "Vigilancia diaria" PRIMERA (landing): ya no es solo "por zona" — suma el
     # VOLCAT zoom al volcan en alerta y es lo que responde al dia a dia del
     # observatorio. (reorden + rename jun 2026, pedido OVDAS)
+    #
+    # El conteo del sub-tab Volcan se DERIVA de GRID_PANELS, no se escribe a
+    # mano: el rotulo quedo diciendo "3 productos" durante toda la migracion a
+    # `volcan_grid`, que ya pintaba cuatro (VOLCAT entro como 4o panel). Un
+    # numero equivocado en el rotulo le hace creer al turno que le falta un
+    # producto por mirar. Import perezoso por el gotcha de hot-reload de
+    # Streamlit documentado en la cabecera del modulo.
+    from dashboard.views.modo_guardia_volcan import GRID_PANELS
     sub_zonas, sub_chile, sub_volcat, sub_mosaico, sub_volcan, sub_loop = st.tabs([
         "🔭 Vigilancia diaria",
         "🌎 Chile (vista nacional)",
         "🌋 VOLCAT por zona",
         "🗺 Mosaico 5 prioritarios",
-        "🔬 Volcán (4 productos)",
+        f"🔬 Volcán ({len(GRID_PANELS)} productos)",
         "🎞 Loop 2h",
     ])
     with sub_zonas:

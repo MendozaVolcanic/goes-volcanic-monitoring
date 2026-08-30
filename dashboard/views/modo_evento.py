@@ -66,10 +66,13 @@ def _hotspots_volcan(lat: float, lon: float):
         "lat_min": lat - 0.6, "lat_max": lat + 0.6,
         "lon_min": lon - 0.6, "lon_max": lon + 0.6,
     }
-    try:
-        hs, dt = fetch_latest_hotspots(bounds=bounds, hours_back=2)
-    except Exception:
-        return [], None
+    # Sin `except Exception: return [], None`: eso convertia un timeout de S3 en
+    # "cero hot spots" y esta es la PANTALLA DE CRISIS. `hotspots_verificados`
+    # lanza si el scan no se pudo leer, y como esta funcion esta cacheada, el
+    # fallo tampoco queda memorizado. (audit 2026-08-30)
+    from dashboard.map_helpers import hotspots_verificados
+    hs, dt = hotspots_verificados(
+        *fetch_latest_hotspots(bounds=bounds, hours_back=2))
     # Filtro radio real
     out = []
     for h in hs:
@@ -181,11 +184,16 @@ def _ash_fig(img: np.ndarray | None, lat: float, lon: float, label: str,
         showlegend=False, hoverinfo="skip",
     ))
     cos_lat = max(0.1, float(np.cos(np.radians(lat))))
+    # constrain="domain" en AMBOS ejes: con scaleanchor y sin esto, el default
+    # de Plotly es constrain="range" y ENSANCHA el rango para cumplir el aspecto,
+    # ignorando el range que se pide aca. Con el contenedor angosto del primer
+    # render la escena se dispara y no vuelve. (audit 2026-08-30)
     fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
-                     showgrid=False, visible=False)
+                     showgrid=False, visible=False, constrain="domain")
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
                      showgrid=False, visible=False,
-                     scaleanchor="x", scaleratio=1.0 / cos_lat)
+                     scaleanchor="x", scaleratio=1.0 / cos_lat,
+                     constrain="domain")
     fig.update_layout(
         title=dict(text=label, font=dict(size=12, color="#e0e0e0")),
         height=height, margin=dict(l=0, r=0, t=28, b=0),
@@ -254,22 +262,30 @@ def _live_panel(volcan_name: str, show_rings: bool = True,
                 st.session_state[event_start_key] = now
                 st.rerun()
 
-    # Bajar datos
-    hotspots_with_d, hs_dt = _hotspots_volcan(v.lat, v.lon)
+    # Bajar datos. Si FDCF no se pudo consultar NO es cero: se pinta aparte.
+    from dashboard.map_helpers import FDCFNoVerificable, estado_hotspots
+    try:
+        hotspots_with_d, hs_dt = _hotspots_volcan(v.lat, v.lon)
+    except FDCFNoVerificable:
+        hotspots_with_d, hs_dt = [], None
     # Solo bajar viento si el toggle esta on (cache 1h asi que no cuesta)
     wind = _wind_volcan(v.lat, v.lon) if show_wind else {}
 
     # KPI row
     k1, k2, k3, k4 = st.columns(4)
     with k1:
-        n_hs = len(hotspots_with_d)
-        kc = "#ff4444" if n_hs > 0 else "#3fb950"
+        # Criterio compartido (`estado_hotspots`): verde SOLO si NOAA miro y no
+        # vio nada; gris con guion si no se pudo consultar. En una crisis, un
+        # cero verde falso es exactamente lo que no puede pasar.
+        est_hs = estado_hotspots([h for h, _d in hotspots_with_d], hs_dt)
         st.markdown(
-            f"<div style='background:#0f1418; border-left:4px solid {kc}; "
+            f"<div style='background:#0f1418; border-left:4px solid {est_hs['color']}; "
             f"padding:0.7rem 0.9rem; border-radius:4px;'>"
             f"<div style='font-size:0.7rem; color:#7a8a9a; text-transform:uppercase;'>"
             f"Hot spots NOAA ≤{EVENT_BBOX_KM} km</div>"
-            f"<div style='font-size:1.6rem; font-weight:700; color:{kc};'>{n_hs}</div>"
+            f"<div style='font-size:1.6rem; font-weight:700; color:{est_hs['color']};'>"
+            f"{est_hs['valor']}</div>"
+            f"<div style='font-size:0.66rem; color:#7a8a9a;'>{est_hs['detalle']}</div>"
             f"</div>", unsafe_allow_html=True,
         )
     with k2:
@@ -421,11 +437,28 @@ def render():
         unsafe_allow_html=True,
     )
 
-    # Selector volcán + permalink
+    # Selector volcán + permalink.
+    #
+    # El fallback a Villarrica NO puede ser mudo: Modo Evento solo cubre los
+    # volcanes prioritarios, y un permalink a cualquier otro pintaba la pantalla
+    # entera de Villarrica —header gigante, KPIs, 3 mapas— sin un solo aviso.
+    # El operador que llega por un link compartido en plena crisis termina
+    # mirando el volcán equivocado y no tiene como notarlo, porque el selector
+    # tampoco ofrece el que pidió. (audit 2026-08-30)
     qp = st.query_params
-    initial = qp.get("volcan", "Villarrica")
+    _pedido = qp.get("volcan")
+    initial = _pedido or "Villarrica"
+    _fallback = False
     if initial not in PRIORITY_VOLCANOES:
+        _fallback = bool(_pedido)
         initial = "Villarrica"
+    if _fallback:
+        st.warning(
+            f"**Modo Evento no cubre «{_pedido}».** Esta vista existe solo para "
+            f"los {len(PRIORITY_VOLCANOES)} volcanes prioritarios, así que abajo "
+            f"estás viendo **Villarrica**, no «{_pedido}». Para ese volcán usa "
+            "Modo Guardia → Volcán, que los cubre todos."
+        )
 
     cols = st.columns([2, 1, 1, 1])
     with cols[0]:

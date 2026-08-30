@@ -183,11 +183,16 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
         hovertemplate=f"<b>{name}</b><extra></extra>",
         showlegend=False,
     ))
+    # constrain="domain" en AMBOS ejes: con scaleanchor y sin esto, el default
+    # de Plotly es constrain="range" y ENSANCHA el rango para cumplir el aspecto,
+    # ignorando el range que se pide aca. Con el contenedor angosto del primer
+    # render la escena se dispara y no vuelve. (audit 2026-08-30)
     fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
-                     showgrid=False, visible=False)
+                     showgrid=False, visible=False, constrain="domain")
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
                      showgrid=False, visible=False,
-                     scaleanchor="x", scaleratio=1.0 / cos_lat)
+                     scaleanchor="x", scaleratio=1.0 / cos_lat,
+                     constrain="domain")
     # Nombre del volcan: annotation EN COORDENADAS DE DATOS (no paper).
     # Si fuera paper, scaleanchor empuja el text al espacio negro afuera
     # de la imagen. En coords de datos, queda siempre adentro del bbox

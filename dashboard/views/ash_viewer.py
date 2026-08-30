@@ -60,7 +60,10 @@ def _base_layout(title, height=680):
         title=dict(text=title, font=dict(size=14, color="#ccc")),
         xaxis_title="Longitud", yaxis_title="Latitud",
         height=height, template="plotly_dark",
-        yaxis=dict(scaleanchor="x", scaleratio=1),
+        # constrain="domain": sin esto Plotly ensancha el RANGO para cumplir el
+        # aspecto de scaleanchor, en vez de encoger el area de dibujo.
+        xaxis=dict(constrain="domain"),
+        yaxis=dict(scaleanchor="x", scaleratio=1, constrain="domain"),
         margin=dict(t=45, b=40, l=50, r=20),
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
     )

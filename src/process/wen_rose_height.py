@@ -89,6 +89,47 @@ RELIABLE_BAND_KM = (3.0, 12.0)
 # el retrieval deja de ser confiable. Calibrado con forward-model sintético.
 RES_TOL = 0.003            # residuo: Tc que ajustan "casi igual de bien" (transmisividad)
 TC_SPAN_MAX = 60.0         # span de Tc dentro de RES_TOL ≥ esto ⇒ mal-condicionado (τ≲0.5)
+# Piso de terreno: cuánto puede quedar el tope BAJO la cumbre antes de avisar.
+# La tolerancia NO es cortesía: el retrieval IR tiene un sesgo conocido de
+# −0.4..−0.8 km (subestima) y el perfil GFS tiene su propio error de altitud, así
+# que un tope 300 m bajo el cráter es ruido esperable, no un absurdo físico.
+SUMMIT_TOL_KM = 0.8
+
+
+def below_summit_flag(top_km, summit_km=None, tol_km: float = SUMMIT_TOL_KM):
+    """¿El tope reportado quedó **bajo la cumbre del propio volcán**?
+
+    Por qué (geología antes que código): una pluma nace en el cráter, así que su
+    tope no puede estar por debajo de la cumbre — es imposible, no improbable.
+    Sin embargo nada en la cadena lo impide: ``altitudes_from_bt`` mapea la BT
+    contra el perfil GFS **sobre el nivel del mar**, sin saber que abajo hay un
+    edificio volcánico de 5 km. Con fondo frío (nieve, nube baja, noche de
+    invierno en el altiplano) o con la máscara enganchada en cirros, el mapeo
+    devuelve altitudes de aire troposférico bajo que en Láscar (cumbre 5592 m)
+    llegaron a caer ~4 km bajo el cráter. Ese número no es "un poco malo": es
+    señal de que la escena no es una pluma o de que el Ts está mal.
+
+    **Marca, no clampea.** Un clamp a la cumbre convertiría un retrieval roto en
+    un número plausible y silencioso — justo lo que el turno no puede detectar.
+    Preferimos que el tope siga siendo el que el retrieval calculó y que el
+    aviso viaje al lado.
+
+    Args:
+        top_km:    tope reportado (km sobre el nivel del mar). None → sin aviso.
+        summit_km: cumbre del volcán (km s.n.m., ``Volcano.elevation/1000``).
+                   **None ⇒ no se evalúa el piso** (comportamiento histórico).
+        tol_km:    margen por el sesgo IR conocido (ver ``SUMMIT_TOL_KM``).
+
+    Returns:
+        str con el aviso, o None si no aplica / no hay dato. Función PURA.
+    """
+    if top_km is None or summit_km is None:
+        return None
+    if top_km >= summit_km - tol_km:
+        return None
+    return (f"tope bajo la cumbre: {top_km:.1f} km vs cráter {summit_km:.1f} km "
+            f"(−{summit_km - top_km:.1f} km) — físicamente imposible para una "
+            "pluma; revisá Ts/máscara antes de usar el número")
 
 
 def in_reliable_band(top_km) -> bool:
@@ -275,6 +316,17 @@ def solve_tc_grid(bt11, bt12, ts_k, coef11, coef12, beta: float = BETA_SILICATE,
         residuo tiene mínimo agudo). En plumas muy finas (t≈1) el residuo queda
         casi plano → el Tc no está restringido → False (la corrección es ruido,
         el caller debe revertir esos píxeles a la cota). ⊆ ``solved``.
+        **OJO — este criterio NO es autosuficiente y no puede usarse solo**
+        (audit ago-2026, §3.3): mide el *ancho* del mínimo, no el *residual*.
+        Un ajuste malo con mínimo angosto (p. ej. el despeje saturando en
+        ``tc_floor_k``=180 K) sale marcado True. Lo que salva al sistema es
+        :func:`_revert_unreliable`, 40 líneas más abajo: esas saturaciones
+        clampean en la tropopausa y ahí ``reliable`` pasa a False, así que el
+        tope vuelve a la cota conservadora. El hallazgo se **refutó como bug**
+        porque un barrido β_true 0.45–1.00 × t11 0.15–0.9 no produjo ni un tope
+        alto espurio marcado como confiable. Consecuencia práctica: **nunca
+        consumir ``well_constrained`` sin pasar por ``_revert_unreliable``**, ni
+        exportarlo fuera del módulo, o el guard deja de existir.
     Función PURA.
     """
     bt11 = np.asarray(bt11, dtype="float64")
@@ -360,6 +412,18 @@ def _revert_unreliable(tc, bt11, well_constrained, profile, trop):
     Devuelve ``(tc_reliable, reliable_mask)``. PURA.
     """
     alt = altitudes_from_bt(tc, profile)
+    # RIESGO LATENTE (audit ago-2026, §3.2 — refutado HOY, no para siempre):
+    # sin tropopausa el umbral pasa a +inf y el guard de runaway se apaga
+    # ENTERO — sólo sobrevive el filtro de mal-condicionamiento, y una
+    # corrección saturada se reportaría como tope confiable, sin flags.
+    # Se refutó como bug porque el ÚNICO proveedor cableado es Open-Meteo
+    # (scene.acquire_ash_scene) y su API no devuelve nulls: verificado sobre
+    # Láscar, 72 h × 19 niveles, 0 nulls en T y Z, incluidos los nueve niveles
+    # 400–70 hPa que harían falta para que `_tropopause` diera None. El modo de
+    # falla realista (perfil caído entero) ya lo corta el guard "sin perfil GFS".
+    # **El día que se cablee LVTP, GRIB o cualquier otro proveedor de perfil,
+    # revisar ESTE guard ANTES de conectarlo**: un perfil con niveles altos
+    # faltantes reabre el agujero.
     z_trop = trop["z_m"] if trop else np.inf
     reliable = (np.asarray(well_constrained, dtype=bool) & np.isfinite(alt)
                 & (alt < z_trop - 1.0))
@@ -385,6 +449,7 @@ def wen_rose_top_height(
     radius_deg: float = 0.75,
     percentile: float = 95,
     beta: float = BETA_SILICATE,
+    summit_km: Optional[float] = None,
 ) -> dict:
     """Altura del tope por Wen-Rose para un volcán en un instante.
 
@@ -399,6 +464,14 @@ def wen_rose_top_height(
     ``ts_k``/``ts_source``, ``beta``, ``n_corrected`` (píxeles realmente
     corregidos), ``field_km`` (Wen-Rose) y ``field_bt_km``, además de
     ``mask_px``, ``so2_px/min``, ``scan_dt``, ``lat``/``lon``, ``tropopause_km``.
+
+    ``summit_km`` (km s.n.m.) activa el **piso de terreno**: si el tope cae bajo
+    la cumbre del volcán se agrega un flag y ``below_summit=True``, pero el
+    número NO se toca (ver :func:`below_summit_flag`). Default ``None`` ⇒ no se
+    evalúa, comportamiento idéntico al histórico para todo call-site existente.
+    La cumbre del catálogo viaja siempre en ``summit_km_catalog`` (informativa,
+    sin efecto sobre el retrieval) para que la pantalla pueda mostrar el tope
+    contra el cráter aunque el piso esté apagado.
     """
     from src.fetch.goes_s3 import _scan_start, download_band_at, open_band
     from src.process.brightness_temp import rad_to_bt
@@ -453,7 +526,11 @@ def wen_rose_top_height(
     trop_km = trop["z_m"] / 1000.0 if trop else None
 
     out = scene.base_out(percentile, source)
+    # Cumbre del catálogo: puramente informativa (el piso se evalúa sólo si el
+    # caller pasa summit_km). Volcano.elevation está en metros.
+    _elev = getattr(scene.volcano, "elevation", None)
     out.update({
+        "summit_km_catalog": (float(_elev) / 1000.0 if _elev is not None else None),
         "beta": beta,
         "ts_k": (float(ts_k) if ts_k is not None else None), "ts_source": ts_source,
         "co2_semitransp_btd": co2_btd, "bg_spread_k": bg_spread,
@@ -600,6 +677,12 @@ def wen_rose_top_height(
     near_trop = (top_wr is not None and trop_km is not None
                  and top_wr >= trop_km - 3.0)
     flags.extend(reliability_flags(top_wr, co2_btd, near_trop))
+    # Piso de terreno: una pluma no puede tener el tope bajo su propio cráter.
+    # Se MARCA, no se clampea — un clamp silencioso volvería plausible un
+    # retrieval roto (audit ago-2026, C3).
+    summit_msg = below_summit_flag(top_wr, summit_km)
+    if summit_msg:
+        flags.append(summit_msg)
     # β-ratios de composición: si NO clasifica como silicato, la detección BTD
     # puede ser falso positivo (cirros/hielo) — aviso independiente (Pavolonis 2010).
     if comp is not None and comp.get("is_ash") is False:
@@ -607,6 +690,8 @@ def wen_rose_top_height(
                      f"(no silicato): posible falso positivo de ceniza")
 
     out["co2_verdict"] = verdict
+    out["summit_km"] = summit_km
+    out["below_summit"] = (summit_msg is not None) if summit_km is not None else None
 
     confidence = wen_rose_confidence(n, band_width,
                                      ts_source == "cielo claro (escena)",

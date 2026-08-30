@@ -138,6 +138,18 @@ class AshScene:
         if self.profile is not None:
             out["tropopause_km"] = trop["z_m"] / 1000.0 if trop else None
             out["profile_time"] = self.profile.get("valid_time")
+            # QUÉ: minutos entre la hora del perfil GFS y el scan GOES.
+            # POR QUÉ: el mapeo BT→altitud SÓLO vale si el T(z) es el de ese
+            # momento. Open-Meteo da el perfil horario más cercano y puede quedar
+            # a horas de distancia (dt fuera de la ventana past_days/forecast_days,
+            # o un hueco del modelo): con un perfil viejo la MISMA BT se traduce a
+            # otra altitud. El fetcher ya lo mide (gfs_profile.py, gap_min) y sólo
+            # lo logueaba; acá lo hacemos viajar hasta la pantalla para que el
+            # turno sepa si el número descansa en un perfil de hace 20 min o de
+            # hace 5 h. Informativo: NO degrada la confianza ni mueve el tope.
+            # None si el proveedor no lo reporta (contrato aún desparejo entre
+            # fetch_gfs_profile y fetch_gfs_wind_profile).
+            out["profile_gap_min"] = self.profile.get("time_gap_min")
         return out
 
 

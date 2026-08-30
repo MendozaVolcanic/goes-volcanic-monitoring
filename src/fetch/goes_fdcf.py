@@ -122,10 +122,19 @@ def _confidence_from_mask(mask: int) -> str:
     return "unknown"
 
 
-def _list_recent_files(s3, hours_back: int = 1) -> list[str]:
-    """Listar archivos FDCF recientes (ultimas N horas)."""
+def _list_recent_files(s3, hours_back: int = 1) -> tuple[list[str], int]:
+    """Listar archivos FDCF recientes (ultimas N horas).
+
+    Devuelve ``(keys, n_fallos)``. Qué es ``n_fallos`` y por qué existe: una
+    carpeta horaria que **no existe** (FileNotFoundError) y una que **no se
+    pudo consultar** (timeout/red/permiso) producen las dos una lista vacía,
+    pero significan cosas opuestas — "NOAA todavía no publicó" contra "S3 no
+    contestó". El llamador necesita el conteo para loguear con el nivel
+    correcto; el contrato de salida no cambia (ver ``fetch_latest_hotspots``).
+    """
     now = datetime.now(timezone.utc)
-    keys = []
+    keys: list[str] = []
+    n_fallos = 0
     for h in range(hours_back + 1):
         t = now - timedelta(hours=h)
         prefix = (
@@ -137,10 +146,11 @@ def _list_recent_files(s3, hours_back: int = 1) -> list[str]:
         except FileNotFoundError:
             continue
         except Exception as e:
-            logger.warning("Listando %s: %s", prefix, e)
+            n_fallos += 1
+            logger.warning("FDCF: no pude listar %s: %s", prefix, e)
     # Ordenar por nombre (los archivos NOAA llevan timestamp en el nombre)
     keys.sort(reverse=True)
-    return keys
+    return keys, n_fallos
 
 
 def _abi_to_latlon(
@@ -309,34 +319,77 @@ def fetch_latest_hotspots(
 ) -> tuple[list[HotSpot], Optional[datetime]]:
     """Bajar el FDCF más reciente y devolver hotspots filtrados por bbox.
 
+    CONTRATO DE SALIDA — leer antes de tocar un call-site (esto es un SDA):
+
+        ``scan_dt`` es el testigo de que el dato FUE CONSULTADO.
+
+        - ``scan_dt`` **no es None** → hubo un scan FDCF real, leído y filtrado.
+          ``hotspots`` es entonces la verdad de ese scan, y ``[]`` significa
+          **"NOAA miró y no detectó nada"** — es el estado normal de un volcán
+          en calma y se puede presentar como tal, siempre junto a la hora del
+          scan (un conteo sin hora no dice si es de hace 8 min o de ayer).
+        - ``scan_dt is None`` → **NO se pudo verificar**: falta la dependencia,
+          S3 no contestó, no hay gránulo publicado, el NetCDF no abrió, o el
+          nombre del archivo no permitió fechar el scan. En este caso
+          ``hotspots`` es SIEMPRE ``[]``, y ese cero **es ausencia de
+          información, no ausencia de anomalía térmica**. Presentarlo como
+          calma (KPI en verde, "0 hot spots") es el peor modo de falla posible
+          en un sistema de alerta volcánica: el volcán puede estar en erupción
+          y la vista mostraría lo mismo que en un día tranquilo. Los
+          consumidores deben pintar "FDCF no consultable" y nunca un cero.
+
+        Invariante, en las dos direcciones:
+            ``scan_dt is None``  ⟺  ``hotspots == []`` **por falta de dato**.
+        Nunca se devuelve ``(hotspots_no_vacíos, None)`` ni un ``scan_dt``
+        válido en un camino de error (un timestamp válido afirmaría que el
+        scan se leyó completo, que es justo lo que no pasó).
+
     Args:
         bounds:           dict con lat_min/lat_max/lon_min/lon_max para filtrar.
                           None = no filtra (devuelve hotspots globales).
-        high_conf_only:   Si True, solo Mask ∈ {10, 11}. Default False
+        high_conf_only:   Si True, solo Mask ∈ HIGH_CONF_MASK. Default False
                           (incluye baja confianza y saturados, marcados aparte).
         hours_back:       Cuántas horas atrás buscar si no encuentra archivos
                           en la hora actual. Default 1.
 
     Returns:
-        (hotspots, scan_dt) — lista de HotSpot y datetime del scan.
-        Si no encuentra nada, ([], None).
+        ``(hotspots, scan_dt)`` según el contrato de arriba.
     """
+    # (1) Dependencias. Sin s3fs/xarray no se consultó nada: no verificable.
     try:
-        import s3fs
+        import s3fs  # noqa: F401  (se usa vía _get_s3; el import valida presencia)
         import xarray as xr
     except ImportError as e:
-        logger.error("s3fs/xarray no disponible: %s", e)
+        logger.error("FDCF NO CONSULTABLE: s3fs/xarray no disponible: %s", e)
         return [], None
 
-    s3 = _get_s3()
-    keys = _list_recent_files(s3, hours_back=hours_back)
+    # (2) Cliente S3. Iba fuera del try y una falla de construcción (credencial,
+    # botocore roto) escapaba como excepción al dashboard en vez de degradar.
+    try:
+        s3 = _get_s3()
+    except Exception as e:
+        logger.exception("FDCF NO CONSULTABLE: no pude construir el cliente S3: %s", e)
+        return [], None
+
+    # (3) Listado. Distinguimos en el LOG "S3 no contestó" de "no hay gránulo
+    # publicado todavía" — para la salida ambos son igual de no verificables.
+    keys, n_fallos = _list_recent_files(s3, hours_back=hours_back)
     if not keys:
-        logger.warning("FDCF: no hay archivos en las ultimas %dh", hours_back)
+        if n_fallos:
+            logger.error(
+                "FDCF NO CONSULTABLE: %d listado(s) de S3 fallaron en las "
+                "ultimas %dh; no hay gránulo que leer", n_fallos, hours_back)
+        else:
+            logger.warning(
+                "FDCF NO CONSULTABLE: S3 respondió pero NOAA no publicó "
+                "gránulos en las ultimas %dh", hours_back)
         return [], None
 
     latest = keys[0]
     logger.info("FDCF: leyendo %s", latest)
 
+    # (4) Lectura del NetCDF. Cualquier excepción (red, h5netcdf, variable
+    # ausente, pyproj) invalida el scan entero: no hay lectura parcial creíble.
     try:
         with s3.open(latest, "rb") as f:
             ds = xr.open_dataset(f, engine="h5netcdf")
@@ -346,14 +399,32 @@ def fetch_latest_hotspots(
             hotspots = extract_hotspots(ds, bounds=bounds,
                                         high_conf_only=high_conf_only)
     except Exception as e:
-        logger.exception("Error leyendo FDCF %s: %s", latest, e)
+        logger.exception("FDCF NO CONSULTABLE: error leyendo %s: %s", latest, e)
+        return [], None
+
+    # (5) Un scan sin hora no se puede presentar. Devolver los hotspots con
+    # scan_dt=None rompería el invariante y el consumidor los pintaría sin
+    # poder decir de cuándo son (o peor: el que chequea `scan_dt is None`
+    # tiraría las detecciones a la basura mostrando "0"). Se degrada entero.
+    if scan_dt is None:
+        logger.error(
+            "FDCF NO CONSULTABLE: no pude fechar el scan %s "
+            "(descarto %d hotspot(s) que no puedo timestampear)",
+            latest, len(hotspots))
         return [], None
 
     return hotspots, scan_dt
 
 
-def _list_files_at_hour(s3, dt: datetime) -> list[str]:
-    """Listar archivos FDCF disponibles para una hora UTC especifica."""
+def _list_files_at_hour(s3, dt: datetime, errores: Optional[list] = None) -> list[str]:
+    """Listar archivos FDCF disponibles para una hora UTC especifica.
+
+    ``errores``: lista donde se anotan los fallos de consulta (no los
+    FileNotFoundError, que son "esa hora no existe"). Sirve para que el
+    llamador sepa si el vacío vino de S3 caído o de que no hay dato — la firma
+    de retorno tiene que seguir siendo ``list[str]`` porque
+    ``nearest_granule_key`` la invoca como callback de listado.
+    """
     prefix = (
         f"{S3_BUCKET}/{S3_PRODUCT}/"
         f"{dt.year}/{dt.timetuple().tm_yday:03d}/{dt.hour:02d}/"
@@ -363,7 +434,9 @@ def _list_files_at_hour(s3, dt: datetime) -> list[str]:
     except FileNotFoundError:
         return []
     except Exception as e:
-        logger.warning("listing %s: %s", prefix, e)
+        logger.warning("FDCF: no pude listar %s: %s", prefix, e)
+        if errores is not None:
+            errores.append((prefix, repr(e)))
         return []
 
 
@@ -378,38 +451,58 @@ def fetch_hotspots_at_time(
     abril 2025 (GOES-19). Busca en la hora exacta + hora previa por si el
     scan que matcha cae en el borde.
 
+    MISMO CONTRATO que ``fetch_latest_hotspots`` (ver su docstring, que es la
+    referencia): ``scan_dt is None`` significa **no verificable** y trae
+    ``hotspots == []``; con ``scan_dt`` no-None el ``[]`` es un cero real,
+    verificado contra ese scan. Vale para el backfill igual que para NRT: un
+    bucket de la timeline con 0 MW porque S3 falló no es un bucket en calma.
+
     Args:
         dt:               datetime UTC del scan deseado.
         bounds:           bbox para filtrar.
-        high_conf_only:   solo Mask 10/11.
+        high_conf_only:   solo Mask ∈ HIGH_CONF_MASK.
 
     Returns:
-        (hotspots, scan_dt_real) con scan_dt_real = ts del archivo elegido
-        (puede diferir de `dt` por ±5 min). ([], None) si no encuentra.
+        ``(hotspots, scan_dt_real)`` con scan_dt_real = ts del archivo elegido
+        (puede diferir de `dt` por ±5 min), o ``([], None)`` si no verificable.
     """
+    # (1) Dependencias.
     try:
-        import s3fs
+        import s3fs  # noqa: F401  (se usa vía _get_s3; el import valida presencia)
         import xarray as xr
     except ImportError as e:
-        logger.error("s3fs/xarray no disponible: %s", e)
+        logger.error("FDCF NO CONSULTABLE: s3fs/xarray no disponible: %s", e)
         return [], None
 
     if dt.tzinfo is None:
         dt = dt.replace(tzinfo=timezone.utc)
 
-    s3 = _get_s3()
-    # Unión [dt-1h, dt, dt+1h]: el scan más cercano al borde de hora puede caer
-    # en la hora adyacente (el comentario viejo prometía esto pero solo hacía
-    # fallback a la previa). Elige la key de menor |Δt| sobre las tres horas.
-    chosen = nearest_granule_key(lambda h: _list_files_at_hour(s3, h),
+    # (2) Cliente S3 (mismo motivo que en el camino NRT: no dejar escapar).
+    try:
+        s3 = _get_s3()
+    except Exception as e:
+        logger.exception("FDCF NO CONSULTABLE: no pude construir el cliente S3: %s", e)
+        return [], None
+
+    # (3) Unión [dt-1h, dt, dt+1h]: el scan más cercano al borde de hora puede
+    # caer en la hora adyacente (el comentario viejo prometía esto pero solo
+    # hacía fallback a la previa). Elige la key de menor |Δt| sobre las tres.
+    errores: list = []
+    chosen = nearest_granule_key(lambda h: _list_files_at_hour(s3, h, errores),
                                  _parse_scan_time, dt)
     if chosen is None:
-        logger.warning("FDCF: no hay archivos cerca de %s", dt.isoformat())
+        if errores:
+            logger.error("FDCF NO CONSULTABLE: %d listado(s) de S3 fallaron "
+                         "cerca de %s", len(errores), dt.isoformat())
+        else:
+            logger.warning("FDCF NO CONSULTABLE: no hay archivos cerca de %s",
+                           dt.isoformat())
         return [], None
 
     logger.info("FDCF: ts=%s, archivo elegido: %s",
                 dt.isoformat(), chosen.split("/")[-1])
 
+    # (4) Lectura del NetCDF: cualquier excepción invalida el scan entero.
     try:
         with s3.open(chosen, "rb") as f:
             ds = xr.open_dataset(f, engine="h5netcdf")
@@ -417,7 +510,18 @@ def fetch_hotspots_at_time(
             hotspots = extract_hotspots(ds, bounds=bounds,
                                         high_conf_only=high_conf_only)
     except Exception as e:
-        logger.exception("Error leyendo FDCF historico %s: %s", chosen, e)
+        logger.exception("FDCF NO CONSULTABLE: error leyendo histórico %s: %s",
+                         chosen, e)
+        return [], None
+
+    # (5) Sin hora no hay bucket al cual atribuir el FRP: se degrada entero.
+    # (En la práctica `chosen` salió de nearest_granule_key, que ya lo fechó;
+    #  el guard queda por si la selección cambia de criterio.)
+    if scan_dt is None:
+        logger.error(
+            "FDCF NO CONSULTABLE: no pude fechar el scan histórico %s "
+            "(descarto %d hotspot(s) que no puedo timestampear)",
+            chosen, len(hotspots))
         return [], None
 
     return hotspots, scan_dt

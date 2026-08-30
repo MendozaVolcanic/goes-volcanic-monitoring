@@ -122,6 +122,109 @@ def test_la_tira_no_se_refresca_sola():
     assert run_every is None, f"no puede auto-refrescarse (run_every={run_every})"
 
 
+def _cuerpo_sin_docstring(path: Path, name: str) -> ast.Module:
+    """Cuerpo de una funcion top-level SIN su docstring.
+
+    POR QUE: `_func_source` devuelve el segmento entero, prosa incluida, asi que
+    un `assert "X" in cuerpo` lo satisface el DOCSTRING. Verificado por mutacion
+    (ago-2026): la version anterior de los dos tests de disparo pasaba con
+    `auto = False` clavado y con el boton metido dentro del `if` del hot spot,
+    porque el docstring nombra `_hotspots_volcan` y "boton".
+    """
+    src = path.read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef) and node.name == name:
+            cuerpo = list(node.body)
+            if (cuerpo and isinstance(cuerpo[0], ast.Expr)
+                    and isinstance(cuerpo[0].value, ast.Constant)
+                    and isinstance(cuerpo[0].value.value, str)):
+                cuerpo = cuerpo[1:]
+            return ast.Module(body=cuerpo, type_ignores=[])
+    raise AssertionError(f"no existe la funcion {name} en {path.name}")
+
+
+def _asignaciones(mod: ast.AST) -> dict[str, list[ast.AST]]:
+    """nombre -> valores que se le asignan (desarmando targets de tupla)."""
+    out: dict[str, list[ast.AST]] = {}
+    for nodo in ast.walk(mod):
+        if not isinstance(nodo, (ast.Assign, ast.AnnAssign)):
+            continue
+        targets = (nodo.targets if isinstance(nodo, ast.Assign)
+                   else [nodo.target])
+        if nodo.value is None:
+            continue
+        for t in targets:
+            elts = t.elts if isinstance(t, (ast.Tuple, ast.List)) else [t]
+            for e in elts:
+                if isinstance(e, ast.Name):
+                    out.setdefault(e.id, []).append(nodo.value)
+    return out
+
+
+def _llama_a(llamadas: set, funcion: str) -> bool:
+    """`funcion` se compara por PREFIJO, no por igualdad.
+
+    Por que: el fetch de hot spots tiene mas de una puerta —`_hotspots_volcan`
+    y su envoltorio `_hotspots_volcan_seguro`, que atrapa el fallo de FDCF sin
+    perder el testigo `scan_dt`— y van a poder aparecer mas. Lo que este test
+    vigila es que el disparo dependa del HOT SPOT, no de cual de las puertas se
+    use; con igualdad exacta, envolver la llamada rompia el test sin que el
+    comportamiento cambiara. (audit 2026-08-30)
+    """
+    return any(str(l).startswith(funcion) for l in llamadas)
+
+
+def _derivados_de(asigs: dict, funcion: str) -> set:
+    """Nombres cuyo valor sale (directa o transitivamente) de `funcion(...)`.
+
+    Es la parte que un substring no puede hacer: distingue `auto = bool(hotspots)`
+    —que depende del retorno de `_hotspots_volcan`— de `auto = False`, que no
+    depende de nada aunque el archivo siga nombrando la funcion mas arriba.
+    """
+    derivados: set = set()
+    cambio = True
+    while cambio:
+        cambio = False
+        for nombre, valores in asigs.items():
+            if nombre in derivados:
+                continue
+            for v in valores:
+                llamadas = {getattr(n.func, "id", getattr(n.func, "attr", ""))
+                            for n in ast.walk(v) if isinstance(n, ast.Call)}
+                nombres = {n.id for n in ast.walk(v)
+                           if isinstance(n, ast.Name)}
+                if _llama_a(llamadas, funcion) or (nombres & derivados):
+                    derivados.add(nombre)
+                    cambio = True
+                    break
+    return derivados
+
+
+def _es_st_button(nodo: ast.AST) -> bool:
+    return (isinstance(nodo, ast.Call) and isinstance(nodo.func, ast.Attribute)
+            and nodo.func.attr == "button"
+            and getattr(nodo.func.value, "id", "") == "st")
+
+
+def _gatillo(mod: ast.Module) -> tuple[ast.BoolOp, set]:
+    """(BoolOp que decide si se corre el retrieval, nombres del hot spot).
+
+    Se localiza por FORMA, no por nombre de variable: la unica expresion
+    booleana del cuerpo que contiene un `st.button(...)`. Asi el test sobrevive
+    a que se renombre `correr`, pero no a que el boton deje de ser una rama.
+    """
+    asigs = _asignaciones(mod)
+    hs = _derivados_de(asigs, "_hotspots_volcan")
+    boolops = [n for n in ast.walk(mod) if isinstance(n, ast.BoolOp)
+               and any(_es_st_button(s) for s in ast.walk(n))]
+    assert len(boolops) == 1, (
+        "el disparo tiene que ser UNA expresion booleana con el boton como "
+        f"rama; encontradas {len(boolops)}. Si el boton quedo dentro de un "
+        "`if`, el caso freatico no tiene como dispararse.")
+    return boolops[0], hs
+
+
 def test_el_disparo_automatico_es_por_hot_spot():
     """La fraccion de rojo del Ash RGB NO sirve de gatillo: medido sobre los 8
     prioritarios sin actividad da 9.9-95.5% (mediana 76%) en el encuadre de la
@@ -129,18 +232,86 @@ def test_el_disparo_automatico_es_por_hot_spot():
 
     El gatillo es el hot spot FDCF: ya esta en memoria, lo valida NOAA, y
     CLAUDE.md lo privilegia.
+
+    LIMITE CONOCIDO (mismo que documenta test_legend_coverage): las vistas
+    Streamlit no se renderizan headless, asi que no se puede ejecutar la tira
+    con y sin hot spot y mirar si dispara. Lo que si se puede pinear es el flujo
+    de DATOS: que la rama automatica del disparo dependa del retorno de
+    `_hotspots_volcan` y no de una constante. Eso es lo que mata la mutacion
+    `auto = False`, que la version por substring dejaba en verde.
     """
-    cuerpo = _func_source(VIEW, "_tira_altura_propia")
-    assert "_hotspots_volcan" in cuerpo
-    assert "_ash_red_fraction" not in cuerpo, (
+    mod = _cuerpo_sin_docstring(VIEW, "_tira_altura_propia")
+    asigs = _asignaciones(mod)
+    hs = _derivados_de(asigs, "_hotspots_volcan")
+    assert hs, ("el cuerpo (no el docstring) tiene que llamar a "
+                "_hotspots_volcan y usar su resultado")
+
+    gatillo, _ = _gatillo(mod)
+    assert isinstance(gatillo.op, ast.Or), (
+        "tiene que ser un `or`: con `and` el boton no alcanza solo y el caso "
+        "freatico se queda sin medir")
+
+    # La rama AUTOMATICA es la que no es el boton, y tiene que depender del hot
+    # spot. `auto = False` no depende de nada -> rojo.
+    auto = [v for v in gatillo.values if not _es_st_button(v)]
+    assert auto, "el `or` perdio su rama automatica"
+    for rama in auto:
+        usados = {n.id for n in ast.walk(rama) if isinstance(n, ast.Name)}
+        llamadas = {getattr(n.func, "id", getattr(n.func, "attr", ""))
+                    for n in ast.walk(rama) if isinstance(n, ast.Call)}
+        assert (usados & hs) or _llama_a(llamadas, "_hotspots_volcan"), (
+            f"la rama automatica {ast.unparse(rama)!r} no depende del hot "
+            f"spot: quedo clavada, o el gatillo cambio de fuente")
+
+    # y la metrica de color sigue descartada — sobre el CODIGO, no el docstring
+    codigo = ast.unparse(mod)
+    assert "_ash_red_fraction" not in codigo, (
         "la metrica de color no sirve de gatillo — ver el plan")
 
 
 def test_el_boton_queda_disponible_sin_hot_spot():
     """El caso freatico (Villarrica, Chillan) da columna de ceniza SIN hot
-    spot. Si el unico disparo fuera automatico, ese caso quedaria sin medir."""
-    cuerpo = _func_source(VIEW, "_tira_altura_propia")
-    assert "st.button" in cuerpo
+    spot. Si el unico disparo fuera automatico, ese caso quedaria sin medir.
+
+    Se pinea la SEMANTICA de cortocircuito, no el texto: el boton tiene que ser
+    una rama del `or` a la DERECHA de la rama automatica, de modo que Python lo
+    evalue —y Streamlit lo dibuje— exactamente cuando NO hay hot spot. Y no
+    puede estar anidado bajo ningun `if` que dependa del hot spot: ahi seria
+    justo el bug que este test vino a atrapar.
+    """
+    mod = _cuerpo_sin_docstring(VIEW, "_tira_altura_propia")
+    gatillo, hs = _gatillo(mod)
+
+    botones = [n for n in ast.walk(mod) if _es_st_button(n)]
+    assert len(botones) == 1, f"esperaba un solo st.button, hay {len(botones)}"
+    boton = botones[0]
+
+    # 1) es rama del or, y NO la primera: el cortocircuito lo salta cuando la
+    #    rama automatica ya es verdadera, y lo dibuja cuando no hay hot spot.
+    assert any(_es_st_button(v) for v in gatillo.values[1:]), (
+        "el boton tiene que ser la rama derecha del `or`: "
+        f"{ast.unparse(gatillo)}")
+    assert not _es_st_button(gatillo.values[0]), (
+        "con el boton primero, se dibuja siempre y el hot spot deja de "
+        "disparar nada")
+
+    # 2) no vive dentro de ningun `if` que mire el hot spot (la mutacion que la
+    #    version por substring dejaba en verde).
+    for nodo in ast.walk(mod):
+        if not isinstance(nodo, ast.If):
+            continue
+        test_nombres = {n.id for n in ast.walk(nodo.test)
+                        if isinstance(n, ast.Name)}
+        test_llamadas = {getattr(n.func, "id", getattr(n.func, "attr", ""))
+                         for n in ast.walk(nodo.test) if isinstance(n, ast.Call)}
+        if not ((test_nombres & hs) or _llama_a(test_llamadas, "_hotspots_volcan")):
+            continue
+        anidados = [x for cuerpo in (nodo.body, nodo.orelse)
+                    for s in cuerpo for x in ast.walk(s) if _es_st_button(x)]
+        assert boton not in anidados, (
+            f"el boton quedo dentro de `if {ast.unparse(nodo.test)}`: sin hot "
+            "spot no hay como pedir el calculo, y la columna freatica se "
+            "queda sin altura")
 
 
 def test_la_tira_avisa_el_costo_antes_de_gastarlo():

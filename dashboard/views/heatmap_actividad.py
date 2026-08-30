@@ -62,6 +62,9 @@ def _build_heatmap(counts_by_day: list[dict], today: datetime) -> go.Figure:
     ≥1 hotspot ese día — medida de persistencia derivada del roll-up diario de
     frp_timeline.json (NO de un solo scan).
     """
+    # Las claves que empiezan con "_" son metadata del roll-up (hoy "_scans",
+    # el denominador), no volcanes. Se itera PRIORITY_VOLCANOES asi que no se
+    # cuelan, pero queda dicho para quien agregue otra metrica.
     days = [(today - timedelta(days=i)).strftime("%d-%b") for i in range(LOOKBACK_DAYS)][::-1]
     z = []
     for name in PRIORITY_VOLCANOES:
@@ -294,7 +297,14 @@ def render():
     # Fuente ÚNICA: roll-up diario derivado de frp_timeline.json (los mismos
     # scans de 10 min de la curva de arriba). Hoy y días previos salen del
     # mismo lugar — sin el bug del "conteo de un solo scan".
-    daily = _load_frp_timeline().get("daily", {})
+    _tl_sem = _load_frp_timeline()
+    daily = _tl_sem.get("daily", {})
+
+    # MISMO guard que la seccion intradia (vivia 90 lineas mas arriba y no se
+    # reusaba): con la serie vencida, "sin deteccion" no es calma — es que nadie
+    # actualizo el pre-cocinado. La conclusion de abajo depende de esto.
+    _age_h_sem = _frp_age_hours(_tl_sem)
+    _stale_sem = _age_h_sem is not None and _age_h_sem > FRP_STALE_HOURS
 
     counts_by_day = []
     covered_days = 0  # días cubiertos por el pre-cocinado (aunque sean 0 act.)
@@ -308,29 +318,67 @@ def render():
     st.plotly_chart(fig, width='stretch', config={"displayModeBar": False})
 
     counts_today = counts_by_day[-1]  # último elemento = hoy
-    if counts_today:
-        active = sorted([k for k, v in counts_today.items() if v > 0],
-                        key=lambda k: -counts_today[k])
+    # "_scans" es el DENOMINADOR (cuántos scans se bajaron hoy), no un volcán.
+    scans_hoy = counts_today.get("_scans")
+    active = sorted([k for k, v in counts_today.items()
+                     if v > 0 and not k.startswith("_")],
+                    key=lambda k: -counts_today[k])
+
+    # Cobertura esperada: un scan cada 10 min desde las 00:00 UTC de hoy.
+    _esperados = max(1, int((today - today.replace(
+        hour=0, minute=0, second=0, microsecond=0)).total_seconds() // 600))
+    _cobertura = (scans_hoy / _esperados) if scans_hoy else 0.0
+
+    if active:
         st.success(
             f"🔥 **Hoy ({today.strftime('%d-%b')})**: detección térmica en "
             f"{len(active)} volcán(es) — "
             + ", ".join(f"{k} ({counts_today[k]} scans)" for k in active)
         )
+    elif _stale_sem or scans_hoy is None or _cobertura < 0.5:
+        # Sin detecciones PERO sin base para concluir calma: la serie está
+        # vencida, o el día tiene menos de la mitad de los scans esperados.
+        # Un día con 60 de 144 scans se ve igual que uno completo en calma, y
+        # esa es justamente la confusión que no puede pasar en un SDA.
+        if scans_hoy is None:
+            _det = ("el pre-cocinado no registra cuántos scans se revisaron hoy"
+                    " (serie generada antes de que el roll-up guardara ese dato)")
+        else:
+            _det = (f"hoy sólo se revisaron **{scans_hoy} de ~{_esperados}** "
+                    "scans esperados")
+        st.warning(
+            f"⚠️ **Hoy ({today.strftime('%d-%b')})**: sin detección FDCF, pero "
+            f"{_det}. **No se puede concluir calma**: falta dato. Para "
+            "descartar actividad, mira el pulso intradía de arriba y los hot "
+            "spots en vivo del Modo Guardia."
+        )
     else:
         st.info(
             f"✅ **Hoy ({today.strftime('%d-%b')})**: sin detección FDCF en los "
-            f"{len(PRIORITY_VOLCANOES)} volcanes prioritarios (aún). "
-            "Calma operacional."
+            f"{len(PRIORITY_VOLCANOES)} volcanes prioritarios, sobre "
+            f"**{scans_hoy} de ~{_esperados}** scans del día. Calma operacional."
         )
 
+    # Cobertura por día: el denominador es lo que separa "no hubo nada" de
+    # "no miramos". Sin esto, `covered_days` contaba la CLAVE del día, que el
+    # productor crea aunque no haya bajado un solo scan.
+    _cob = []
+    for i in range(LOOKBACK_DAYS):
+        _d = (today - timedelta(days=LOOKBACK_DAYS - 1 - i))
+        _n = counts_by_day[i].get("_scans")
+        _cob.append(f"{_d.strftime('%d')}: {_n if _n is not None else '—'}")
     st.caption(
-        f"📊 {covered_days}/{LOOKBACK_DAYS} días cubiertos por el pre-cocinado. "
-        "El roll-up se llena hasta 7 días con las corridas horarias del "
-        "workflow `frp_timeline.yml` (fuente única con el pulso intradía)."
+        f"📊 {covered_days}/{LOOKBACK_DAYS} días con datos. Scans por día "
+        f"({' · '.join(_cob)}) — un día completo son ~144 scans de 10 min. "
+        "Menos scans = menos base para descartar actividad, no menos actividad. "
+        "Fuente: workflow `frp_timeline.yml`."
     )
 
     # Tabla de detalle del día actual
-    if counts_today:
+    # `active`, no `counts_today`: desde que el roll-up guarda el denominador
+    # ("_scans"), el dict nunca esta vacio y la tabla saldria siempre, con todos
+    # los volcanes en "Calmo" incluso en un dia sin cobertura.
+    if active:
         st.markdown("### Detalle día actual")
         rows = []
         for name in PRIORITY_VOLCANOES:

@@ -303,3 +303,55 @@ if __name__ == "__main__":
     test_frp_daily_rollup()
     test_frp_timeline_view_builds_with_empty()
     print("OK — smoke tests passed")
+
+
+def test_el_iframe_prefiere_la_api_nueva_de_streamlit():
+    """`st.components.v1.html` quedo deprecada con remocion el 2026-06-01.
+
+    Esa fecha YA PASO: el server lo avisa en cada carga y la proxima
+    actualizacion del runtime de HF puede llevarse los call-sites por delante.
+    El helper prefiere `st.iframe` y cae a la API vieja solo si no existe, para
+    que el deploy no dependa de que ambas versiones coincidan con el local.
+    (audit 2026-08-30)
+    """
+    import streamlit as st
+    from dashboard.style import render_html_iframe
+
+    llamadas = {"iframe": 0, "vieja": 0}
+    orig = getattr(st, "iframe", None)
+
+    def _fake_iframe(src, **kw):
+        llamadas["iframe"] += 1
+
+    st.iframe = _fake_iframe
+    try:
+        assert render_html_iframe("<b>x</b>", height=10) is True
+    finally:
+        if orig is None:
+            del st.iframe
+        else:
+            st.iframe = orig
+
+    assert llamadas["iframe"] == 1, "no uso st.iframe habiendo st.iframe"
+
+
+def test_ningun_call_site_llama_directo_a_la_api_deprecada():
+    """El unico `components.html` permitido es el FALLBACK del helper.
+
+    Si vuelve a aparecer en una vista, el dia que Streamlit la borre esa vista
+    revienta en produccion sin que nadie lo note en local.
+    """
+    import re
+    from pathlib import Path
+
+    raiz = Path(__file__).parent.parent
+    culpables = []
+    for f in (raiz / "dashboard").rglob("*.py"):
+        if f.name == "style.py":
+            continue  # ahi vive el fallback, a proposito
+        cuerpo = f.read_text(encoding="utf-8")
+        # sacar comentarios: mencionar la API vieja en prosa esta permitido
+        codigo = "\n".join(re.sub(r"#.*$", "", l) for l in cuerpo.splitlines())
+        if re.search(r"components\.v1|components\.html\s*\(", codigo):
+            culpables.append(f.name)
+    assert not culpables, culpables

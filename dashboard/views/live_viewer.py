@@ -260,9 +260,11 @@ def _make_fig(img: np.ndarray, bounds: dict, title: str,
         title=dict(text=title, font=dict(size=12, color="#99aabb")),
         xaxis_title="Longitud", yaxis_title="Latitud",
         height=760, template="plotly_dark",
+        # constrain="domain": sin esto Plotly ensancha el RANGO para cumplir el
+        # aspecto de scaleanchor, en vez de encoger el area de dibujo.
         yaxis=dict(scaleanchor="x", scaleratio=1,
-                   range=[lat_min - 0.5, lat_max + 0.5]),
-        xaxis=dict(range=[lon_min - 0.5, lon_max + 0.5]),
+                   range=[lat_min - 0.5, lat_max + 0.5], constrain="domain"),
+        xaxis=dict(range=[lon_min - 0.5, lon_max + 0.5], constrain="domain"),
         margin=dict(t=30, b=30, l=40, r=15),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -287,9 +289,14 @@ def _fetch_hotspots_cached(
     """
     bounds = {"lat_min": lat_min, "lat_max": lat_max,
               "lon_min": lon_min, "lon_max": lon_max}
-    hotspots, scan_dt = fetch_latest_hotspots(bounds=bounds, hours_back=2)
-    ts_str = scan_dt.isoformat() if scan_dt else None
-    return [h.to_dict() for h in hotspots], ts_str
+    # `hotspots_verificados` lanza si scan_dt is None (FDCF no consultable). Una
+    # funcion cacheada que lanza NO guarda resultado, asi que el fallo se
+    # reintenta al proximo rerun en vez de quedar fijo 5 min. El llamador lo
+    # atrapa y muestra el estado, sin inventar un cero. (audit 2026-08-30)
+    from dashboard.map_helpers import hotspots_verificados
+    hotspots, scan_dt = hotspots_verificados(
+        *fetch_latest_hotspots(bounds=bounds, hours_back=2))
+    return [h.to_dict() for h in hotspots], scan_dt.isoformat()
 
 
 def _add_hotspots(fig, hotspots: list[dict], scan_label: str | None = None) -> None:
@@ -581,7 +588,7 @@ def _live_content():
     # Calcula el proximo scan esperado: ultimo ts + 10 min + ~4 min latencia RAMMB.
     # El JS en el browser decrementa un contador cada segundo sin re-run del server.
     from datetime import timedelta as _td
-    import streamlit.components.v1 as _stc
+    from dashboard.style import render_html_iframe
 
     _ref_ts = None
     for _p in LIVE_PRODUCTS:
@@ -673,7 +680,9 @@ def _live_content():
     # Barra de auto-refresh (izq) + botón refresh compacto (der), en una fila.
     col_cd, col_rf = st.columns([7, 0.9])
     with col_cd:
-        _stc.html(_countdown_html, height=42)
+        # `st.iframe` con fallback a la API vieja: components.v1.html quedo
+        # deprecada con fecha de remocion ya vencida. (audit 2026-08-30)
+        render_html_iframe(_countdown_html, height=42)
     with col_rf:
         if st.button("🔄", width='stretch', key="live_refresh_btn",
                      help="Consultar RAMMB ahora y cargar el scan más reciente"):
@@ -959,9 +968,16 @@ def _live_content():
         if show_hotspots:
             with st.spinner("Cargando hot spots NOAA FDCF..."):
                 _b = CHILE_REPROJECTED_BOUNDS
-                hotspots_nacional, hotspots_scan_ts = _fetch_hotspots_cached(
-                    _b["lat_min"], _b["lat_max"], _b["lon_min"], _b["lon_max"],
-                )
+                from dashboard.map_helpers import FDCFNoVerificable
+                try:
+                    hotspots_nacional, hotspots_scan_ts = _fetch_hotspots_cached(
+                        _b["lat_min"], _b["lat_max"], _b["lon_min"], _b["lon_max"],
+                    )
+                except FDCFNoVerificable:
+                    # FDCF no contestó. Se avisa abajo; NO se dibuja un cero.
+                    hotspots_nacional, hotspots_scan_ts = [], None
+                    st.caption("⚠ Hot spots NOAA FDCF no consultables en este "
+                               "ciclo — el mapa NO descarta anomalía térmica.")
             _ts_short = (hotspots_scan_ts[11:16] + " UTC"
                          if hotspots_scan_ts else "—")
             if hotspots_nacional:
@@ -1018,12 +1034,20 @@ def _live_content():
                                     if hotspots_scan_ts else None),
                     )
 
+                # constrain="domain" es lo que hace que Plotly RESPETE el range
+                # de aca. Sin el, el default constrain="range" ensancha el eje
+                # para cumplir el aspecto: Chile (15 x 43 grados) en un contenedor
+                # ancho salia a 82 grados de longitud, y a 688 en el primer render,
+                # cuando el contenedor todavia mide 16 px. El mapa quedaba invisible
+                # y el rango NO se recuperaba al crecer el contenedor. Verificado en
+                # el deploy HF, no solo en local. (audit 2026-08-30)
                 fig.update_layout(
                     height=820,
                     xaxis=dict(range=[bounds["lon_min"], bounds["lon_max"]],
-                               autorange=False),
+                               autorange=False, constrain="domain"),
                     yaxis=dict(range=[bounds["lat_min"], bounds["lat_max"]],
-                               autorange=False, scaleanchor="x", scaleratio=1),
+                               autorange=False, scaleanchor="x", scaleratio=1,
+                               constrain="domain"),
                     margin=dict(t=40, b=35, l=45, r=15),
                 )
                 render_compact_legend(
@@ -1124,10 +1148,14 @@ def _live_content():
                             volc_layer=volc_layer,
                         )
                         if show_hotspots:
-                            _hs_zona, _hs_ts_z = _fetch_hotspots_cached(
-                                zone_bounds["lat_min"], zone_bounds["lat_max"],
-                                zone_bounds["lon_min"], zone_bounds["lon_max"],
-                            )
+                            from dashboard.map_helpers import FDCFNoVerificable
+                            try:
+                                _hs_zona, _hs_ts_z = _fetch_hotspots_cached(
+                                    zone_bounds["lat_min"], zone_bounds["lat_max"],
+                                    zone_bounds["lon_min"], zone_bounds["lon_max"],
+                                )
+                            except FDCFNoVerificable:
+                                _hs_zona, _hs_ts_z = [], None
                             if _hs_zona:
                                 _add_hotspots(
                                     fig_z, _hs_zona,

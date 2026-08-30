@@ -36,6 +36,12 @@ requests>=2.31.0
 pandas>=2.1.0
 Pillow>=10.0.0
 
+# YAML — lo usa tests/test_workflow_concurrency.py para parsear
+# .github/workflows/*.yml (regla "un tag, un grupo de concurrency"). Sin el
+# paquete, ese test se auto-saltea con pytest.importorskip("yaml") y CI
+# reportaba verde con 9 tests MENOS que local. (fix audit ago-2026)
+PyYAML>=6.0
+
 # Video export (MP4 H.264) — imageio-ffmpeg trae binario ffmpeg incluido
 # asi no requiere ffmpeg de sistema en Streamlit Cloud.
 imageio>=2.34.0

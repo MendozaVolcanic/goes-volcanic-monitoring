@@ -34,6 +34,40 @@ def _func_source(path: Path, name: str) -> str:
     raise AssertionError(f"no existe la funcion {name} en {path.name}")
 
 
+def _func_node(path: Path, name: str) -> ast.FunctionDef:
+    """El nodo AST de una funcion top-level, SIN su docstring.
+
+    POR QUE existe: `_func_source` devuelve el segmento completo, docstring
+    incluido, asi que un `assert "X" in cuerpo` lo satisface una mencion en la
+    prosa. Verificado por mutacion (ago-2026): con el default de `volcan_grid`
+    cambiado a `GRID_PANELS_TV` —la grilla pierde VOLCAT, el unico producto con
+    altura cuantitativa— los tres asserts seguian pasando porque el docstring
+    nombra `GRID_PANELS_TV`, `_panel_rammb` y `_panel_volcat`.
+    """
+    src = path.read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    for node in ast.walk(tree):
+        if isinstance(node, ast.FunctionDef) and node.name == name:
+            cuerpo = list(node.body)
+            if (cuerpo and isinstance(cuerpo[0], ast.Expr)
+                    and isinstance(cuerpo[0].value, ast.Constant)
+                    and isinstance(cuerpo[0].value.value, str)):
+                cuerpo = cuerpo[1:]
+            return ast.Module(body=cuerpo, type_ignores=[])
+    raise AssertionError(f"no existe la funcion {name} en {path.name}")
+
+
+def _nombres_usados(fn: ast.AST) -> set:
+    """Identificadores que el CODIGO de `fn` referencia (ast.Name)."""
+    return {n.id for n in ast.walk(fn) if isinstance(n, ast.Name)}
+
+
+def _funciones_llamadas(fn: ast.AST) -> set:
+    """Nombres invocados como funcion dentro de `fn`."""
+    return {getattr(n.func, "attr", getattr(n.func, "id", ""))
+            for n in ast.walk(fn) if isinstance(n, ast.Call)}
+
+
 def test_render_product_honra_la_altura_pedida():
     """En un 2x2 cada panel necesita su alto: 620 clavado no sirve."""
     from dashboard.views.modo_guardia_volcan import _render_product
@@ -265,11 +299,41 @@ def test_el_alto_de_la_sala_no_paga_el_cromo_de_la_pagina():
     assert GRID_CHROME_TV_PX < GRID_CHROME_PAGE_PX
 
 
+def test_grid_panels_declara_los_dos_tipos_de_panel():
+    """La estructura de datos que gobierna la grilla, antes que el texto que la
+    nombra: tiene que haber paneles RAMMB **y** el de VOLCAT, que es el unico
+    producto con altura de pluma cuantitativa. Si VOLCAT desaparece de la lista
+    la grilla pinta 3 mapas y el rotulo del sub-tab —derivado de
+    len(GRID_PANELS)— sigue prometiendo 4."""
+    from dashboard.views.modo_guardia_volcan import GRID_PANELS
+
+    kinds = [p["kind"] for p in GRID_PANELS]
+    assert "volcat" in kinds, kinds
+    assert kinds.count("rammb") >= 3, kinds
+
+
 def test_la_grilla_recorre_los_paneles_declarados():
-    """Sin hardcodear: agregar un panel a GRID_PANELS debe bastar."""
-    cuerpo = _func_source(VIEW, "volcan_grid")
-    assert "GRID_PANELS" in cuerpo
-    assert "_panel_rammb" in cuerpo and "_panel_volcat" in cuerpo
+    """Sin hardcodear: agregar un panel a GRID_PANELS debe bastar.
+
+    Se afirma sobre el CUERPO sin docstring (`_func_node`) y por identificador
+    exacto, no por substring: `GRID_PANELS_TV` contiene "GRID_PANELS" como
+    substring y la prosa nombra a los dos paneles, asi que la version anterior
+    de este test la satisfacia el docstring (mutacion ago-2026).
+    """
+    grid = _func_node(VIEW, "volcan_grid")
+
+    nombres = _nombres_usados(grid)
+    assert "GRID_PANELS" in nombres, (
+        "el default de `panels` tiene que salir de GRID_PANELS (la lista de 4 "
+        f"con VOLCAT), no de otra: {sorted(n for n in nombres if 'PANEL' in n)}")
+    assert "GRID_PANELS_TV" not in nombres, (
+        "GRID_PANELS_TV son los 3 de la sala: como default deja la grilla sin "
+        "VOLCAT")
+
+    llamadas = _funciones_llamadas(grid)
+    assert "_panel_rammb" in llamadas and "_panel_volcat" in llamadas, (
+        f"los dos tipos de panel se tienen que DIBUJAR, no mencionar: "
+        f"{sorted(llamadas)}")
 
 
 GUARDIA = (Path(__file__).parent.parent / "dashboard" / "views"
@@ -644,3 +708,122 @@ def test_el_png_del_rotador_conserva_el_orden_de_la_sala():
     compositor = _func_source(ZONAS, "_volcan_zoom_png")
     assert re.search(r"ex\.map\(_one,\s*GRID_PANELS_TV\)", compositor), compositor
     assert "PRODUCTS" not in compositor
+
+
+# ── El rotulo del sub-tab cuenta los paneles de verdad ────────────────
+
+
+def _tabs_del_modo_guardia() -> list:
+    """Elementos de la llamada `st.tabs([...])` que arma los sub-tabs.
+
+    Se busca por contenido ("Vigilancia diaria") y no por numero de linea:
+    el archivo se reordena seguido y un indice clavado apuntaria a otra cosa
+    sin fallar.
+    """
+    tree = ast.parse(GUARDIA.read_text(encoding="utf-8"))
+    for node in ast.walk(tree):
+        if not (isinstance(node, ast.Call)
+                and isinstance(node.func, ast.Attribute)
+                and node.func.attr == "tabs" and node.args):
+            continue
+        lista = node.args[0]
+        if not isinstance(lista, ast.List):
+            continue
+        planos = [e.value for e in lista.elts
+                  if isinstance(e, ast.Constant) and isinstance(e.value, str)]
+        if any("Vigilancia diaria" in t for t in planos):
+            return lista.elts
+    raise AssertionError("no se encontro el st.tabs de los sub-tabs de guardia")
+
+
+def test_el_subtab_volcan_cuenta_los_paneles_que_dibuja():
+    """El rotulo decia "(3 productos)" mientras la vista pintaba CUATRO.
+
+    Paso en la migracion a `volcan_grid`: VOLCAT entro como 4o panel de
+    `GRID_PANELS` y el texto del tab se quedo atras (verificado en el DOM el
+    2026-08-30: 4 contenedores). Un conteo equivocado le hace creer al turno
+    que le falta un producto por mirar, justo en la vista que existe para que
+    no falte ninguno. Por eso el numero se DERIVA de la lista y el test pide
+    que siga derivado: un literal vuelve a envejecer en la proxima migracion.
+    """
+    from dashboard.views.modo_guardia_volcan import GRID_PANELS
+
+    volcan = [e for e in _tabs_del_modo_guardia()
+              if "Volcán" in ast.dump(e)]
+    assert len(volcan) == 1, "no hay exactamente un sub-tab de Volcan"
+    etiqueta = volcan[0]
+
+    # f-string, no Constant: si alguien la vuelve a escribir a mano, falla aca
+    assert isinstance(etiqueta, ast.JoinedStr), (
+        "el rotulo del sub-tab Volcan volvio a ser un literal — tiene que "
+        "salir de len(GRID_PANELS) o vuelve a desincronizarse")
+    fuente = ast.unparse(etiqueta)
+    assert "len(GRID_PANELS)" in fuente, fuente
+    # ...y de GRID_PANELS, no de GRID_PANELS_TV (que son 3 y es otra vista)
+    assert "GRID_PANELS_TV" not in fuente, fuente
+
+    # el numero que veria el operador hoy
+    assert f"{len(GRID_PANELS)} productos" == "4 productos"
+
+
+def test_el_boton_de_modo_sala_sigue_declarando_sus_tres():
+    """El slot `tv=volcan` usa GRID_PANELS_TV (3, sin VOLCAT), asi que su
+    boton dice "3 productos" a proposito. Este test es el que evita que
+    alguien "corrija" ese 3 a 4 por analogia con el sub-tab de al lado.
+    """
+    from dashboard.views.modo_guardia_volcan import GRID_PANELS_TV
+
+    src = GUARDIA.read_text(encoding="utf-8")
+    assert len(GRID_PANELS_TV) == 3
+    assert re.search(r"Modo Sala · \{volcan\} \(3 productos\)", src), (
+        "el boton de Modo Sala dejo de declarar 3 productos, pero "
+        "GRID_PANELS_TV sigue teniendo 3 paneles")
+
+
+MANUALS = Path(__file__).parent.parent / "dashboard" / "manuals.py"
+
+
+def test_el_manual_de_guardia_cuenta_los_mismos_productos():
+    """El manual es lo que lee el turno cuando no sabe qué está mirando.
+
+    Describia el sub-tab como "3 productos (Ash, GeoColor, SO2)" — el texto
+    de antes de que VOLCAT entrara a la grilla. Un manual que promete menos
+    de lo que la vista muestra es peor que no tenerlo: el operador da por
+    decorativo el panel que le da la ALTURA de la pluma. El rotulo del tab ya
+    se deriva de GRID_PANELS; la prosa no puede, asi que la pinea este test.
+    """
+    from dashboard.views.modo_guardia_volcan import GRID_PANELS
+
+    from dashboard.manuals import _MANUALS
+
+    # SOLO la seccion de guardia: "VOLCAT" aparece 9 veces en el archivo
+    # (tiene pagina propia), asi que buscar en el fuente entero da un falso
+    # verde — este test paso una mutacion que borraba VOLCAT del manual de
+    # guardia justamente por eso.
+    _, texto = _MANUALS["guardia"]
+
+    conteos = [int(n) for n in re.findall(r"Volcán \((\d+) productos\)", texto)]
+    assert conteos, "el manual dejo de nombrar el sub-tab Volcan"
+    assert all(n == len(GRID_PANELS) for n in conteos), conteos
+
+    # ...y el BULLET que describe ese sub-tab nombra los cuatro, no solo los
+    # tres de RAMMB. Acotado al BULLET: la seccion de guardia nombra
+    # "Ash RGB" en el bullet del mosaico y "VOLCAT" en Referencias, asi que
+    # buscar en toda la seccion tambien deja pasar la mutacion (medido: dos
+    # mutantes que borraban productos del bullet sobrevivian).
+    renglones = texto.splitlines()
+    arranque = [k for k, l in enumerate(renglones)
+                if l.startswith("- **Volcán (")]
+    assert len(arranque) == 1, (
+        "el manual ya no tiene un bullet propio del sub-tab Volcan")
+    bullet = [renglones[arranque[0]]]
+    for l in renglones[arranque[0] + 1:]:
+        if l.startswith("- **") or not l.strip():
+            break
+        bullet.append(l)
+    bullet = " ".join(bullet)
+
+    for panel in GRID_PANELS:
+        etiqueta = panel["label"].split(" ·")[0]
+        assert etiqueta in bullet, (
+            f"el bullet del sub-tab Volcan no menciona {etiqueta}")

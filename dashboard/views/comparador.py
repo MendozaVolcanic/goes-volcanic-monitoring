@@ -122,11 +122,16 @@ def _plot_frame(img: np.ndarray | None, lat: float, lon: float,
         showlegend=False,
     ))
     cos_lat = max(0.1, float(np.cos(np.radians(lat))))
+    # constrain="domain" en AMBOS ejes: con scaleanchor y sin esto, el default
+    # de Plotly es constrain="range" y ENSANCHA el rango para cumplir el aspecto,
+    # ignorando el range que se pide aca. Con el contenedor angosto del primer
+    # render la escena se dispara y no vuelve. (audit 2026-08-30)
     fig.update_xaxes(range=[bounds_box["lon_min"], bounds_box["lon_max"]],
-                     showgrid=False, visible=False)
+                     showgrid=False, visible=False, constrain="domain")
     fig.update_yaxes(range=[bounds_box["lat_min"], bounds_box["lat_max"]],
                      showgrid=False, visible=False,
-                     scaleanchor="x", scaleratio=1.0 / cos_lat)
+                     scaleanchor="x", scaleratio=1.0 / cos_lat,
+                     constrain="domain")
     fig.update_layout(
         title=dict(text=title, font=dict(size=12, color="#e0e0e0"), x=0.02),
         height=height, margin=dict(l=0, r=0, t=28, b=0),

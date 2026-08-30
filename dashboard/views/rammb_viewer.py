@@ -541,9 +541,11 @@ def _build_animation(frames: list[dict], bounds: dict, height: int = 700,
             )],
             title=dict(text=frames[0]["label"], font=dict(size=13, color="#ccc")),
             xaxis_title="Longitud", yaxis_title="Latitud",
+            # constrain="domain": sin esto Plotly ensancha el RANGO para cumplir
+            # el aspecto de scaleanchor, en vez de encoger el area de dibujo.
             yaxis=dict(scaleanchor="x", scaleratio=1,
-                       range=[lat_min, lat_max]),
-            xaxis=dict(range=[lon_min, lon_max]),
+                       range=[lat_min, lat_max], constrain="domain"),
+            xaxis=dict(range=[lon_min, lon_max], constrain="domain"),
             height=height,
             template="plotly_dark",
             margin=dict(t=55, b=75, l=50, r=20),

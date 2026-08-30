@@ -214,12 +214,29 @@ def _hotspots_volcan(lat_min: float, lat_max: float,
                      ) -> tuple[list[HotSpot], datetime | None]:
     bounds = {"lat_min": lat_min, "lat_max": lat_max,
               "lon_min": lon_min, "lon_max": lon_max}
+    # `hotspots_verificados` lanza si el scan no se pudo leer. Importa doble
+    # aca: esta funcion ademas gobierna el DISPARO AUTOMATICO de la tira de
+    # altura (`auto = bool(hotspots)`), asi que un fallo tragado como "cero hot
+    # spots" no solo pintaba calma — tambien apagaba el retrieval en silencio.
+    from dashboard.map_helpers import (filter_hotspots_near_volcanoes,
+                                       hotspots_verificados)
+    hs, dt = hotspots_verificados(
+        *fetch_latest_hotspots(bounds=bounds, hours_back=1))
+    return filter_hotspots_near_volcanoes(hs), dt
+
+
+def _hotspots_volcan_seguro(lat_min, lat_max, lon_min, lon_max):
+    """`_hotspots_volcan` sin propagar el fallo, PERO devolviendo `dt=None`.
+
+    Los paneles de mapa no tienen donde poner un aviso, asi que degradan a "sin
+    diamantes". Lo que NO se pierde es el testigo: `dt is None` sigue diciendo
+    "no verificado", y quien tenga donde mostrarlo (el KPI, la tira de altura)
+    lo usa en vez de inventar un cero.
+    """
+    from dashboard.map_helpers import FDCFNoVerificable
     try:
-        hs, dt = fetch_latest_hotspots(bounds=bounds, hours_back=1)
-        from dashboard.map_helpers import filter_hotspots_near_volcanoes
-        return filter_hotspots_near_volcanoes(hs), dt
-    except Exception as e:
-        logger.warning("hotspots fallo: %s", e)
+        return _hotspots_volcan(lat_min, lat_max, lon_min, lon_max)
+    except FDCFNoVerificable:
         return [], None
 
 
@@ -484,11 +501,16 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
     # por lo que un circulo geometrico (en km) se ve como circulo visual.
     # Sin esto los anillos aparecen aplastados como ovalos.
     cos_lat = max(0.1, float(np.cos(np.radians(volcan_lat))))
+    # constrain="domain" en AMBOS ejes: con scaleanchor y sin esto, el default
+    # de Plotly es constrain="range" y ENSANCHA el rango para cumplir el aspecto,
+    # ignorando el range que se pide aca. Con el contenedor angosto del primer
+    # render la escena se dispara y no vuelve. (audit 2026-08-30)
     fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
-                     showgrid=False, visible=False)
+                     showgrid=False, visible=False, constrain="domain")
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
                      showgrid=False, visible=False,
-                     scaleanchor="x", scaleratio=1.0 / cos_lat)
+                     scaleanchor="x", scaleratio=1.0 / cos_lat,
+                     constrain="domain")
     fig.update_layout(
         title=dict(text=product_label, font=dict(size=13, color="#e0e0e0"), x=0.02),
         height=height, margin=dict(l=0, r=0, t=28, b=0),
@@ -676,7 +698,7 @@ def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
     # paneles triplica el ruido sin agregar informacion.
     hs = None
     if prod_id == "eumetsat_ash":
-        hs, _ = _hotspots_volcan(bounds["lat_min"], bounds["lat_max"],
+        hs, _ = _hotspots_volcan_seguro(bounds["lat_min"], bounds["lat_max"],
                                  bounds["lon_min"], bounds["lon_max"])
     wind = _wind_at_volcano(v.lat, v.lon) if show_wind else {}
 
@@ -833,7 +855,7 @@ def _tira_altura_propia(volcan_name: str, radius_deg: float = RADIUS_DEG):
         "lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
         "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
     }
-    hotspots, _ = _hotspots_volcan(bounds["lat_min"], bounds["lat_max"],
+    hotspots, _ = _hotspots_volcan_seguro(bounds["lat_min"], bounds["lat_max"],
                                    bounds["lon_min"], bounds["lon_max"])
 
     st.markdown(
@@ -902,11 +924,30 @@ def _render_altura(v, wr: dict | None, acha: dict | None,
     acha_ok = bool(acha) and acha.get("status") == "ok"
 
     if not (wr_ok or acha_ok):
-        st.info(
-            f"Sin firma de ceniza IR-opaca en el encuadre (±{radius_deg:g}°) → "
-            "no hay tope que reportar. **Es el estado esperado sin pluma "
-            "activa.** Ojo: una pluma de gas/SO₂ tampoco da tope por este "
-            "camino; para eso mira el indicador SO₂ de la grilla.")
+        # "No hay pluma" y "no pude medir" son estados OPUESTOS y se veian
+        # igual. Los retrievals ya distinguen `no_plume` de `no_data` + motivo
+        # (`acquire_ash_scene` en src/process/scene.py llena `reason`), y la
+        # vista hermana `volcat_viewer.py:877` ya lo leia; esta lo tiraba. Con
+        # S3 u Open-Meteo caidos el operador leia "estado esperado sin pluma
+        # activa" — justo cuando la tira se dispara sola por hot spot, o sea
+        # cuando SI hay anomalia termica. (audit 2026-08-30)
+        _motivo = None
+        for _r in (wr, acha):
+            if isinstance(_r, dict) and _r.get("status") == "no_data":
+                _motivo = _r.get("reason") or "fuente no disponible"
+                break
+        if _motivo:
+            st.warning(
+                f"**No se pudo medir el tope** (no es lo mismo que no haya "
+                f"pluma): {_motivo}. Las fuentes del retrieval —S3 de NOAA y "
+                "el perfil GFS— fallan de forma intermitente; reintenta en un "
+                "momento. **Este panel NO descarta una columna eruptiva.**")
+        else:
+            st.info(
+                f"Sin firma de ceniza IR-opaca en el encuadre (±{radius_deg:g}°) → "
+                "no hay tope que reportar. **Es el estado esperado sin pluma "
+                "activa.** Ojo: una pluma de gas/SO₂ tampoco da tope por este "
+                "camino; para eso mira el indicador SO₂ de la grilla.")
         return
 
     cima_km = (v.elevation or 0) / 1000.0
@@ -923,6 +964,28 @@ def _render_altura(v, wr: dict | None, acha: dict | None,
                  "ACHA NOAA · p95")
     with cols[3]:
         kpi_card(f"{cima_km:.1f} km", f"Cima de {v.name}")
+
+    # Edad del perfil GFS. Se medía en `scene.py` y se tiraba antes de llegar a
+    # la pantalla: el operador no sabía si el perfil que convierte temperatura
+    # en altura era de hace 20 minutos o de hace 5 horas. El retrieval es tan
+    # bueno como su perfil, así que el numero va JUNTO al numero que sostiene.
+    _gap = (wr or {}).get("profile_gap_min")
+    if _gap is None:
+        _gap = (acha or {}).get("profile_gap_min")
+    if _gap is not None:
+        try:
+            _g = int(_gap)
+        except (TypeError, ValueError):
+            _g = None
+        if _g is not None:
+            _aviso = " ⚠ perfil viejo" if _g > 240 else ""
+            st.caption(
+                f"Perfil GFS usado para convertir temperatura en altura: "
+                f"**{_g} min** de antigüedad{_aviso}. "
+                "GFS publica cada 6 h, así que un perfil de pocas horas es lo "
+                "normal; uno de más de 4 h merece desconfianza si el viento "
+                "cambió."
+            )
 
     topes = [r["top_km"] for r, ok in ((wr, wr_ok), (acha, acha_ok))
              if ok and r.get("top_km") is not None]
@@ -950,7 +1013,7 @@ def _grid_header(volcan_name: str, show_wind: bool,
         "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
     }
     now = datetime.now(timezone.utc)
-    hotspots, _ = _hotspots_volcan(bounds["lat_min"], bounds["lat_max"],
+    hotspots, _ = _hotspots_volcan_seguro(bounds["lat_min"], bounds["lat_max"],
                                    bounds["lon_min"], bounds["lon_max"])
     wind = _wind_at_volcano(v.lat, v.lon) if show_wind else {}
     wind_summary = ""
@@ -1083,7 +1146,7 @@ def _capture_button(v, show_wind: bool, radius_deg: float = RADIUS_DEG):
         "lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
         "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
     }
-    hotspots, _ = _hotspots_volcan(bounds["lat_min"], bounds["lat_max"],
+    hotspots, _ = _hotspots_volcan_seguro(bounds["lat_min"], bounds["lat_max"],
                                    bounds["lon_min"], bounds["lon_max"])
     wind = _wind_at_volcano(v.lat, v.lon) if show_wind else {}
     captured = []

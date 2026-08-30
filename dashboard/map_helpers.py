@@ -546,3 +546,82 @@ def add_chile_border(fig: go.Figure, color: str = "rgba(255,255,255,0.65)",
         hoverinfo="skip", showlegend=False, name="Frontera Andina",
     ))
     return fig
+
+
+# ── Estado del producto FDCF (hot spots NOAA) ────────────────────────
+#
+# POR QUE ESTO EXISTE, y por que vive aca y no en cada vista:
+#
+# `fetch_latest_hotspots` devuelve `(hotspots, scan_dt)` y su contrato dice que
+# `scan_dt is None` significa **no se pudo verificar** (S3 caido, sin granulo
+# publicado, NetCDF ilegible), mientras que `scan_dt` valido con lista vacia
+# significa **NOAA miro y no detecto nada**. Son estados opuestos.
+#
+# Las cuatro vistas que consumen hot spots pintaban los dos igual: un `0`, y dos
+# de ellas en VERDE. O sea que un timeout de AWS a las 3 de la manana se leia
+# como "volcan tranquilo". En un sistema que existe para avisar, ese es el peor
+# modo de falla posible — peor que un crash, porque nadie lo nota.
+#
+# Cuatro auditores independientes cayeron sobre este mismo bug por caminos
+# distintos (audit 2026-08-30). El criterio se centraliza aca para que no vuelva
+# a divergir entre vistas: seis implementaciones con seis criterios fue como
+# llegamos hasta aca.
+
+class FDCFNoVerificable(Exception):
+    """FDCF no se pudo consultar en este intento.
+
+    Existe para un motivo concreto: `@st.cache_data` **no cachea** el resultado
+    de una llamada que lanza. Sin esto, un blip de 2 segundos de AWS quedaba
+    guardado 5 minutos y congelaba "sin hot spots" en la pared del Modo Sala,
+    saltandose ademas el scan siguiente. Levantarla dentro de la funcion
+    cacheada y atraparla afuera hace que el fallo NO se memorice y se reintente
+    al proximo rerun.
+    """
+
+
+def hotspots_verificados(hotspots, scan_dt):
+    """Normaliza la salida del fetcher; lanza si el dato no es verificable.
+
+    Uso: llamarla DENTRO de la funcion decorada con `@st.cache_data`, y atrapar
+    `FDCFNoVerificable` afuera devolviendo `([], None)`.
+    """
+    if scan_dt is None:
+        raise FDCFNoVerificable()
+    return hotspots, scan_dt
+
+
+def estado_hotspots(hotspots, scan_dt, ahora=None):
+    """Como presentar el conteo de hot spots sin mentir.
+
+    Devuelve un dict con `color`, `valor`, `detalle` y `verificado`, para que la
+    vista arme su propio HTML pero el CRITERIO sea uno solo:
+
+    - `scan_dt is None`  -> gris, valor "—", "FDCF no consultable". **Nunca un
+      cero**: ese cero seria ausencia de informacion disfrazada de ausencia de
+      anomalia termica.
+    - `n > 0`            -> rojo, el conteo, con la edad del scan.
+    - `n == 0` con scan  -> verde, "0", con la edad del scan. Este es el unico
+      caso en que el verde esta justificado: NOAA miro y no vio nada.
+
+    La edad va SIEMPRE junto al numero: un conteo sin hora no dice si es de hace
+    ocho minutos o de ayer.
+    """
+    from datetime import datetime, timezone
+
+    if scan_dt is None:
+        return {"verificado": False, "color": "#8b98a5", "valor": "—",
+                "detalle": "FDCF no consultable · reintentando"}
+
+    ahora = ahora or datetime.now(timezone.utc)
+    try:
+        edad_min = int((ahora - scan_dt).total_seconds() / 60)
+        edad = f"scan hace {edad_min} min"
+    except (TypeError, ValueError):
+        edad = "scan sin fecha"
+
+    n = len(hotspots)
+    if n > 0:
+        return {"verificado": True, "color": "#ff4444", "valor": str(n),
+                "detalle": edad}
+    return {"verificado": True, "color": "#44dd88", "valor": "0",
+            "detalle": f"sin detecciones · {edad}"}

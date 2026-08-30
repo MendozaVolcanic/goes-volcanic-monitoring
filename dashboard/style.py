@@ -449,6 +449,40 @@ def inject_css():
     st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 
+
+def render_html_iframe(html: str, height: int = 0) -> bool:
+    """Renderiza HTML con JS en un iframe. Devuelve True si pudo.
+
+    Existe porque `st.components.v1.html` quedo DEPRECADA con fecha de
+    remocion **2026-06-01, ya pasada**: el server lo avisa en cada carga y la
+    proxima actualizacion del runtime de HF puede llevarse los call-sites por
+    delante. El reemplazo oficial es `st.iframe`, que auto-detecta HTML crudo.
+
+    Se prefiere `st.iframe` y se cae a la API vieja si no existe, porque el
+    deploy no siempre corre la misma version de Streamlit que el entorno local
+    — migrar a ciegas rompe justo del lado que no se ve. Si no hay ninguna de
+    las dos, devuelve False y el llamador degrada sin romper la app entera.
+    (audit 2026-08-30)
+    """
+    try:
+        import streamlit as _st
+        if hasattr(_st, "iframe"):
+            # `st.iframe` RECHAZA height=0 ("must be a positive integer"), y el
+            # watchdog justamente pide un iframe invisible. Un pixel es
+            # imperceptible y evita caer al fallback deprecado — que era lo que
+            # pasaba: el helper parecia migrado y el server seguia avisando de
+            # la API muerta en cada carga.
+            _st.iframe(html, height=max(1, int(height)))
+            return True
+    except Exception:
+        pass
+    try:
+        import streamlit.components.v1 as components
+        components.html(html, height=height)
+        return True
+    except Exception:
+        return False
+
 def inject_reconnect_watchdog():
     """Watchdog JS que auto-recarga la app si Streamlit cae en 'Connection error'.
 
@@ -474,16 +508,11 @@ def inject_reconnect_watchdog():
     Anti-loop: backoff por sessionStorage (no recarga más de 1 vez cada
     BACKOFF_MS) — si el servidor está caído de verdad, no martillea reloads.
     """
-    # Defensivo: components.html es la UNICA API que ejecuta JS (iframe), pero
-    # esta deprecada (removal anunciado post 2026-06-01). Si algun dia no esta,
-    # degradamos SIN watchdog en vez de crashear la app entera (esto corre en el
-    # top-level de app.py en cada carga).
+    # El iframe es la UNICA via para ejecutar JS. `render_html_iframe` prefiere
+    # `st.iframe` y cae a la API vieja; si no hay ninguna, degradamos SIN
+    # watchdog en vez de crashear la app (esto corre en el top-level de app.py).
     try:
-        import streamlit.components.v1 as components
-    except Exception:
-        return
-    try:
-        components.html(
+        render_html_iframe(
             """
         <script>
         (function(){

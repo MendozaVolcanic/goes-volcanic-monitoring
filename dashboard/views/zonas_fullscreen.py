@@ -75,12 +75,16 @@ def _recent_ts(product: str, n: int = 3) -> list[str]:
 @st.cache_data(ttl=300, show_spinner=False)
 def _hotspots_zone(zone_key: str) -> tuple[list[HotSpot], datetime | None]:
     bounds = VOLCANIC_ZONES[zone_key]
-    try:
-        hs, dt = fetch_latest_hotspots(bounds=bounds, hours_back=1)
-        from dashboard.map_helpers import filter_hotspots_near_volcanoes
-        return filter_hotspots_near_volcanoes(hs), dt
-    except Exception:
-        return [], None
+    # Sin `except Exception: return [], None`. Eso hacia dos cosas malas a la
+    # vez: presentaba un fallo de S3 como "sin hot spots" en la pared que se
+    # proyecta 24/7, y como esta funcion esta cacheada 5 min, el fallo quedaba
+    # congelado y se salteaba el scan siguiente. `hotspots_verificados` lanza,
+    # y una funcion cacheada que lanza no memoriza nada. (audit 2026-08-30)
+    from dashboard.map_helpers import (filter_hotspots_near_volcanoes,
+                                       hotspots_verificados)
+    hs, dt = hotspots_verificados(
+        *fetch_latest_hotspots(bounds=bounds, hours_back=1))
+    return filter_hotspots_near_volcanoes(hs), dt
 
 
 @st.cache_data(ttl=900, show_spinner=False)
@@ -1277,7 +1281,10 @@ def _rotating_grid_4_zonas(show_volcanoes: bool, show_hotspots: bool,
                             session_key: str = "zonas_rot_idx",
                             chrome: bool = True,
                             include_volcat: bool = False):
-    """Auto-rotate productos cada 10s en loop: GeoColor -> Ash -> SO2 [-> VOLCAT].
+    """Auto-rotate productos en loop: GeoColor -> Ash -> SO2 [-> VOLCAT].
+
+    El intervalo lo fija ROTATION_SECONDS de este modulo (no lo escribas a mano
+    aca: el docstring decia 10s cuando la constante ya valia 15).
 
     chrome=True: muestra banner "ROTANDO PRODUCTOS" arriba.
     chrome=False: solo las imágenes, sin banner — modo TV puro.
@@ -1480,6 +1487,9 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
             try:
                 hs, _ = _hotspots_zone(zk)
             except Exception:
+                # Incluye FDCFNoVerificable: en el rotador TV no hay donde
+                # poner un aviso, asi que se dibuja el mapa sin diamantes. Lo
+                # importante es que el fallo NO quedo cacheado 5 min.
                 hs = []
         return zk, img, hs, used_ts, used_zoom
 
@@ -1637,7 +1647,10 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
     try:
         scan_dt = parse_rammb_ts(ts)
         age_min = int((now - scan_dt).total_seconds() / 60)
-    except Exception:
+    except (ValueError, TypeError):
+        # Solo un timestamp mal formado. Capturar `Exception` a secas hacia que
+        # un error de programacion se presentara al operador como un estado del
+        # dato ("Sin scan disponible"), que es la peor forma de fallar en un SDA.
         scan_dt = None
         age_min = -1
 
@@ -1696,6 +1709,7 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
             try:
                 hotspots_z, _ = _hotspots_zone(zone_key)
             except Exception:
+                # Idem: incluye FDCFNoVerificable (ver _hotspots_zone).
                 hotspots_z = []
         return zone_key, img_z, used_ts_z, used_zoom_z, hotspots_z
 
@@ -1705,7 +1719,14 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
             results[zk] = (img_z, used_ts_z, used_zoom_z, hs_z)
 
     # Hora (UTC + local Chile) + resolucion POR ZONA, destacada en cada panel.
-    from dashboard.utils import fmt_chile, parse_rammb_ts
+    #
+    # OJO: `fmt_chile` y `parse_rammb_ts` NO se re-importan aca. Estan en el
+    # import top-level (linea 29) y volver a importarlos LOCALMENTE los convertia
+    # en variables locales de toda la funcion — Python decide el ambito al
+    # compilar, no al ejecutar. El uso de `parse_rammb_ts` de mas arriba (el del
+    # banner de estado) tiraba UnboundLocalError, el `except Exception` lo tragaba
+    # y el banner mostraba "Sin scan disponible" para siempre: el semaforo de
+    # frescura de la sala no podia ponerse rojo nunca. (audit 2026-08-30)
     from dashboard.views.modo_guardia_volcan import _zoom_res_label
 
     def _zone_time_html(uts: str, uzoom: int) -> str:

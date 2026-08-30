@@ -83,6 +83,10 @@ def _round_to_step(dt: datetime, step_min: int) -> datetime:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--backfill-hours", type=float, default=3.0)
+    ap.add_argument(
+        "--gap-fill", type=int, default=12,
+        help="Cuantos scans FALTANTES de la ventana rellenar por corrida, "
+             "ademas del backfill reciente. 0 lo desactiva. Ver _rellenar_huecos.")
     ap.add_argument("--window-hours", type=float, default=48.0)
     ap.add_argument("--step-min", type=int, default=10)
     ap.add_argument("--radius-km", type=float, default=50.0)
@@ -131,6 +135,50 @@ def main():
         if total > 0:
             log.info("  %s  FRP_total=%.1f MW  %s", key, total,
                      {k: v for k, v in frp.items() if v > 0})
+
+    # ── Relleno de huecos viejos ────────────────────────────────────────
+    #
+    # POR QUE: el bucle de arriba sólo mira `backfill_hours` (3 h) hacia atrás
+    # desde AHORA, así que un hueco más viejo que eso **no se visita nunca**.
+    # El cron declara cadencia de 10 min pero GitHub lo corre cada 2-12 h para
+    # repos poco activos, así que los huecos son la norma, no la excepción: en
+    # la serie real había 156 de 287 scans y un hueco de 9.7 h que sobrevivió
+    # ~20 corridas. El comentario del YAML decía "auto-sanante" y era falso.
+    #
+    # Con presupuesto (`--gap-fill`) para no volver la corrida impredecible: se
+    # rellenan los faltantes MÁS RECIENTES primero, que son los que el operador
+    # mira, y la serie converge en unas pocas corridas.
+    if args.gap_fill > 0:
+        faltantes = []
+        n_ventana = int(args.window_hours * 60 // args.step_min)
+        for i in range(n_ventana + 1):
+            t = now_floor - timedelta(minutes=i * args.step_min)
+            if t.strftime(ISO) not in existing:
+                faltantes.append(t)
+        if faltantes:
+            log.info("huecos en la ventana: %d; relleno hasta %d",
+                     len(faltantes), args.gap_fill)
+        rellenados = 0
+        for target in faltantes:
+            if rellenados >= args.gap_fill:
+                break
+            try:
+                hs, scan_dt = fetch_scan_sliced(target, bounds=CHILE_BBOX)
+            except Exception as e:
+                log.warning("hueco %s falló: %s", target.isoformat(), e)
+                continue
+            if scan_dt is None:
+                continue
+            key = _round_to_step(scan_dt, args.step_min).strftime(ISO)
+            if key in existing:
+                continue
+            frp, counts = sum_frp_per_volcano(hs, volcanoes,
+                                              radius_km=args.radius_km)
+            existing[key] = {"t": key, "frp": frp, "n": counts}
+            rellenados += 1
+            fetched += 1
+        if rellenados:
+            log.info("huecos rellenados: %d", rellenados)
 
     # Podar ventana rodante de scans (para la curva intradía)
     cutoff = (now - timedelta(hours=args.window_hours)).strftime(ISO)

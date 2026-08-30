@@ -9,8 +9,17 @@ name: FRP timeline build
 on:
   schedule:
     # Cada 10 min (cadencia nativa del FDCF GOES-19). El pre-check evita re-bajar
-    # scans ya presentes; backfill de 3h da solape (auto-sanante si se saltea una
-    # corrida). Antes 15 min; subido a 10 a pedido OVDAS (jun 2026).
+    # scans ya presentes; backfill de 3h da solape para una corrida salteada.
+    #
+    # OJO — este cron NO se cumple: GitHub throttlea los schedules de repos poco
+    # activos y en la practica corre cada 2-12 h (verificado en el remote,
+    # ago-2026). Por eso los huecos son la norma: se midieron 156 de 287 scans
+    # esperados en 48 h, con uno de 9.7 h que sobrevivio ~20 corridas porque el
+    # backfill de 3h nunca llega tan atras. El decia "auto-sanante" y era falso.
+    # Lo que SI sana la serie es `--gap-fill` (build_frp_timeline.py), que
+    # rellena los faltantes de toda la ventana con presupuesto por corrida.
+    #
+    # Antes 15 min; subido a 10 a pedido OVDAS (jun 2026).
     - cron: '*/10 * * * *'
   workflow_dispatch:
     inputs:

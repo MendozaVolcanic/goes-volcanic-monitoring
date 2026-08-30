@@ -103,8 +103,18 @@ def daily_rollup(scans: list) -> dict:
                guarda build_frp_timeline (campo "n" = conteo de hotspots).
 
     Returns:
-        {"YYYY-MM-DD": {"Villarrica": 8, "Lascar": 2, ...}, ...}
-        Sólo incluye volcanes con ≥1 scan con detección ese día.
+        {"YYYY-MM-DD": {"_scans": 138, "Villarrica": 8, "Lascar": 2, ...}, ...}
+        Sólo incluye volcanes con ≥1 scan con detección ese día, MÁS la clave
+        especial ``"_scans"`` con el total de scans disponibles ese día.
+
+    Por qué existe ``"_scans"`` (el denominador): sin él, un día con 60 de 144
+    scans bajados es indistinguible de un día completo en calma — los dos dan
+    cero detecciones y se pintan igual. El heatmap semanal afirmaba "calma
+    operacional" sobre días a los que sencillamente les faltaba dato. El
+    numerador solo no puede sostener esa conclusión. (audit ago-2026)
+
+    La clave lleva guion bajo para no colisionar nunca con un nombre de volcán;
+    todo consumidor debe saltear las claves que empiezan con "_".
     """
     out: dict[str, dict[str, int]] = {}
     for s in scans:
@@ -112,6 +122,7 @@ def daily_rollup(scans: list) -> dict:
         if not day:
             continue
         d = out.setdefault(day, {})
+        d["_scans"] = d.get("_scans", 0) + 1
         for name, n in s.get("n", {}).items():
             if n and n > 0:
                 d[name] = d.get(name, 0) + 1

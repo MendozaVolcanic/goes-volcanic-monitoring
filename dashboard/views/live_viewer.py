@@ -588,7 +588,7 @@ def _live_content():
     # Calcula el proximo scan esperado: ultimo ts + 10 min + ~4 min latencia RAMMB.
     # El JS en el browser decrementa un contador cada segundo sin re-run del server.
     from datetime import timedelta as _td
-    import streamlit.components.v1 as _stc
+    from dashboard.style import render_html_iframe
 
     _ref_ts = None
     for _p in LIVE_PRODUCTS:
@@ -680,7 +680,9 @@ def _live_content():
     # Barra de auto-refresh (izq) + botón refresh compacto (der), en una fila.
     col_cd, col_rf = st.columns([7, 0.9])
     with col_cd:
-        _stc.html(_countdown_html, height=42)
+        # `st.iframe` con fallback a la API vieja: components.v1.html quedo
+        # deprecada con fecha de remocion ya vencida. (audit 2026-08-30)
+        render_html_iframe(_countdown_html, height=42)
     with col_rf:
         if st.button("🔄", width='stretch', key="live_refresh_btn",
                      help="Consultar RAMMB ahora y cargar el scan más reciente"):

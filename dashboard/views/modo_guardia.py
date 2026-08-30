@@ -409,7 +409,8 @@ def _chile_subtab():
                  "Util para medir largo de pluma en escala continental.",
         )
     with cols[3]:
-        # Helper que usa st.components.v1.html (iframe interno con JS
+        # Helper que usa render_html_iframe (st.iframe, con fallback a la
+        # API vieja) — iframe interno con JS
         # NO sanitizado) — st.markdown sanitiza onclick, NO funciona.
         from dashboard.map_helpers import render_top_navigation_button
         render_top_navigation_button(

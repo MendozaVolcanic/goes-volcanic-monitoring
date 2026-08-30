@@ -72,3 +72,54 @@ def test_umbral_es_coherente_con_la_cadencia_del_cron():
 if __name__ == "__main__":
     import pytest
     raise SystemExit(pytest.main([__file__, "-q"]))
+
+
+# ── El denominador del roll-up diario ────────────────────────────────
+
+
+def test_el_rollup_diario_guarda_cuantos_scans_hubo():
+    """Sin denominador, "no hubo nada" y "no miramos" son el mismo pixel.
+
+    El heatmap semanal pintaba `daily.get(volcan, 0)` y concluia "Calma
+    operacional". Con solo el numerador, un dia con 60 de 144 scans bajados es
+    IDENTICO a un dia completo sin detecciones: los dos dan cero. La serie real
+    tenia huecos de hasta 9.7 h, asi que no es hipotetico. (audit 2026-08-30)
+    """
+    from src.fetch.frp_timeline import daily_rollup
+
+    scans = [
+        {"t": "2026-08-30T00:10:00Z", "n": {"Villarrica": 2}},
+        {"t": "2026-08-30T00:20:00Z", "n": {"Villarrica": 0}},
+        {"t": "2026-08-30T00:30:00Z", "n": {}},
+        {"t": "2026-08-29T00:10:00Z", "n": {}},
+    ]
+    out = daily_rollup(scans)
+
+    # el numerador sigue siendo el de siempre
+    assert out["2026-08-30"]["Villarrica"] == 1
+
+    # ...y ahora ademas se sabe sobre cuantos scans se afirma eso
+    assert out["2026-08-30"]["_scans"] == 3
+    assert out["2026-08-29"]["_scans"] == 1
+
+    # un dia SIN detecciones ya no es un dict vacio indistinguible de "sin dato"
+    assert out["2026-08-29"] == {"_scans": 1}
+
+
+def test_el_denominador_no_se_confunde_con_un_volcan():
+    """`_scans` viaja en el mismo dict que los volcanes, asi que el prefijo "_"
+    es lo unico que lo separa. Si alguien lo renombra sin guion bajo, el
+    heatmap lo listaria como un volcan activo llamado "scans".
+    """
+    from src.fetch.frp_timeline import daily_rollup
+    from src.volcanos import CATALOG
+
+    out = daily_rollup([{"t": "2026-08-30T00:10:00Z", "n": {"Lascar": 1}}])
+    meta = [k for k in out["2026-08-30"] if k.startswith("_")]
+    assert meta == ["_scans"], meta
+
+    nombres = {v.name for v in CATALOG}
+    for clave in out["2026-08-30"]:
+        if clave.startswith("_"):
+            continue
+        assert clave in nombres, f"{clave} no es un volcan del catalogo"

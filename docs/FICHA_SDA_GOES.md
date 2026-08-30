@@ -63,6 +63,22 @@
   (mitigados con test tri-espectral + β-ratios). Toda altura propia se etiqueta
   **INDICATIVO** con banda de incertidumbre y nivel de confianza que nunca es
   "alta"; el producto cuantitativo de referencia sigue siendo VOLCAT.
+- **Cuándo se ejecuta el cálculo de altura (ago-2026):** NO corre en cada scan.
+  Una escena cuesta ~78 MB y ~90 s (bandas L1b C11/C14/C15 medidas contra S3 con
+  caché frío), así que en la vista de volcán se dispara sólo en dos casos:
+  (a) **automáticamente** cuando el producto FDCF de NOAA reporta un *hot spot*
+  dentro del encuadre, y (b) **a pedido del operador**, con un botón siempre
+  disponible que declara el costo antes de gastarlo. El hot spot marca anomalía
+  térmica en el cráter, **no** pluma: una erupción freática puede dar columna de
+  ceniza sin ninguno, y ese caso lo dispara la persona. Se evaluó y **descartó**
+  un disparador por fracción de color del Ash RGB: medido sobre los 8 volcanes
+  prioritarios sin actividad da 9,9–95,5 % (mediana 76 %), o sea que con
+  cualquier umbral absoluto dispara siempre o nunca.
+- **Advertencia mostrada en pantalla junto al resultado:** los tres retrievals
+  miden **sólo ceniza IR-opaca**. Si todos los topes quedan bajo la cota del
+  volcán, la interfaz declara explícitamente que eso significa *"no se encontró
+  ceniza IR-opaca"* y no *"la pluma es baja"* — es el comportamiento típico ante
+  una pluma de gas/SO₂ (validado contra Chillán, 27-jun-2026).
 - **Política de privacidad:** No aplica (sin datos personales).
 - **Si es caja negra (5.5):** No aplica — código 100% abierto (Apache-2.0).
 
@@ -73,7 +89,8 @@ mismo commit que el cambio). Módulos con cabecera "FICHA SDA" (Nivel 1):
 `src/process/ash_detection.py`, `scene.py`, `bt_matching_height.py`,
 `wen_rose_height.py`, `beta_ratios.py`, `wind_shear_height.py`,
 `acha_plume_height.py`, `parallax.py` (corrige la georef de la pluma por su
-altura).
+altura) y `dashboard/views/modo_guardia_volcan.py` (la vista que decide
+CUÁNDO se ejecuta el retrieval y qué advertencias acompañan al número).
 
 **Dónde viven los guards de adquisición (ago-2026):** los tres retrievals de
 altura comparten `src/process/scene.py` (`acquire_ash_scene`). Ahí —y sólo ahí—

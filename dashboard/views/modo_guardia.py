@@ -966,7 +966,7 @@ def render():
         "🌎 Chile (vista nacional)",
         "🌋 VOLCAT por zona",
         "🗺 Mosaico 5 prioritarios",
-        "🔬 Volcán (3 productos)",
+        "🔬 Volcán (4 productos)",
         "🎞 Loop 2h",
     ])
     with sub_zonas:

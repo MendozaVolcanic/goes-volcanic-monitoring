@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import logging
 
+from src.fetch import _backoff
 from src.fetch.granule_select import get_s3 as _get_s3
 from datetime import datetime, timedelta, timezone
 from typing import Optional
@@ -135,15 +136,24 @@ def _read_range(s3, grib: str, start: int, end: int, retries: int = 4) -> bytes:
     reintento. Cada registro va por su propia request (no una conexión sostenida):
     un corte transitorio de red — habitual bajando decenas de MB de S3 — reintenta
     ese registro en vez de tumbar todo el perfil.
+
+    Entre intentos espera con backoff exponencial y jitter (``_backoff``), igual
+    que ``goes_s3._retry_s3``: reintentar en ráfaga no sobrevive a un corte breve
+    y agrava un 503 SlowDown. ``FileNotFoundError`` no se reintenta: el objeto no
+    existe, esperar no lo va a crear.
     """
     last = None
     for attempt in range(retries):
         try:
             return s3.cat_file(grib, start=start, end=end + 1)  # end exclusivo en fsspec
+        except FileNotFoundError:
+            raise
         except Exception as e:            # transitorio: EndpointConnectionError, timeout
             last = e
             logger.warning("GFS archive range [%d,%d] intento %d: %s",
                            start, end, attempt + 1, e)
+            if attempt < retries - 1:
+                _backoff.pause_before_retry(attempt)
     raise last
 
 

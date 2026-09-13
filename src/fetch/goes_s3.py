@@ -21,6 +21,7 @@ from src.config import (
     RAW_DIR,
     VOLCANIC_BANDS,
 )
+from src.fetch import _backoff
 from src.fetch.granule_select import get_s3, nearest_granule_key
 
 logger = logging.getLogger(__name__)
@@ -57,6 +58,11 @@ def _retry_s3(fn, *args, what: str = "", **kwargs):
     Propaga ``FileNotFoundError`` de inmediato (no es transitorio). Tras agotar los
     reintentos, relanza la última excepción. Función utilitaria (testeable con un
     ``fn`` falso que falla N veces).
+
+    Entre intentos espera con backoff exponencial y jitter (``_backoff``): antes
+    los 4 intentos salían en milisegundos, que no sobreviven a un corte de un par
+    de segundos y, ante un 503 SlowDown, agravan el throttle de S3. No espera
+    después del último intento: sólo atrasaría el error.
     """
     last = None
     for attempt in range(_S3_RETRIES):
@@ -68,6 +74,8 @@ def _retry_s3(fn, *args, what: str = "", **kwargs):
             last = e
             logger.warning("S3 %s intento %d/%d: %s", what or getattr(fn, "__name__", "op"),
                            attempt + 1, _S3_RETRIES, e)
+            if attempt < _S3_RETRIES - 1:
+                _backoff.pause_before_retry(attempt)
     raise last
 
 

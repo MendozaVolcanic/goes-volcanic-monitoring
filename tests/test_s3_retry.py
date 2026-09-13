@@ -15,6 +15,13 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from src.fetch.goes_s3 import _retry_s3, _S3_RETRIES
 
 
+@pytest.fixture(autouse=True)
+def _sin_dormir(monkeypatch):
+    """El retry ahora espera con backoff; estos tests no deben dormir de verdad."""
+    from src.fetch import _backoff
+    monkeypatch.setattr(_backoff, "_sleep", lambda s: None)
+
+
 def test_retry_succeeds_after_transient_failures():
     """Falla las primeras 2 veces (red), luego OK → devuelve el resultado."""
     calls = {"n": 0}

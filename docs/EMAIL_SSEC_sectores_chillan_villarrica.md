@@ -30,8 +30,8 @@ Dear Dr. Pavolonis,
 My name is Nicolás Mendoza, and I am a geologist at the Southern Andes Volcano
 Observatory (OVDAS) of SERNAGEOMIN, the agency responsible for Chile's National Volcano
 Surveillance Network. Our GOES-19 near real time dashboard uses VOLCAT every day,
-including your Copahue_250_m, Calbuco_1_km and Planchon-Peteroa_500_m sectors, and more
-recently the VIIRS imagery on Villarrica_250_m. Thank you for all of it.
+including your Copahue_250_m, Calbuco_1_km and Planchon-Peteroa_500_m sectors. Thank you
+for all of it.
 
 I am writing with one question about data access and two coverage requests, listed in
 order of how much they would help us.
@@ -62,8 +62,7 @@ for a crater scale source, rather than from a finer ABI grid. We can send prefer
 and an event history.
 
 A word on our own work, so there is no ambiguity. We are a small team building open source
-ash height retrievals from ABI, plus a VIIRS prototype not yet validated, with much of the
-code written with AI coding assistants. We label all of it as indicative. It complements
+ash height retrievals from ABI, with much of the code written with AI coding assistants. We label all of it as indicative. It complements
 VOLCAT rather than replacing it, and VOLCAT is the reference we validate against.
 
 We would be glad to share event histories, observed plume heights and preferred sector
@@ -85,8 +84,8 @@ Estimado Dr. Pavolonis:
 Mi nombre es Nicolás Mendoza y soy geólogo del Observatorio Volcanológico de los Andes del
 Sur (OVDAS) de SERNAGEOMIN, el organismo a cargo de la Red Nacional de Vigilancia Volcánica
 de Chile. Nuestro panel GOES-19 en tiempo casi real usa VOLCAT todos los días, incluidos sus
-sectores Copahue_250_m, Calbuco_1_km y Planchon-Peteroa_500_m, y desde hace poco las
-imágenes VIIRS de Villarrica_250_m. Muchas gracias por todo ello.
+sectores Copahue_250_m, Calbuco_1_km y Planchon-Peteroa_500_m. Muchas gracias por todo
+ello.
 
 Le escribo con una consulta sobre acceso a datos y dos solicitudes de cobertura, ordenadas
 según cuánto nos ayudarían.
@@ -118,8 +117,7 @@ grilla ABI más fina. Podemos enviar los límites preferidos y un historial de e
 
 Una aclaración sobre nuestro propio trabajo, para evitar ambigüedades. Somos un equipo
 pequeño que construye retrievals de altura de ceniza de código abierto a partir de ABI,
-además de un prototipo VIIRS aún no validado, con buena parte del código escrito con
-asistentes de programación con IA. Todo lo etiquetamos como indicativo. Complementa a VOLCAT,
+con buena parte del código escrito con asistentes de programación con IA. Todo lo etiquetamos como indicativo. Complementa a VOLCAT,
 no lo reemplaza, y VOLCAT es la referencia contra la que validamos.
 
 Con gusto compartiremos historiales de eventos, alturas de columna observadas y límites de
@@ -154,9 +152,8 @@ Servicio Nacional de Geología y Minería (SERNAGEOMIN), Chile
 - **Largo: de ~1.000 a ~530 palabras** en inglés. El párrafo de transparencia sobre IA se
   mantiene (decisión tuya de jul-2026), pero en tres frases y al final, para que el correo
   abra con los pedidos.
-- **El retrieval VIIRS propio se nombra como prototipo no validado.** Existe en la rama
-  `feat/viirs-ash-height` (Fases 1 y 2, jul-2026), **no está en `main`** ni validado en vivo.
-  La v1 decía "soon", que prometía más de lo que hay.
+- **Sin mención a un retrieval VIIRS propio.** Decisión de Nicolás (13-sep-2026): el proyecto
+  Goes no incorpora VIIRS. La v1 prometía uno "soon".
 - **Sin Cc a Sieglaff.** Su ficha SSEC no publica correo; poner una dirección adivinada es
   peor que no ponerla.
 

@@ -43,7 +43,8 @@ from typing import Optional
 
 import numpy as np
 
-from src.fetch.granule_select import nearest_granule_key, get_s3 as _get_s3
+from src.fetch.granule_select import (SCAN_MAX_GAP_S, nearest_granule_key,
+                                      get_s3 as _get_s3)
 
 # Constantes físicas canónicas desde src/config (con fallback, mismo patrón que
 # goes_fdcf.py).
@@ -194,9 +195,16 @@ def fetch_acha_height_at(
     dt: datetime,
     bounds: dict,
     keep_dqf=DQF_KEEP_DEFAULT,
+    max_gap_s: Optional[float] = SCAN_MAX_GAP_S,
 ) -> Optional[dict]:
     """Bajar el gránulo ACHA2KMF más cercano a ``dt`` y devolver la altura del
     tope de nube recortada a ``bounds`` (bbox lat/lon del volcán).
+
+    Tope de desfase (``max_gap_s``, default ``SCAN_MAX_GAP_S``): la altura se
+    cruza con bandas L1b del mismo scan y la vista la presenta como la vigente
+    (``dt=ahora``). Un gránulo más lejano que el tope devuelve ``None``, que
+    ``acha_plume_height`` ya degrada a ``no_data``. El tope cubre la latencia
+    ACHA medida (máx 12,4 min más 10 min de cadencia).
 
     Args:
         dt:       datetime UTC del scan deseado (NRT: pasar ``now``).
@@ -233,7 +241,7 @@ def fetch_acha_height_at(
     # Unión [dt-1h, dt, dt+1h]: el gránulo más cercano al borde de hora puede
     # caer en la hora adyacente, no solo en la previa (fallback viejo).
     chosen = nearest_granule_key(lambda h: _list_files_at_hour(s3, h),
-                                 _parse_scan_time, dt)
+                                 _parse_scan_time, dt, max_gap_s=max_gap_s)
     if chosen is None:
         logger.warning("ACHA: sin gránulos cerca de %s", dt.isoformat())
         return None

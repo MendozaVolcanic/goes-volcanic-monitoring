@@ -22,7 +22,7 @@ from src.config import (
     VOLCANIC_BANDS,
 )
 from src.fetch import _backoff
-from src.fetch.granule_select import get_s3, nearest_granule_key
+from src.fetch.granule_select import SCAN_MAX_GAP_S, get_s3, nearest_granule_key
 
 logger = logging.getLogger(__name__)
 
@@ -185,17 +185,25 @@ def _scan_start(remote_path: str) -> datetime | None:
         return None
 
 
-def download_band_at(dt: datetime, band: int, use_cache: bool = True) -> Path | None:
+def download_band_at(dt: datetime, band: int, use_cache: bool = True,
+                     max_gap_s: float | None = SCAN_MAX_GAP_S) -> Path | None:
     """Descargar la banda del scan MÁS CERCANO a `dt` (no el último de la hora).
 
     `download_band` toma `files[-1]` (el último de la hora) — correcto para "lo
     más reciente" pero NO para backfill de un timestamp puntual: todos los scans
     de la misma hora darían el mismo archivo. Acá elegimos el scan cuyo
     `_sYYYYDDDHHMMSS` está más cerca de `dt` (RadF escanea cada 10 min).
+
+    Tope de desfase (``max_gap_s``, default ``SCAN_MAX_GAP_S``): los llamadores
+    tratan el archivo como EL scan de ``dt`` (la escena de ceniza y la altura se
+    muestran con esa hora; el backfill de loops rotula el frame con ella). Ante
+    un hueco NOAA, sin tope entraba un scan de hasta ~1 h. Con tope devuelve
+    ``None``, que ``scene.acquire_ash_scene`` ya degrada a "sin banda".
     """
     # Unión de [dt-1h, dt, dt+1h]: el scan más cercano al borde de hora puede
     # caer en la hora siguiente (HH:56 → (HH+1):00), no solo en la previa.
-    best = nearest_granule_key(lambda h: list_band_files(h, band), _scan_start, dt)
+    best = nearest_granule_key(lambda h: list_band_files(h, band), _scan_start, dt,
+                               max_gap_s=max_gap_s)
     if best is None:
         logger.error("No band %d files near %s", band, dt.isoformat())
         return None

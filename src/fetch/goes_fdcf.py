@@ -36,7 +36,8 @@ from typing import Optional
 
 import numpy as np
 
-from src.fetch.granule_select import nearest_granule_key, get_s3 as _get_s3
+from src.fetch.granule_select import (SCAN_MAX_GAP_S, nearest_granule_key,
+                                      get_s3 as _get_s3)
 
 # Constantes fisicas canonical desde src/config (con try/except fallback,
 # mismo patron que MOSAICO_RADIUS_DEG en dashboard/views/).
@@ -444,12 +445,20 @@ def fetch_hotspots_at_time(
     dt: datetime,
     bounds: Optional[dict] = None,
     high_conf_only: bool = False,
+    max_gap_s: Optional[float] = SCAN_MAX_GAP_S,
 ) -> tuple[list[HotSpot], Optional[datetime]]:
     """Bajar el FDCF mas cercano a `dt` y devolver hotspots filtrados.
 
     Para backfill historico: dt en cualquier momento desde 2017 (GOES-16) o
-    abril 2025 (GOES-19). Busca en la hora exacta + hora previa por si el
-    scan que matcha cae en el borde.
+    abril 2025 (GOES-19). Busca en la unión de la hora de `dt`, la previa y la
+    siguiente, por si el scan que matcha cae en el borde.
+
+    Tope de desfase (``max_gap_s``, default ``SCAN_MAX_GAP_S``): si el scan más
+    cercano está más lejos, devuelve ``([], None)``, o sea "no verificable". Sin
+    tope, ante un hueco NOAA entraba un scan de hasta ~1 h: ``build_backfill``
+    lo guardaba con la etiqueta del ``ts`` pedido, y el roll-up diario de
+    ``build_frp_timeline`` podía contar dos veces el mismo scan vecino. (La
+    timeline intradía ya era correcta: arma su clave desde ``scan_dt``.)
 
     MISMO CONTRATO que ``fetch_latest_hotspots`` (ver su docstring, que es la
     referencia): ``scan_dt is None`` significa **no verificable** y trae
@@ -464,7 +473,8 @@ def fetch_hotspots_at_time(
 
     Returns:
         ``(hotspots, scan_dt_real)`` con scan_dt_real = ts del archivo elegido
-        (puede diferir de `dt` por ±5 min), o ``([], None)`` si no verificable.
+        (normalmente a ±5 min de `dt`, nunca más que ``max_gap_s``), o
+        ``([], None)`` si no verificable.
     """
     # (1) Dependencias.
     try:
@@ -489,7 +499,7 @@ def fetch_hotspots_at_time(
     # hacía fallback a la previa). Elige la key de menor |Δt| sobre las tres.
     errores: list = []
     chosen = nearest_granule_key(lambda h: _list_files_at_hour(s3, h, errores),
-                                 _parse_scan_time, dt)
+                                 _parse_scan_time, dt, max_gap_s=max_gap_s)
     if chosen is None:
         if errores:
             logger.error("FDCF NO CONSULTABLE: %d listado(s) de S3 fallaron "

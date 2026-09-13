@@ -22,7 +22,12 @@ from datetime import datetime, timezone
 from typing import Optional
 
 import numpy as np
-import requests
+
+# Sesión compartida con Retry (429/5xx y errores de conexión, backoff 0,5/1/2 s).
+# Antes se usaba `requests.get` crudo: un 503 transitorio de Open-Meteo al primer
+# intento dejaba el retrieval de altura SIN perfil, y la pantalla lo mostraba como
+# "no hay dato" cuando era un parpadeo de red. (deuda audit ago-2026)
+from src.fetch._http_session import get_session as _get_session
 
 logger = logging.getLogger(__name__)
 
@@ -107,7 +112,7 @@ def fetch_gfs_profile(
         "timezone": "UTC",
     }
     try:
-        r = requests.get(OPENMETEO_URL, params=params, timeout=TIMEOUT)
+        r = _get_session().get(OPENMETEO_URL, params=params, timeout=TIMEOUT)
         r.raise_for_status()
         data = r.json()
     except Exception as e:
@@ -264,7 +269,7 @@ def fetch_gfs_wind_profile(
         "models": "gfs_seamless", "timezone": "UTC",
     }
     try:
-        r = requests.get(OPENMETEO_URL, params=params, timeout=TIMEOUT)
+        r = _get_session().get(OPENMETEO_URL, params=params, timeout=TIMEOUT)
         r.raise_for_status()
         data = r.json()
     except Exception as e:

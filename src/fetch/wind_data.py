@@ -18,7 +18,9 @@ import math
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 
-import requests
+# Sesión compartida con Retry: un 429/5xx transitorio de Open-Meteo ya no deja
+# un punto de la grilla de viento vacío al primer intento. (deuda audit ago-2026)
+from src.fetch._http_session import get_session as _get_session
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +64,7 @@ def fetch_wind_point(lat: float, lon: float, level: str = DEFAULT_LEVEL) -> dict
         "wind_speed_unit": "kmh",
     }
     try:
-        r = requests.get(OPENMETEO_URL, params=params, timeout=TIMEOUT)
+        r = _get_session().get(OPENMETEO_URL, params=params, timeout=TIMEOUT)
         r.raise_for_status()
         data = r.json()
         hourly = data.get("hourly", {})
@@ -97,7 +99,7 @@ def fetch_wind_diagnostic(level: str = DEFAULT_LEVEL) -> dict:
     Returns dict con status_code y error del API si hubo fallo, o 'ok'.
     """
     try:
-        r = requests.get(OPENMETEO_URL, params={
+        r = _get_session().get(OPENMETEO_URL, params={
             "latitude":        -33,
             "longitude":       -71,
             "hourly":          f"wind_speed_{level},wind_direction_{level}",

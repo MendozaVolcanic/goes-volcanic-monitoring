@@ -178,6 +178,33 @@ audit ago-2026 ese bloque estaba duplicado en tres módulos, con el riesgo de qu
 un fix a un guard se aplicara sólo a uno. Cualquier cambio a un criterio de
 degradación va en `scene.py` y en esta ficha, mismo commit.
 
+### A.6 Tope de desfase del gránulo S3 (sep-2026)
+- **Archivos:** `src/fetch/granule_select.py` (`SCAN_MAX_GAP_S`,
+  `nearest_granule_key(..., max_gap_s)`), aplicado en
+  `goes_s3.download_band_at`, `goes_fdcf.fetch_hotspots_at_time` (y su alias
+  `frp_timeline.fetch_scan_sliced`) y `goes_acha.fetch_acha_height_at`.
+- **Qué decide:** si el gránulo más cercano al instante pedido está lo bastante
+  cerca para usarse como *el scan de ese instante*. Si su inicio de scan dista
+  más de **30 min**, el sistema lo trata como **no verificable** (sin banda, sin
+  hot spots verificados, sin ACHA) en vez de entregarlo con la hora pedida.
+- **Por qué existe:** los productos ABI se buscan en la unión de tres carpetas
+  horarias. Ante un hueco de datos NOAA, el "más cercano" podía estar a ~60 min
+  y se mostraba como vigente: una escena o una altura de otro momento con la
+  hora equivocada, o hot spots de backfill guardados bajo otra etiqueta.
+- **Por qué 30 min (medido, no supuesto):** en NRT se pide `dt = ahora`, y el
+  scan más nuevo empieza hasta cadencia + latencia antes. Medición del
+  13-sep-2026 sobre 24 h del bucket `noaa-goes19` (LastModified menos inicio de
+  scan): L1b C14 máx 10,1 min, FDCF 10,8, ACHA 12,4, LVTPF 13,1; cadencia fija
+  de 10 min. El desfase normal llega a ~23 min y el tope deja ~7 min de margen:
+  un tope más estricto convertiría latencia normal en "sin dato", que es un
+  negativo silencioso. En uso histórico el desfase normal es de 0 a 5 min.
+- **Límites conocidos:** si NOAA aumenta su latencia más de ~7 min sobre lo
+  medido, la vista NRT empezaría a reportar "sin dato" con el scan publicado; el
+  warning de `granule_select` registra el desfase para detectarlo. En backfill
+  el tope es laxo (tolera un hueco de un par de scans). **LVTPF no lleva tope**
+  (decisión pendiente, comentada en `goes_lvtp.py`): no está cableado al
+  dashboard y un perfil clear-sky a 40 min puede seguir siendo útil.
+
 ---
 
 ## B. Límites, sesgos y usos excluidos

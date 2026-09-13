@@ -257,6 +257,11 @@ def fetch_lvtp_profile(
     s3 = _get_s3()
     # Unión [dt-1h, dt, dt+1h]: el gránulo más cercano al borde de hora puede
     # caer en la hora adyacente, no solo en la previa (fallback viejo).
+    # SIN tope de desfase (max_gap_s) a propósito, decisión pendiente (sep-2026):
+    # un perfil T(z) clear-sky varía lento, y el perfil GFS con que se compara ya
+    # se acepta con horas de desfase, así que no está claro que un gránulo a 40
+    # min sea peor que ninguno. LVTPF no está cableado al dashboard; revisar
+    # cuando se cablee. El scan_dt real va en la salida.
     chosen = nearest_granule_key(lambda h: _list_lvtp_files(s3, h),
                                  _parse_scan_time, dt)
     if chosen is None:

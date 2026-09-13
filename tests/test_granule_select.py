@@ -219,6 +219,138 @@ def test_unparseable_keys_skipped():
     assert chosen == good
 
 
+# ── Tope de desfase (max_gap_s) ─────────────────────────────────────────────
+#
+# Por qué: la unión [dt-1h, dt, dt+1h] resuelve el borde de hora, pero ante un
+# hueco de datos NOAA el "más cercano" podía estar a ~60 min y se usaba como si
+# fuera el scan pedido: una escena de ceniza, un FRP o una altura de otro momento
+# presentada con la hora que el operador pidió. El tope convierte ese caso en
+# "no hay gránulo" (no verificable), que cada fetcher ya sabe degradar.
+
+_T0 = datetime(2026, 6, 15, 12, 0, tzinfo=timezone.utc)
+
+
+def test_tope_rechaza_granulo_demasiado_lejano():
+    dt = _T0 + timedelta(minutes=50)
+    assert nearest_granule_key(_lister([_T0]), _parse, dt, max_gap_s=30 * 60) is None
+
+
+def test_tope_acepta_justo_en_el_limite():
+    dt = _T0 + timedelta(minutes=30)
+    chosen = nearest_granule_key(_lister([_T0]), _parse, dt, max_gap_s=30 * 60)
+    assert _parse(chosen) == _T0
+
+
+def test_sin_tope_conserva_el_comportamiento_previo():
+    """Default ``max_gap_s=None``: llamadores no revisados (LVTPF) no cambian."""
+    dt = _T0 + timedelta(minutes=50)
+    assert _parse(nearest_granule_key(_lister([_T0]), _parse, dt)) == _T0
+
+
+def test_tope_por_defecto_cubre_la_latencia_nrt_medida():
+    """En NRT se pide ``dt=ahora`` y el scan más nuevo en S3 empieza hasta
+    cadencia + latencia antes. Medido el 13-sep-2026 sobre 24 h de S3
+    (LastModified menos inicio de scan): L1b C14 máx 10,1 min, FDCF 10,8,
+    ACHA 12,4, LVTPF 13,1; cadencia 10 min. Un tope menor que 10 + 13,1 min
+    rechazaría el scan vigente y la vista diría "sin dato" en operación normal.
+    """
+    from src.fetch.granule_select import SCAN_MAX_GAP_S
+    assert SCAN_MAX_GAP_S >= (10.0 + 13.1) * 60
+    assert SCAN_MAX_GAP_S < 60 * 60, "el tope tiene que cortar el caso de ~1 h"
+
+
+def _key_noaa(producto: str, dt: datetime) -> str:
+    doy = dt.timetuple().tm_yday
+    stamp = f"{dt.year}{doy:03d}{dt.hour:02d}{dt.minute:02d}{dt.second:02d}"
+    return (f"noaa-goes19/{producto}/{dt.year}/{doy:03d}/{dt.hour:02d}/"
+            f"OR_{producto}-M6_G19_s{stamp}0_e_c.nc")
+
+
+class _S3Registro:
+    """s3fs falso: lista keys fijas y registra qué se intentó abrir.
+
+    ``open`` explota a propósito: los fetchers atrapan la excepción y devuelven
+    "no verificable" igual que con el tope, así que el resultado solo no
+    distingue los dos caminos. Lo que se verifica es si se intentó abrir.
+    """
+
+    def __init__(self, keys):
+        self.keys = list(keys)
+        self.abiertos: list = []
+
+    def ls(self, prefix, **kw):
+        return list(self.keys)
+
+    def open(self, key, mode="rb", **kw):
+        self.abiertos.append(key)
+        raise OSError("fake: sin contenido")
+
+
+def test_download_band_at_no_baja_un_scan_fuera_de_tope(monkeypatch):
+    import src.fetch.goes_s3 as goes_s3
+    bajados: list = []
+    lister = _lister([_T0])
+    monkeypatch.setattr(goes_s3, "list_band_files", lambda h, band: lister(h))
+    monkeypatch.setattr(goes_s3, "_download_cached",
+                        lambda key, use_cache=True: bajados.append(key) or Path(key))
+    assert goes_s3.download_band_at(_T0 + timedelta(minutes=50), 14) is None
+    assert bajados == []
+
+
+def test_download_band_at_nrt_con_latencia_normal_si_baja(monkeypatch):
+    """dt=ahora con el último scan a 23 min (latencia normal): se usa."""
+    import src.fetch.goes_s3 as goes_s3
+    bajados: list = []
+    lister = _lister([_T0])
+    monkeypatch.setattr(goes_s3, "list_band_files", lambda h, band: lister(h))
+    monkeypatch.setattr(goes_s3, "_download_cached",
+                        lambda key, use_cache=True: bajados.append(key) or Path(key))
+    assert goes_s3.download_band_at(_T0 + timedelta(minutes=23), 14) is not None
+    assert len(bajados) == 1
+
+
+@pytest.mark.parametrize("modulo,funcion", [
+    ("src.fetch.goes_fdcf", "fetch_hotspots_at_time"),
+    ("src.fetch.frp_timeline", "fetch_scan_sliced"),
+])
+def test_fdcf_historico_no_abre_scan_fuera_de_tope(monkeypatch, modulo, funcion):
+    """Backfill de FRP y hot spots: un scan a 50 min NO se atribuye a ``dt``.
+
+    ``build_backfill`` guarda los hot spots con la etiqueta del ``ts`` pedido;
+    sin tope quedaban bajo la hora equivocada.
+    """
+    import importlib
+
+    import src.fetch.goes_fdcf as fdcf
+    fake = _S3Registro([_key_noaa("ABI-L2-FDCF", _T0)])
+    monkeypatch.setattr(fdcf, "_get_s3", lambda *a, **k: fake)
+    fn = getattr(importlib.import_module(modulo), funcion)
+
+    hs, scan_dt = fn(_T0 + timedelta(minutes=50), bounds={
+        "lat_min": -40, "lat_max": -39, "lon_min": -72.5, "lon_max": -71.5})
+    assert (hs, scan_dt) == ([], None)
+    assert fake.abiertos == []
+
+    fn(_T0 + timedelta(minutes=4), bounds={
+        "lat_min": -40, "lat_max": -39, "lon_min": -72.5, "lon_max": -71.5})
+    assert len(fake.abiertos) == 1, "dentro del tope sí debe intentar leerlo"
+
+
+def test_acha_no_abre_granulo_fuera_de_tope(monkeypatch):
+    """La altura ACHA se cruza con bandas L1b del mismo scan y se muestra con
+    la hora pedida: un gránulo a 50 min no puede entrar como el vigente."""
+    import src.fetch.goes_acha as goes_acha
+    fake = _S3Registro([_key_noaa("ABI-L2-ACHA2KMF", _T0)])
+    monkeypatch.setattr(goes_acha, "_get_s3", lambda *a, **k: fake)
+    bounds = {"lat_min": -40, "lat_max": -39, "lon_min": -72.5, "lon_max": -71.5}
+
+    assert goes_acha.fetch_acha_height_at(_T0 + timedelta(minutes=50), bounds) is None
+    assert fake.abiertos == []
+
+    goes_acha.fetch_acha_height_at(_T0 + timedelta(minutes=23), bounds)
+    assert len(fake.abiertos) == 1, "latencia NRT normal: sí debe intentar leerlo"
+
+
 if __name__ == "__main__":
     test_picks_next_hour_granule_at_end_of_hour()
     test_picks_prev_hour_granule_at_start_of_hour()

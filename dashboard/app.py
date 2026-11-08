@@ -173,24 +173,14 @@ with st.sidebar:
     # Consecuencia: deep-linking (?vista=evento), browser back/forward,
     # o cualquier cambio de URL programatico NO actualizaba el radio.
     #
-    # FIX (intento 2, definitivo): solo sincronizar URL -> session_state
-    # cuando la URL cambio EXTERNAMENTE entre dos renders consecutivos
-    # (ej. deep link, browser back/forward, redirect). Si la URL no
-    # cambio, dejar que session_state gane — eso preserva el click del
-    # usuario en el radio (que ocurre ANTES de que el bottom de app.py
-    # escriba la URL nueva).
-    #
-    # El intento 1 sincronizaba EN CADA RERUN, creando un feedback loop
-    # que anulaba todos los clicks del sidebar (se restauraba el valor
-    # viejo de URL antes de que la escritura de URL tomara efecto).
-    _url_vista = qp.get("vista", "").lower()
-    _last_url_vista = st.session_state.get("__last_url_vista", "")
-    if _url_vista != _last_url_vista and _url_vista in PAGE_SLUGS:
-        # URL cambio externamente — adoptar la URL como verdad.
-        st.session_state["nav_page"] = PAGE_SLUGS[_url_vista]
-    # Marcar URL conocida para el proximo rerun. Hacerlo SIEMPRE (no solo
-    # cuando cambio) para que la primera vez tambien quede registrada.
-    st.session_state["__last_url_vista"] = _url_vista
+    # Solo se sincroniza URL -> session_state cuando la URL cambio desde
+    # afuera (enlace directo, atras/adelante, redirect). Si no cambio, gana
+    # session_state, que trae el click del operador. Sincronizar en cada
+    # rerun anulaba todos los clicks del sidebar. La logica y sus pruebas
+    # de secuencia viven en dashboard/navegacion.py.
+    from dashboard.navegacion import adoptar_vista_de_url, publicar_vista_en_url
+
+    adoptar_vista_de_url(st.session_state, qp.get("vista", ""), PAGE_SLUGS)
 
     initial_idx = 0
     if "vista" in qp:
@@ -208,8 +198,7 @@ with st.sidebar:
 
     # Escribir el slug actual a la URL (los demas params se preservan)
     _slug_for_page = next((s for s, p in PAGE_SLUGS.items() if p == page), None)
-    if _slug_for_page and qp.get("vista") != _slug_for_page:
-        st.query_params["vista"] = _slug_for_page
+    publicar_vista_en_url(st.session_state, st.query_params, _slug_for_page)
 
     # ── Modo Fullscreen ──────────────────────────────────────────
     # render_top_navigation_button usa <a target="_self"> (navega la

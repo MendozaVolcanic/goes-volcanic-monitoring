@@ -344,7 +344,14 @@ def _grid_fragment(cell_px: int = None, use_hires: bool = False,
         # IR, no tiene equivalente de las recetas Ash ni SO2.
         if use_hires and pid == "geocolor":
             arr, info = _hires_for_volcano_cached(name, mode=hires_mode)
-            if arr is not None:
+            # Mismo tope de edad que la grilla de volcán: pasado eso, RAMMB.
+            from datetime import datetime, timezone
+            from dashboard.views.modo_guardia_volcan import (
+                HIRES_MAX_AGE_MIN, _hires_age_min)
+            _edad_hires = (_hires_age_min(info, datetime.now(timezone.utc))
+                           if info else None)
+            if (arr is not None and _edad_hires is not None
+                    and _edad_hires <= HIRES_MAX_AGE_MIN):
                 return job, arr, None, (-2 if hires_mode == "mono_05km" else -1), info
         tss = ts_by_prod.get(pid) or []
         if not tss:

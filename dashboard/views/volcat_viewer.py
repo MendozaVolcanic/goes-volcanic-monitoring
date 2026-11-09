@@ -1097,6 +1097,19 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
         )
 
 
+def sector_y_encuadre_zona(zona: str) -> tuple[str, str, dict]:
+    """(sector, instrumento, encuadre) de una zona, igual que en Modo Guardia.
+
+    `Chile_South_2_km` parte en -40,3°, así que no contiene Villarrica ni Llaima:
+    la zona Sur tiene que leerse del sector central y recortarse a su franja.
+    """
+    from src.fetch.volcat_api import ZONE_TO_SECTOR_4
+    from dashboard.views.zonas_fullscreen import VOLCAT_VIEW_4
+
+    sector, instr = ZONE_TO_SECTOR_4[zona]
+    return sector, instr, VOLCAT_VIEW_4[zona]
+
+
 def _render_height_section(key_suffix: str = "tab") -> None:
     """Render del bloque Altura/Loading/Probability/Reff.
 
@@ -1120,7 +1133,7 @@ def _render_height_section(key_suffix: str = "tab") -> None:
     # VOLCAT tiene sectores regionales (Chile_North/Central/South_2km) que
     # cubren zonas completas. Antes solo se accedia eligiendo un volcan;
     # ahora ofrecemos el acceso directo por zona tambien.
-    from src.fetch.volcat_api import ZONE_TO_SECTOR
+    from src.fetch.volcat_api import ZONE_TO_SECTOR_4
     modo_sel = st.radio(
         "Ver por", ["Volcán", "Zona"], horizontal=True,
         index=1,  # default = Zona (la zona default es Norte) al abrir la vista
@@ -1143,9 +1156,10 @@ def _render_height_section(key_suffix: str = "tab") -> None:
     with cv1:
         if modo_sel == "Zona":
             zona_sel = st.selectbox(
-                "Zona volcánica", list(ZONE_TO_SECTOR.keys()), index=0,
+                "Zona volcánica", list(ZONE_TO_SECTOR_4), index=0,
                 key=f"volcat_height_zona_{key_suffix}",
-                help="Sector regional VOLCAT. 'Sur' cubre tambien la zona austral.",
+                help="Sector regional VOLCAT, con el mismo encuadre de las 4 "
+                     "zonas de Modo Guardia.",
             )
             volc_name_h = f"Zona {zona_sel}"
         else:
@@ -1196,11 +1210,11 @@ def _render_height_section(key_suffix: str = "tab") -> None:
     )
 
     # view_bounds: en modo Volcán encuadramos CERCA del volcán elegido (±_PAD)
-    # en vez del sector regional gigante. En modo Zona = sector entero (None).
+    # en vez del sector regional gigante. En modo Zona, el encuadre de la zona.
     view_bounds = None
     if modo_sel == "Zona":
         # Sector regional directo — no pasa por resolve_volcat_sector.
-        sector, instr = ZONE_TO_SECTOR[zona_sel]
+        sector, instr, view_bounds = sector_y_encuadre_zona(zona_sel)
     else:
         v_obj = get_volcano(volc_name_h)
         if v_obj is None:
@@ -1239,8 +1253,15 @@ def _render_height_section(key_suffix: str = "tab") -> None:
         kpi_card(sector.replace("_", " "), "Sector VOLCAT")
     with kh3:
         short_ts = meta.get("datetime", "—").split("_")[-1].replace("-", ":")
+        from datetime import datetime, timezone
+        from dashboard.map_helpers import alerta_edad
+        _dt_scan = _volcat_dt_obj(meta.get("datetime"))
+        _edad = (int((datetime.now(timezone.utc) - _dt_scan).total_seconds() / 60)
+                 if _dt_scan else None)
+        # 120 min: SSEC publica con 30 a 50 min de latencia normal.
         kpi_card(short_ts[:5] + " UTC" if len(short_ts) >= 5 else "—",
-                 "Hora del scan")
+                 (f"Hora del scan · hace {_edad} min{alerta_edad(_edad, 120)}"
+                  if _edad is not None else "Hora del scan"))
 
     def _render_map_block():
         # Georef + NUESTROS volcanes monitoreados (RNVV) + frontera, igual que
@@ -1401,12 +1422,8 @@ def _render_vaa_block():
                 unsafe_allow_html=True,
             )
     else:
-        info_panel(
-            "<b>Sin Volcanic Ash Advisories activos.</b><br>"
-            "Los VAA son emitidos por los VAACs (Volcanic Ash Advisory Centers) "
-            "cuando se detecta ceniza volcanica que puede afectar la aviacion. "
-            "La ausencia de VAA indica condiciones normales."
-        )
+        from dashboard.map_helpers import mensaje_vaa
+        info_panel(mensaje_vaa(vaa))
 
 
 def _render_ssec_rgb_block():

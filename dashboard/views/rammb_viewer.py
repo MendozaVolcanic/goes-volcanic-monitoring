@@ -764,6 +764,18 @@ def _fetch_latest_ts_label(product: str) -> str:
     return _frame_label(times[0]) if times else "—"
 
 
+def _edad_ultimo_scan_min(product: str) -> int | None:
+    """Minutos desde el último scan publicado del producto, o None si no se sabe."""
+    from datetime import datetime, timezone
+    from dashboard.utils import parse_rammb_ts
+    try:
+        times = get_latest_timestamps(product, n=1)
+        scan = parse_rammb_ts(times[0])
+        return int((datetime.now(timezone.utc) - scan).total_seconds() / 60)
+    except (IndexError, TypeError, ValueError):
+        return None
+
+
 def render():
     from dashboard.manuals import render_manual
     render_manual("loops")
@@ -1062,9 +1074,13 @@ def render():
     # si el usuario lo cambió sin re-presionar "Cargar"): si no, el banner
     # mostraría "Ash RGB · <hora del último scan de SO2>". Cacheado (ttl 300).
     latest_ts_label_loaded = _fetch_latest_ts_label(sel["product"])
+    from dashboard.map_helpers import alerta_edad, clase_banner_edad
+    _edad_scan = _edad_ultimo_scan_min(sel["product"])
+    _clase = clase_banner_edad(_edad_scan)
+    _icono = "&#10003;" if _clase == "ok" else "&#9888;"
     st.markdown(
-        f'<div class="status-banner ok">'
-        f'<b>&#10003; {len(frames)} frames &middot; '
+        f'<div class="status-banner {_clase}">'
+        f'<b>{_icono} {len(frames)} frames{alerta_edad(_edad_scan)} &middot; '
         f'{PRODUCT_LABELS[sel["product"]]} &middot; {scope_label}</b>'
         f'<span style="color:#556677; font-size:0.78rem;">'
         f'{latest_ts_label_loaded}</span>'

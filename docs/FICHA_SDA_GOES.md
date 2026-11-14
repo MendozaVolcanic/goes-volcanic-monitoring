@@ -1,6 +1,6 @@
 # Ficha de Transparencia Algorítmica — Monitoreo Volcánico GOES-19 (dashboard + retrieval de altura de pluma)
 
-**Identificador interno:** SDA-GOES-01   **Versión:** v2.0 — 2026-08-30
+**Identificador interno:** SDA-GOES-01   **Versión:** v2.1, 2026-11-09
 *(Resolución CPLT N°372; ver `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` del workspace)*
 
 > **Qué cambió respecto de la v1.0 (2026-07-01):** ver §"Historial de versiones" al final.
@@ -318,6 +318,20 @@ conectarlos exige actualizar esta ficha.
 ---
 
 ## Historial de versiones
+
+### v2.1: 2026-11-09 (revisión interna)
+**Cómo se presenta la ausencia de dato** (`dashboard/map_helpers.py`). No cambia
+ninguna detección ni cifra: cambia lo que la página afirma cuando no puede saber.
+- Con FDCF no consultable, ninguna vista muestra un cero ni una frase de calma.
+- Un cero de hot spots con un scan de más de 30 min se muestra en ámbar y no en
+  verde, porque ya faltan al menos dos scans seguidos.
+- Una imagen con 30 min o más de atraso se rotula "atrasada" (VOLCAT desde 120 min,
+  por la latencia normal de SSEC).
+- Una escena Ash + BTD del caché con más de 30 min no conserva su diagnóstico.
+- Un fallo de descarga de los VAA no se lee como condiciones normales.
+
+**Pendiente de decisión del dueño:** la descripción de las categorías `Mask` de
+§A.3 está en revisión.
 
 ### v2.0 — 2026-08-30 (auditoría adversarial del 30-ago-2026, §2.5)
 **Sacado / corregido**

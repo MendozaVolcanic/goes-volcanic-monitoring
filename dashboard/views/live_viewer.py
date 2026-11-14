@@ -506,12 +506,19 @@ def _health_banner():
     for prod, label, pcolor in LIVE_PRODUCTS:
         info = ts_all.get(prod)
         if info:
+            # El color del banner sigue al producto más fresco: el atraso de
+            # otro producto se marca aquí, en su propia fila.
+            from dashboard.map_helpers import alerta_edad
+            try:
+                _edad_prod = int((now - parse_rammb_ts(info["ts"])).total_seconds() / 60)
+            except Exception:
+                _edad_prod = None
             prods_html += (
                 f"<span style='margin-right:0.7rem; white-space:nowrap;'>"
                 f"<span style='color:{pcolor};'>■</span> "
                 f"<b style='color:#c0ccd8;'>{label}</b> "
                 f"<span style='color:#99aabb; font-family:monospace;'>"
-                f"{info['utc']}</span></span>")
+                f"{info['utc']}</span>{alerta_edad(_edad_prod)}</span>")
         else:
             prods_html += (f"<span style='margin-right:0.7rem; color:#556;'>"
                            f"{label} —</span>")
@@ -978,19 +985,10 @@ def _live_content():
                     hotspots_nacional, hotspots_scan_ts = [], None
                     st.caption("⚠ Hot spots NOAA FDCF no consultables en este "
                                "ciclo — el mapa NO descarta anomalía térmica.")
-            _ts_short = (hotspots_scan_ts[11:16] + " UTC"
-                         if hotspots_scan_ts else "—")
-            if hotspots_nacional:
-                st.caption(
-                    f"🔥 {len(hotspots_nacional)} hot spot(s) NOAA FDCF detectado(s) "
-                    f"en Chile (scan {_ts_short}). Mas info en hover de cada punto."
-                )
-            else:
-                st.caption(
-                    f"🔥 Sin hot spots FDCF en Chile en este scan ({_ts_short}). "
-                    "Es lo normal: el algoritmo solo detecta superficies muy "
-                    "calientes (lava expuesta, incendios, no cenizas frías)."
-                )
+            from dashboard.map_helpers import frase_hotspots_chile
+            _frase_hs = frase_hotspots_chile(len(hotspots_nacional), hotspots_scan_ts)
+            if _frase_hs:
+                st.caption(_frase_hs)
 
         for prod_id, prod_label, _ in LIVE_PRODUCTS:
             with sub_tabs[prod_id]:
@@ -1156,6 +1154,9 @@ def _live_content():
                                 )
                             except FDCFNoVerificable:
                                 _hs_zona, _hs_ts_z = [], None
+                                st.caption("⚠ Hot spots NOAA FDCF no consultables "
+                                           "en este ciclo: el mapa NO descarta "
+                                           "anomalía térmica.")
                             if _hs_zona:
                                 _add_hotspots(
                                     fig_z, _hs_zona,

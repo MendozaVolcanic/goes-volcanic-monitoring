@@ -54,6 +54,7 @@ libre); registro pre-paper en `docs/paper/REGISTRO_PAPER.md`.
 - `STATUS.md` es curado por humanos; `STATUS_NRT.md` lo regenera el bot cada 10 min — NO mezclar.
 
 ## Patrones de código
+- **Ausencia de dato ≠ calma**: toda vista que hable de hot spots, de edad de imagen o de VAA usa los criterios de `dashboard/map_helpers.py` (`estado_hotspots`, `kpi_hotspot_cercano`, `alerta_edad`, `mensaje_vaa`) y no descarta la hora del scan. `tests/test_honestidad_dato.py` falla si una vista hace `x, _ = _hotspots_*()`. Una línea que sólo corre cuando la fuente falla no la ve ninguna prueba normal: pasar `pyflakes` antes de cerrar.
 - **Auto-refresh**: `@st.fragment(run_every="60s")` para panel; selectores VAN AFUERA del fragment para preservar estado entre reruns.
 - **Sidebar routing + permalinks**: `PAGE_OPTIONS` list + `PAGE_SLUGS` dict en `dashboard/app.py`. URL `?vista=<slug>` setea inicial, escribe el slug al cambiar.
 - **Modo fullscreen global**: `?fullscreen=1` oculta sidebar via CSS, padding 0.4rem, max-width 100%.

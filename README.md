@@ -21,7 +21,7 @@ Dashboard de monitoreo volcánico en tiempo casi-real usando imágenes del saté
 
 > **Nota histórica:** hasta jun-2026 hubo un mirror en Streamlit Cloud (`goesvolcanic.streamlit.app`). Se abandonó por inestabilidad (sleep ~6 h, `KeyError` intermitentes con Python 3.14) y **ya no se actualiza** — Hugging Face Spaces es hoy el único deploy oficial.
 
-Genera productos **Ash RGB**, **detección de ceniza** (BTD split-window) y **SO2** para los **43 volcanes activos de Chile** monitoreados por SERNAGEOMIN.
+Genera productos **Ash RGB**, **detección de ceniza** (BTD split-window) y **SO2** para los **44 volcanes activos de Chile** monitoreados por SERNAGEOMIN.
 
 ## Productos
 
@@ -85,7 +85,7 @@ streamlit run dashboard/app.py
 ```
 src/
 ├── config.py              # Configuración centralizada
-├── volcanos.py            # Catálogo 43 volcanes chilenos
+├── volcanos.py            # Catálogo 44 volcanes chilenos
 ├── fetch/
 │   └── goes_s3.py         # Descarga desde AWS S3
 └── process/

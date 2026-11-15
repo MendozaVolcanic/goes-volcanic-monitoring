@@ -96,3 +96,19 @@ if __name__ == "__main__":
     test_ash_rgb_normalize()
     test_chile_bounds()
     print("All tests passed!")
+
+
+def test_lastarria_esta_en_el_catalogo_con_datos_del_gvp():
+    """Lastarria faltaba en la lista seleccionable aunque su sector VOLCAT ya
+    estaba mapeado. Coordenadas y altura del Smithsonian GVP (volcan 355120),
+    la misma fuente con la que coinciden las del resto del catalogo."""
+    from src.volcanos import get_volcano
+    from src.config import VOLCANIC_ZONES
+
+    v = get_volcano("Lastarria")
+    assert v is not None
+    assert (v.lat, v.lon, v.elevation) == (-25.168, -68.507, 5706)
+    assert v.zone == "norte"
+    z = VOLCANIC_ZONES["norte"]
+    assert z["lat_min"] <= v.lat <= z["lat_max"]
+    assert z["lon_min"] <= v.lon <= z["lon_max"]

@@ -29,14 +29,17 @@ try:
     from dashboard.style import header
     from dashboard.utils import CHILE_TZ, parse_rammb_ts, utc_to_chile
     from src.fetch.rammb_slider import (
-        fetch_frame_robust, ZOOM_VOLCAN, ZOOM_ZONE,
+        fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
     )
+    from src.volcanos import CATALOG, get_volcano
+    # Listado por fecha (nov-2026). `get_latest_timestamps` de arriba ya no
+    # se usa aca: queda importado solo para no chocar con el PR 34, que
+    # reescribe esa misma linea; se quita cuando ambos esten en main.
     from src.fetch.historic_rammb import (
         ESTADO_NO_CONSERVADO, ESTADO_PARCIAL, ESTADO_SIN_RESPUESTA,
         archive_span, fetch_available_dates, list_local_day,
         local_window_utc, tile_available,
     )
-    from src.volcanos import CATALOG, get_volcano
 except Exception:
     # Streamlit Cloud hot-reload race condition: retry import dentro de funciones.
     # Si esto se ejecuta, hay un bug — log y reraise para que Streamlit muestre el error.
@@ -285,12 +288,6 @@ def render():
         zoom_preferred=ZOOM_VOLCAN, zoom_fallback=ZOOM_ZONE,
     )
 
-    label = f"{v.name} · {PRODUCTS[product]} · {_rotulo_ts(used_ts or selected_ts)}"
-    if used_ts and used_ts != selected_ts:
-        label += f" ⚠ el scan {_rotulo_ts(selected_ts)} no cargó: se muestra el más cercano"
-    if used_zoom == ZOOM_ZONE:
-        label += " ⚠ zoom 3"
-
     regla = st.toggle(
         "📏 Regla", value=False, key="replay_regla",
         help="Arrastra sobre la imagen para medir en km desde donde "
@@ -298,12 +295,24 @@ def render():
              "corrida hacia el sur (0,4 a 1,5 km por km de altura).",
     )
 
+    # El rotulo lleva la hora del scan que de verdad se dibuja: si el pedido
+    # no cargo y entro un vecino, se nombran los dos.
+    labels = {idx: _rotulo_ts(used_ts or selected_ts)}
+    if used_ts and used_ts != selected_ts:
+        labels[idx] += f" (pedido {_rotulo_ts(selected_ts)})"
+
+    label = f"{v.name} · {PRODUCTS[product]} · {labels[idx]}"
+    if used_ts and used_ts != selected_ts:
+        label += " ⚠ ts cercano"
+    if used_zoom == ZOOM_ZONE:
+        label += " ⚠ zoom 3"
+
+    from dashboard.map_helpers import render_compact_legend
+    render_compact_legend(product, symbols=("volcano",))
     # Mismo panel que la grilla de volcan (Vista Operacional / Modo Guardia):
     # en km alrededor del crater, con barra de escala. Lazy import (gotcha
     # Streamlit Cloud, ver CLAUDE.md).
-    from dashboard.map_helpers import render_compact_legend
     from dashboard.views.modo_guardia_volcan import _render_product
-    render_compact_legend(product, symbols=("volcano",))
     fig = _render_product(img, bounds, label, v.lat, v.lon, v.name,
                           height=720, regla=regla)
     st.plotly_chart(fig, width="stretch",

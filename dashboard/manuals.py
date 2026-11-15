@@ -242,31 +242,45 @@ no disparar el algoritmo. Para esos casos usar VRP MODIS/VIIRS.
 
     # ── Replay reciente ───────────────────────────────────────────
     "replay": (
-        "Replay reciente",
+        "Replay por fecha",
         """
-**Qué muestra**: animación pre-renderizada de las **últimas N horas**
-(típicamente 2-6 h) para un volcán seleccionado. Pensado para revisión
-post-evento o entrega de turno — "qué pasó mientras no estabas mirando".
+**Qué muestra**: los scans GOES-19 de RAMMB (GeoColor, Ash RGB o SO2 RGB)
+sobre **cualquier volcán del catálogo**, en el **día y la ventana horaria**
+que elijas, para recorrerlos de a uno. Sirve para revisar después qué se vio:
+por ejemplo, el SO2 de Lastarria de un día puntual.
 
 **Cómo usarlo**:
-- Selector de volcán → carga animación pre-cocinada del cache.
-- Slider de tiempo para avanzar frame por frame.
-- Botón ▶ para reproducir continuo.
-- Productos disponibles: Ash RGB, GeoColor, SO2 RGB (los que el cron
-  pre-renderiza cada hora).
+- **Volcán**: arriba van las sugerencias ★ (volcanes con actividad
+  frecuente, donde casi siempre hay algo que ver); más abajo, todo el
+  catálogo. Puedes escribir el nombre para buscarlo.
+- **Producto** y **radio** (0.25° a 3°).
+- **Día** y **ventana horaria** en hora de Chile. Debajo aparece el mismo
+  tramo en UTC, porque los scans de GOES van rotulados en UTC.
+- Recorre con el slider o con **◀ ▶** (un scan = 10 min).
+- **📏 Regla**: arrastra sobre la imagen para medir en km. La imagen está en
+  km alrededor del cráter, con barra de escala, igual que la grilla de
+  volcán. No corrige el paralaje.
 
-**Diferencia con Loops descargables**:
-- **Replay** = navegación interactiva frame-a-frame, sin descarga.
-- **Loops descargables** = MP4/GIF generado en demanda, para guardar
-  o pegar en informe.
+**Hasta dónde llega el archivo**: lo dice la vista en cada visita, leído de
+la lista de días de RAMMB. Medido el 15-11-2026: un tramo continuo desde el
+01-09-2026 (76 días) y, antes, días sueltos hasta julio de 2025. Ojo: RAMMB
+sigue listando algunos días cuyas imágenes ya borró; la vista lo comprueba
+bajando una imagen y te lo dice. **Si un día no está, la vista lo informa y
+no muestra otro en su lugar.**
 
-**Nota histórica**: el caso Calbuco 2015 originalmente estaba aquí
-pero RAMMB Slider no archiva GOES-13 (operacional en 2015), así que
-fue reemplazado por eventos recientes con archivo GOES-19 (~28 días
-hacia atrás).
+**Lo que no hace**: no trae hot spots ni altura VOLCAT del momento elegido
+(para eso, Modo Evento o VOLCAT), y no decide si hay pluma: la lectura de la
+imagen queda al geólogo de turno.
+
+**Diferencia con Backfill histórico**: Backfill muestra eventos ya armados
+(con hot spots y altura) y puede ir más atrás regenerando desde L1b; Replay
+es para mirar al momento cualquier día que RAMMB todavía conserve.
+
+**Nota histórica**: Calbuco 2015 no se puede revisar aquí porque RAMMB no
+archiva GOES-13.
 
 **Referencias**:
-- [RAMMB Slider — fuente de tiles](https://rammb-slider.cira.colostate.edu/)
+- [RAMMB Slider, fuente de las imágenes](https://rammb-slider.cira.colostate.edu/)
 """,
     ),
 
@@ -280,7 +294,7 @@ training, comparación con evento actual, o validación de productos
 en eventos confirmados.
 
 **Eventos disponibles** (ver tabla abajo): erupciones recientes con
-archivo GOES-19 disponible (~últimos 28 días en RAMMB) más algunas
+archivo GOES-19 disponible en RAMMB más algunas
 pre-procesadas y guardadas como assets permanentes en
 `out_backfill/`.
 
@@ -292,8 +306,9 @@ pre-procesadas y guardadas como assets permanentes en
 4. El script descarga frames RAMMB, los compone, genera MP4 + JSON
    con hot spots, y guarda en `out_backfill/`.
 
-**Limitación clave**: RAMMB Slider solo expone ~28 días de archivo
-para GOES-19. Eventos más viejos requieren reprocesado desde L1b
+**Limitación clave**: RAMMB Slider conserva un tramo continuo de unos
+dos meses y medio más algunos días sueltos (ver el manual de Replay por
+fecha). Eventos más viejos requieren reprocesado desde L1b
 NOAA S3 — no implementado en este dashboard (sería pipeline aparte).
 
 **Referencias**:

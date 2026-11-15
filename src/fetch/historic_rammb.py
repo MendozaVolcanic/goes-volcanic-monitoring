@@ -1,7 +1,9 @@
 """Fetch historico de tiles RAMMB para fechas fuera del archive estandar.
 
-RAMMB-CIRA mantiene tiles PNG en su CDN para ~360 dias hacia atras (mucho
-mas que la API `latest_times.json` que solo da las ultimas horas). Estos
+RAMMB-CIRA mantiene tiles PNG en su CDN mucho mas atras que la API
+`latest_times.json` (que corta en 100 scans, unas 16 h). Medido el
+15-11-2026: tramo continuo desde 01-09-2026 y dias sueltos hasta jul-2025,
+algunos listados pero ya sin tiles (ver "Listado por fecha" mas abajo). Estos
 tiles son archivos estaticos accesibles directamente por URL.
 
 Limitacion descubierta: para fechas viejas, el ZOOM 4 solo esta disponible
@@ -205,3 +207,201 @@ def fetch_historic_frame_for_bounds(product: str, ts: str, bounds: dict,
         img, col_start=col_start, row_start=row_start,
         out_bounds=bounds, sat_lon=sat_lon, zoom=zoom, tile_sz=tile_sz,
     )
+
+
+# ── Listado por fecha (vista Replay, nov-2026) ───────────────────────
+#
+# Por que: `latest_times.json` entrega como maximo los 100 scans mas nuevos
+# (unas 16 h), asi que no sirve para revisar un dia elegido. RAMMB publica por
+# producto dos JSON que si lo permiten:
+#   - available_dates.json      -> {"dates_int": [20261115, ...]}
+#   - <YYYYMMDD>_by_hour.json   -> {"timestamps_int": {"HH": [ts, ...]}}
+# Medido el 15-11-2026 (jma_so2, eumetsat_ash, geocolor dan la misma lista):
+# la lista trae un tramo continuo reciente (desde 01-09-2026) y dias sueltos
+# hacia atras hasta jul-2025, y ALGUNOS de esos dias sueltos ya no tienen
+# imagenes (todos los tiles dan 404). Por eso:
+#   1. "no esta en la lista" (404 del JSON) se dice como tal, no como calma;
+#   2. un error de red se distingue de un 404: no dice nada del dia;
+#   3. un dia listado se confirma bajando un tile (`tile_available`).
+
+_JSON_BASE = f"{BASE_URL}/data/json/{SATELLITE}/{SECTOR}"
+
+# Estados de un listado. "parcial" = una de las dos fechas UTC del dia local
+# no respondio: se muestra lo que llego, avisando que puede faltar un tramo.
+ESTADO_OK = "ok"
+ESTADO_NO_CONSERVADO = "no_conservado"
+ESTADO_SIN_RESPUESTA = "sin_respuesta"
+ESTADO_PARCIAL = "parcial"
+
+
+def parse_available_dates(payload: dict) -> list:
+    """`available_dates.json` -> lista de `date`, de la mas vieja a la mas nueva."""
+    from datetime import date as _date
+    out = []
+    for d in payload.get("dates_int", []):
+        d = int(d)
+        out.append(_date(d // 10000, d // 100 % 100, d % 100))
+    return sorted(out)
+
+
+def parse_by_hour(payload: dict) -> list[str]:
+    """`<fecha>_by_hour.json` -> timestamps de 14 digitos en orden cronologico.
+
+    RAMMB agrupa por hora y deja lo mas nuevo primero dentro de cada hora;
+    aca se aplana y se ordena, porque la vista recorre de izquierda a derecha.
+    """
+    horas = payload.get("timestamps_int", {}) or {}
+    return sorted(str(t) for lista in horas.values() for t in lista)
+
+
+def fetch_available_dates(product: str) -> list | None:
+    """Dias que RAMMB lista para el producto. None = RAMMB no respondio."""
+    url = f"{_JSON_BASE}/{product}/available_dates.json?_={int(time.time())}"
+    try:
+        r = _get_session().get(url, timeout=15,
+                               headers={"Cache-Control": "no-cache"})
+        r.raise_for_status()
+        return parse_available_dates(r.json())
+    except Exception as e:
+        logger.warning("available_dates %s: %s", product, e)
+        return None
+
+
+def fetch_day_timestamps(product: str, utc_day) -> tuple[list[str], str]:
+    """Scans de un dia UTC. Devuelve (timestamps, estado).
+
+    estado: "ok", "no_conservado" (RAMMB respondio 404: ese dia no esta) o
+    "sin_respuesta" (red caida o respuesta rara: no se sabe nada del dia).
+    """
+    url = f"{_JSON_BASE}/{product}/{utc_day:%Y%m%d}_by_hour.json"
+    try:
+        r = _get_session().get(url, timeout=15)
+        if r.status_code == 404:
+            return [], ESTADO_NO_CONSERVADO
+        r.raise_for_status()
+        return parse_by_hour(r.json()), ESTADO_OK
+    except Exception as e:
+        logger.warning("by_hour %s %s: %s", product, utc_day, e)
+        return [], ESTADO_SIN_RESPUESTA
+
+
+def local_window_utc(local_day, h_ini: int, h_fin: int, tz):
+    """[inicio, fin) en UTC de la ventana local h_ini..h_fin (h_fin <= 24)."""
+    from datetime import datetime as _dt, timezone as _tz
+    base = _dt(local_day.year, local_day.month, local_day.day, tzinfo=tz)
+    # Sumar horas en hora local "de pared" y recien despues pasar a UTC: asi
+    # el dia del cambio de horario sigue cortando en la medianoche de Chile.
+    ini = (base + timedelta(hours=h_ini)).astimezone(_tz.utc)
+    fin_local = base + timedelta(hours=h_fin)
+    if h_fin >= 24:
+        sig = local_day + timedelta(days=1)
+        fin_local = _dt(sig.year, sig.month, sig.day, tzinfo=tz)
+    return ini, fin_local.astimezone(_tz.utc)
+
+
+def utc_dates_for_local_day(local_day, tz) -> list:
+    """Fechas UTC que cubre un dia local completo (una o dos)."""
+    ini, fin = local_window_utc(local_day, 0, 24, tz)
+    ultimo = fin - timedelta(seconds=1)
+    fechas = [ini.date()]
+    if ultimo.date() != ini.date():
+        fechas.append(ultimo.date())
+    return fechas
+
+
+def timestamps_in_local_window(timestamps: list[str], local_day,
+                               h_ini: int, h_fin: int, tz) -> list[str]:
+    """Filtra timestamps UTC a la ventana local [h_ini, h_fin) del dia."""
+    from datetime import datetime as _dt, timezone as _tz
+    ini, fin = local_window_utc(local_day, h_ini, h_fin, tz)
+    out = []
+    for ts in timestamps:
+        t = _dt.strptime(ts, "%Y%m%d%H%M%S").replace(tzinfo=_tz.utc)
+        if ini <= t < fin:
+            out.append(ts)
+    return sorted(out)
+
+
+def list_local_day(product: str, local_day, h_ini: int, h_fin: int,
+                   tz) -> tuple[list[str], str]:
+    """Scans de un dia LOCAL (Chile) en la ventana [h_ini, h_fin).
+
+    Un dia local cruza dos dias UTC: se piden los dos. Nunca se completa con
+    otro dia: si el pedido no existe, la lista vuelve vacia con su motivo.
+    """
+    todos: list[str] = []
+    estados = []
+    for d in utc_dates_for_local_day(local_day, tz):
+        ts, est = fetch_day_timestamps(product, d)
+        todos.extend(ts)
+        estados.append(est)
+    elegidos = timestamps_in_local_window(todos, local_day, h_ini, h_fin, tz)
+    if ESTADO_SIN_RESPUESTA in estados:
+        return elegidos, (ESTADO_PARCIAL if elegidos else ESTADO_SIN_RESPUESTA)
+    if elegidos:
+        return elegidos, ESTADO_OK
+    if all(e == ESTADO_NO_CONSERVADO for e in estados):
+        return [], ESTADO_NO_CONSERVADO
+    # El dia existe pero no hay scans en esa ventana horaria.
+    return [], ESTADO_OK
+
+
+def archive_span(dates: list) -> dict | None:
+    """Tramo continuo mas reciente y tramos sueltos anteriores.
+
+    El tramo continuo es lo que se puede prometer; los sueltos son dias que
+    RAMMB retuvo aparte y que pueden no tener imagenes (ver `tile_available`).
+    """
+    if not dates:
+        return None
+    ds = sorted(set(dates))
+    tramos = []
+    ini = prev = ds[0]
+    for d in ds[1:]:
+        if (d - prev).days != 1:
+            tramos.append((ini, prev))
+            ini = d
+        prev = d
+    tramos.append((ini, prev))
+    desde, hasta = tramos[-1]
+    return {
+        "continuo_desde": desde,
+        "continuo_hasta": hasta,
+        "dias_continuos": (hasta - desde).days + 1,
+        "sueltos": tramos[:-1],
+    }
+
+
+def tile_available(product: str, ts: str, bounds: dict,
+                   zoom: int = 3) -> bool | None:
+    """Un tile del encuadre existe para ese scan? True / False (404) / None.
+
+    Zoom 3 porque es el maximo que RAMMB guarda para las bandas IR (Ash, SO2)
+    y tambien existe para GeoColor. None = no se pudo saber (red).
+
+    Pasa por el cache de tiles de `rammb_slider` (PR 34): si el cuadro ya se
+    dibujo, no sale a la red, y lo que baja la sonda queda para el cuadro.
+    Va con su propia funcion de bajada porque necesita distinguir un 404
+    (el dia ya no tiene imagenes) de un error de red (no se sabe), y
+    `_bajar_tile` devuelve None en los dos casos.
+    """
+    from src.fetch.rammb_slider import _TILES, _tile_url
+    rows, cols = get_tiles_for_bounds(bounds, zoom)
+    r, c = rows[len(rows) // 2], cols[len(cols) // 2]
+    url = _tile_url(product, ts, zoom, r, c)
+    codigo: dict = {}
+
+    def _bajar() -> bytes | None:
+        try:
+            resp = _get_session().get(url, timeout=15)
+        except Exception as e:
+            logger.warning("tile_available %s %s: %s", product, ts, e)
+            return None
+        codigo["http"] = resp.status_code
+        if resp.status_code == 200 and len(resp.content) > 500:
+            return resp.content
+        return None
+
+    if _TILES.obtener((product, ts, zoom, r, c), _bajar):
+        return True
+    return False if codigo.get("http") == 404 else None

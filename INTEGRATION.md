@@ -44,7 +44,7 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
 | Latencia detección | ≤ 60 s desde publicación RAMMB |
 | Latencia total user-visible | 4-7 min después del scan real |
 | Formato output | PNG con timestamp + GeoTIFF (EPSG:4326) + GIF/MP4 (animación) + ZIP frames |
-| Retención RAMMB | ~9-10 meses (medido jun-2026: frame OK a 270d; era GOES-19, desde abr-2025) |
+| Retención RAMMB | Tramo continuo de ~2,5 meses (medido 15-11-2026: desde 01-09-2026, 76 días) más días sueltos hasta jul-2025; de 168 días listados, 48 ya no tienen imágenes. La vista Replay lo calcula en cada visita desde `available_dates.json` |
 
 ## Productos disponibles
 
@@ -91,8 +91,8 @@ compatibilidad). Fuente de verdad: `PAGE_OPTIONS`/`PAGE_SLUGS` en `dashboard/app
 3. **🔀 Comparador** (`comparador`) — dos frames lado a lado (baseline histórico vs actual, o dos productos).
 4. **🚨 Modo Evento** (`evento`) — foco en un volcán en crisis, con productos y altura.
 5. **📅 Heatmap actividad** (`heatmap`) — pulso térmico intradía de FRP (serie pre-cocinada `data/frp_timeline.json`) + heatmap semanal día × volcán.
-6. **🔁 Replay reciente** (`replay`) — repetición de las últimas horas.
-7. **📅 Backfill histórico** (`backfill`) — revisión día/hora de eventos pasados desde GitHub Releases (`backfill-<fecha>-<volcán>`). Slider temporal + grid de productos + hot spots + altura VOLCAT. Generado por `scripts/build_backfill.py`. Con `--l1b-fallback` los productos se regeneran desde bandas L1b crudas cuando la fecha cae fuera del archive RAMMB (~9-10 meses) — `src/process/historic_l1b_rgb.py`.
+6. **🔁 Replay por fecha** (`replay`): cualquier volcán del catálogo (sugerencias con actividad primero), en GeoColor, Ash RGB o SO₂ RGB, el día y la ventana horaria que se elijan (hora de Chile, con su equivalente UTC). Lista los scans del día con `<fecha>_by_hour.json` de RAMMB (`src/fetch/historic_rammb.list_local_day`), no con `latest_times.json`, que corta en 100 scans. Muestra en pantalla hasta dónde llega el archivo real; un día que RAMMB no conserva, o que lista pero ya sin imágenes, se informa y no se reemplaza por otro. Recorrido con slider y ◀ ▶, radio de 0.25 a 3°, imagen en km con barra de escala y 📏 Regla (mismo panel que la grilla de volcán).
+7. **📅 Backfill histórico** (`backfill`): revisión día/hora de eventos pasados desde GitHub Releases (`backfill-<fecha>-<volcán>`). Slider temporal + grid de productos + hot spots + altura VOLCAT. Generado por `scripts/build_backfill.py`. Con `--l1b-fallback` los productos se regeneran desde bandas L1b crudas cuando la fecha cae fuera del archivo RAMMB (ver Retención RAMMB), con `src/process/historic_l1b_rgb.py`.
 8. **🌡 Ash + BTD (temperaturas K)** (`ash`) — versión propia desde L1b con temperaturas de brillo.
 9. **📏 VOLCAT (altura pluma)** (`volcat`): productos SSEC (Ash Height/Loading/Probability/Reff) con cheat-sheet visual + VAA + cruce con la altura propia. Incluye el **🎞 Loop VOLCAT** por volcán o por zona: animación de las últimas 2, 3, 6 o 12 h (en pantalla y descargable en GIF y MP4) con hora UTC y de Chile, sector, barra de escala en km (N-S en zona) y barra de color del producto en cada cuadro, con los colores de la escala exactos en el GIF; los cuadros que SSEC no publicó no se rellenan y el cuadro siguiente avisa el salto. Cualquier cuadro se puede abrir como mapa para medir con la 📏 Regla en km (modo Volcán).
 10. **🎞 Loops descargables** (`loops`): animaciones RAMMB (GeoColor, Ash RGB, SO₂, BTD) por scope. Export GIF/MP4/ZIP. El loop de VOLCAT vive en la página 📏 VOLCAT.
@@ -161,8 +161,9 @@ streamlit run dashboard/app.py
 ## Limitaciones conocidas
 
 - **Parallax GOES**: volcanes altos (>4000 m) aparecen ~1-3 km al este de su coord real WGS84.
-- **Profundidad histórica por fuente** (medido jun-2026): RAMMB RGB ~9-10 meses
-  (era GOES-19, desde abr-2025); hot spots FDCF en S3 desde el inicio de
+- **Profundidad histórica por fuente**: RAMMB RGB, tramo continuo desde
+  01-09-2026 más días sueltos hasta jul-2025 (medido 15-11-2026; la cifra de
+  "~9-10 meses" de jun-2026 venía de un día suelto, no de un archivo continuo); hot spots FDCF en S3 desde el inicio de
   GOES-19 (OK a feb-2025); RealEarth VOLCAT/ash_rgb ≥5 meses. Para ir más atrás
   hay que computar las RGB desde L1b (S3 `noaa-goes19`, indefinido). Pre-abr-2025
   es GOES-16 (no soportado).

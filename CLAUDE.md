@@ -82,7 +82,7 @@ libre); registro pre-paper en `docs/paper/REGISTRO_PAPER.md`.
 - **App dormant / HTTP 303 a auth no es bug, es sleep mode**: Streamlit Cloud free duerme apps sin tráfico ~12h. El endpoint sirve un shell HTML estático con redirect 303 a `share.streamlit.io/-/auth/app?redirect_uri=...`. `curl` NO la despierta (solo baja el shell). Se necesita browser real con JS+WebSocket que pulse "Yes, get this app back up!". Mitigación: workflow `keepalive_streamlit.yml` con Playwright cada 8h.
 - **Plotly scaleratio en lat/lon**: con `scaleratio=1` los círculos geográficos se ven como óvalos. Usar `scaleratio = 1/cos(lat)` para 1 km vertical = 1 km horizontal visual.
 - **Título Plotly largo achica el plot**: wrappea a 2 líneas si pasa de ~30 chars. Usar `title=""` y poner el label en `st.markdown` arriba del plot.
-- **Calbuco 2015 NO sirve para test de plataforma**: RAMMB no archiva GOES-13. Usar eventos recientes (Sangay, Reventador, Sabancaya) del archive GOES-19 ~28 días.
+- **Calbuco 2015 NO sirve para test de plataforma**: RAMMB no archiva GOES-13. Usar eventos recientes del archivo GOES-19 de RAMMB: tramo continuo desde 01-09-2026 más días sueltos (medido 15-11-2026; ni "28 días" ni "9-10 meses" eran ciertos). La vista Replay por fecha calcula el límite en vivo y verifica que el día tenga imágenes, porque RAMMB lista días cuyos tiles ya borró.
 
 ## Comandos comunes
 - `python -m pytest tests/ -q` — física round-trip (Planck, Wen-Rose, β, viento), geo, FRP rollup

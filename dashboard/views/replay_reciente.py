@@ -1,40 +1,40 @@
-"""Replay reciente — vista de eventos volcánicos en últimos 28 días.
+"""Replay por fecha: cualquier volcan, cualquier dia que RAMMB conserve.
 
-Reemplaza el "Replay Calbuco 2015" porque GOES-13 archive no esta en
-RAMMB. En su lugar usamos datos REALES recientes de GOES-19 archive
-(retencion ~28 dias en RAMMB) sobre volcanes con actividad continua:
+Para que sirve: revisar despues lo que mostro GOES-19 sobre un volcan en un
+dia y una ventana horaria elegidos (por ejemplo, el SO2 de Lastarria del
+14-11-2026), recorriendo los scans de a uno.
 
-- **Sangay (Ecuador)**: -2.005°, -78.341°. Casi continuo 2024-2026.
-  Hot spots diarios, plumas frecuentes. Cobertura GOES-19 excelente.
-- **Reventador (Ecuador)**: -0.077°, -77.66°. Explosiones diarias.
-- **Sabancaya (Perú)**: -15.78°, -71.85°. Explosiones diarias documentadas.
-- **Lascar (Chile)**: -23.37°, -67.73°. Hot spots térmicos esporádicos.
+Como lista los scans (nov-2026): pide a RAMMB `<fecha>_by_hour.json` del dia
+elegido, NO "los ultimos N". `latest_times.json` corta en 100 scans (unas
+16 h), asi que la version anterior, que pedia 200 y prometia 28 dias, en
+realidad cubria menos de un dia.
 
-Caso de uso: probar TODA la plataforma actual (Ash RGB / hot spots NOAA /
-altura VOLCAT / BTD / detección tri-espectral) sobre actividad volcánica
-real reciente. Si encontrás un día con buena pluma, ese timestamp puede
-ser el "evento de prueba" canónico para el equipo.
+Cuanto conserva RAMMB (medido el 15-11-2026 para jma_so2, eumetsat_ash y
+geocolor): un tramo continuo reciente (desde 01-09-2026, 76 dias) y, antes,
+dias sueltos hasta jul-2025, algunos de los cuales ya no tienen imagenes
+aunque sigan en la lista. La vista calcula ese limite en cada visita desde
+`available_dates.json` y lo dice en pantalla; un dia que no esta se informa
+como tal y nunca se reemplaza por otro.
 
-Por que NO Calbuco 2015:
-- RAMMB no archiva GOES-13.
-- VOLCAT operacional desde 2018.
-- Hot spots FDCF tampoco existian.
-- Calbuco vale para Wen-Rose 1994 historicamente — vista separada
-  (todavia pendiente).
+No decide nada: muestra la imagen RAMMB del scan elegido. La lectura (hay
+pluma, es ceniza, es SO2) queda al geologo de turno.
 """
 
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 
-import numpy as np
-import plotly.graph_objects as go
 import streamlit as st
 
 try:
-    from dashboard.style import header, volcano_marker
-    from dashboard.utils import fmt_chile, parse_rammb_ts
+    from dashboard.style import header
+    from dashboard.utils import CHILE_TZ, parse_rammb_ts, utc_to_chile
     from src.fetch.rammb_slider import (
-        fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
+        fetch_frame_robust, ZOOM_VOLCAN, ZOOM_ZONE,
+    )
+    from src.fetch.historic_rammb import (
+        ESTADO_NO_CONSERVADO, ESTADO_PARCIAL, ESTADO_SIN_RESPUESTA,
+        archive_span, fetch_available_dates, list_local_day,
+        local_window_utc, tile_available,
     )
     from src.volcanos import CATALOG, get_volcano
 except Exception:
@@ -46,8 +46,9 @@ except Exception:
 
 logger = logging.getLogger(__name__)
 
-# Volcanes activos para replay — incluye Chile + países vecinos cubiertos
-# por GOES-19 con actividad reciente confirmada
+# Sugerencias, no la lista: volcanes con actividad frecuente donde casi
+# siempre hay algo que ver. Van primero en el selector; el resto del catalogo
+# viene despues.
 ACTIVE_VOLCANOES = [
     {"name": "Sangay (Ecuador)", "rationale": "Actividad casi continua. Hot spots diarios."},
     {"name": "Reventador (Ecuador)", "rationale": "Explosiones diarias. Pluma frecuente."},
@@ -70,211 +71,261 @@ try:
 except Exception:
     RADIUS_DEG = 0.4  # ver src/config.py
 
+# Radios ofrecidos (grados). 0.4 es el encuadre historico de la vista; 3
+# grados alcanza para seguir una pluma larga.
+RADIOS_DEG = [0.25, 0.4, 0.75, 1.0, 1.5, 2.0, 3.0]
+
+
+def volcan_options() -> list[tuple[str, str]]:
+    """(nombre, rotulo) para el selector: sugeridos primero, luego el resto
+    del catalogo en su orden. Todos los volcanes del catalogo estan."""
+    nombres = {v.name for v in CATALOG}
+    out = [(a["name"], f"★ {a['name']}: {a['rationale']}")
+           for a in ACTIVE_VOLCANOES if a["name"] in nombres]
+    vistos = {n for n, _ in out}
+    out += [(v.name, v.name) for v in CATALOG if v.name not in vistos]
+    return out
+
+
+# ── Datos (cache) ────────────────────────────────────────────────────
+# Lo que se lista de un dia pasado no cambia; el dia de hoy si (entra un scan
+# cada 10 min), por eso el TTL es corto igual.
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def _fechas_listadas(product: str):
+    return fetch_available_dates(product)
+
 
 @st.cache_data(ttl=300, show_spinner=False)
-def _list_timestamps(product: str, n: int = 200) -> list[str]:
-    """Lista hasta N timestamps del producto. RAMMB archive ~28 dias."""
-    return get_latest_timestamps(product, n=n)
+def _scans_del_dia(product: str, dia: date, h_ini: int, h_fin: int):
+    return list_local_day(product, dia, h_ini, h_fin, CHILE_TZ)
 
 
-def _array_to_data_url(arr):
-    # Lazy import (gotcha Streamlit Cloud — ver CLAUDE.md).
-    from dashboard.map_helpers import array_to_data_url
-    return array_to_data_url(arr)
+@st.cache_data(ttl=3600, show_spinner=False)
+def _hay_imagenes(product: str, ts: str, bounds_key: tuple):
+    lat_min, lat_max, lon_min, lon_max = bounds_key
+    return tile_available(product, ts, {"lat_min": lat_min, "lat_max": lat_max,
+                                        "lon_min": lon_min, "lon_max": lon_max})
 
 
+def _rotulo_ts(ts: str) -> str:
+    """'14-nov 09:50 Chile · 12:50 UTC' (la hora de Chile manda: es la del
+    dia elegido)."""
+    dt = parse_rammb_ts(ts)
+    ch = utc_to_chile(dt)
+    return f"{ch:%d-%m %H:%M} Chile · {dt:%H:%M} UTC"
 
-def _plot_frame(img: np.ndarray | None, lat: float, lon: float,
-                volcan_name: str, title: str, height: int = 720):
-    fig = go.Figure()
-    bounds = {
-        "lat_min": lat - RADIUS_DEG, "lat_max": lat + RADIUS_DEG,
-        "lon_min": lon - RADIUS_DEG, "lon_max": lon + RADIUS_DEG,
-    }
-    if img is not None:
-        fig.add_layout_image(
-            source=_array_to_data_url(img),
-            xref="x", yref="y",
-            x=bounds["lon_min"], y=bounds["lat_max"],
-            sizex=2 * RADIUS_DEG, sizey=2 * RADIUS_DEG,
-            sizing="stretch", layer="below",
-        )
-    fig.add_trace(go.Scatter(
-        x=[lon], y=[lat], mode="markers+text",
-        marker=volcano_marker("focus"),
-        text=[volcan_name], textposition="top center",
-        textfont=dict(color="#00ffff", size=12),
-        showlegend=False, hoverinfo="skip",
-    ))
-    cos_lat = max(0.1, float(np.cos(np.radians(lat))))
-    # constrain="domain" en AMBOS ejes: con scaleanchor y sin esto, el default
-    # de Plotly es constrain="range" y ENSANCHA el rango para cumplir el aspecto,
-    # ignorando el range que se pide aca. Con el contenedor angosto del primer
-    # render la escena se dispara y no vuelve. (audit 2026-08-30)
-    fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
-                     showgrid=False, visible=False, constrain="domain")
-    fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
-                     showgrid=False, visible=False,
-                     scaleanchor="x", scaleratio=1.0 / cos_lat,
-                     constrain="domain")
-    fig.update_layout(
-        title=dict(text=title, font=dict(size=12, color="#e0e0e0")),
-        height=height, margin=dict(l=0, r=0, t=30, b=0),
-        paper_bgcolor="#0a0e14", plot_bgcolor="#0a0e14",
-    )
-    if img is None:
-        fig.add_annotation(text="Sin imagen", xref="paper", yref="paper",
-                           x=0.5, y=0.5, showarrow=False,
-                           font=dict(color="#7a8a9a", size=14))
-    return fig
+
+def _texto_archivo(span: dict | None) -> str:
+    """Limite real del archivo RAMMB, en palabras."""
+    if span is None:
+        return ("No se pudo leer la lista de días de RAMMB: no se sabe hasta "
+                "dónde llega el archivo. Igual puedes pedir un día.")
+    txt = (f"RAMMB conserva **continuo desde el "
+           f"{span['continuo_desde']:%d-%m-%Y}** "
+           f"({span['dias_continuos']} días, hasta el "
+           f"{span['continuo_hasta']:%d-%m-%Y}).")
+    if span["sueltos"]:
+        tramos = ", ".join(
+            f"{a:%d-%m-%Y}" if a == b else f"{a:%d-%m-%Y} a {b:%d-%m-%Y}"
+            for a, b in span["sueltos"])
+        txt += (f" Antes, solo días sueltos ({tramos}); algunos siguen en la "
+                f"lista pero ya no tienen imágenes.")
+    return txt
+
+
+def _mover(key: str, paso: int, n: int):
+    """Callback de ◀ ▶: corre el cuadro elegido sin salir de la ventana."""
+    st.session_state[key] = min(max(st.session_state.get(key, 0) + paso, 0),
+                                n - 1)
 
 
 def render():
     from dashboard.manuals import render_manual
     render_manual("replay")
     header(
-        "🔁 Replay reciente — actividad real GOES-19",
-        "Eventos volcánicos en últimos 28 días · Sangay/Reventador/Sabancaya/Lascar/Villarrica/Copahue",
+        "🔁 Replay por fecha: actividad real GOES-19",
+        "Cualquier volcán del catálogo, el día y la ventana horaria que elijas, "
+        "dentro de lo que RAMMB conserva",
     )
 
-    # Banner explicativo
-    st.markdown(
-        "<div style='background:#0f1418; border-left:4px solid #4a9eff; "
-        "padding:0.7rem 1rem; border-radius:4px; margin-bottom:0.8rem;'>"
-        "<b style='color:#4a9eff;'>📌 Por qué reemplazamos Calbuco 2015</b>"
-        "<div style='color:#c0ccd8; font-size:0.85rem; margin-top:0.3rem;'>"
-        "Calbuco 2015 es el caso canónico científico, pero <b>RAMMB no archiva "
-        "GOES-13</b>, VOLCAT no existía, y FDCF tampoco. Para probar TODA la "
-        "plataforma actual usamos eventos recientes en cobertura GOES-19 con "
-        "actividad continua. <b>Sangay y Reventador (Ecuador)</b> son ideales: "
-        "tienen plumas casi diarias, hot spots NRT, y RAMMB conserva los "
-        "últimos ~28 días de tiles."
-        "</div></div>",
-        unsafe_allow_html=True,
-    )
-
-    # Selectores
-    cols = st.columns([2, 1.5, 1])
-    with cols[0]:
-        volcan_options = [v["name"] for v in ACTIVE_VOLCANOES]
-        volcan_idx = st.selectbox(
-            "Volcán",
-            options=range(len(volcan_options)),
-            format_func=lambda i: f"{volcan_options[i]} — {ACTIVE_VOLCANOES[i]['rationale']}",
-            index=0, key="replay_volcan",
+    # ── Selectores ──
+    opciones = volcan_options()
+    rotulos = dict(opciones)
+    c1, c2, c3 = st.columns([2.2, 1.2, 1.2])
+    with c1:
+        volcan_name = st.selectbox(
+            "Volcán", [n for n, _ in opciones],
+            format_func=lambda n: rotulos[n],
+            index=0, key="replay_volcan_nombre",
+            help="★ = sugerencias con actividad frecuente. Más abajo está "
+                 "todo el catálogo.",
         )
-        volcan_name = volcan_options[volcan_idx]
-    with cols[1]:
+    with c2:
         product = st.selectbox(
-            "Producto",
-            options=list(PRODUCTS.keys()),
+            "Producto", list(PRODUCTS.keys()),
             format_func=lambda k: PRODUCTS[k],
             index=0, key="replay_product",
         )
-    with cols[2]:
-        st.markdown(
-            "<div style='color:#556; padding-top:0.6rem; font-size:0.78rem;'>"
-            "Buscando últimos 28 días<br>en RAMMB archive…</div>",
-            unsafe_allow_html=True,
+    with c3:
+        radio = st.select_slider(
+            "Radio (grados)", options=RADIOS_DEG, value=RADIUS_DEG,
+            format_func=lambda r: f"{r:g}° (~{r * 111:.0f} km)",
+            key="replay_radio",
         )
+
+    hoy_chile = utc_to_chile(datetime.now(timezone.utc)).date()
+    fechas = _fechas_listadas(product)
+    span = archive_span(fechas) if fechas else None
+    # El calendario parte en el dia listado mas viejo; dias del medio que no
+    # esten se avisan al elegirlos. Sin lista, se deja un año hacia atras.
+    minimo = fechas[0] if fechas else hoy_chile - timedelta(days=365)
+
+    d1, d2 = st.columns([1.2, 2.2])
+    with d1:
+        dia = st.date_input(
+            "Día (hora de Chile)", value=hoy_chile,
+            min_value=minimo, max_value=hoy_chile,
+            format="DD-MM-YYYY", key="replay_dia",
+        )
+    with d2:
+        h_ini, h_fin = st.slider(
+            "Ventana horaria (hora de Chile)", 0, 24, (0, 24),
+            format="%d:00", key="replay_ventana",
+        )
+    if h_fin <= h_ini:
+        st.warning("La ventana horaria está vacía: elige un fin mayor que el inicio.")
+        return
+
+    ini_utc, fin_utc = local_window_utc(dia, h_ini, h_fin, CHILE_TZ)
+    st.caption(
+        f"{dia:%d-%m-%Y} de {h_ini:02d}:00 a {h_fin:02d}:00 hora de Chile = "
+        f"{ini_utc:%d-%m %H:%M} a {fin_utc:%d-%m %H:%M} UTC. "
+        + _texto_archivo(span)
+    )
 
     v = get_volcano(volcan_name)
     if v is None:
         st.error(f"Volcán {volcan_name} no encontrado en catálogo.")
         return
 
-    # Listar timestamps disponibles
-    with st.spinner("Listando timestamps RAMMB últimos días…"):
-        timestamps = _list_timestamps(product, n=200)
-    if not timestamps:
-        st.error("RAMMB no respondió. Reintentá en unos segundos.")
+    # ── Scans del dia ──
+    with st.spinner("Pidiendo a RAMMB los scans de ese día…"):
+        timestamps, estado = _scans_del_dia(product, dia, h_ini, h_fin)
+    if estado == ESTADO_SIN_RESPUESTA:
+        st.error("RAMMB no respondió: no se sabe si ese día existe. "
+                 "Prueba de nuevo en unos segundos.")
         return
+    if estado == ESTADO_NO_CONSERVADO:
+        st.error(f"RAMMB no conserva el {dia:%d-%m-%Y} para "
+                 f"{PRODUCTS[product]}. No se muestra otro día en su lugar. "
+                 + _texto_archivo(span))
+        return
+    if not timestamps:
+        st.warning(f"El {dia:%d-%m-%Y} está en RAMMB, pero no hay scans de "
+                   f"{PRODUCTS[product]} entre las {h_ini:02d}:00 y las "
+                   f"{h_fin:02d}:00 hora de Chile.")
+        return
+    if estado == ESTADO_PARCIAL:
+        st.warning("Una parte del día no respondió en RAMMB: la lista puede "
+                   "estar incompleta (faltan scans, no es que no los haya).")
 
-    st.success(
-        f"📡 RAMMB: {len(timestamps)} timestamps disponibles "
-        f"(desde {timestamps[-1][:8]} hasta {timestamps[0][:8]})"
-    )
-
-    # Slider sobre timestamps (mas viejo izq, mas nuevo der)
-    timestamps_chrono = list(reversed(timestamps))
-    labels = []
-    for ts in timestamps_chrono:
-        try:
-            dt = parse_rammb_ts(ts)
-            labels.append(dt.strftime("%d-%b %H:%M UTC"))
-        except Exception:
-            labels.append(ts)
-
-    idx = st.select_slider(
-        "Timestamp (mover slider para reproducir el evento)",
-        options=list(range(len(timestamps_chrono))),
-        format_func=lambda i: labels[i],
-        value=len(timestamps_chrono) - 1,  # default = mas reciente
-        key="replay_idx",
-    )
-
-    selected_ts = timestamps_chrono[idx]
-
-    # Bajar y mostrar
     bounds = {
-        "lat_min": v.lat - RADIUS_DEG, "lat_max": v.lat + RADIUS_DEG,
-        "lon_min": v.lon - RADIUS_DEG, "lon_max": v.lon + RADIUS_DEG,
+        "lat_min": v.lat - radio, "lat_max": v.lat + radio,
+        "lon_min": v.lon - radio, "lon_max": v.lon + radio,
     }
-    # Fallback con frames VECINOS del seleccionado (no near-live): si el frame
-    # histórico no carga en RAMMB, probamos los timestamps adyacentes en el
-    # tiempo — así un fallback sigue siendo "cercano" de verdad y no salta a un
-    # frame reciente mal etiquetado como el pasado. (fix audit jun 2026)
-    _neighbors = timestamps_chrono[max(0, idx - 2):idx + 3]
+    # La lista de RAMMB trae dias cuyas imagenes ya se borraron: se prueba un
+    # tile del encuadre antes de ofrecer el slider (medido nov-2026).
+    muestra = timestamps[len(timestamps) // 2]
+    hay = _hay_imagenes(product, muestra, (bounds["lat_min"], bounds["lat_max"],
+                                           bounds["lon_min"], bounds["lon_max"]))
+    if hay is False:
+        st.error(f"RAMMB todavía lista el {dia:%d-%m-%Y}, pero ya borró sus "
+                 f"imágenes de {PRODUCTS[product]}: no hay nada que mostrar. "
+                 + _texto_archivo(span))
+        return
+    if hay is None:
+        st.warning("No se pudo confirmar que RAMMB tenga las imágenes de ese "
+                   "día (sin respuesta). Se intenta igual.")
+
+    st.success(f"📡 {len(timestamps)} scans de {PRODUCTS[product]} en la "
+               f"ventana ({_rotulo_ts(timestamps[0])} a "
+               f"{_rotulo_ts(timestamps[-1])}).")
+
+    # ── Recorrer cuadros ──
+    # La key lleva producto, dia y ventana: con otra lista de scans el indice
+    # guardado no significa lo mismo y se vuelve al primer cuadro.
+    n = len(timestamps)
+    key = f"replay_idx_{product}_{dia:%Y%m%d}_{h_ini}_{h_fin}"
+    if st.session_state.get(key, 0) >= n:
+        st.session_state[key] = 0
+    b1, s, b2 = st.columns([0.6, 8, 0.6])
+    with b1:
+        st.button("◀", key=f"{key}_ant", on_click=_mover, args=(key, -1, n),
+                  help="Scan anterior", width="stretch")
+    with b2:
+        st.button("▶", key=f"{key}_sig", on_click=_mover, args=(key, 1, n),
+                  help="Scan siguiente", width="stretch")
+    with s:
+        idx = st.select_slider(
+            "Scan (mueve el slider o usa ◀ ▶)",
+            options=list(range(n)),
+            format_func=lambda i: _rotulo_ts(timestamps[i]),
+            key=key, label_visibility="collapsed",
+        )
+    selected_ts = timestamps[idx]
+
+    # Fallback con frames VECINOS del seleccionado, todos del mismo dia y
+    # ventana: si un scan no carga, se muestra el adyacente y el rotulo dice
+    # cual es. Nunca un frame de otro dia ni uno reciente. (fix audit jun 2026)
+    _neighbors = timestamps[max(0, idx - 2):idx + 3]
     _candidates = [selected_ts] + [t for t in _neighbors if t != selected_ts]
     img, used_ts, used_zoom = fetch_frame_robust(
         product, _candidates, bounds,
         zoom_preferred=ZOOM_VOLCAN, zoom_fallback=ZOOM_ZONE,
     )
 
-    label = f"{v.name} · {PRODUCTS[product]} · {labels[idx]}"
+    label = f"{v.name} · {PRODUCTS[product]} · {_rotulo_ts(used_ts or selected_ts)}"
     if used_ts and used_ts != selected_ts:
-        label += " ⚠ ts cercano"
+        label += f" ⚠ el scan {_rotulo_ts(selected_ts)} no cargó: se muestra el más cercano"
     if used_zoom == ZOOM_ZONE:
         label += " ⚠ zoom 3"
 
-    from dashboard.map_helpers import render_compact_legend
-    render_compact_legend(product, symbols=("volcano",))
-    st.plotly_chart(
-        _plot_frame(img, v.lat, v.lon, v.name, label, height=720),
-        width='stretch',
-        config={"displayModeBar": False},
+    regla = st.toggle(
+        "📏 Regla", value=False, key="replay_regla",
+        help="Arrastra sobre la imagen para medir en km desde donde "
+             "quieras. No corrige el paralaje: una pluma alta aparece "
+             "corrida hacia el sur (0,4 a 1,5 km por km de altura).",
     )
 
-    # Tabla de productos disponibles para validar la plataforma
-    st.markdown("### ✅ Qué puedes validar con este evento")
-    rows = [
-        {"Producto": "Ash RGB (RAMMB)", "Estado": "✅ Disponible", "Probar": "Pluma roja brillante = ceniza"},
-        {"Producto": "GeoColor (RAMMB)", "Estado": "✅ Disponible", "Probar": "Pluma visible/visible-IR"},
-        {"Producto": "SO2 RGB (RAMMB)", "Estado": "✅ Disponible", "Probar": "Pluma verde si hay SO2 fresco"},
-        {"Producto": "Hot spots NOAA FDCF", "Estado": "✅ Disponible", "Probar": "Lava expuesta o flujos calientes"},
-        {"Producto": "Altura VOLCAT (SSEC)", "Estado": "✅ Disponible", "Probar": "Tab VOLCAT — ash height en km"},
-        {"Producto": "BTD raw (L1b)", "Estado": "✅ Disponible", "Probar": "Tab Ash RGB Viewer — heatmap K"},
-        {"Producto": "Tri-espectral (Pavolonis)", "Estado": "⚠ Parcial", "Probar": "Sólo en VOLCAT por ahora"},
-    ]
-    st.dataframe(rows, width='stretch', hide_index=True)
+    # Mismo panel que la grilla de volcan (Vista Operacional / Modo Guardia):
+    # en km alrededor del crater, con barra de escala. Lazy import (gotcha
+    # Streamlit Cloud, ver CLAUDE.md).
+    from dashboard.map_helpers import render_compact_legend
+    from dashboard.views.modo_guardia_volcan import _render_product
+    render_compact_legend(product, symbols=("volcano",))
+    fig = _render_product(img, bounds, label, v.lat, v.lon, v.name,
+                          height=720, regla=regla)
+    st.plotly_chart(fig, width="stretch",
+                    config={"displayModeBar": regla, "displaylogo": False})
+    if img is None:
+        st.warning("RAMMB no entregó imagen para este scan ni para los "
+                   "vecinos. Sin imagen no se puede decir nada del volcán.")
 
     st.caption(
-        "💡 **Workflow sugerido**: con el slider encontrá un timestamp "
-        "donde se vea pluma clara en Ash RGB. Después abre ese mismo "
-        "timestamp en otras vistas (Modo Evento, VOLCAT, Ash RGB Viewer) "
-        "para cross-checkear. **Permalink amigable**: copiá la URL — "
-        "incluye el volcán seleccionado."
+        "💡 Con ◀ ▶ recorres el día de a un scan (10 min). Para hot spots, "
+        "altura VOLCAT o un loop descargable de ese mismo momento, abre "
+        "Modo Evento, VOLCAT o Loops."
     )
 
-    # Sección Calbuco 2015 (movida abajo, solo info)
-    with st.expander("📚 Calbuco 2015 — caso histórico (sin datos disponibles)"):
+    with st.expander("📚 Calbuco 2015: caso histórico (sin datos disponibles)"):
         st.markdown(
             "Calbuco 22-Apr-2015 21:04 UTC sigue siendo el evento canónico "
             "para validar **Wen-Rose 1994** (~21 km confirmado por radiosonda). "
             "Pero como GOES-13 archive no está en RAMMB, no podemos hacer "
             "replay con los productos actuales del dashboard.\n\n"
             "**Para usarlo en el futuro** necesitamos:\n"
-            "- Backfill desde `s3://noaa-goes13` (5 bandas IR — adaptar receta Ash RGB)\n"
+            "- Backfill desde `s3://noaa-goes13` (5 bandas IR, adaptar la receta Ash RGB)\n"
             "- O bundle de PNGs públicos de archivo en `data/historic/calbuco_2015/`\n\n"
             "Sesión dedicada futura, ~500 LOC."
         )

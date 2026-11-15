@@ -482,7 +482,7 @@ def _health_banner():
             msg = "Latencia elevada"
             sub = f"último scan hace {age_min} min · RAMMB lento"
             tip = ("RAMMB/CIRA está lento. No es problema nuestro — "
-                   "esperá el próximo ciclo.")
+                   "espera el próximo ciclo.")
         else:
             color = "#ff4444"; bg = "rgba(255,68,68,0.10)"; icon = "❌"
             msg = "Datos atrasados"

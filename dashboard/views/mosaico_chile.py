@@ -522,8 +522,8 @@ def _live_panel():
             index=list(CELL_SIZES).index(DEFAULT_CELL_SIZE),
             key="mosaico_cell_size", horizontal=True,
             help="Alto de cada celda. Si ves los bordes del recuadro "
-                 "RECORTADOS, bajá un paso; si ves franjas negras a los "
-                 "lados, subí uno. Depende del ancho de tu pantalla: "
+                 "RECORTADOS, baja un paso; si ves franjas negras a los "
+                 "lados, sube uno. Depende del ancho de tu pantalla: "
                  "Mediano ~1280 px · Grande ~1600 · Máximo ~1920 o "
                  "modo pantalla completa.",
         )

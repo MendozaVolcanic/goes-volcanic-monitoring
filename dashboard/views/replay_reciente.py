@@ -260,7 +260,7 @@ def render():
 
     st.caption(
         "💡 **Workflow sugerido**: con el slider encontrá un timestamp "
-        "donde se vea pluma clara en Ash RGB. Después abrí ese mismo "
+        "donde se vea pluma clara en Ash RGB. Después abre ese mismo "
         "timestamp en otras vistas (Modo Evento, VOLCAT, Ash RGB Viewer) "
         "para cross-checkear. **Permalink amigable**: copiá la URL — "
         "incluye el volcán seleccionado."

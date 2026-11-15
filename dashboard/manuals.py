@@ -10,7 +10,7 @@ renderiza en un `st.expander` colapsado al INICIO de la sección. Incluye:
 Filosofía: el operador de turno debería poder abrir el expander en 30s y
 saber qué está mirando sin tener que conocer la receta RGB de memoria.
 
-Para agregar/editar un manual: tocá solo este archivo. Cada vista importa
+Para agregar/editar un manual: toca solo este archivo. Cada vista importa
 `render_manual` y lo invoca con su `view_key`.
 """
 
@@ -22,7 +22,7 @@ import streamlit as st
 # ── Manuales por vista ───────────────────────────────────────────
 # Estructura: view_key -> (titulo_expander, cuerpo_markdown)
 # El titulo_expander aparece como "📖 Cómo interpretar — <titulo>".
-# El cuerpo es markdown estandar; podes usar **bold**, listas, links.
+# El cuerpo es markdown estandar; puedes usar **bold**, listas, links.
 
 _MANUALS: dict[str, tuple[str, str]] = {
     # ── Vista Operacional ─────────────────────────────────────────
@@ -137,7 +137,7 @@ cirro o nieve.
 
 **Nota técnica**: la sustracción se hace en espacio RGB normalizado
 (0-1 por canal), no en temperatura de brillo. Para diferencias
-cuantitativas en Kelvin usá la vista **Ash + BTD**.
+cuantitativas en Kelvin usa la vista **Ash + BTD**.
 
 **Referencias**:
 - [EUMETSAT Volcanic Ash RGB Technical Guide](https://www-cdn.eumetsat.int/files/2020-04/pdf_rgb_quick_guide_ash.pdf)
@@ -473,7 +473,7 @@ zona del cráter.
 
 **Limitaciones**:
 - **% ash-rojo no es FRP**: no compares unidades. Para magnitud
-  cuantitativa absoluta usá FRP o VOLCAT mass loading.
+  cuantitativa absoluta usa FRP o VOLCAT mass loading.
 - Cirros invierno chileno (mayo-sept) pueden inflar el % ash-rojo
   sin actividad real. Validar con FRP en paralelo.
 

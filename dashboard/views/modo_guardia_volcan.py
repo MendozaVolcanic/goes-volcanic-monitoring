@@ -621,7 +621,7 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
             draw.text((wind_x, y), txt, fill=color, font=f_small)
             y += 28
     else:
-        draw.text((wind_x, y), "(viento no solicitado — activá toggle 💨)",
+        draw.text((wind_x, y), "(viento no solicitado: activa el toggle 💨)",
                   fill=(120, 120, 140), font=f_small)
 
     # 3 productos — calcular anchos para que llenen 95% del lienzo

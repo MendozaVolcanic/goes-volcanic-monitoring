@@ -43,7 +43,7 @@ def img_to_png_bytes(arr: np.ndarray, label: str | None = None) -> bytes:
 
     Usado por los botones de descarga. label deberia ser el timestamp UTC +
     scope (volcan, encuadre) para que el archivo descargado sea
-    autoexplicativo: si solo guardaste el PNG, no perdes el contexto.
+    autoexplicativo: si solo guardaste el PNG, no pierdes el contexto.
     """
     import io as _io
     from PIL import Image as _PIL, ImageDraw as _ID, ImageFont as _IF

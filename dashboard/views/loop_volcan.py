@@ -222,7 +222,7 @@ def render_subtab():
                 st.caption(f"⚠ Frames cargados en zoom 3 (RAMMB no sirvió zoom 4 para {PRODUCT_OPTIONS[product]}).")
 
     if not frames:
-        st.error("No se pudieron bajar frames. Probá otro producto o volcán.")
+        st.error("No se pudieron bajar frames. Prueba otro producto o volcán.")
         return
 
     fig = _build_loop_figure(frames, v, height=720)
@@ -241,7 +241,7 @@ def render_subtab():
             f"📌 {v.name} · {PRODUCT_OPTIONS[product]} · "
             f"{len(frames)} frames · "
             f"{ts_first.strftime('%H:%M')} → {ts_last.strftime('%H:%M UTC')} · "
-            f"presioná ▶ Play para auto-loop continuo · cache 10 min"
+            f"presiona ▶ Play para auto-loop continuo · cache 10 min"
         )
     except Exception:
         pass

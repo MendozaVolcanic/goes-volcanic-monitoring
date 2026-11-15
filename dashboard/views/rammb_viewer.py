@@ -864,7 +864,7 @@ def render():
     range_on = st.checkbox(
         "🎚 Rango personalizado (en vez del preset de Duracion)",
         value=False, key="anim_range_on",
-        help="Elegi una ventana hacia atras dentro de las ultimas ~12 h "
+        help="Elige una ventana hacia atras dentro de las ultimas ~12 h "
              "(lo que retiene el cache). Apagado = usa el preset de Duracion.")
     range_h = None
     if range_on:
@@ -887,7 +887,7 @@ def render():
             info_panel(
                 "<b>Animacion de pulsos eruptivos</b><br><br>"
                 "Descarga los ultimos N scans de GOES-19 y los muestra como loop.<br>"
-                "Eleginado <b>Cobertura</b> podes ver todo Chile, una zona volcanica "
+                "Eligiendo <b>Cobertura</b> puedes ver todo Chile, una zona volcanica "
                 "especifica, o hacer zoom a un volcan individual.<br><br>"
                 "<b>GeoColor</b>: color real mejorado (solo dia).<br>"
                 "<b>Ash RGB</b>: deteccion de ceniza (dia y noche). Ceniza = rojo/magenta.<br>"
@@ -898,7 +898,7 @@ def render():
                 "Un proceso automatico (GitHub Actions) corre cada hora y pre-descarga "
                 "los ultimos 12h de frames para los escopos mas usados "
                 "(Nacional, las 4 zonas, y los 8 volcanes prioritarios marcados con &#9733;). "
-                "Cuando pedis una animacion de esos escopos, el dashboard usa esos frames "
+                "Cuando pides una animacion de esos escopos, el dashboard usa esos frames "
                 "cacheados y solo baja de RAMMB los <b>ultimos ~6 frames</b> que el cron "
                 "todavia no pesco (los del ultima hora). Resultado: <b>~10 segundos</b> "
                 "en vez de 60-120s, y siempre con los frames mas recientes incluidos.<br>"
@@ -1094,7 +1094,7 @@ def render():
 
     st.markdown(
         '<div style="font-size:0.78rem; color:#556677; margin:0.3rem 0 0.5rem 0;">'
-        'Controles: presioná <b>▶ Play</b> arriba a la izquierda del plot · '
+        'Controles: presiona <b>▶ Play</b> arriba a la izquierda del plot · '
         'slider inferior (UTC) para navegar frame por frame · '
         '<i>atajos de teclado pendientes — sesión dedicada futura</i> '
         '(refactor de la animación a Streamlit-state, ~300 LOC)</div>',
@@ -1195,7 +1195,7 @@ def render():
                         st.error(
                             "No se pudo generar MP4. Si esto pasa en Streamlit "
                             "Cloud, revisar que imageio-ffmpeg este instalado. "
-                            "Mientras tanto podes usar el GIF."
+                            "Mientras tanto puedes usar el GIF."
                         )
             if "_mp4_bytes" in st.session_state and st.session_state["_mp4_bytes"]:
                 size_mb = len(st.session_state["_mp4_bytes"]) / 1024 / 1024

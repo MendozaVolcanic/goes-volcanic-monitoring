@@ -858,7 +858,7 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
                  key=f"acha_btn_{v_obj.name}_{key_suffix}"):
         st.session_state[flag_key] = True
     if not st.session_state.get(flag_key):
-        st.caption("Producto propio NRT — apretá para bajar las bandas del scan, "
+        st.caption("Producto propio NRT: aprieta para bajar las bandas del scan, "
                    "el gránulo ACHA y el perfil GFS, y calcular el tope por los "
                    "tres métodos. El VOLCAT de arriba sigue siendo la referencia.")
         return
@@ -904,7 +904,7 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
                 f"(~{so2_px} píxeles{so2_txt}) pero **sin ceniza silicatada "
                 "IR-opaca**. La altura propia **no aplica a plumas de gas**: el "
                 "SO₂ es transparente en 11 µm, así que los tres métodos darían "
-                "alturas espurias (por debajo del cráter). Para el SO₂ usá el "
+                "alturas espurias (por debajo del cráter). Para el SO₂ usa el "
                 "**indicador SO₂** (Modo Guardia / RGB). *(Validado con la pluma "
                 "de Chillán del 27-jun.)*"
             )
@@ -1446,7 +1446,7 @@ def _render_height_section(key_suffix: str = "tab") -> None:
             "Posibles causas: scan ABI atrasado, sector con cobertura "
             "intermitente, o el producto solo está disponible cuando "
             "VOLCAT detecta una pluma activa (Ash_Loading/Reff suelen "
-            "ser nulos sin erupción). Probá Ash_Probability como "
+            "ser nulos sin erupción). Prueba Ash_Probability como "
             "indicador siempre disponible."
         )
         return

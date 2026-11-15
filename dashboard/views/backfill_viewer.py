@@ -400,10 +400,10 @@ def render():
     scope_data = manifest["scopes"][sel_scope]
     bounds = scope_data["bounds"]
 
-    # ── Slider de timestamp (deslizá para ver la evolución temporal) ──
+    # ── Slider de timestamp (desliza para ver la evolución temporal) ──
     timestamps = manifest["timestamps_target"]
     idx = st.slider(
-        "Timestamp (deslizá para ver la evolución)", 0, len(timestamps) - 1,
+        "Timestamp (desliza para ver la evolución)", 0, len(timestamps) - 1,
         0, 1, format="%d", label_visibility="collapsed", key="bf_ts_idx",
     )
     ts = timestamps[idx]

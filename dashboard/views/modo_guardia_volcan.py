@@ -395,8 +395,10 @@ def fetch_volcan_product(prod_id: str, volcano_name: str,
             try:
                 ts_dt = parse_rammb_ts(used_ts)
                 age = int((now - ts_dt).total_seconds() / 60)
+                from dashboard.map_helpers import alerta_edad
                 ts_label = (f"{ts_dt.strftime('%H:%M')} UTC · "
-                            f"{fmt_chile(ts_dt)} (hace {age} min)")
+                            f"{fmt_chile(ts_dt)} (hace {age} min)"
+                            f"{alerta_edad(age)}")
                 # Mostrar SIEMPRE la resolucion del zoom usado (antes solo
                 # aparecia en fallback -> GeoColor, que suele usar el zoom
                 # preferido, no la mostraba; Ash/SO2 si). (jun 2026)
@@ -553,7 +555,7 @@ def _load_font(size: int):
 def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
                        elevation: int, region: str,
                        product_imgs: list[tuple[str, np.ndarray | None, str]],
-                       wind_data: dict, hotspots_count: int,
+                       wind_data: dict, hotspots_txt: str,
                        generated_utc: datetime,
                        radius_deg: float = RADIUS_DEG) -> bytes:
     """Compone una imagen A4-landscape con los 3 productos + header.
@@ -584,7 +586,7 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
     draw.text((40, 115),
               f"Captura UTC: {generated_utc.strftime('%Y-%m-%d %H:%M:%S')} · "
               f"Encuadre {etiqueta_encuadre(radius_deg)} · "
-              f"Hot spots NOAA en bbox: {hotspots_count}",
+              f"Hot spots NOAA en bbox: {hotspots_txt}",
               fill=(150, 160, 180), font=f_small)
 
     # Viento (esquina derecha)
@@ -855,7 +857,7 @@ def _tira_altura_propia(volcan_name: str, radius_deg: float = RADIUS_DEG):
         "lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
         "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
     }
-    hotspots, _ = _hotspots_volcan_seguro(bounds["lat_min"], bounds["lat_max"],
+    hotspots, hs_dt = _hotspots_volcan_seguro(bounds["lat_min"], bounds["lat_max"],
                                    bounds["lon_min"], bounds["lon_max"])
 
     st.markdown(
@@ -883,9 +885,8 @@ def _tira_altura_propia(volcan_name: str, radius_deg: float = RADIUS_DEG):
              f"erupción freática puede dar columna sin anomalía térmica.")
 
     if not correr:
-        st.caption(
-            f"Sin hot spot en el encuadre. Si ves columna en los mapas de "
-            f"arriba, aprieta el botón — el cálculo cuesta {ALTURA_COSTO_TXT}.")
+        from dashboard.map_helpers import aviso_altura_sin_disparo
+        st.caption(aviso_altura_sin_disparo(hs_dt, ALTURA_COSTO_TXT))
         return
 
     # Import perezoso entre vistas (gotcha Streamlit Cloud, ver CLAUDE.md) y
@@ -1013,8 +1014,10 @@ def _grid_header(volcan_name: str, show_wind: bool,
         "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
     }
     now = datetime.now(timezone.utc)
-    hotspots, _ = _hotspots_volcan_seguro(bounds["lat_min"], bounds["lat_max"],
+    hotspots, hs_dt = _hotspots_volcan_seguro(bounds["lat_min"], bounds["lat_max"],
                                    bounds["lon_min"], bounds["lon_max"])
+    from dashboard.map_helpers import estado_hotspots
+    est_hs = estado_hotspots(hotspots, hs_dt, ahora=now)
     wind = _wind_at_volcano(v.lat, v.lon) if show_wind else {}
     wind_summary = ""
     if wind:
@@ -1037,7 +1040,9 @@ def _grid_header(volcan_name: str, show_wind: bool,
         f"{v.region} · elev {v.elevation} m · {v.lat}°, {v.lon}°{wind_summary}"
         f"</span></div>"
         f"<div style='font-size:0.85rem; color:#9aaabb;'>"
-        f"Hot spots {len(hotspots)} · Render {now.strftime('%H:%M:%S')} UTC / "
+        f"<span style='color:{est_hs['color']}; font-weight:700;'>"
+        f"Hot spots {est_hs['valor']}</span> ({est_hs['detalle']}) · "
+        f"Render {now.strftime('%H:%M:%S')} UTC / "
         f"{fmt_chile(now)}</div></div></div>",
         unsafe_allow_html=True,
     )
@@ -1146,8 +1151,10 @@ def _capture_button(v, show_wind: bool, radius_deg: float = RADIUS_DEG):
         "lat_min": v.lat - radius_deg, "lat_max": v.lat + radius_deg,
         "lon_min": v.lon - radius_deg, "lon_max": v.lon + radius_deg,
     }
-    hotspots, _ = _hotspots_volcan_seguro(bounds["lat_min"], bounds["lat_max"],
+    hotspots, hs_dt = _hotspots_volcan_seguro(bounds["lat_min"], bounds["lat_max"],
                                    bounds["lon_min"], bounds["lon_max"])
+    from dashboard.map_helpers import estado_hotspots
+    est_hs = estado_hotspots(hotspots, hs_dt, ahora=now)
     wind = _wind_at_volcano(v.lat, v.lon) if show_wind else {}
     captured = []
     for panel in GRID_PANELS_TV:
@@ -1157,7 +1164,8 @@ def _capture_button(v, show_wind: bool, radius_deg: float = RADIUS_DEG):
     try:
         png_bytes = _build_capture_png(
             v.name, v.lat, v.lon, v.elevation, v.region,
-            captured, wind, len(hotspots), now, radius_deg,
+            captured, wind, f"{est_hs['valor']} ({est_hs['detalle']})",
+            now, radius_deg,
         )
         st.download_button(
             label="📸 Descargar captura PNG (este momento)",

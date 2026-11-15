@@ -267,7 +267,9 @@ def render():
     except Exception:
         pass
 
-    # Status banner
+    # Status banner: el diagnostico solo describe el presente si la escena es reciente.
+    from dashboard.map_helpers import resumen_escena_ash
+    insight_text, status = resumen_escena_ash(insight_text, status, ts_raw)
     status_icons = {"ok": "&#10003;", "warn": "&#9888;", "alert": "&#9888;"}
     st.markdown(
         f'<div class="status-banner {status}">'

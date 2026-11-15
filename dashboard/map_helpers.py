@@ -567,6 +567,16 @@ def add_chile_border(fig: go.Figure, color: str = "rgba(255,255,255,0.65)",
 # a divergir entre vistas: seis implementaciones con seis criterios fue como
 # llegamos hasta aca.
 
+COLOR_SIN_DATO = "#8b98a5"
+COLOR_DATO_VENCIDO = "#ffaa44"
+COLOR_CALMA = "#44dd88"
+# Mismo límite que el rojo de frescura de RAMMB: FDCF sale cada 10 min, así que a
+# los 30 min ya faltan al menos dos scans seguidos.
+FDCF_SCAN_VENCIDO_MIN = 30
+ESCENA_ASH_VIGENTE_MIN = 30
+IMAGEN_ATRASADA_MIN = 30
+
+
 class FDCFNoVerificable(Exception):
     """FDCF no se pudo consultar en este intento.
 
@@ -596,12 +606,15 @@ def estado_hotspots(hotspots, scan_dt, ahora=None):
     Devuelve un dict con `color`, `valor`, `detalle` y `verificado`, para que la
     vista arme su propio HTML pero el CRITERIO sea uno solo:
 
-    - `scan_dt is None`  -> gris, valor "—", "FDCF no consultable". **Nunca un
+    - `scan_dt is None`  -> gris, valor "s/d", "FDCF no consultable". **Nunca un
       cero**: ese cero seria ausencia de informacion disfrazada de ausencia de
       anomalia termica.
     - `n > 0`            -> rojo, el conteo, con la edad del scan.
-    - `n == 0` con scan  -> verde, "0", con la edad del scan. Este es el unico
-      caso en que el verde esta justificado: NOAA miro y no vio nada.
+    - `n == 0` con scan reciente -> verde, "0", con la edad del scan. Este es el
+      unico caso en que el verde esta justificado: NOAA miro hace poco y no vio
+      nada.
+    - `n == 0` con scan vencido -> ambar: el cero existe, pero es de hace rato y
+      no dice nada de lo que pasa ahora.
 
     La edad va SIEMPRE junto al numero: un conteo sin hora no dice si es de hace
     ocho minutos o de ayer.
@@ -609,10 +622,11 @@ def estado_hotspots(hotspots, scan_dt, ahora=None):
     from datetime import datetime, timezone
 
     if scan_dt is None:
-        return {"verificado": False, "color": "#8b98a5", "valor": "—",
+        return {"verificado": False, "color": COLOR_SIN_DATO, "valor": "s/d",
                 "detalle": "FDCF no consultable · reintentando"}
 
     ahora = ahora or datetime.now(timezone.utc)
+    edad_min = None
     try:
         edad_min = int((ahora - scan_dt).total_seconds() / 60)
         edad = f"scan hace {edad_min} min"
@@ -623,5 +637,124 @@ def estado_hotspots(hotspots, scan_dt, ahora=None):
     if n > 0:
         return {"verificado": True, "color": "#ff4444", "valor": str(n),
                 "detalle": edad}
-    return {"verificado": True, "color": "#44dd88", "valor": "0",
+    if edad_min is not None and edad_min > FDCF_SCAN_VENCIDO_MIN:
+        return {"verificado": True, "color": COLOR_DATO_VENCIDO, "valor": "0",
+                "detalle": f"{edad} · vencido, no descarta anomalía térmica"}
+    return {"verificado": True, "color": COLOR_CALMA, "valor": "0",
             "detalle": f"sin detecciones · {edad}"}
+
+
+def kpi_hotspot_cercano(nearest, dist_km, scan_dt, ahora=None):
+    """(color, valor, detalle) del KPI "hot spot más cercano".
+
+    Comparte criterio con `estado_hotspots`: sin scan, o con uno vencido, "no hay
+    hot spots a 100 km" no se puede afirmar y el KPI no puede quedar en verde.
+    """
+    estado = estado_hotspots([], scan_dt, ahora=ahora)
+    if not estado["verificado"]:
+        return COLOR_SIN_DATO, "s/d", "FDCF no consultable"
+    if nearest is not None and dist_km < 100:
+        color = ("#ff4444" if dist_km < 10
+                 else "#ffaa44" if dist_km < 30 else COLOR_CALMA)
+        return (color, f"{dist_km:.0f} km",
+                f"T={nearest.temp_k:.0f}K, FRP {nearest.frp_mw:.1f}MW")
+    if estado["color"] != COLOR_CALMA:
+        return COLOR_DATO_VENCIDO, "sin dato reciente", estado["detalle"]
+    return COLOR_CALMA, "sin hotspots", "≤100 km del volcán"
+
+
+def frase_hotspots_chile(n, scan_ts):
+    """Frase bajo el mapa nacional. None si no hay nada que se pueda afirmar.
+
+    `scan_ts` es el ISO del scan o None. Sin scan no se dice "es lo normal": el
+    llamador ya avisó que FDCF no contestó.
+    """
+    if n == 0 and not scan_ts:
+        return None
+    hora = f"{scan_ts[11:16]} UTC" if scan_ts else "s/d"
+    if n > 0:
+        return (f"🔥 {n} hot spot(s) NOAA FDCF detectado(s) en Chile "
+                f"(scan {hora}). Mas info en hover de cada punto.")
+    return (f"🔥 Sin hot spots FDCF en Chile en este scan ({hora}). Es lo normal: "
+            "el algoritmo solo detecta superficies muy calientes (lava expuesta, "
+            "incendios, no cenizas frías).")
+
+
+def aviso_altura_sin_disparo(scan_dt, costo_txt):
+    """Texto de la tira de altura cuando el cálculo no se disparó solo."""
+    if scan_dt is None:
+        return (f"FDCF no consultable: no se sabe si hay hot spot en el encuadre. "
+                f"Si ves columna en los mapas de arriba, aprieta el botón (el "
+                f"cálculo cuesta {costo_txt}).")
+    return (f"Sin hot spot en el encuadre. Si ves columna en los mapas de "
+            f"arriba, aprieta el botón (el cálculo cuesta {costo_txt}).")
+
+
+def mensaje_vaa(vaa):
+    """HTML del panel VAA sin avisos activos. `vaa` None es descarga fallida."""
+    if vaa is None:
+        return ("<b>No se pudo consultar los Volcanic Ash Advisories.</b><br>"
+                "RealEarth no respondió en este intento. Esto NO significa que "
+                "no haya avisos activos: revisa directamente el VAAC.")
+    return ("<b>Sin Volcanic Ash Advisories activos.</b><br>"
+            "Los VAA son emitidos por los VAACs (Volcanic Ash Advisory Centers) "
+            "cuando se detecta ceniza volcanica que puede afectar la aviacion. "
+            "La ausencia de VAA indica condiciones normales.")
+
+
+def resumen_escena_ash(insight, status, ts_iso, ahora=None):
+    """(texto, clase) del banner de Ash + BTD, según la edad de la escena.
+
+    La escena puede venir del caché en disco, que nadie limpia: su diagnóstico
+    sólo describe el presente si la escena es reciente.
+    """
+    from datetime import datetime, timezone
+
+    ahora = ahora or datetime.now(timezone.utc)
+    try:
+        escena = datetime.fromisoformat(str(ts_iso).replace("Z", "+00:00"))
+        if escena.tzinfo is None:
+            escena = escena.replace(tzinfo=timezone.utc)
+        edad_min = int((ahora - escena).total_seconds() / 60)
+    except (TypeError, ValueError):
+        return ("Escena sin fecha legible: no representa el estado actual", "warn")
+    if edad_min <= ESCENA_ASH_VIGENTE_MIN:
+        return insight, status
+    if edad_min >= 2880:
+        edad = f"{edad_min // 1440} días"
+    elif edad_min >= 120:
+        edad = f"{edad_min // 60} horas"
+    else:
+        edad = f"{edad_min} min"
+    return (f"Escena en caché de hace {edad}: no representa el estado actual. "
+            "Presiona Descargar imagen fresca", "warn")
+
+
+def alerta_edad(edad_min, limite_min=IMAGEN_ATRASADA_MIN):
+    """Sufijo para el rótulo de una imagen: vacío si está al día.
+
+    VOLCAT pasa `limite_min=120`: SSEC tarda 30 a 50 min por diseño, y eso no es
+    una caída.
+    """
+    if edad_min is None or edad_min < limite_min:
+        return ""
+    return " ⚠ atrasada"
+
+
+def clase_banner_edad(edad_min, limite_min=IMAGEN_ATRASADA_MIN):
+    """Clase del banner de estado: "ok" sólo con edad conocida y al día."""
+    if edad_min is None or edad_min >= limite_min:
+        return "warn"
+    return "ok"
+
+
+def aviso_fdcf_html():
+    """Aviso flotante para pantallas sin lugar en el flujo (Modo Sala).
+
+    `position: fixed` porque un elemento en flujo desborda el `100vh` de la sala.
+    """
+    return ("<div style='position:fixed; left:12px; bottom:12px; z-index:9999; "
+            "background:rgba(15,20,24,0.92); border-left:4px solid #8b98a5; "
+            "padding:0.35rem 0.7rem; border-radius:4px; color:#e6edf3; "
+            "font-size:0.85rem;'>⚠ FDCF no consultable: la ausencia de "
+            "diamantes NO descarta anomalía térmica</div>")

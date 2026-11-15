@@ -385,7 +385,8 @@ def _build_target_ts_window(target_dt: datetime, window_hours: int = 2) -> list[
     # cruzar límites de minuto/hora/día/mes (…235000 vs …001000 salta 6 órdenes
     # de magnitud por 20 min reales) → parsear a datetime y comparar segundos.
     def _dist_s(s: str) -> float:
-        return abs((datetime.strptime(s, "%Y%m%d%H%M%S") - target_dt).total_seconds())
+        escena = datetime.strptime(s, "%Y%m%d%H%M%S").replace(tzinfo=target_dt.tzinfo)
+        return abs((escena - target_dt).total_seconds())
 
     timestamps.sort(key=_dist_s)
     return timestamps

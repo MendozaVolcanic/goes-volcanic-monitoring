@@ -369,7 +369,9 @@ def _live_panel(volcan_name: str, show_rings: bool = True,
             try:
                 dt = parse_rammb_ts(used_ts)
                 age = int((now - dt).total_seconds() / 60)
-                ts_label = f"{dt.strftime('%H:%M UTC')} (hace {age}m)"
+                from dashboard.map_helpers import alerta_edad
+                ts_label = (f"{dt.strftime('%H:%M UTC')} (hace {age}m)"
+                            f"{alerta_edad(age)}")
                 if used_zoom == ZOOM_ZONE:
                     ts_label += " ⚠z3"
             except Exception:

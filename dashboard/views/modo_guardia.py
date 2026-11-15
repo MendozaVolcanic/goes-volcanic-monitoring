@@ -276,14 +276,8 @@ def _live_panel(volcan_name: str, product: str = "eumetsat_ash",
 
     # KPI 3: distancia al hot spot mas cercano del volcan seleccionado
     nearest_hs, dist_km = _nearest_hotspot(hotspots, v.lat, v.lon) if v else (None, float("inf"))
-    if nearest_hs is not None and dist_km < 100:
-        nh_color = "#ff4444" if dist_km < 10 else "#ffaa44" if dist_km < 30 else "#44dd88"
-        nh_label = f"{dist_km:.0f} km"
-        nh_sub = f"T={nearest_hs.temp_k:.0f}K, FRP {nearest_hs.frp_mw:.1f}MW"
-    else:
-        nh_color = "#44dd88"
-        nh_label = "sin hotspots"
-        nh_sub = "≤100 km del volcán"
+    from dashboard.map_helpers import kpi_hotspot_cercano
+    nh_color, nh_label, nh_sub = kpi_hotspot_cercano(nearest_hs, dist_km, hs_dt)
     with c2:
         st.markdown(
             f"<div style='background:#0f1418; border-left:4px solid {nh_color}; "
@@ -355,9 +349,16 @@ def _rotating_chile_tv(volcan_name: str, show_rings: bool = True,
 
     ts = _latest_ts(current)
     frame = _chile_frame(current, ts) if ts else None
-    hotspots, _ = _hotspots_chile()
+    from dashboard.map_helpers import (FDCFNoVerificable, aviso_fdcf_html,
+                                       render_compact_legend,
+                                       render_scan_status_badge)
+    try:
+        hotspots, hs_dt = _hotspots_chile()
+    except FDCFNoVerificable:
+        hotspots, hs_dt = [], None
+    if hs_dt is None:
+        st.markdown(aviso_fdcf_html(), unsafe_allow_html=True)
 
-    from dashboard.map_helpers import render_compact_legend, render_scan_status_badge
     render_compact_legend(
         current, tv=True,
         symbols=("volcano", "hotspot_frp") + (("rings",) if show_rings else ()),

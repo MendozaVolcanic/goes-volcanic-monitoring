@@ -833,14 +833,14 @@ def _volcan_zoom_png(volcano_name: str, bucket: str, show_hotspots: bool):
     }
     now = datetime.now(timezone.utc)
 
-    hotspots = []
+    hotspots, hs_dt = [], None
     if show_hotspots:
         try:
-            hotspots, _ = _hotspots_volcan(
+            hotspots, hs_dt = _hotspots_volcan(
                 bounds["lat_min"], bounds["lat_max"],
                 bounds["lon_min"], bounds["lon_max"])
         except Exception:
-            hotspots = []
+            hotspots, hs_dt = [], None
 
     def _one(panel):
         img, ts_label = fetch_volcan_product(
@@ -860,6 +860,15 @@ def _volcan_zoom_png(volcano_name: str, bucket: str, show_hotspots: bool):
         panels.append((label, img, ts_label, hs))
 
     composed = _compose_volcan_panels(v, V_RADIUS, panels)
+    if show_hotspots and hs_dt is None:
+        # Va dentro del PNG porque el slot de sala solo muestra esta imagen.
+        from PIL import ImageDraw
+        from dashboard.views.modo_guardia_volcan import _load_font
+        ImageDraw.Draw(composed).text(
+            (10, composed.height - 28),
+            "FDCF no consultable: sin diamantes NO descarta anomalia",
+            fill=(255, 170, 68), font=_load_font(16),
+            stroke_width=2, stroke_fill=(0, 0, 0))
     buf = io.BytesIO()
     composed.save(buf, format="PNG")
     return buf.getvalue()
@@ -1002,6 +1011,10 @@ def _rotating_tv_zonas(show_volcanoes: bool, show_hotspots: bool,
     status_kwargs = {}
     if kind == "rgb":
         ts_for_status = _recent_ts(val, n=1)
+        scan_dt = parse_rammb_ts(ts_for_status[0]) if ts_for_status else None
+    elif kind == "volcan":
+        # El zoom compone Ash, GeoColor y SO2: Ash es el producto de cabecera.
+        ts_for_status = _recent_ts("eumetsat_ash", n=1)
         scan_dt = parse_rammb_ts(ts_for_status[0]) if ts_for_status else None
     elif kind == "volcat_zonas":
         # Edad del frame de la PRIMERA zona (todas comparten cadencia VOLCAT
@@ -1482,24 +1495,23 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
                 product, timestamps, zk, True)
         except Exception:
             img = None
-        hs = []
+        hs, hs_dt = [], None
         if show_hotspots:
             try:
-                hs, _ = _hotspots_zone(zk)
+                hs, hs_dt = _hotspots_zone(zk)
             except Exception:
-                # Incluye FDCFNoVerificable: en el rotador TV no hay donde
-                # poner un aviso, asi que se dibuja el mapa sin diamantes. Lo
-                # importante es que el fallo NO quedo cacheado 5 min.
-                hs = []
-        return zk, img, hs, used_ts, used_zoom
+                # Incluye FDCFNoVerificable. El fallo NO queda cacheado 5 min,
+                # y el aviso se dibuja en la banda de la zona.
+                hs, hs_dt = [], None
+        return zk, img, hs, used_ts, used_zoom, hs_dt
 
     with ThreadPoolExecutor(max_workers=4) as ex:
-        fetched = {zk: (img, hs, uts, uz)
-                   for zk, img, hs, uts, uz in ex.map(_fetch, zones)}
+        fetched = {zk: (img, hs, uts, uz, hdt)
+                   for zk, img, hs, uts, uz, hdt in ex.map(_fetch, zones)}
 
     tiles = []
     for zk in zones:
-        img, hs, used_ts, used_zoom = fetched[zk]
+        img, hs, used_ts, used_zoom, hs_dt = fetched[zk]
         b = ub[zk]
         lon_span = b["lon_max"] - b["lon_min"]
         lat_span = b["lat_max"] - b["lat_min"]
@@ -1578,6 +1590,10 @@ def _compose_4_zonas_png(product: str, timestamps: tuple,
         zc = ZONE_COLORS[zk]
         rgb_c = tuple(int(zc[i:i + 2], 16) for i in (1, 3, 5))
         d.text((6, 2), ZONE_LABELS[zk], fill=rgb_c, font=f_zone)
+        if show_hotspots and hs_dt is None:
+            _aviso = "FDCF no consultable"
+            d.text((pw - 6 - d.textlength(_aviso, font=f_res), 6), _aviso,
+                   fill=(255, 170, 68), font=f_res)
         if used_ts:
             zdt = parse_rammb_ts(used_ts)
             t1 = f"{zdt.strftime('%H:%M')} UTC · {fmt_chile(zdt)}"
@@ -1704,19 +1720,24 @@ def _render_4_zonas_inner(product: str, show_volcanoes: bool, show_hotspots: boo
         # Frame CACHEADO (ya reproyectado) -> 2a+ aparición instantánea.
         img_z, used_ts_z, used_zoom_z = _zone_frame_cached(
             product, ts_key, zone_key, bool(zbounds))
-        hotspots_z = []
+        hotspots_z, hs_dt_z = [], None
         if show_hotspots:
             try:
-                hotspots_z, _ = _hotspots_zone(zone_key)
+                hotspots_z, hs_dt_z = _hotspots_zone(zone_key)
             except Exception:
                 # Idem: incluye FDCFNoVerificable (ver _hotspots_zone).
-                hotspots_z = []
-        return zone_key, img_z, used_ts_z, used_zoom_z, hotspots_z
+                hotspots_z, hs_dt_z = [], None
+        return zone_key, img_z, used_ts_z, used_zoom_z, hotspots_z, hs_dt_z
 
     results: dict = {}
+    fdcf_caido = False
     with ThreadPoolExecutor(max_workers=4) as ex:
-        for zk, img_z, used_ts_z, used_zoom_z, hs_z in ex.map(_fetch_one, all_zones):
+        for zk, img_z, used_ts_z, used_zoom_z, hs_z, hs_dt_z in ex.map(_fetch_one, all_zones):
             results[zk] = (img_z, used_ts_z, used_zoom_z, hs_z)
+            fdcf_caido = fdcf_caido or (show_hotspots and hs_dt_z is None)
+    if fdcf_caido:
+        from dashboard.map_helpers import aviso_fdcf_html
+        st.markdown(aviso_fdcf_html(), unsafe_allow_html=True)
 
     # Hora (UTC + local Chile) + resolucion POR ZONA, destacada en cada panel.
     #

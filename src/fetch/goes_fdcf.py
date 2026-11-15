@@ -449,9 +449,12 @@ def fetch_hotspots_at_time(
 ) -> tuple[list[HotSpot], Optional[datetime]]:
     """Bajar el FDCF mas cercano a `dt` y devolver hotspots filtrados.
 
-    Para backfill historico: dt en cualquier momento desde 2017 (GOES-16) o
-    abril 2025 (GOES-19). Busca en la unión de la hora de `dt`, la previa y la
-    siguiente, por si el scan que matcha cae en el borde.
+    Para backfill historico: solo cubre lo que existe en ``noaa-goes19``, con
+    FDCF desde 2024-10-17 (listado en S3, nov-2026); GOES-19 es GOES-East
+    operacional recién desde abril 2025. Los eventos anteriores son de GOES-16,
+    que está en otro bucket que este módulo no consulta. Busca en la unión de
+    la hora de `dt`, la previa y la siguiente, por si el scan que matcha cae en
+    el borde.
 
     Tope de desfase (``max_gap_s``, default ``SCAN_MAX_GAP_S``): si el scan más
     cercano está más lejos, devuelve ``([], None)``, o sea "no verificable". Sin

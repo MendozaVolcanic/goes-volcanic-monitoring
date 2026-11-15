@@ -183,14 +183,14 @@ def resolve_volcat_sector(volcano) -> tuple[str, str]:
     return _regional_sector_for_lat(volcano.lat)
 
 
-def _query_frames(sector: str, instr: str, image_type: str,
-                  sat: str) -> tuple[list, dict | None]:
-    """Helper: pega al API VOLCAT y devuelve (frames, coords).
+def _query_frames_estado(sector: str, instr: str, image_type: str,
+                         sat: str) -> tuple[list, dict | None, str | None]:
+    """Como `_query_frames`, pero devuelve tambien POR QUE no hay frames.
 
-    SIEMPRE devuelve una 2-tupla — los callers desempacan con
-    `frames, coords = _query_frames(...)`. Antes los paths de error devolvían
-    `[]` (lista desnuda) -> ValueError al desempacar y crash de la página VOLCAT
-    cuando SSEC fallaba. (fix audit jun 2026)
+    (frames, coords, error): `error` es None si SSEC respondio, aunque la
+    lista venga vacia. El loop necesita esa diferencia: "SSEC no respondio"
+    es una falla del dato y "SSEC respondio sin cuadros" es otra cosa, y
+    ninguna de las dos significa que el volcan este tranquilo.
     """
     url = (
         f"{BASE}/imagery/get_list/json/"
@@ -201,12 +201,45 @@ def _query_frames(sector: str, instr: str, image_type: str,
         r = _get_session().get(url, timeout=TIMEOUT)
         if r.status_code != 200:
             logger.warning("VOLCAT API %s -> %s", url, r.status_code)
-            return [], None
+            return [], None, f"SSEC respondio HTTP {r.status_code}"
         d = r.json()
     except Exception as e:
         logger.warning("VOLCAT API fail: %s", e)
-        return [], None
-    return d.get("endtime") or [], d.get("coordinates")
+        return [], None, f"SSEC no respondio ({type(e).__name__})"
+    return d.get("endtime") or [], d.get("coordinates"), None
+
+
+def _query_frames(sector: str, instr: str, image_type: str,
+                  sat: str) -> tuple[list, dict | None]:
+    """Helper: pega al API VOLCAT y devuelve (frames, coords).
+
+    SIEMPRE devuelve una 2-tupla: los callers desempacan con
+    `frames, coords = _query_frames(...)`. Antes los paths de error devolvían
+    `[]` (lista desnuda) -> ValueError al desempacar y crash de la página VOLCAT
+    cuando SSEC fallaba. (fix audit jun 2026)
+    """
+    frames, coords, _err = _query_frames_estado(sector, instr, image_type, sat)
+    return frames, coords
+
+
+def _frame_meta(f: dict, sector: str, instr: str, image_type: str,
+                coords: dict | None) -> dict:
+    """Dict de un cuadro VOLCAT con todas sus URLs. Lo comparten el ultimo
+    cuadro, el cuadro mas cercano a una hora y cada cuadro de un loop: eran
+    tres copias del mismo literal."""
+    legend_key = LEGEND_KEY.get(image_type, "ASH_HGT-LOAD")
+    return {
+        "datetime": f.get("datetime"),
+        "image_url": BASE + f["filename"],
+        "annot_url": (BASE + f["annot"]) if f.get("annot") else None,
+        "legend_url": f"{BASE}/data/sector_imagery_config/overlays/maps/{sector}.MAP.{legend_key}.png",
+        "latlon_url": f"{BASE}/data/sector_imagery_config/overlays/latlon/{sector}.LATLON.CYAN.png",
+        "volcanoes_url": f"{BASE}/data/sector_imagery_config/overlays/volcanoes/{sector}.VOLCANOES.CYAN.png",
+        "coords": coords,
+        "sector": sector,
+        "instr": instr,
+        "image_type": image_type,
+    }
 
 
 def volcat_latest(
@@ -244,21 +277,10 @@ def volcat_latest(
     if not frames:
         return None
     last = frames[-1]
-
-    legend_key = LEGEND_KEY.get(image_type, "ASH_HGT-LOAD")
-    return {
-        "datetime": last.get("datetime"),
-        "image_url": BASE + last["filename"],
-        "annot_url": (BASE + last["annot"]) if last.get("annot") else None,
-        "legend_url": f"{BASE}/data/sector_imagery_config/overlays/maps/{sector}.MAP.{legend_key}.png",
-        "latlon_url": f"{BASE}/data/sector_imagery_config/overlays/latlon/{sector}.LATLON.CYAN.png",
-        "volcanoes_url": f"{BASE}/data/sector_imagery_config/overlays/volcanoes/{sector}.VOLCANOES.CYAN.png",
-        "coords": coords,
-        "sector": sector,
-        "instr": instr,
-        "image_type": image_type,
-        "sat": last.get("filename", "").split("/")[-1].split(".")[0] if last.get("filename") else None,
-    }
+    meta = _frame_meta(last, sector, instr, image_type, coords)
+    meta["sat"] = (last.get("filename", "").split("/")[-1].split(".")[0]
+                   if last.get("filename") else None)
+    return meta
 
 
 def _parse_volcat_frame_dt(dstr: Optional[str]):
@@ -314,20 +336,111 @@ def volcat_at_time(
     if best is None or best_gap > max_gap_min * 60:
         return None
 
-    legend_key = LEGEND_KEY.get(image_type, "ASH_HGT-LOAD")
-    return {
-        "datetime": best.get("datetime"),
-        "image_url": BASE + best["filename"],
-        "annot_url": (BASE + best["annot"]) if best.get("annot") else None,
-        "legend_url": f"{BASE}/data/sector_imagery_config/overlays/maps/{sector}.MAP.{legend_key}.png",
-        "latlon_url": f"{BASE}/data/sector_imagery_config/overlays/latlon/{sector}.LATLON.CYAN.png",
-        "volcanoes_url": f"{BASE}/data/sector_imagery_config/overlays/volcanoes/{sector}.VOLCANOES.CYAN.png",
-        "coords": coords,
-        "sector": sector,
-        "instr": instr,
-        "image_type": image_type,
-        "gap_seconds": int(best_gap),
-    }
+    meta = _frame_meta(best, sector, instr, image_type, coords)
+    meta["gap_seconds"] = int(best_gap)
+    return meta
+
+
+# ── Ventana de cuadros para el loop animado ──────────────────────────────
+#
+# FICHA SDA (Nivel 1): seleccion de cuadros que se muestran al operador
+#   Que decide: NADA. Elige que cuadros VOLCAT (SSEC/CIMSS) entran en el loop
+#     de las ultimas N horas y lista los que SSEC no publico. No clasifica ni
+#     mide; la lectura de la pluma queda al geologo de turno.
+#   Regla de honestidad: un cuadro faltante NO se rellena con el anterior. Un
+#     loop que repite el cuadro de las 13:00 en el hueco de las 13:10 muestra
+#     una pluma quieta que nadie observo.
+#   Trazabilidad: dashboard/volcat_loop.py (armado), dashboard/views/
+#     volcat_viewer.py::_render_volcat_loop (pantalla), tests/test_volcat_loop.py.
+
+# Cadencia del Full Disk ABI, que es la que usa VOLCAT en todos los sectores
+# chilenos (cuadros a los :x0:30).
+CADENCIA_VOLCAT_MIN = 10
+
+
+def seleccionar_ventana(frames: list[dict], horas: float,
+                        fin=None) -> list[dict]:
+    """Cuadros de las ultimas `horas` hasta `fin`, del mas antiguo al mas nuevo.
+
+    SSEC entrega la lista entera de ~30 dias (mas de 4000 cuadros por sector)
+    sin importar el `daterange` que se le pida; el recorte es nuestro. `fin`
+    por defecto es el ultimo cuadro publicado, NO la hora actual: SSEC publica
+    con 30 a 50 min de atraso y anclar en "ahora" dejaria siempre los ultimos
+    cuadros como faltantes. Cada cuadro devuelto lleva `dt` (datetime UTC).
+    """
+    from datetime import timedelta
+    con_dt = []
+    for f in frames:
+        dt = _parse_volcat_frame_dt(f.get("datetime"))
+        if dt is not None and f.get("filename"):
+            con_dt.append({**f, "dt": dt})
+    if not con_dt:
+        return []
+    con_dt.sort(key=lambda f: f["dt"])
+    fin = fin or con_dt[-1]["dt"]
+    inicio = fin - timedelta(hours=horas)
+    return [f for f in con_dt if inicio < f["dt"] <= fin]
+
+
+def huecos_en_ventana(dts: list, inicio, fin,
+                      cadencia_min: float = CADENCIA_VOLCAT_MIN) -> list:
+    """Horas en que deberia haber un cuadro y SSEC no lo publico.
+
+    Se recorre la grilla de la cadencia hacia atras desde `fin` (que es un
+    cuadro real, asi la grilla cae en los :x0:30 de SSEC) y se marca como
+    faltante todo slot sin un cuadro a menos de media cadencia.
+    """
+    from datetime import timedelta
+    paso = timedelta(minutes=cadencia_min)
+    tol = paso / 2
+    faltan = []
+    slot = fin
+    while slot > inicio:
+        if not any(abs(d - slot) < tol for d in dts):
+            faltan.append(slot)
+        slot -= paso
+    return sorted(faltan)
+
+
+def volcat_ventana(sector: str, instr: str = "ABI",
+                   image_type: str = "Ash_Height", horas: float = 2,
+                   sat: str = "GOES-19") -> dict:
+    """Cuadros VOLCAT de las ultimas `horas` para armar un loop.
+
+    Devuelve un dict:
+      ok:        False si SSEC no respondio (error dice por que).
+      error:     texto para mostrar, o None.
+      frames:    cuadros REALES, del mas antiguo al mas nuevo, cada uno con
+                 las mismas claves que `volcat_latest` mas `dt`.
+      faltantes: datetimes de los cuadros que SSEC no publico en la ventana.
+      inicio, fin: limites de la ventana (fin = ultimo cuadro publicado).
+
+    Mismo criterio de satelite que `volcat_latest`: GOES-19 y, solo si no hay
+    ni un cuadro, todos (sectores de prueba que solo ve GOES-18).
+    """
+    from datetime import timedelta
+    vacio = {"ok": False, "error": None, "frames": [], "faltantes": [],
+             "inicio": None, "fin": None}
+    frames, coords, err = _query_frames_estado(sector, instr, image_type, sat)
+    if not frames and err is None and sat != "all":
+        frames, coords, err = _query_frames_estado(sector, instr, image_type,
+                                                   "all")
+    if err is not None:
+        return {**vacio, "error": err}
+    sel = seleccionar_ventana(frames, horas)
+    if not sel:
+        return {**vacio, "ok": True,
+                "error": f"SSEC no tiene cuadros {image_type} del sector {sector}"}
+    fin = sel[-1]["dt"]
+    inicio = fin - timedelta(hours=horas)
+    out = []
+    for f in sel:
+        m = _frame_meta(f, sector, instr, image_type, coords)
+        m["dt"] = f["dt"]
+        out.append(m)
+    return {"ok": True, "error": None, "frames": out,
+            "faltantes": huecos_en_ventana([f["dt"] for f in sel], inicio, fin),
+            "inicio": inicio, "fin": fin}
 
 
 def volcat_available_types(sector: str, instr: str = "ABI") -> list[str]:

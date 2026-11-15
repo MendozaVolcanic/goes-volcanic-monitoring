@@ -1110,6 +1110,212 @@ def sector_y_encuadre_zona(zona: str) -> tuple[str, str, dict]:
     return sector, instr, VOLCAT_VIEW_4[zona]
 
 
+# ── Loop VOLCAT (GIF / MP4 / animacion en pantalla) ──────────────────────
+#
+# FICHA SDA (Nivel 1): visualizacion, no decide nada. Ver la cabecera de
+# dashboard/volcat_loop.py y src/fetch/volcat_api.py::volcat_ventana.
+#
+# Ventanas de 2 a 12 h: SSEC guarda ~30 dias (4000+ cuadros por sector) y
+# cada cuadro es una descarga de ~0,3 MB; 12 h = 72 cuadros ya es el tope
+# razonable para generar a pedido y para que el GIF se pueda mandar.
+LOOP_HORAS = (2, 3, 6, 12)
+LOOP_FPS = (1, 2, 3, 5)
+# Descargas en paralelo contra SSEC: suficiente para que 72 cuadros no tarden
+# minutos, sin martillar un servidor universitario que nos da el dato gratis.
+_LOOP_HILOS = 6
+
+
+@st.cache_data(ttl=TTL_VOLCAT, show_spinner=False)
+def _volcat_ventana_cached(sector: str, instr: str, product: str,
+                           horas: int) -> dict:
+    """Lista de cuadros de la ventana (cache 5 min, igual que el ultimo
+    cuadro). El JSON de SSEC trae ~30 dias y pesa ~1 MB: no se pide en cada
+    rerun. Los cuadros en si se cachean por URL en `_volcat_map_only`."""
+    from src.fetch.volcat_api import volcat_ventana
+    return volcat_ventana(sector, instr, product, horas=horas)
+
+
+def _armar_loop_volcat(v_obj, ventana: dict, product_label: str, pad: float,
+                       sector_txt: str, fps: int, progreso=None) -> dict:
+    """Baja, recorta y anota cada cuadro de la ventana; arma GIF y MP4.
+
+    Un cuadro listado por SSEC que no se pudo bajar queda en `fallidos` y NO
+    entra al loop; el cuadro siguiente lleva el aviso del salto. Igual que
+    los faltantes de la lista: se muestran, no se rellenan.
+    """
+    import io as _io
+    from concurrent.futures import ThreadPoolExecutor
+
+    from PIL import Image
+
+    from dashboard.volcat_loop import (aviso_salto, armar_gif, armar_mp4,
+                                       componer_cuadro, recortar_encuadre)
+
+    frames = ventana["frames"]
+    view = {"lat_min": v_obj.lat - pad, "lat_max": v_obj.lat + pad,
+            "lon_min": v_obj.lon - pad, "lon_max": v_obj.lon + pad}
+
+    # Barra de color de la escala del producto: la misma paleta en todos los
+    # cuadros, se toma del ultimo (ya cacheado por el panel de arriba).
+    barra = None
+    _bt, ht = _volcat_colorbar_split_vertical(frames[-1]["image_url"])
+    if ht:
+        barra = Image.open(_io.BytesIO(ht)).convert("RGB")
+
+    def _bajar(m):
+        return _volcat_map_only(m["image_url"], m.get("latlon_url"),
+                                m.get("coords") or {})
+
+    with ThreadPoolExecutor(max_workers=_LOOP_HILOS) as ex:
+        geos = list(ex.map(_bajar, frames))
+
+    cuadros, fallidos, prev_dt = [], [], None
+    titulo = f"{v_obj.name} ±{pad:g}° · {product_label}"
+    for i, (m, geo) in enumerate(zip(frames, geos)):
+        if progreso is not None:
+            progreso.progress((i + 1) / len(frames),
+                              text=f"Componiendo cuadro {i + 1} de {len(frames)}")
+        mapa = (recortar_encuadre(geo["png"], geo["bounds"], view)
+                if geo and geo.get("png") else None)
+        if mapa is None:
+            fallidos.append(m["dt"])
+            continue
+        img, _g = componer_cuadro(mapa, view, (v_obj.lat, v_obj.lon), m["dt"],
+                                  titulo, sector_txt, barra_color=barra,
+                                  aviso=aviso_salto(prev_dt, m["dt"]),
+                                  alto_mapa=600)
+        cuadros.append(img)
+        prev_dt = m["dt"]
+
+    return {"n": len(cuadros), "fallidos": fallidos,
+            "gif": armar_gif(cuadros, ms_por_cuadro=int(1000 / fps)),
+            "mp4": armar_mp4(cuadros, fps=fps)}
+
+
+def _render_volcat_loop(v_obj, sector: str, instr: str, product: str,
+                        product_label: str, pad: float,
+                        key_suffix: str) -> None:
+    """Seccion '🎞 Loop VOLCAT': genera a pedido y muestra el loop animado
+    (el mismo GIF que se descarga, asi lo que se ve es lo que se archiva).
+
+    Honestidades que la seccion muestra antes del loop: que sector usa, que
+    un cuadro sin dibujo es normal, la edad del ultimo cuadro publicado, si
+    SSEC no respondio, y que cuadros faltan o no se pudieron bajar.
+    """
+    from datetime import datetime, timezone
+
+    from dashboard.map_helpers import alerta_edad, render_compact_legend
+    from dashboard.views.modo_guardia_volcan import etiqueta_sector_volcat
+    from dashboard.volcat_loop import rotulo_hora
+
+    st.markdown("#### 🎞 Loop VOLCAT")
+    render_compact_legend("volcat", symbols=("volcano",))
+    sector_txt = etiqueta_sector_volcat(sector)
+    st.caption(
+        f"Sector **{sector_txt}** · sin dibujo = VOLCAT no detecta ceniza, "
+        "no es una falla · cada cuadro lleva hora UTC y de Chile, barra de "
+        "escala en km y la escala de color del producto. Los cuadros que SSEC "
+        "no publicó **no se rellenan**: el siguiente avisa el salto.")
+
+    c1, c2, c3 = st.columns([1.4, 1.2, 1])
+    with c1:
+        horas = st.select_slider(
+            "Ventana del loop", options=list(LOOP_HORAS), value=2,
+            format_func=lambda h: f"{h} h ({h * 6} cuadros)",
+            key=f"volcat_loop_horas_{key_suffix}",
+            help="Horas hacia atrás desde el último cuadro publicado por SSEC "
+                 "(no desde ahora: SSEC publica con 30 a 50 min de atraso).")
+    with c2:
+        fps = st.select_slider(
+            "Velocidad", options=list(LOOP_FPS), value=3,
+            format_func=lambda f: f"{f} cuadros/s",
+            key=f"volcat_loop_fps_{key_suffix}")
+    with c3:
+        st.markdown("<div style='height:1.7rem'></div>", unsafe_allow_html=True)
+        generar = st.button("Generar loop", type="primary", width='stretch',
+                            key=f"volcat_loop_btn_{key_suffix}")
+
+    clave = (v_obj.name, sector, instr, product, round(pad, 2), horas, fps)
+    estado_key = f"volcat_loop_res_{key_suffix}"
+    if generar:
+        with st.spinner(f"Consultando la lista de cuadros de SSEC ({sector})..."):
+            ventana = _volcat_ventana_cached(sector, instr, product, horas)
+        res = {"clave": clave, "ventana": ventana}
+        if ventana["ok"] and ventana["frames"]:
+            barra = st.progress(0.0, text="Bajando cuadros de SSEC...")
+            res.update(_armar_loop_volcat(v_obj, ventana, product_label, pad,
+                                          sector_txt, fps, progreso=barra))
+            barra.empty()
+        st.session_state[estado_key] = res
+
+    res = st.session_state.get(estado_key)
+    # El resultado guardado vale solo para la seleccion que lo genero: con
+    # otro volcan, radio o ventana se descargaria el loop equivocado.
+    if not res or res["clave"] != clave:
+        st.info(f"Elige la ventana y presiona **Generar loop**. Baja hasta "
+                f"{horas * 6} cuadros de SSEC (~0,3 MB c/u) la primera vez; "
+                "los cuadros quedan en caché 2 h.")
+        return
+
+    ventana = res["ventana"]
+    if not ventana["ok"]:
+        st.error(f"⚠ {ventana['error']}. No hay loop: sin la lista de cuadros "
+                 "no se puede saber qué publicó VOLCAT. Esto es una falla del "
+                 "dato, no ausencia de ceniza.")
+        return
+    if not ventana["frames"]:
+        st.warning(f"⚠ {ventana['error'] or 'SSEC no devolvió cuadros'}.")
+        return
+
+    edad = int((datetime.now(timezone.utc) - ventana["fin"]).total_seconds() / 60)
+    st.caption(f"Del {rotulo_hora(ventana['inicio'])} al "
+               f"{rotulo_hora(ventana['fin'])} · último cuadro publicado hace "
+               f"{edad} min{alerta_edad(edad, 120)}")
+
+    faltantes = ventana["faltantes"]
+    fallidos = res.get("fallidos", [])
+    if faltantes or fallidos:
+        def _lista(dts):
+            txt = ", ".join(d.strftime("%H:%M") for d in dts[:12])
+            return txt + (f" y {len(dts) - 12} más" if len(dts) > 12 else "")
+        partes = []
+        if faltantes:
+            partes.append(f"SSEC no publicó {len(faltantes)} cuadro(s): "
+                          f"{_lista(faltantes)} UTC")
+        if fallidos:
+            partes.append(f"{len(fallidos)} cuadro(s) listados no se pudieron "
+                          f"bajar: {_lista(fallidos)} UTC")
+        st.warning("⚠ " + " · ".join(partes) + ". El loop salta esos "
+                   "minutos (no se rellenan) y el cuadro siguiente lo avisa.")
+
+    if not res.get("n"):
+        st.error("⚠ No se pudo bajar ningún cuadro de SSEC. No hay loop.")
+        return
+
+    st.image(res["gif"],
+             caption=f"{res['n']} cuadros · {fps} cuadros/s · el mismo GIF "
+                     "que se descarga")
+
+    base = (f"volcat_loop_{v_obj.name.replace(' ', '_')}_r{pad:g}deg_"
+            f"{product.lower()}_{ventana['inicio']:%Y%m%dT%H%M}-"
+            f"{ventana['fin']:%Y%m%dT%H%MZ}_{horas}h")
+    d1, d2 = st.columns(2)
+    with d1:
+        st.download_button(f"⬇ GIF ({len(res['gif']) / 1e6:.1f} MB)",
+                           data=res["gif"], file_name=f"{base}.gif",
+                           mime="image/gif", width='stretch',
+                           key=f"volcat_loop_gif_{key_suffix}")
+    with d2:
+        if res.get("mp4"):
+            st.download_button(f"⬇ MP4 ({len(res['mp4']) / 1e6:.1f} MB)",
+                               data=res["mp4"], file_name=f"{base}.mp4",
+                               mime="video/mp4", width='stretch',
+                               key=f"volcat_loop_mp4_{key_suffix}")
+        else:
+            st.caption("MP4 no disponible (falta imageio-ffmpeg en el "
+                       "servidor); el GIF sí.")
+
+
 def _render_height_section(key_suffix: str = "tab") -> None:
     """Render del bloque Altura/Loading/Probability/Reff.
 
@@ -1333,6 +1539,18 @@ def _render_height_section(key_suffix: str = "tab") -> None:
                 st.image(leg_bytes, width='stretch')
             else:
                 st.caption("(sin leyenda)")
+
+    # ── Loop VOLCAT: como evoluciona la pluma en las ultimas horas. Va justo
+    # debajo del ultimo cuadro porque usa la MISMA seleccion (volcan, sector,
+    # producto, acercamiento); en la vista Loops habria que volver a elegir
+    # todo y esa vista esta armada sobre la cache de RAMMB, no sobre SSEC. ──
+    st.markdown("---")
+    if modo_sel == "Volcán":
+        _render_volcat_loop(v_obj, sector, instr, prod_h,
+                            sel_meta["label_es"], float(zoom_pad), key_suffix)
+    else:
+        st.caption("🎞 El loop VOLCAT se arma por volcán (encuadre en km "
+                   "centrado en el cráter): cambia **Ver por** a Volcán.")
 
     # ── Altura propia INDICATIVA (ACHA NOAA ∩ ceniza). Solo en modo Volcán
     # (es el tope de UN volcán, necesita lat/lon puntual). Va DEBAJO del VOLCAT

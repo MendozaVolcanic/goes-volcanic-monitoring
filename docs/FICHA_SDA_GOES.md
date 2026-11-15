@@ -1,6 +1,6 @@
 # Ficha de Transparencia Algorítmica — Monitoreo Volcánico GOES-19 (dashboard + retrieval de altura de pluma)
 
-**Identificador interno:** SDA-GOES-01   **Versión:** v2.1, 2026-11-09
+**Identificador interno:** SDA-GOES-01   **Versión:** v2.2, 2026-11-15
 *(Resolución CPLT N°372; ver `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` del workspace)*
 
 > **Qué cambió respecto de la v1.0 (2026-07-01):** ver §"Historial de versiones" al final.
@@ -298,6 +298,31 @@ pero que dependen de una condición del entorno, y por eso quedan registrados:
    se consume siempre a través de `_revert_unreliable`. Si algún consumidor futuro
    lo lee directo, el guard deja de existir.**
 
+### B.9 Loop VOLCAT: visualización, y cómo muestra el cuadro faltante (nov-2026)
+- **Archivos:** `src/fetch/volcat_api.py` (`volcat_ventana`,
+  `seleccionar_ventana`, `huecos_en_ventana`), `dashboard/volcat_loop.py`
+  (armado del GIF/MP4) y `dashboard/views/volcat_viewer.py`
+  (`_render_volcat_loop`, página 📏 VOLCAT, modo Volcán).
+- **Qué decide:** nada. Anima los cuadros del producto VOLCAT de SSEC/CIMSS de
+  las últimas 2 a 12 h alrededor de un volcán. No mide ni clasifica la pluma.
+- **Reglas de presentación:**
+  - Un cuadro que SSEC **no publicó** (hueco en su lista) o que **no se pudo
+    bajar** no se rellena con el anterior: el loop salta y el cuadro siguiente
+    lleva impreso "Salto de N min: faltan K cuadros antes de este". En pantalla
+    se listan las horas faltantes. Rellenar mostraría una pluma quieta que nadie
+    observó.
+  - Si SSEC no responde, la página lo dice como falla del dato y no arma loop;
+    nunca lo presenta como ausencia de ceniza.
+  - Cada cuadro lleva hora UTC y hora de Chile, sector VOLCAT usado
+    (`etiqueta_sector_volcat`), la nota "sin dibujo = VOLCAT no detecta ceniza
+    (normal, no es una falla)", barra de escala en km y la barra de color del
+    producto al costado del mapa.
+  - El mapa se agranda por vecino más cercano: interpolar crearía colores (y
+    por lo tanto alturas) que no están en la paleta de VOLCAT.
+- **Límites conocidos:** la ventana termina en el último cuadro publicado, que
+  llega con 30 a 50 min de atraso; la página muestra esa edad. Hereda todos los
+  límites del render PNG de VOLCAT (§B.1, §B.7) y no corrige parallax (§C).
+
 ---
 
 ## C. Implementado pero **NO cableado a producción**
@@ -318,6 +343,12 @@ conectarlos exige actualizar esta ficha.
 ---
 
 ## Historial de versiones
+
+### v2.2: 2026-11-15 (revisión interna)
+Nueva vista: **loop animado de VOLCAT** (GIF, MP4 y animación en pantalla) en la
+página 📏 VOLCAT. No agrega ninguna detección ni cifra; agrega §B.9 con las reglas
+de presentación del cuadro faltante (no se rellena, se avisa el salto) y de SSEC
+caído (falla del dato, no calma).
 
 ### v2.1: 2026-11-09 (revisión interna)
 **Cómo se presenta la ausencia de dato** (`dashboard/map_helpers.py`). No cambia
@@ -377,8 +408,9 @@ Primera ficha publicable del SDA-GOES-01.
 variables o las fuentes de datos (regla: **mismo commit** que el cambio). Módulos
 con cabecera "FICHA SDA" (Nivel 1): `src/process/ash_detection.py`, `scene.py`,
 `bt_matching_height.py`, `wen_rose_height.py`, `beta_ratios.py`,
-`wind_shear_height.py`, `acha_plume_height.py`, `parallax.py` y
-`dashboard/views/modo_guardia_volcan.py`. **Ojo:** llevar cabecera FICHA no
+`wind_shear_height.py`, `acha_plume_height.py`, `parallax.py`,
+`dashboard/views/modo_guardia_volcan.py`, `dashboard/volcat_loop.py` y el bloque
+`volcat_ventana` de `src/fetch/volcat_api.py`. **Ojo:** llevar cabecera FICHA no
 implica estar en producción — el mapa de qué corre y qué no es §A vs §C.
 `src/process/ash_rgb.py` (indicador SO₂) y `src/fetch/goes_fdcf.py` (filtro de
 hot spots) clasifican y **todavía no llevan cabecera FICHA**; agregarla es tarea

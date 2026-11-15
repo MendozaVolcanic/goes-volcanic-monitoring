@@ -94,8 +94,8 @@ compatibilidad). Fuente de verdad: `PAGE_OPTIONS`/`PAGE_SLUGS` en `dashboard/app
 6. **🔁 Replay reciente** (`replay`) — repetición de las últimas horas.
 7. **📅 Backfill histórico** (`backfill`) — revisión día/hora de eventos pasados desde GitHub Releases (`backfill-<fecha>-<volcán>`). Slider temporal + grid de productos + hot spots + altura VOLCAT. Generado por `scripts/build_backfill.py`. Con `--l1b-fallback` los productos se regeneran desde bandas L1b crudas cuando la fecha cae fuera del archive RAMMB (~9-10 meses) — `src/process/historic_l1b_rgb.py`.
 8. **🌡 Ash + BTD (temperaturas K)** (`ash`) — versión propia desde L1b con temperaturas de brillo.
-9. **📏 VOLCAT (altura pluma)** (`volcat`) — productos SSEC (Ash Height/Loading/Probability/Reff) con cheat-sheet visual + VAA + cruce con la altura propia.
-10. **🎞 Loops descargables** (`loops`) — animaciones 1-3h por scope. Export GIF/MP4/ZIP.
+9. **📏 VOLCAT (altura pluma)** (`volcat`): productos SSEC (Ash Height/Loading/Probability/Reff) con cheat-sheet visual + VAA + cruce con la altura propia. En modo Volcán incluye el **🎞 Loop VOLCAT**: animación de las últimas 2, 3, 6 o 12 h (en pantalla y descargable en GIF y MP4) con hora UTC y de Chile, sector, barra de escala en km y barra de color del producto en cada cuadro; los cuadros que SSEC no publicó no se rellenan y el cuadro siguiente avisa el salto.
+10. **🎞 Loops descargables** (`loops`): animaciones RAMMB (GeoColor, Ash RGB, SO₂, BTD) por scope. Export GIF/MP4/ZIP. El loop de VOLCAT vive en la página 📏 VOLCAT.
 11. **📈 Series de tiempo** (`series`) — tendencia por volcán con KPIs + thumbnails contextuales (PICO y ÚLTIMO).
 
 ## Volcanes monitoreados
@@ -121,6 +121,8 @@ streamlit run dashboard/app.py
 | Hot spots FDCF | List[HotSpot] con (lat, lon, FRP_MW, T_K, area_km², confidence) | `src/fetch/goes_fdcf.py::fetch_latest_hotspots(bounds)` | 10 min |
 | Series de tiempo por volcán | List[TimeSeriesPoint] / CSV | `src/fetch/timeseries.py::fetch_volcano_timeseries(lat, lon, product)` | on-demand |
 | Altura de pluma VOLCAT | PNG con colorbar (no NetCDF) | `src/fetch/volcat_api.py::volcat_latest(sector, ...)` | 10 min |
+| Ventana de cuadros VOLCAT (loop) | dict {ok, error, frames[{dt, image_url, coords...}], faltantes[dt], inicio, fin} | `src/fetch/volcat_api.py::volcat_ventana(sector, instr, image_type, horas)` | on-demand |
+| Loop VOLCAT de un volcán | GIF + MP4 (H.264) | `dashboard/volcat_loop.py` (`componer_cuadro`, `armar_gif`, `armar_mp4`) | on-demand |
 | Altura de tope ACHA (INDICATIVO) | dict {top_km p95, top_max_km, field_km, lat/lon, latency} | `src/process/acha_plume_height.py::plume_top_height(dt, volcano, radius)` | 10 min |
 | HT ACHA recortada a bbox | dict {height_m, dqf, lat/lon, window, scan_dt} | `src/fetch/goes_acha.py::fetch_acha_height_at(dt, bounds)` | 10 min |
 | Altura de tope BT-matching (INDICATIVO, propio) | dict {top_km p95, top_max_km, field_km, tropopause_km, lat/lon} | `src/process/bt_matching_height.py::bt_matching_top_height(dt, volcano, radius)` | 10 min |

@@ -784,6 +784,10 @@ def render():
         "Loops de los ultimos scans &middot; Nacional, por zona o por volcan",
     )
     refresh_info_badge(context="animation")
+    # El loop de VOLCAT no vive aca: esta vista esta armada sobre la cache y la
+    # reproyeccion de RAMMB, y VOLCAT necesita su sector y su escala de color.
+    st.caption("🎞 ¿Loop de altura de pluma? Está en **📏 VOLCAT** → Ver por "
+               "Volcán → Loop VOLCAT.")
 
     # ── Controles (compactado: 1 fila con Producto + Duracion + Cobertura + Boton) ─
     # Wind overlay toggle — fuera del session_state de fetch para que cambiar

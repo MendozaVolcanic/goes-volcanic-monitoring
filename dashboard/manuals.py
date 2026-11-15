@@ -364,17 +364,24 @@ cuantitativa** (km sobre nivel del mar) y carga de ceniza (g/m²).
 sobre fondo frío. Plumas finas o muy frías (>10 km alt) pueden ser
 sub-detectadas.
 
-**🎞 Loop VOLCAT** (modo **Volcán**, debajo del último cuadro): anima las
-últimas **2, 3, 6 o 12 h** del producto elegido, con el mismo volcán y
-acercamiento de arriba. Sirve para ver hacia dónde se mueve la pluma y si la
+**🎞 Loop VOLCAT** (debajo del último cuadro, en modo **Volcán** o
+**Zona**): anima las últimas **2, 3, 6 o 12 h** del producto elegido, con el
+mismo volcán y acercamiento (o la misma zona) de arriba. Sirve para ver hacia dónde se mueve la pluma y si la
 columna crece o se corta entre un cuadro y otro.
 1. Elige la ventana y la velocidad y presiona **Generar loop**.
 2. Se ve en pantalla el mismo GIF que se descarga; abajo están los botones
    **GIF** (para correo o web) y **MP4** (más liviano, para informes y
    presentaciones).
-3. Cada cuadro trae impreso: volcán y radio, sector VOLCAT, hora UTC y hora
-   de Chile, barra de escala en km y la barra de color del producto al
-   costado (no encima de la cordillera).
+3. Cada cuadro trae impreso: volcán y radio (o zona), sector VOLCAT, hora
+   UTC y hora de Chile, barra de escala en km y la barra de color del
+   producto al costado (no encima de la cordillera). En **Zona** la barra de
+   escala es **vertical (N-S)**: en 5 a 13 grados de latitud un km
+   horizontal no mide lo mismo arriba que abajo del mapa.
+4. **📏 Medir sobre un cuadro del loop** (desplegable bajo las descargas):
+   elige un cuadro y se dibuja como mapa. En modo Volcán está en km del
+   cráter con la regla prendida: arrastra del cráter al frente de la pluma
+   y la línea muestra su largo en km. En Zona queda en grados con barra N-S
+   y sin regla.
 
 Cómo leerlo:
 - **Cuadro sin dibujo es lo normal**: VOLCAT sólo pinta cuando detecta ceniza.
@@ -385,6 +392,10 @@ Cómo leerlo:
   siguiente dice "Salto de N min: faltan K cuadros antes de este". Un loop
   rellenado mostraría una pluma quieta que nadie observó.
 - Si SSEC no responde, no hay loop y la página lo dice como falla del dato.
+- El **GIF** guarda los colores de la escala **exactos** (tiene sólo 256
+  colores y se reservan para la escala): un píxel de la pluma se lee contra
+  la barra igual que en el producto. El **MP4** comprime con pérdida y puede
+  correr levemente los colores: sirve para presentar, no para leer alturas.
 - En los sectores regionales (todos menos Copahue, Calbuco y
   Planchón-Peteroa) el píxel es de 2 km: al acercar se ven los cuadros del
   dato, a propósito (no se suaviza, porque mezclar colores inventaría

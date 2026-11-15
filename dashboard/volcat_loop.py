@@ -45,6 +45,10 @@ _BLANCO = (255, 255, 255)
 _GRIS_TXT = (200, 210, 222)
 _AMARILLO = (255, 210, 63)
 
+# Ancho minimo del cuadro: con menos, la nota de vacio y la hora no caben en
+# una linea a la letra que se lee en un celular.
+ANCHO_MIN_PX = 520
+
 NOTA_VACIO = ("sin dibujo = VOLCAT no detecta ceniza en ese cuadro "
               "(normal, no es una falla)")
 
@@ -113,6 +117,57 @@ def barra_escala(view: dict, ancho_px: int) -> tuple[int, float]:
     ancho_km = (view["lon_max"] - view["lon_min"]) * km_por_grado_lon(lat_m)
     km = largo_barra_km(ancho_km)
     return km, km / ancho_km * ancho_px
+
+
+def barra_escala_ns(view: dict, alto_px: int) -> tuple[int, float]:
+    """(largo en km, largo en px) de una barra VERTICAL para un mapa de zona.
+
+    Una zona abarca hasta 12,7 grados de latitud (Norte): ahi un km
+    horizontal no vale lo mismo arriba que abajo del mapa (cos 17° contra
+    cos 29°, 8 % de diferencia). Un grado de meridiano si vale casi lo mismo
+    en todo el mapa (110,7 a 110,9 km), asi que la barra va N-S. Mismo
+    criterio que `regla.agregar_barra_ns` en las vistas Nacional y Zona.
+    """
+    lat_m = (view["lat_min"] + view["lat_max"]) / 2.0
+    alto_km = (view["lat_max"] - view["lat_min"]) * km_por_grado_lat(lat_m)
+    km = largo_barra_km(alto_km)
+    return km, km / alto_km * alto_px
+
+
+# ── Encuadres: un volcan o una zona ──────────────────────────────────────
+
+def encuadre_volcan(v, pad: float) -> dict:
+    """Encuadre de ±pad grados centrado en el crater, barra horizontal.
+
+    `archivo` lleva el radio: dos loops del mismo volcan a radios distintos
+    no pueden llamarse igual (regla del repo para encuadres ajustables).
+    """
+    return {
+        "titulo": f"{v.name} ±{pad:g}°",
+        "archivo": f"{v.name.replace(' ', '_')}_r{pad:g}deg",
+        "view": {"lat_min": v.lat - pad, "lat_max": v.lat + pad,
+                 "lon_min": v.lon - pad, "lon_max": v.lon + pad},
+        "centro": (v.lat, v.lon),
+        "barra": "ew",
+        "alto": 600,
+    }
+
+
+def encuadre_zona(zona: str, view: dict) -> dict:
+    """Encuadre de una zona (el mismo de Modo Guardia), barra N-S.
+
+    Mas alto que el de un volcan: la zona cubre cientos de km y a 600 px una
+    pluma de 20 km quedaria en un punado de pixeles.
+    """
+    return {
+        "titulo": f"Zona {zona}",
+        "archivo": f"Zona_{zona}",
+        "view": dict(view),
+        "centro": ((view["lat_min"] + view["lat_max"]) / 2.0,
+                   (view["lon_min"] + view["lon_max"]) / 2.0),
+        "barra": "ns",
+        "alto": 760,
+    }
 
 
 # ── Recorte ───────────────────────────────────────────────────────────────
@@ -193,7 +248,7 @@ def _dibujar_volcanes(draw, view, x0, y0, w, h, font, evitar=()):
     encimados no se leen ninguno. Devuelve los rectangulos de los nombres.
     """
     from dashboard.map_helpers import draw_volcano_marker_pil
-    from src.volcanos import CATALOG
+    from src.volcanos import CATALOG, PRIORITY_VOLCANOES
     vis = [v for v in CATALOG if v.zone != "test"
            and view["lat_min"] <= v.lat <= view["lat_max"]
            and view["lon_min"] <= v.lon <= view["lon_max"]]
@@ -202,8 +257,16 @@ def _dibujar_volcanes(draw, view, x0, y0, w, h, font, evitar=()):
     rotulos = []
     lat_c = (view["lat_min"] + view["lat_max"]) / 2
     lon_c = (view["lon_min"] + view["lon_max"]) / 2
-    # El del centro primero: es el volcan del loop y su nombre no se omite.
-    for v in sorted(vis, key=lambda v: (v.lat - lat_c) ** 2 + (v.lon - lon_c) ** 2):
+    # Orden de prioridad para el nombre: el del centro (en un loop de volcan
+    # es el volcan del loop y su nombre no se omite), despues los
+    # prioritarios ★ (en una zona hay decenas y no caben todos), despues el
+    # resto por cercania al centro.
+    def _d2(v):
+        return (v.lat - lat_c) ** 2 + (v.lon - lon_c) ** 2
+    centro_v = min(vis, key=_d2) if vis else None
+    for v in sorted(vis, key=lambda v: (v is not centro_v,
+                                        v.name not in PRIORITY_VOLCANOES,
+                                        _d2(v))):
         x = x0 + (v.lon - view["lon_min"]) / (view["lon_max"] - view["lon_min"]) * w
         y = y0 + (view["lat_max"] - v.lat) / (view["lat_max"] - view["lat_min"]) * h
         draw_volcano_marker_pil(draw, x, y, size=tri)
@@ -219,29 +282,53 @@ def _dibujar_volcanes(draw, view, x0, y0, w, h, font, evitar=()):
     return rotulos
 
 
-def _geometria_barra(view, x0, y0, w, h, font):
-    """Posicion de la barra de escala y su rectangulo (con rotulo), para
-    dibujarla y para que los nombres de volcanes le hagan espacio."""
-    km, largo = barra_escala(view, w)
-    m = max(10, w // 30)
-    bx0, by = x0 + m, y0 + h - m
-    grosor = max(3, w // 160)
+def _geometria_barra(view, x0, y0, w, h, font, orient: str = "ew"):
+    """Posicion de la barra de escala, su rotulo y su rectangulo, para
+    dibujarla y para que los nombres de volcanes le hagan espacio.
+
+    orient "ew": horizontal (loop de volcan, mapa en km del crater).
+    orient "ns": vertical (loop de zona, ver `barra_escala_ns`).
+    """
+    m = max(10, min(w, h) // 30)
+    grosor = max(3, min(w, h) // 160)
     fs = getattr(font, "size", 12)
+    if orient == "ns":
+        km, largo = barra_escala_ns(view, h)
+        bx, by0 = x0 + m, y0 + h - m
+        texto = f"{km} km N-S"
+        tw = font.getlength(texto) if hasattr(font, "getlength") else fs * len(texto)
+        rect = (bx - grosor * 2 - 4, by0 - largo - 4,
+                bx + grosor * 2 + 8 + tw, by0 + grosor + 4)
+        return {"orient": "ns", "km": km, "bx": bx, "by0": by0,
+                "by1": by0 - largo, "grosor": grosor, "texto": texto,
+                "rect": rect}
+    km, largo = barra_escala(view, w)
+    bx0, by = x0 + m, y0 + h - m
     rect = (bx0 - 4, by - grosor * 2 - fs * 1.4, bx0 + largo + 4, by + grosor + 4)
-    return {"km": km, "bx0": bx0, "bx1": bx0 + largo, "by": by,
-            "grosor": grosor, "rect": rect}
+    return {"orient": "ew", "km": km, "bx0": bx0, "bx1": bx0 + largo,
+            "by": by, "grosor": grosor, "texto": f"{km} km", "rect": rect}
 
 
 def _dibujar_barra(draw, g, font):
     """Barra de escala blanca abajo a la izquierda, con halo oscuro."""
+    fs = getattr(font, "size", 12)
+    if g["orient"] == "ns":
+        bx, by0, by1, grosor = g["bx"], g["by0"], g["by1"], g["grosor"]
+        draw.line([(bx, by0), (bx, by1)], fill=(10, 14, 20), width=grosor + 4)
+        draw.line([(bx, by0), (bx, by1)], fill=_BLANCO, width=grosor)
+        for yt in (by0, by1):
+            draw.line([(bx - grosor * 2, yt), (bx + grosor, yt)], fill=_BLANCO,
+                      width=max(2, grosor // 2))
+        _texto(draw, (bx + grosor * 2 + 6, (by0 + by1) / 2 - fs * 0.6),
+               g["texto"], font)
+        return
     bx0, bx1, by, grosor = g["bx0"], g["bx1"], g["by"], g["grosor"]
     draw.line([(bx0, by), (bx1, by)], fill=(10, 14, 20), width=grosor + 4)
     draw.line([(bx0, by), (bx1, by)], fill=_BLANCO, width=grosor)
     for xt in (bx0, bx1):
         draw.line([(xt, by - grosor * 2), (xt, by + grosor)], fill=_BLANCO,
                   width=max(2, grosor // 2))
-    s = f"{g['km']} km"
-    fs = getattr(font, "size", 12)
+    s = g["texto"]
     _texto(draw, ((bx0 + bx1) / 2 - draw.textlength(s, font=font) / 2,
                   by - grosor * 2 - fs * 1.25), s, font)
 
@@ -250,7 +337,8 @@ def componer_cuadro(mapa: Image.Image, view: dict, centro: tuple[float, float],
                     dt: datetime, titulo: str, sector_txt: str,
                     barra_color: Image.Image | None = None,
                     aviso: str | None = None,
-                    alto_mapa: int = 640) -> tuple[Image.Image, dict]:
+                    alto_mapa: int = 640,
+                    barra: str = "ew") -> tuple[Image.Image, dict]:
     """Un cuadro del loop listo para GIF/MP4.
 
     Disposicion: banda superior (volcan, producto, sector) · mapa con
@@ -263,8 +351,13 @@ def componer_cuadro(mapa: Image.Image, view: dict, centro: tuple[float, float],
     crater): asi un km horizontal mide lo mismo que uno vertical y la barra
     de escala vale en las dos direcciones.
 
+    `barra` = "ew" (volcan) o "ns" (zona, ver `barra_escala_ns`). El lienzo
+    se ensancha hasta ANCHO_MIN_PX o hasta el texto mas largo: una zona alta
+    y angosta (Norte) deja un mapa de ~270 px y los rotulos se cortaban. El
+    mapa no se estira, el espacio extra queda de fondo.
+
     Devuelve (imagen, geo) con `geo` = {"mapa_xy", "mapa_px", "textos",
-    "rotulos", "barra_rect"}.
+    "texto_cabe", "rotulos", "barra_rect", "barra_txt"}.
     """
     lat0 = centro[0]
     alto_km = (view["lat_max"] - view["lat_min"]) * km_por_grado_lat(lat0)
@@ -282,18 +375,28 @@ def componer_cuadro(mapa: Image.Image, view: dict, centro: tuple[float, float],
     # cuadro y uno mas alto saldria cortado justo en el renglon del aviso.
     banda_inf = pad * 2 + linea * 3
 
+    orient = barra
     barra = None
     if barra_color is not None:
         bw = max(1, round(barra_color.width * h / barra_color.height))
         barra = barra_color.convert("RGB").resize((bw, h), Image.LANCZOS)
-    ancho_total = w + (barra.width if barra else 0)
+
+    hora = rotulo_hora(dt)
+    sector_linea = f"Sector VOLCAT {sector_txt}"
+    marca = "VOLCAT SSEC/CIMSS · GOES-19"
+    textos = [titulo, sector_linea, hora, NOTA_VACIO] + ([aviso] if aviso else [])
+    medir = ImageDraw.Draw(Image.new("RGB", (1, 1)))
+    fuentes = [f_tit, f_peq, f_txt, f_peq] + ([f_txt] if aviso else [])
+    mas_largo = max(medir.textlength(t, font=f) for t, f in zip(textos, fuentes))
+    ancho_total = max(w + (barra.width if barra else 0), ANCHO_MIN_PX,
+                      int(mas_largo + 2 * pad + 4))
 
     # Frontera, volcanes y barra se dibujan sobre el MAPA solo y despues se
     # pega: asi lo que sigue de largo (la frontera cruza el encuadre entero)
     # queda recortado al borde y no tacha la hora de la banda de abajo.
     dm = ImageDraw.Draw(mapa)
     _dibujar_frontera(dm, view, 0, 0, w, h)
-    gbarra = _geometria_barra(view, 0, 0, w, h, f_peq)
+    gbarra = _geometria_barra(view, 0, 0, w, h, f_peq, orient=orient)
     rotulos = _dibujar_volcanes(dm, view, 0, 0, w, h, f_peq,
                                 evitar=[gbarra["rect"]])
     _dibujar_barra(dm, gbarra, f_peq)
@@ -304,11 +407,6 @@ def componer_cuadro(mapa: Image.Image, view: dict, centro: tuple[float, float],
     if barra:
         img.paste(barra, (x0 + w, y0))
     draw = ImageDraw.Draw(img)
-
-    hora = rotulo_hora(dt)
-    sector_linea = f"Sector VOLCAT {sector_txt}"
-    marca = "VOLCAT SSEC/CIMSS · GOES-19"
-    textos = [titulo, sector_linea, hora, NOTA_VACIO] + ([aviso] if aviso else [])
 
     _texto(draw, (pad, pad), titulo, f_tit)
     _texto(draw, (pad, pad + linea), sector_linea, f_peq, fill=_GRIS_TXT)
@@ -322,20 +420,71 @@ def componer_cuadro(mapa: Image.Image, view: dict, centro: tuple[float, float],
         _texto(draw, (pad, yb + 2 * linea), aviso, f_txt, fill=_AMARILLO)
 
     # rotulos y barra_rect van en coordenadas del mapa (origen arriba-izq).
+    texto_cabe = all(pad + draw.textlength(t, font=f) <= ancho_total
+                     for t, f in zip(textos, fuentes))
     return img, {"mapa_xy": (x0, y0), "mapa_px": (w, h), "textos": textos,
-                 "rotulos": rotulos, "barra_rect": gbarra["rect"]}
+                 "texto_cabe": texto_cabe, "rotulos": rotulos,
+                 "barra_rect": gbarra["rect"], "barra_txt": gbarra["texto"]}
 
 
 # ── Salidas ───────────────────────────────────────────────────────────────
 
-def armar_gif(cuadros: list[Image.Image], ms_por_cuadro: int = 500) -> bytes:
-    """GIF en loop infinito con exactamente los cuadros recibidos."""
+def colores_de_escala(barra: Image.Image, min_px: int = 20) -> list[tuple]:
+    """Colores de los bloques de la barra de color (los que tienen area).
+
+    Se descartan los grises (fondo blanco, numeros, borde) y los colores con
+    menos de `min_px` pixeles, que son el antialias del texto: no son
+    valores de la escala.
+    """
+    cols = barra.convert("RGB").getcolors(1 << 20) or []
+    return [c for n, c in cols if n >= min_px and max(c) - min(c) >= 25]
+
+
+# Colores que dibujamos encima del producto: tambien se reservan, si no el
+# triangulo cian del volcan salia verdoso en el GIF.
+_COLORES_DIBUJO = [(0, 255, 255), _BLANCO, _AMARILLO, _FONDO, FONDO_FUERA,
+                   (20, 24, 32), (236, 240, 250), (0, 0, 0), _GRIS_TXT,
+                   (15, 18, 24)]
+
+
+def _paleta_fija(colores_fijos: list[tuple]) -> Image.Image:
+    """Paleta de 256: los colores de la escala y del dibujo EXACTOS, y el
+    resto una rampa de grises para el fondo IR (que es gris)."""
+    fijos = []
+    for c in list(colores_fijos) + _COLORES_DIBUJO:
+        c = tuple(int(v) for v in c[:3])
+        if c not in fijos:
+            fijos.append(c)
+    fijos = fijos[:200]          # deja al menos 56 grises para el fondo
+    n = 256 - len(fijos)
+    grises = [(round(i * 255 / (n - 1)),) * 3 for i in range(n)]
+    pal = Image.new("P", (1, 1))
+    pal.putpalette([v for c in fijos + grises for v in c])
+    return pal
+
+
+def armar_gif(cuadros: list[Image.Image], ms_por_cuadro: int = 500,
+              colores_fijos: list[tuple] | None = None) -> bytes:
+    """GIF en loop infinito con exactamente los cuadros recibidos.
+
+    Un GIF tiene 256 colores. Con `colores_fijos` (los de la escala, ver
+    `colores_de_escala`) cada cuadro se pasa a una paleta que los contiene
+    EXACTOS, sin tramado: el pixel de la pluma conserva el color con que
+    figura en la barra y la altura se lee igual que en el producto. Con la
+    paleta adaptativa de PIL el fondo IR en grises competia por los cupos y
+    los colores de la escala se corrian.
+    """
     if not cuadros:
         return b""
+    if colores_fijos:
+        pal = _paleta_fija(colores_fijos)
+        cuadros = [c.convert("RGB").quantize(palette=pal,
+                                             dither=Image.Dither.NONE)
+                   for c in cuadros]
     buf = io.BytesIO()
     cuadros[0].save(buf, format="GIF", save_all=True,
                     append_images=cuadros[1:], duration=ms_por_cuadro,
-                    loop=0, optimize=True, disposal=2)
+                    loop=0, optimize=not colores_fijos, disposal=2)
     return buf.getvalue()
 
 

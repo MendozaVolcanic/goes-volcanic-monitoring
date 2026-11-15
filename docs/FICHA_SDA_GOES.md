@@ -302,7 +302,8 @@ pero que dependen de una condición del entorno, y por eso quedan registrados:
 - **Archivos:** `src/fetch/volcat_api.py` (`volcat_ventana`,
   `seleccionar_ventana`, `huecos_en_ventana`), `dashboard/volcat_loop.py`
   (armado del GIF/MP4) y `dashboard/views/volcat_viewer.py`
-  (`_render_volcat_loop`, página 📏 VOLCAT, modo Volcán).
+  (`_render_volcat_loop`, `_figura_medicion`; página 📏 VOLCAT, modos Volcán
+  y Zona).
 - **Qué decide:** nada. Anima los cuadros del producto VOLCAT de SSEC/CIMSS de
   las últimas 2 a 12 h alrededor de un volcán. No mide ni clasifica la pluma.
 - **Reglas de presentación:**
@@ -319,6 +320,15 @@ pero que dependen de una condición del entorno, y por eso quedan registrados:
     producto al costado del mapa.
   - El mapa se agranda por vecino más cercano: interpolar crearía colores (y
     por lo tanto alturas) que no están en la paleta de VOLCAT.
+  - El GIF (256 colores) se arma con una paleta que contiene **exactos** los
+    colores de la barra de la escala; con la paleta adaptativa de PIL el fondo
+    IR en grises competía por los cupos y se corrían (medido: 7 de 40 colores
+    de una escala sintética). El MP4 (H.264) es con pérdida: para presentar,
+    no para leer alturas.
+  - En modo Zona la barra de escala es vertical N-S (un km horizontal no vale
+    lo mismo en 5 a 13 grados de latitud). La medición con regla sobre un
+    cuadro sólo se ofrece en modo Volcán, en km del cráter (`regla.py`); en
+    Zona el cuadro queda en grados, sin regla.
 - **Límites conocidos:** la ventana termina en el último cuadro publicado, que
   llega con 30 a 50 min de atraso; la página muestra esa edad. Hereda todos los
   límites del render PNG de VOLCAT (§B.1, §B.7) y no corrige parallax (§C).
@@ -346,9 +356,10 @@ conectarlos exige actualizar esta ficha.
 
 ### v2.2: 2026-11-15 (revisión interna)
 Nueva vista: **loop animado de VOLCAT** (GIF, MP4 y animación en pantalla) en la
-página 📏 VOLCAT. No agrega ninguna detección ni cifra; agrega §B.9 con las reglas
-de presentación del cuadro faltante (no se rellena, se avisa el salto) y de SSEC
-caído (falla del dato, no calma).
+página 📏 VOLCAT, por volcán o por zona, con medición en km sobre cualquier cuadro.
+No agrega ninguna detección ni cifra; agrega §B.9 con las reglas de presentación
+del cuadro faltante (no se rellena, se avisa el salto), de SSEC caído (falla del
+dato, no calma) y de los colores de la escala en el GIF (exactos).
 
 ### v2.1: 2026-11-09 (revisión interna)
 **Cómo se presenta la ausencia de dato** (`dashboard/map_helpers.py`). No cambia

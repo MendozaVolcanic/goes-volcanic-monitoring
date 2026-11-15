@@ -229,14 +229,15 @@ def test_el_mapa_se_compone_en_proporcion_de_km():
 
 
 def test_la_barra_de_color_va_al_costado_y_no_encima_del_mapa():
-    sin, geo_sin = _componer(con_barra=False)
     con, geo_con = _componer(con_barra=True)
-    assert con.width > sin.width
     x0, y0 = geo_con["mapa_xy"]
     w, h = geo_con["mapa_px"]
-    # A la derecha del mapa hay pixeles de la barra (magenta).
+    # A la derecha del mapa hay pixeles de la barra (magenta)...
     derecha = con.crop((x0 + w, y0, con.width, y0 + h))
     assert (200, 0, 200) in [c for _n, c in derecha.getcolors(1 << 20)]
+    # ...y dentro del mapa ninguno.
+    mapa = con.crop((x0, y0, x0 + w, y0 + h))
+    assert (200, 0, 200) not in [c for _n, c in mapa.getcolors(1 << 20)]
 
 
 def test_el_cuadro_marca_el_volcan_en_el_centro():
@@ -365,8 +366,9 @@ def test_cuadro_que_ssec_no_entrega_queda_fuera_y_anotado(monkeypatch):
     monkeypatch.setattr(vv, "_volcat_map_only", _map_only)
     monkeypatch.setattr(vv, "_volcat_colorbar_split_vertical",
                         lambda url: (b"", b""))
-    res = vv._armar_loop_volcat(v, {"frames": frames}, "Altura", 1.0,
-                                "Chile Central 2 km (regional 2 km)", fps=2)
+    res = vv._armar_loop_volcat(vl.encuadre_volcan(v, 1.0), {"frames": frames},
+                                "Altura", "Chile Central 2 km (regional 2 km)",
+                                fps=2)
     assert res["fallidos"] == [malo]
     assert res["n"] == 3
     assert Image.open(io.BytesIO(res["gif"])).n_frames == 3
@@ -402,6 +404,208 @@ def test_ningun_nombre_de_volcan_tapa_la_barra_de_escala():
     _c, geo = _componer(con_barra=False)
     bx0, by0, bx1, by1 = geo["barra_rect"]
     assert geo["rotulos"], "el encuadre de Villarrica tiene volcanes rotulados"
+    assert geo["texto_cabe"]
     for (x0, y0, x1, y1) in geo["rotulos"]:
         se_tocan = x0 < bx1 and bx0 < x1 and y0 < by1 and by0 < y1
         assert not se_tocan, ((x0, y0, x1, y1), geo["barra_rect"])
+
+
+# ── Loop por zona ─────────────────────────────────────────────────────────
+
+VIEW_NORTE = {"lat_min": -29.5, "lat_max": -16.8,
+              "lon_min": -71.5, "lon_max": -66.8}
+
+
+def test_barra_ns_mide_lo_que_dice_en_la_vertical():
+    """En una zona de 12 grados de latitud un km horizontal no vale lo mismo
+    arriba que abajo; un grado de meridiano si. Por eso la barra va N-S."""
+    from dashboard.regla import km_por_grado_lat
+    km, px = vl.barra_escala_ns(VIEW_NORTE, alto_px=800)
+    alto_km = 12.7 * km_por_grado_lat((-29.5 - 16.8) / 2)
+    assert km in (1, 2, 5, 10, 20, 50, 100, 200, 500)
+    assert km <= alto_km / 3
+    assert px == pytest.approx(km / alto_km * 800, rel=1e-6)
+
+
+def _componer_zona():
+    from PIL import Image
+    enc = vl.encuadre_zona("Norte", VIEW_NORTE)
+    mapa = Image.new("RGB", (100, 300), (60, 60, 60))
+    return vl.componer_cuadro(
+        mapa, enc["view"], centro=enc["centro"], dt=FIN,
+        titulo=enc["titulo"] + " · Altura de pluma (km AMSL)",
+        sector_txt="Chile North 2 km (regional 2 km)",
+        barra=enc["barra"], alto_mapa=600)
+
+
+def test_la_zona_lleva_barra_vertical_rotulada_n_s():
+    import numpy as np
+    cuadro, geo = _componer_zona()
+    assert "N-S" in geo["barra_txt"]
+    x0, y0 = geo["mapa_xy"]
+    w, h = geo["mapa_px"]
+    _km, largo = vl.barra_escala_ns(VIEW_NORTE, alto_px=h)
+    a = np.asarray(cuadro.crop((x0, y0 + h // 2, x0 + w // 3, y0 + h)))
+    blanco = (a == 255).all(axis=2)
+    mejor = 0
+    for col in blanco.T:
+        run = 0
+        for b in col:
+            run = run + 1 if b else 0
+            mejor = max(mejor, run)
+    assert mejor >= 0.9 * largo, (mejor, largo)
+
+
+def test_zona_angosta_no_corta_los_textos_ni_deforma_el_mapa():
+    """La Norte mide 12,7 x 4,7 grados: el mapa sale angosto. El lienzo se
+    ensancha para los textos, pero el mapa conserva su proporcion de km."""
+    from dashboard.regla import km_por_grado_lat, km_por_grado_lon
+    cuadro, geo = _componer_zona()
+    lat = (-29.5 - 16.8) / 2
+    esperado = 600 * (4.7 * km_por_grado_lon(lat)) / (12.7 * km_por_grado_lat(lat))
+    assert geo["mapa_px"][0] == pytest.approx(esperado, abs=1)
+    assert cuadro.width >= vl.ANCHO_MIN_PX
+    assert geo["texto_cabe"], "algun texto pasa el borde del cuadro"
+
+
+def test_encuadres_de_volcan_y_de_zona():
+    v = _villarrica()
+    ev = vl.encuadre_volcan(v, 0.75)
+    assert ev["view"]["lat_max"] == pytest.approx(v.lat + 0.75)
+    assert ev["centro"] == (v.lat, v.lon)
+    assert ev["barra"] == "ew"
+    assert "±0.75°" in ev["titulo"] and "r0.75deg" in ev["archivo"]
+    ez = vl.encuadre_zona("Norte", VIEW_NORTE)
+    assert ez["barra"] == "ns"
+    assert ez["centro"] == pytest.approx(((-29.5 - 16.8) / 2, (-71.5 - 66.8) / 2))
+    assert ez["titulo"] == "Zona Norte" and ez["archivo"] == "Zona_Norte"
+
+
+def test_la_pagina_ofrece_el_loop_tambien_por_zona():
+    import ast
+    src = (Path(__file__).parent.parent / "dashboard" / "views"
+           / "volcat_viewer.py").read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    render = next(n for n in tree.body if isinstance(n, ast.FunctionDef)
+                  and n.name == "_render_height_section")
+    cuerpo = ast.get_source_segment(src, render)
+    # Llamadas de verdad (AST), no texto: "encuadre_zona(" tambien aparece
+    # dentro de "sector_y_encuadre_zona(" y daba verde con la zona apagada.
+    llamadas = [n.func.id for n in ast.walk(render)
+                if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)]
+    assert "encuadre_zona" in llamadas and "encuadre_volcan" in llamadas
+    assert llamadas.count("_render_volcat_loop") == 1
+    assert "se arma por volcán" not in cuerpo
+
+
+# ── Medir sobre un cuadro del loop ────────────────────────────────────────
+
+def _geo_sintetico(v, radio=3.0):
+    return {"png": _png_sector(w=120, h=120),
+            "bounds": {"lat_min": v.lat - radio, "lat_max": v.lat + radio,
+                       "lon_min": v.lon - radio, "lon_max": v.lon + radio}}
+
+
+def test_cuadro_de_volcan_se_mide_en_km_con_la_regla():
+    """El GIF no se puede medir; el cuadro elegido se dibuja en km del crater
+    con la misma regla de la grilla del volcan."""
+    import dashboard.views.volcat_viewer as vv
+    from dashboard.regla import km_por_grado_lon
+    v = _villarrica()
+    enc = vl.encuadre_volcan(v, 1.0)
+    fig = vv._figura_medicion(enc, _geo_sintetico(v), (b"", b""), FIN, 500)
+    assert fig.layout.dragmode == "drawline"
+    x0, x1 = fig.layout.xaxis.range
+    assert x1 - x0 == pytest.approx(2 * km_por_grado_lon(v.lat), rel=1e-6)
+    textos = [a.text for a in fig.layout.annotations]
+    assert any(t.endswith(" km") for t in textos), textos
+    # Misma hora que el GIF, no el "10:50 -03" que deja la sigla de tzdata.
+    assert any("hora de Chile (UTC-3)" in (t or "") for t in textos), textos
+
+
+def test_cuadro_de_zona_queda_en_grados_con_barra_ns_y_sin_regla():
+    """En una zona la figura sigue en grados (como Nacional y Zona): una
+    regla ahi mediria mal en horizontal, asi que no se ofrece."""
+    import dashboard.views.volcat_viewer as vv
+    v = _villarrica()
+    enc = vl.encuadre_zona("Sur", {"lat_min": -42.5, "lat_max": -37.0,
+                                   "lon_min": -74.0, "lon_max": -70.5})
+    fig = vv._figura_medicion(enc, _geo_sintetico(v, radio=6.0), (b"", b""),
+                              FIN, 500)
+    assert fig.layout.dragmode != "drawline"
+    assert tuple(fig.layout.xaxis.range) == (-74.0, -70.5)
+    assert any("N-S" in (a.text or "") for a in fig.layout.annotations)
+
+
+def test_el_loop_ofrece_medir_sobre_sus_cuadros():
+    import ast
+    src = (Path(__file__).parent.parent / "dashboard" / "views"
+           / "volcat_viewer.py").read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    fn = next(n for n in tree.body if isinstance(n, ast.FunctionDef)
+              and n.name == "_render_volcat_loop")
+    cuerpo = ast.get_source_segment(src, fn)
+    assert "_figura_medicion(" in cuerpo and '"usados"' in cuerpo
+
+
+def test_el_gif_conserva_exactos_los_colores_de_la_escala():
+    """El GIF tiene 256 colores. Con paleta adaptativa, el fondo IR en grises
+    compite por esos cupos y los colores de la escala de altura pueden
+    correrse: el pixel de la pluma deja de coincidir con su color en la
+    barra, y la altura leida es otra. Los colores de la escala se reservan."""
+    import numpy as np
+    from PIL import Image
+    rng = np.random.default_rng(0)
+    arcoiris = [tuple(int(c) for c in rng.integers(0, 256, 3)) for _ in range(40)]
+    a = np.zeros((64, 300, 3), dtype=np.uint8)
+    for x in range(256):                       # rampa IR de 256 grises
+        a[:, x] = x
+    for i, c in enumerate(arcoiris):           # bloques de la escala
+        a[(i % 8) * 8:(i % 8) * 8 + 8, 256 + (i // 8) * 8:256 + (i // 8) * 8 + 8] = c
+    cuadro = Image.fromarray(a)
+    gif = vl.armar_gif([cuadro, cuadro], ms_por_cuadro=500,
+                       colores_fijos=arcoiris)
+    out = np.asarray(Image.open(io.BytesIO(gif)).convert("RGB"))
+    for i, c in enumerate(arcoiris):
+        y, x = (i % 8) * 8 + 3, 256 + (i // 8) * 8 + 3
+        assert tuple(out[y, x]) == c, (i, c, tuple(out[y, x]))
+
+
+def test_colores_de_la_escala_salen_de_la_barra():
+    """Se toman los colores con area (los bloques de la escala), no el
+    antialias del texto de los numeros."""
+    from PIL import Image, ImageDraw
+    barra = Image.new("RGB", (40, 200), (255, 255, 255))
+    d = ImageDraw.Draw(barra)
+    d.rectangle([0, 0, 15, 99], fill=(255, 0, 255))
+    d.rectangle([0, 100, 15, 199], fill=(0, 0, 255))
+    d.point((30, 50), fill=(250, 10, 240))     # un pixel suelto de antialias
+    cols = vl.colores_de_escala(barra)
+    assert (255, 0, 255) in cols and (0, 0, 255) in cols
+    assert (250, 10, 240) not in cols
+
+
+def test_el_loop_le_pasa_al_gif_los_colores_de_su_barra(monkeypatch):
+    from PIL import Image, ImageDraw
+    import dashboard.views.volcat_viewer as vv
+    import dashboard.volcat_loop as mod
+
+    v = _villarrica()
+    barra = Image.new("RGB", (30, 120), (255, 255, 255))
+    ImageDraw.Draw(barra).rectangle([0, 0, 14, 59], fill=(200, 0, 200))
+    buf = io.BytesIO()
+    barra.save(buf, format="PNG")
+    monkeypatch.setattr(vv, "_volcat_map_only",
+                        lambda *a: _geo_sintetico(v))
+    monkeypatch.setattr(vv, "_volcat_colorbar_split_vertical",
+                        lambda url: (b"", buf.getvalue()))
+    visto = {}
+
+    def _espia(cuadros, ms_por_cuadro=500, colores_fijos=None):
+        visto["fijos"] = colores_fijos
+        return b"GIF"
+    monkeypatch.setattr(mod, "armar_gif", _espia)
+    frames = [{"dt": FIN, "image_url": "u0", "latlon_url": None, "coords": {}}]
+    vv._armar_loop_volcat(vl.encuadre_volcan(v, 1.0), {"frames": frames},
+                          "Altura", "Chile Central 2 km (regional 2 km)", fps=2)
+    assert (200, 0, 200) in (visto.get("fijos") or [])

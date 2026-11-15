@@ -29,7 +29,7 @@ from dashboard.style import volcano_marker
 from dashboard.utils import fmt_chile, parse_rammb_ts
 from src.fetch.rammb_slider import (
     fetch_frame_for_bounds, fetch_frame_robust,
-    get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
+    get_latest_timestamps, zoom_reducido, ZOOM_VOLCAN, ZOOM_ZONE,
 )
 from src.volcanos import PRIORITY_VOLCANOES, get_volcano
 
@@ -252,7 +252,10 @@ def _mode_antes_despues(now: datetime):
         flags = []
         if used_ts and used_ts != target_ts:
             flags.append("ts cercano")
-        if used_zoom == ZOOM_ZONE:
+        # Aviso de zoom: sólo si el frame vino más grueso de lo que el producto
+        # publica (`zoom_reducido`). Ash y SO2 topan en zoom 3 (bandas IR de
+        # 2 km): marcarlos siempre dejaba el aviso encendido y nadie lo leía.
+        if zoom_reducido(product, used_zoom, ZOOM_VOLCAN):
             flags.append("zoom 3")
         return " ⚠ " + ", ".join(flags) if flags else ""
 

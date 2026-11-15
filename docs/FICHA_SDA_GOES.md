@@ -1,6 +1,6 @@
 # Ficha de Transparencia Algorítmica — Monitoreo Volcánico GOES-19 (dashboard + retrieval de altura de pluma)
 
-**Identificador interno:** SDA-GOES-01   **Versión:** v2.2, 2026-11-15
+**Identificador interno:** SDA-GOES-01   **Versión:** v2.3, 2026-11-15
 *(Resolución CPLT N°372; ver `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` del workspace)*
 
 > **Qué cambió respecto de la v1.0 (2026-07-01):** ver §"Historial de versiones" al final.
@@ -353,6 +353,18 @@ conectarlos exige actualizar esta ficha.
 ---
 
 ## Historial de versiones
+
+### v2.3: 2026-11-15 (menos descargas por ciclo)
+**Cómo se adquieren los datos, no qué se decide con ellos.** Ninguna detección,
+umbral ni cifra cambia.
+- Tiles RAMMB y gránulos FDCF se bajan una vez por scan y se reutilizan
+  (`src/fetch/cache_inmutable.py`). Las fallas no se guardan, y el listado de
+  FDCF se consulta en cada llamada: con S3 caído, el scan sigue siendo "no
+  verificable" aunque el anterior esté en memoria.
+- Ash RGB y SO2 se piden a zoom 3, el máximo que RAMMB publica para esas
+  bandas IR de 2 km. El aviso "zoom reducido" ahora sólo se enciende cuando el
+  frame vino más grueso de lo que el producto permite.
+- Modo Guardia y Vista Operacional sólo ejecutan la pestaña que se mira.
 
 ### v2.2: 2026-11-15 (revisión interna)
 Nueva vista: **loop animado de VOLCAT** (GIF, MP4 y animación en pantalla) en la

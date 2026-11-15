@@ -762,11 +762,19 @@ def _live_content():
     # ── Tabs ──────────────────────────────────────────────────────────────
     # Sub-tabs por producto (GeoColor/Ash/SO2) replican estructura de Nacional
     # en Zona y Volcan tambien -> consistencia UX.
-    tab_nacional, tab4, tab5 = st.tabs([
+    #
+    # Pestañas PEREZOSAS (nov-2026): sólo corre la que se mira, y dentro de
+    # ella sólo el producto elegido. Con `st.tabs` pelado corrían Nacional,
+    # las 4 zonas por 3 productos y la grilla de volcán en cada rerun aunque
+    # se viera una sola. Todas recuerdan la elección (también ante el
+    # st.rerun que dispara _health_banner con cada scan nuevo, que en
+    # Streamlit 1.56 las devolvía a Nacional). Ver dashboard/pestanas.py.
+    from dashboard.pestanas import pestanas_perezosas, visible
+    tab_nacional, tab4, tab5 = pestanas_perezosas([
         "🌎 Nacional",
         "🗺️ Por Zona Volcánica",
         "🔬 Volcán",
-    ])
+    ], key="op_tab")
 
     # Etiquetas reusadas para sub-tabs en las 3 vistas (consistencia).
     SUBTAB_LABELS = ["🌍 GeoColor", "🌋 Ash RGB", "🟢 SO2"]
@@ -956,257 +964,266 @@ def _live_content():
 
     # ── Tab nacional: los 3 productos apilados ────────────────────────────
     with tab_nacional:
-        # Sub-pestanas por producto (consistencia con Zona/Volcan).
-        _sub_geo, _sub_ash, _sub_so2 = st.tabs(SUBTAB_LABELS)
-        sub_tabs = dict(zip(SUBTAB_PRODS, [_sub_geo, _sub_ash, _sub_so2]))
+        if visible(tab_nacional):
+            # Sub-pestanas por producto (consistencia con Zona/Volcan).
+            _sub_geo, _sub_ash, _sub_so2 = pestanas_perezosas(
+                SUBTAB_LABELS, key="op_nac_prod")
+            sub_tabs = dict(zip(SUBTAB_PRODS, [_sub_geo, _sub_ash, _sub_so2]))
 
-        # Descargar viento una sola vez (compartido por los 3 productos).
-        wind_data_cached = None
-        wind_error = None
-        if show_wind:
-            wind_data_cached = _fetch_wind_cached(WIND_LEVELS[wind_level])
-            if not wind_data_cached:
-                wind_error = fetch_wind_diagnostic(WIND_LEVELS[wind_level])
+            # Descargar viento una sola vez (compartido por los 3 productos).
+            wind_data_cached = None
+            wind_error = None
+            if show_wind:
+                wind_data_cached = _fetch_wind_cached(WIND_LEVELS[wind_level])
+                if not wind_data_cached:
+                    wind_error = fetch_wind_diagnostic(WIND_LEVELS[wind_level])
 
-        # Hot spots NOAA FDCF — compartidos por los 3 productos en vista Nacional.
-        # Bbox: el de la imagen reprojectada (CHILE_REPROJECTED_BOUNDS).
-        hotspots_nacional = []
-        hotspots_scan_ts = None
-        if show_hotspots:
-            with st.spinner("Cargando hot spots NOAA FDCF..."):
-                _b = CHILE_REPROJECTED_BOUNDS
-                from dashboard.map_helpers import FDCFNoVerificable
-                try:
-                    hotspots_nacional, hotspots_scan_ts = _fetch_hotspots_cached(
-                        _b["lat_min"], _b["lat_max"], _b["lon_min"], _b["lon_max"],
-                    )
-                except FDCFNoVerificable:
-                    # FDCF no contestó. Se avisa abajo; NO se dibuja un cero.
-                    hotspots_nacional, hotspots_scan_ts = [], None
-                    st.caption("⚠ Hot spots NOAA FDCF no consultables en este "
-                               "ciclo — el mapa NO descarta anomalía térmica.")
-            from dashboard.map_helpers import frase_hotspots_chile
-            _frase_hs = frase_hotspots_chile(len(hotspots_nacional), hotspots_scan_ts)
-            if _frase_hs:
-                st.caption(_frase_hs)
-
-        for prod_id, prod_label, _ in LIVE_PRODUCTS:
-            with sub_tabs[prod_id]:
-                # Paso 1 — timestamp (liviano, cache 90s)
-                ts = _get_latest_ts(prod_id)
-                if ts is None:
-                    st.error(f"No se pudo obtener timestamp de {prod_label}.")
-                    continue
-
-                # Paso 2 — imagen (pesado, cache 2h por timestamp)
-                with st.spinner(f"Cargando {prod_label} · {ts[8:10]}:{ts[10:12]} UTC..."):
-                    frame = _fetch_frame_for_ts(prod_id, ts)
-
-                if frame is None:
-                    st.error(f"No se pudo descargar {prod_label}.")
-                    continue
-
-                bounds = frame.get("bounds", CHILE_TILE_BOUNDS)
-                title = (
-                    f"{prod_label} — GOES-19 · "
-                    f"{frame['label_utc']}  ({frame['label_local']} Chile)"
-                )
-                fig = _make_fig(frame["image"], bounds, title, volc_layer=volc_layer)
-                if show_wind:
-                    if wind_data_cached:
-                        _add_wind_arrows(fig, wind_data_cached, level_label=wind_level)
-                        st.caption(
-                            f"🌬 {len(wind_data_cached)} vectores de viento GFS a {wind_level} "
-                            f"(flechas amarillas; largo ∝ velocidad)"
+            # Hot spots NOAA FDCF — compartidos por los 3 productos en vista Nacional.
+            # Bbox: el de la imagen reprojectada (CHILE_REPROJECTED_BOUNDS).
+            hotspots_nacional = []
+            hotspots_scan_ts = None
+            if show_hotspots:
+                with st.spinner("Cargando hot spots NOAA FDCF..."):
+                    _b = CHILE_REPROJECTED_BOUNDS
+                    from dashboard.map_helpers import FDCFNoVerificable
+                    try:
+                        hotspots_nacional, hotspots_scan_ts = _fetch_hotspots_cached(
+                            _b["lat_min"], _b["lat_max"], _b["lon_min"], _b["lon_max"],
                         )
-                    elif wind_error:
-                        st.warning(
-                            f"No se pudieron obtener vectores de viento a {wind_level}. "
-                            f"Open-Meteo status={wind_error['status']}. "
-                            f"Respuesta: {wind_error['response'][:200]}"
+                    except FDCFNoVerificable:
+                        # FDCF no contestó. Se avisa abajo; NO se dibuja un cero.
+                        hotspots_nacional, hotspots_scan_ts = [], None
+                        st.caption("⚠ Hot spots NOAA FDCF no consultables en este "
+                                   "ciclo — el mapa NO descarta anomalía térmica.")
+                from dashboard.map_helpers import frase_hotspots_chile
+                _frase_hs = frase_hotspots_chile(len(hotspots_nacional), hotspots_scan_ts)
+                if _frase_hs:
+                    st.caption(_frase_hs)
+
+            for prod_id, prod_label, _ in LIVE_PRODUCTS:
+                sub_tab = sub_tabs[prod_id]
+                with sub_tab:
+                    if not visible(sub_tab):
+                        continue
+                    # Paso 1 — timestamp (liviano, cache 90s)
+                    ts = _get_latest_ts(prod_id)
+                    if ts is None:
+                        st.error(f"No se pudo obtener timestamp de {prod_label}.")
+                        continue
+
+                    # Paso 2 — imagen (pesado, cache 2h por timestamp)
+                    with st.spinner(f"Cargando {prod_label} · {ts[8:10]}:{ts[10:12]} UTC..."):
+                        frame = _fetch_frame_for_ts(prod_id, ts)
+
+                    if frame is None:
+                        st.error(f"No se pudo descargar {prod_label}.")
+                        continue
+
+                    bounds = frame.get("bounds", CHILE_TILE_BOUNDS)
+                    title = (
+                        f"{prod_label} — GOES-19 · "
+                        f"{frame['label_utc']}  ({frame['label_local']} Chile)"
+                    )
+                    fig = _make_fig(frame["image"], bounds, title, volc_layer=volc_layer)
+                    if show_wind:
+                        if wind_data_cached:
+                            _add_wind_arrows(fig, wind_data_cached, level_label=wind_level)
+                            st.caption(
+                                f"🌬 {len(wind_data_cached)} vectores de viento GFS a {wind_level} "
+                                f"(flechas amarillas; largo ∝ velocidad)"
+                            )
+                        elif wind_error:
+                            st.warning(
+                                f"No se pudieron obtener vectores de viento a {wind_level}. "
+                                f"Open-Meteo status={wind_error['status']}. "
+                                f"Respuesta: {wind_error['response'][:200]}"
+                            )
+                    if show_hotspots and hotspots_nacional:
+                        _add_hotspots(
+                            fig, hotspots_nacional,
+                            scan_label=(hotspots_scan_ts[11:16] + " UTC"
+                                        if hotspots_scan_ts else None),
                         )
-                if show_hotspots and hotspots_nacional:
-                    _add_hotspots(
-                        fig, hotspots_nacional,
-                        scan_label=(hotspots_scan_ts[11:16] + " UTC"
-                                    if hotspots_scan_ts else None),
+
+                    # constrain="domain" es lo que hace que Plotly RESPETE el range
+                    # de aca. Sin el, el default constrain="range" ensancha el eje
+                    # para cumplir el aspecto: Chile (15 x 43 grados) en un contenedor
+                    # ancho salia a 82 grados de longitud, y a 688 en el primer render,
+                    # cuando el contenedor todavia mide 16 px. El mapa quedaba invisible
+                    # y el rango NO se recuperaba al crecer el contenedor. Verificado en
+                    # el deploy HF, no solo en local. (audit 2026-08-30)
+                    fig.update_layout(
+                        height=820,
+                        xaxis=dict(range=[bounds["lon_min"], bounds["lon_max"]],
+                                   autorange=False, constrain="domain"),
+                        yaxis=dict(range=[bounds["lat_min"], bounds["lat_max"]],
+                                   autorange=False, scaleanchor="x", scaleratio=1,
+                                   constrain="domain"),
+                        margin=dict(t=40, b=35, l=45, r=15),
+                    )
+                    # Barra N-S: en grados 1:1 un km horizontal no mide lo mismo
+                    # en Arica que en Magallanes; uno de meridiano si.
+                    from dashboard.regla import agregar_barra_ns
+                    agregar_barra_ns(fig, bounds)
+                    render_compact_legend(
+                        prod_id,
+                        symbols=("volcano",)
+                                + (("hotspot",)
+                                   if (show_hotspots and hotspots_nacional) else ()),
+                    )
+                    st.plotly_chart(fig, width='stretch')
+
+                    # Botones de descarga (PNG con timestamp + GeoTIFF georeferenciado)
+                    _dl_label = (
+                        f"GOES-19 {prod_label} - Chile - "
+                        f"{frame['label_utc']} ({frame['label_local']} CL)"
+                    )
+                    download_buttons(
+                        frame["image"],
+                        bounds=bounds,
+                        base_filename=f"goes19_{prod_id}_chile_{ts}",
+                        label_overlay=_dl_label,
+                        prod_label=prod_label,
+                        key_prefix=f"dl_nacional_{prod_id}",
                     )
 
-                # constrain="domain" es lo que hace que Plotly RESPETE el range
-                # de aca. Sin el, el default constrain="range" ensancha el eje
-                # para cumplir el aspecto: Chile (15 x 43 grados) en un contenedor
-                # ancho salia a 82 grados de longitud, y a 688 en el primer render,
-                # cuando el contenedor todavia mide 16 px. El mapa quedaba invisible
-                # y el rango NO se recuperaba al crecer el contenedor. Verificado en
-                # el deploy HF, no solo en local. (audit 2026-08-30)
-                fig.update_layout(
-                    height=820,
-                    xaxis=dict(range=[bounds["lon_min"], bounds["lon_max"]],
-                               autorange=False, constrain="domain"),
-                    yaxis=dict(range=[bounds["lat_min"], bounds["lat_max"]],
-                               autorange=False, scaleanchor="x", scaleratio=1,
-                               constrain="domain"),
-                    margin=dict(t=40, b=35, l=45, r=15),
-                )
-                # Barra N-S: en grados 1:1 un km horizontal no mide lo mismo
-                # en Arica que en Magallanes; uno de meridiano si.
-                from dashboard.regla import agregar_barra_ns
-                agregar_barra_ns(fig, bounds)
-                render_compact_legend(
-                    prod_id,
-                    symbols=("volcano",)
-                            + (("hotspot",)
-                               if (show_hotspots and hotspots_nacional) else ()),
-                )
-                st.plotly_chart(fig, width='stretch')
+                    st.markdown(
+                        f'<div style="font-size:0.75rem; color:#445566; margin-top:0.3rem;">'
+                        f'{notas.get(prod_id, "")}'
+                        f'</div>',
+                        unsafe_allow_html=True,
+                    )
 
-                # Botones de descarga (PNG con timestamp + GeoTIFF georeferenciado)
-                _dl_label = (
-                    f"GOES-19 {prod_label} - Chile - "
-                    f"{frame['label_utc']} ({frame['label_local']} CL)"
-                )
-                download_buttons(
-                    frame["image"],
-                    bounds=bounds,
-                    base_filename=f"goes19_{prod_id}_chile_{ts}",
-                    label_overlay=_dl_label,
-                    prod_label=prod_label,
-                    key_prefix=f"dl_nacional_{prod_id}",
-                )
-
-                st.markdown(
-                    f'<div style="font-size:0.75rem; color:#445566; margin-top:0.3rem;">'
-                    f'{notas.get(prod_id, "")}'
-                    f'</div>',
-                    unsafe_allow_html=True,
-                )
-
-                # Leyenda interpretativa (solo Ash RGB y SO2).
-                if prod_id in LEYENDAS_HTML:
-                    st.markdown(LEYENDAS_HTML[prod_id], unsafe_allow_html=True)
+                    # Leyenda interpretativa (solo Ash RGB y SO2).
+                    if prod_id in LEYENDAS_HTML:
+                        st.markdown(LEYENDAS_HTML[prod_id], unsafe_allow_html=True)
 
     # ── Tab 4: Por Zona Volcánica — sub-tabs por producto (auto-carga 4 zonas) ──
     with tab4:
-        _z_geo, _z_ash, _z_so2 = st.tabs(SUBTAB_LABELS)
-        zona_sub_tabs = dict(zip(SUBTAB_PRODS, [_z_geo, _z_ash, _z_so2]))
+        if visible(tab4):
+            _z_geo, _z_ash, _z_so2 = pestanas_perezosas(
+                SUBTAB_LABELS, key="op_zona_prod")
+            zona_sub_tabs = dict(zip(SUBTAB_PRODS, [_z_geo, _z_ash, _z_so2]))
 
-        for prod_zona, sub_tab_z in zona_sub_tabs.items():
-            with sub_tab_z:
-                ts_zona = _get_latest_ts(prod_zona)
-                if ts_zona is None:
-                    st.error(f"No se pudo obtener timestamp de {PRODUCT_LABELS.get(prod_zona, prod_zona)}.")
-                    continue
+            for prod_zona, sub_tab_z in zona_sub_tabs.items():
+                with sub_tab_z:
+                    if not visible(sub_tab_z):
+                        continue
+                    ts_zona = _get_latest_ts(prod_zona)
+                    if ts_zona is None:
+                        st.error(f"No se pudo obtener timestamp de {PRODUCT_LABELS.get(prod_zona, prod_zona)}.")
+                        continue
 
-                st.markdown(
-                    f'<div style="font-size:0.9rem; color:#c0ccd8; margin-bottom:0.4rem; '
-                    f'padding:0.3rem 0.6rem; background:rgba(17,24,34,0.5); '
-                    f'border-radius:6px; border-left:3px solid #4a9eff;">'
-                    f'<b>{PRODUCT_LABELS.get(prod_zona, prod_zona)}</b> · Scan '
-                    f'<b style="font-family:monospace;">{ts_zona[8:10]}:{ts_zona[10:12]} UTC</b>'
-                    f'<span style="color:#667788; font-size:0.74rem; margin-left:0.5rem;">'
-                    f'· Zoom=3 (~3.4 km/px) · 4 zonas en paralelo</span></div>',
-                    unsafe_allow_html=True,
-                )
+                    st.markdown(
+                        f'<div style="font-size:0.9rem; color:#c0ccd8; margin-bottom:0.4rem; '
+                        f'padding:0.3rem 0.6rem; background:rgba(17,24,34,0.5); '
+                        f'border-radius:6px; border-left:3px solid #4a9eff;">'
+                        f'<b>{PRODUCT_LABELS.get(prod_zona, prod_zona)}</b> · Scan '
+                        f'<b style="font-family:monospace;">{ts_zona[8:10]}:{ts_zona[10:12]} UTC</b>'
+                        f'<span style="color:#667788; font-size:0.74rem; margin-left:0.5rem;">'
+                        f'· Zoom=3 (~3.4 km/px) · 4 zonas en paralelo</span></div>',
+                        unsafe_allow_html=True,
+                    )
 
-                row1_col1, row1_col2 = st.columns(2)
-                row2_col1, row2_col2 = st.columns(2)
-                zone_cols = {
-                    "norte":   row1_col1,
-                    "centro":  row1_col2,
-                    "sur":     row2_col1,
-                    "austral": row2_col2,
-                }
-                # Descarga paralela de las 4 zonas. Cache 2h por (prod, ts, zona)
-                # asi que cambiar de sub-tab no re-descarga si ya se vio.
-                from concurrent.futures import ThreadPoolExecutor
-                with st.spinner(
-                    f"Descargando 4 zonas para {PRODUCT_LABELS.get(prod_zona, prod_zona)}..."
-                ):
-                    with ThreadPoolExecutor(max_workers=4) as ex:
-                        futures = {
-                            zk: ex.submit(_fetch_zone_frame, prod_zona, ts_zona, zk)
-                            for zk in zone_cols
-                        }
-                        zone_imgs = {zk: f.result() for zk, f in futures.items()}
+                    row1_col1, row1_col2 = st.columns(2)
+                    row2_col1, row2_col2 = st.columns(2)
+                    zone_cols = {
+                        "norte":   row1_col1,
+                        "centro":  row1_col2,
+                        "sur":     row2_col1,
+                        "austral": row2_col2,
+                    }
+                    # Descarga paralela de las 4 zonas. Cache 2h por (prod, ts, zona)
+                    # asi que cambiar de sub-tab no re-descarga si ya se vio.
+                    from concurrent.futures import ThreadPoolExecutor
+                    with st.spinner(
+                        f"Descargando 4 zonas para {PRODUCT_LABELS.get(prod_zona, prod_zona)}..."
+                    ):
+                        with ThreadPoolExecutor(max_workers=4) as ex:
+                            futures = {
+                                zk: ex.submit(_fetch_zone_frame, prod_zona, ts_zona, zk)
+                                for zk in zone_cols
+                            }
+                            zone_imgs = {zk: f.result() for zk, f in futures.items()}
 
-                for zone_key, col in zone_cols.items():
-                    with col:
-                        img_zona = zone_imgs[zone_key]
-                        if img_zona is None:
-                            st.error(f"Sin datos para {ZONE_LABELS[zone_key]}")
-                            continue
-                        zone_bounds = VOLCANIC_ZONES[zone_key]
-                        zone_title = (
-                            f'<b style="color:{ZONE_COLORS[zone_key]};">'
-                            f'{ZONE_LABELS[zone_key]}</b>'
-                        )
-                        st.markdown(zone_title, unsafe_allow_html=True)
-                        # Sin titulo en el plot (la zona ya aparece en el
-                        # markdown de arriba). Esto evita que titulos largos
-                        # tipo 'eumetsat_ash' wrappen y achiquen el plot
-                        # respecto a 'geocolor' (titulo corto).
-                        fig_z = _make_fig(
-                            img_zona, zone_bounds, "",
-                            volc_layer=volc_layer,
-                        )
-                        if show_hotspots:
-                            from dashboard.map_helpers import FDCFNoVerificable
-                            try:
-                                _hs_zona, _hs_ts_z = _fetch_hotspots_cached(
-                                    zone_bounds["lat_min"], zone_bounds["lat_max"],
-                                    zone_bounds["lon_min"], zone_bounds["lon_max"],
-                                )
-                            except FDCFNoVerificable:
-                                _hs_zona, _hs_ts_z = [], None
-                                st.caption("⚠ Hot spots NOAA FDCF no consultables "
-                                           "en este ciclo: el mapa NO descarta "
-                                           "anomalía térmica.")
-                            if _hs_zona:
-                                _add_hotspots(
-                                    fig_z, _hs_zona,
-                                    scan_label=(_hs_ts_z[11:16] + " UTC"
-                                                if _hs_ts_z else None),
-                                )
-                        # Viento: el bug era que solo se aplicaba en Volcan,
-                        # no en Zona. Filtrar por bbox de la zona y agregar.
-                        if show_wind and wind_data_cached:
-                            _wind_z = [w for w in wind_data_cached
-                                       if zone_bounds["lat_min"] <= w["lat"] <= zone_bounds["lat_max"]
-                                       and zone_bounds["lon_min"] <= w["lon"] <= zone_bounds["lon_max"]]
-                            if _wind_z:
-                                _add_wind_arrows(fig_z, _wind_z, level_label=wind_level)
-                        # Mapas mas grandes: 640 -> 760 px y margenes mas chicos
-                        fig_z.update_layout(
-                            height=760,
-                            margin=dict(l=10, r=10, t=30, b=10),
-                        )
-                        from dashboard.regla import agregar_barra_ns
-                        agregar_barra_ns(fig_z, zone_bounds)
-                        render_compact_legend(prod_zona,
-                                              symbols=("volcano",))
-                        st.plotly_chart(fig_z, width='stretch')
+                    for zone_key, col in zone_cols.items():
+                        with col:
+                            img_zona = zone_imgs[zone_key]
+                            if img_zona is None:
+                                st.error(f"Sin datos para {ZONE_LABELS[zone_key]}")
+                                continue
+                            zone_bounds = VOLCANIC_ZONES[zone_key]
+                            zone_title = (
+                                f'<b style="color:{ZONE_COLORS[zone_key]};">'
+                                f'{ZONE_LABELS[zone_key]}</b>'
+                            )
+                            st.markdown(zone_title, unsafe_allow_html=True)
+                            # Sin titulo en el plot (la zona ya aparece en el
+                            # markdown de arriba). Esto evita que titulos largos
+                            # tipo 'eumetsat_ash' wrappen y achiquen el plot
+                            # respecto a 'geocolor' (titulo corto).
+                            fig_z = _make_fig(
+                                img_zona, zone_bounds, "",
+                                volc_layer=volc_layer,
+                            )
+                            if show_hotspots:
+                                from dashboard.map_helpers import FDCFNoVerificable
+                                try:
+                                    _hs_zona, _hs_ts_z = _fetch_hotspots_cached(
+                                        zone_bounds["lat_min"], zone_bounds["lat_max"],
+                                        zone_bounds["lon_min"], zone_bounds["lon_max"],
+                                    )
+                                except FDCFNoVerificable:
+                                    _hs_zona, _hs_ts_z = [], None
+                                    st.caption("⚠ Hot spots NOAA FDCF no consultables "
+                                               "en este ciclo: el mapa NO descarta "
+                                               "anomalía térmica.")
+                                if _hs_zona:
+                                    _add_hotspots(
+                                        fig_z, _hs_zona,
+                                        scan_label=(_hs_ts_z[11:16] + " UTC"
+                                                    if _hs_ts_z else None),
+                                    )
+                            # Viento: el bug era que solo se aplicaba en Volcan,
+                            # no en Zona. Filtrar por bbox de la zona y agregar.
+                            if show_wind and wind_data_cached:
+                                _wind_z = [w for w in wind_data_cached
+                                           if zone_bounds["lat_min"] <= w["lat"] <= zone_bounds["lat_max"]
+                                           and zone_bounds["lon_min"] <= w["lon"] <= zone_bounds["lon_max"]]
+                                if _wind_z:
+                                    _add_wind_arrows(fig_z, _wind_z, level_label=wind_level)
+                            # Mapas mas grandes: 640 -> 760 px y margenes mas chicos
+                            fig_z.update_layout(
+                                height=760,
+                                margin=dict(l=10, r=10, t=30, b=10),
+                            )
+                            from dashboard.regla import agregar_barra_ns
+                            agregar_barra_ns(fig_z, zone_bounds)
+                            render_compact_legend(prod_zona,
+                                                  symbols=("volcano",))
+                            st.plotly_chart(fig_z, width='stretch')
 
-                        # Descarga PNG + GeoTIFF por zona
-                        _dt_zona = parse_rammb_ts(ts_zona)
-                        _zona_label = (
-                            f"GOES-19 {PRODUCT_LABELS.get(prod_zona, prod_zona)} - "
-                            f"{ZONE_LABELS[zone_key]} - "
-                            f"{_dt_zona.strftime('%Y-%m-%d %H:%M UTC')}"
-                            f" ({fmt_chile(_dt_zona)} CL)"
-                        )
-                        download_buttons(
-                            img_zona,
-                            bounds=zone_bounds,
-                            base_filename=(f"goes19_{prod_zona}_{zone_key}_"
-                                           f"{ts_zona}"),
-                            label_overlay=_zona_label,
-                            prod_label=ZONE_LABELS[zone_key],
-                            key_prefix=f"dl_zona_{zone_key}_{prod_zona}",
-                        )
+                            # Descarga PNG + GeoTIFF por zona
+                            _dt_zona = parse_rammb_ts(ts_zona)
+                            _zona_label = (
+                                f"GOES-19 {PRODUCT_LABELS.get(prod_zona, prod_zona)} - "
+                                f"{ZONE_LABELS[zone_key]} - "
+                                f"{_dt_zona.strftime('%Y-%m-%d %H:%M UTC')}"
+                                f" ({fmt_chile(_dt_zona)} CL)"
+                            )
+                            download_buttons(
+                                img_zona,
+                                bounds=zone_bounds,
+                                base_filename=(f"goes19_{prod_zona}_{zone_key}_"
+                                               f"{ts_zona}"),
+                                label_overlay=_zona_label,
+                                prod_label=ZONE_LABELS[zone_key],
+                                key_prefix=f"dl_zona_{zone_key}_{prod_zona}",
+                            )
 
-                # Leyenda interpretativa debajo del grid 2x2.
-                if prod_zona in LEYENDAS_HTML:
-                    st.markdown(LEYENDAS_HTML[prod_zona], unsafe_allow_html=True)
+                    # Leyenda interpretativa debajo del grid 2x2.
+                    if prod_zona in LEYENDAS_HTML:
+                        st.markdown(LEYENDAS_HTML[prod_zona], unsafe_allow_html=True)
 
     # ── Tab 5: Volcán — los 4 productos a la vez ──────────────────────────
     # Delega en `modo_guardia_volcan.volcan_grid`, la MISMA grilla que usan el
@@ -1215,64 +1232,65 @@ def _live_content():
     # justo lo que no se puede hacer con un volcán en crisis. Import perezoso
     # (gotcha de hot-reload de Streamlit, documentado en la cabecera del módulo).
     with tab5:
-        from dashboard.views.modo_guardia_volcan import volcan_grid
+        if visible(tab5):
+            from dashboard.views.modo_guardia_volcan import volcan_grid
 
-        col_vsel, col_vrad, col_vw, col_vr, col_vm = st.columns(
-            [2.2, 1.2, 1, 1, 1])
-        with col_vsel:
-            priority_names = [v.name for v in CATALOG
-                              if v.name in PRIORITY_VOLCANOES]
-            other_names = [v.name for v in CATALOG
-                           if v.name not in priority_names]
-            volc_options = [f"★ {n}" for n in priority_names] + other_names
-            sel_raw = st.selectbox("Volcán", volc_options, index=0,
-                                   key="volc_sel")
-            sel_name = sel_raw.replace("★ ", "")
-        with col_vrad:
-            # El radio manda sobre los 4 paneles a la vez (parametro de
-            # volcan_grid). Sin esto la vista queda clavada en el radio de
-            # Modo Guardia (~38 km) y una pluma que ya se desplazo se sale
-            # del cuadro justo cuando hay que seguirla.
-            _vg_radius = st.slider(
-                "Radio (°)", 0.35, 3.0, 0.35, 0.05, key="vg_radius",
-                help="±radio en grados lat/lon (~111 km por grado). Súbelo "
-                     "para seguir una pluma que ya se alejó del cráter.")
-        with col_vw:
-            _vg_wind = st.toggle("💨 Viento", value=False, key="vg_wind",
-                                 help="Vectores GFS 300/500/850 hPa sobre el "
-                                      "cráter. Cache 1h.")
-        with col_vr:
-            _vg_rings = st.toggle("⊙ Anillos", value=False, key="vg_rings",
-                                  help="Anillos de distancia desde el cráter. "
-                                       "Crecen con el radio: a 3° llegan a "
-                                       "300 km.")
-        with col_vm:
-            # La regla vive en el navegador (plotly): arrastrar no recarga la
-            # pagina. Fuera de los fragments, como todo selector de la grilla.
-            _vg_regla = st.toggle(
-                "📏 Regla", value=False, key="vg_regla",
-                help="Arrastra sobre cualquier mapa, por ejemplo desde el "
-                     "cráter hasta el frente de la pluma: la línea muestra su "
-                     "largo en km (error menor a 1,5 % hasta 3° de radio). "
-                     "Para borrar una línea, tócala y usa la goma arriba a la "
-                     "derecha; con un scan nuevo se borran solas. Mientras "
-                     "está prendida, arrastrar no hace zoom. Ojo con el "
-                     "paralaje: una pluma alta aparece corrida hacia el sur "
-                     "entre 0,4 km (norte) y 1,5 km (austral) por cada km de "
-                     "altura.")
+            col_vsel, col_vrad, col_vw, col_vr, col_vm = st.columns(
+                [2.2, 1.2, 1, 1, 1])
+            with col_vsel:
+                priority_names = [v.name for v in CATALOG
+                                  if v.name in PRIORITY_VOLCANOES]
+                other_names = [v.name for v in CATALOG
+                               if v.name not in priority_names]
+                volc_options = [f"★ {n}" for n in priority_names] + other_names
+                sel_raw = st.selectbox("Volcán", volc_options, index=0,
+                                       key="volc_sel")
+                sel_name = sel_raw.replace("★ ", "")
+            with col_vrad:
+                # El radio manda sobre los 4 paneles a la vez (parametro de
+                # volcan_grid). Sin esto la vista queda clavada en el radio de
+                # Modo Guardia (~38 km) y una pluma que ya se desplazo se sale
+                # del cuadro justo cuando hay que seguirla.
+                _vg_radius = st.slider(
+                    "Radio (°)", 0.35, 3.0, 0.35, 0.05, key="vg_radius",
+                    help="±radio en grados lat/lon (~111 km por grado). Súbelo "
+                         "para seguir una pluma que ya se alejó del cráter.")
+            with col_vw:
+                _vg_wind = st.toggle("💨 Viento", value=False, key="vg_wind",
+                                     help="Vectores GFS 300/500/850 hPa sobre el "
+                                          "cráter. Cache 1h.")
+            with col_vr:
+                _vg_rings = st.toggle("⊙ Anillos", value=False, key="vg_rings",
+                                      help="Anillos de distancia desde el cráter. "
+                                           "Crecen con el radio: a 3° llegan a "
+                                           "300 km.")
+            with col_vm:
+                # La regla vive en el navegador (plotly): arrastrar no recarga la
+                # pagina. Fuera de los fragments, como todo selector de la grilla.
+                _vg_regla = st.toggle(
+                    "📏 Regla", value=False, key="vg_regla",
+                    help="Arrastra sobre cualquier mapa, por ejemplo desde el "
+                         "cráter hasta el frente de la pluma: la línea muestra su "
+                         "largo en km (error menor a 1,5 % hasta 3° de radio). "
+                         "Para borrar una línea, tócala y usa la goma arriba a la "
+                         "derecha; con un scan nuevo se borran solas. Mientras "
+                         "está prendida, arrastrar no hace zoom. Ojo con el "
+                         "paralaje: una pluma alta aparece corrida hacia el sur "
+                         "entre 0,4 km (norte) y 1,5 km (austral) por cada km de "
+                         "altura.")
 
-        volcan_grid(
-            sel_name,
-            show_wind=_vg_wind,
-            show_rings=_vg_rings,
-            regla=_vg_regla,
-            enable_capture=True,
-            fullscreen=st.query_params.get("fullscreen") == "1",
-            radius_deg=_vg_radius,
-            # Hay operador delante: la tira de altura propia puede ofrecer su
-            # boton y disparar sola con hot spot.
-            mostrar_altura=True,
-        )
+            volcan_grid(
+                sel_name,
+                show_wind=_vg_wind,
+                show_rings=_vg_rings,
+                regla=_vg_regla,
+                enable_capture=True,
+                fullscreen=st.query_params.get("fullscreen") == "1",
+                radius_deg=_vg_radius,
+                # Hay operador delante: la tira de altura propia puede ofrecer su
+                # boton y disparar sola con hot spot.
+                mostrar_altura=True,
+            )
 
     st.markdown(
         '<div style="font-size:0.72rem; color:#334455; margin-top:1rem; '

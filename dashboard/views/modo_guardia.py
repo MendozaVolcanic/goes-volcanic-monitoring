@@ -989,24 +989,37 @@ def render():
     # producto por mirar. Import perezoso por el gotcha de hot-reload de
     # Streamlit documentado en la cabecera del modulo.
     from dashboard.views.modo_guardia_volcan import GRID_PANELS
-    sub_zonas, sub_chile, sub_volcat, sub_mosaico, sub_volcan, sub_loop = st.tabs([
-        "🔭 Vigilancia diaria",
-        "🌎 Chile (vista nacional)",
-        "🌋 VOLCAT por zona",
-        "🗺 Mosaico 5 prioritarios",
-        f"🔬 Volcán ({len(GRID_PANELS)} productos)",
-        "🎞 Loop 2h",
-    ])
+    # Pestañas PEREZOSAS (nov-2026): sólo corre la que se mira. Con `st.tabs`
+    # pelado corrían las seis en cada rerun y sus fragments seguían refrescando
+    # escondidos: mosaico de 15 celdas, 4 paneles de volcán y VOLCAT, cada
+    # minuto, sin que nadie los viera (~850 peticiones por ciclo de 10 min).
+    # Cambiar de pestaña ahora pide un rerun; ver dashboard/pestanas.py.
+    from dashboard.pestanas import pestanas_perezosas, visible
+    sub_zonas, sub_chile, sub_volcat, sub_mosaico, sub_volcan, sub_loop = (
+        pestanas_perezosas([
+            "🔭 Vigilancia diaria",
+            "🌎 Chile (vista nacional)",
+            "🌋 VOLCAT por zona",
+            "🗺 Mosaico 5 prioritarios",
+            f"🔬 Volcán ({len(GRID_PANELS)} productos)",
+            "🎞 Loop 2h",
+        ], key="guardia_subtab"))
     with sub_zonas:
-        _zonas_subtab()
+        if visible(sub_zonas):
+            _zonas_subtab()
     with sub_chile:
-        _chile_subtab()
+        if visible(sub_chile):
+            _chile_subtab()
     with sub_volcat:
-        _volcat_zonas_subtab()
+        if visible(sub_volcat):
+            _volcat_zonas_subtab()
     with sub_mosaico:
-        _mosaico_subtab()
+        if visible(sub_mosaico):
+            _mosaico_subtab()
     with sub_volcan:
-        _volcan_subtab()
+        if visible(sub_volcan):
+            _volcan_subtab()
     with sub_loop:
-        from dashboard.views.loop_volcan import render_subtab as loop_panel
-        loop_panel()
+        if visible(sub_loop):
+            from dashboard.views.loop_volcan import render_subtab as loop_panel
+            loop_panel()

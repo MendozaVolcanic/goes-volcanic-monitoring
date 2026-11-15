@@ -86,7 +86,7 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
 Permalink: `?vista=<slug>` (los slugs viejos `live`/`zonas`/`animacion` redirigen por
 compatibilidad). Fuente de verdad: `PAGE_OPTIONS`/`PAGE_SLUGS` en `dashboard/app.py`.
 
-1. **🌎 Vista Operacional** (`operacional`): último scan, auto-refresh 60s. Tabs Nacional / Por Zona Volcánica (grid 4-zonas) / Volcán. El tab **Volcán** muestra los 4 productos a la vez en grilla 2×2 (GeoColor · Ash RGB · SO₂ · VOLCAT), cada panel con su propia cadencia de refresco (RAMMB 60 s, VOLCAT 120 s), radio ajustable de 0.35 a 3° y toggles de viento GFS, anillos y **📏 Regla**. Los cuatro paneles se dibujan en km centrados en el cráter (`dashboard/regla.py`), con barra de escala; con la regla prendida, arrastrar traza una línea rotulada con su largo en km, calculado por plotly en el navegador. Nacional y Zona llevan barra de escala N-S. Comparte implementación con Modo Guardia vía `modo_guardia_volcan.volcan_grid`.
+1. **🌎 Vista Operacional** (`operacional`): último scan, auto-refresh 60s. Tabs Nacional / Por Zona Volcánica (grid 4-zonas) / Volcán. El tab **Volcán** muestra los 4 productos a la vez en grilla 2×2 (GeoColor · Ash RGB · SO₂ · VOLCAT), cada panel con su propia cadencia de refresco (RAMMB 60 s, VOLCAT 120 s), radio ajustable de 0.35 a 3° y toggles de viento GFS, anillos y **📏 Regla**. Los cuatro paneles se dibujan en km centrados en el cráter (`dashboard/regla.py`), con barra de escala; con la regla prendida, arrastrar traza una línea rotulada con su largo en km, calculado por plotly en el navegador. Nacional y Zona llevan barra de escala N-S. Comparte implementación con Modo Guardia vía `modo_guardia_volcan.volcan_grid`. Desde nov-2026 las pestañas son perezosas (`dashboard/pestanas.py`): sólo corre y refresca la que se mira, y cambiar de pestaña pide un rerun.
 2. **🛡 Modo Guardia** (`guardia`) — vista de turno de sala: sub-tabs Vigilancia diaria (4 zonas RGB), Chile, VOLCAT por zona (4 zonas lado a lado), Mosaico, Volcán (grilla 2×2 de 4 productos) y Loop 2h. Con `?tv=1` entra en **Modo Sala TV** (rotación fullscreen sin controles, pensada para monitor 24/7).
 3. **🔀 Comparador** (`comparador`) — dos frames lado a lado (baseline histórico vs actual, o dos productos).
 4. **🚨 Modo Evento** (`evento`) — foco en un volcán en crisis, con productos y altura.
@@ -117,7 +117,7 @@ streamlit run dashboard/app.py
 
 | Dato | Formato | Endpoint / archivo | Cadencia |
 |---|---|---|---|
-| Frame Ash RGB / SO2 / GeoColor por volcán | PNG + GeoTIFF | función `fetch_frame_for_bounds(prod, ts, bounds, zoom=4)` en `src/fetch/rammb_slider.py` | 10 min |
+| Frame Ash RGB / SO2 / GeoColor por volcán | PNG + GeoTIFF | función `fetch_frame_for_bounds(prod, ts, bounds, zoom=4)` en `src/fetch/rammb_slider.py` (Ash y SO2 se topan a zoom 3, su máximo en RAMMB; tiles memorizados por ts) | 10 min |
 | Hot spots FDCF | List[HotSpot] con (lat, lon, FRP_MW, T_K, area_km², confidence) | `src/fetch/goes_fdcf.py::fetch_latest_hotspots(bounds)` | 10 min |
 | Series de tiempo por volcán | List[TimeSeriesPoint] / CSV | `src/fetch/timeseries.py::fetch_volcano_timeseries(lat, lon, product)` | on-demand |
 | Altura de pluma VOLCAT | PNG con colorbar (no NetCDF) | `src/fetch/volcat_api.py::volcat_latest(sector, ...)` | 10 min |

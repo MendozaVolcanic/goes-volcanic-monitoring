@@ -29,7 +29,8 @@ try:
     from dashboard.style import header
     from dashboard.utils import CHILE_TZ, parse_rammb_ts, utc_to_chile
     from src.fetch.rammb_slider import (
-        fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
+        fetch_frame_robust, get_latest_timestamps, zoom_reducido,
+        ZOOM_VOLCAN, ZOOM_ZONE,
     )
     from src.volcanos import CATALOG, get_volcano
     # Listado por fecha (nov-2026). `get_latest_timestamps` de arriba ya no
@@ -304,7 +305,10 @@ def render():
     label = f"{v.name} · {PRODUCTS[product]} · {labels[idx]}"
     if used_ts and used_ts != selected_ts:
         label += " ⚠ ts cercano"
-    if used_zoom == ZOOM_ZONE:
+    # Aviso de zoom: sólo si el frame vino más grueso de lo que el producto
+    # publica (`zoom_reducido`). Ash y SO2 topan en zoom 3 (bandas IR de
+    # 2 km): marcarlos siempre dejaba el aviso encendido y nadie lo leía.
+    if zoom_reducido(product, used_zoom, ZOOM_VOLCAN):
         label += " ⚠ zoom 3"
 
     from dashboard.map_helpers import render_compact_legend

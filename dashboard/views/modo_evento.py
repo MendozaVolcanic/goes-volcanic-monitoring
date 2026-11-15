@@ -28,7 +28,8 @@ try:
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.fetch.goes_fdcf import fetch_latest_hotspots
     from src.fetch.rammb_slider import (
-        fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
+        fetch_frame_robust, get_latest_timestamps, zoom_reducido,
+        ZOOM_VOLCAN, ZOOM_ZONE,
     )
     from src.fetch.wind_data import fetch_wind_point
     from src.volcanos import PRIORITY_VOLCANOES, get_volcano
@@ -372,7 +373,10 @@ def _live_panel(volcan_name: str, show_rings: bool = True,
                 from dashboard.map_helpers import alerta_edad
                 ts_label = (f"{dt.strftime('%H:%M UTC')} (hace {age}m)"
                             f"{alerta_edad(age)}")
-                if used_zoom == ZOOM_ZONE:
+                # Aviso de zoom: sólo si el frame vino más grueso de lo que el producto
+                # publica (`zoom_reducido`). Ash y SO2 topan en zoom 3 (bandas IR de
+                # 2 km): marcarlos siempre dejaba el aviso encendido y nadie lo leía.
+                if zoom_reducido(prod_id, used_zoom, ZOOM_VOLCAN):
                     ts_label += " ⚠z3"
             except Exception:
                 ts_label = used_ts

@@ -126,3 +126,22 @@ def synthetic_s3(monkeypatch):
     monkeypatch.setattr(gfs_profile, "fetch_gfs_profile",
                         lambda lat, lon, dt=None: PROFILE)
     return tc_true
+
+
+@pytest.fixture(autouse=True)
+def _caches_inmutables_limpios():
+    """Cada prueba parte con los caches de objetos inmutables vacíos.
+
+    `src/fetch/cache_inmutable.py` memoriza tiles RAMMB y gránulos FDCF a nivel
+    de proceso (es lo que evita bajarlos en cada tick). Entre pruebas eso sería
+    una fuga: un gránulo memorizado por una prueba haría pasar la siguiente sin
+    tocar su S3 falso, y una prueba de "S3 no abre" saldría verde por error.
+    """
+    try:
+        from src.fetch.cache_inmutable import limpiar_todas
+    except ImportError:          # antes de que exista el módulo (prueba en rojo)
+        yield
+        return
+    limpiar_todas()
+    yield
+    limpiar_todas()

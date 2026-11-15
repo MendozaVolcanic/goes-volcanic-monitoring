@@ -1160,15 +1160,31 @@ def _emit_tv_png(png: bytes) -> None:
     en una pantalla de sala grande se veia CHICO. Ahora el <img> ocupa el
     viewport completo (100vw x 100vh) y object-fit:contain ESCALA la imagen
     para llenar la dimension mayor preservando el aspecto (sin recorte ni
-    deformacion). Mismo ciclo de vida estilo+imagen (inline) -> sin pestaneo."""
-    import base64
-    b64 = base64.b64encode(png).decode()
-    st.markdown(
-        f"<img src='data:image/png;base64,{b64}' "
-        f"style='display:block; width:100vw; height:calc(100vh - 8px); "
-        f"object-fit:contain;'/>",
-        unsafe_allow_html=True,
-    )
+    deformacion).
+
+    POR URL, NO EN BASE64 (nov-2026): el PNG iba inline en el HTML, asi que
+    cada aparicion del slot reenviaba ~1 MB por el websocket aunque fuera el
+    mismo PNG de la vuelta anterior (medido: 99,6 MB por ciclo de 10 min en
+    tv=1, mas de la mitad repetidos). `st.image` manda solo una URL
+    /media/<hash>: el mismo PNG da la misma URL y el navegador lo reutiliza.
+    El estilo va acotado al contenedor `tv_png` y con mas especificidad que la
+    regla global del Modo Sala para `stImage` (72vw + object-fit:fill, pensada
+    para VOLCAT): sin eso el grid de 4 zonas y el zoom de volcan se
+    deformarian y los anillos de distancia dejarian de ser circulos."""
+    with st.container(key="tv_png"):
+        st.markdown(
+            "<style>"
+            ".st-key-tv_png [data-testid='stImage'],"
+            ".st-key-tv_png [data-testid='stImageContainer']"
+            "{width:100vw !important;}"
+            ".st-key-tv_png [data-testid='stImage'] img"
+            "{display:block; width:100vw !important;"
+            " height:calc(100vh - 8px) !important;"
+            " object-fit:contain !important;}"
+            "</style>",
+            unsafe_allow_html=True,
+        )
+        st.image(png)
 
 
 def _tv_placeholder(msg: str) -> None:

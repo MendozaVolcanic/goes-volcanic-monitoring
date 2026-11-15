@@ -45,7 +45,7 @@ try:
     from src.fetch.goes_fdcf import HotSpot, fetch_latest_hotspots
     from src.fetch.rammb_slider import (
         fetch_frame_for_bounds, fetch_frame_robust,
-        get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
+        get_latest_timestamps, zoom_reducido, ZOOM_VOLCAN, ZOOM_ZONE,
     )
     from src.fetch.wind_data import fetch_wind_point
     from src.volcanos import PRIORITY_VOLCANOES, get_volcano
@@ -196,8 +196,8 @@ def _frame_with_fallback(product: str, timestamps: list[str],
                           ) -> tuple[np.ndarray | None, str | None, int]:
     """Fallback de ts + fallback de zoom (zoom=4 -> zoom=3).
 
-    RAMMB intermitentemente no sirve eumetsat_ash / jma_so2 en zoom=4.
-    Esta funcion delega en fetch_frame_robust que cubre los 2 fallbacks.
+    Ash y SO2 no existen a zoom 4 en RAMMB (bandas IR de 2 km):
+    fetch_frame_robust los pide directo a zoom 3 y cubre los 2 fallbacks.
     Devuelve (img, ts_usado, zoom_usado). zoom=0 si todo fallo.
     """
     bounds = {"lat_min": lat_min, "lat_max": lat_max,
@@ -408,7 +408,10 @@ def fetch_volcan_product(prod_id: str, volcano_name: str,
                 flags = []
                 if used_ts != timestamps[0]:
                     flags.append("scan previo")
-                if used_zoom < ZOOM_VOLCAN:
+                # Aviso de zoom: sólo si el frame vino más grueso de lo que el producto
+                # publica (`zoom_reducido`). Ash y SO2 topan en zoom 3 (bandas IR de
+                # 2 km): marcarlos siempre dejaba el aviso encendido y nadie lo leía.
+                if zoom_reducido(prod_id, used_zoom, ZOOM_VOLCAN):
                     flags.append("zoom reducido")
                 if flags:
                     ts_label += " ⚠ " + ", ".join(flags)

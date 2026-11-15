@@ -24,6 +24,8 @@ import numpy as np
 import requests
 from PIL import Image
 
+from src.fetch.cache_inmutable import CacheInmutable
+
 logger = logging.getLogger(__name__)
 
 BASE_URL = "https://slider.cira.colostate.edu"
@@ -65,6 +67,44 @@ except Exception:
 # zoom=2 Chile: cols[1,2] rows[2,3] → scan angles x∈[-0.0759,+0.0758] y∈[0,-0.1518]
 # zoom=3 cfac=13484 center=2048: cols [2..5] rows [4..7]
 CHILE_TILES_Z3 = {"rows": [4, 5, 6, 7], "cols": [2, 3, 4, 5]}
+
+# Zoom MÁXIMO que RAMMB publica por producto (goes-19, full_disk).
+#
+# QUÉ: el tope de zoom de cada producto. POR QUÉ: Ash RGB y SO2 se arman con
+# bandas IR de 2 km, y el Slider no los publica más finos que zoom 3. No es una
+# falla intermitente (así lo describía el código hasta nov-2026): la
+# configuración del propio Slider (`/js/define-products.js`, sector full_disk)
+# declara `max_zoom_level` 5 y, para `eumetsat_ash` y `jma_so2`,
+# `zoom_level_adjust` 2 y `resolution` "2 km", o sea 5 menos 2 = 3. GeoColor se
+# apoya en la banda 2 (0,5 km) y llega a 5. Medido en vivo el 15-nov-2026 en 12
+# timestamps repartidos en 16 h: Ash y SO2 dieron 404 en zoom 4 las 12 veces y
+# 200 en zoom 3 las 12; GeoColor, 200 en ambos. Pedir zoom 4 costaba una
+# cadena de 404 por panel en cada tick (560 de 739 pedidos de tiles en Modo
+# Guardia) y demoraba el panel sin ganar un solo píxel de información.
+# Producto que no esté acá: sin tope propio (no se inventa).
+PRODUCT_MAX_ZOOM = {
+    "geocolor": 5,
+    "eumetsat_ash": 3,
+    "jma_so2": 3,
+    "split_window_difference_10_3-12_3": 3,
+}
+
+
+def zoom_efectivo(product: str, zoom: int) -> int:
+    """Zoom que de verdad se puede pedir: el solicitado, topado al del producto."""
+    return min(int(zoom), PRODUCT_MAX_ZOOM.get(product, int(zoom)))
+
+
+def zoom_reducido(product: str, zoom_usado: int, zoom_pedido: int) -> bool:
+    """¿El frame vino más grueso de lo que el producto permite?
+
+    Se compara contra `zoom_efectivo`, no contra lo pedido: Ash a zoom 3 es su
+    resolución máxima y avisarlo como "reducido" dejaba el aviso encendido
+    siempre, que es lo mismo que no tener aviso. GeoColor a zoom 3 sí es una
+    degradación real (cayó al fallback porque zoom 4 no cargó).
+    """
+    return int(zoom_usado) < zoom_efectivo(product, zoom_pedido)
+
 
 # Productos volcánicos disponibles y sus nombres para mostrar
 PRODUCTS = {
@@ -187,28 +227,58 @@ def ts_to_parts(ts: str) -> tuple[str, str, str]:
     return ts[:4], ts[4:6], ts[6:8]
 
 
-def fetch_tile(product: str, ts: str, zoom: int, row: int, col: int) -> np.ndarray | None:
-    """Descargar un tile individual.
+# Tiles ya bajados, por (producto, ts, zoom, fila, columna). Un tile RAMMB es
+# inmutable: la URL lleva el timestamp del scan. Se guardan los PNG crudos
+# (~100-400 kB) y no el array decodificado (~0,8 MB): entra 3-4 veces más en el
+# mismo techo y decodificar cuesta milisegundos. 128 MB cubren de sobra los
+# tiles únicos de un ciclo (Guardia + Sala + Operacional, con los 3 ts de
+# fallback). Las fallas NO se guardan: ver src/fetch/cache_inmutable.py.
+_TILES = CacheInmutable("tiles_rammb", max_bytes=128 * 1024 * 1024)
 
-    Returns:
-        Array numpy (TILE_SIZE, TILE_SIZE, 3) uint8, o None si falla.
-    """
+
+def _tile_url(product: str, ts: str, zoom: int, row: int, col: int) -> str:
     yyyy, mm, dd = ts_to_parts(ts)
-    url = (
+    return (
         f"{BASE_URL}/data/imagery/{yyyy}/{mm}/{dd}"
         f"/{SATELLITE}---{SECTOR}/{product}/{ts}"
         f"/{zoom:02d}/{row:03d}_{col:03d}.png"
     )
+
+
+def _bajar_tile(url: str) -> bytes | None:
+    """PNG crudo del tile, o None si no existe (404) o la red falló."""
     try:
         resp = _get_session().get(url, timeout=TIMEOUT)
         if resp.status_code == 404:
             return None
         resp.raise_for_status()
-        img = Image.open(io.BytesIO(resp.content)).convert("RGB")
-        return np.array(img)
+        return resp.content or None
     except Exception as e:
-        logger.warning("Tile %d_%d zoom%d ts=%s: %s", row, col, zoom, ts, e)
+        logger.warning("Tile %s: %s", "/".join(url.rsplit("/", 4)[-4:]), e)
         return None
+
+
+def fetch_tile(product: str, ts: str, zoom: int, row: int, col: int) -> np.ndarray | None:
+    """Descargar un tile individual (o leerlo del caché si ya se bajó).
+
+    Returns:
+        Array numpy (TILE_SIZE, TILE_SIZE, 3) uint8, o None si falla.
+    """
+    url = _tile_url(product, ts, zoom, row, col)
+    crudo = _TILES.obtener((product, ts, zoom, row, col),
+                           lambda: _bajar_tile(url))
+    if crudo is None:
+        return None
+    try:
+        return np.array(Image.open(io.BytesIO(crudo)).convert("RGB"))
+    except Exception as e:
+        logger.warning("Tile %d_%d zoom%d ts=%s ilegible: %s", row, col, zoom, ts, e)
+        return None
+
+
+def tile_cache_stats() -> dict:
+    """Aciertos, descargas y bytes del caché de tiles (diagnóstico)."""
+    return _TILES.stats()
 
 
 def reproject_to_latlon(
@@ -434,11 +504,15 @@ def fetch_frame_for_bounds(
         product: ID del producto RAMMB.
         ts:      Timestamp 14-dígitos.
         bounds:  {lat_min, lat_max, lon_min, lon_max}.
-        zoom:    Nivel de zoom (2=Chile, 3=zona, 4=volcán).
+        zoom:    Nivel de zoom (2=Chile, 3=zona, 4=volcán). Se topa al
+                 máximo que RAMMB publica para el producto (`zoom_efectivo`):
+                 pedir Ash a zoom 4 devolvía None (404) y dejaba vacíos los
+                 loops y series que no tienen fallback propio.
 
     Returns:
         Array (H, W, 3) uint8 georeferenciado en los bounds dados, o None.
     """
+    zoom = zoom_efectivo(product, zoom)
     tile_rows, tile_cols = get_tiles_for_bounds(bounds, zoom, sat_lon)
     img = fetch_stitched_frame(product, ts, zoom=zoom,
                                tile_rows=tile_rows, tile_cols=tile_cols)
@@ -470,18 +544,25 @@ def fetch_frame_robust(
 ) -> tuple[np.ndarray | None, str | None, int]:
     """Fetch con fallback de timestamps Y de zoom.
 
-    RAMMB intermitentemente falla en zoom=4 para algunos productos
-    (eumetsat_ash, jma_so2). Esta funcion:
-      1. Prueba cada ts en `timestamps` con `zoom_preferred`. Si carga, usa eso.
-      2. Si NINGUN ts cargo en zoom_preferred, prueba con zoom_fallback
-         (los mismos ts en orden).
-      3. Si tampoco hay, devuelve (None, None, 0).
+    Esta funcion:
+      1. Topa ambos zooms al máximo que RAMMB publica para el producto
+         (`zoom_efectivo`). Ash y SO2 no existen a zoom 4: pedirlo era una
+         cadena de 404 garantizada por panel y por tick, no un fallback.
+      2. Prueba cada ts en `timestamps` con el zoom preferido. Si carga, usa eso.
+      3. Si NINGUN ts cargo, prueba con el zoom de fallback (mismos ts, en orden).
+      4. Si tampoco hay, devuelve (None, None, 0).
 
-    Devuelve (img, ts_usado, zoom_usado). zoom_usado=0 si fallo todo.
+    Devuelve (img, ts_usado, zoom_usado). zoom_usado es el zoom REAL del frame
+    (ya topado) y 0 si fallo todo; para saber si vino degradado usar
+    `zoom_reducido(product, zoom_usado, zoom_pedido)`.
 
     Cualquier llamador debe usar esta funcion en vez de fetch_frame_for_bounds
-    cuando quiera robustez frente a fallas RAMMB.
+    cuando quiera robustez frente a fallas RAMMB. Los tiles quedan memorizados
+    (ver `fetch_tile`), así que repetir la llamada en el tick siguiente con el
+    mismo scan no sale a la red.
     """
+    zoom_preferred = zoom_efectivo(product, zoom_preferred)
+    zoom_fallback = zoom_efectivo(product, zoom_fallback)
     # Intento 1: zoom preferido
     for ts in timestamps:
         try:

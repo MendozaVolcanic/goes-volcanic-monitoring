@@ -718,13 +718,16 @@ def _tabs_del_modo_guardia() -> list:
 
     Se busca por contenido ("Vigilancia diaria") y no por numero de linea:
     el archivo se reordena seguido y un indice clavado apuntaria a otra cosa
-    sin fallar.
+    sin fallar. Desde nov-2026 los sub-tabs van por `pestanas_perezosas`
+    (sólo corre el visible); se aceptan las dos formas de la llamada.
     """
     tree = ast.parse(GUARDIA.read_text(encoding="utf-8"))
     for node in ast.walk(tree):
-        if not (isinstance(node, ast.Call)
-                and isinstance(node.func, ast.Attribute)
-                and node.func.attr == "tabs" and node.args):
+        if not (isinstance(node, ast.Call) and node.args):
+            continue
+        f = node.func
+        if not ((isinstance(f, ast.Attribute) and f.attr == "tabs")
+                or (isinstance(f, ast.Name) and f.id == "pestanas_perezosas")):
             continue
         lista = node.args[0]
         if not isinstance(lista, ast.List):

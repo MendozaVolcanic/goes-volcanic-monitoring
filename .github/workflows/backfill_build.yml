@@ -2,8 +2,10 @@ name: Backfill historico build
 
 # Manual trigger: corre `scripts/build_backfill.py` con parametros del usuario
 # y publica el resultado como release `backfill-<DATE>-<VOLCAN>`. Permite
-# revisar eventos historicos (RAMMB archive ~360 dias) en la vista
-# "📅 Backfill historico" del dashboard.
+# revisar eventos historicos en la vista
+# "📅 Backfill historico" del dashboard. RAMMB conserva unos 2,5 meses
+# continuos y dias sueltos antes (medido 15-11-2026): fuera de eso usar
+# --l1b-fallback, que regenera desde L1b crudo de S3.
 
 on:
   workflow_dispatch:

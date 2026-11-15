@@ -82,7 +82,7 @@ CATALOG = [
     Volcano("Kīlauea (Hawái)", 19.42, -155.29, 1247, "Hawaii USA", "test", 0),
     Volcano("Popocatépetl (México)", 19.02, -98.62, 5426, "México", "test", 0),
     # Volcanes muy activos en cobertura GOES-19 — utiles para replay
-    # con datos reales recientes (RAMMB archive ultimos 28 dias).
+    # con datos reales recientes (RAMMB conserva unos 2,5 meses continuos).
     Volcano("Sangay (Ecuador)", -2.005, -78.341, 5286, "Ecuador", "test", 0),
     Volcano("Reventador (Ecuador)", -0.077, -77.66, 3562, "Ecuador", "test", 0),
     Volcano("Sabancaya (Perú)", -15.78, -71.85, 5976, "Peru", "test", 0),

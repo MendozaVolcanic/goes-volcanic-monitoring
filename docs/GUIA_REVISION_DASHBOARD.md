@@ -78,7 +78,8 @@ Es la vista de **entrega de turno**: qué pasó mientras no mirabas.
 
 ### 7. 📅 Backfill histórico — `?vista=backfill`
 Reconstrucción de eventos pasados desde L1b crudo, fuera de la ventana del archive
-de RAMMB (~28 días). Se alimenta del workflow manual `backfill_build.yml`.
+de RAMMB (unos 2,5 meses continuos, medido 15-11-2026; el límite de hoy lo
+muestra 🔁 Replay por fecha). Se alimenta del workflow manual `backfill_build.yml`.
 - **Qué NO sobre-leer:** el perfil GFS que usa el retrieval de altura es NRT, no de
   archivo, así que **la altura propia sobre un evento viejo no es confiable**.
 

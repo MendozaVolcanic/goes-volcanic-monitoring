@@ -1,6 +1,7 @@
 """Generación de productos volcánicos desde L1b GOES-19 para fechas históricas.
 
-Motivo (el "por qué"): RAMMB/CIRA SLIDER solo archiva ~9-10 meses de frames.
+Motivo (el "por qué"): RAMMB/CIRA SLIDER conserva unos 2,5 meses
+continuos de frames y dias sueltos antes (medido 15-11-2026).
 El bucket S3 `noaa-goes19` guarda las bandas L1b crudas de forma indefinida
 (desde abril 2025, cuando GOES-19 pasó a GOES-East). Por eso, cuando RAMMB no
 tiene un frame para una fecha, podemos REGENERAR el producto desde las bandas

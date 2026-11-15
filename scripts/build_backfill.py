@@ -73,7 +73,7 @@ def _fetch_one(product: str, ts: str, bounds: dict, scope_id: str,
 
     Si RAMMB no tiene el frame y `l1b_fallback` esta activo, regenera el
     producto desde las bandas L1b crudas de S3 (cobertura indefinida, vs
-    los ~9-10 meses de RAMMB). Ver src/process/historic_l1b_rgb.py.
+    unos 2,5 meses continuos de RAMMB, medido nov-2026). Ver src/process/historic_l1b_rgb.py.
     """
     zoom = HISTORIC_MAX_ZOOM.get(product, 3)
     img = fetch_historic_frame_for_bounds(product, ts, bounds, zoom=zoom)
@@ -376,7 +376,7 @@ def main():
     ap.add_argument("--l1b-fallback", action="store_true",
                     help="Regenerar productos desde L1b crudo (S3 noaa-goes19) "
                          "cuando RAMMB no tenga el frame. Si la fecha esta fuera "
-                         "del archive RAMMB (~9-10 meses), activa modo L1b-only. "
+                         "del archive RAMMB (unos 2,5 meses continuos), activa modo L1b-only. "
                          "GeoColor sale TrueColor aprox (no el de CIRA).")
     args = ap.parse_args()
 

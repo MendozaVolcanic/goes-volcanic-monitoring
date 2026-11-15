@@ -375,7 +375,9 @@ def _mode_dos_volcanes(now: datetime):
 
 def _build_target_ts_window(target_dt: datetime, window_hours: int = 2) -> list[str]:
     """Genera timestamps cada 10 min en una ventana de ±window_hours alrededor
-    del target_dt. Usado para baseline historico — RAMMB conserva ~28 dias.
+    del target_dt. Usado para baseline historico. RAMMB conserva unos 2,5 meses
+    continuos y dias sueltos antes (medido 15-11-2026); el limite real lo
+    calcula en vivo `historic_rammb.archive_span`.
     """
     target_dt = target_dt.replace(second=0, microsecond=0)
     target_dt = target_dt.replace(minute=(target_dt.minute // 10) * 10)
@@ -451,7 +453,8 @@ def _mode_baseline(now: datetime):
     if img_now is None and img_base is None:
         st.error(
             "No se pudieron bajar ni el frame actual ni el de baseline. "
-            "RAMMB retiene ~28 días de historia — más allá no hay tiles."
+            "RAMMB conserva unos 2,5 meses continuos y días sueltos antes; "
+            "la vista 🔁 Replay por fecha muestra el límite real de hoy."
         )
         return
 
@@ -500,7 +503,8 @@ def _mode_baseline(now: datetime):
         f"hace {days_ago} día(s). Asumimos que ese día NO había actividad anómala — "
         "si la había, esta vista no sirve. Útil para detectar **cambios respecto a "
         "lo típico** (cobertura nubosa habitual, sombra de Andes, etc.). "
-        "RAMMB retiene ~28 días, baselines más viejas no estarán disponibles."
+        "RAMMB conserva unos 2,5 meses continuos (medido nov-2026): una baseline "
+        "más vieja puede no estar. El límite real de hoy está en 🔁 Replay por fecha."
     )
 
 

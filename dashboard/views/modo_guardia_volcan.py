@@ -425,7 +425,19 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
                     hotspots: list[HotSpot] | None = None,
                     show_wind: bool = False, wind_data: dict | None = None,
                     show_rings: bool = False,
-                    height: int = 620):
+                    height: int = 620, regla: bool = False):
+    """Panel de un producto del volcan, dibujado en km alrededor del crater.
+
+    Se arma en lon/lat (asi vienen imagen, hot spots y viento) y al final
+    `dashboard.regla.figura_en_km` lo pasa entero al plano del crater: la
+    barra de escala y la regla miden km sin convertir grados a mano.
+    """
+    from dashboard.regla import (activar_regla, agregar_barra_escala,
+                                 figura_en_km, km_por_grado_lat,
+                                 radios_anillos_km)
+
+    radio_km = ((bounds["lat_max"] - bounds["lat_min"]) / 2
+                * km_por_grado_lat(volcan_lat))
     fig = go.Figure()
     if img is not None:
         fig.add_layout_image(
@@ -438,8 +450,10 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
         )
 
     # Anillos de distancia (debajo de marcadores y vientos)
+    # Los radios siguen al encuadre: con 5-50 km fijos, a 3 grados de radio
+    # quedaban apinados en el centro.
     if show_rings:
-        for r_km in RING_RADII_KM:
+        for r_km in radios_anillos_km(radio_km):
             lats, lons = _circle_points(volcan_lat, volcan_lon, r_km)
             fig.add_trace(go.Scatter(
                 x=lons, y=lats, mode="lines",
@@ -499,19 +513,16 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
                 hoverinfo="skip", showlegend=False,
             ))
 
-    # scaleratio = 1/cos(lat) hace que 1 km en x = 1 km en y en pixeles,
-    # por lo que un circulo geometrico (en km) se ve como circulo visual.
-    # Sin esto los anillos aparecen aplastados como ovalos.
-    cos_lat = max(0.1, float(np.cos(np.radians(volcan_lat))))
     # constrain="domain" en AMBOS ejes: con scaleanchor y sin esto, el default
     # de Plotly es constrain="range" y ENSANCHA el rango para cumplir el aspecto,
     # ignorando el range que se pide aca. Con el contenedor angosto del primer
     # render la escena se dispara y no vuelve. (audit 2026-08-30)
+    # El aspecto (1 km en x = 1 km en y) lo pone figura_en_km mas abajo; en
+    # grados era scaleratio = 1/cos(lat).
     fig.update_xaxes(range=[bounds["lon_min"], bounds["lon_max"]],
                      showgrid=False, visible=False, constrain="domain")
     fig.update_yaxes(range=[bounds["lat_min"], bounds["lat_max"]],
                      showgrid=False, visible=False,
-                     scaleanchor="x", scaleratio=1.0 / cos_lat,
                      constrain="domain")
     fig.update_layout(
         title=dict(text=product_label, font=dict(size=13, color="#e0e0e0"), x=0.02),
@@ -524,6 +535,11 @@ def _render_product(img: np.ndarray | None, bounds: dict, product_label: str,
             xref="paper", yref="paper", x=0.5, y=0.5, showarrow=False,
             font=dict(color="#7a8a9a", size=14),
         )
+    figura_en_km(fig, volcan_lat, volcan_lon)
+    agregar_barra_escala(fig, fig.layout.xaxis.range, fig.layout.yaxis.range)
+    if regla:
+        # Bajo 1 grado de radio un pixel vale menos de 1 km: un decimal.
+        activar_regla(fig, decimales=1 if radio_km < 111 else 0)
     return fig
 
 
@@ -665,10 +681,21 @@ def _build_capture_png(volcan_name: str, volcan_lat: float, volcan_lon: float,
 
 # ── Render principal ─────────────────────────────────────────────────
 
+def _config_plotly(regla: bool) -> dict:
+    """Sin barra de herramientas, salvo con la regla: ahi deja SOLO el boton
+    de borrar linea (se toca la linea y luego el boton). Sin el, las
+    mediciones se acumulan hasta el proximo scan."""
+    if regla:
+        return {"displayModeBar": True, "modeBarButtons": [["eraseshape"]],
+                "displaylogo": False, "responsive": True}
+    return {"displayModeBar": False, "responsive": True}
+
+
 @st.fragment(run_every=f"{RAMMB_REFRESH_S}s")
 def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
                  show_wind: bool, show_rings: bool, height: int,
-                 radius_deg: float = RADIUS_DEG, show_legend: bool = True):
+                 radius_deg: float = RADIUS_DEG, show_legend: bool = True,
+                 regla: bool = False):
     """Un panel RAMMB con su propio poll.
 
     NO recibe timestamp ni imagen por argumento: los args de un fragment con
@@ -716,21 +743,27 @@ def _panel_rammb(prod_id: str, label: str, recipe: str, volcan_name: str,
 
     img, ts_label = fetch_volcan_product(
         prod_id, v.name, v.lat, v.lon, bounds, now)
+    # La edad va bajo el mapa y no en su titulo: el panel se refresca cada
+    # minuto, y una figura distinta borra las lineas trazadas con la regla.
+    from dashboard.map_helpers import separar_edad
+    titulo, edad = separar_edad(ts_label)
     st.plotly_chart(
-        _render_product(img, bounds, f"{label} · {ts_label}",
+        _render_product(img, bounds, f"{label} · {titulo}",
                         v.lat, v.lon, v.name,
                         hotspots=hs, show_wind=show_wind, wind_data=wind,
-                        show_rings=show_rings, height=height),
+                        show_rings=show_rings, height=height, regla=regla),
         width='stretch',
-        config={"displayModeBar": False, "responsive": True},
+        config=_config_plotly(regla),
         # El radio va en la key: dos renders del mismo volcan a radios
         # distintos son figuras distintas, y con la key compartida Plotly
         # reusaria el estado (zoom/pan) de la anterior.
         key=f"vgrid_{prod_id}_{volcan_name}_{radius_deg:.2f}",
     )
+    _edad_txt = (f"<b style='color:#9aa8b6;'>Scan hace {edad} min</b> · "
+                 if edad is not None else "")
     st.markdown(
         f"<div style='font-size:0.7rem; color:#556; margin-top:-0.5rem;'>"
-        f"{recipe}</div>",
+        f"{_edad_txt}{recipe}</div>",
         unsafe_allow_html=True,
     )
 
@@ -759,7 +792,7 @@ def etiqueta_sector_volcat(sector: str) -> str:
 
 @st.fragment(run_every=f"{VOLCAT_REFRESH_S}s")
 def _panel_volcat(volcan_name: str, height: int,
-                  radius_deg: float = RADIUS_DEG):
+                  radius_deg: float = RADIUS_DEG, regla: bool = False):
     """Panel VOLCAT: altura de pluma cuantitativa de SSEC/CIMSS.
 
     Reusa `zonas_fullscreen._render_volcat_zoom_tv` (import perezoso entre
@@ -793,7 +826,10 @@ def _panel_volcat(volcan_name: str, height: int,
     )
 
     from dashboard.views.zonas_fullscreen import _render_volcat_zoom_tv
-    _render_volcat_zoom_tv(volcan_name, height=height, pad=radius_deg)
+    # en_km: la grilla lleva barra de escala y regla en los cuatro paneles.
+    # El slot de sala que usa la misma funcion sin la grilla queda en grados.
+    _render_volcat_zoom_tv(volcan_name, height=height, pad=radius_deg,
+                           en_km=True, regla=regla)
 
 
 # ── Tira de altura de tope (calculo propio) ──────────────────────────
@@ -1287,7 +1323,7 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
                 fullscreen: bool = False, panels: list | None = None,
                 per_row: int | None = None, show_header: bool = True,
                 radius_deg: float = RADIUS_DEG, show_legend: bool = True,
-                mostrar_altura: bool = False):
+                mostrar_altura: bool = False, regla: bool = False):
     """Grilla de productos del volcan, todos a la vez.
 
     FUENTE UNICA de esta vista — la usan el sub-tab Volcan del Modo Guardia,
@@ -1354,12 +1390,12 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
             with col:
                 if panel["kind"] == "volcat":
                     _panel_volcat(volcan_name, height=height,
-                                  radius_deg=radius_deg)
+                                  radius_deg=radius_deg, regla=regla)
                 else:
                     _panel_rammb(panel["id"], panel["label"], panel["recipe"],
                                  volcan_name, show_wind, show_rings, height,
                                  radius_deg=radius_deg,
-                                 show_legend=show_legend)
+                                 show_legend=show_legend, regla=regla)
 
     # Debajo de los mapas, no como quinto panel: la grilla se afino midiendo
     # (4 en una fila que entran justo en 1080p) y un quinto elemento devuelve

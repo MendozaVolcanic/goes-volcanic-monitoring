@@ -30,7 +30,7 @@ _MANUALS: dict[str, tuple[str, str]] = {
         "Vista Operacional",
         """
 **Qué muestra**: visor en vivo de los productos GOES-19 (GOES-East,
-geoestacionario 75°W, cadencia ~10 min, resolución 2 km IR). Podés
+geoestacionario 75°W, cadencia ~10 min, resolución 2 km IR). Puedes
 elegir un volcán específico o una región amplia, y alternar entre Ash
 RGB, GeoColor, SO2 RGB y otros productos satelitales.
 
@@ -49,8 +49,24 @@ RGB, GeoColor, SO2 RGB y otros productos satelitales.
 - **Toggle 💨 Viento GFS**: superpone vectores de viento a 300/500/850 hPa
   (Open-Meteo) para predecir dirección de pluma.
 
+**Medir hasta dónde llega la ceniza** (pestaña Volcán):
+- Cada mapa trae una **barra de escala** en km abajo a la izquierda. En
+  Nacional y Zona la barra es **vertical (N-S)**: esos mapas están en
+  grados, y un km horizontal no mide lo mismo en Arica que en Magallanes.
+- **📏 Regla**: con el interruptor prendido, arrastra desde el cráter hasta
+  el frente de la pluma y la línea muestra su largo en km. Funciona en los
+  cuatro productos, incluido VOLCAT. Hasta 3° de radio el error es menor a
+  1,5 %. Una línea se borra tocándola y luego la goma (arriba a la
+  derecha), y se borra sola con un scan nuevo, porque hay que volver a
+  medir sobre la imagen nueva.
+- Los **anillos** crecen con el radio: a 3° llegan a 300 km.
+- **Paralaje**: GOES-19 mira Chile de lado, y una pluma alta aparece
+  corrida hacia el sur entre 0,4 km por km de altura en el norte y 1,5 en
+  la zona austral. Una pluma a 10 km sobre Villarrica se dibuja unos 10 km
+  al sur de donde está.
+
 **Falsos positivos en Chile invierno** (mayo-septiembre): cirros altos
-y nieve cordillerana dan señal Ash RGB roja similar a ceniza. Validá
+y nieve cordillerana dan señal Ash RGB roja similar a ceniza. Valida
 siempre cruzando con hot spots NOAA FDCF y movimiento en loop.
 
 **Referencias**:

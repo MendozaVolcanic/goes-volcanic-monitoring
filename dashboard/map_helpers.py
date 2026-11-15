@@ -427,7 +427,7 @@ def _symbol_html(key: str) -> str:
         return (_svg('<circle cx="6" cy="6" r="4.6" fill="none" '
                      'stroke="rgba(255,255,255,0.75)" stroke-width="1" '
                      'stroke-dasharray="2 1.6"/>')
-                + "Anillos 5/10/25/50 km")
+                + "Anillos de distancia (rótulo en km)")
     if key == "wind":
         arrows = "".join(
             _svg(f'<path d="M1,6 L9,6 M6.5,3.2 L9.6,6 L6.5,8.8" fill="none" '
@@ -739,6 +739,23 @@ def alerta_edad(edad_min, limite_min=IMAGEN_ATRASADA_MIN):
     if edad_min is None or edad_min < limite_min:
         return ""
     return " ⚠ atrasada"
+
+
+def separar_edad(rotulo: str) -> tuple[str, int | None]:
+    """Saca "(hace N min)" de un rótulo de imagen: (rótulo estable, N).
+
+    El rótulo estable solo cambia con un scan nuevo; la edad cambia cada
+    minuto. Va dentro del mapa lo primero y fuera lo segundo, porque cualquier
+    cambio de la figura redibuja el mapa y borra las líneas que el operador
+    trazó con la regla. El aviso "atrasada" queda en el rótulo estable: cambia
+    una sola vez, al cruzar el límite.
+    """
+    import re
+
+    m = re.search(r" \(hace (\d+) min\)", rotulo)
+    if not m:
+        return rotulo, None
+    return rotulo[:m.start()] + rotulo[m.end():], int(m.group(1))
 
 
 def clase_banner_edad(edad_min, limite_min=IMAGEN_ATRASADA_MIN):

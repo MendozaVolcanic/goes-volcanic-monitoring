@@ -29,6 +29,7 @@ Cross-check con VRP (MODIS/VIIRS) sigue siendo necesario para validar.
 
 from __future__ import annotations
 
+import io
 import logging
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
@@ -36,6 +37,7 @@ from typing import Optional
 
 import numpy as np
 
+from src.fetch.cache_inmutable import CacheInmutable
 from src.fetch.granule_select import (SCAN_MAX_GAP_S, nearest_granule_key,
                                       get_s3 as _get_s3)
 
@@ -220,6 +222,43 @@ def xy_index_range(
     return int(c_idx[0]), int(c_idx[-1]), int(r_idx[0]), int(r_idx[-1])
 
 
+# Gránulos FDCF ya bajados, por key S3. QUÉ: los bytes del NetCDF de un scan.
+# POR QUÉ: la key lleva el inicio del scan en el nombre (`_s<YYYYDDDHHMMSSs>`)
+# y NOAA no reescribe un gránulo publicado, así que es inmutable. Antes cada
+# lector abría el archivo por su cuenta: Modo Sala lo bajaba una vez por zona
+# (4 GET de ~1,9 MB del mismo scan) y otra por volcán, porque el caché de
+# Streamlit va por bbox. Ahora el recorte por bbox sigue siendo por llamador
+# (`extract_hotspots`), pero el archivo se baja una vez por scan. 16 MB guardan
+# los últimos ~8 scans: sobra para NRT y para el histórico de un evento.
+#
+# Lo que esto NO cambia (contrato SDA, ver `fetch_latest_hotspots`): el
+# LISTADO se hace en cada llamada. Si S3 no contesta, la llamada devuelve
+# ([], None) aunque el gránulo anterior siga en memoria; un scan memorizado
+# nunca se presenta como el scan actual.
+_GRANULOS = CacheInmutable("granulos_fdcf", max_bytes=16 * 1024 * 1024)
+
+
+def _bajar_granulo(s3, key: str) -> bytes:
+    with s3.open(key, "rb") as f:
+        return f.read()
+
+
+def _abrir_granulo(s3, key: str):
+    """Dataset FDCF de `key`, bajando el archivo sólo si no está en memoria.
+
+    Lanza lo mismo que lanzaría `s3.open`/`xr.open_dataset`: el llamador ya
+    convierte cualquier excepción en "no verificable".
+    """
+    import xarray as xr
+    crudo = _GRANULOS.obtener(key, lambda: _bajar_granulo(s3, key))
+    return xr.open_dataset(io.BytesIO(crudo or b""), engine="h5netcdf")
+
+
+def fdcf_cache_stats() -> dict:
+    """Aciertos, descargas y bytes del caché de gránulos (diagnóstico)."""
+    return _GRANULOS.stats()
+
+
 def _read_block(ds, name: str, rng: Optional[tuple]) -> np.ndarray:
     """Materializar una variable 2D del FDCF, recortada al sub-bloque si lo hay.
 
@@ -359,7 +398,7 @@ def fetch_latest_hotspots(
     # (1) Dependencias. Sin s3fs/xarray no se consultó nada: no verificable.
     try:
         import s3fs  # noqa: F401  (se usa vía _get_s3; el import valida presencia)
-        import xarray as xr
+        import xarray as xr  # noqa: F401  (se usa en _abrir_granulo; valida presencia)
     except ImportError as e:
         logger.error("FDCF NO CONSULTABLE: s3fs/xarray no disponible: %s", e)
         return [], None
@@ -392,13 +431,12 @@ def fetch_latest_hotspots(
     # (4) Lectura del NetCDF. Cualquier excepción (red, h5netcdf, variable
     # ausente, pyproj) invalida el scan entero: no hay lectura parcial creíble.
     try:
-        with s3.open(latest, "rb") as f:
-            ds = xr.open_dataset(f, engine="h5netcdf")
-            # Time del scan — parsear del nombre del archivo (mas robusto que
-            # decodificar variable 't' en J2000 segundos)
-            scan_dt = _parse_scan_time(latest)
-            hotspots = extract_hotspots(ds, bounds=bounds,
-                                        high_conf_only=high_conf_only)
+        ds = _abrir_granulo(s3, latest)
+        # Time del scan: parsear del nombre del archivo (mas robusto que
+        # decodificar variable 't' en J2000 segundos)
+        scan_dt = _parse_scan_time(latest)
+        hotspots = extract_hotspots(ds, bounds=bounds,
+                                    high_conf_only=high_conf_only)
     except Exception as e:
         logger.exception("FDCF NO CONSULTABLE: error leyendo %s: %s", latest, e)
         return [], None
@@ -482,7 +520,7 @@ def fetch_hotspots_at_time(
     # (1) Dependencias.
     try:
         import s3fs  # noqa: F401  (se usa vía _get_s3; el import valida presencia)
-        import xarray as xr
+        import xarray as xr  # noqa: F401  (se usa en _abrir_granulo; valida presencia)
     except ImportError as e:
         logger.error("FDCF NO CONSULTABLE: s3fs/xarray no disponible: %s", e)
         return [], None
@@ -517,11 +555,10 @@ def fetch_hotspots_at_time(
 
     # (4) Lectura del NetCDF: cualquier excepción invalida el scan entero.
     try:
-        with s3.open(chosen, "rb") as f:
-            ds = xr.open_dataset(f, engine="h5netcdf")
-            scan_dt = _parse_scan_time(chosen)
-            hotspots = extract_hotspots(ds, bounds=bounds,
-                                        high_conf_only=high_conf_only)
+        ds = _abrir_granulo(s3, chosen)
+        scan_dt = _parse_scan_time(chosen)
+        hotspots = extract_hotspots(ds, bounds=bounds,
+                                    high_conf_only=high_conf_only)
     except Exception as e:
         logger.exception("FDCF NO CONSULTABLE: error leyendo histórico %s: %s",
                          chosen, e)

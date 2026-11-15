@@ -25,7 +25,8 @@ try:
     from dashboard.style import volcano_marker
     from dashboard.utils import fmt_chile, parse_rammb_ts
     from src.fetch.rammb_slider import (
-        fetch_frame_robust, get_latest_timestamps, ZOOM_VOLCAN, ZOOM_ZONE,
+        fetch_frame_robust, get_latest_timestamps, zoom_reducido,
+        ZOOM_VOLCAN, ZOOM_ZONE,
     )
     from dashboard.map_helpers import RGB_PRODUCTS
     from src.volcanos import get_volcano
@@ -125,7 +126,8 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
                  target_width_px: int | None = None,
                  zoom_used: int | None = None,
                  hires_render: str | None = None,
-                 hires_sun_alt: float | None = None):
+                 hires_sun_alt: float | None = None,
+                 product: str | None = None):
     """Mini-plot cuadrado con bbox compensado por latitud.
 
     `height` se usa solo si `target_width_px=None`. Si se pasa width,
@@ -233,13 +235,15 @@ def _render_mini(img: np.ndarray | None, lat: float, lon: float, name: str,
             else:
                 badge_color = "#33aaff"
                 badge_text = "HI-RES NOAA · 1km/px"
-        elif zoom_used >= 4:
-            badge_color = "#3fb950"
-            badge_text = f"z={zoom_used} · 1.7km/px"
         else:
-            badge_color = "#ff9933"
-            kmpx = {3: "3.4", 2: "6.8"}.get(zoom_used, "?")
+            kmpx = {4: "1.7", 3: "3.4", 2: "6.8"}.get(zoom_used, "?")
             badge_text = f"z={zoom_used} · {kmpx}km/px"
+            # Naranja = fallback REAL: el frame vino más grueso de lo que el
+            # producto publica. Ash/SO2 a z=3 es su máximo (bandas IR de 2 km)
+            # y va en verde; sin producto se conserva el criterio viejo.
+            degradado = (zoom_reducido(product, zoom_used, ZOOM_VOLCAN)
+                         if product else zoom_used < ZOOM_VOLCAN)
+            badge_color = "#ff9933" if degradado else "#3fb950"
         fig.add_annotation(
             x=bounds["lon_max"], y=bounds["lat_min"],
             xref="x", yref="y",
@@ -376,7 +380,7 @@ def _grid_fragment(cell_px: int = None, use_hires: bool = False,
             tss = ts_by_prod.get(pid) or []
             if used_ts and tss and used_ts != tss[0]:
                 fallback_ts += 1
-            if used_zoom == ZOOM_ZONE:
+            if used_zoom and zoom_reducido(pid, used_zoom, ZOOM_VOLCAN):
                 fallback_zoom += 1
             with cols[i]:
                 st.plotly_chart(
@@ -386,7 +390,7 @@ def _grid_fragment(cell_px: int = None, use_hires: bool = False,
                     _render_mini(img, v.lat, v.lon,
                                  f"{name} · {label}" if i == 0 else label,
                                  target_width_px=cell_px, show_rings=True,
-                                 zoom_used=used_zoom,
+                                 zoom_used=used_zoom, product=pid,
                                  hires_render=(hires_info or {}).get("render"),
                                  hires_sun_alt=(hires_info or {}).get("sun_alt")),
                     width='stretch',
@@ -432,7 +436,8 @@ def _grid_fragment(cell_px: int = None, use_hires: bool = False,
     if fallback_ts:
         notes.append(f"{fallback_ts} con scan previo")
     if fallback_zoom:
-        notes.append(f"{fallback_zoom} en zoom 3 (RAMMB no sirvió zoom 4)")
+        notes.append(f"{fallback_zoom} con zoom reducido (RAMMB no sirvió "
+                     "el zoom del producto)")
     if notes:
         st.caption("ℹ " + " · ".join(notes))
 
@@ -488,7 +493,7 @@ def _grid_fragment_tv(session_key: str = "tv_mosaico_rot_idx"):
                 st.plotly_chart(
                     _render_mini(img, v.lat, v.lon, name,
                                  target_width_px=460, show_rings=True,
-                                 zoom_used=used_zoom),
+                                 zoom_used=used_zoom, product=current),
                     width='stretch',
                     config={"displayModeBar": False},
                 )

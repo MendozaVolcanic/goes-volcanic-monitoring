@@ -450,6 +450,7 @@ def wen_rose_top_height(
     percentile: float = 95,
     beta: float = BETA_SILICATE,
     summit_km: Optional[float] = None,
+    profile_fn=None,
 ) -> dict:
     """Altura del tope por Wen-Rose para un volcán en un instante.
 
@@ -485,7 +486,8 @@ def wen_rose_top_height(
     # los guards de honestidad viven en scene.acquire_ash_scene. Wen-Rose sí
     # necesita los coeficientes Planck: mezcla RADIANCIAS, no temperaturas.
     scene = acquire_ash_scene(dt, volcano, radius_deg, with_coefs=True,
-                              source=source, label="Wen-Rose")
+                              source=source, label="Wen-Rose",
+                              profile_fn=profile_fn)
     if isinstance(scene, dict):
         return scene
 

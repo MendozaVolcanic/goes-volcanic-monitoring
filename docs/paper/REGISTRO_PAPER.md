@@ -144,6 +144,27 @@ independiente → fix**. Dos hallazgos confirmados que cambiaron el método
   que hasta ahora solo se probaban con un volcán inexistente. Implicancia para
   la reproducibilidad: los criterios de degradación del retrieval son ahora
   auditables en un único archivo, no inferidos de tres copias divergentes.
+- **G2: el perfil de otro momento no da error, da otra altura (nov-2026):** la
+  altura sale de buscar la BT del tope en el T(z) del GFS. Open-Meteo guarda
+  sólo ~2 días hacia atrás y, para un scan más viejo, igual devuelve "la hora
+  más cercana", que puede ser de otro día; `fetch_gfs_profile` lo registraba en
+  el log y la escena lo usaba sin mirar. El árbitro de viento ya rechazaba su
+  perfil viejo (`MAX_WIND_AGE_H` = 3 h); el de temperatura no tenía guard. Fix
+  en `scene.acquire_ash_scene`: (a) `MAX_PROFILE_AGE_H` = 3 h, medido entre la
+  `valid_time` del perfil y el scan, sin confiar en el gap que reporta el
+  fetcher; hora ilegible ⇒ no se reporta. 3 h no es una tolerancia física del
+  T(z) medida por nosotros: es la misma regla del viento y el semiancho del
+  ciclo de 6 h del GFS archivado. (b) `profile_fn` inyectable en BT-matching y
+  Wen-Rose, para pasar `gfs_archive.fetch_gfs_profile_archive` en eventos
+  viejos (mismo diseño que `wind_profile_fn`). (c) Perfil sin tropopausa ⇒ no
+  se reporta: con un segundo proveedor el riesgo latente de la FICHA §B.8.1
+  (guard de runaway en +inf) dejaba de estar cubierto por "Open-Meteo no trae
+  nulls". En NRT nada cambia: Open-Meteo es horario y el gap queda bajo 30 min.
+  Implicancia para el paper: los casos de la §3 se corrieron dentro de las
+  48 h de Open-Meteo, así que sus perfiles eran los del día; desde ahora un
+  caso histórico sin GFS archivado sale `no_data` en vez de una altura con la
+  atmósfera equivocada. Verificado por mutación (desactivar el guard rompe 3
+  pruebas; ignorar `profile_fn` rompe 1).
 
 ## 6. Open source / reproducibilidad
 
@@ -165,7 +186,8 @@ corregido a 1er orden (Δ = h·tanθ, ~1 km/km a −40°S; `parallax.py`; falta
 cablearlo al render del mapa) · sin RTM (β_tropo aproximado con clear-sky de
 escena) · wind-shear con banda de
 ambigüedad recalibrada al RMSE del viento GFS (±8 m/s) y guard de pluma adjunta
-(`adv_ambiguous`) implementados, pero el NÚMERO aún sin validar en evento real.
+(`adv_ambiguous`) implementados, pero el NÚMERO aún sin validar en evento real. · altura de eventos de más de ~2 días sólo con
+GFS archivado inyectado (`profile_fn`); sin él el retrieval no reporta (G2).
 
 ## 8. Candidatos a trabajo futuro (ya scopeados)
 

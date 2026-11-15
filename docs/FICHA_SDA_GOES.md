@@ -1,6 +1,6 @@
 # Ficha de Transparencia Algorítmica — Monitoreo Volcánico GOES-19 (dashboard + retrieval de altura de pluma)
 
-**Identificador interno:** SDA-GOES-01   **Versión:** v2.3, 2026-11-15
+**Identificador interno:** SDA-GOES-01   **Versión:** v2.4, 2026-11-15
 *(Resolución CPLT N°372; ver `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` del workspace)*
 
 > **Qué cambió respecto de la v1.0 (2026-07-01):** ver §"Historial de versiones" al final.
@@ -173,7 +173,9 @@ declara qué decide, con qué umbral, con qué fuente y cuál es su límite cono
 ### A.5 Dónde viven los guards de adquisición
 Los retrievals de altura comparten `src/process/scene.py` (`acquire_ash_scene`).
 Ahí —y sólo ahí— se decide *no reportar*: banda ausente, bbox fuera del disco,
-bandas de scans distintos (misregistro) y falta de perfil GFS. Hasta la ola 2 del
+bandas de scans distintos (misregistro), falta de perfil GFS, perfil a más de
+`MAX_PROFILE_AGE_H` (3 h) del scan o con hora ilegible, y perfil sin tropopausa
+(v2.4). Hasta la ola 2 del
 audit ago-2026 ese bloque estaba duplicado en tres módulos, con el riesgo de que
 un fix a un guard se aplicara sólo a uno. Cualquier cambio a un criterio de
 degradación va en `scene.py` y en esta ficha, mismo commit.
@@ -289,6 +291,9 @@ pero que dependen de una condición del entorno, y por eso quedan registrados:
    realista (perfil caído entero) ya lo corta el guard "sin perfil GFS".
    **Condición de seguridad: un solo proveedor de perfil. El día que se cablee
    LVTP, GRIB o cualquier otro, revisar este guard ANTES de conectarlo.**
+   *(v2.4: revisado al abrir `profile_fn` para el GFS archivado. La escena ahora
+   rechaza todo perfil sin tropopausa, sea cual sea su proveedor, así que esta
+   condición ya no depende de que Open-Meteo no traiga nulls.)*
 2. **`well_constrained` no mide la calidad del ajuste** — mide el ancho del mínimo
    de residuo, no su valor. Se refutó porque `_revert_unreliable` neutraliza los
    casos malos (la altura clampa en la tropopausa, `reliable` pasa a `False` y el
@@ -353,6 +358,20 @@ conectarlos exige actualizar esta ficha.
 ---
 
 ## Historial de versiones
+
+### v2.4: 2026-11-15 (perfil T(z) del momento correcto)
+**Criterio de "no reportar" nuevo en `src/process/scene.py`.** Ningún umbral de
+detección ni cifra de altura cambia en NRT.
+- Si el perfil T(z) está a más de 3 h del scan, o su hora no se puede leer, el
+  retrieval de altura no reporta. Antes, para un scan de más de ~2 días,
+  Open-Meteo devolvía el perfil de otro día y la altura salía con la atmósfera
+  equivocada, sin aviso en pantalla. En el dashboard (scan de hace minutos) el
+  perfil es horario y este guard no se activa.
+- BT-matching y Wen-Rose aceptan un perfil inyectado (`profile_fn`), para
+  validar eventos viejos con el GFS archivado (`src/fetch/gfs_archive.py`).
+  Ningún camino del dashboard lo usa.
+- Un perfil sin tropopausa tampoco se usa (cierra la condición de §B.8.1 para
+  cualquier proveedor).
 
 ### v2.3: 2026-11-15 (menos descargas por ciclo)
 **Cómo se adquieren los datos, no qué se decide con ellos.** Ninguna detección,

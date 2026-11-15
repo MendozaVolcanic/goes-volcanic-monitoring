@@ -16,18 +16,29 @@ aunque sigan en la lista. La vista calcula ese limite en cada visita desde
 `available_dates.json` y lo dice en pantalla; un dia que no esta se informa
 como tal y nunca se reemplaza por otro.
 
-No decide nada: muestra la imagen RAMMB del scan elegido. La lectura (hay
-pluma, es ceniza, es SO2) queda al geologo de turno.
+Cuatro productos y reproduccion (15-11-2026): GeoColor, Ash RGB, SO2 y
+VOLCAT del MISMO scan, lado a lado, para comparar contra una anomalia vista
+en otro visor. El dia se puede reproducir entero: se baja una vez y la
+animacion corre en el navegador (`dashboard/replay_dia.py`). Un producto sin
+imagen en un scan queda vacio y dice por que; nunca toma el scan vecino.
+
+No decide nada: muestra imagenes RAMMB y SSEC ya publicadas. La lectura (hay
+pluma, es ceniza, es SO2, que altura) queda al geologo de turno.
 """
 
 import logging
+import time
 from datetime import date, datetime, timedelta, timezone
 
 import streamlit as st
 
 try:
     from dashboard.style import header
-    from dashboard.utils import CHILE_TZ, parse_rammb_ts, utc_to_chile
+    from dashboard.utils import CHILE_TZ, utc_to_chile
+    from dashboard.replay_dia import (
+        PANELES, PANELES_RAMMB, ROTULOS, emparejar, figura_dia,
+        linea_de_tiempo, rotulo_slot, volcat_por_slot,
+    )
     from src.fetch.rammb_slider import (
         fetch_frame_robust, zoom_reducido, ZOOM_VOLCAN, ZOOM_ZONE,
     )
@@ -61,11 +72,31 @@ ACTIVE_VOLCANOES = [
     {"name": "Copahue", "rationale": "Emisión sostenida de SO2."},
 ]
 
-PRODUCTS = {
-    "eumetsat_ash": "Ash RGB",
-    "geocolor": "GeoColor",
-    "jma_so2": "SO2 RGB",
-}
+# Rotulos de los productos (los 4 se muestran juntos; ya no se elige uno).
+PRODUCTS = ROTULOS
+
+# Velocidades de reproduccion (cuadros por segundo). A 4 cuadros/s un dia de
+# 144 scans dura 36 s.
+VELOCIDADES = [1, 2, 4, 8, 12]
+
+# Descargas en paralelo al cargar el dia: RAMMB entrega tiles chicos (24
+# cuadros en ~5 s con 8 hilos, medido 15-11-2026); SSEC es un servidor
+# universitario, por eso no mas que esto.
+_HILOS = 8
+
+# VOLCAT viene a 2 km por pixel: en un encuadre de 0,4 grados son ~45 pixeles.
+# Se agranda con vecino mas cercano (cada color es una altura de la escala y
+# un filtro suave inventaria alturas intermedias).
+_ESCALA_VOLCAT = 4
+
+# VOLCAT es lo caro de reproducir un dia: SSEC entrega el sector entero
+# (Chile_North_2_km son ~0,55 MB por cuadro, medido 15-11-2026) aunque el
+# encuadre sea de 0,4 grados. Con 8 hilos y una conexion lenta, el dia de
+# Lastarria iba en 176 de 559 imagenes a los 8 min. Por eso la reproduccion
+# baja primero GeoColor, Ash y SO2 (unos KB cada uno) y VOLCAT se agrega
+# aparte, con el costo a la vista.
+_MB_POR_CUADRO_VOLCAT = 0.55
+_VOLCAT_SIN_CARGAR = "VOLCAT no cargado: usa «Agregar VOLCAT»"
 
 # Canonical en src/config (REPLAY_RADIUS_DEG). Fallback hardcoded por
 # si Streamlit Cloud falla el import durante hot-reload (gotcha CLAUDE.md).
@@ -111,14 +142,6 @@ def _hay_imagenes(product: str, ts: str, bounds_key: tuple):
                                         "lon_min": lon_min, "lon_max": lon_max})
 
 
-def _rotulo_ts(ts: str) -> str:
-    """'14-nov 09:50 Chile · 12:50 UTC' (la hora de Chile manda: es la del
-    dia elegido)."""
-    dt = parse_rammb_ts(ts)
-    ch = utc_to_chile(dt)
-    return f"{ch:%d-%m %H:%M} Chile · {dt:%H:%M} UTC"
-
-
 def _texto_archivo(span: dict | None) -> str:
     """Limite real del archivo RAMMB, en palabras."""
     if span is None:
@@ -143,19 +166,158 @@ def _mover(key: str, paso: int, n: int):
                                 n - 1)
 
 
+@st.cache_data(ttl=300, show_spinner=False)
+def _volcat_del_dia(sector: str, instr: str, ini_iso: str, fin_iso: str):
+    """Cuadros VOLCAT de la ventana. La lista de SSEC trae ~30 dias y pesa
+    ~1 MB: no se pide en cada rerun."""
+    from src.fetch.volcat_api import volcat_cuadros_entre
+    return volcat_cuadros_entre(sector, instr, datetime.fromisoformat(ini_iso),
+                                datetime.fromisoformat(fin_iso))
+
+
+def _imagen_volcat(meta: dict, bounds: dict):
+    """Recorte del cuadro VOLCAT al encuadre, agrandado sin mezclar colores.
+    None si SSEC no lo entrego."""
+    import numpy as np
+
+    from dashboard.views.volcat_viewer import _volcat_map_only
+    from dashboard.volcat_loop import escalar_mapa, recortar_encuadre
+    geo = _volcat_map_only(meta["image_url"], meta.get("latlon_url"),
+                           meta.get("coords") or {})
+    if not (geo and geo.get("png")):
+        return None
+    rec = recortar_encuadre(geo["png"], geo["bounds"], bounds)
+    if rec is None:
+        return None
+    w, h = rec.size
+    return np.asarray(escalar_mapa(rec, w * _ESCALA_VOLCAT,
+                                   h * _ESCALA_VOLCAT))
+
+
+def _barra_volcat(meta: dict | None):
+    """Escala de altura de VOLCAT (la quemada por SSEC), o None."""
+    if meta is None:
+        return None
+    try:
+        import io
+
+        import numpy as np
+        from PIL import Image
+
+        from dashboard.views.volcat_viewer import (
+            _volcat_colorbar_split_vertical)
+        _bt, ht = _volcat_colorbar_split_vertical(meta["image_url"])
+        if not ht:
+            return None
+        return np.asarray(Image.open(io.BytesIO(ht)).convert("RGB"))
+    except Exception:
+        logger.warning("Replay: sin escala VOLCAT", exc_info=True)
+        return None
+
+
+def _texto_progreso(n: int, total: int, segundos: float) -> str:
+    """'Bajando imágenes: 56 de 423 · faltan ~11 min'. El ritmo sale de lo
+    ya bajado: depende de la conexion y de RAMMB, no de una cifra fija."""
+    txt = f"Bajando imágenes: {n} de {total}"
+    if 0 < n < total and segundos > 0:
+        faltan = (total - n) * segundos / n
+        txt += (f" · faltan ~{faltan / 60:.0f} min" if faltan >= 90
+                else f" · faltan ~{faltan:.0f} s")
+    return txt
+
+
+def _cargar_cuadros(slots, par, vmatch, bounds, notas, nota_volcat,
+                    progreso=None, productos=PANELES,
+                    base: list[dict] | None = None) -> list[dict]:
+    """Baja `productos` de cada slot. Lo que falta queda None con su motivo:
+    no se rellena con el scan vecino.
+
+    Con `base` completa cuadros ya cargados (se usa para agregar VOLCAT
+    despues de los tres de RAMMB sin volver a bajarlos)."""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
+    if base is not None:
+        cuadros = {c["slot"]: c for c in base}
+    else:
+        cuadros = {s: {"slot": s, "imgs": {pid: None for pid in PANELES},
+                       "motivos": {}} for s in slots}
+    if "volcat" not in productos:
+        # "No cargado" solo donde SSEC SI tiene cuadro; donde no lo tiene se
+        # dice eso, que es otra cosa.
+        for s in slots:
+            if base is None or cuadros[s]["imgs"].get("volcat") is None:
+                cuadros[s]["motivos"]["volcat"] = (
+                    _VOLCAT_SIN_CARGAR if vmatch.get(s) is not None
+                    else (nota_volcat or "SSEC no publicó este cuadro"))
+    tareas = {}
+
+    def _rammb(prod, ts):
+        img, _used, zoom = fetch_frame_robust(
+            prod, [ts], bounds, zoom_preferred=ZOOM_VOLCAN,
+            zoom_fallback=ZOOM_ZONE)
+        return img, zoom
+
+    t0 = time.monotonic()
+    with ThreadPoolExecutor(max_workers=_HILOS) as ex:
+        for s in slots:
+            for prod in PANELES_RAMMB:
+                if prod not in productos:
+                    continue
+                ts = par[s].get(prod)
+                if ts is None:
+                    cuadros[s]["motivos"][prod] = (
+                        notas.get(prod) or "RAMMB no publicó este scan")
+                else:
+                    tareas[ex.submit(_rammb, prod, ts)] = (s, prod)
+            if "volcat" not in productos:
+                continue
+            cuadros[s]["motivos"].pop("volcat", None)
+            meta = vmatch.get(s)
+            if meta is None:
+                cuadros[s]["motivos"]["volcat"] = (
+                    nota_volcat or "SSEC no publicó este cuadro")
+            else:
+                tareas[ex.submit(_imagen_volcat, meta, bounds)] = (s, "volcat")
+        total = max(len(tareas), 1)
+        for n, fut in enumerate(as_completed(tareas), start=1):
+            s, pid = tareas[fut]
+            try:
+                res = fut.result()
+            except Exception:
+                logger.warning("Replay: fallo %s %s", pid, s, exc_info=True)
+                res = (None, None) if pid != "volcat" else None
+            if pid == "volcat":
+                img = res
+                if img is None:
+                    cuadros[s]["motivos"][pid] = "no se pudo bajar de SSEC"
+            else:
+                img, zoom = res
+                if img is None:
+                    cuadros[s]["motivos"][pid] = "RAMMB no entregó la imagen"
+                elif zoom_reducido(pid, zoom, ZOOM_VOLCAN):
+                    # Solo si vino mas grueso de lo que el producto publica
+                    # (Ash y SO2 topan en zoom 3: eso no es una degradacion).
+                    cuadros[s]["motivos"][pid] = "⚠ zoom 3"
+            cuadros[s]["imgs"][pid] = img
+            if progreso is not None and (n % 8 == 0 or n == total):
+                progreso.progress(n / total, text=_texto_progreso(
+                    n, total, time.monotonic() - t0))
+    return [cuadros[s] for s in slots]
+
+
 def render():
     from dashboard.manuals import render_manual
     render_manual("replay")
     header(
         "🔁 Replay por fecha: actividad real GOES-19",
-        "Cualquier volcán del catálogo, el día y la ventana horaria que elijas, "
-        "dentro de lo que RAMMB conserva",
+        "GeoColor, Ash RGB, SO2 y VOLCAT del mismo scan, para cualquier "
+        "volcán y día que RAMMB conserve",
     )
 
     # ── Selectores ──
     opciones = volcan_options()
     rotulos = dict(opciones)
-    c1, c2, c3 = st.columns([2.2, 1.2, 1.2])
+    c1, c3 = st.columns([2.6, 1.2])
     with c1:
         volcan_name = st.selectbox(
             "Volcán", [n for n, _ in opciones],
@@ -163,12 +325,6 @@ def render():
             index=0, key="replay_volcan_nombre",
             help="★ = sugerencias con actividad frecuente. Más abajo está "
                  "todo el catálogo.",
-        )
-    with c2:
-        product = st.selectbox(
-            "Producto", list(PRODUCTS.keys()),
-            format_func=lambda k: PRODUCTS[k],
-            index=0, key="replay_product",
         )
     with c3:
         radio = st.select_slider(
@@ -178,7 +334,9 @@ def render():
         )
 
     hoy_chile = utc_to_chile(datetime.now(timezone.utc)).date()
-    fechas = _fechas_listadas(product)
+    # Los tres productos RAMMB listan los mismos dias (medido 15-11-2026);
+    # el limite que se muestra sale del SO2.
+    fechas = _fechas_listadas("jma_so2")
     span = archive_span(fechas) if fechas else None
     # El calendario parte en el dia listado mas viejo; dias del medio que no
     # esten se avisan al elegirlos. Sin lista, se deja un año hacia atras.
@@ -211,123 +369,184 @@ def render():
     if v is None:
         st.error(f"Volcán {volcan_name} no encontrado en catálogo.")
         return
-
-    # ── Scans del dia ──
-    with st.spinner("Pidiendo a RAMMB los scans de ese día…"):
-        timestamps, estado = _scans_del_dia(product, dia, h_ini, h_fin)
-    if estado == ESTADO_SIN_RESPUESTA:
-        st.error("RAMMB no respondió: no se sabe si ese día existe. "
-                 "Prueba de nuevo en unos segundos.")
-        return
-    if estado == ESTADO_NO_CONSERVADO:
-        st.error(f"RAMMB no conserva el {dia:%d-%m-%Y} para "
-                 f"{PRODUCTS[product]}. No se muestra otro día en su lugar. "
-                 + _texto_archivo(span))
-        return
-    if not timestamps:
-        st.warning(f"El {dia:%d-%m-%Y} está en RAMMB, pero no hay scans de "
-                   f"{PRODUCTS[product]} entre las {h_ini:02d}:00 y las "
-                   f"{h_fin:02d}:00 hora de Chile.")
-        return
-    if estado == ESTADO_PARCIAL:
-        st.warning("Una parte del día no respondió en RAMMB: la lista puede "
-                   "estar incompleta (faltan scans, no es que no los haya).")
-
     bounds = {
         "lat_min": v.lat - radio, "lat_max": v.lat + radio,
         "lon_min": v.lon - radio, "lon_max": v.lon + radio,
     }
-    # La lista de RAMMB trae dias cuyas imagenes ya se borraron: se prueba un
-    # tile del encuadre antes de ofrecer el slider (medido nov-2026).
-    muestra = timestamps[len(timestamps) // 2]
-    hay = _hay_imagenes(product, muestra, (bounds["lat_min"], bounds["lat_max"],
-                                           bounds["lon_min"], bounds["lon_max"]))
-    if hay is False:
-        st.error(f"RAMMB todavía lista el {dia:%d-%m-%Y}, pero ya borró sus "
-                 f"imágenes de {PRODUCTS[product]}: no hay nada que mostrar. "
-                 + _texto_archivo(span))
+    bkey = (bounds["lat_min"], bounds["lat_max"],
+            bounds["lon_min"], bounds["lon_max"])
+
+    # ── Scans del dia, producto por producto ──
+    # Cada producto se lista aparte: RAMMB puede tener un dia para Ash y no
+    # para SO2, y un hueco de uno no borra a los otros.
+    listas, notas, avisos = {}, {}, []
+    with st.spinner("Pidiendo a RAMMB los scans de ese día…"):
+        for prod in PANELES_RAMMB:
+            ts, estado = _scans_del_dia(prod, dia, h_ini, h_fin)
+            if estado == ESTADO_SIN_RESPUESTA:
+                notas[prod] = "RAMMB no respondió"
+                continue
+            if estado == ESTADO_NO_CONSERVADO:
+                notas[prod] = "RAMMB no conserva este día"
+                continue
+            if not ts:
+                notas[prod] = "sin scans en la ventana"
+                continue
+            # La lista de RAMMB trae dias cuyas imagenes ya se borraron: se
+            # prueba un tile del encuadre antes de ofrecerlos (medido nov-2026).
+            hay = _hay_imagenes(prod, ts[len(ts) // 2], bkey)
+            if hay is False:
+                notas[prod] = "RAMMB ya borró las imágenes de este día"
+                continue
+            if hay is None:
+                avisos.append(f"No se pudo confirmar que RAMMB tenga las "
+                              f"imágenes de {ROTULOS[prod]} (sin respuesta); "
+                              f"se intenta igual.")
+            if estado == ESTADO_PARCIAL:
+                avisos.append(f"Una parte del día no respondió en RAMMB para "
+                              f"{ROTULOS[prod]}: pueden faltar scans (no es "
+                              f"que no los haya).")
+            listas[prod] = ts
+
+    if not listas:
+        detalle = "; ".join(f"{ROTULOS[p]}: {n}" for p, n in notas.items())
+        if all(n == "RAMMB no respondió" for n in notas.values()):
+            st.error("RAMMB no respondió: no se sabe si ese día existe. "
+                     "Prueba de nuevo en unos segundos.")
+        else:
+            st.error(f"No hay imágenes RAMMB del {dia:%d-%m-%Y} en esa "
+                     f"ventana ({detalle}). No se muestra otro día en su "
+                     f"lugar. " + _texto_archivo(span))
         return
-    if hay is None:
-        st.warning("No se pudo confirmar que RAMMB tenga las imágenes de ese "
-                   "día (sin respuesta). Se intenta igual.")
+    for a in avisos:
+        st.warning(a)
 
-    st.success(f"📡 {len(timestamps)} scans de {PRODUCTS[product]} en la "
-               f"ventana ({_rotulo_ts(timestamps[0])} a "
-               f"{_rotulo_ts(timestamps[-1])}).")
+    slots = linea_de_tiempo(listas)
+    par = emparejar({p: listas.get(p, []) for p in PANELES_RAMMB}, slots)
 
-    # ── Recorrer cuadros ──
-    # La key lleva producto, dia y ventana: con otra lista de scans el indice
-    # guardado no significa lo mismo y se vuelve al primer cuadro.
-    n = len(timestamps)
-    key = f"replay_idx_{product}_{dia:%Y%m%d}_{h_ini}_{h_fin}"
-    if st.session_state.get(key, 0) >= n:
-        st.session_state[key] = 0
-    b1, s, b2 = st.columns([0.6, 8, 0.6])
-    with b1:
-        st.button("◀", key=f"{key}_ant", on_click=_mover, args=(key, -1, n),
-                  help="Scan anterior", width="stretch")
-    with b2:
-        st.button("▶", key=f"{key}_sig", on_click=_mover, args=(key, 1, n),
-                  help="Scan siguiente", width="stretch")
-    with s:
-        idx = st.select_slider(
-            "Scan (mueve el slider o usa ◀ ▶)",
-            options=list(range(n)),
-            format_func=lambda i: _rotulo_ts(timestamps[i]),
-            key=key, label_visibility="collapsed",
-        )
-    selected_ts = timestamps[idx]
+    # ── VOLCAT de la misma ventana ──
+    from src.fetch.volcat_api import resolve_volcat_sector
+    from dashboard.views.modo_guardia_volcan import etiqueta_sector_volcat
+    sector, instr = resolve_volcat_sector(v)
+    vres = _volcat_del_dia(sector, instr, ini_utc.isoformat(),
+                           fin_utc.isoformat())
+    nota_volcat = None
+    if not vres["ok"]:
+        nota_volcat = "SSEC no respondió"
+    elif vres["desde"] is not None and fin_utc <= vres["desde"]:
+        nota_volcat = (f"SSEC conserva VOLCAT desde el "
+                       f"{utc_to_chile(vres['desde']):%d-%m-%Y}")
+    vmatch = volcat_por_slot(vres["frames"], slots)
 
-    # Fallback con frames VECINOS del seleccionado, todos del mismo dia y
-    # ventana: si un scan no carga, se muestra el adyacente y el rotulo dice
-    # cual es. Nunca un frame de otro dia ni uno reciente. (fix audit jun 2026)
-    _neighbors = timestamps[max(0, idx - 2):idx + 3]
-    _candidates = [selected_ts] + [t for t in _neighbors if t != selected_ts]
-    img, used_ts, used_zoom = fetch_frame_robust(
-        product, _candidates, bounds,
-        zoom_preferred=ZOOM_VOLCAN, zoom_fallback=ZOOM_ZONE,
-    )
+    cuentas = [f"{ROTULOS[p]} {len(listas.get(p, []))}" for p in PANELES_RAMMB]
+    cuentas.append(f"VOLCAT {sum(m is not None for m in vmatch.values())}")
+    st.success(f"📡 {len(slots)} scans en la ventana ({rotulo_slot(slots[0])} "
+               f"a {rotulo_slot(slots[-1])}). Imágenes por producto: "
+               + " · ".join(cuentas) + ".")
+    if nota_volcat:
+        st.warning(f"VOLCAT: {nota_volcat}. Sin VOLCAT no se sabe la altura; "
+                   f"los otros tres productos se muestran igual.")
 
+    # ── Leyendas, en el orden de los paneles ──
+    from dashboard.map_helpers import render_compact_legend
+    cols = st.columns(len(PANELES))
+    for col, pid in zip(cols, PANELES):
+        with col:
+            render_compact_legend(pid, symbols=("volcano",), height_px=30)
+
+    modo = st.radio("Modo", ["▶ Reproducir el día", "Cuadro a cuadro"],
+                    horizontal=True, key="replay_modo",
+                    label_visibility="collapsed")
     regla = st.toggle(
         "📏 Regla", value=False, key="replay_regla",
-        help="Arrastra sobre la imagen para medir en km desde donde "
-             "quieras. No corrige el paralaje: una pluma alta aparece "
-             "corrida hacia el sur (0,4 a 1,5 km por km de altura).",
+        help="Arrastra sobre cualquiera de los cuatro paneles para medir en "
+             "km. No corrige el paralaje: una pluma alta aparece corrida "
+             "hacia el sur (0,4 a 1,5 km por km de altura).",
     )
+    meta_barra = next((m for m in vmatch.values() if m is not None), None)
 
-    # El rotulo lleva la hora del scan que de verdad se dibuja: si el pedido
-    # no cargo y entro un vecino, se nombran los dos.
-    labels = {idx: _rotulo_ts(used_ts or selected_ts)}
-    if used_ts and used_ts != selected_ts:
-        labels[idx] += f" (pedido {_rotulo_ts(selected_ts)})"
+    if modo == "Cuadro a cuadro":
+        # La key lleva dia y ventana: con otra lista de scans el indice
+        # guardado no significa lo mismo y se vuelve al primer cuadro.
+        n = len(slots)
+        key = f"replay_idx_{dia:%Y%m%d}_{h_ini}_{h_fin}"
+        if st.session_state.get(key, 0) >= n:
+            st.session_state[key] = 0
+        b1, s, b2 = st.columns([0.6, 8, 0.6])
+        with b1:
+            st.button("◀", key=f"{key}_ant", on_click=_mover,
+                      args=(key, -1, n), help="Scan anterior", width="stretch")
+        with b2:
+            st.button("▶", key=f"{key}_sig", on_click=_mover,
+                      args=(key, 1, n), help="Scan siguiente", width="stretch")
+        with s:
+            idx = st.select_slider(
+                "Scan (mueve el slider o usa ◀ ▶)", options=list(range(n)),
+                format_func=lambda i: rotulo_slot(slots[i]),
+                key=key, label_visibility="collapsed",
+            )
+        cuadros = _cargar_cuadros([slots[idx]], par, vmatch, bounds, notas,
+                                  nota_volcat)
+        ms = 250
+    else:
+        fps = st.select_slider(
+            "Velocidad (cuadros por segundo)", options=VELOCIDADES, value=4,
+            key="replay_fps",
+            help=f"A 4 cuadros/s los {len(slots)} scans duran "
+                 f"{len(slots) / 4:.0f} s.",
+        )
+        ms = int(1000 / fps)
+        clave = (v.name, radio, dia.isoformat(), h_ini, h_fin)
+        guardado = st.session_state.get("replay_dia_cuadros")
+        n_volcat = sum(m is not None for m in vmatch.values())
+        mb_volcat = n_volcat * _MB_POR_CUADRO_VOLCAT
+        if guardado is None or guardado["clave"] != clave:
+            st.info(
+                f"Para reproducir se bajan una vez los {len(slots)} scans de "
+                f"GeoColor, Ash RGB y SO2. RAMMB entrega tiles enteros (uno "
+                f"por producto y scan, de hasta ~0,7 MB), así que un día "
+                f"completo son unos cientos de MB: con buena conexión es "
+                f"cerca de un minuto, con una lenta pueden ser varios (el "
+                f"progreso dice cuánto falta). Si buscas una hora puntual, "
+                f"achica la ventana horaria. VOLCAT se agrega después con su "
+                f"propio botón: ~{_MB_POR_CUADRO_VOLCAT:g} MB por cuadro, "
+                f"~{mb_volcat:.0f} MB para esta ventana. Ya cargado, la "
+                f"reproducción corre en tu navegador.")
+            if not st.button(f"⬇ Cargar {len(slots)} scans y reproducir",
+                             type="primary", key="replay_cargar"):
+                return
+            barra = st.progress(0.0, text="Bajando imágenes…")
+            cuadros = _cargar_cuadros(slots, par, vmatch, bounds, notas,
+                                      nota_volcat, progreso=barra,
+                                      productos=PANELES_RAMMB)
+            barra.empty()
+            # Un solo dia en memoria: otro dia reemplaza al anterior.
+            guardado = {"clave": clave, "cuadros": cuadros,
+                        "con_volcat": False}
+            st.session_state["replay_dia_cuadros"] = guardado
+        cuadros = guardado["cuadros"]
+        if not guardado["con_volcat"] and n_volcat:
+            if st.button(f"➕ Agregar VOLCAT ({n_volcat} cuadros, "
+                         f"~{mb_volcat:.0f} MB)", key="replay_volcat"):
+                barra = st.progress(0.0, text="Bajando cuadros VOLCAT…")
+                cuadros = _cargar_cuadros(slots, par, vmatch, bounds, notas,
+                                          nota_volcat, progreso=barra,
+                                          productos=("volcat",), base=cuadros)
+                barra.empty()
+                guardado.update(cuadros=cuadros, con_volcat=True)
 
-    label = f"{v.name} · {PRODUCTS[product]} · {labels[idx]}"
-    if used_ts and used_ts != selected_ts:
-        label += " ⚠ ts cercano"
-    # Aviso de zoom: sólo si el frame vino más grueso de lo que el producto
-    # publica (`zoom_reducido`). Ash y SO2 topan en zoom 3 (bandas IR de
-    # 2 km): marcarlos siempre dejaba el aviso encendido y nadie lo leía.
-    if zoom_reducido(product, used_zoom, ZOOM_VOLCAN):
-        label += " ⚠ zoom 3"
-
-    from dashboard.map_helpers import render_compact_legend
-    render_compact_legend(product, symbols=("volcano",))
-    # Mismo panel que la grilla de volcan (Vista Operacional / Modo Guardia):
-    # en km alrededor del crater, con barra de escala. Lazy import (gotcha
-    # Streamlit Cloud, ver CLAUDE.md).
-    from dashboard.views.modo_guardia_volcan import _render_product
-    fig = _render_product(img, bounds, label, v.lat, v.lon, v.name,
-                          height=720, regla=regla)
+    fig = figura_dia(cuadros, v.lat, v.lon, bounds, ms_por_cuadro=ms,
+                     regla=regla, titulo=v.name,
+                     barra_volcat=_barra_volcat(meta_barra))
     st.plotly_chart(fig, width="stretch",
                     config={"displayModeBar": regla, "displaylogo": False})
-    if img is None:
-        st.warning("RAMMB no entregó imagen para este scan ni para los "
-                   "vecinos. Sin imagen no se puede decir nada del volcán.")
 
     st.caption(
-        "💡 Con ◀ ▶ recorres el día de a un scan (10 min). Para hot spots, "
-        "altura VOLCAT o un loop descargable de ese mismo momento, abre "
-        "Modo Evento, VOLCAT o Loops."
+        f"VOLCAT: sector **{etiqueta_sector_volcat(sector)}**; sin dibujo = "
+        f"VOLCAT no detecta ceniza en ese cuadro, no es una falla. Un panel "
+        f"vacío dice por qué no hay imagen; nunca se rellena con el scan de al "
+        f"lado. Para hot spots o un loop descargable de ese momento, abre Modo "
+        f"Evento o Loops."
     )
 
     with st.expander("📚 Calbuco 2015: caso histórico (sin datos disponibles)"):

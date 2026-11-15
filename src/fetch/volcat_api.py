@@ -402,6 +402,46 @@ def huecos_en_ventana(dts: list, inicio, fin,
     return sorted(faltan)
 
 
+def volcat_cuadros_entre(sector: str, instr: str, inicio, fin,
+                         image_type: str = "Ash_Height",
+                         sat: str = "GOES-19") -> dict:
+    """Cuadros VOLCAT publicados en [inicio, fin), para el Replay de un dia.
+
+    A diferencia de `volcat_ventana` (ultimas N horas desde el ultimo cuadro),
+    aca la ventana la fija el operador: un dia y una franja horaria pasados.
+
+    Devuelve un dict:
+      ok:     False si SSEC no respondio (`error` dice por que). Eso NO es
+              "sin ceniza": sin respuesta no se sabe nada.
+      error:  texto para mostrar, o None.
+      frames: cuadros reales de la ventana, del mas antiguo al mas nuevo, con
+              las claves de `volcat_latest` mas `dt`.
+      desde:  datetime del cuadro mas viejo que SSEC conserva (medido
+              15-11-2026: unos 30 dias). Un dia anterior no tiene VOLCAT, y la
+              pantalla lo tiene que decir con esa fecha.
+    """
+    frames, coords, err = _query_frames_estado(sector, instr, image_type, sat)
+    if not frames and err is None and sat != "all":
+        frames, coords, err = _query_frames_estado(sector, instr, image_type,
+                                                   "all")
+    if err is not None:
+        return {"ok": False, "error": err, "frames": [], "desde": None}
+    con_dt = []
+    for f in frames:
+        dt = _parse_volcat_frame_dt(f.get("datetime"))
+        if dt is not None and f.get("filename"):
+            con_dt.append((dt, f))
+    con_dt.sort(key=lambda par: par[0])
+    desde = con_dt[0][0] if con_dt else None
+    out = []
+    for dt, f in con_dt:
+        if inicio <= dt < fin:
+            m = _frame_meta(f, sector, instr, image_type, coords)
+            m["dt"] = dt
+            out.append(m)
+    return {"ok": True, "error": None, "frames": out, "desde": desde}
+
+
 def volcat_ventana(sector: str, instr: str = "ABI",
                    image_type: str = "Ash_Height", horas: float = 2,
                    sat: str = "GOES-19") -> dict:

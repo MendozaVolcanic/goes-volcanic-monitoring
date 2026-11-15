@@ -244,22 +244,41 @@ no disparar el algoritmo. Para esos casos usar VRP MODIS/VIIRS.
     "replay": (
         "Replay por fecha",
         """
-**Qué muestra**: los scans GOES-19 de RAMMB (GeoColor, Ash RGB o SO2 RGB)
+**Qué muestra**: los **cuatro productos del mismo scan**, lado a lado
+(GeoColor, Ash RGB, SO2 RGB y VOLCAT, en el orden de la grilla de volcán),
 sobre **cualquier volcán del catálogo**, en el **día y la ventana horaria**
-que elijas, para recorrerlos de a uno. Sirve para revisar después qué se vio:
-por ejemplo, el SO2 de Lastarria de un día puntual.
+que elijas. Sirve para revisar después qué se vio, o para comparar contra
+una anomalía vista en otro visor: por ejemplo, el SO2 de Lastarria de un día
+puntual con su GeoColor y su Ash RGB de la misma hora.
 
 **Cómo usarlo**:
 - **Volcán**: arriba van las sugerencias ★ (volcanes con actividad
   frecuente, donde casi siempre hay algo que ver); más abajo, todo el
   catálogo. Puedes escribir el nombre para buscarlo.
-- **Producto** y **radio** (0.25° a 3°).
+- **Radio** (0.25° a 3°).
 - **Día** y **ventana horaria** en hora de Chile. Debajo aparece el mismo
   tramo en UTC, porque los scans de GOES van rotulados en UTC.
-- Recorre con el slider o con **◀ ▶** (un scan = 10 min).
-- **📏 Regla**: arrastra sobre la imagen para medir en km. La imagen está en
-  km alrededor del cráter, con barra de escala, igual que la grilla de
-  volcán. No corrige el paralaje.
+- **▶ Reproducir el día**: elige la velocidad y presiona **Cargar**. Se
+  bajan una vez GeoColor, Ash RGB y SO2 de toda la ventana y la animación
+  corre en tu navegador, con ▶ Reproducir, ⏸ Pausa y un
+  deslizador para saltar a cualquier hora. **VOLCAT se agrega aparte** con
+  «➕ Agregar VOLCAT», que muestra los MB antes de bajar: SSEC entrega el
+  sector entero (~0,55 MB por cuadro, ~80 MB un día completo). RAMMB
+  también entrega tiles enteros (hasta ~0,7 MB por producto y scan), así que
+  la carga depende de la conexión; la barra de progreso dice cuánto falta.
+  Si buscas una hora puntual, achica la ventana horaria antes.
+- **Cuadro a cuadro**: el slider o **◀ ▶** (un scan = 10 min); baja sólo
+  ese scan.
+- **📏 Regla**: arrastra sobre cualquiera de los cuatro paneles para medir
+  en km. Los paneles están en km alrededor del cráter, con barra de escala.
+  No corrige el paralaje.
+
+**Si un producto falta en un scan**, su panel queda vacío y dice por qué
+(RAMMB no publicó ese scan, no conserva el día, no respondió; SSEC no
+publicó el cuadro VOLCAT). Nunca se rellena con el scan de al lado: eso
+mostraría una pluma quieta que nadie vio. VOLCAT sin dibujo es lo normal:
+sólo dibuja cuando detecta ceniza. SSEC guarda VOLCAT unos 30 días (medido
+15-11-2026); un día anterior se muestra sin VOLCAT y lo dice.
 
 **Hasta dónde llega el archivo**: lo dice la vista en cada visita, leído de
 la lista de días de RAMMB. Medido el 15-11-2026: un tramo continuo desde el
@@ -268,9 +287,9 @@ sigue listando algunos días cuyas imágenes ya borró; la vista lo comprueba
 bajando una imagen y te lo dice. **Si un día no está, la vista lo informa y
 no muestra otro en su lugar.**
 
-**Lo que no hace**: no trae hot spots ni altura VOLCAT del momento elegido
-(para eso, Modo Evento o VOLCAT), y no decide si hay pluma: la lectura de la
-imagen queda al geólogo de turno.
+**Lo que no hace**: no trae hot spots ni la altura propia (para eso, Modo
+Evento o la vista VOLCAT), y no decide si hay pluma: la lectura de la imagen
+queda al geólogo de turno.
 
 **Diferencia con Backfill histórico**: Backfill muestra eventos ya armados
 (con hot spots y altura) y puede ir más atrás regenerando desde L1b; Replay

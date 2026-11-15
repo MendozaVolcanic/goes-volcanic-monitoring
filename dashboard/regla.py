@@ -196,19 +196,25 @@ def activar_regla(fig, decimales: int = 0):
     return fig
 
 
-def _barra(fig, x0, y0, x1, y1, texto, tx, ty, xanchor, yanchor):
-    """Barra con halo oscuro: legible sobre nubes blancas y sobre oceano."""
+def _barra(fig, x0, y0, x1, y1, texto, tx, ty, xanchor, yanchor,
+           ejes=("x", "y")):
+    """Barra con halo oscuro: legible sobre nubes blancas y sobre oceano.
+
+    `ejes` elige el subplot (("x2", "y2"), ...) cuando la figura tiene varios
+    paneles, como la del Replay de un dia."""
+    xref, yref = ejes
     for color, ancho in (("rgba(10,14,20,0.85)", 6), (_COLOR_BARRA, 2.5)):
         fig.add_shape(type="line", x0=x0, y0=y0, x1=x1, y1=y1,
-                      xref="x", yref="y", line=dict(color=color, width=ancho))
-    fig.add_annotation(x=tx, y=ty, xref="x", yref="y", text=texto,
+                      xref=xref, yref=yref, line=dict(color=color, width=ancho))
+    fig.add_annotation(x=tx, y=ty, xref=xref, yref=yref, text=texto,
                        showarrow=False, xanchor=xanchor, yanchor=yanchor,
                        font=dict(color=_COLOR_BARRA, size=11),
                        bgcolor="rgba(10,14,20,0.6)", borderpad=2)
     return fig
 
 
-def agregar_barra_escala(fig, x_rango, y_rango, x_frac: float = 0.05):
+def agregar_barra_escala(fig, x_rango, y_rango, x_frac: float = 0.05,
+                         ejes=("x", "y")):
     """Barra horizontal abajo a la izquierda, para una figura YA en km.
 
     `x_frac` corre el inicio cuando el borde izquierdo esta ocupado (la barra
@@ -220,7 +226,7 @@ def agregar_barra_escala(fig, x_rango, y_rango, x_frac: float = 0.05):
     x0 = x_min + x_frac * (x_max - x_min)
     y0 = y_min + 0.06 * (y_max - y_min)
     return _barra(fig, x0, y0, x0 + largo, y0, f"{largo} km",
-                  x0 + largo / 2, y0, "center", "bottom")
+                  x0 + largo / 2, y0, "center", "bottom", ejes=ejes)
 
 
 def agregar_barra_ns(fig, bounds: dict):

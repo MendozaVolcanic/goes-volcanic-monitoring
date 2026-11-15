@@ -649,7 +649,8 @@ def _render_volcat_one_zona_tv(zona: str, sector: str, instr: str, height: int,
             _placeholder("frame no disponible (descarga SSEC)")
 
 
-def _render_volcat_zoom_tv(volcano_name: str, height: int, pad: float = 0.5):
+def _render_volcat_zoom_tv(volcano_name: str, height: int, pad: float = 0.5,
+                           en_km: bool = False, regla: bool = False):
     """Slot TV: VOLCAT (altura de pluma) con ZOOM ±pad° a un volcan EN ALERTA
     (Villarrica/Chillan). Cuantifica la pluma del volcan activo en la rotacion
     de sala, junto al zoom RGB (GOES/GeoColor). Sirve plotly desde el cache que
@@ -690,11 +691,26 @@ def _render_volcat_zoom_tv(volcano_name: str, height: int, pad: float = 0.5):
           "lon_min": v.lon - pad, "lon_max": v.lon + pad}
     dt = _volcat_dt_obj(meta.get("datetime"))
     leg = _volcat_colorbar_split_vertical(meta["image_url"])
+    fig = _volcat_zone_fig(data["png"], data["bounds"], vb, volcano_name,
+                           fmt_both(dt) if dt else "", height, legend_pair=leg)
+    if en_km:
+        # Misma conversion que los paneles RAMMB de la grilla (ver
+        # dashboard/regla.py): asi la pluma de VOLCAT se mide igual que la
+        # del Ash RGB de al lado.
+        from dashboard.regla import (activar_regla, agregar_barra_escala,
+                                     figura_en_km)
+        figura_en_km(fig, v.lat, v.lon)
+        # La barra de color BT ocupa el 10 % izquierdo: la de escala va
+        # a su derecha para no quedar debajo.
+        agregar_barra_escala(fig, fig.layout.xaxis.range,
+                             fig.layout.yaxis.range, x_frac=0.14)
+        if regla:
+            activar_regla(fig, decimales=1 if pad < 1.0 else 0)
+    from dashboard.views.modo_guardia_volcan import _config_plotly
     st.plotly_chart(
-        _volcat_zone_fig(data["png"], data["bounds"], vb, volcano_name,
-                         fmt_both(dt) if dt else "", height, legend_pair=leg),
+        fig,
         width='stretch',
-        config={"displayModeBar": False, "responsive": True},
+        config=_config_plotly(regla),
         # El pad va en la key igual que en _panel_rammb: dos renders del
         # mismo volcan a radios distintos son figuras distintas, y con la
         # key compartida Plotly reusa el zoom/pan de la anterior. Desde

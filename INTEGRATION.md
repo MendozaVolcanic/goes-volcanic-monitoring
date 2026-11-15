@@ -1,7 +1,7 @@
 ---
 slug: goes
 title: GOES Volcanic Monitoring
-last_updated: 2026-08-29
+last_updated: 2026-11-15
 last_commit: 4eafc38
 status: producción
 tier: 1
@@ -86,7 +86,7 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
 Permalink: `?vista=<slug>` (los slugs viejos `live`/`zonas`/`animacion` redirigen por
 compatibilidad). Fuente de verdad: `PAGE_OPTIONS`/`PAGE_SLUGS` en `dashboard/app.py`.
 
-1. **🌎 Vista Operacional** (`operacional`) — último scan, auto-refresh 60s. Tabs Nacional / Por Zona Volcánica (grid 4-zonas) / Volcán. El tab **Volcán** muestra los 4 productos a la vez en grilla 2×2 (GeoColor · Ash RGB · SO₂ · VOLCAT), cada panel con su propia cadencia de refresco (RAMMB 60 s, VOLCAT 120 s), radio ajustable 0.35–3° y toggles de viento GFS y anillos. Comparte implementación con Modo Guardia vía `modo_guardia_volcan.volcan_grid`.
+1. **🌎 Vista Operacional** (`operacional`): último scan, auto-refresh 60s. Tabs Nacional / Por Zona Volcánica (grid 4-zonas) / Volcán. El tab **Volcán** muestra los 4 productos a la vez en grilla 2×2 (GeoColor · Ash RGB · SO₂ · VOLCAT), cada panel con su propia cadencia de refresco (RAMMB 60 s, VOLCAT 120 s), radio ajustable de 0.35 a 3° y toggles de viento GFS, anillos y **📏 Regla**. Los cuatro paneles se dibujan en km centrados en el cráter (`dashboard/regla.py`), con barra de escala; con la regla prendida, arrastrar traza una línea rotulada con su largo en km, calculado por plotly en el navegador. Nacional y Zona llevan barra de escala N-S. Comparte implementación con Modo Guardia vía `modo_guardia_volcan.volcan_grid`.
 2. **🛡 Modo Guardia** (`guardia`) — vista de turno de sala: sub-tabs Vigilancia diaria (4 zonas RGB), Chile, VOLCAT por zona (4 zonas lado a lado), Mosaico, Volcán (grilla 2×2 de 4 productos) y Loop 2h. Con `?tv=1` entra en **Modo Sala TV** (rotación fullscreen sin controles, pensada para monitor 24/7).
 3. **🔀 Comparador** (`comparador`) — dos frames lado a lado (baseline histórico vs actual, o dos productos).
 4. **🚨 Modo Evento** (`evento`) — foco en un volcán en crisis, con productos y altura.

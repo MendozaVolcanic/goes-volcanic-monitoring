@@ -1048,6 +1048,10 @@ def _live_content():
                                constrain="domain"),
                     margin=dict(t=40, b=35, l=45, r=15),
                 )
+                # Barra N-S: en grados 1:1 un km horizontal no mide lo mismo
+                # en Arica que en Magallanes; uno de meridiano si.
+                from dashboard.regla import agregar_barra_ns
+                agregar_barra_ns(fig, bounds)
                 render_compact_legend(
                     prod_id,
                     symbols=("volcano",)
@@ -1176,6 +1180,8 @@ def _live_content():
                             height=760,
                             margin=dict(l=10, r=10, t=30, b=10),
                         )
+                        from dashboard.regla import agregar_barra_ns
+                        agregar_barra_ns(fig_z, zone_bounds)
                         render_compact_legend(prod_zona,
                                               symbols=("volcano",))
                         st.plotly_chart(fig_z, width='stretch')
@@ -1211,7 +1217,8 @@ def _live_content():
     with tab5:
         from dashboard.views.modo_guardia_volcan import volcan_grid
 
-        col_vsel, col_vrad, col_vw, col_vr = st.columns([2.2, 1.2, 1, 1])
+        col_vsel, col_vrad, col_vw, col_vr, col_vm = st.columns(
+            [2.2, 1.2, 1, 1, 1])
         with col_vsel:
             priority_names = [v.name for v in CATALOG
                               if v.name in PRIORITY_VOLCANOES]
@@ -1236,12 +1243,29 @@ def _live_content():
                                       "cráter. Cache 1h.")
         with col_vr:
             _vg_rings = st.toggle("⊙ Anillos", value=False, key="vg_rings",
-                                  help="Anillos 5/10/25/50 km desde el cráter.")
+                                  help="Anillos de distancia desde el cráter. "
+                                       "Crecen con el radio: a 3° llegan a "
+                                       "300 km.")
+        with col_vm:
+            # La regla vive en el navegador (plotly): arrastrar no recarga la
+            # pagina. Fuera de los fragments, como todo selector de la grilla.
+            _vg_regla = st.toggle(
+                "📏 Regla", value=False, key="vg_regla",
+                help="Arrastra sobre cualquier mapa, por ejemplo desde el "
+                     "cráter hasta el frente de la pluma: la línea muestra su "
+                     "largo en km (error menor a 1,5 % hasta 3° de radio). "
+                     "Para borrar una línea, tócala y usa la goma arriba a la "
+                     "derecha; con un scan nuevo se borran solas. Mientras "
+                     "está prendida, arrastrar no hace zoom. Ojo con el "
+                     "paralaje: una pluma alta aparece corrida hacia el sur "
+                     "entre 0,4 km (norte) y 1,5 km (austral) por cada km de "
+                     "altura.")
 
         volcan_grid(
             sel_name,
             show_wind=_vg_wind,
             show_rings=_vg_rings,
+            regla=_vg_regla,
             enable_capture=True,
             fullscreen=st.query_params.get("fullscreen") == "1",
             radius_deg=_vg_radius,

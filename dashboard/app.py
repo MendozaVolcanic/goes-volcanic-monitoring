@@ -1,7 +1,7 @@
 """GOES Volcanic Monitoring Dashboard - Chile.
 
 Dashboard NRT de monitoreo volcánico usando GOES-19 (GOES-East).
-Ash RGB, detección de ceniza, SO2, hot spots para 43 volcanes chilenos.
+Ash RGB, detección de ceniza, SO2, hot spots para los volcanes chilenos del catálogo.
 
 Ejecutar: streamlit run dashboard/app.py
 """
@@ -103,6 +103,15 @@ if _fullscreen:
             key="btn_exit_fs",
         )
 
+# Cuantos volcanes chilenos hay en el catalogo: el rotulo de la barra lateral
+# decia "43" clavado y quedo desfasado al sumar Lastarria. try/except por el
+# gotcha de imports en hot-reload (CLAUDE.md).
+try:
+    from src.volcanos import CATALOG as _CATALOGO
+    _N_VOLCANES = sum(1 for _v in _CATALOGO if _v.zone != "test")
+except ImportError:
+    _N_VOLCANES = 44
+
 # ── Sidebar ──────────────────────────────────────────────────────
 with st.sidebar:
     st.markdown(
@@ -113,7 +122,8 @@ with st.sidebar:
         '-webkit-background-clip:text;-webkit-text-fill-color:transparent;">'
         "GOES Monitor</div>"
         '<div style="color:#556677; font-size:0.75rem; margin-top:0.2rem; '
-        'letter-spacing:0.1em; text-transform:uppercase;">Chile &middot; 43 volcanes</div>'
+        'letter-spacing:0.1em; text-transform:uppercase;">Chile &middot; '
+        f'{_N_VOLCANES} volcanes</div>'
         "</div>",
         unsafe_allow_html=True,
     )

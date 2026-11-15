@@ -19,7 +19,7 @@ repo_url: "https://github.com/MendozaVolcanic/goes-volcanic-monitoring"
 Dashboard NRT de monitoreo volcánico para Chile usando GOES-19 (GOES-East).
 Genera Ash RGB, indicador SO2, BTD split-window, hot spots NOAA FDCF, series
 de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
-43 volcanes chilenos.
+44 volcanes chilenos.
 
 ## Stack
 
@@ -100,7 +100,7 @@ compatibilidad). Fuente de verdad: `PAGE_OPTIONS`/`PAGE_SLUGS` en `dashboard/app
 
 ## Volcanes monitoreados
 
-`src/volcanos.py` — **43 volcanes** chilenos con `(lat, lon, elevación, prioridad)`.
+`src/volcanos.py`: **44 volcanes** chilenos (los 43 de la lista RNVV más Lastarria) con `(lat, lon, elevación, prioridad)`.
 Lista de prioridad (8): Villarrica, Lascar, Calbuco, Copahue, Lonquimay, Llaima, Chaitén, Hudson.
 
 ## Cómo se ejecuta

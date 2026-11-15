@@ -19,10 +19,11 @@ class Volcano:
     ranking: int    # ranking SERNAGEOMIN (1=mayor peligro). 0=sin ranking
 
 
-# 43 volcanes monitoreados por SERNAGEOMIN OVDAS (RNVV)
-# Lista oficial dada por el usuario. Ordenados norte a sur por zona.
+# Volcanes monitoreados por SERNAGEOMIN OVDAS (RNVV). Base: lista oficial de 43
+# dada por el usuario; Lastarria se agrego en nov-2026 (pedido de Nicolas).
+# Ordenados norte a sur por zona.
 CATALOG = [
-    # ── Zona Norte (8 volcanes) ──
+    # ── Zona Norte (9 volcanes) ──
     Volcano("Taapaca", -18.10, -69.50, 5860, "Arica y Parinacota", "norte", 0),
     Volcano("Parinacota", -18.17, -69.14, 6348, "Arica y Parinacota", "norte", 0),
     Volcano("Guallatiri", -18.42, -69.09, 6071, "Arica y Parinacota", "norte", 15),
@@ -31,6 +32,9 @@ CATALOG = [
     Volcano("Ollague", -21.30, -68.18, 5868, "Antofagasta", "norte", 25),
     Volcano("San Pedro", -21.88, -68.40, 6145, "Antofagasta", "norte", 0),
     Volcano("Lascar", -23.37, -67.73, 5592, "Antofagasta", "norte", 4),
+    # Smithsonian GVP 355120 (misma fuente que coincide con el resto). Ranking
+    # 0 = sin ranking verificado en el SERNAGEOMIN 2019, no "sin peligro".
+    Volcano("Lastarria", -25.168, -68.507, 5706, "Antofagasta", "norte", 0),
 
     # ── Zona Centro (9 volcanes) ──
     Volcano("Tupungatito", -33.40, -69.80, 5640, "Metropolitana", "centro", 0),

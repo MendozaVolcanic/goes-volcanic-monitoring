@@ -9,7 +9,7 @@
 ## Qué es este proyecto
 Dashboard NRT de monitoreo volcánico para Chile usando GOES-19 (GOES-East).
 Genera Ash RGB, detección de ceniza (BTD split-window), indicador SO2, y visualiza
-hot spots y color real para 43 volcanes chilenos. **Licencia Apache-2.0** (código
+hot spots y color real para 44 volcanes chilenos. **Licencia Apache-2.0** (código
 libre); registro pre-paper en `docs/paper/REGISTRO_PAPER.md`.
 
 ## Stack técnico

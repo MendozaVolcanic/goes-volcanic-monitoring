@@ -550,7 +550,7 @@ def _mode_diff_temporal(now: datetime):
 
     if img_a is None or img_b is None:
         st.error("No se pudo bajar uno de los frames (ni en zoom 3 con ts vecinos). "
-                 "Probá otro producto o timestamp.")
+                 "Prueba otro producto o timestamp.")
         return
 
     diff = _compute_diff(img_a, img_b)

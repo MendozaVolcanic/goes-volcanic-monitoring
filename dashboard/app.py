@@ -253,7 +253,7 @@ with st.sidebar:
             "actualizan solos desde el mismo repo. Costo: $0 en HF Spaces "
             "(16 GB RAM, 2 vCPU, free).<br>"
             "<i style='color:#556677;'>Por que un mirror funciona: corre en "
-            "otra maquina, otro OS, version de Python que vos elegis. Bugs "
+            "otra maquina, otro OS, version de Python que tú eliges. Bugs "
             "de infra de Streamlit Cloud (como el race condition de Python "
             "3.14 que causo los crashes de mayo 2026) no afectan el mirror.</i>"
             "<br><br>"

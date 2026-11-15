@@ -129,7 +129,7 @@ def below_summit_flag(top_km, summit_km=None, tol_km: float = SUMMIT_TOL_KM):
         return None
     return (f"tope bajo la cumbre: {top_km:.1f} km vs cráter {summit_km:.1f} km "
             f"(−{summit_km - top_km:.1f} km) — físicamente imposible para una "
-            "pluma; revisá Ts/máscara antes de usar el número")
+            "pluma; revisa Ts/máscara antes de usar el número")
 
 
 def in_reliable_band(top_km) -> bool:
@@ -649,7 +649,7 @@ def wen_rose_top_height(
                      f"(pluma fina o corrección saturada en tropopausa) → "
                      f"revertidos a la cota{extra}")
     if delta is not None and delta >= DELTA_WARN_KM:
-        flags.append(f"corrección grande (+{delta:.1f} km): verificá Ts y nº de píxeles")
+        flags.append(f"corrección grande (+{delta:.1f} km): verifica Ts y nº de píxeles")
     if ts_source != "cielo claro (escena)":
         flags.append(f"Ts de fallback ({ts_source}): fondo cálido no observado")
     elif n_clear < 4 * MIN_CLEAR_PX:

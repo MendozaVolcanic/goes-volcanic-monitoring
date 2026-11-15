@@ -10,7 +10,7 @@ renderiza en un `st.expander` colapsado al INICIO de la sección. Incluye:
 Filosofía: el operador de turno debería poder abrir el expander en 30s y
 saber qué está mirando sin tener que conocer la receta RGB de memoria.
 
-Para agregar/editar un manual: tocá solo este archivo. Cada vista importa
+Para agregar/editar un manual: toca solo este archivo. Cada vista importa
 `render_manual` y lo invoca con su `view_key`.
 """
 
@@ -22,7 +22,7 @@ import streamlit as st
 # ── Manuales por vista ───────────────────────────────────────────
 # Estructura: view_key -> (titulo_expander, cuerpo_markdown)
 # El titulo_expander aparece como "📖 Cómo interpretar — <titulo>".
-# El cuerpo es markdown estandar; podes usar **bold**, listas, links.
+# El cuerpo es markdown estandar; puedes usar **bold**, listas, links.
 
 _MANUALS: dict[str, tuple[str, str]] = {
     # ── Vista Operacional ─────────────────────────────────────────
@@ -137,7 +137,7 @@ cirro o nieve.
 
 **Nota técnica**: la sustracción se hace en espacio RGB normalizado
 (0-1 por canal), no en temperatura de brillo. Para diferencias
-cuantitativas en Kelvin usá la vista **Ash + BTD**.
+cuantitativas en Kelvin usa la vista **Ash + BTD**.
 
 **Referencias**:
 - [EUMETSAT Volcanic Ash RGB Technical Guide](https://www-cdn.eumetsat.int/files/2020-04/pdf_rgb_quick_guide_ash.pdf)
@@ -364,6 +364,43 @@ cuantitativa** (km sobre nivel del mar) y carga de ceniza (g/m²).
 sobre fondo frío. Plumas finas o muy frías (>10 km alt) pueden ser
 sub-detectadas.
 
+**🎞 Loop VOLCAT** (debajo del último cuadro, en modo **Volcán** o
+**Zona**): anima las últimas **2, 3, 6 o 12 h** del producto elegido, con el
+mismo volcán y acercamiento (o la misma zona) de arriba. Sirve para ver hacia dónde se mueve la pluma y si la
+columna crece o se corta entre un cuadro y otro.
+1. Elige la ventana y la velocidad y presiona **Generar loop**.
+2. Se ve en pantalla el mismo GIF que se descarga; abajo están los botones
+   **GIF** (para correo o web) y **MP4** (más liviano, para informes y
+   presentaciones).
+3. Cada cuadro trae impreso: volcán y radio (o zona), sector VOLCAT, hora
+   UTC y hora de Chile, barra de escala en km y la barra de color del
+   producto al costado (no encima de la cordillera). En **Zona** la barra de
+   escala es **vertical (N-S)**: en 5 a 13 grados de latitud un km
+   horizontal no mide lo mismo arriba que abajo del mapa.
+4. **📏 Medir sobre un cuadro del loop** (desplegable bajo las descargas):
+   elige un cuadro y se dibuja como mapa. En modo Volcán está en km del
+   cráter con la regla prendida: arrastra del cráter al frente de la pluma
+   y la línea muestra su largo en km. En Zona queda en grados con barra N-S
+   y sin regla.
+
+Cómo leerlo:
+- **Cuadro sin dibujo es lo normal**: VOLCAT sólo pinta cuando detecta ceniza.
+- La ventana termina en el **último cuadro que publicó SSEC**, no en la hora
+  actual (SSEC publica con 30 a 50 min de atraso); la página dice esa edad.
+- Si SSEC **no publicó** algún cuadro, o no se pudo bajar, la página lista
+  las horas que faltan y **el loop no las rellena**: salta, y el cuadro
+  siguiente dice "Salto de N min: faltan K cuadros antes de este". Un loop
+  rellenado mostraría una pluma quieta que nadie observó.
+- Si SSEC no responde, no hay loop y la página lo dice como falla del dato.
+- El **GIF** guarda los colores de la escala **exactos** (tiene sólo 256
+  colores y se reservan para la escala): un píxel de la pluma se lee contra
+  la barra igual que en el producto. El **MP4** comprime con pérdida y puede
+  correr levemente los colores: sirve para presentar, no para leer alturas.
+- En los sectores regionales (todos menos Copahue, Calbuco y
+  Planchón-Peteroa) el píxel es de 2 km: al acercar se ven los cuadros del
+  dato, a propósito (no se suaviza, porque mezclar colores inventaría
+  alturas).
+
 **⛔ Este sistema NO se usa para alerta aeronáutica ni para definir
 niveles de vuelo (FL).** No es una limitación de trámite: la altura
 **propia** de este dashboard está declarada **INDICATIVA**, tiene banda
@@ -401,16 +438,19 @@ incluir en informes, presentaciones, o subir a redes/Twitter para
 comunicar evento a público.
 
 **Cómo usarlo**:
-1. Elegí volcán y producto (Ash RGB, GeoColor, SO2 RGB).
-2. Elegí ventana (últimas 2 h, 6 h, 24 h).
+1. Elige volcán y producto (Ash RGB, GeoColor, SO2 RGB).
+2. Elige ventana (últimas 2 h, 6 h, 24 h).
 3. Click "Generar" → el backend descarga frames de RAMMB, los
    compone, y entrega:
    - **MP4** (h264) — compatible con todo, recomendado para informes.
    - **GIF** — para web, peso mayor.
    - **ZIP de PNGs** — frames individuales si quieres post-procesar.
 
-**Tip**: para erupciones largas (>6 h), generá varios loops de 2 h y
-encadenalos en editor — un GIF/MP4 de 24 h pesa demasiado.
+**Tip**: para erupciones largas (>6 h), genera varios loops de 2 h y
+encadénalos en un editor: un GIF/MP4 de 24 h pesa demasiado.
+
+**Loop de VOLCAT** (altura de pluma): está en la página **📏 VOLCAT**,
+modo Volcán, porque usa el sector y la escala de color de VOLCAT.
 
 **Cache**: las animaciones se cachean por (volcán, producto, ventana,
 hora-redondeada) — re-generar con mismos parámetros es instantáneo.
@@ -444,7 +484,7 @@ zona del cráter.
 
 **Limitaciones**:
 - **% ash-rojo no es FRP**: no compares unidades. Para magnitud
-  cuantitativa absoluta usá FRP o VOLCAT mass loading.
+  cuantitativa absoluta usa FRP o VOLCAT mass loading.
 - Cirros invierno chileno (mayo-sept) pueden inflar el % ash-rojo
   sin actividad real. Validar con FRP en paralelo.
 

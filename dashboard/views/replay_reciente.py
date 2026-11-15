@@ -29,13 +29,12 @@ try:
     from dashboard.style import header
     from dashboard.utils import CHILE_TZ, parse_rammb_ts, utc_to_chile
     from src.fetch.rammb_slider import (
-        fetch_frame_robust, get_latest_timestamps, zoom_reducido,
-        ZOOM_VOLCAN, ZOOM_ZONE,
+        fetch_frame_robust, zoom_reducido, ZOOM_VOLCAN, ZOOM_ZONE,
     )
     from src.volcanos import CATALOG, get_volcano
-    # Listado por fecha (nov-2026). `get_latest_timestamps` de arriba ya no
-    # se usa aca: queda importado solo para no chocar con el PR 34, que
-    # reescribe esa misma linea; se quita cuando ambos esten en main.
+    # Listado por fecha (nov-2026): los scans salen del dia elegido, no de
+    # `latest_times.json` (corta en 100). Los tiles pasan por el cache de
+    # rammb_slider, tambien los de la sonda `tile_available`.
     from src.fetch.historic_rammb import (
         ESTADO_NO_CONSERVADO, ESTADO_PARCIAL, ESTADO_SIN_RESPUESTA,
         archive_span, fetch_available_dates, list_local_day,

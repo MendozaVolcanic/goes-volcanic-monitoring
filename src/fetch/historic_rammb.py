@@ -378,19 +378,30 @@ def tile_available(product: str, ts: str, bounds: dict,
 
     Zoom 3 porque es el maximo que RAMMB guarda para las bandas IR (Ash, SO2)
     y tambien existe para GeoColor. None = no se pudo saber (red).
+
+    Pasa por el cache de tiles de `rammb_slider` (PR 34): si el cuadro ya se
+    dibujo, no sale a la red, y lo que baja la sonda queda para el cuadro.
+    Va con su propia funcion de bajada porque necesita distinguir un 404
+    (el dia ya no tiene imagenes) de un error de red (no se sabe), y
+    `_bajar_tile` devuelve None en los dos casos.
     """
+    from src.fetch.rammb_slider import _TILES, _tile_url
     rows, cols = get_tiles_for_bounds(bounds, zoom)
     r, c = rows[len(rows) // 2], cols[len(cols) // 2]
-    url = (f"{BASE_URL}/data/imagery/{ts[:4]}/{ts[4:6]}/{ts[6:8]}"
-           f"/{SATELLITE}---{SECTOR}/{product}/{ts}/{zoom:02d}"
-           f"/{r:03d}_{c:03d}.png")
-    try:
-        resp = _get_session().get(url, timeout=15)
-        if resp.status_code == 404:
-            return False
+    url = _tile_url(product, ts, zoom, r, c)
+    codigo: dict = {}
+
+    def _bajar() -> bytes | None:
+        try:
+            resp = _get_session().get(url, timeout=15)
+        except Exception as e:
+            logger.warning("tile_available %s %s: %s", product, ts, e)
+            return None
+        codigo["http"] = resp.status_code
         if resp.status_code == 200 and len(resp.content) > 500:
-            return True
+            return resp.content
         return None
-    except Exception as e:
-        logger.warning("tile_available %s %s: %s", product, ts, e)
-        return None
+
+    if _TILES.obtener((product, ts, zoom, r, c), _bajar):
+        return True
+    return False if codigo.get("http") == 404 else None

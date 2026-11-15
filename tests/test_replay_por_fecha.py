@@ -223,3 +223,37 @@ def test_la_vista_no_pide_los_ultimos_n_scans():
               / "replay_reciente.py").read_text(encoding="utf-8")
     assert "get_latest_timestamps(" not in fuente
     assert "list_local_day(" in fuente
+
+
+# ── Caché de tiles (PR 34) ───────────────────────────────────────────
+
+def _b():
+    return {"lat_min": -25.6, "lat_max": -24.8, "lon_min": -68.9, "lon_max": -68.1}
+
+
+def test_sonda_de_imagen_reusa_un_tile_ya_bajado(monkeypatch):
+    """Si el cuadro ya se dibujo, su tile esta en el cache: la sonda no sale
+    a la red (un tile es inmutable, la URL lleva el scan)."""
+    from src.fetch import rammb_slider as rs
+    ts = "20261114150020"
+    rows, cols = rs.get_tiles_for_bounds(_b(), 3)
+    r, c = rows[len(rows) // 2], cols[len(cols) // 2]
+    rs._TILES.obtener(("jma_so2", ts, 3, r, c), lambda: b"x" * 2000)
+    s = _Sesion({})  # cualquier pedido seria error de red
+    monkeypatch.setattr(hr, "_get_session", lambda: s)
+    assert hr.tile_available("jma_so2", ts, _b()) is True
+    assert s.pedidas == []
+
+
+def test_sonda_exitosa_deja_el_tile_para_el_cuadro(monkeypatch):
+    """Lo que baja la sonda queda en el cache de rammb_slider: el cuadro de
+    ese scan no vuelve a pedir el mismo tile."""
+    from src.fetch import rammb_slider as rs
+    ts = "20261114151020"
+    s = _Sesion({f"/{ts}/": _Resp(200, content=b"y" * 2000)})
+    monkeypatch.setattr(hr, "_get_session", lambda: s)
+    assert hr.tile_available("jma_so2", ts, _b()) is True
+    rows, cols = rs.get_tiles_for_bounds(_b(), 3)
+    r, c = rows[len(rows) // 2], cols[len(cols) // 2]
+    assert rs._TILES.obtener(("jma_so2", ts, 3, r, c),
+                             lambda: None) == b"y" * 2000

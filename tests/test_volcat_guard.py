@@ -53,16 +53,19 @@ def _png_volcat(pintar):
                                   / "volcat_ash_height_strip.png").convert("RGB"))
     img = np.full((850, 1000, 3), 90, dtype=np.uint8)
     img[850 - strip.shape[0]:] = strip
-    pintar(img, 343, 181)
+    pintar(img, 286, 480)
     buf = io.BytesIO()
     Image.fromarray(img).save(buf, format="PNG")
     return buf.getvalue()
 
 
-# Georef CE: 0,02° por píxel, esquina en (-30, -75): Chillán cae en (343, 181).
-_COORDS = {"PROJECTION": "CE", "EQ_RADIUS": 6378.137,
-           "SCALE_FACTOR": 6378.137 * 0.02 * 3.141592653589793 / 180.0,
-           "ORIGIN_LON": 285.0, "ORIGIN_LAT": -30.0}
+# Georef tal cual la entrega SSEC para Chile_Central_2_km (listado del 16-11-2026).
+# OJO: EQ_RADIUS = 206264,8 son SEGUNDOS DE ARCO por radián, así que SCALE_FACTOR
+# (72,8) es el píxel en segundos de arco (0,0202°), NO en km. Con esta georef
+# Chillán (-36,86; -71,38) cae en la fila 286, columna 480.
+_COORDS = {"PROJECTION": "CE", "REF_LON": 289, "ORIGIN_LAT": -31.8007698059082,
+           "ORIGIN_LON": 278.9210815429688, "EQ_RADIUS": 206264.796875,
+           "SCALE_FACTOR": 72.80000305175781, "OFFSET_X": 0, "OFFSET_Y": 36}
 
 
 def _con_png(monkeypatch, png):
@@ -98,6 +101,18 @@ def test_volcat_height_at_da_el_intervalo_del_objeto_anclado(monkeypatch):
     r = va.volcat_height_at(v, datetime.now(timezone.utc))
     assert (r["top_lo_km"], r["top_hi_km"]) == (3, 4), r
     assert r["frame"] == "2026-11-08_20-30-30"
+
+
+def test_el_radio_de_anclaje_va_en_km_reales(monkeypatch):
+    """Pluma que empieza 3 píxeles (~6,7 km) al sur del volcán, como Chillán
+    08-11 16:30 por paralaje. Con el radio de 10 km se ancla. El bug era tomar
+    SCALE_FACTOR (segundos de arco) como km: 72,8 km por píxel dejaba el radio
+    en 1 píxel y la pluma no se anclaba."""
+    def pluma_corrida(img, r, c):
+        img[r + 3:r + 6, c:c + 8] = (255, 160, 1)
+    v = _con_png(monkeypatch, _png_volcat(pluma_corrida))
+    r = va.volcat_height_at(v, datetime.now(timezone.utc))
+    assert (r.get("top_lo_km"), r.get("top_hi_km")) == (3, 4), r
 
 
 if __name__ == "__main__":

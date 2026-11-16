@@ -375,6 +375,10 @@ sobre 989 cuadros reales guardados el 16-11:
   (medido: plumas hasta 1,7 %, mantos falsos del 16-11 de 29 a 68 %).
 Los umbrales de 10 km, 5 %, 3 píxeles y los de la separación de color son
 nuestros, declarados en el código.
+- Corrección del mismo día: el tamaño del píxel se calculaba tomando
+  `SCALE_FACTOR` de SSEC como km, pero está en segundos de arco; el radio de
+  anclaje quedaba en 1 píxel. Ahora sale del ángulo del píxel por el radio medio
+  terrestre.
 
 ### v2.4: 2026-11-15 (perfil T(z) del momento correcto)
 **Criterio de "no reportar" nuevo en `src/process/scene.py`.** Ningún umbral de

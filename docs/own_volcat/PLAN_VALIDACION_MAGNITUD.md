@@ -3,7 +3,7 @@
 Estado: **paso 0 hecho** (16-11-2026): 989 archivos, 112 MB, 0 errores, en
 `data/raw/volcat_validacion/` con `manifiesto.json` (URL, bytes, sha256) y `eventos.json`.
 Script: `scripts/harvest_volcat_validacion.py`. **Paso 1 hecho** (16-11-2026, §3.1 abajo).
-Pasos 2 a 6 sin empezar.
+**Paso 2 hecho** (16-11-2026, §3.2). Pasos 3 a 6 sin empezar.
 
 ## 1. Por qué
 
@@ -95,6 +95,21 @@ verificadas por mutación (8 mutaciones, 8 atrapadas):
 Pendiente que el paso 2 resuelve: en los sectores dedicados el volcán **no** está en el
 centro del cuadro (Reventador a ~14 km, Cotopaxi a ~11 km del centro), así que hacen falta
 sus coordenadas GVP para anclar el objeto.
+
+**3.2 Resultado del paso 2 (16-11-2026).** `src/volcanos_validacion.py`: Reventador
+(GVP 352010; -0,077, -77,656; 3.562 m), Cotopaxi (352050; -0,677, -78,436; 5.911 m) y
+Sabancaya (354006; -15,787, -71,857; 5.960 m), del WFS oficial del GVP (la web
+volcano.si.edu da 403 a clientes automáticos). Fuera del catálogo operacional. Ruiz se
+descartó (un solo píxel). Dos hallazgos:
+- **Bug del paso 1 corregido:** `SCALE_FACTOR` de SSEC está en segundos de arco
+  (`EQ_RADIUS` = 206.264,8 = segundos de arco por radián), no en km. Se usaba como km y
+  el radio de anclaje quedaba en 1 píxel. La prueba sintética pasaba porque repetía el
+  mismo supuesto; ahora usa la georef real de `Chile_Central_2_km`.
+- **Anclaje con coordenadas GVP:** Sabancaya ancla bien (01-11: 46 de 67 cuadros, tope
+  6 a 8 km, 0,5 a 2 km sobre la cumbre; 28-10: 22 de 34). Chillán: 13 de 64, 3 a 4 km.
+  **Reventador ancla mal** (3 a 9 de ~35 por evento) y **Cotopaxi** ancla mal con topes de
+  12 a 18 km; Sabancaya 26-10 tiene 5 cuadros con 16 a 18 km. Hay que mirarlos a ojo
+  antes del paso 3 (¿pluma desprendida, objeto meteorológico, o el radio de 10 km?).
 
 **Paso 2: volcanes fuera del catálogo.** Chillán ya está en el catálogo. Objetos `Volcano` para Reventador, Sabancaya,
 Cotopaxi y Ruiz con coordenadas y cota tomadas del GVP (Smithsonian), citadas, no de memoria.

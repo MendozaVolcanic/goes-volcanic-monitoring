@@ -20,6 +20,7 @@ logger = logging.getLogger(__name__)
 
 BASE = "https://volcano.ssec.wisc.edu"
 TIMEOUT = 20
+R_TIERRA_MEDIO_KM = 6371.0  # radio medio terrestre (IUGG); sólo para pasar el píxel a km
 
 # Mapping nombre de volcano -> sector VOLCAT recomendado
 # Ver docs/altura_pluma/sectores_VOLCAT_chile.md
@@ -533,9 +534,12 @@ def volcat_height_at(volcano, dt, seed_radius_km: float = 10.0) -> Optional[dict
     # Antes: color más cercano de un LUT lineal sobre todos los píxeles de una
     # caja de ±0,6°, que leía hasta 10 % alto, confundía colores mezclados con
     # el fondo y contaba como "altura" un manto sinóptico que cubría el sector.
-    # SCALE_FACTOR es el arco de un píxel en km (con EQ_RADIUS en km: dp sale de
-    # su cociente), así que es el tamaño del píxel sin constantes nuestras.
-    res = volcat_object_heights(a, row, col, px_km=float(coords["SCALE_FACTOR"]),
+    # Tamaño N-S del píxel en km. OJO: SCALE_FACTOR NO está en km. SSEC entrega
+    # EQ_RADIUS = 206264,8 (segundos de arco por radián), así que SCALE_FACTOR es
+    # el píxel en segundos de arco (72,8″ en Chile_Central_2_km, 8,96″ en los
+    # sectores de 250 m). El ángulo `dp` por el radio medio terrestre da los km.
+    px_km = math.radians(dp) * R_TIERRA_MEDIO_KM
+    res = volcat_object_heights(a, row, col, px_km=px_km,
                                 seed_radius_km=seed_radius_km)
     res.update({"frame": vc.get("datetime"),
                 "gap_min": round(vc.get("gap_seconds", 0) / 60.0, 0)})

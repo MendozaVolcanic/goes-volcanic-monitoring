@@ -14,7 +14,7 @@ try:
         ash_legend, ash_so2_legend, btd_legend, so2_legend,
         header, info_panel, kpi_card, refresh_info_badge,
     )
-    from dashboard.utils import fmt_chile
+    from dashboard.utils import fmt_both_long
     from src.config import CHILE_BOUNDS, VOLCANIC_ZONES
     from src.process.pipeline import get_latest_processed, load_processed, process_ash_rgb
     from src.volcanos import CATALOG
@@ -262,8 +262,7 @@ def render():
     try:
         # timestamp formato ISO: 2026-04-15T14:30:00+00:00 o similar
         dt_ts = datetime.fromisoformat(ts_raw.replace("Z", "+00:00"))
-        ch_str = fmt_chile(dt_ts)
-        ts_display = f"{dt_ts.strftime('%Y-%m-%d %H:%M UTC')}  ({ch_str} Chile)"
+        ts_display = fmt_both_long(dt_ts)
     except Exception:
         pass
 

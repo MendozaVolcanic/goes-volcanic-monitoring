@@ -97,8 +97,9 @@ def _fetch_frame_for_ts(product: str, ts: str, _v: str = _REPROJECT_VERSION) -> 
         "dt": dt,
         "image": img,
         "bounds": CHILE_REPROJECTED_BOUNDS,
-        "label_utc": dt.strftime("%Y-%m-%d %H:%M UTC"),
-        "label_local": fmt_chile(dt),
+        # Un solo rotulo: fecha UTC + hora de Chile con su desfase. Por separado
+        # cada llamador le pegaba "Chile" o "CL" y quedaba repetido.
+        "label": fmt_both_long(dt),
     }
 
 
@@ -423,7 +424,7 @@ def _reloj_chile():
         f'<div style="font-size:1.25rem; font-weight:700; color:#e8eaf0; '
         f'font-family:monospace; letter-spacing:0.04em;">{utc_str}</div>'
         f'<div style="font-size:0.82rem; color:#99aabb; font-family:monospace;">'
-        f'{ch_str} <span style="color:#445566; font-size:0.7rem;">Chile</span></div>'
+        f'{ch_str}</div>'
         f'</div>',
         unsafe_allow_html=True,
     )
@@ -539,7 +540,7 @@ def _health_banner():
         f"<div style='font-size:1.0rem; color:#e8eaf0; font-family:monospace; "
         f"font-weight:700;'>{utc_str}</div>"
         f"<div style='font-size:0.7rem; color:#99aabb; font-family:monospace;'>"
-        f"{ch_str} <span style='color:#556;'>Chile</span></div></div>"
+        f"{ch_str}</div></div>"
         f"<span style='color:#33414f;'>│</span>"
         # Scan por producto
         f"<div style='font-size:0.78rem; line-height:1.3;'>"
@@ -1022,7 +1023,7 @@ def _live_content():
                     bounds = frame.get("bounds", CHILE_TILE_BOUNDS)
                     title = (
                         f"{prod_label} — GOES-19 · "
-                        f"{frame['label_utc']}  ({frame['label_local']} Chile)"
+                        f"{frame['label']}"
                     )
                     fig = _make_fig(frame["image"], bounds, title, volc_layer=volc_layer)
                     if show_wind:
@@ -1076,7 +1077,7 @@ def _live_content():
                     # Botones de descarga (PNG con timestamp + GeoTIFF georeferenciado)
                     _dl_label = (
                         f"GOES-19 {prod_label} - Chile - "
-                        f"{frame['label_utc']} ({frame['label_local']} CL)"
+                        f"{frame['label']}"
                     )
                     download_buttons(
                         frame["image"],
@@ -1208,8 +1209,7 @@ def _live_content():
                             _zona_label = (
                                 f"GOES-19 {PRODUCT_LABELS.get(prod_zona, prod_zona)} - "
                                 f"{ZONE_LABELS[zone_key]} - "
-                                f"{_dt_zona.strftime('%Y-%m-%d %H:%M UTC')}"
-                                f" ({fmt_chile(_dt_zona)} CL)"
+                                f"{fmt_both_long(_dt_zona)}"
                             )
                             download_buttons(
                                 img_zona,

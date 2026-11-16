@@ -231,7 +231,7 @@ def _live_panel(volcan_name: str, show_rings: bool = True,
             f"<div style='font-size:0.85rem; color:#ff6644; margin-top:0.2rem;'>"
             f"⏱ Evento marcado hace <b>{h}h {m}min</b> "
             f"({event_started.strftime('%H:%M UTC')} / "
-            f"{fmt_chile(event_started)} CL)</div>"
+            f"{fmt_chile(event_started)})</div>"
         )
 
     head_l, head_r = st.columns([3, 1])

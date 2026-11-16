@@ -22,7 +22,7 @@ try:
         C_ACCENT, C_ASH, C_SO2,
         header, info_panel, kpi_card, refresh_info_badge,
     )
-    from dashboard.utils import fmt_chile, parse_rammb_ts
+    from dashboard.utils import fmt_both_long, parse_rammb_ts, utc_to_chile
     from src.fetch.timeseries import (
         METRIC_LABEL, fetch_volcano_timeseries,
     )
@@ -90,6 +90,34 @@ def _cached_frame(
     return fetch_frame_for_bounds(product, ts, bounds, zoom=zoom)
 
 
+def _fuente_rotulo(draw, label: str, w: int, pad: int = 5):
+    """Fuente de la banda al pie: 2.5% del ancho, achicada hasta que el rotulo
+    quepa entero.
+
+    El rotulo lleva fecha UTC + hora de Chile con su desfase + metrica; en una
+    miniatura angosta a 2.5% se salia por la derecha y se perdia justo el
+    numero de la metrica.
+    """
+    from PIL import ImageFont
+
+    def _cargar(fs):
+        for nombre in ("DejaVuSans-Bold.ttf", "arial.ttf"):
+            try:
+                return ImageFont.truetype(nombre, fs)
+            except Exception:
+                continue
+        return None
+
+    fs = max(11, int(w * 0.025))
+    font = _cargar(fs)
+    if font is None:
+        return ImageFont.load_default()
+    while fs > 8 and draw.textlength(label, font=font) > w - 2 * pad:
+        fs -= 1
+        font = _cargar(fs)
+    return font
+
+
 def _thumb_with_marker(
     img: np.ndarray, vlat: float, vlon: float, bounds: dict,
     label: str = "", peak: bool = False,
@@ -98,7 +126,7 @@ def _thumb_with_marker(
 
     Retorna PNG bytes listo para st.image. Si peak=True, banda inferior roja.
     """
-    from PIL import Image, ImageDraw, ImageFont
+    from PIL import Image, ImageDraw
     import io as _io
 
     pil = Image.fromarray(img).convert("RGB")
@@ -120,14 +148,7 @@ def _thumb_with_marker(
     draw.line([(cx, cy - 3), (cx, cy + 3)], fill=(255, 255, 255), width=1)
 
     if label:
-        try:
-            fs = max(11, int(w * 0.025))
-            font = ImageFont.truetype("DejaVuSans-Bold.ttf", fs)
-        except Exception:
-            try:
-                font = ImageFont.truetype("arial.ttf", fs)
-            except Exception:
-                font = ImageFont.load_default()
+        font = _fuente_rotulo(draw, label, w)
         pad = 5
         bbox = draw.textbbox((0, 0), label, font=font)
         band_h = (bbox[3] - bbox[1]) + pad * 2
@@ -436,8 +457,8 @@ def render():
             with t_col1:
                 if peak_img is not None:
                     label = (
-                        f"PICO · {peak_pt['dt'].strftime('%Y-%m-%d %H:%M UTC')} "
-                        f"({fmt_chile(peak_pt['dt'])} CL) · {peak_pt['metric']:.2f}%"
+                        f"PICO · {fmt_both_long(peak_pt['dt'])} · "
+                        f"{peak_pt['metric']:.2f}%"
                     )
                     png = _thumb_with_marker(
                         peak_img, v_obj.lat, v_obj.lon, bds, label, peak=True,
@@ -453,8 +474,8 @@ def render():
             with t_col2:
                 if last_img is not None:
                     label = (
-                        f"ÚLTIMO · {last_pt['dt'].strftime('%Y-%m-%d %H:%M UTC')} "
-                        f"({fmt_chile(last_pt['dt'])} CL) · {last_pt['metric']:.2f}%"
+                        f"ÚLTIMO · {fmt_both_long(last_pt['dt'])} · "
+                        f"{last_pt['metric']:.2f}%"
                     )
                     png = _thumb_with_marker(
                         last_img, v_obj.lat, v_obj.lon, bds, label, peak=False,
@@ -470,7 +491,9 @@ def render():
     # ── Tabla descargable ──
     df = pd.DataFrame([
         {"timestamp_utc": p["dt"].strftime("%Y-%m-%d %H:%M:%S"),
-         "timestamp_chile": fmt_chile(p["dt"]),
+         # ISO con desfase: la hora de Chile sola, sin fecha ni offset,
+         # no se puede volver a cruzar con otra serie.
+         "timestamp_chile": utc_to_chile(p["dt"]).isoformat(timespec="minutes"),
          "metric_pct": round(p["metric"], 3),
          "available": p["available"]}
         for p in points

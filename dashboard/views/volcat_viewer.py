@@ -19,7 +19,7 @@ try:
         C_ACCENT, C_ASH, C_SO2, volcano_marker,
         ash_legend, ash_so2_legend, header, info_panel, kpi_card, refresh_info_badge,
     )
-    from dashboard.utils import fmt_chile
+    from dashboard.utils import fmt_both_long
     from src.config import CHILE_BOUNDS, VOLCANIC_ZONES
     from src.fetch.realearth_api import (
         fetch_image,
@@ -731,7 +731,7 @@ def _parse_volcat_dt(s: str | None) -> str:
     dt = _volcat_dt_obj(s)
     if dt is None:
         return s or "—"
-    return f"{dt.strftime('%Y-%m-%d %H:%M UTC')} ({fmt_chile(dt)} Chile)"
+    return fmt_both_long(dt)
 
 
 # ── Altura propia INDICATIVA: ACHA NOAA (ABI-L2-ACHA2KMF) ∩ máscara de ceniza ──
@@ -889,7 +889,7 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
     scan_dt = (primary or {}).get("scan_dt")
     ts_txt = "—"
     if scan_dt is not None:
-        ts_txt = f"{scan_dt.strftime('%Y-%m-%d %H:%M UTC')} ({fmt_chile(scan_dt)} Chile)"
+        ts_txt = fmt_both_long(scan_dt)
 
     # ── Sin ceniza por ninguno de los métodos ───────────────────────────
     if not acha_ok and not wr_ok:
@@ -1053,8 +1053,7 @@ def _render_acha_indicative_section(v_obj, radius_deg: float,
     # `primary` — el gránulo ACHA L2 puede diferir un scan del L1b de Wen-Rose.
     # (fix C3, audit jul-2026)
     fld_dt = fld.get("scan_dt")
-    fld_ts_txt = (f"{fld_dt.strftime('%Y-%m-%d %H:%M UTC')} "
-                  f"({fmt_chile(fld_dt)} Chile)") if fld_dt else ts_txt
+    fld_ts_txt = fmt_both_long(fld_dt) if fld_dt else ts_txt
     st.plotly_chart(
         _fig_acha_field(fld["field_km"], fld["lat"], fld["lon"], view_bounds,
                         f"Tope de pluma ({method_lbl}) · INDICATIVO · {fld_ts_txt}"),
@@ -1219,8 +1218,7 @@ def _figura_medicion(enc: dict, geo: dict, legend_pair: tuple, dt,
     from dashboard.views.zonas_fullscreen import _volcat_zone_fig
     from dashboard.volcat_loop import rotulo_hora
 
-    # Misma hora que el GIF: "hora de Chile (UTC-3)" y no el "10:50 -03"
-    # que deja la sigla de tzdata en fmt_both.
+    # Misma hora que el GIF: rotulo_hora, con fecha y "hora de Chile (UTC-3)".
     fig = _volcat_zone_fig(geo["png"], geo["bounds"], enc["view"],
                            enc["titulo"], rotulo_hora(dt), height,
                            legend_pair=legend_pair)
@@ -1673,15 +1671,12 @@ def _parse_timestamp(ts_str):
         from datetime import datetime, timezone
         date_part = ts_str.split(".")[0]
         time_part = ts_str.split(".")[1] if "." in ts_str else "000000"
-        utc_str = f"{date_part[:4]}-{date_part[4:6]}-{date_part[6:8]} {time_part[:2]}:{time_part[2:4]} UTC"
-        # Agregar hora local Chile
         dt = datetime(
             int(date_part[:4]), int(date_part[4:6]), int(date_part[6:8]),
             int(time_part[:2]), int(time_part[2:4]),
             tzinfo=timezone.utc,
         )
-        ch_str = fmt_chile(dt)
-        return f"{utc_str}  ({ch_str} Chile)"
+        return fmt_both_long(dt)
     except Exception:
         return ts_str
 

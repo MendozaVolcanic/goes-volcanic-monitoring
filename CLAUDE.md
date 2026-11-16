@@ -54,6 +54,7 @@ libre); registro pre-paper en `docs/paper/REGISTRO_PAPER.md`.
 - `STATUS.md` es curado por humanos; `STATUS_NRT.md` lo regenera el bot cada 10 min — NO mezclar.
 
 ## Patrones de código
+- **Hora de Chile = desfase en números, nunca sigla** (nov-2026): tzdata sacó CLT/CLST de America/Santiago en 2017 y `%Z` imprime "-03". Toda hora local sale de `dashboard/utils.py`: `fmt_chile` ("10:10 Chile (UTC-3)"), `fmt_both`, `fmt_both_long` (agrega la fecha local cuando de 21 a 24 h en Chile ya es otro día en UTC) o `desfase_chile`. El rótulo ya dice "Chile": no pegarle " CL" ni " Chile" detrás. `tests/test_hora_chile.py` lo vigila, incluido que la banda del PNG de zonas del Modo Sala siga cabiendo.
 - **Ausencia de dato ≠ calma**: toda vista que hable de hot spots, de edad de imagen o de VAA usa los criterios de `dashboard/map_helpers.py` (`estado_hotspots`, `kpi_hotspot_cercano`, `alerta_edad`, `mensaje_vaa`) y no descarta la hora del scan. `tests/test_honestidad_dato.py` falla si una vista hace `x, _ = _hotspots_*()`. Una línea que sólo corre cuando la fuente falla no la ve ninguna prueba normal: pasar `pyflakes` antes de cerrar.
 - **Auto-refresh**: `@st.fragment(run_every="60s")` para panel; selectores VAN AFUERA del fragment para preservar estado entre reruns.
 - **Sidebar routing + permalinks**: `PAGE_OPTIONS` list + `PAGE_SLUGS` dict en `dashboard/app.py`. URL `?vista=<slug>` setea inicial, escribe el slug al cambiar.

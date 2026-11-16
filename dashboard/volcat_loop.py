@@ -80,13 +80,12 @@ def rotulo_hora(dt: datetime) -> str:
     no trae CLT/CLST para Santiago y la sigla impresa saldria como '-03'.
     Si la fecha local es otra (noche en Chile, madrugada UTC) va la fecha.
     """
-    from dashboard.utils import utc_to_chile
+    from dashboard.utils import desfase_chile, utc_to_chile
     local = utc_to_chile(dt)
-    off = int(local.utcoffset().total_seconds() // 3600)
     hora_local = (local.strftime("%H:%M") if local.date() == dt.date()
                   else local.strftime("%Y-%m-%d %H:%M"))
     return (f"{dt.strftime('%Y-%m-%d %H:%M')} UTC · {hora_local} "
-            f"hora de Chile (UTC{off:+d})")
+            f"hora de Chile ({desfase_chile(dt)})")
 
 
 def aviso_salto(dt_prev: datetime | None, dt: datetime,

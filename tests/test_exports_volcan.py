@@ -89,6 +89,46 @@ def test_el_label_se_imprime_de_verdad_sobre_el_png():
     assert np.array_equal(sin[30:50, :60], con[30:50, :60])
 
 
+# El label real de la grilla de volcan: producto, volcan, encuadre, hora UTC +
+# hora de Chile con su desfase, edad y resolucion. Ronda los 140 caracteres.
+LABEL_LARGO = ("GOES-19 GeoColor - Planchón-Peteroa (+/-0.35 deg (~39 km)) - "
+               "15:50 UTC · 12:50 Chile (UTC-3) (hace 4 min) · hi-res L1b "
+               "~0.5 km/px (visible, pan-sharp)")
+
+
+@pytest.mark.parametrize("ancho", [300, 700, 1600])
+def test_el_label_largo_cabe_entero_en_la_cinta(ancho):
+    """Ninguna linea se sale del PNG y no se pierde ni una palabra.
+
+    Antes la letra era 1.8% del ancho sin tope: en un encuadre de volcan
+    (300-700 px) el label se cortaba en el borde derecho, y lo que se perdia
+    era justo la hora de Chile y la resolucion.
+    """
+    from PIL import Image, ImageDraw
+
+    from dashboard.exports import cinta_texto
+
+    d = ImageDraw.Draw(Image.new("RGB", (ancho, 10)))
+    font, lineas, pad = cinta_texto(d, LABEL_LARGO, ancho)
+    assert lineas
+    for ln in lineas:
+        assert pad + d.textlength(ln, font=font) <= ancho - pad, (ancho, ln)
+    assert " ".join(lineas).split() == LABEL_LARGO.split()
+
+
+def test_la_cinta_crece_hacia_arriba_y_no_tapa_la_marca():
+    """Con varias lineas la banda crece, pero la imagen conserva su tamano."""
+    from PIL import Image
+    import io
+
+    from dashboard.exports import img_to_png_bytes
+
+    arr = np.full((300, 300, 3), 200, dtype=np.uint8)
+    con = np.array(Image.open(io.BytesIO(img_to_png_bytes(arr, LABEL_LARGO))))
+    assert con.shape == (300, 300, 3)
+    assert np.array_equal(arr[120:160, :], con[120:160, :])
+
+
 def test_download_buttons_ofrece_las_dos_salidas(monkeypatch):
     """PNG **y** GeoTIFF: son dos usos distintos (informe / QGIS) y perder
     uno de los dos es exactamente la regresion que esta rama repara.

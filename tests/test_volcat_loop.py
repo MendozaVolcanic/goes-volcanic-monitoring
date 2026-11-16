@@ -609,3 +609,70 @@ def test_el_loop_le_pasa_al_gif_los_colores_de_su_barra(monkeypatch):
     vv._armar_loop_volcat(vl.encuadre_volcan(v, 1.0), {"frames": frames},
                           "Altura", "Chile Central 2 km (regional 2 km)", fps=2)
     assert (200, 0, 200) in (visto.get("fijos") or [])
+
+
+# ── Ventanas de dias (pedido 16-11-2026: evolucion de Chillan en 10 dias) ──
+#
+# SSEC guarda ~30 dias. Un loop de 10 dias con todos los cuadros serian 1440
+# descargas de ~0,4 MB: se toma un cuadro por paso (p. ej. uno por hora). Un
+# paso sin cuadro publicado queda como faltante, nunca se rellena.
+
+def _con_dt(lista):
+    return [{**f, "dt": va._parse_volcat_frame_dt(f["datetime"])} for f in lista]
+
+
+def test_submuestreo_toma_un_cuadro_real_por_paso():
+    frames = _con_dt(_frames_sinteticos(FIN, 6 * 6))   # 6 h, cada 10 min
+    inicio = FIN - timedelta(hours=6)
+    sel, faltan = va.submuestrear(frames, inicio, FIN, paso_min=60)
+    assert [f["dt"] for f in sel] == [FIN - timedelta(hours=h)
+                                      for h in range(5, -1, -1)]
+    assert faltan == []
+
+
+def test_submuestreo_usa_un_cuadro_vecino_real_si_falta_el_del_paso():
+    """Si SSEC no publico el cuadro justo del paso, sirve otro REAL dentro
+    de medio paso (con su propia hora). Si no hay ninguno, es faltante."""
+    hueco = FIN - timedelta(hours=2)
+    vacio = {FIN - timedelta(hours=4) + timedelta(minutes=m)
+             for m in range(-30, 31, 10)}
+    frames = _con_dt(_frames_sinteticos(FIN, 6 * 6, saltar={hueco} | vacio))
+    inicio = FIN - timedelta(hours=6)
+    sel, faltan = va.submuestrear(frames, inicio, FIN, paso_min=60)
+    dts = [f["dt"] for f in sel]
+    assert hueco not in dts
+    assert any(abs(d - hueco) < timedelta(minutes=30) for d in dts)
+    assert faltan == [FIN - timedelta(hours=4)]
+    assert len(set(dts)) == len(dts)          # ningun cuadro usado dos veces
+
+
+def test_ventana_de_10_dias_baja_un_cuadro_por_hora(monkeypatch):
+    payload = {"endtime": _frames_sinteticos(FIN, 6 * 24 * 12),
+               "coordinates": {"PROJECTION": "CE"}}
+    monkeypatch.setattr(va, "_get_session",
+                        lambda: _Sesion(resp=_Resp(200, payload)))
+    r = va.volcat_ventana("Chile_Central_2_km", "ABI", "Ash_Height",
+                          horas=240, paso_min=60)
+    assert r["ok"] is True
+    assert len(r["frames"]) == 240
+    assert r["paso_min"] == 60
+    assert r["faltantes"] == []
+    assert r["fin"] - r["inicio"] == timedelta(days=10)
+
+
+def test_el_loop_ofrece_10_dias_y_avisa_saltos_segun_el_paso():
+    import ast
+    import dashboard.views.volcat_viewer as vv
+    assert 240 in vv.LOOP_HORAS
+    assert vv.LOOP_PASO_MIN[240] >= 60
+    # 16 dias: un mes en curso completo hasta su dia 16 (Chillan, nov-2026).
+    assert 384 in vv.LOOP_HORAS
+    assert vv._rotulo_ventana(384) == "16 días (384 cuadros, 1 por hora)"
+    src = Path(vv.__file__).read_text(encoding="utf-8")
+    tree = ast.parse(src)
+    armado = next(n for n in tree.body if isinstance(n, ast.FunctionDef)
+                  and n.name == "_armar_loop_volcat")
+    assert "paso_min" in ast.get_source_segment(src, armado)
+    # Con un cuadro por hora, una hora entre cuadros no es un salto.
+    assert vl.aviso_salto(FIN - timedelta(hours=1), FIN, cadencia_min=60) is None
+    assert vl.aviso_salto(FIN - timedelta(hours=3), FIN, cadencia_min=60)

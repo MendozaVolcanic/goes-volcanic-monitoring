@@ -459,20 +459,27 @@ def volcat_available_types(sector: str, instr: str = "ABI") -> list[str]:
         return []
 
 
-def volcat_height_at(volcano, dt, radius_deg: float = 0.6) -> Optional[dict]:
-    """Reverse-map del colorbar QUEMADO de VOLCAT Ash_Height en el bbox de un
-    volcán → altura (km AMSL) como **ground-truth INDICATIVO** para cruzar con
-    nuestro retrieval propio.
+def volcat_height_at(volcano, dt, seed_radius_km: float = 10.0) -> Optional[dict]:
+    """Altura VOLCAT Ash_Height (km s.n.m.) del objeto que toca un volcán, leída
+    del PNG, como **referencia INDICATIVA** para cruzar con el retrieval propio.
 
-    HONESTIDAD: es FRÁGIL (±1-2 km extra; depende de la paleta SSEC) y SOLO sirve
-    de cross-check de validación, NUNCA como número operacional. Reconstruye el
-    valor desde el color del PNG porque SSEC no expone el NetCDF público. Devuelve:
-      - dict ``{p95_km, max_km, median_km, n_matched, frame, gap_min}`` si VOLCAT
-        SÍ tiene detección de altura en el bbox del volcán;
+    HONESTIDAD: SOLO sirve de cross-check de validación, NUNCA como número
+    operacional. Reconstruye el valor desde el color del PNG porque SSEC no
+    expone el NetCDF público, así que depende de la paleta SSEC y la barra es
+    DISCRETA (1 km por color hasta 10 km, 2 km arriba). Devuelve:
+      - dict ``{top_lo_km, top_hi_km, n_top, max_lo_km, p95_mid_km,
+        median_mid_km, n, n_mezclados, frac_sector, frame, gap_min}`` si VOLCAT
+        dibuja un objeto que toca el volcán (ver ``volcat_object_heights``);
       - dict ``{"note": ...}`` si no hay frame, el sector es PS (georef no-lineal),
-        o **no hay detección de VOLCAT ahí** (común en plumas chilenas finas, que
-        caen bajo el umbral de detección de VOLCAT);
+        **no hay objeto que toque el volcán** (común en plumas chilenas finas, bajo
+        el umbral de VOLCAT), o el objeto es un manto del tamaño del sector
+        (``sector_wide: True``);
       - None si fallan dependencias.
+
+    ``seed_radius_km`` = 10: el objeto tiene que tocar ese disco. Cubre el
+    paralaje de GOES-East (0,4 a 1,5 km hacia el sur por km de altura en Chile)
+    para topes de hasta ~6 km más un píxel de georef; en Chillán 08-11 16:30 la
+    pluma empieza ~10 km al sur de la coordenada del catálogo (umbral nuestro).
 
     Solo sectores CE (Chile_North/Central, equatoriales) — georef lineal. Los PS
     (Chile_South) se omiten.
@@ -485,9 +492,7 @@ def volcat_height_at(volcano, dt, radius_deg: float = 0.6) -> Optional[dict]:
         import requests
         from PIL import Image
 
-        from src.process.volcat_colorbar import (build_height_lut,
-                                                 extract_rainbow_bar,
-                                                 heights_from_plume)
+        from src.process.volcat_colorbar import volcat_object_heights
     except Exception:
         logger.exception("volcat_height_at: deps no disponibles")
         return None
@@ -510,17 +515,9 @@ def volcat_height_at(volcano, dt, radius_deg: float = 0.6) -> Optional[dict]:
         im = Image.open(io.BytesIO(raw)).convert("RGB")
     except Exception as e:
         return {"note": f"descarga del frame falló ({e})"}
-    W, H = im.size
     a = np.asarray(im).astype("float64")
 
-    # LUT desde el colorbar (strip inferior, mitad derecha = escala de altura).
-    strip = a[int(0.935 * H):H, :]
-    bar = extract_rainbow_bar(strip[:, int(0.48 * strip.shape[1]):])
-    if bar is None:
-        return {"note": "no se pudo extraer el colorbar de altura"}
-    lut_rgb, lut_val = build_height_lut(bar)
-
-    # Georef CE lineal: pixel del volcán + bbox de ±radius.
+    # Georef CE lineal: píxel del volcán.
     def _nlon(x):
         return x - 360.0 if x > 180.0 else x
     try:
@@ -529,29 +526,17 @@ def volcat_height_at(volcano, dt, radius_deg: float = 0.6) -> Optional[dict]:
         lat0 = coords["ORIGIN_LAT"] + coords.get("OFFSET_Y", 0) * dp
     except Exception:
         return {"note": "coords del sector incompletas"}
-    row = (lat0 - volcano.lat) / dp
-    col = (volcano.lon - lon0) / dp
-    rpx = max(4, int(radius_deg / dp))
-    r0, r1 = max(0, int(row - rpx)), min(int(0.92 * H), int(row + rpx))
-    c0, c1 = max(0, int(col - rpx)), min(W, int(col + rpx))
-    if r1 <= r0 or c1 <= c0:
-        return {"note": "el volcán cae fuera del sector"}
-    box = a[r0:r1, c0:c1]
+    row = int(round((lat0 - volcano.lat) / dp))
+    col = int(round((volcano.lon - lon0) / dp))
 
-    # Píxeles candidatos de altura: saturados (arcoíris) y NO la grilla cyan del
-    # overlay SSEC. El filtro fino (distancia a la paleta) lo hace heights_from_plume.
-    mx, mn = box.max(2), box.min(2)
-    with np.errstate(invalid="ignore", divide="ignore"):
-        sat = np.where(mx > 0, (mx - mn) / mx, 0.0)
-    cyan = (box[:, :, 1] > 150) & (box[:, :, 2] > 150) & (box[:, :, 0] < 120)
-    px = box[(sat > 0.35) & ~cyan]
-    if len(px) < 3:
-        return {"note": "sin detección de altura VOLCAT en el bbox del volcán "
-                "(pluma fina bajo el umbral de VOLCAT, o ceniza en otro sitio)"}
-    res = heights_from_plume(px, lut_rgb, lut_val)
-    if res is None or res["n_matched"] < 3:
-        return {"note": "píxeles saturados no matchean la paleta de altura "
-                "(probable overlay del mapa, no ceniza)"}
+    # Objeto VOLCAT que toca el volcán, leído por bloques de la barra (nov-2026).
+    # Antes: color más cercano de un LUT lineal sobre todos los píxeles de una
+    # caja de ±0,6°, que leía hasta 10 % alto, confundía colores mezclados con
+    # el fondo y contaba como "altura" un manto sinóptico que cubría el sector.
+    # SCALE_FACTOR es el arco de un píxel en km (con EQ_RADIUS en km: dp sale de
+    # su cociente), así que es el tamaño del píxel sin constantes nuestras.
+    res = volcat_object_heights(a, row, col, px_km=float(coords["SCALE_FACTOR"]),
+                                seed_radius_km=seed_radius_km)
     res.update({"frame": vc.get("datetime"),
                 "gap_min": round(vc.get("gap_seconds", 0) / 60.0, 0)})
     return res

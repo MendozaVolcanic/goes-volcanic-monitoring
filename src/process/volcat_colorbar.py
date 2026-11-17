@@ -30,6 +30,8 @@ from __future__ import annotations
 
 from typing import Optional
 
+import math
+
 import numpy as np
 
 VOLCAT_HEIGHT_VMIN = 0.0    # km AMSL — extremo bajo del colorbar Ash/Dust Height
@@ -131,7 +133,22 @@ SEED_RADIUS_KM = 10.0  # el objeto tiene que tocar este disco alrededor del volc
 MAX_SECTOR_FRAC = 0.05  # objeto > 5 % del mapa ⇒ manto sinóptico, no pluma (nuestro;
                         # medido: plumas ≤ 1,7 %, mantos del 16-11 de 12 a 49 %)
 MAP_FRAC = 0.92        # el mapa ocupa el 92 % superior del PNG; abajo, la leyenda
-TOP_MIN_PX = 3         # píxeles mínimos de un bloque para fijar el tope (nuestro)
+TOP_MIN_AREA_KM2 = 12.0  # área mínima de un bloque para fijar el tope (nuestro):
+                         # 3 píxeles IR de ABI de 2 km. Es un área del SENSOR, no
+                         # una cuenta de píxeles del PNG: en un sector de 250 m un
+                         # píxel IR son ~7 x 7 del PNG, y "3 píxeles del PNG"
+                         # (0,2 km²) dejaba pasar ruido de 16 a 18 km (Sabancaya
+                         # 26-10). Se pasa a píxeles del PNG con top_min_px.
+
+
+def top_min_px(px_km: float, px_km_ew: float) -> int:
+    """Píxeles del PNG que suman TOP_MIN_AREA_KM2, redondeado hacia arriba.
+
+    ``px_km`` es el lado N-S del píxel y ``px_km_ew`` el E-O; en la grilla CE de
+    SSEC el E-O es px_km·cos(lat). Hacia arriba: 2,97 píxeles de Chillán (sector
+    de 2 km) son 3, no 2, porque con 2 el bloque no llega al área.
+    """
+    return math.ceil(TOP_MIN_AREA_KM2 / (px_km * px_km_ew))
 
 
 def _saturation(a):
@@ -267,11 +284,13 @@ def anchored_object(mask, row: int, col: int, seed_radius_px: int):
 
 
 def volcat_object_heights(img_rgb, row: int, col: int, px_km: float,
+                          px_km_ew: float | None = None,
                           seed_radius_km: float = SEED_RADIUS_KM,
                           max_sector_frac: float = MAX_SECTOR_FRAC) -> dict:
     """Altura VOLCAT del objeto que toca el volcán en un PNG Ash_Height. PURA.
 
-    ``row, col``: píxel del volcán; ``px_km``: tamaño del píxel. Devuelve
+    ``row, col``: píxel del volcán; ``px_km``: lado N-S del píxel y
+    ``px_km_ew`` el E-O (por defecto igual a ``px_km``). Devuelve
     ``{top_lo_km, top_hi_km, n_top, p95_mid_km, median_mid_km, n, n_mezclados,
     frac_sector}`` o ``{"note": ...}`` (sin barra, volcán fuera, sin objeto, o
     manto del tamaño del sector, este último con ``sector_wide: True``).
@@ -308,14 +327,17 @@ def volcat_object_heights(img_rgb, row: int, col: int, px_km: float,
                         "sinóptico, no una pluma",
                 "sector_wide": True, "frac_sector": frac}
     lo_o, hi_o, al_o = lo_map[obj], hi_map[obj], al_map[obj]
-    # Tope = bloque más alto con al menos TOP_MIN_PX píxeles: 1 o 2 píxeles
-    # sueltos (Chillán 08-11 20:10: 2 px de 16-18 km en un objeto de 2 a 4 km)
-    # no fijan un tope. El máximo crudo va aparte, para no esconderlo.
+    # Tope = bloque más alto que cubre al menos TOP_MIN_AREA_KM2 (3 píxeles IR):
+    # menos que eso es ruido del retrieval, no un tope (Chillán 08-11 20:10: 2 px
+    # de 16-18 km en un objeto de 2 a 4 km; Sabancaya 26-10: píxeles IR sueltos
+    # de 16 a 18 km sobre fondo cálido). El máximo crudo va aparte.
+    min_px = top_min_px(px_km, px_km if px_km_ew is None else px_km_ew)
     niveles, cuenta = np.unique(lo_o, return_counts=True)
-    firmes = niveles[cuenta >= TOP_MIN_PX]
+    firmes = niveles[cuenta >= min_px]
     if len(firmes) == 0:
         return {"note": f"objeto VOLCAT de {int(obj.sum())} píxeles: ningún "
-                        f"bloque llega a {TOP_MIN_PX} píxeles, no fija un tope",
+                        f"bloque llega a {TOP_MIN_AREA_KM2:g} km² ({min_px} "
+                        "píxeles del cuadro), no fija un tope",
                 "n": int(obj.sum()), "max_lo_km": int(lo_o.max())}
     top = firmes.max()
     mid = (lo_o + hi_o) / 2.0

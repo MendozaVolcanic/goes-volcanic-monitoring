@@ -20,7 +20,29 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre 2026-11-17 tarde (miniatura de Series arreglada en PR 42)
+## 0. 2026-11-17 noche (TOP_MIN_PX como área del sensor, PR abierto)
+
+> Reemplaza como estado vigente al bloque "## 0-prev. Cierre 2026-11-17 tarde"
+> de abajo, que se conserva. El PR 42 ya está en `main` (088fb72).
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Mínimo del tope VOLCAT como área del sensor | **PR abierto, sin merge** | rama `fix/top-min-area-sensor`; ficha SDA v2.7; plan de validación §3.3 |
+| Volcanes VOLCAT faltantes con coordenadas GVP | **No empezado** | sin rama; se traspasa a una sesión nueva por contexto |
+| Validación VOLCAT pasos 3 a 6 | No empezados | ya no los bloquea el umbral; falta el criterio ya decidido aplicado |
+
+Hallazgos del cambio (detalle en el plan §3.3):
+- Sabancaya 01-11: 03:00 y 03:20 bajan de 7 a 8 km a 6 a 7 km; 03:10 queda en
+  7 a 8 km con 12,5 km² (borde); desde 03:30 el tope de 7 a 8 km es firme.
+- Sabancaya 26-10: sin los 16 a 18 km, pero 12:20 a 12:40 dan 12 a 14 km con
+  3 a 4 píxeles IR. **Decisión de Nicolás**: ¿subir el umbral? Recomendación:
+  no por ahora; el evento ya está excluido a ojo y subirlo costaría 03:10 del 01-11.
+- Los cuadros cosechados viven sólo en el worktree `volcat-propio-continuar-79dff8`
+  (`data/raw/volcat_validacion/`, gitignored): no borrar ese worktree.
+
+---
+
+## 0-prev. Cierre 2026-11-17 tarde (miniatura de Series arreglada en PR 42)
 
 > Reemplaza como estado vigente al bloque "## 0-prev. Cierre 2026-11-17"
 > de abajo, que se conserva. Sesión cerrada al aviso de contexto (150 mil

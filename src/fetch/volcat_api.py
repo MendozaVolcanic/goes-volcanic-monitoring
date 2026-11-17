@@ -580,7 +580,10 @@ def volcat_height_at(volcano, dt, seed_radius_km: float = 10.0) -> Optional[dict
     # el píxel en segundos de arco (72,8″ en Chile_Central_2_km, 8,96″ en los
     # sectores de 250 m). El ángulo `dp` por el radio medio terrestre da los km.
     px_km = math.radians(dp) * R_TIERRA_MEDIO_KM
-    res = volcat_object_heights(a, row, col, px_km=px_km,
+    # El píxel CE mide px_km N-S pero px_km·cos(lat) E-O: el mínimo del tope es
+    # un área del sensor (12 km²) y a -37° el píxel tiene un 20 % menos de área.
+    px_km_ew = px_km * math.cos(math.radians(volcano.lat))
+    res = volcat_object_heights(a, row, col, px_km=px_km, px_km_ew=px_km_ew,
                                 seed_radius_km=seed_radius_km)
     res.update({"frame": vc.get("datetime"),
                 "gap_min": round(vc.get("gap_seconds", 0) / 60.0, 0)})

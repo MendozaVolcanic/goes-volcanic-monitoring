@@ -53,8 +53,9 @@ def _acha_top(scan_dt, v):
 
 
 def _volcat_height(scan_dt, v):
-    """Reverse-map del colorbar VOLCAT Ash_Height (ground-truth INDICATIVO, FRÁGIL
-    ±1-2 km). Devuelve (texto, km_p95 o None)."""
+    """Altura VOLCAT Ash_Height del objeto que toca el volcán, leída del PNG por
+    bloques de la barra (referencia INDICATIVA, discreta: 1 km por color hasta
+    10 km, 2 km arriba). Devuelve (texto, centro del bloque del tope o None)."""
     try:
         from src.fetch.volcat_api import volcat_height_at
         r = volcat_height_at(v, scan_dt)
@@ -62,10 +63,12 @@ def _volcat_height(scan_dt, v):
             return "VOLCAT height: deps no disponibles", None
         if "note" in r:
             return f"VOLCAT height: {r['note']}", None
-        return (f"VOLCAT height (reverse-map PNG, ±1-2 km FRÁGIL): "
-                f"p95={r['p95_km']:.1f} km · máx={r['max_km']:.1f} km "
-                f"({r['n_matched']} px, frame {r['frame']} gap {r['gap_min']:.0f}min)",
-                r["p95_km"])
+        centro = (r["top_lo_km"] + r["top_hi_km"]) / 2.0
+        return (f"VOLCAT height (PNG por bloques, objeto anclado): tope "
+                f"{r['top_lo_km']}-{r['top_hi_km']} km ({r['n_top']} px) · "
+                f"máx. crudo desde {r['max_lo_km']} km · {r['n']} px en el objeto "
+                f"(frame {r['frame']} gap {r['gap_min']:.0f}min)",
+                centro)
     except Exception as e:
         return f"VOLCAT height: error ({e})", None
 

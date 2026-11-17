@@ -1,6 +1,6 @@
 # Ficha de Transparencia Algorítmica — Monitoreo Volcánico GOES-19 (dashboard + retrieval de altura de pluma)
 
-**Identificador interno:** SDA-GOES-01   **Versión:** v2.4, 2026-11-15
+**Identificador interno:** SDA-GOES-01   **Versión:** v2.5, 2026-11-16
 *(Resolución CPLT N°372; ver `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` del workspace)*
 
 > **Qué cambió respecto de la v1.0 (2026-07-01):** ver §"Historial de versiones" al final.
@@ -359,11 +359,32 @@ conectarlos exige actualizar esta ficha.
 | `src/process/wind_shear_height.py` | Estimar altura por deriva/cizalle del viento (árbitro independiente del IR) | `scripts/validate_fase3c.py` (validación offline) |
 | `src/process/bt_matching_height.py` | Módulo autónomo de cota por BT-matching | scripts de validación y tests. *(El **método** BT-matching sí está en producción, calculado dentro de `wen_rose_height.py` como `top_bt_matching_km`; lo no cableado es el módulo separado.)* |
 | `src/fetch/goes_lvtp.py` | Perfil T(z) del propio GOES-19 (LVTPF) como cross-check del GFS | `scripts/compare_lvtp_vs_gfs.py`. Ver §B.8.1: cablearlo obliga a revisar el guard de tropopausa. |
+| `src/process/volcat_colorbar.py` (`volcat_object_heights`) y `src/fetch/volcat_api.py` (`volcat_height_at`) | Leer la altura VOLCAT del PNG de SSEC (barra por bloques discretos, objeto que toca el volcán, rechazo de mantos del tamaño del sector) como **referencia de validación** de la altura propia | `scripts/validate_fase3b.py` y el plan `docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`. El dashboard muestra el PNG de VOLCAT tal cual, sin leerle números. |
 | `src/fetch/viirs_firms.py`, `src/fetch/viirs_gibs.py` | Hot spots térmicos VIIRS 375 m e imagen VIIRS para volcanes australes | `scripts/viirs_patagonia_snapshots.py` (uso manual) |
 
 ---
 
 ## Historial de versiones
+
+### v2.5: 2026-11-16 (lectura de la referencia VOLCAT)
+**Sólo cambia un componente de validación (§C); nada de lo que ve el operador
+cambia.** La lectura de altura desde el PNG de VOLCAT se rehízo tras medirla
+sobre 989 cuadros reales guardados el 16-11:
+- La barra de SSEC son bloques discretos (1 km por color hasta 10 km, 2 km
+  arriba). La lectura lineal anterior leía hasta 10 % alto (el azul de 10 a 12 km
+  salía 12,2). Ahora el tope se informa como el intervalo del bloque.
+- En los sectores regionales de 2 km el color viene mezclado con el fondo IR; se
+  separa "color de barra + gris" y, si dos intervalos lo explican, el píxel no se
+  usa. Un tope necesita al menos 3 píxeles del bloque.
+- Sólo cuenta el objeto que toca el volcán (radio 10 km, por el paralaje), y un
+  objeto que cubre más del 5 % del sector se rechaza como manto sinóptico
+  (medido: plumas hasta 1,7 %, mantos falsos del 16-11 de 29 a 68 %).
+Los umbrales de 10 km, 5 %, 3 píxeles y los de la separación de color son
+nuestros, declarados en el código.
+- Corrección del mismo día: el tamaño del píxel se calculaba tomando
+  `SCALE_FACTOR` de SSEC como km, pero está en segundos de arco; el radio de
+  anclaje quedaba en 1 píxel. Ahora sale del ángulo del píxel por el radio medio
+  terrestre.
 
 ### v2.4: 2026-11-15 (perfil T(z) del momento correcto)
 **Criterio de "no reportar" nuevo en `src/process/scene.py`.** Ningún umbral de

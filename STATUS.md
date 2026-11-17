@@ -20,6 +20,96 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
+## 0. Cierre de sesión 16-11-2026: validación de magnitud contra VOLCAT (pasos 0 a 2)
+
+> **Estado fijado con trabajo en curso.** La sesión "Validación de magnitud
+> VOLCAT: pasos 3 a 6" (local_f702bfa8) estaba trabajando en ESTE mismo
+> worktree y rama cuando se escribió esto. Puede haber commits encima de
+> 202ece9: mirar `git log` antes de creerle a esta tabla.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Paso 0: cosecha de cuadros VOLCAT | Terminado | a2d1dca; 989 archivos, 111,7 MB, 0 errores, sha256 en `data/raw/volcat_validacion/manifiesto.json` (gitignored, sólo en este worktree) |
+| Paso 1: lectura por bloques + objeto anclado | Terminado | e05b722; `src/process/volcat_colorbar.py::volcat_object_heights`, `tests/test_volcat_colorbar.py` (15 pruebas, mutaciones atrapadas) |
+| Paso 2: coordenadas GVP + fix de unidades | Terminado | 202ece9; `src/volcanos_validacion.py`, `tests/test_volcanos_validacion.py`, fix `SCALE_FACTOR` en `src/fetch/volcat_api.py` |
+| Suite completa | Verde | 566 passed, 1 skipped (~4,5 min), corrida tras 202ece9 |
+| Pasos 3 a 6 (métodos propios vs VOLCAT) | Corriendo en otra sesión | local_f702bfa8, misma rama |
+| PR 38 (esta rama) | Abierto, sin merge | apilado sobre PR 36; título aún dice "paso 0 y 1" |
+| PR 36 (base de esta rama) | Abierto, sin merge | `claude/volcat-propio-continuar-79dff8` -> main |
+| Remoto | Al día | `git ls-remote` = `git rev-parse HEAD` = 202ece9 al escribir esto |
+
+Plan vivo con todo lo medido: `docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md` (§2, §3.1, §3.2).
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | Criterio de "consistente" para el paso 5 (decidir ANTES de ver números) | (a) el intervalo VOLCAT se cruza con nuestra banda β; (b) diferencia de centros ≤ 1 km; (c) ≤ 2 km | (a): VOLCAT entrega un bloque de 1 a 2 km, no un número; exigirle más precisión al centro sería inventar resolución |
+| 2 | Orden de merge de PR 36, 38 y 39 | 36 -> 38 -> 39, o 39 primero | 36 y 38 primero (38 es pila de 36); al rebasar 39 conservar sus `submuestrear`/`paso_min` y la ficha §B.9 de ambos lados |
+
+### c. Lo aprendido
+
+- **Regla general del workspace**: antes de interpretar una unidad de un
+  producto externo, leer la memoria de referencia del proyecto. La memoria
+  `reference_volcat_sectors.md` YA decía que `SCALE_FACTOR` de SSEC (proyección
+  CE) va en segundos de arco; igual se programó como km y el radio de anclaje
+  quedó en 1 píxel. Una prueba sintética escrita con la misma suposición dio
+  verde falso: **las georef de prueba se copian del listado real**, no se
+  inventan. (Destino: patrón ya anotado en memoria; propuesto para
+  `CLAUDE.md` del proyecto, sección Patrones de código.)
+- La barra de VOLCAT Ash_Height es **discreta**: 1 km por bloque hasta 10, luego
+  2 km hasta 18; 18 a 20 es negro e ilegible. Leerla como gradiente lineal
+  sobrelee hasta 10 % (el azul de 10-12 se leía 12,2).
+- En sectores de 2 km el color se mezcla con el gris IR: rojo y salmón (1-2 y
+  2-3 km) no se separan; un tope VOLCAT de 1 a 3 km en sector regional es
+  ambiguo por construcción.
+- El sitio volcano.si.edu responde 403 a bots; el WFS del GVP sí responde.
+
+### d. Problemas abiertos e hipótesis
+
+| Problema | Etiqueta |
+|---|---|
+| Reventador ancla en sólo 3 a 9 de ~35 cuadros por evento | CONFIRMADO (medido); causa SOSPECHA: pluma desprendida, radio de 10 km corto |
+| Cotopaxi 25-10 y Sabancaya 26-10 dan topes de 12 a 18 km | CONFIRMADO (medido); que sean nubes meteorológicas y no ceniza: SOSPECHA, falta mirarlo a ojo |
+| Chillán 08-11: tope firme 3-4 km en 13 de 64 cuadros; pulso de 5-6 km sólo en 1-2 px | CONFIRMADO |
+| `used_sat` sin usar en `volcat_api.py:276` | CONFIRMADO, viene de main, no se tocó |
+
+### e. Cerrado, no rehacer
+
+- El "tope bajo el cráter" de Chillán 08-11 era artefacto de la lectura vieja,
+  no física.
+- La afirmación anterior del plan de que el azul se "sublee" era falsa (era
+  sobrelectura) y ya se corrigió en el plan.
+- Los mantos sinópticos del 16-11 (Sabancaya/Ubinas/Copahue) se rechazan con la
+  regla de > 5 % del mapa.
+- Los sectores PS (Chile_South) se omiten en `volcat_height_at` con nota; no
+  hay que adaptar la conversión a km para ellos.
+
+### f. Prompt para la próxima sesión
+
+```
+Proyecto Goes, worktree C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\volcat-propio-continuar-79dff8,
+rama claude/validacion-magnitud-volcat (PR 38, apilado sobre PR 36).
+1. Verifica antes de creer: git status -sb; git log --oneline 202ece9..HEAD (puede haber
+   commits de la sesión de pasos 3 a 6); git ls-remote origin -h refs/heads/claude/validacion-magnitud-volcat.
+2. Lee en orden: CLAUDE.md, STATUS.md §0, docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md, y la nota
+   C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_514630c7-d36d-4bb5-b6c3-8a142112495e\validacion_magnitud_traspaso_2026-11-16.md
+3. Si la sesión de pasos 3 a 6 ya terminó, revisa lo que dejó (diff, pruebas) antes de seguir; si no, no
+   edites los mismos archivos.
+4. Trabajo pendiente en orden: mirar a ojo Reventador/Cotopaxi y los topes 12-18 km; pedir a Nicolás el
+   criterio de consistencia ANTES de ver números; BT-matching, Wen-Rose y ACHA en pocos scans (Sabancaya
+   01-11 y 28-10, Chillán 08-11) con GFS archivado; scripts/validate_magnitud.py + tabla en
+   docs/paper/REGISTRO_PAPER.md §3.
+Reglas duras: TDD; ficha SDA (docs/FICHA_SDA_GOES.md) en el mismo commit que la lógica; sin merge ni deploy;
+no tocar replay_reciente.py, replay_dia.py, historic_rammb.py ni docs/auditoria_2026-11; sin VIIRS; no
+inventar valores físicos; sin guiones largos; rutas absolutas.
+Si no alcanza: deja el avance commiteado y un bloque nuevo arriba en STATUS.md con /cierre.
+```
+
+---
+
 ## Qué corre de verdad (workflows, ago-2026)
 
 | Workflow | Disparo declarado | Qué produce |

@@ -1,6 +1,6 @@
 # Ficha de Transparencia Algorítmica — Monitoreo Volcánico GOES-19 (dashboard + retrieval de altura de pluma)
 
-**Identificador interno:** SDA-GOES-01   **Versión:** v2.5, 2026-11-16
+**Identificador interno:** SDA-GOES-01   **Versión:** v2.6, 2026-11-17
 *(Resolución CPLT N°372; ver `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` del workspace)*
 
 > **Qué cambió respecto de la v1.0 (2026-07-01):** ver §"Historial de versiones" al final.
@@ -365,6 +365,20 @@ conectarlos exige actualizar esta ficha.
 ---
 
 ## Historial de versiones
+
+### v2.6: 2026-11-17 (loop VOLCAT de días, registro de un cambio ya en producción)
+**Sólo visualización (§B.9); ninguna detección, umbral ni cifra de altura
+cambia.** Esta entrada registra un cambio que entró a `main` el 16-11 (loop de
+1, 3, 10 y 16 días) con el texto de §B.9 al día pero sin subir la versión de la
+ficha:
+- El loop VOLCAT pasó de cubrir 2 a 12 h a cubrir de 2 h a 16 días (16 días es
+  lo más largo útil dentro de los ~30 días que guarda SSEC).
+- En las ventanas de días se toma **un cuadro real por paso**
+  (`volcat_api.submuestrear`: 30 min en 1 día, 60 min desde 3 días), el más
+  cercano a cada punto de la grilla a menos de medio paso, sin repetir uno y con
+  su propia hora. Un punto sin cuadro cerca se lista como faltante y no se
+  rellena; el aviso de salto se mide contra el paso, no contra los 10 min
+  nativos.
 
 ### v2.5: 2026-11-16 (lectura de la referencia VOLCAT)
 **Sólo cambia un componente de validación (§C); nada de lo que ve el operador

@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-17 (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,213 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre de sesión 16-11-2026: validación de magnitud contra VOLCAT (pasos 0 a 2)
+## 0. Cierre 2026-11-17 (merges 36 a 40, deploy y lo que sigue)
+
+> Reemplaza como estado vigente a los dos bloques "## 0-prev." de abajo (16-11),
+> que se conservan como histórico. Todo lo de la tabla se verificó hoy contra
+> GitHub y la API de Hugging Face, no de memoria.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| PR 36 (guard de perfil GFS, ficha v2.4) | **En `main`** | merge `094f798` |
+| PR 38 (validación VOLCAT pasos 0 a 2, ficha v2.5) | **En `main`** | merge `c1b5141` |
+| PR 39 (loop VOLCAT de 1, 3, 10 y 16 días) | **En `main`** | merge `e520c9e`; ficha sube a v2.6 en este PR para registrarlo |
+| PR 40 (Comparador con todo el catálogo) | **En `main`** | merge `5910de4` |
+| PR 37 (hora de Chile sin sigla, miniatura en dos líneas) | **En `main`**, pero ver d.1 | merge `54f2528`; CI de main verde: 592 pasan, 4 saltadas |
+| Deploy Hugging Face | **RUNNING** | Space sha `4d59609` (snapshot huérfano de `main` @ `54f2528`); cartel del sidebar `build-20261117-0444-54f2528`; página pública abierta: vista Series carga y calcula, vista VOLCAT ofrece "1, 3, 10 o 16 días" |
+| Validación VOLCAT pasos 3 a 6 | No empezados | requiere antes el arreglo de `TOP_MIN_PX` (pendiente 1) |
+
+### b. Lo que sigue, priorizado
+
+1. **Miniatura de Series cortada en producción** (d.1): arreglar con TDD y
+   mutación; la prueba actual dio verde y el defecto se ve igual.
+2. **`TOP_MIN_PX` como área del sensor** (`docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`
+   §3.3): hoy cuenta píxeles del PNG; en un sector de 250 m eso es 0,2 km².
+   Pasarlo a un área en píxeles IR (p. ej. 3 de 2 km, ~12 km²) convertida con
+   `px_km`, con ficha SDA en el mismo commit. Es el paso previo a los pasos 3 a 6.
+3. **Volcanes del mapeo VOLCAT que faltan en el catálogo**: Olca, Aucanquilcha,
+   Putana, Ojos del Salado, Cerro Azul/Quizapu, Lautaro, con coordenadas del
+   Smithsonian GVP (WFS, como Lastarria), nunca adivinadas.
+4. **Validación VOLCAT pasos 3 a 6** (plan §3), con el criterio de consistencia
+   decidido por Nicolás ANTES de ver números (ver 0-prev, validación, b.1).
+5. **Decisiones de Nicolás que tocan cifras del paper**: máscara FDCF 30 a 35
+   con etiquetas de confianza; el verde del Ash RGB (SO₂ o cirros); altura
+   propia marcada INDICATIVO y con paralaje.
+6. **Coherencia entre vistas**: distorsión E-O del 31 % en la vista Zona; rumbo
+   y paralaje en la regla; rótulos de anillos que se pisan.
+7. **Migración a servidor local** y auditoría de rendimiento.
+
+### c. Lo aprendido
+
+- **El script de deploy hace `git checkout main`**: no corre desde un worktree
+  si `main` está tomado por otro. Se desplegó desde el worktree que tenía `main`
+  (limpio, avanzado con `--ff-only`). El sha del Space nunca es el de `main`
+  (es un commit huérfano); la prueba de qué build corre es el cartel
+  `build-<fecha>-<sha de main>` del sidebar.
+- **Una prueba de ancho de texto no prueba que se vea**: la del PR 37 pasa en
+  CI y la miniatura igual sale cortada en producción (d.1). Verificar en la
+  página pública, no sólo en la suite.
+
+### d. Problemas abiertos e hipótesis
+
+1. **CONFIRMADO** (visto en la página pública, 17-11 04:4x UTC, Láscar, Ash
+   RGB, 6 h): en las dos miniaturas de Series ("PICO" y "ÚLTIMO") la segunda
+   línea `2026-11-17 04:20 UTC · …` se corta en el borde derecho y la hora de
+   Chile no se ve. Captura:
+   `C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\miniatura_series_cortada_2026-11-17.jpg`.
+   Causa: SOSPECHA, la prueba `test_rotulo_de_miniatura_de_series_cabe` mide
+   otra línea, otra fuente o otro ancho que el que se dibuja en el servidor.
+2. Pendiente heredado sin tocar: avisos de `pyflakes` preexistentes
+   (`used_sat` en `volcat_api.py`, imports sin uso en `volcat_viewer.py` y
+   `comparador.py`).
+
+### e. Prompt para la próxima sesión
+
+```text
+Retomo el dashboard GOES (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes).
+Usa /retomar. Verifica antes de creer: gh pr list --state open; git ls-remote origin -h
+refs/heads/main; curl https://huggingface.co/api/spaces/mendozavolcanic/goes-volcanic-monitoring.
+Lee en orden: CLAUDE.md del repo, STATUS.md "## 0.", docs/FICHA_SDA_GOES.md (v2.6).
+Trabajo, cada uno en su rama y PR propio hacia main, SIN fusionar ni desplegar:
+  1. Miniatura de Series cortada (STATUS.md 0.d.1): reproducir con una prueba que falle
+     sobre el PNG real, arreglar, mutación.
+  2. TOP_MIN_PX como área del sensor (plan §3.3), TDD, mutación, ficha SDA en el mismo commit.
+  3. Volcanes VOLCAT faltantes con coordenadas GVP (WFS), nunca adivinadas.
+No empezar los pasos 3 a 6 de la validación sin el criterio de Nicolás.
+Reglas duras: la carpeta principal está en audit/2026-11-previa-local y no se toca;
+docs/auditoria_2026-11 nunca se sube ni se citan sus números de hallazgo; español de
+Chile sin voseo y sin guiones largos; rutas absolutas; nada de VIIRS; SDA (CPLT 372).
+```
+
+---
+
+## 0-prev. Cierre 2026-11-16 (sesión Replay + loop VOLCAT + Comparador)
+
+> Actualizado tras el cierre: la sesión "Validación de magnitud" terminó su
+> turno sin empezar los pasos 3 a 6. Sólo alcanzó la revisión a ojo de los
+> anclajes (`c99338a` en el PR 38) y encontró un umbral mal dimensionado que
+> hay que corregir antes de comparar contra nuestras alturas; está escrito en
+> `docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md` de esa rama. El PR 38 trae
+> además su propio bloque "## 0." en este archivo (`8703435`, pasos 0 a 2):
+> al mergear, el más reciente queda como "## 0." y el otro pasa a "## 0-prev.",
+> sin borrar ninguno.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Replay por fecha: 4 productos lado a lado (GeoColor, Ash RGB, SO₂, VOLCAT) y botón Play del día | **En `main`** | PR 35, merge 2026-11-15 16:09 UTC |
+| Loop animado VOLCAT (GIF, MP4 y en pantalla) | **En `main`** | PR 32 |
+| Menos descargas por ciclo (caché de tiles y pestañas perezosas) | **En `main`** | PR 34 |
+| Lastarria en el catálogo | **En `main`** | PR 33 |
+| Deploy Hugging Face | RUNNING, `lastModified` 2026-11-15 16:09 UTC (coincide con el merge del PR 35) | API de HF consultada hoy |
+| Bot FRP | Produce: último commit de `data/frp_timeline.json` 2026-11-16 17:57 UTC | `gh api .../commits?path=` |
+| Loop VOLCAT de 1, 3, 10 y 16 días (evolución de Chillán) | **Rama sin mergear**, CI verde | PR 39, `feat/volcat-loop-dias`; suite local 542 pasan, 2 saltadas |
+| Comparador con todo el catálogo (prioritarios primero, con ★) | **Rama sin mergear**, CI verde | PR 40, `feat/comparador-catalogo` @ `fefd751` |
+| Guard de perfil GFS en la altura (no convertir con T(z) de otro momento) | **Rama sin mergear**, CI verde | PR 36 |
+| Validación de magnitud VOLCAT, pasos 0 a 2 | **Rama sin mergear**, apilada sobre PR 36, sin CI (su base no es `main`) | PR 38 |
+| Validación VOLCAT, pasos 3 a 6 | **No empezados**; revisión previa de anclajes hecha, con un umbral a corregir | PR 38, `c99338a`; plan en `docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md` de esa rama |
+| Hora de Chile con desfase numérico (sin "-03") | **Rama sin mergear, CI ROJO** | PR 37; ver d.1 |
+| Loops de Chillán en archivo | Entregados, fuera del repo | `C:\Users\nmend\Downloads\volcat_nevados_chillan_2026-11-08_r1.5deg.mp4` y `.gif`; `C:\Users\nmend\Downloads\volcat_nevados_chillan_16dias_2026-10-31_a_2026-11-16_r1deg.mp4` (9,8 MB) y `.gif` (25 MB) |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | ¿Mergear PR 39 y PR 40? | ahora / después de probarlos en local | **Ahora**: ambos con CI verde, tocan sólo vistas (no lógica de decisión del SDA) y traen pruebas propias. |
+| 2 | Orden de merge de 36, 38 y 39 (los tres tocan `docs/FICHA_SDA_GOES.md`) | cualquiera / 36, 38, 39 | **36, luego 38, luego 39**: 36 sube la ficha a v2.4, 38 a v2.5, y 39 edita B.9 sin subir versión. En ese orden, 39 sólo resuelve el conflicto de texto en B.9 y anota el cambio como v2.6. |
+| 3 | PR 37 con CI rojo | relajar la prueba / achicar el rótulo / cerrar el PR | **Achicar el rótulo** (o fuente más chica en miniaturas de 320 px): la prueba hace bien en fallar, el texto no cabe con la fuente del runner Linux. |
+| 4 | ¿Deploy a HF después de mergear? | sí / esperar | **Sí, tras 39 y 40**, para que el loop de 16 días de Chillán quede en la app pública. |
+
+### c. Lo aprendido
+
+- **Animación Plotly con `layout.images`** (patrón del proyecto, quedó en
+  `CLAUDE.md`, Gotchas): cada frame necesita `redraw: True`, y un frame que
+  fija `annotations` o `images` **reemplaza la lista entera**: lo estático
+  (rótulos de la barra de escala, barra de color de VOLCAT) se repite en cada
+  frame o desaparece en el segundo cuadro.
+- **Loop de días: un cuadro real por paso, nunca relleno** (regla de método,
+  vive en el código del PR 39, `volcat_api.submuestrear`): el más cercano a
+  cada punto de la grilla a menos de medio paso, sin repetir uno, con su propia
+  hora; un punto sin cuadro se lista como faltante y el salto se mide contra el
+  paso, no contra los 10 min nativos. Proponer un bullet en `CLAUDE.md` cuando
+  entre el PR 39.
+- **Costo por cuadro** (trampa de medición, en memoria
+  `reference_rammb_retencion.md`): un tile RAMMB es un PNG de 678 px de hasta
+  ~0,7 MB y un recuadro de 0,4° cae en 1 a 4 tiles; un cuadro VOLCAT de sector
+  completo pesa 0,37 a 0,55 MB. Cargar un día entero de 4 productos con la red
+  saturada tomó ~20 min; por eso la carga en dos etapas con ETA.
+- **Probar en el navegador del panel** (trampa de prueba, vale para todo el
+  workspace): un panel oculto pausa `requestAnimationFrame`, así que una
+  animación "se pega" sin ser bug (verificar los frames por `relayout`). Una
+  fecha escrita a mano en `st.date_input` no se confirma: elegirla en el
+  calendario.
+- **VOLCAT**: SSEC guarda ~30 días; para "el mes en curso" la ventana útil más
+  larga es 16 días.
+
+### d. Problemas abiertos e hipótesis
+
+1. **CONFIRMADO**: PR 37 falla en CI en
+   `tests/test_hora_chile.py::test_rotulo_de_miniatura_de_series_cabe[320]`,
+   `327.89 <= 310` (1 falla, 556 pasan). El rótulo de hora nuevo no cabe en la
+   miniatura de 320 px con la fuente del runner Linux.
+2. **CONFIRMADO**: la FICHA SDA tendrá conflicto de versión al mergear 36, 38 y
+   39 (ver b.2). Lo mismo `STATUS.md` entre este PR y el 38: ambos agregan un
+   bloque "## 0." en el mismo lugar.
+3. **SOSPECHA**: el deploy de HF contiene exactamente `main` al merge del PR
+   35; sólo coincide la hora, no comparé el sha del Space con el del repo.
+4. **SOSPECHA**: con la red normal (no saturada) la carga del día completo del
+   Replay debería bajar bastante de los ~20 min medidos; no lo medí.
+5. **CONFIRMADO** que existen, no son de esta sesión: avisos de `pyflakes`
+   preexistentes (`used_sat` y unos imports sin uso en `volcat_viewer.py` y
+   `comparador.py`). No tocados.
+
+### e. Ya cerrado, no rehacer
+
+- Replay por fecha con los 4 productos y Play: hecho y mergeado (PR 35). Los
+  huecos se cuentan honestos (14-11 Lastarria: 9 scans SO₂ no publicados por
+  RAMMB, 8 imágenes no descargadas, 8 cuadros VOLCAT no publicados por SSEC).
+- Los textos de retención de RAMMB ya dicen lo medido (continuo desde
+  01-09-2026 más días sueltos); no volver a "28 días" ni "9-10 meses".
+- Loop de 16 días de Chillán: ya generado en archivo (383 cuadros, 1 descarga
+  fallida anunciada); no hace falta volver a bajarlo para mostrarlo.
+- Que `get_volcano` resuelva bien todo el catálogo (riesgo de coincidencia
+  parcial): verificado, cada nombre se resuelve a sí mismo.
+- Qué es VOLCAT y de dónde salen los datos: explicado; lo esencial ya vive en
+  memoria (`reference_volcat_source.md`).
+
+### f. Prompt para la próxima sesión
+
+```text
+Retomo el dashboard GOES (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes).
+Usa /retomar. Antes de creerle al traspaso:
+1. gh pr list --state open  (esperados al 16-11: 36, 37, 38, 39, 40)
+   y gh pr checks <n> en cada uno; el 37 tenía CI rojo.
+2. Si vas a seguir la validación VOLCAT, lee primero
+   docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md en la rama del PR 38
+   (revisión de anclajes en c99338a: hay un umbral mal dimensionado que se
+   corrige antes del paso 3).
+3. git ls-remote origin -h refs/heads/main contra lo que diga STATUS.md.
+Lee en orden: CLAUDE.md del repo, STATUS.md sección "## 0.", docs/FICHA_SDA_GOES.md.
+Trabajo sugerido, en orden:
+  a. Con mi visto bueno, mergear 36, 38 y 39 en ese orden resolviendo la
+     versión de la FICHA SDA (B.9), y el 40.
+  b. Arreglar el PR 37 (rótulo que no cabe en la miniatura de 320 px).
+  c. Deploy a HF (bash scripts/deploy_hf.sh) y verificar el loop de 16 días
+     de Chillán en la app pública.
+Reglas duras: ramas nuevas y PR a main SIN mergear ni desplegar salvo que yo
+lo pida; no tocar ni subir docs/auditoria_2026-11; español de Chile sin voseo
+y sin guiones largos; rutas absolutas; nada de VIIRS; SDA (CPLT 372): ficha
+en el mismo commit que la lógica y ausencia de dato nunca se muestra como
+calma; TDD.
+Si la sesión no alcanza: deja el estado en STATUS.md con /cierre.
+```
+
+---
+
+## 0-prev. Cierre de sesión 16-11-2026: validación de magnitud contra VOLCAT (pasos 0 a 2)
 
 > **Estado fijado con trabajo en curso.** La sesión "Validación de magnitud
 > VOLCAT: pasos 3 a 6" (local_f702bfa8) estaba trabajando en ESTE mismo

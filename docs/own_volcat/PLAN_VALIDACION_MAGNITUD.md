@@ -161,6 +161,36 @@ de 23:10 a 02:50 y de 7 a 8 km desde 03:00, pluma de 1 a 2 % del sector que crec
 cortarse), Sabancaya 28-10 (6 a 7 km, 09:10 a 11:20) y Chillán 08-11 (3 a 4 km).
 Reventador 07-11 20:50 y 21:00 (8 a 10 km) como caso secundario.
 
+**3.4 Chillán a cadencia completa y un manto que el 5 % no atrapa (17-11-2026).** Se
+bajaron los 2.181 cuadros publicados de `Chile_Central_2_km` del 01-11 al 16-11 (de 2.304
+posibles) y se leyeron cuadro a cuadro. Horas de Chile:
+- **Pulsos anclados al cráter:** 08-11 de 11:00 a 18:30 (27 cuadros, 1 a 4 km; los
+  primeros objetos ya desprendidos a 11 a 20 km), 10-11 de 12:00 a 12:10 y de 18:30 a
+  20:30 (13, 3 a 5 km), 11-11 de 14:50 a 15:10 (3, 3 a 5 km) y 14-11 de 13:40 a 20:30
+  (38, 3 a 5 km, con cuadros sueltos de hasta 12 km). El objeto más grande de esos días
+  mide 67 píxeles (~270 km²). Para el paso 3 suman 10-11, 11-11 y 14-11 a Chillán 08-11.
+- **16-11 (y 15-11 desde las 23:30): un sistema que NO es pluma pasa el filtro.** Aparece a
+  ~110 km del cráter, se acerca y lo cubre de 05:20 a 09:00. `volcat_object_heights`, el
+  código de producción, corrido sobre esos cuadros, devuelve **tope 16 a 18 km** para
+  Chillán (06:50, 07:30, 08:50 y 09:00): el objeto es el 3,0 a 4,1 % del sector, bajo el
+  `MAX_SECTOR_FRAC` de 5 %, y mide hasta ~31.000 píxeles (~126.000 km²), unas 470 veces
+  la pluma más grande del período.
+- **Causa:** una fracción del sector no es una medida física. Los mantos que fijaron el
+  5 % (68, 49 y 29 %) eran de sectores de 250 m, chicos; `Chile_Central_2_km` es tan
+  grande que un sistema de escala sinóptica cabe en un 4 %. Es el mismo error que tenía
+  `TOP_MIN_PX` (contar en el PNG en vez de medir en el terreno) y el mismo tipo de caso que
+  Cotopaxi 25-10: un objeto que nace lejos y pasa por encima del cráter.
+- **Alcance:** `volcat_height_at` sólo la llaman `scripts/validate_fase3b.py` y esta
+  validación; la app no la usa. No hay altura falsa en pantalla, pero el paso 3 la
+  heredaría si se comparan cuadros del 16-11.
+- **Decisión pendiente de Nicolás (no se cambió código):** (a) límite en km² del objeto
+  anclado, que también rechazaría la nube de una erupción grande horas después del inicio;
+  (b) criterio temporal, el objeto tiene que existir anclado al cráter antes de crecer
+  (atrapa este caso y Cotopaxi, pero exige varios cuadros y no cabe en la función de un
+  cuadro); (c) dejar la función como está y excluir a mano los cuadros con sistemas que
+  entran desde lejos, como se hizo con Cotopaxi. Recomendación: (c) para el paso 3, que
+  usa casos ya revisados a ojo, y (b) si alguna vez la lectura VOLCAT llega a la app.
+
 **Paso 2: volcanes fuera del catálogo.** Chillán ya está en el catálogo. Objetos `Volcano` para Reventador, Sabancaya,
 Cotopaxi y Ruiz con coordenadas y cota tomadas del GVP (Smithsonian), citadas, no de memoria.
 `acquire_ash_scene` ya acepta un objeto en vez de un nombre.

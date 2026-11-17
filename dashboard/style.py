@@ -620,7 +620,7 @@ def refresh_info_badge(context: str = "general"):
         "live":      ("60 s", "#3fb950", "Polling al servidor cada 60 s; imagen nueva aparece ~3-5 min despues del fin del scan de GOES-19 (ciclo real: 10 min)."),
         "general":   ("manual", "#4a9eff", "Esta vista carga al abrirla o presionar ↻. GOES-19 publica un scan nuevo cada 10 min; sumale unos minutos de latencia de la fuente."),
         "animation": ("por ejecucion", "#d29922", "Genera una animacion con los N ultimos frames disponibles. Reejecuta para traer el frame mas reciente."),
-        "volcat":    ("manual", "#4a9eff", "Productos pre-procesados por SSEC/CIMSS (RealEarth + portal VOLCAT). Cadencia ABI 10 min; SSEC publica ~3-6 min despues del scan. Apreta ↻ para el frame mas nuevo."),
+        "volcat":    ("manual", "#4a9eff", "Productos pre-procesados por SSEC/CIMSS (RealEarth + portal VOLCAT). Cadencia ABI 10 min; SSEC publica con 30 a 50 min de atraso desde el inicio del scan (es normal, no es una caida). Apreta ↻ para el frame mas nuevo."),
         "ash":       ("manual", "#4a9eff", "Baja las 4 bandas L1b crudas de AWS S3 NOAA y las procesa aca (no usa RAMMB). GOES-19 publica cada 10 min + ~2 min de calibracion NOAA."),
         "series":    ("diario", "#3fb950", "Series de hot spots NOAA FDCF + FRP. Un GitHub Action agrega los conteos por volcan 1 vez al dia (02:00 UTC); el dia en curso puede estar incompleto."),
     }
@@ -685,8 +685,8 @@ Wisconsin (SSEC/CIMSS) con el algoritmo Pavolonis 2013.
     <td style="padding:2px 6px;">1-2 min</td>
     <td style="padding:2px 6px;">El dato bruto se publica en AWS</td></tr>
 <tr><td style="padding:2px 6px;">3. Procesamiento SSEC</td>
-    <td style="padding:2px 6px;">3-6 min</td>
-    <td style="padding:2px 6px;">SSEC corre Pavolonis (deteccion + altura/carga) y publica en RealEarth + portal VOLCAT</td></tr>
+    <td style="padding:2px 6px;"><b>decenas de min</b></td>
+    <td style="padding:2px 6px;">SSEC corre Pavolonis (deteccion + altura/carga) y publica en RealEarth + portal VOLCAT. En total el frame llega 30 a 50 min despues del inicio del scan (34,6 min medido el 17-11-2026)</td></tr>
 <tr><td style="padding:2px 6px;">4. El dashboard consulta</td>
     <td style="padding:2px 6px;">al abrir / ↻</td>
     <td style="padding:2px 6px;">Pedimos el frame mas nuevo a la API de SSEC</td></tr>

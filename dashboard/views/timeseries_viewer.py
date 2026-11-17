@@ -90,37 +90,64 @@ def _cached_frame(
     return fetch_frame_for_bounds(product, ts, bounds, zoom=zoom)
 
 
-def _fuente_rotulo(draw, label: str, w: int, pad: int = 5):
-    """Fuente de la banda al pie: 2.5% del ancho, achicada hasta que el rotulo
-    quepa entero.
+def rotulo_miniatura(etiqueta: str, dt, metrica: float) -> tuple[str, str]:
+    """Las dos lineas de la banda de una miniatura: rotulo + metrica, y hora.
 
-    El rotulo lleva fecha UTC + hora de Chile con su desfase + metrica; en una
-    miniatura angosta a 2.5% se salia por la derecha y se perdia justo el
-    numero de la metrica.
+    En una sola linea no cabia: en el cruce de dia la hora de Chile lleva su
+    propia fecha y el rotulo pasaba de 330 px en una miniatura de 320 px aun
+    con letra 8, y lo que se cortaba era justo el numero de la metrica.
     """
+    return (f"{etiqueta} · {metrica:.2f}%", fmt_both_long(dt))
+
+
+def _cargar_fuente(fs: int):
+    """DejaVu Sans Bold en todo sistema: por nombre (Linux), la que trae
+    matplotlib (Windows), y Arial solo como ultimo recurso. Con Arial el
+    render en Windows era mas angosto que en produccion y las pruebas de
+    ancho pasaban en local y fallaban en CI."""
     from PIL import ImageFont
 
-    def _cargar(fs):
-        for nombre in ("DejaVuSans-Bold.ttf", "arial.ttf"):
-            try:
-                return ImageFont.truetype(nombre, fs)
-            except Exception:
-                continue
-        return None
+    candidatas = ["DejaVuSans-Bold.ttf"]
+    try:
+        import matplotlib
+        from pathlib import Path as _Path
+        candidatas.append(str(_Path(matplotlib.get_data_path())
+                              / "fonts" / "ttf" / "DejaVuSans-Bold.ttf"))
+    except Exception:
+        pass
+    candidatas.append("arial.ttf")
+    for nombre in candidatas:
+        try:
+            return ImageFont.truetype(nombre, fs)
+        except Exception:
+            continue
+    return None
 
+
+def _fuente_rotulo(draw, lineas, w: int, pad: int = 5):
+    """Fuente de la banda al pie: 2.5% del ancho, achicada hasta que la linea
+    mas larga quepa entera. Acepta un texto o una secuencia de lineas."""
+    from PIL import ImageFont
+
+    if isinstance(lineas, str):
+        lineas = (lineas,)
     fs = max(11, int(w * 0.025))
-    font = _cargar(fs)
+    font = _cargar_fuente(fs)
     if font is None:
         return ImageFont.load_default()
-    while fs > 8 and draw.textlength(label, font=font) > w - 2 * pad:
+
+    def _ancho(f):
+        return max(draw.textlength(t, font=f) for t in lineas)
+
+    while fs > 8 and _ancho(font) > w - 2 * pad:
         fs -= 1
-        font = _cargar(fs)
+        font = _cargar_fuente(fs)
     return font
 
 
 def _thumb_with_marker(
     img: np.ndarray, vlat: float, vlon: float, bounds: dict,
-    label: str = "", peak: bool = False,
+    label: str | tuple[str, ...] = "", peak: bool = False,
 ) -> bytes:
     """Anotar imagen con marcador del volcán + label en banda inferior.
 
@@ -148,10 +175,12 @@ def _thumb_with_marker(
     draw.line([(cx, cy - 3), (cx, cy + 3)], fill=(255, 255, 255), width=1)
 
     if label:
-        font = _fuente_rotulo(draw, label, w)
+        lineas = (label,) if isinstance(label, str) else tuple(label)
+        font = _fuente_rotulo(draw, lineas, w)
         pad = 5
-        bbox = draw.textbbox((0, 0), label, font=font)
-        band_h = (bbox[3] - bbox[1]) + pad * 2
+        bbox = draw.textbbox((0, 0), "Ag", font=font)
+        alto_linea = (bbox[3] - bbox[1]) + 2
+        band_h = alto_linea * len(lineas) + pad * 2
         # Banda al pie con color segun pico/normal
         col = (180, 50, 50, 200) if peak else (0, 0, 0, 200)
         overlay = Image.new("RGBA", pil.size, (0, 0, 0, 0))
@@ -159,7 +188,9 @@ def _thumb_with_marker(
         ovd.rectangle([0, h - band_h, w, h], fill=col)
         pil = Image.alpha_composite(pil.convert("RGBA"), overlay).convert("RGB")
         draw = ImageDraw.Draw(pil)
-        draw.text((pad, h - band_h + pad), label, fill=(255, 255, 255), font=font)
+        for k, linea in enumerate(lineas):
+            draw.text((pad, h - band_h + pad + k * alto_linea), linea,
+                      fill=(255, 255, 255), font=font)
 
     buf = _io.BytesIO()
     pil.save(buf, format="PNG", optimize=True)
@@ -456,9 +487,8 @@ def render():
 
             with t_col1:
                 if peak_img is not None:
-                    label = (
-                        f"PICO · {fmt_both_long(peak_pt['dt'])} · "
-                        f"{peak_pt['metric']:.2f}%"
+                    label = rotulo_miniatura(
+                        "PICO", peak_pt["dt"], peak_pt["metric"],
                     )
                     png = _thumb_with_marker(
                         peak_img, v_obj.lat, v_obj.lon, bds, label, peak=True,
@@ -473,9 +503,8 @@ def render():
 
             with t_col2:
                 if last_img is not None:
-                    label = (
-                        f"ÚLTIMO · {fmt_both_long(last_pt['dt'])} · "
-                        f"{last_pt['metric']:.2f}%"
+                    label = rotulo_miniatura(
+                        "ÚLTIMO", last_pt["dt"], last_pt["metric"],
                     )
                     png = _thumb_with_marker(
                         last_img, v_obj.lat, v_obj.lon, bds, label, peak=False,

@@ -178,10 +178,37 @@ def test_banda_de_zona_del_modo_sala_cabe():
 
 @pytest.mark.parametrize("w", [320, 480, 800])
 def test_rotulo_de_miniatura_de_series_cabe(w):
-    """La banda de la miniatura (pico / ultimo) achica la letra hasta caber."""
+    """La banda de la miniatura (pico / ultimo) cabe entera y legible.
+
+    El peor caso es el cruce de dia: la hora de Chile lleva su propia fecha.
+    En una sola linea eso no cabe en 320 px ni con letra 8 (se perdia justo
+    el numero de la metrica), asi que la banda va en dos lineas: rotulo y
+    metrica arriba, la hora completa abajo. Cada linea cabe y la letra no
+    baja de 9 px.
+    """
+    from PIL import Image, ImageDraw
+    from dashboard.views.timeseries_viewer import (
+        _fuente_rotulo, rotulo_miniatura,
+    )
+    lineas = rotulo_miniatura("PICO", CRUCE_DIA, 100.0)
+    assert lineas == ("PICO · 100.00%", utils.fmt_both_long(CRUCE_DIA))
+    d = ImageDraw.Draw(Image.new("RGB", (w, 10)))
+    font = _fuente_rotulo(d, lineas, w)
+    for linea in lineas:
+        assert d.textlength(linea, font=font) <= w - 10, (linea, font.size)
+    assert font.size >= 9
+
+
+def test_fuente_de_la_miniatura_es_la_misma_en_todo_sistema():
+    """La miniatura usa DejaVu Sans Bold tambien en Windows.
+
+    La falla de CI solo se veia en Linux porque en Windows caia a Arial, que
+    es mas angosta: la prueba de ancho pasaba en local y fallaba en el
+    runner. matplotlib trae DejaVu, asi que el render es el mismo en todos
+    lados y la prueba mide lo que se ve en produccion.
+    """
     from PIL import Image, ImageDraw
     from dashboard.views.timeseries_viewer import _fuente_rotulo
-    label = (f"PICO · {utils.fmt_both_long(CRUCE_DIA)} · 100.00%")
-    d = ImageDraw.Draw(Image.new("RGB", (w, 10)))
-    font = _fuente_rotulo(d, label, w)
-    assert d.textlength(label, font=font) <= w - 10
+    d = ImageDraw.Draw(Image.new("RGB", (320, 10)))
+    font = _fuente_rotulo(d, ("x",), 320)
+    assert font.getname() == ("DejaVu Sans", "Bold")

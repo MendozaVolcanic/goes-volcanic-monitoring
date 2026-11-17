@@ -120,6 +120,9 @@ cirros con más confianza que el composite solo.
 **Qué muestra**: 2 productos lado a lado para el mismo volcán y
 timestamp, o **modo sustracción** RGB-RGB para resaltar diferencias.
 
+**Volcán**: todo el catálogo. Los 8 prioritarios van primero, marcados con
+★; puedes escribir el nombre para buscar cualquier otro.
+
 **Cómo leerlo**:
 - **Modo paralelo**: útil para comparar Ash RGB vs GeoColor (¿la
   señal roja se ve también en visible como pluma?), o Ash RGB vs SO2

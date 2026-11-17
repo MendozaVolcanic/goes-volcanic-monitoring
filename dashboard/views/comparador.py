@@ -31,7 +31,7 @@ from src.fetch.rammb_slider import (
     fetch_frame_for_bounds, fetch_frame_robust,
     get_latest_timestamps, zoom_reducido, ZOOM_VOLCAN, ZOOM_ZONE,
 )
-from src.volcanos import PRIORITY_VOLCANOES, get_volcano
+from src.volcanos import CATALOG, PRIORITY_VOLCANOES, get_volcano
 
 logger = logging.getLogger(__name__)
 
@@ -198,6 +198,22 @@ def _ts_age_label(ts: str, now: datetime) -> str:
         return "—"
 
 
+# ── Volcanes ofrecidos ───────────────────────────────────────────────
+# Todo el catalogo, con los prioritarios primero (marcados con ★), igual que
+# Replay y la grilla de volcan. Antes solo estaban los 8 prioritarios, y para
+# comparar contra una anomalia de otro volcan (Lastarria, nov-2026) no habia
+# donde. Las opciones son los nombres pelados: la ★ va solo en el rotulo.
+
+def opciones_volcan() -> list[str]:
+    prioritarios = [v.name for v in CATALOG if v.name in PRIORITY_VOLCANOES]
+    return prioritarios + [v.name for v in CATALOG
+                           if v.name not in prioritarios]
+
+
+def _rotulo_volcan(nombre: str) -> str:
+    return f"★ {nombre}" if nombre in PRIORITY_VOLCANOES else nombre
+
+
 # ── Modos ────────────────────────────────────────────────────────────
 
 def _mode_antes_despues(now: datetime):
@@ -206,7 +222,7 @@ def _mode_antes_despues(now: datetime):
     with cols[0]:
         volcan_name = st.selectbox(
             "Volcán",
-            options=PRIORITY_VOLCANOES,
+            options=opciones_volcan(), format_func=_rotulo_volcan,
             index=0, key="comp_ad_volcan",
         )
     with cols[1]:
@@ -298,18 +314,18 @@ def _mode_dos_volcanes(now: datetime):
     cols = st.columns([1, 1, 1, 1])
     with cols[0]:
         v1 = st.selectbox(
-            "Volcán 1", options=PRIORITY_VOLCANOES,
-            index=0, key="comp_2v_v1",
+            "Volcán 1", options=opciones_volcan(),
+            format_func=_rotulo_volcan, index=0, key="comp_2v_v1",
         )
     with cols[1]:
-        v2_options = [v for v in PRIORITY_VOLCANOES if v != v1]
+        v2_options = [v for v in opciones_volcan() if v != v1]
         # Si el valor persistido de Volcán 2 quedó fuera de las opciones (porque
         # el usuario eligió ese mismo en Volcán 1), limpiarlo ANTES de crear el
         # selectbox -> evita StreamlitAPIException. (fix audit jun 2026)
         if st.session_state.get("comp_2v_v2") not in v2_options:
             st.session_state.pop("comp_2v_v2", None)
         v2 = st.selectbox(
-            "Volcán 2", options=v2_options,
+            "Volcán 2", options=v2_options, format_func=_rotulo_volcan,
             index=0, key="comp_2v_v2",
         )
     with cols[2]:
@@ -406,7 +422,7 @@ def _mode_baseline(now: datetime):
     with cols[0]:
         volcan_name = st.selectbox(
             "Volcán",
-            options=PRIORITY_VOLCANOES,
+            options=opciones_volcan(), format_func=_rotulo_volcan,
             index=0, key="comp_base_volcan",
         )
     with cols[1]:
@@ -509,7 +525,7 @@ def _mode_diff_temporal(now: datetime):
     cols = st.columns([1.4, 1, 1, 1])
     with cols[0]:
         volcan_name = st.selectbox(
-            "Volcán", options=PRIORITY_VOLCANOES,
+            "Volcán", options=opciones_volcan(), format_func=_rotulo_volcan,
             index=0, key="comp_diff_volcan",
         )
     with cols[1]:

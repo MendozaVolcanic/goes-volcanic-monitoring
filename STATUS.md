@@ -28,7 +28,7 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 | Qué | Estado | Evidencia |
 |---|---|---|
 | Mínimo del tope VOLCAT como área del sensor | **En `main`**, CI de main verde | PR 43, merge `d62753a`; ficha SDA v2.7 |
-| Hugging Face | RUNNING con el build de `088fb72` (sha del Space `313d79c`): **sin el PR 43** | API de HF; desplegar espera el sí de Nicolás |
+| Hugging Face | **RUNNING con `main` @ `d62753a`** (sha del Space `fd8d8ff`), desplegado con el sí de Nicolás | API de HF y rótulo `build-20261117-1737-d62753a` en la página pública |
 | PR abiertos | ninguno | `gh pr list` |
 | VOLCAT Chillán 01 a 16-11 a 10 min | analizado, entregado | plan de validación §3.4; MP4 en `C:\Users\nmend\Downloads\` |
 | Umbral de manto `MAX_SECTOR_FRAC` (5 % del sector) | **falla reproducida, sin cambio de código** | plan §3.4: el 16-11 da tope 16 a 18 km sobre Chillán con el código de producción |
@@ -45,11 +45,10 @@ Decisiones que esperan a Nicolás:
 
 | # | Pregunta | Recomendación |
 |---|---|---|
-| 1 | ¿Desplegar `main` (PR 43) a Hugging Face? | Sí; el cambio sólo afecta la lectura de altura VOLCAT de validación, riesgo bajo |
-| 2 | Umbral de manto: (a) km² del objeto, (b) criterio temporal, (c) exclusión a ojo | (c) para el paso 3; (b) si la lectura VOLCAT llega a la app (plan §3.4) |
+| 1 | Umbral de manto: (a) km² del objeto, (b) criterio temporal, (c) exclusión a ojo | (c) para el paso 3; (b) si la lectura VOLCAT llega a la app (plan §3.4) |
 
 Prompt para la próxima sesión: "/retomar en Goes. Lee STATUS.md ## 0. Si Nicolás ya
-respondió las decisiones 1 y 2, ejecútalas; después sigue con los volcanes VOLCAT con
+respondió la decisión 1, ejecútala; después sigue con los volcanes VOLCAT con
 coordenadas GVP (Olca, Aucanquilcha, Putana, Ojos del Salado, Cerro Azul/Quizapu,
 Lautaro) o con el paso 3 de la validación, lo que él elija."
 

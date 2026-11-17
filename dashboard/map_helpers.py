@@ -326,12 +326,11 @@ def render_scan_status_badge(scan_dt, refresh_seconds: int,
         c = "#d29922"
     else:
         c = "#ff4444"
-    # Hora local Chile aprox = UTC-3 (CLST) o UTC-4 (CLT).
-    # Usamos zoneinfo para que sea correcto segun horario verano/invierno.
+    # Hora local con su desfase en numeros (UTC-3 verano / UTC-4 invierno).
+    # Antes decia "CLT" a mano, que es la sigla de invierno, tambien en verano.
     try:
-        from zoneinfo import ZoneInfo
-        scan_clt = scan_dt.astimezone(ZoneInfo("America/Santiago"))
-        clt_str = scan_clt.strftime("%H:%M CLT")
+        from dashboard.utils import fmt_chile
+        clt_str = fmt_chile(scan_dt)
     except Exception:
         clt_str = ""
     return (

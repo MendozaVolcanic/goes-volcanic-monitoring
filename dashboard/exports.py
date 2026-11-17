@@ -38,6 +38,48 @@ def _fmt_size(n_bytes: int) -> str:
     return f"{kb/1024:.1f} MB" if kb >= 1024 else f"{kb:.0f} KB"
 
 
+def _fuente(fs: int):
+    from PIL import ImageFont as _IF
+    for nombre in ("DejaVuSans-Bold.ttf", "arial.ttf"):
+        try:
+            return _IF.truetype(nombre, fs)
+        except Exception:
+            continue
+    return _IF.load_default()
+
+
+def cinta_texto(draw, label: str, ancho: int, fs_min: int = 9):
+    """Fuente y lineas para que el label quepa ENTERO en la cinta del PNG.
+
+    Primero achica la letra (1.8% del ancho, hasta fs_min); si con la letra
+    minima todavia no cabe, corta en lineas por palabra. Nunca recorta: el
+    label lleva la hora UTC, la hora de Chile y la resolucion, y un PNG que
+    pierde el final ya no se explica solo meses despues.
+
+    Devuelve (font, lineas, pad).
+    """
+    fs = max(11, int(ancho * 0.018))
+    pad = max(5, fs // 3)
+    font = _fuente(fs)
+    util = ancho - 2 * pad
+    while fs > fs_min and draw.textlength(label, font=font) > util:
+        fs -= 1
+        font = _fuente(fs)
+    if draw.textlength(label, font=font) <= util:
+        return font, [label], pad
+    lineas, actual = [], ""
+    for palabra in label.split():
+        prueba = f"{actual} {palabra}".strip()
+        if actual and draw.textlength(prueba, font=font) > util:
+            lineas.append(actual)
+            actual = palabra
+        else:
+            actual = prueba
+    if actual:
+        lineas.append(actual)
+    return font, lineas, pad
+
+
 def img_to_png_bytes(arr: np.ndarray, label: str | None = None) -> bytes:
     """numpy array -> PNG bytes (con label opcional sobre-impreso al pie).
 
@@ -46,31 +88,24 @@ def img_to_png_bytes(arr: np.ndarray, label: str | None = None) -> bytes:
     autoexplicativo: si solo guardaste el PNG, no pierdes el contexto.
     """
     import io as _io
-    from PIL import Image as _PIL, ImageDraw as _ID, ImageFont as _IF
+    from PIL import Image as _PIL, ImageDraw as _ID
 
     img = _PIL.fromarray(arr).convert("RGB")
     if label:
-        # Cinta inferior con timestamp
+        # Cinta inferior con timestamp, en tantas lineas como haga falta
         draw = _ID.Draw(img)
-        fs = max(11, int(img.width * 0.018))
-        try:
-            font = _IF.truetype("DejaVuSans-Bold.ttf", fs)
-        except Exception:
-            try:
-                font = _IF.truetype("arial.ttf", fs)
-            except Exception:
-                font = _IF.load_default()
-        bbox = draw.textbbox((0, 0), label, font=font)
-        th = bbox[3] - bbox[1]
-        pad = max(5, fs // 3)
-        band_h = th + pad * 2
+        font, lineas, pad = cinta_texto(draw, label, img.width)
+        alto_linea = draw.textbbox((0, 0), "Ag", font=font)[3] + 2
+        band_h = alto_linea * len(lineas) + pad * 2
         y0 = img.height - band_h
         overlay = _PIL.new("RGBA", img.size, (0, 0, 0, 0))
         odraw = _ID.Draw(overlay)
         odraw.rectangle([0, y0, img.width, img.height], fill=(0, 0, 0, 180))
         img = _PIL.alpha_composite(img.convert("RGBA"), overlay).convert("RGB")
         draw = _ID.Draw(img)
-        draw.text((pad, y0 + pad), label, fill=(255, 255, 255), font=font)
+        for i, ln in enumerate(lineas):
+            draw.text((pad, y0 + pad + i * alto_linea), ln,
+                      fill=(255, 255, 255), font=font)
         # Marca arriba-derecha
         brand = "GOES-19 / RAMMB-CIRA"
         bb = draw.textbbox((0, 0), brand, font=font)

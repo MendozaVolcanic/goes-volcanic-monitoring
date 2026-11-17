@@ -71,7 +71,7 @@ ZONE_LABELS = {
 
 
 def _frame_label(ts: str) -> str:
-    """'20260424122000' -> '2026-04-24 12:20 UTC (08:20 CLT)'"""
+    """'20260424122000' -> '2026-04-24 12:20 UTC · 08:20 Chile (UTC-4)'"""
     dt = parse_rammb_ts(ts)
     return fmt_both_long(dt)
 
@@ -514,7 +514,7 @@ def _build_animation(frames: list[dict], bounds: dict, height: int = 700,
         ))
 
     b64_first = _img_to_b64(frames[0]["image"])
-    # Slider steps: mostrar HH:MM UTC y CLT
+    # Slider steps: HH:MM UTC (la hora de Chile va en los KPI Inicio/Fin)
     slider_steps = []
     for i, f in enumerate(frames):
         dt = parse_rammb_ts(f["ts"])
@@ -1072,7 +1072,7 @@ def render():
 
     st.markdown("<div style='height:0.3rem'></div>", unsafe_allow_html=True)
 
-    # Status banner con scope + hora UTC+CLT. OJO: el label del producto sale de
+    # Status banner con scope + hora UTC + Chile. OJO: el label del producto sale de
     # sel["product"] (el CARGADO), así que la hora debe recomputarse para ESE
     # producto, no para el valor vivo del selector `product` (que puede diferir
     # si el usuario lo cambió sin re-presionar "Cargar"): si no, el banner

@@ -1,10 +1,17 @@
 """Utilidades de tiempo y formato para el dashboard.
 
 Manejo de zonas horarias:
-  UTC → America/Santiago (CLT/CLST)
-  - Invierno (abril-septiembre): UTC-4 (CLT)
-  - Verano (octubre-marzo):      UTC-3 (CLST)
-  La conversion es automatica via zoneinfo.
+  UTC -> America/Santiago, conversion automatica via zoneinfo.
+  - Invierno: UTC-4
+  - Verano:   UTC-3
+  (Las fechas de cambio las fija decreto y se han movido; la base tz las sigue.)
+
+Por que el desfase va en numeros y no como sigla: la base tz de IANA saco en
+2017 las siglas CLT/CLST de America/Santiago, asi que el codigo de zona de
+strftime imprime "-03". En pantalla eso quedaba "10:10 -03", que nadie lee
+como hora de Chile.
+El rotulo es "10:10 Chile (UTC-3)": dice de donde es la hora y cuanto se
+separa de UTC, que es lo que se compara contra la hora del scan.
 """
 
 from datetime import datetime, timezone
@@ -18,11 +25,16 @@ def now_utc() -> datetime:
     return datetime.now(timezone.utc)
 
 
+def _a_utc(dt: datetime) -> datetime:
+    """Datetime en UTC; uno sin zona se lee como UTC (asi vienen de RAMMB)."""
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(timezone.utc)
+
+
 def utc_to_chile(dt: datetime) -> datetime:
     """Convertir datetime UTC a hora local de Chile."""
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=timezone.utc)
-    return dt.astimezone(CHILE_TZ)
+    return _a_utc(dt).astimezone(CHILE_TZ)
 
 
 def fmt_utc(dt: datetime) -> str:
@@ -30,25 +42,39 @@ def fmt_utc(dt: datetime) -> str:
     return dt.strftime("%Y-%m-%d %H:%M UTC")
 
 
+def desfase_chile(dt: datetime) -> str:
+    """Desfase de Chile respecto de UTC en esa fecha: 'UTC-3' o 'UTC-4'."""
+    off_h = int(utc_to_chile(dt).utcoffset().total_seconds() // 3600)
+    return f"UTC{off_h:+d}"
+
+
 def fmt_chile(dt: datetime) -> str:
-    """Formato hora local Chile: '10:30 CLT'"""
-    dt_ch = utc_to_chile(dt)
-    tz_name = dt_ch.strftime("%Z")   # CLT o CLST segun temporada
-    return dt_ch.strftime(f"%H:%M {tz_name}")
+    """Hora local de Chile con su desfase: '10:10 Chile (UTC-3)'.
+
+    Solo HH:MM: quien necesite la fecha usa fmt_both_long, que la agrega
+    cuando el dia local no es el dia UTC.
+    """
+    return f"{utc_to_chile(dt):%H:%M} Chile ({desfase_chile(dt)})"
 
 
 def fmt_both(dt: datetime) -> str:
-    """UTC + hora local: '14:30 UTC (10:30 CLT)'"""
-    utc_str = dt.strftime("%H:%M UTC")
-    ch_str = fmt_chile(dt)
-    return f"{utc_str}  ({ch_str})"
+    """UTC + hora local: '13:10 UTC · 10:10 Chile (UTC-3)'."""
+    return f"{_a_utc(dt):%H:%M} UTC · {fmt_chile(dt)}"
 
 
 def fmt_both_long(dt: datetime) -> str:
-    """Version larga con fecha: '2026-04-15 14:30 UTC (10:30 CLT)'"""
-    utc_str = dt.strftime("%Y-%m-%d %H:%M UTC")
-    ch_str = fmt_chile(dt)
-    return f"{utc_str}  ({ch_str})"
+    """Con fecha: '2026-11-15 13:10 UTC · 10:10 Chile (UTC-3)'.
+
+    De 21 a 24 h en Chile ya es el dia siguiente en UTC; ahi la hora local
+    lleva su propia fecha ('2026-11-16 01:10 UTC · 2026-11-15 22:10 Chile
+    (UTC-3)'), porque una hora sin fecha al lado de otra fecha se lee mal.
+    """
+    dt = _a_utc(dt)
+    local = utc_to_chile(dt)
+    hora_local = (f"{local:%H:%M}" if local.date() == dt.date()
+                  else f"{local:%Y-%m-%d %H:%M}")
+    return (f"{dt:%Y-%m-%d %H:%M} UTC · "
+            f"{hora_local} Chile ({desfase_chile(dt)})")
 
 
 def parse_rammb_ts(ts: str) -> datetime:
@@ -61,12 +87,12 @@ def parse_rammb_ts(ts: str) -> datetime:
 
 
 def ts14_to_display(ts: str) -> str:
-    """Timestamp 14 digitos → 'HH:MM UTC (HH:MM CLT)'"""
+    """Timestamp 14 digitos -> 'HH:MM UTC · HH:MM Chile (UTC-3)'"""
     dt = parse_rammb_ts(ts)
     return fmt_both(dt)
 
 
 def ts14_to_display_long(ts: str) -> str:
-    """Timestamp 14 digitos → 'YYYY-MM-DD HH:MM UTC (HH:MM CLT)'"""
+    """Timestamp 14 digitos -> 'YYYY-MM-DD HH:MM UTC · HH:MM Chile (UTC-3)'"""
     dt = parse_rammb_ts(ts)
     return fmt_both_long(dt)

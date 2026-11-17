@@ -20,7 +20,106 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. 2026-11-17 cierre de noche (PR 43 en main, Chillán a 10 min, umbral de manto)
+## 0. Cierre 2026-11-17 final (PR 45 en main, detector propio medido, próxima: por qué VOLCAT ve y nosotros no)
+
+> Reemplaza como estado vigente al bloque "## 0-prev. 2026-11-17 cierre de noche" de abajo, que
+> se conserva. Verificado al escribir: `main` local = remoto = `8b4f3c1` (`git ls-remote`), sin PR
+> abiertos (`gh pr list`), Space de HF `fd8d8ff` RUNNING. **Estado fijado con trabajo en curso:**
+> la sesión "Goes: detector propio que vea plumas débiles (Chillán)" estaba abriendo un PR solo de
+> documentación (resultado del detector en `docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`). Revisar
+> `gh pr list` antes de creerle a la fila de PR abiertos.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Texto de atraso de SSEC en la página VOLCAT (decía 3 a 6 min) | **En `main`**, sin desplegar | PR 45, merge `8b4f3c1`; medido 34,6 min el 17-11 |
+| Traspaso + hallazgos Chillán §3.4 y §3.5 | **En `main`** | PR 44, merge `a8f493c` |
+| Hugging Face | RUNNING con el build de `d62753a`: **sin el PR 45** (sólo texto) | API de HF; desplegar espera el sí de Nicolás |
+| Detector propio para plumas débiles | **Medido, ninguna variante cumple el criterio**; sin PR de código | informe `C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\INFORME_variantes.md`; rama `claude/detector-plumas-debiles-a13f64` |
+| PR de docs del detector | **En curso** al cerrar (otra sesión) | ver aviso arriba |
+| Chillán 14-11: VOLCAT 8 a 12 km | explicado: sobreestimación semitransparente, BT11 nunca bajo 271 K | plan §3.5 |
+| Umbral de manto `MAX_SECTOR_FRAC` | falla reproducida, sin cambio | plan §3.4 |
+| Volcanes VOLCAT con coordenadas GVP | no empezado | sin rama |
+| Validación VOLCAT pasos 3 a 6 | no empezados | criterio decidido (cruce de intervalos) |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | ¿Desplegar `main` (PR 45) a HF? | ahora / con el próximo cambio | Con el próximo cambio de código: es sólo texto |
+| 2 | Umbral de manto (plan §3.4) | (a) km² del objeto, (b) nacer en el cráter, (c) exclusión a ojo | (c) para el paso 3; (b) si la lectura VOLCAT llega a la app |
+| 3 | ¿Fusionar el PR de docs del detector cuando llegue? | sí / revisar antes | Sí, si sólo toca el plan y cada número tiene fuente |
+
+### c. Lo aprendido
+
+- **Patrón de defecto (propuesto para `CLAUDE.md`, Filosofía operacional):** nuestro detector
+  (BTD < -1 K, Prata 1989) no ve plumas chicas de Chillán que VOLCAT sí ve. Dentro de la huella
+  VOLCAT la BTD mediana queda en +0,02 a +0,31 K respecto del cielo despejado; bajar el umbral o
+  usar anomalía temporal da 15 % de falsas alarmas y sólo 25 % de coincidencia espacial. **No
+  volver a proponer "bajar el umbral BTD" sin leer antes el informe del detector.**
+- **Trampa de medición:** "píxeles altos de VOLCAT = ceniza alta" es falso cuando la escena no tiene
+  nada frío: el 14-11 la BT11 mínima fue 271 K y una nube opaca a 8 km estaría a 249 K. Antes de
+  usar una altura VOLCAT, comparar con la BT11 mínima del entorno.
+- **Regla de método (vale para todo el workspace):** un umbral en fracción de imagen (5 % del
+  sector, 3 píxeles del PNG) no es una medida física; dos veces en esta semana el mismo error dio
+  topes falsos. Medir en km o km² del terreno.
+- **CI:** un fallo por timeout del checkout no es una prueba roja; mirar qué paso falló
+  (`gh run view --json jobs`) antes de diagnosticar, y relanzar.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** `detect_ash_enhanced` da 0 píxeles de ceniza en los 9 scans revisados del 14-11 y
+  en los cuadros VOLCAT de prueba del detector.
+- **CONFIRMADO:** VOLCAT da 8 a 12 km el 14-11 de 16:20 a 18:20 (hora de Chile) sobre la pluma, sin
+  ningún píxel IR bajo 271 K en 25 km.
+- **CONFIRMADO:** `volcat_object_heights` da 16 a 18 km para Chillán el 16-11 por un sistema
+  meteorológico (3 a 4 % del sector).
+- **SOSPECHA:** VOLCAT detecta estas plumas porque usa un fondo de cielo despejado modelado
+  (transferencia radiativa) y razones β con 8,5, 11 y 12 µm (quizás 10,3 µm), no un umbral de BTD.
+  Es lo que la próxima sesión tiene que comprobar en los papers.
+- **SOSPECHA:** los cirros delgados del 14-11 influyen en las alturas altas de VOLCAT (coinciden en
+  hora, pero también hay uno a las 19:20 sin altura alta).
+- **SOSPECHA:** la franja que sale al SE del cráter en Ash RGB y en la anomalía de fondo es nieve de
+  la cresta (aparece también el 12-11, día sin ceniza).
+
+### e. Cerrado, no rehacer
+
+- PR 36 a 45 en `main`. Mínimo del tope = 12 km² del sensor (PR 43). Texto de atraso (PR 45).
+- VOLCAT Chillán 01 a 16-11 leído a 10 min: pulsos 08, 10, 11 y 14-11. MP4 en `C:\Users\nmend\Downloads\`
+  (16 días, 4 días con pluma, mosaico de los 4 pulsos con anillos de 10, 25 y 50 km).
+- Variantes de detector V0 a V3 medidas con criterio previo: ninguna cumple. No repetir sin una idea
+  nueva (bandas 8,5 y 10,3 µm, fondo modelado, GFS archivado).
+- La Regla 📏 ya existe en la grilla del volcán, en el loop VOLCAT ("Medir sobre un cuadro del
+  loop") y en Replay: no es un pendiente.
+
+### f. Prompt para la próxima sesión
+
+```
+/retomar en Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes).
+1. Verifica antes de creer: git fetch; git ls-remote origin -h refs/heads/main; gh pr list;
+   API de HF (sha y stage). Si hay un PR de docs del detector abierto, revísalo y pide el sí.
+2. Lee en orden: CLAUDE.md del proyecto, STATUS.md "## 0.", docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md
+   §3.4 y §3.5 (y la sección del detector si ya entró), y el informe
+   C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\INFORME_variantes.md
+3. Tarea: entender por qué VOLCAT ve ceniza en Chillán (nov-2026) que nuestro detector no ve, y
+   cómo atacarlo. Usa la skill `investigacion` (agotar lo local primero: docs/own_volcat/ tiene el
+   ATBD GOES-R VolAsh v3.0, Pavolonis 2020, Saint 2024, VADUGS) y busca Pavolonis 2010 (β-ratios),
+   2013 (altura) y 2015 (detección automática SECO). Varias perspectivas: física radiativa (fondo
+   de cielo despejado modelado vs umbral), estadística (pruebas de VOLCAT), operación (qué falso
+   positivo tolera un observatorio) y datos (bandas ABI 8,5, 10,3, 11, 12 y 13,3 µm). Usa
+   `multi-perspective`, `devils-advocate` y `deep-research` si sirven.
+4. Entregable: informe con hipótesis ordenadas por evidencia, qué prueba falsaría cada una con los
+   datos que ya hay (huellas VOLCAT en grilla ABI, ~978 scans en cache de la sesión del detector) y
+   un plan con costo. No cambies código de detección sin criterio declarado antes de medir.
+Reglas: SDA CPLT 372 (ficha en el mismo commit que la lógica); sin VIIRS; sin guiones largos;
+fusionar o desplegar sólo con el sí de Nicolás por PR; rutas absolutas; docs/auditoria_2026-11 no
+se sube. Si la sesión no alcanza: deja el informe parcial en docs/own_volcat/ y cierra con /cierre.
+```
+
+---
+
+## 0-prev. 2026-11-17 cierre de noche (PR 43 en main, Chillán a 10 min, umbral de manto)
 
 > Reemplaza como estado vigente al bloque "## 0-prev. 2026-11-17 noche" de abajo,
 > que se conserva. Verificado contra GitHub y la API de Hugging Face al escribir esto.

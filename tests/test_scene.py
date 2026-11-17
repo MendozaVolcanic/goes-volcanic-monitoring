@@ -247,3 +247,116 @@ def test_acha_undated_granule_refuses(synthetic_s3, monkeypatch):
 
     r = plume_top_height(SCAN_DT, "Lascar", radius_deg=0.6)
     assert r["status"] == "no_data" and "datar" in r["reason"], r
+
+
+# ── Perfil de otro momento: la misma BT se traduce a otra altitud ───────────
+#
+# Por qué: Open-Meteo sólo guarda ~2 días hacia atrás. Para un scan más viejo
+# `fetch_gfs_profile` devuelve igual "la hora más cercana", que puede ser de
+# otro día, y la escena la usaba sin mirar: la altura de un evento viejo salía
+# con el T(z) equivocado y nadie lo veía (sólo un warning en el log). El árbitro
+# de viento ya rechazaba su perfil viejo (MAX_WIND_AGE_H); el de temperatura no.
+
+def _perfil_a(horas):
+    """PROFILE del fixture, pero fechado `horas` después del scan."""
+    from conftest import PROFILE
+    p = dict(PROFILE)
+    p["valid_time"] = (SCAN_DT + timedelta(hours=horas)).strftime("%Y-%m-%dT%H:%M")
+    return p
+
+
+def test_scene_rechaza_perfil_de_otro_dia(synthetic_s3, monkeypatch):
+    import src.fetch.gfs_profile as gfs_profile
+    from src.process.scene import acquire_ash_scene
+
+    monkeypatch.setattr(gfs_profile, "fetch_gfs_profile",
+                        lambda lat, lon, dt=None: _perfil_a(-41))
+    r = acquire_ash_scene(SCAN_DT, "Lascar", radius_deg=0.6, source="test")
+    assert isinstance(r, dict) and r["status"] == "no_data", r
+    assert "perfil" in r["reason"] and "41" in r["reason"], r["reason"]
+    # El SO₂ ya medido viaja igual, como en el caso sin perfil.
+    assert r["so2_px"] == 64, r
+
+
+def test_scene_rechaza_perfil_sin_hora_legible(synthetic_s3, monkeypatch):
+    """Sin hora del perfil no se puede verificar frescura: no se reporta."""
+    import src.fetch.gfs_profile as gfs_profile
+    from src.process.scene import acquire_ash_scene
+
+    p = _perfil_a(0)
+    p["valid_time"] = "ayer"
+    monkeypatch.setattr(gfs_profile, "fetch_gfs_profile",
+                        lambda lat, lon, dt=None: p)
+    r = acquire_ash_scene(SCAN_DT, "Lascar", radius_deg=0.6, source="test")
+    assert isinstance(r, dict) and r["status"] == "no_data", r
+
+
+def test_scene_acepta_perfil_dentro_de_la_ventana(synthetic_s3, monkeypatch):
+    """Hasta MAX_PROFILE_AGE_H el perfil vale: es el semiancho del ciclo GFS
+    archivado (6 h), así que el ciclo nominal siempre entra."""
+    import src.fetch.gfs_profile as gfs_profile
+    from src.process.scene import MAX_PROFILE_AGE_H, AshScene, acquire_ash_scene
+
+    monkeypatch.setattr(gfs_profile, "fetch_gfs_profile",
+                        lambda lat, lon, dt=None: _perfil_a(-MAX_PROFILE_AGE_H))
+    r = acquire_ash_scene(SCAN_DT, "Lascar", radius_deg=0.6, source="test")
+    assert isinstance(r, AshScene), r
+
+
+def test_el_rechazo_llega_a_los_dos_retrievals_con_perfil(synthetic_s3,
+                                                         monkeypatch):
+    """El guard vive en la escena; BT-matching y Wen-Rose lo heredan sin copia."""
+    import src.fetch.gfs_profile as gfs_profile
+    from src.process.bt_matching_height import bt_matching_top_height
+    from src.process.wen_rose_height import wen_rose_top_height
+
+    monkeypatch.setattr(gfs_profile, "fetch_gfs_profile",
+                        lambda lat, lon, dt=None: _perfil_a(48))
+    for fn in (bt_matching_top_height, wen_rose_top_height):
+        r = fn(SCAN_DT, "Lascar", radius_deg=0.6)
+        assert r["status"] == "no_data" and "perfil" in r["reason"], (fn, r)
+
+
+def test_perfil_inyectado_reemplaza_al_nrt(synthetic_s3, monkeypatch):
+    """Para un evento viejo se inyecta el GFS archivado (gfs_archive) y el NRT
+    no se toca. Mismo diseño que `wind_profile_fn` del árbitro de viento."""
+    import src.fetch.gfs_profile as gfs_profile
+    from src.process.bt_matching_height import bt_matching_top_height
+    from src.process.wen_rose_height import wen_rose_top_height
+
+    def _boom(*a, **kw):
+        raise AssertionError("no debía consultar Open-Meteo")
+
+    monkeypatch.setattr(gfs_profile, "fetch_gfs_profile", _boom)
+    pedidos = []
+
+    def archivo(lat, lon, dt=None):
+        pedidos.append(dt)
+        return _perfil_a(1)
+
+    for fn in (bt_matching_top_height, wen_rose_top_height):
+        r = fn(SCAN_DT, "Lascar", radius_deg=0.6, profile_fn=archivo)
+        assert r["status"] == "ok", (fn, r)
+        assert r["profile_time"] == _perfil_a(1)["valid_time"]
+    assert len(pedidos) == 2 and all(d == SCAN_DT for d in pedidos), pedidos
+
+
+def test_scene_rechaza_perfil_sin_tropopausa(synthetic_s3, monkeypatch):
+    """Sin tropopausa el guard de runaway de Wen-Rose pasa a +inf y se apaga
+    (FICHA_SDA §B.8.1). Con Open-Meteo no ocurre (0 nulls medidos), pero un
+    perfil inyectado (GRIB archivado con niveles altos caídos) sí puede traerla
+    vacía: ese perfil no acota la altura y no se usa."""
+    from src.process.bt_matching_height import bt_matching_top_height
+    from src.process.scene import acquire_ash_scene
+    from src.process.wen_rose_height import wen_rose_top_height
+
+    p = _perfil_a(0)
+    p["tropopause"] = None
+    r = acquire_ash_scene(SCAN_DT, "Lascar", radius_deg=0.6, source="test",
+                          profile_fn=lambda lat, lon, dt=None: p)
+    assert isinstance(r, dict) and r["status"] == "no_data", r
+    assert "tropopausa" in r["reason"], r["reason"]
+    for fn in (bt_matching_top_height, wen_rose_top_height):
+        r = fn(SCAN_DT, "Lascar", radius_deg=0.6,
+               profile_fn=lambda lat, lon, dt=None: p)
+        assert r["status"] == "no_data", (fn, r)

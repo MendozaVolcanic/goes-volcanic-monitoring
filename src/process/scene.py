@@ -5,8 +5,10 @@
 # Modelo/método : reglas determinísticas: ventana geos + guard de mismo-scan + detección tri-espectral
 # Datos entrada : ABI-L1b C11/C14/C15 (GOES-19) + perfil GFS (Open-Meteo) — SIN datos personales
 # Variables     : bandas requeridas, radio del encuadre, umbral SO₂ de contexto
-# Limitaciones  : si S3 tiene un hueco y las bandas caen en scans distintos NO se reporta (mejor nada que misregistro)
-# Refs/datos    : guard de mismo-scan (review jun-2026); unificación de los 3 preámbulos (audit ago-2026, ola 2)
+# Limitaciones  : si S3 tiene un hueco y las bandas caen en scans distintos NO se reporta (mejor nada que misregistro);
+#                 tampoco si el perfil T(z) está a más de MAX_PROFILE_AGE_H del scan (sería el de otro momento)
+# Refs/datos    : guard de mismo-scan (review jun-2026); unificación de los 3 preámbulos (audit ago-2026, ola 2);
+#                 guard de edad del perfil + perfil inyectable para eventos viejos (nov-2026)
 # Ficha completa: docs/FICHA_SDA_GOES.md
 # ════════════════════════════════════════════════════════════════════
 """Adquisición común de la **escena de ceniza** para los retrievals de altura.
@@ -55,6 +57,18 @@ ANCHOR_BAND = 14           # de su grilla salen la ventana geos y la georef
 
 # Umbral del indicador SO₂ (BT 8.4 − BT 11.2). Fallback si src.config no carga.
 _SO2_THR_FALLBACK = -3.0
+
+# QUÉ: distancia máxima entre la hora del perfil T(z) y el scan para usarlo.
+# POR QUÉ: la altura sale de buscar la BT del tope en el T(z); con el perfil de
+# otro momento la MISMA BT cae a otra altitud. Open-Meteo guarda sólo ~2 días
+# hacia atrás y, para un scan más viejo, igual devuelve "la hora más cercana",
+# que puede ser de otro día: la escena la usaba sin mirar. No es una tolerancia
+# física medida sobre el T(z): es la misma regla que el árbitro de viento
+# (wind_shear_height.MAX_WIND_AGE_H = 3 h) y el semiancho del ciclo de 6 h del
+# GFS archivado (gfs_archive), así que el ciclo nominal siempre entra y el
+# ciclo anterior de respaldo (hasta 9 h) no. En NRT Open-Meteo es horario: el
+# gap real queda bajo 30 min y este guard no se activa.
+MAX_PROFILE_AGE_H = 3.0
 
 
 def bounds_for(volcano, radius_deg: float) -> dict:
@@ -153,6 +167,25 @@ class AshScene:
         return out
 
 
+def profile_age_h(profile: dict, ref: Optional[datetime]) -> Optional[float]:
+    """Horas entre la hora válida del perfil y el scan; None si no se puede
+    saber (sin ``valid_time`` legible o sin hora del scan). PURA.
+
+    Se mide acá y no se confía en el ``time_gap_min`` que reporta el fetcher:
+    así vale igual para Open-Meteo, el GFS archivado o el LVTPF.
+    """
+    if ref is None:
+        return None
+    try:
+        vt = datetime.strptime(str(profile.get("valid_time")), "%Y-%m-%dT%H:%M")
+    except (TypeError, ValueError):
+        return None
+    vt = vt.replace(tzinfo=timezone.utc)
+    if ref.tzinfo is None:
+        ref = ref.replace(tzinfo=timezone.utc)
+    return abs((ref - vt).total_seconds()) / 3600.0
+
+
 def _err(reason: str, *, source: str, volcano=None, bounds=None,
          scan_dt=None, **extra) -> dict:
     out = {"status": "no_data", "reason": reason, "source": source}
@@ -180,6 +213,7 @@ def acquire_ash_scene(
     ref_dt: Optional[datetime] = None,
     latlon: Optional[tuple] = None,
     bounds: Optional[dict] = None,
+    profile_fn=None,
 ) -> Union[AshScene, dict]:
     """Bajar y preparar la escena de ceniza para un volcán en un instante.
 
@@ -203,6 +237,10 @@ def acquire_ash_scene(
         ref_dt:       scan de referencia al que alinear las bandas.
         latlon:       (lat2d, lon2d) de la ventana, si el caller ya los tiene.
         bounds:       bbox explícito (default: el del volcán con ``radius_deg``).
+        profile_fn:   ``fn(lat, lon, dt) -> perfil`` que reemplaza al GFS NRT de
+                      Open-Meteo. Para un evento viejo se inyecta
+                      ``gfs_archive.fetch_gfs_profile_archive``; sin él, un scan
+                      de más de ~2 días queda sin perfil válido y no se reporta.
 
     Returns:
         ``AshScene`` si todo salió bien, o un ``dict`` con ``status="no_data"``
@@ -329,14 +367,41 @@ def acquire_ash_scene(
 
     # ── Perfil GFS T(z) (insumo del mapeo BT→altitud) ────────────────────
     if with_profile:
-        from src.fetch.gfs_profile import fetch_gfs_profile
-        profile = fetch_gfs_profile(v.lat, v.lon, ref)
+        if profile_fn is None:
+            from src.fetch.gfs_profile import fetch_gfs_profile as profile_fn
+        profile = profile_fn(v.lat, v.lon, ref)
         if profile is None:
             # El SO₂ ya se midió: va en el error para que el dashboard pueda
             # explicar la escena aunque no haya perfil.
             return _err("sin perfil GFS (Open-Meteo)", source=source,
                         volcano=v.name, bounds=bounds, scan_dt=scan_dt,
                         so2_px=so2_px, so2_min=so2_min)
+        age_h = profile_age_h(profile, scan_dt or ref)
+        if age_h is None or age_h > MAX_PROFILE_AGE_H:
+            # Guard de "no reportar": un perfil de otro momento no da error,
+            # da una altura equivocada que se ve igual de válida.
+            motivo = (f"hora del perfil no legible ({profile.get('valid_time')!r}): "
+                      "no se puede verificar que sea el de este scan"
+                      if age_h is None else
+                      f"perfil T(z) a {age_h:.0f} h del scan (máx. "
+                      f"{MAX_PROFILE_AGE_H:g} h): convertiría la temperatura del "
+                      "tope con la atmósfera de otro momento. Para un evento "
+                      "viejo hay que inyectar el GFS archivado")
+            logger.warning("%s %s: %s", label, v.name, motivo)
+            return _err(motivo, source=source, volcano=v.name, bounds=bounds,
+                        scan_dt=scan_dt, so2_px=so2_px, so2_min=so2_min)
+        if not profile.get("tropopause"):
+            # QUÉ: un perfil sin tropopausa no se usa.
+            # POR QUÉ: la tropopausa es el techo del mapeo BT→altitud y el
+            # umbral del guard de runaway de Wen-Rose; sin ella ese umbral pasa
+            # a +inf y el guard se apaga (FICHA_SDA §B.8.1). Open-Meteo siempre
+            # la trae (0 nulls medidos), pero un perfil inyectado, p. ej. un
+            # GRIB archivado al que le faltan los niveles altos, puede no traerla.
+            motivo = ("perfil T(z) sin tropopausa (faltan niveles entre 6 y "
+                      "20 km): no acota la altura")
+            logger.warning("%s %s: %s", label, v.name, motivo)
+            return _err(motivo, source=source, volcano=v.name, bounds=bounds,
+                        scan_dt=scan_dt, so2_px=so2_px, so2_min=so2_min)
         scene.profile = profile
 
     return scene

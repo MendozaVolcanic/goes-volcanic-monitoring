@@ -54,6 +54,7 @@ def bt_matching_top_height(
     volcano: Union[str, object],
     radius_deg: float = 0.75,
     percentile: float = 95,
+    profile_fn=None,
 ) -> dict:
     """Altura del tope de pluma por BT-matching para un volcán en un instante.
 
@@ -74,7 +75,7 @@ def bt_matching_top_height(
     # Adquisición común (bandas del mismo scan + máscara + SO₂ + perfil GFS);
     # los guards de honestidad viven en scene.acquire_ash_scene.
     scene = acquire_ash_scene(dt, volcano, radius_deg, source=source,
-                              label="BT-matching")
+                              label="BT-matching", profile_fn=profile_fn)
     if isinstance(scene, dict):
         return scene
 

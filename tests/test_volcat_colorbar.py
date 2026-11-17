@@ -155,23 +155,63 @@ def _cuadro_sintetico(alto=400, ancho=1000):
 def test_pluma_compacta_da_el_intervalo_del_tope():
     from src.process.volcat_colorbar import volcat_object_heights
     img, hmap = _cuadro_sintetico(alto=850)
-    img[400:404, 500:520] = VERDE_OSCURO     # cuerpo 7-8 km
-    img[400:402, 520:524] = AZUL             # tope 10-12 km
+    img[400:440, 500:560] = VERDE_OSCURO     # cuerpo 7-8 km, ~188 km²
+    img[400:415, 560:575] = AZUL             # tope 10-12 km, 225 px, ~17,6 km²
     r = volcat_object_heights(img, 401, 500, px_km=0.28)
     assert "note" not in r
     assert (r["top_lo_km"], r["top_hi_km"]) == (10, 12)
-    assert r["n"] == 4 * 20 + 2 * 4
+    assert r["n"] == 40 * 60 + 15 * 15
 
 
 def test_dos_pixeles_sueltos_no_fijan_el_tope():
-    """Chillán 08-11 20:10: 2 píxeles de 16-18 km en un objeto de 2 a 4 km."""
+    """Chillán 08-11 20:10: 2 píxeles de 16-18 km en un objeto de 2 a 4 km.
+    Sector de 2 km (Chile_Central_2_km, píxel de 2,25 x 1,80 km a -36,9°)."""
     from src.process.volcat_colorbar import volcat_object_heights
     img, _ = _cuadro_sintetico(alto=850)
     img[400:404, 500:520] = VERDE_OSCURO     # 80 px de 7-8 km
-    img[400, 520:522] = AZUL                 # 2 px de 10-12 km
-    r = volcat_object_heights(img, 401, 500, px_km=0.28)
+    img[400, 520:522] = AZUL                 # 2 px de 10-12 km, ~8 km²
+    r = volcat_object_heights(img, 401, 500, px_km=2.248, px_km_ew=1.799)
     assert (r["top_lo_km"], r["top_hi_km"]) == (7, 8)
     assert r["max_lo_km"] == 10
+
+
+def test_tope_minimo_es_un_area_del_sensor_no_pixeles_del_png():
+    """El mínimo del tope son ~12 km² (3 píxeles IR de 2 km de ABI, umbral
+    nuestro), pasados a píxeles del PNG con el tamaño de su píxel. En un sector
+    de 2 km a la latitud de Chillán son 3 píxeles (4,04 km² cada uno; 'floor'
+    daría 2); en uno de 250 m a la de Sabancaya son 163 (0,0737 km²)."""
+    from src.process.volcat_colorbar import TOP_MIN_AREA_KM2, top_min_px
+    assert TOP_MIN_AREA_KM2 == 12.0
+    assert top_min_px(2.248, 1.799) == 3
+    assert top_min_px(0.2768, 0.2663) == 163
+    assert top_min_px(2.0, 2.0) == 3            # justo 12 km² cuenta como firme
+    assert top_min_px(2.0, 1.9) == 4            # 3,16 px: con 3 no llega al área
+    assert top_min_px(50.0, 50.0) == 1          # nunca menos de un píxel
+
+
+def test_ruido_de_250m_bajo_un_pixel_ir_no_fija_el_tope():
+    """Sabancaya 26-10 11:50 a 13:10: píxeles IR sueltos de 16 a 18 km en un
+    sector de 250 m. 100 píxeles del PNG son ~7,4 km²: menos que 3 píxeles IR.
+    Con el umbral viejo (3 píxeles del PNG = 0,2 km²) fijaban el tope."""
+    from src.process.volcat_colorbar import volcat_object_heights
+    img, _ = _cuadro_sintetico(alto=850)
+    img[400:440, 500:560] = VERDE_OSCURO     # cuerpo 7-8 km
+    img[400:410, 560:570] = AZUL             # 100 px de 10-12 km
+    r = volcat_object_heights(img, 401, 500, px_km=0.2768, px_km_ew=0.2663)
+    assert (r["top_lo_km"], r["top_hi_km"]) == (7, 8), r
+    assert r["max_lo_km"] == 10
+
+
+def test_el_area_usa_el_ancho_este_oeste_del_pixel():
+    """En la grilla CE el píxel mide px_km N-S pero px_km·cos(lat) E-O. A 60°
+    el área es la mitad: 200 px de 0,28 x 0,14 km (7,8 km²) no fijan el tope,
+    aunque con px_km² (15,7 km²) sí lo harían."""
+    from src.process.volcat_colorbar import volcat_object_heights
+    img, _ = _cuadro_sintetico(alto=850)
+    img[400:440, 500:560] = VERDE_OSCURO
+    img[400:410, 560:580] = AZUL             # 200 px de 10-12 km
+    r = volcat_object_heights(img, 401, 500, px_km=0.28, px_km_ew=0.14)
+    assert (r["top_lo_km"], r["top_hi_km"]) == (7, 8), r
 
 
 def test_manto_del_tamano_del_sector_no_es_pluma():

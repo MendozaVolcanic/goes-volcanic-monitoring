@@ -1,6 +1,6 @@
 # Ficha de Transparencia Algorítmica — Monitoreo Volcánico GOES-19 (dashboard + retrieval de altura de pluma)
 
-**Identificador interno:** SDA-GOES-01   **Versión:** v2.6, 2026-11-17
+**Identificador interno:** SDA-GOES-01   **Versión:** v2.7, 2026-11-17
 *(Resolución CPLT N°372; ver `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` del workspace)*
 
 > **Qué cambió respecto de la v1.0 (2026-07-01):** ver §"Historial de versiones" al final.
@@ -365,6 +365,25 @@ conectarlos exige actualizar esta ficha.
 ---
 
 ## Historial de versiones
+
+### v2.7: 2026-11-17 (mínimo del tope VOLCAT como área del sensor)
+**Sólo cambia un componente de validación (§C); nada de lo que ve el operador
+cambia.** El tope que se lee del PNG de VOLCAT exigía 3 píxeles del bloque más
+alto, contados en píxeles del PNG. En un sector de 250 m eso son 0,2 km², una
+fracción de un píxel IR de ABI (~2 km), y dejó pasar como topes de 16 a 18 km
+píxeles IR sueltos sobre fondo cálido (Sabancaya 26-10, revisado a ojo).
+- Ahora el mínimo es un **área: 12 km², unos 3 píxeles IR de 2 km** (umbral
+  nuestro), pasada a píxeles del cuadro con el tamaño de su píxel: lado N-S por
+  lado E-O, que en la grilla CE de SSEC es el N-S por cos(latitud), redondeado
+  hacia arriba (`top_min_px`). En el sector de 2 km a la latitud de Chillán
+  sigue siendo 3 píxeles; en uno de 250 m a la de Sabancaya son 163.
+- Efecto medido sobre los cuadros guardados: en Sabancaya 01-11 los cuadros de
+  03:00 y 03:20 UTC pasan de 7 a 8 km a 6 a 7 km (148 y 151 píxeles, 10,9 y
+  11,1 km²) y el de 03:10 queda en 7 a 8 km (12,5 km²); desde 03:30 el tope de
+  7 a 8 km es firme. En Sabancaya 26-10 desaparecen los topes de 16 a 18 km,
+  pero de 12:20 a 12:40 UTC quedan topes de 12 a 14 km con 12,5 a 15,2 km²:
+  un ruido de 3 a 4 píxeles IR no se distingue de un tope con un umbral de 3.
+  Ese evento ya estaba fuera de la comparación por la revisión a ojo.
 
 ### v2.6: 2026-11-17 (loop VOLCAT de días, registro de un cambio ya en producción)
 **Sólo visualización (§B.9); ninguna detección, umbral ni cifra de altura

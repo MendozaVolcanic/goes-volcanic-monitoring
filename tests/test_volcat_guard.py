@@ -10,6 +10,7 @@ degrada limpio.
 """
 
 import sys
+import pytest
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -115,6 +116,23 @@ def test_el_radio_de_anclaje_va_en_km_reales(monkeypatch):
     assert (r.get("top_lo_km"), r.get("top_hi_km")) == (3, 4), r
 
 
+def test_volcat_height_at_pasa_el_ancho_este_oeste_del_pixel(monkeypatch):
+    """El mínimo del tope es un área: el ancho E-O del píxel CE es
+    px_km·cos(lat del volcán), y tiene que llegar a volcat_object_heights."""
+    import math
+
+    import src.process.volcat_colorbar as vc
+    visto = {}
+
+    def espia(a, row, col, px_km, **kw):
+        visto.update(kw, px_km=px_km)
+        return {"note": "espia"}
+    monkeypatch.setattr(vc, "volcat_object_heights", espia)
+    v = _con_png(monkeypatch, _png_volcat(lambda img, r, c: None))
+    va.volcat_height_at(v, datetime.now(timezone.utc))
+    assert visto["px_km_ew"] == pytest.approx(
+        visto["px_km"] * math.cos(math.radians(v.lat)))
+
+
 if __name__ == "__main__":
-    import pytest
     raise SystemExit(pytest.main([__file__, "-q"]))

@@ -4,7 +4,7 @@ Estado: **paso 0 hecho** (16-11-2026): 989 archivos, 112 MB, 0 errores, en
 `data/raw/volcat_validacion/` con `manifiesto.json` (URL, bytes, sha256) y `eventos.json`.
 Script: `scripts/harvest_volcat_validacion.py`. **Paso 1 hecho** (16-11-2026, §3.1 abajo).
 **Paso 2 hecho** (16-11-2026, §3.2). **Revisión a ojo previa al paso 3 hecha** (§3.3):
-encontró un umbral mal dimensionado que hay que corregir antes del paso 3. Pasos 3 a 6 sin empezar.
+encontró un umbral mal dimensionado, **corregido el 17-11** (§3.3). Pasos 3 a 6 sin empezar.
 
 ## 1. Por qué
 
@@ -142,6 +142,19 @@ alrededor del volcán con el disco de 10 km dibujado, cuadro por cuadro:
   PNG con `px_km`. Revisar después qué cuadros de Sabancaya 01-11 quedan: los primeros de
   7 a 8 km (03:00 a 03:20, 148 a 170 píxeles del PNG, ~11 a 13 km²) quedan justo en el
   borde. Va en la ficha SDA en el mismo commit.
+
+**Corrección hecha (17-11-2026, ficha SDA v2.7).** `TOP_MIN_AREA_KM2 = 12` (umbral nuestro)
+y `top_min_px(px_km, px_km_ew)` en `src/process/volcat_colorbar.py`; `volcat_height_at`
+pasa el lado E-O del píxel CE (px_km·cos(lat)). 10 mutaciones, todas atrapadas. Sobre los
+cuadros guardados:
+- Sabancaya 01-11: 03:00 y 03:20 bajan a 6 a 7 km (10,9 y 11,1 km²); 03:10 queda en 7 a
+  8 km (12,5 km², justo sobre el borde); desde 03:30 el tope de 7 a 8 km es firme (27 km²
+  o más). El salto de 6 a 7 a 7 a 8 km queda en 03:10 a 03:30, no en 03:00.
+- Sabancaya 26-10: desaparecen los 16 a 18 km, pero 12:20 a 12:40 dan 12 a 14 km con
+  12,5 a 15,2 km² (3 a 4 píxeles IR). Un umbral de 3 píxeles IR no separa ese ruido; el
+  evento ya quedaba fuera de la comparación por la revisión a ojo. Subir el umbral es
+  decisión de Nicolás (costaría el cuadro de 03:10 del 01-11).
+- Chillán 08-11 (sector de 2 km): el mínimo sigue en 3 píxeles, sin cambios.
 
 Consecuencia para el paso 3: los casos utilizables son Sabancaya 01-11 (tope de 6 a 7 km
 de 23:10 a 02:50 y de 7 a 8 km desde 03:00, pluma de 1 a 2 % del sector que crece sin

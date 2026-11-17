@@ -10,6 +10,7 @@ la tendencia.
 from __future__ import annotations
 
 import logging
+import math
 
 import numpy as np
 import pandas as pd
@@ -36,6 +37,11 @@ except Exception:
     raise
 
 logger = logging.getLogger(__name__)
+
+# Ancho minimo en que se dibuja una miniatura (pico / ultimo). Con 480 px la
+# letra queda en 12 y las dos lineas del rotulo caben con el peor caso (cruce
+# de dia, la hora de Chile con su propia fecha).
+THUMB_MIN_W = 480
 
 
 WINDOW_OPTIONS = {
@@ -157,6 +163,16 @@ def _thumb_with_marker(
     import io as _io
 
     pil = Image.fromarray(img).convert("RGB")
+    # El frame llega a 60 px/grado (zoom 3): con el radio del slider mide 80
+    # a 240 px de ancho, y la hora de Chile no cabe ahi ni con letra 8 (en
+    # produccion se cortaba). Se amplia por un factor ENTERO y con vecino mas
+    # cercano: cada pixel del satelite queda como un bloque, sin suavizado
+    # que invente detalle, y el rotulo y el marcador se dibujan nitidos a la
+    # resolucion con que se muestran (st.image estira igual al ancho de la
+    # columna).
+    k = max(1, math.ceil(THUMB_MIN_W / pil.size[0]))
+    if k > 1:
+        pil = pil.resize((pil.size[0] * k, pil.size[1] * k), Image.NEAREST)
     w, h = pil.size
 
     # Marcador del volcán: convertir lat/lon a (x, y) en la imagen.
@@ -167,12 +183,15 @@ def _thumb_with_marker(
     draw = ImageDraw.Draw(pil)
     # Triangulo HUECO: el relleno tapaba el pixel del crater (ver
     # map_helpers.draw_volcano_marker_pil).
-    s = max(8, w // 50)
+    # Tamano medido sobre el frame ORIGINAL y luego por k: ampliar la imagen
+    # no puede achicar el marcador en pantalla (con w // 50 sobre la imagen
+    # ampliada quedaba a un cuarto del tamano que se veia antes).
+    s = max(8, (w // k) // 50) * k
     draw_volcano_marker_pil(draw, cx, cy, size=s, color=(255, 60, 60),
                             halo=(255, 255, 255))
     # Cruz central pequeña en el vertice del triangulo (la coordenada exacta)
-    draw.line([(cx - 3, cy), (cx + 3, cy)], fill=(255, 255, 255), width=1)
-    draw.line([(cx, cy - 3), (cx, cy + 3)], fill=(255, 255, 255), width=1)
+    draw.line([(cx - 3 * k, cy), (cx + 3 * k, cy)], fill=(255, 255, 255), width=k)
+    draw.line([(cx, cy - 3 * k), (cx, cy + 3 * k)], fill=(255, 255, 255), width=k)
 
     if label:
         lineas = (label,) if isinstance(label, str) else tuple(label)

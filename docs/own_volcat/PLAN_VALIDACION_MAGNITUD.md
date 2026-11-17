@@ -166,6 +166,12 @@ incertidumbre que el retrieval ya declara. Como referencia, sin usarlo de criter
 literatura reporta un sesgo IR de −0,4 a −0,8 km (Pavolonis 2020). La decisión del criterio
 es tuya.
 
+**Decidido por Nicolás el 16-11-2026, antes de ver ningún número:** un scan es
+consistente si el intervalo del tope VOLCAT (`top_lo_km` a `top_hi_km`, el bloque de la
+barra) **se cruza** con nuestra banda β (`top_km_lo` a `top_km_hi`). Sin margen extra:
+se descartó la variante de ±1 km. Se aplica por método (BT-matching, Wen-Rose, ACHA) y
+se reporta cuántos scans cumplen, no un promedio.
+
 **Paso 6: registrar.** `scripts/validate_magnitud.py` reproducible, tabla en
 `docs/paper/REGISTRO_PAPER.md` §3 y, si algo cambia la lógica, ficha SDA en el mismo commit.
 

@@ -215,6 +215,59 @@ y de 18:00 a 18:20 (hora de Chile) pinta píxeles de 8 a 12 km. Revisado sobre l
   Los de 8 a 12 km son un caso documentado de sobreestimación del retrieval semitransparente,
   útil para el paper y para la regla de no reportar alturas altas con BT11 tibia.
 
+**3.6 Un detector más sensible para las plumas chicas de Chillán: ninguna variante sirve (17-11-2026).**
+La pregunta era si un detector distinto de `detect_ash_enhanced` ve las emisiones de Chillán de
+noviembre que VOLCAT sí ve (§3.4), sin llenar los Andes de falsas alarmas. La hipótesis: sobre la
+cordillera la BTD 11-12 de cielo despejado es positiva (vapor de agua), así que una pluma que la baja
+1 a 2 K nunca cruza el umbral absoluto de -1 K; una anomalía respecto del cielo despejado propio de
+cada píxel sí la vería. **No se cambió código.**
+
+- **Criterio, declarado antes de ver números.** Unidad: scan de 10 min, ventana de ±1° alrededor del
+  cráter. Positivo: cuadro VOLCAT con objeto anclado al cráter los días 08, 10, 11 y 14-11. Negativo:
+  días sin ceniza (01 a 06, 09, 12, 13 y 15-11), de 11:00 a 20:50 hora de Chile; aparte, el sistema
+  meteorológico del 16-11 (05:20 a 09:00), que no debe detectarse. Detección: objeto conexo de 2 o
+  más píxeles ABI con uno a 10 km o menos del cráter. Umbrales elegidos con 08 y 10-11 más negativos
+  01 a 06, congelados y evaluados en 11 y 14-11 más negativos 09, 12, 13 y 15. Cumple si en la prueba:
+  (1) detecta 50 % o más de los cuadros VOLCAT; (2) falsa alarma en 2 % o menos de los scans
+  negativos y ningún día con más de 3; (3) 10 % o menos en el 16-11; (4) 50 % o más de los píxeles
+  marcados a 30 km o menos del cráter caen en la huella VOLCAT dilatada 1 píxel (para no premiar
+  cirros o nieve que coinciden en la hora).
+- **Datos.** 978 scans GOES-19 L1b (C11, C14, C15), leídos solo en la ventana. Positivos: 57 cuadros
+  VOLCAT anclados (el criterio decía 59 por un conteo previo; la tabla de cuadros da 57). Faltó el L1b
+  de 08-11 21:00 UTC, así que quedaron 21 de ajuste y 35 de prueba. Días negativos con un scan cada
+  20 min (30 por día): el tope de 3 por día se aplicó sobre esa cadencia, el doble de exigente que a
+  10 min. Huellas VOLCAT llevadas a la grilla ABI desde los PNG de `Chile_Central_2_km`.
+
+| Variante | Detecta (prueba) | Falsa alarma (prueba, peor día) | 16-11 | En la huella VOLCAT |
+|---|---|---|---|---|
+| `detect_ash_enhanced` (BTD < -1 K + tri-espectral) | 0 de 35 | 0 de 120 | 0 de 23 | sin píxeles |
+| BTD < -0,5 K | 0 de 35 | 0 de 120 | 0 de 23 | sin píxeles |
+| BTD < 0 K, sin tri-espectral | 3 de 35 | 4 de 120 (3) | 3 de 23 | 73 % (26 px) |
+| Anomalía respecto del cielo despejado del píxel | **27 de 35 (77 %)** | **18 de 120 = 15 % (9)** | 0 de 23 | **25 %** |
+| β(12,11) con fondo compuesto, T_ref 215 K | 21 de 35 (60 %) | 7 de 120 = 5,8 % (5) | 0 de 23 | 26 % |
+
+  La anomalía elegida con el ajuste: referencia por píxel = mediana de BT8,4, BT11,2 y BT12,3 de los
+  3 días más tibios en BT11,2 entre los 10 previos, mismo slot (±10 min); marca si BT11 > 200 K y
+  ΔBTD < min(-0,4 K; 0,3·ΔBT11). Cumple (1) y (3), falla (2) (9 falsas alarmas el 12-11 y 9 el 13-11,
+  con ~160 píxeles marcados por scan en los días negativos de la prueba) y (4). β(12,11) usa
+  `beta_ratios.cloud_emissivity` con el compuesto como cielo despejado; con T_ref ±10 K su
+  sensibilidad va de 60 a 66 %. Ninguna de las 2.592 combinaciones de la anomalía ni de las 540 de β
+  cumple los cuatro criterios, ni siquiera eligiéndola con la prueba: con sensibilidad de 50 % o más,
+  la mejor coincidencia espacial es 27 %.
+- **Por qué (la física).** Dentro de la huella VOLCAT la BTD casi no cambia respecto del cielo
+  despejado: la mediana de ΔBTD es +0,31 K (ajuste) y +0,02 K (prueba), con percentil 5 de -0,6 y
+  -1,0 K. En los 10 km alrededor del cráter, los días sin ceniza tienen percentil 5 de -1,4 y -1,6 K
+  (vapor, nieve, nubes). La pluma no baja la BTD más que un día normal, y el 14-11 la huella está
+  incluso 1 K más tibia que la referencia en BT11. No hay firma split-window que separar en un
+  píxel de 2 km: si hay ceniza es poca o muy delgada, y VOLCAT la marca con pruebas que no tenemos.
+  Corrige la lectura de §3.5: no es que la firma quede justo bajo nuestro umbral, es que no se
+  distingue del fondo. Lo que la anomalía marca el 14-11 es una franja de ~45 km hacia el SSE, y el
+  12-11, día sin ceniza, aparece una franja parecida. Los cirros lineales del 14-11 (16:20 a 18:20)
+  no sirven para separar cirro de pluma: 11 de esos 13 scans también son positivos VOLCAT.
+- **Sin probar:** β(8,5/11) y la banda de 10,3 µm; negativos a 10 min; GFS archivado para la T_ref
+  de β (se usó una constante); otros volcanes y plumas más cargadas de ceniza. Scripts y huellas
+  quedaron fuera del repo (dependen de ~60 MB de ventanas L1b cacheadas fuera del repo).
+
 **Paso 2: volcanes fuera del catálogo.** Chillán ya está en el catálogo. Objetos `Volcano` para Reventador, Sabancaya,
 Cotopaxi y Ruiz con coordenadas y cota tomadas del GVP (Smithsonian), citadas, no de memoria.
 `acquire_ash_scene` ya acepta un objeto en vez de un nombre.

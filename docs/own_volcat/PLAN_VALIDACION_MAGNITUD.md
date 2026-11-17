@@ -191,6 +191,30 @@ posibles) y se leyeron cuadro a cuadro. Horas de Chile:
   entran desde lejos, como se hizo con Cotopaxi. Recomendación: (c) para el paso 3, que
   usa casos ya revisados a ojo, y (b) si alguna vez la lectura VOLCAT llega a la app.
 
+**3.5 Chillán 14-11: VOLCAT da 8 a 12 km donde las cámaras no ven nada sobre 6 km (17-11-2026).**
+Las cámaras del observatorio no vieron nada sobre 6 km sobre el nivel del mar (unos 3 km sobre
+el cráter de 3.212 m). VOLCAT da tope firme de 3 a 5 km casi todo el día, pero de 16:20 a 16:50
+y de 18:00 a 18:20 (hora de Chile) pinta píxeles de 8 a 12 km. Revisado sobre los nueve scans
+(seis altos y tres de control):
+- **Los píxeles altos están sobre la pluma**, en el eje que sale al SE del cráter, en el mismo
+  lugar que los de 3 a 5 km de los controles. No están sobre las líneas finas de hielo N-S que se
+  ven en Ash RGB a 10 a 15 km al oeste y al este. La pluma pasa del naranja (3 a 5 km) a amarillo,
+  verde y azul en esas horas, y a las 19:20 vuelve al naranja.
+- **Nada en el IR está tan frío.** Dentro de 25 km del cráter ningún píxel de 2 km baja de
+  271 K en BT 11,2 µm. Con el GFS archivado, una nube opaca a 8 km estaría a 249 K y a 12 km a
+  216 K. El píxel más frío es la cumbre nevada. VOLCAT llega a 8 a 12 km solo si trata esos
+  píxeles tibios como nube delgada y fría: es la solución semitransparente del retrieval, no un
+  tope real.
+- **Coincide en el tiempo con cirros delgados** que cruzan cerca del cráter de 16:20 a 18:20
+  (también hay uno a las 19:20, en el control). Pueden perturbar el retrieval, pero no está
+  probado.
+- **Nuestros métodos no detectan esta pluma**: `detect_ash_enhanced` da 0 píxeles en los nueve
+  scans, controles incluidos (BTD 11-12 nunca baja de -1 K dentro de 25 km). La firma de esta
+  ceniza es más débil que nuestro umbral; VOLCAT la detecta con otras pruebas.
+- **Consecuencia para el paso 3**: Chillán 14-11 entra solo con los cuadros de tope 3 a 5 km.
+  Los de 8 a 12 km son un caso documentado de sobreestimación del retrieval semitransparente,
+  útil para el paper y para la regla de no reportar alturas altas con BT11 tibia.
+
 **Paso 2: volcanes fuera del catálogo.** Chillán ya está en el catálogo. Objetos `Volcano` para Reventador, Sabancaya,
 Cotopaxi y Ruiz con coordenadas y cota tomadas del GVP (Smithsonian), citadas, no de memoria.
 `acquire_ash_scene` ya acepta un objeto en vez de un nombre.

@@ -380,9 +380,18 @@ sobre fondo frío. Plumas finas o muy frías (>10 km alt) pueden ser
 sub-detectadas.
 
 **🎞 Loop VOLCAT** (debajo del último cuadro, en modo **Volcán** o
-**Zona**): anima las últimas **2, 3, 6 o 12 h** del producto elegido, con el
-mismo volcán y acercamiento (o la misma zona) de arriba. Sirve para ver hacia dónde se mueve la pluma y si la
-columna crece o se corta entre un cuadro y otro.
+**Zona**): anima las últimas **2, 3, 6 o 12 h**, o **1, 3, 10 o 16 días**, del
+producto elegido, con el mismo volcán y acercamiento (o la misma zona) de
+arriba. Sirve para ver hacia dónde se mueve la pluma y si la columna crece o
+se corta entre un cuadro y otro; con 10 días, para ver la evolución de un
+volcán de un día a otro.
+- Hasta 12 h entran todos los cuadros (uno cada 10 min). En ventanas de días
+  se toma **un cuadro real por paso**: uno cada 30 min en 1 día y uno por
+  hora desde 3 días (10 días = 240 cuadros, ~90 MB; 16 días = 384
+  cuadros, ~150 MB la primera vez). Cada
+  cuadro conserva su propia hora; si en un paso SSEC no publicó nada, el
+  cuadro siguiente avisa el salto.
+- SSEC guarda unos **30 días** de VOLCAT: más atrás no hay loop posible.
 1. Elige la ventana y la velocidad y presiona **Generar loop**.
 2. Se ve en pantalla el mismo GIF que se descarga; abajo están los botones
    **GIF** (para correo o web) y **MP4** (más liviano, para informes y

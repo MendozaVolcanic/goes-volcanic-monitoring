@@ -402,9 +402,44 @@ def huecos_en_ventana(dts: list, inicio, fin,
     return sorted(faltan)
 
 
+def submuestrear(frames: list[dict], inicio, fin,
+                 paso_min: float) -> tuple[list[dict], list]:
+    """Un cuadro REAL por paso, para loops de varios dias.
+
+    Por que (16-11-2026, evolucion de Nevados de Chillan en 10 dias): con
+    todos los cuadros, 10 dias son 1440 descargas de ~0,4 MB. Uno por hora
+    son 240, y alcanzan para ver como cambia la pluma de un dia a otro.
+
+    Se recorre la grilla del paso hacia atras desde `fin` y en cada punto se
+    toma el cuadro publicado mas cercano, a menos de medio paso y sin repetir
+    uno ya usado. Ese cuadro conserva su propia hora (no se re-rotula). Un
+    punto sin cuadro cerca queda en `faltantes`: NO se rellena.
+
+    `frames` deben traer `dt`. Devuelve (cuadros en orden, faltantes).
+    """
+    from datetime import timedelta
+    paso = timedelta(minutes=paso_min)
+    tol = paso / 2
+    elegidos, faltan, usados = [], [], set()
+    slot = fin
+    while slot > inicio:
+        cerca = [f for f in frames
+                 if abs(f["dt"] - slot) < tol and f["dt"] not in usados]
+        if cerca:
+            mejor = min(cerca, key=lambda f: abs(f["dt"] - slot))
+            elegidos.append(mejor)
+            usados.add(mejor["dt"])
+        else:
+            faltan.append(slot)
+        slot -= paso
+    elegidos.sort(key=lambda f: f["dt"])
+    return elegidos, sorted(faltan)
+
+
 def volcat_ventana(sector: str, instr: str = "ABI",
                    image_type: str = "Ash_Height", horas: float = 2,
-                   sat: str = "GOES-19") -> dict:
+                   sat: str = "GOES-19",
+                   paso_min: float = CADENCIA_VOLCAT_MIN) -> dict:
     """Cuadros VOLCAT de las ultimas `horas` para armar un loop.
 
     Devuelve un dict:
@@ -414,13 +449,15 @@ def volcat_ventana(sector: str, instr: str = "ABI",
                  las mismas claves que `volcat_latest` mas `dt`.
       faltantes: datetimes de los cuadros que SSEC no publico en la ventana.
       inicio, fin: limites de la ventana (fin = ultimo cuadro publicado).
+      paso_min:  minutos entre cuadros del loop. Con mas de la cadencia nativa
+                 (10 min) se toma un cuadro por paso (`submuestrear`).
 
     Mismo criterio de satelite que `volcat_latest`: GOES-19 y, solo si no hay
     ni un cuadro, todos (sectores de prueba que solo ve GOES-18).
     """
     from datetime import timedelta
     vacio = {"ok": False, "error": None, "frames": [], "faltantes": [],
-             "inicio": None, "fin": None}
+             "inicio": None, "fin": None, "paso_min": paso_min}
     frames, coords, err = _query_frames_estado(sector, instr, image_type, sat)
     if not frames and err is None and sat != "all":
         frames, coords, err = _query_frames_estado(sector, instr, image_type,
@@ -433,14 +470,18 @@ def volcat_ventana(sector: str, instr: str = "ABI",
                 "error": f"SSEC no tiene cuadros {image_type} del sector {sector}"}
     fin = sel[-1]["dt"]
     inicio = fin - timedelta(hours=horas)
+    if paso_min > CADENCIA_VOLCAT_MIN:
+        sel, faltantes = submuestrear(sel, inicio, fin, paso_min)
+    else:
+        faltantes = huecos_en_ventana([f["dt"] for f in sel], inicio, fin)
     out = []
     for f in sel:
         m = _frame_meta(f, sector, instr, image_type, coords)
         m["dt"] = f["dt"]
         out.append(m)
     return {"ok": True, "error": None, "frames": out,
-            "faltantes": huecos_en_ventana([f["dt"] for f in sel], inicio, fin),
-            "inicio": inicio, "fin": fin}
+            "faltantes": faltantes, "inicio": inicio, "fin": fin,
+            "paso_min": paso_min}
 
 
 def volcat_available_types(sector: str, instr: str = "ABI") -> list[str]:

@@ -1115,24 +1115,50 @@ def sector_y_encuadre_zona(zona: str) -> tuple[str, str, dict]:
 # FICHA SDA (Nivel 1): visualizacion, no decide nada. Ver la cabecera de
 # dashboard/volcat_loop.py y src/fetch/volcat_api.py::volcat_ventana.
 #
-# Ventanas de 2 a 12 h: SSEC guarda ~30 dias (4000+ cuadros por sector) y
-# cada cuadro es una descarga de ~0,3 MB; 12 h = 72 cuadros ya es el tope
-# razonable para generar a pedido y para que el GIF se pueda mandar.
-LOOP_HORAS = (2, 3, 6, 12)
+# Ventanas de 2 h a 16 dias. SSEC guarda ~30 dias (4000+ cuadros por sector)
+# y cada cuadro es una descarga de ~0,4 MB (Chile_Central_2_km: 0,37 MB de
+# promedio, medido 16-11-2026). Hasta 12 h van todos los cuadros (cada
+# 10 min). Para ventanas de dias (pedido 16-11-2026: ver la evolucion de
+# Nevados de Chillan) se toma un cuadro real por paso: 10 dias a uno por hora
+# son 240 cuadros, ~90 MB, en vez de 1440. 16 dias (384 cuadros, ~150 MB)
+# alcanza para un mes en curso hasta su dia 16 (pedido para Chillan,
+# 16-11-2026); SSEC guarda ~30 dias, asi que no hay ventana mas larga util.
+# El paso queda escrito en pantalla y en el nombre del archivo, y un salto
+# mayor que el paso se avisa igual.
+LOOP_HORAS = (2, 3, 6, 12, 24, 72, 240, 384)
+LOOP_PASO_MIN = {2: 10, 3: 10, 6: 10, 12: 10, 24: 30, 72: 60, 240: 60,
+                 384: 60}
+_MB_POR_CUADRO = 0.4
 LOOP_FPS = (1, 2, 3, 5)
 # Descargas en paralelo contra SSEC: suficiente para que 72 cuadros no tarden
 # minutos, sin martillar un servidor universitario que nos da el dato gratis.
 _LOOP_HILOS = 6
 
 
+def _n_cuadros(horas: int) -> int:
+    return int(horas * 60 / LOOP_PASO_MIN[horas])
+
+
+def _rotulo_ventana(horas: int) -> str:
+    """'2 h (12 cuadros)', '10 días (240 cuadros, 1 por hora)'."""
+    n = _n_cuadros(horas)
+    paso = LOOP_PASO_MIN[horas]
+    if horas < 24:
+        return f"{horas} h ({n} cuadros)"
+    dias = f"{horas // 24} día" + ("s" if horas >= 48 else "")
+    cada = "1 por hora" if paso == 60 else f"1 cada {paso} min"
+    return f"{dias} ({n} cuadros, {cada})"
+
+
 @st.cache_data(ttl=TTL_VOLCAT, show_spinner=False)
 def _volcat_ventana_cached(sector: str, instr: str, product: str,
-                           horas: int) -> dict:
+                           horas: int, paso_min: int = 10) -> dict:
     """Lista de cuadros de la ventana (cache 5 min, igual que el ultimo
     cuadro). El JSON de SSEC trae ~30 dias y pesa ~1 MB: no se pide en cada
     rerun. Los cuadros en si se cachean por URL en `_volcat_map_only`."""
     from src.fetch.volcat_api import volcat_ventana
-    return volcat_ventana(sector, instr, product, horas=horas)
+    return volcat_ventana(sector, instr, product, horas=horas,
+                          paso_min=paso_min)
 
 
 def _armar_loop_volcat(enc: dict, ventana: dict, product_label: str,
@@ -1169,14 +1195,27 @@ def _armar_loop_volcat(enc: dict, ventana: dict, product_label: str,
         return _volcat_map_only(m["image_url"], m.get("latlon_url"),
                                 m.get("coords") or {})
 
+    # Con ventanas de dias la descarga es lo largo (240 cuadros): el
+    # progreso la cuenta, no solo la composicion.
+    from concurrent.futures import as_completed
+    geos = [None] * len(frames)
     with ThreadPoolExecutor(max_workers=_LOOP_HILOS) as ex:
-        geos = list(ex.map(_bajar, frames))
+        futs = {ex.submit(_bajar, m): i for i, m in enumerate(frames)}
+        for n, fut in enumerate(as_completed(futs), start=1):
+            geos[futs[fut]] = fut.result()
+            if progreso is not None:
+                progreso.progress(n / len(frames) * 0.8,
+                                  text=f"Bajando cuadro {n} de {len(frames)} "
+                                       f"de SSEC")
+    # Un salto se mide contra el paso del loop: con un cuadro por hora, una
+    # hora entre cuadros es lo normal y no se avisa.
+    paso_min = ventana.get("paso_min", 10)
 
     cuadros, fallidos, usados, prev_dt = [], [], [], None
     titulo = f"{enc['titulo']} · {product_label}"
     for i, (m, geo) in enumerate(zip(frames, geos)):
         if progreso is not None:
-            progreso.progress((i + 1) / len(frames),
+            progreso.progress(0.8 + 0.2 * (i + 1) / len(frames),
                               text=f"Componiendo cuadro {i + 1} de {len(frames)}")
         mapa = (recortar_encuadre(geo["png"], geo["bounds"], view)
                 if geo and geo.get("png") else None)
@@ -1185,7 +1224,8 @@ def _armar_loop_volcat(enc: dict, ventana: dict, product_label: str,
             continue
         img, _g = componer_cuadro(mapa, view, enc["centro"], m["dt"],
                                   titulo, sector_txt, barra_color=barra,
-                                  aviso=aviso_salto(prev_dt, m["dt"]),
+                                  aviso=aviso_salto(prev_dt, m["dt"],
+                                                    cadencia_min=paso_min),
                                   alto_mapa=enc["alto"], barra=enc["barra"])
         cuadros.append(img)
         usados.append({k: m.get(k) for k in
@@ -1272,10 +1312,13 @@ def _render_volcat_loop(enc: dict, sector: str, instr: str, product: str,
     with c1:
         horas = st.select_slider(
             "Ventana del loop", options=list(LOOP_HORAS), value=2,
-            format_func=lambda h: f"{h} h ({h * 6} cuadros)",
+            format_func=_rotulo_ventana,
             key=f"volcat_loop_horas_{key_suffix}",
-            help="Horas hacia atrás desde el último cuadro publicado por SSEC "
-                 "(no desde ahora: SSEC publica con 30 a 50 min de atraso).")
+            help="Hacia atrás desde el último cuadro publicado por SSEC (no "
+                 "desde ahora: SSEC publica con 30 a 50 min de atraso). Hasta "
+                 "12 h entran todos los cuadros (cada 10 min); en ventanas de "
+                 "días, uno cada 30 o 60 min. SSEC guarda unos 30 días.")
+    paso_min = LOOP_PASO_MIN[horas]
     with c2:
         fps = st.select_slider(
             "Velocidad", options=list(LOOP_FPS), value=3,
@@ -1287,11 +1330,12 @@ def _render_volcat_loop(enc: dict, sector: str, instr: str, product: str,
                             key=f"volcat_loop_btn_{key_suffix}")
 
     # `archivo` ya distingue volcan y radio, o zona.
-    clave = (enc["archivo"], sector, instr, product, horas, fps)
+    clave = (enc["archivo"], sector, instr, product, horas, paso_min, fps)
     estado_key = f"volcat_loop_res_{key_suffix}"
     if generar:
         with st.spinner(f"Consultando la lista de cuadros de SSEC ({sector})..."):
-            ventana = _volcat_ventana_cached(sector, instr, product, horas)
+            ventana = _volcat_ventana_cached(sector, instr, product, horas,
+                                             paso_min)
         res = {"clave": clave, "ventana": ventana}
         if ventana["ok"] and ventana["frames"]:
             barra = st.progress(0.0, text="Bajando cuadros de SSEC...")
@@ -1304,9 +1348,12 @@ def _render_volcat_loop(enc: dict, sector: str, instr: str, product: str,
     # El resultado guardado vale solo para la seleccion que lo genero: con
     # otro volcan, zona, radio o ventana se descargaria el loop equivocado.
     if not res or res["clave"] != clave:
+        n_cuadros = _n_cuadros(horas)
         st.info(f"Elige la ventana y presiona **Generar loop**. Baja hasta "
-                f"{horas * 6} cuadros de SSEC (~0,3 MB c/u) la primera vez; "
-                "los cuadros quedan en caché 2 h.")
+                f"{n_cuadros} cuadros de SSEC "
+                f"(~{str(_MB_POR_CUADRO).replace('.', ',')} MB c/u, "
+                f"~{n_cuadros * _MB_POR_CUADRO:.0f} MB) la primera vez; los "
+                "cuadros quedan en caché 2 h.")
         return
 
     ventana = res["ventana"]
@@ -1327,8 +1374,11 @@ def _render_volcat_loop(enc: dict, sector: str, instr: str, product: str,
     faltantes = ventana["faltantes"]
     fallidos = res.get("fallidos", [])
     if faltantes or fallidos:
+        # En ventanas de dias la hora sola no dice que dia falto.
+        fmt = "%d-%m %H:%M" if horas > 24 else "%H:%M"
+
         def _lista(dts):
-            txt = ", ".join(d.strftime("%H:%M") for d in dts[:12])
+            txt = ", ".join(d.strftime(fmt) for d in dts[:12])
             return txt + (f" y {len(dts) - 12} más" if len(dts) > 12 else "")
         partes = []
         if faltantes:
@@ -1344,13 +1394,16 @@ def _render_volcat_loop(enc: dict, sector: str, instr: str, product: str,
         st.error("⚠ No se pudo bajar ningún cuadro de SSEC. No hay loop.")
         return
 
+    paso_txt = ("todos los cuadros (cada 10 min)" if paso_min <= 10
+                else f"un cuadro cada {paso_min} min")
     st.image(res["gif"],
-             caption=f"{res['n']} cuadros · {fps} cuadros/s · el mismo GIF "
-                     "que se descarga")
+             caption=f"{res['n']} cuadros · {paso_txt} · {fps} cuadros/s · "
+                     "el mismo GIF que se descarga")
 
     base = (f"volcat_loop_{enc['archivo']}_"
             f"{product.lower()}_{ventana['inicio']:%Y%m%dT%H%M}-"
-            f"{ventana['fin']:%Y%m%dT%H%MZ}_{horas}h")
+            f"{ventana['fin']:%Y%m%dT%H%MZ}_{horas}h"
+            + (f"_cada{paso_min}min" if paso_min > 10 else ""))
     d1, d2 = st.columns(2)
     with d1:
         st.download_button(f"⬇ GIF ({len(res['gif']) / 1e6:.1f} MB)",

@@ -305,7 +305,13 @@ pero que dependen de una condición del entorno, y por eso quedan registrados:
   (`_render_volcat_loop`, `_figura_medicion`; página 📏 VOLCAT, modos Volcán
   y Zona).
 - **Qué decide:** nada. Anima los cuadros del producto VOLCAT de SSEC/CIMSS de
-  las últimas 2 a 12 h alrededor de un volcán. No mide ni clasifica la pluma.
+  las últimas 2 h a 16 días alrededor de un volcán. No mide ni clasifica la
+  pluma.
+- **Ventanas de días (16-11-2026):** desde 1 día se toma un cuadro real por
+  paso (`submuestrear`: 30 min en 1 día, 60 min desde 3 días), el más
+  cercano a cada punto de la grilla a menos de medio paso, sin repetir uno y
+  con su propia hora. Un punto sin cuadro cerca es faltante y se lista; el
+  aviso de salto se mide contra el paso, no contra los 10 min nativos.
 - **Reglas de presentación:**
   - Un cuadro que SSEC **no publicó** (hueco en su lista) o que **no se pudo
     bajar** no se rellena con el anterior: el loop salta y el cuadro siguiente

@@ -212,3 +212,91 @@ def test_fuente_de_la_miniatura_es_la_misma_en_todo_sistema():
     d = ImageDraw.Draw(Image.new("RGB", (320, 10)))
     font = _fuente_rotulo(d, ("x",), 320)
     assert font.getname() == ("DejaVu Sans", "Bold")
+
+
+@pytest.mark.parametrize("radio", [0.5, 1.0, 2.0])   # extremos y default del slider
+@pytest.mark.parametrize("peak", [True, False])
+def test_miniatura_de_series_no_corta_el_rotulo_en_el_png(radio, peak):
+    """El rotulo se ve entero en el PNG que dibuja la vista, no solo en teoria.
+
+    La prueba de arriba mide el texto contra 320 a 800 px, pero el frame que
+    llega a la miniatura sale de `reproject_to_latlon` a zoom 3 (60 px/grado):
+    con el radio del slider (0,5 a 2 grados) mide 80 a 240 px de ancho. Ahi la
+    letra bajaba al minimo de 8 px y la segunda linea igual se salia por la
+    derecha: en produccion (17-11, Lascar) la hora de Chile no se veia.
+
+    Se dibuja sobre un frame negro del tamano real y se busca el texto blanco
+    en la franja de la banda: no puede llegar al borde derecho.
+    """
+    import io
+    import numpy as np
+    from PIL import Image
+    from src.fetch.rammb_slider import ZOOM_ZONE, reproject_to_latlon
+    from src.volcanos import get_volcano
+    from dashboard.views.timeseries_viewer import (
+        _thumb_with_marker, rotulo_miniatura,
+    )
+    v = get_volcano("Lascar")
+    bds = {"lat_min": v.lat - radio, "lat_max": v.lat + radio,
+           "lon_min": v.lon - radio, "lon_max": v.lon + radio}
+    # Mismo camino de tamano que fetch_frame_for_bounds (zoom 3, tiles de 678).
+    frame = reproject_to_latlon(
+        np.zeros((678, 678, 3), np.uint8), col_start=0, row_start=0,
+        out_bounds=bds, zoom=ZOOM_ZONE, tile_sz=678,
+    )
+    frame[:] = 0
+    lineas = rotulo_miniatura("ÚLTIMO", CRUCE_DIA, 100.0)
+    png = _thumb_with_marker(frame, v.lat, v.lon, bds, lineas, peak=peak)
+
+    arr = np.asarray(Image.open(io.BytesIO(png)).convert("RGB"))
+    h, w, _ = arr.shape
+    banda = arr[int(h * 0.75):]            # el marcador va al centro, no aqui
+    # Tinta = todo lo que se aparta del color de la banda (roja en el pico,
+    # negra en el ultimo), incluido el antialiasing tenue: con radio 1 el
+    # corte cae justo antes del separador y en el borde queda solo media
+    # tinta. La columna 0 es margen, siempre color de banda puro.
+    ref = banda[:, :1].astype(int)
+    tinta = np.abs(banda.astype(int) - ref).sum(axis=2) > 60
+    cols = np.where(tinta.any(axis=0))[0]
+    assert cols.size, "no se dibujo el rotulo"
+    # Los ultimos 4 px (el margen de 5 de la banda) tienen que quedar limpios.
+    assert cols.max() < w - 4, (radio, frame.shape, w, int(cols.max()))
+
+
+def test_miniatura_ampliada_no_inventa_detalle():
+    """La ampliacion de la miniatura es por bloques: cada pixel del satelite
+    (~3,4 km a zoom 3) queda como un cuadrado de k x k del mismo color. Un
+    remuestreo suave fabricaria degradados que el sensor no vio."""
+    import io
+    import numpy as np
+    from PIL import Image
+    from dashboard.views.timeseries_viewer import THUMB_MIN_W, _thumb_with_marker
+    rng = np.random.default_rng(0)
+    frame = rng.integers(0, 256, (120, 120, 3), dtype=np.uint8)
+    bds = {"lat_min": -24.0, "lat_max": -23.0, "lon_min": -68.0, "lon_max": -67.0}
+    png = _thumb_with_marker(frame, -23.5, -67.5, bds, label="")
+    arr = np.asarray(Image.open(io.BytesIO(png)).convert("RGB"))
+    k = arr.shape[1] // 120
+    assert arr.shape[1] >= THUMB_MIN_W and arr.shape[1] == 120 * k
+    esperado = np.kron(frame, np.ones((k, k, 1), np.uint8))
+    # Fuera del marcador (al centro) la imagen es la original en bloques.
+    borde = np.ones(arr.shape[:2], bool)
+    borde[arr.shape[0] // 4: 3 * arr.shape[0] // 4,
+          arr.shape[1] // 4: 3 * arr.shape[1] // 4] = False
+    assert (arr[borde] == esperado[borde]).all()
+
+
+def test_ampliar_la_miniatura_no_achica_el_marcador():
+    """El triangulo del volcan ocupa la misma fraccion del ancho con o sin
+    ampliacion: medio ancho de 8 px sobre un frame de 120 (el de radio 1)."""
+    import io
+    import numpy as np
+    from PIL import Image
+    from dashboard.views.timeseries_viewer import _thumb_with_marker
+    frame = np.zeros((120, 120, 3), np.uint8)
+    bds = {"lat_min": -24.0, "lat_max": -23.0, "lon_min": -68.0, "lon_max": -67.0}
+    png = _thumb_with_marker(frame, -23.5, -67.5, bds, label="")
+    arr = np.asarray(Image.open(io.BytesIO(png)).convert("RGB"))
+    cols = np.where((arr.max(axis=2) > 0).any(axis=0))[0]
+    fraccion = (cols.max() - cols.min()) / arr.shape[1]
+    assert fraccion >= 2 * 8 / 120 * 0.95, fraccion

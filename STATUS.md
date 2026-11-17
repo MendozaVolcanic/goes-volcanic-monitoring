@@ -20,7 +20,41 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. 2026-11-17 noche (TOP_MIN_PX como área del sensor, PR abierto)
+## 0. 2026-11-17 cierre de noche (PR 43 en main, Chillán a 10 min, umbral de manto)
+
+> Reemplaza como estado vigente al bloque "## 0-prev. 2026-11-17 noche" de abajo,
+> que se conserva. Verificado contra GitHub y la API de Hugging Face al escribir esto.
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Mínimo del tope VOLCAT como área del sensor | **En `main`**, CI de main verde | PR 43, merge `d62753a`; ficha SDA v2.7 |
+| Hugging Face | **RUNNING con `main` @ `d62753a`** (sha del Space `fd8d8ff`), desplegado con el sí de Nicolás | API de HF y rótulo `build-20261117-1737-d62753a` en la página pública |
+| PR abiertos | ninguno | `gh pr list` |
+| VOLCAT Chillán 01 a 16-11 a 10 min | analizado, entregado | plan de validación §3.4; MP4 en `C:\Users\nmend\Downloads\` |
+| Umbral de manto `MAX_SECTOR_FRAC` (5 % del sector) | **falla reproducida, sin cambio de código** | plan §3.4: el 16-11 da tope 16 a 18 km sobre Chillán con el código de producción |
+| Volcanes VOLCAT faltantes con coordenadas GVP | no empezado | sin rama |
+| Validación VOLCAT pasos 3 a 6 | no empezados | criterio ya decidido (cruce de intervalos) |
+
+Chillán, días con ceniza anclada al cráter (hora de Chile): 08-11 (11:00 a 18:30,
+1 a 4 km), 10-11 (12:00 a 12:10 y 18:30 a 20:30, 3 a 5 km), 11-11 (14:50 a 15:10,
+3 a 5 km) y 14-11 (13:40 a 20:30, 3 a 5 km). El 16-11 es un sistema que entra desde
+~110 km, no pluma. El loop de una imagen por hora se saltaba el pulso del 10-11 al
+mediodía: para eventos cortos, cadencia completa.
+
+Decisiones que esperan a Nicolás:
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Umbral de manto: (a) km² del objeto, (b) criterio temporal, (c) exclusión a ojo | (c) para el paso 3; (b) si la lectura VOLCAT llega a la app (plan §3.4) |
+
+Prompt para la próxima sesión: "/retomar en Goes. Lee STATUS.md ## 0. Si Nicolás ya
+respondió la decisión 1, ejecútala; después sigue con los volcanes VOLCAT con
+coordenadas GVP (Olca, Aucanquilcha, Putana, Ojos del Salado, Cerro Azul/Quizapu,
+Lautaro) o con el paso 3 de la validación, lo que él elija."
+
+---
+
+## 0-prev. 2026-11-17 noche (TOP_MIN_PX como área del sensor, PR abierto)
 
 > Reemplaza como estado vigente al bloque "## 0-prev. Cierre 2026-11-17 tarde"
 > de abajo, que se conserva. El PR 42 ya está en `main` (088fb72).

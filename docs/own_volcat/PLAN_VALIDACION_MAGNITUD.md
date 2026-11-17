@@ -161,6 +161,60 @@ de 23:10 a 02:50 y de 7 a 8 km desde 03:00, pluma de 1 a 2 % del sector que crec
 cortarse), Sabancaya 28-10 (6 a 7 km, 09:10 a 11:20) y Chillán 08-11 (3 a 4 km).
 Reventador 07-11 20:50 y 21:00 (8 a 10 km) como caso secundario.
 
+**3.4 Chillán a cadencia completa y un manto que el 5 % no atrapa (17-11-2026).** Se
+bajaron los 2.181 cuadros publicados de `Chile_Central_2_km` del 01-11 al 16-11 (de 2.304
+posibles) y se leyeron cuadro a cuadro. Horas de Chile:
+- **Pulsos anclados al cráter:** 08-11 de 11:00 a 18:30 (27 cuadros, 1 a 4 km; los
+  primeros objetos ya desprendidos a 11 a 20 km), 10-11 de 12:00 a 12:10 y de 18:30 a
+  20:30 (13, 3 a 5 km), 11-11 de 14:50 a 15:10 (3, 3 a 5 km) y 14-11 de 13:40 a 20:30
+  (38, 3 a 5 km, con cuadros sueltos de hasta 12 km). El objeto más grande de esos días
+  mide 67 píxeles (~270 km²). Para el paso 3 suman 10-11, 11-11 y 14-11 a Chillán 08-11.
+- **16-11 (y 15-11 desde las 23:30): un sistema que NO es pluma pasa el filtro.** Aparece a
+  ~110 km del cráter, se acerca y lo cubre de 05:20 a 09:00. `volcat_object_heights`, el
+  código de producción, corrido sobre esos cuadros, devuelve **tope 16 a 18 km** para
+  Chillán (06:50, 07:30, 08:50 y 09:00): el objeto es el 3,0 a 4,1 % del sector, bajo el
+  `MAX_SECTOR_FRAC` de 5 %, y mide hasta ~31.000 píxeles (~126.000 km²), unas 470 veces
+  la pluma más grande del período.
+- **Causa:** una fracción del sector no es una medida física. Los mantos que fijaron el
+  5 % (68, 49 y 29 %) eran de sectores de 250 m, chicos; `Chile_Central_2_km` es tan
+  grande que un sistema de escala sinóptica cabe en un 4 %. Es el mismo error que tenía
+  `TOP_MIN_PX` (contar en el PNG en vez de medir en el terreno) y el mismo tipo de caso que
+  Cotopaxi 25-10: un objeto que nace lejos y pasa por encima del cráter.
+- **Alcance:** `volcat_height_at` sólo la llaman `scripts/validate_fase3b.py` y esta
+  validación; la app no la usa. No hay altura falsa en pantalla, pero el paso 3 la
+  heredaría si se comparan cuadros del 16-11.
+- **Decisión pendiente de Nicolás (no se cambió código):** (a) límite en km² del objeto
+  anclado, que también rechazaría la nube de una erupción grande horas después del inicio;
+  (b) criterio temporal, el objeto tiene que existir anclado al cráter antes de crecer
+  (atrapa este caso y Cotopaxi, pero exige varios cuadros y no cabe en la función de un
+  cuadro); (c) dejar la función como está y excluir a mano los cuadros con sistemas que
+  entran desde lejos, como se hizo con Cotopaxi. Recomendación: (c) para el paso 3, que
+  usa casos ya revisados a ojo, y (b) si alguna vez la lectura VOLCAT llega a la app.
+
+**3.5 Chillán 14-11: VOLCAT da 8 a 12 km donde las cámaras no ven nada sobre 6 km (17-11-2026).**
+Las cámaras del observatorio no vieron nada sobre 6 km sobre el nivel del mar (unos 3 km sobre
+el cráter de 3.212 m). VOLCAT da tope firme de 3 a 5 km casi todo el día, pero de 16:20 a 16:50
+y de 18:00 a 18:20 (hora de Chile) pinta píxeles de 8 a 12 km. Revisado sobre los nueve scans
+(seis altos y tres de control):
+- **Los píxeles altos están sobre la pluma**, en el eje que sale al SE del cráter, en el mismo
+  lugar que los de 3 a 5 km de los controles. No están sobre las líneas finas de hielo N-S que se
+  ven en Ash RGB a 10 a 15 km al oeste y al este. La pluma pasa del naranja (3 a 5 km) a amarillo,
+  verde y azul en esas horas, y a las 19:20 vuelve al naranja.
+- **Nada en el IR está tan frío.** Dentro de 25 km del cráter ningún píxel de 2 km baja de
+  271 K en BT 11,2 µm. Con el GFS archivado, una nube opaca a 8 km estaría a 249 K y a 12 km a
+  216 K. El píxel más frío es la cumbre nevada. VOLCAT llega a 8 a 12 km solo si trata esos
+  píxeles tibios como nube delgada y fría: es la solución semitransparente del retrieval, no un
+  tope real.
+- **Coincide en el tiempo con cirros delgados** que cruzan cerca del cráter de 16:20 a 18:20
+  (también hay uno a las 19:20, en el control). Pueden perturbar el retrieval, pero no está
+  probado.
+- **Nuestros métodos no detectan esta pluma**: `detect_ash_enhanced` da 0 píxeles en los nueve
+  scans, controles incluidos (BTD 11-12 nunca baja de -1 K dentro de 25 km). La firma de esta
+  ceniza es más débil que nuestro umbral; VOLCAT la detecta con otras pruebas.
+- **Consecuencia para el paso 3**: Chillán 14-11 entra solo con los cuadros de tope 3 a 5 km.
+  Los de 8 a 12 km son un caso documentado de sobreestimación del retrieval semitransparente,
+  útil para el paper y para la regla de no reportar alturas altas con BT11 tibia.
+
 **Paso 2: volcanes fuera del catálogo.** Chillán ya está en el catálogo. Objetos `Volcano` para Reventador, Sabancaya,
 Cotopaxi y Ruiz con coordenadas y cota tomadas del GVP (Smithsonian), citadas, no de memoria.
 `acquire_ash_scene` ya acepta un objeto en vez de un nombre.

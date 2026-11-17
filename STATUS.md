@@ -20,7 +20,90 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre 2026-11-17 (merges 36 a 40, deploy y lo que sigue)
+## 0. Cierre 2026-11-17 tarde (miniatura de Series arreglada en PR 42)
+
+> Reemplaza como estado vigente al bloque "## 0-prev. Cierre 2026-11-17"
+> de abajo, que se conserva. Sesión cerrada al aviso de contexto (150 mil
+> tokens) tras terminar el primero de los tres PR pedidos. Todo verificado
+> contra GitHub, sin trabajo en segundo plano al escribir esto (sólo el CI
+> del PR 42 en curso).
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Miniatura de Series cortada (0-prev d.1) | **PR abierto, sin merge**, CI en curso al cerrar | [PR 42](https://github.com/MendozaVolcanic/goes-volcanic-monitoring/pull/42), rama `fix/miniatura-series-ancho` @ `656d28a`; `tests/test_hora_chile.py` 26 pasan en local |
+| `TOP_MIN_PX` como área del sensor | **No empezado** | sin rama |
+| Volcanes VOLCAT faltantes con coordenadas GVP | **No empezado** | sin rama |
+| `main` | sin cambios de esta sesión | `2dddda7` (bot FRP sobre `3084b22`) |
+| Hugging Face | RUNNING con `main` @ `54f2528` (sigue con la miniatura cortada) | API de HF consultada al empezar |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | ¿Mergear el PR 42 y desplegar? | ahora / tras mirarlo en local | **Mergear con CI verde y desplegar**, y mirar la vista Series en la página pública (Láscar, radio 1°): es lo único que falta verificar. |
+| 2 | Criterio de consistencia de los pasos 3 a 6 de VOLCAT | ver 0-prev (16-11) b.1 | sigue sin respuesta; (a) cruce de intervalos |
+
+### c. Lo aprendido
+
+- **Causa de la miniatura cortada** (patrón de defecto, propuesto para
+  `CLAUDE.md` Patrones de código): la prueba de ancho medía contra 320 a
+  800 px, pero el frame real sale de `reproject_to_latlon` a 60 px por grado
+  (zoom 3) y mide **80 a 240 px**. Una prueba de render tiene que construir
+  su entrada por el mismo camino de tamaño que producción, no con un ancho
+  supuesto. Arreglo: ampliar por factor entero con vecino más cercano
+  (`THUMB_MIN_W = 480`) y escalar el marcador con el mismo factor.
+- **Medir tinta en un PNG** (trampa de medición): con letra de 8 px el corte
+  puede caer en un píxel de antialiasing tenue y un umbral de "blanco > 200"
+  da verde falso (pasó con radio 1°). Medir la tinta como diferencia contra
+  el color de la propia banda.
+
+### d. Problemas abiertos e hipótesis
+
+1. **SOSPECHA**: el arreglo se ve bien en la app. Verificado sólo sobre el PNG
+   generado en local (captura en scratchpad), no en Streamlit corriendo.
+2. **CONFIRMADO**: `C_ASH` y `C_SO2` importados sin uso en
+   `dashboard/views/timeseries_viewer.py` (pyflakes), anteriores a esta sesión,
+   no tocados.
+
+### e. Ya cerrado, no rehacer
+
+- Diagnóstico de la miniatura: no era la fuente ni el sistema operativo, era
+  el ancho del frame. No volver a ajustar `_fuente_rotulo`.
+
+### f. Prompt para la próxima sesión
+
+```text
+Retomo el dashboard GOES. Usa /retomar. Trabaja desde origin/main actualizado
+(git fetch; cada rama nueva cortada de origin/main).
+Verifica antes de creer: gh pr list --state open (esperado: PR 42);
+gh pr checks 42; git ls-remote origin -h refs/heads/main;
+curl https://huggingface.co/api/spaces/mendozavolcanic/goes-volcanic-monitoring.
+Lee en orden: CLAUDE.md del repo, STATUS.md "## 0.", docs/FICHA_SDA_GOES.md (v2.6).
+Trabajo, cada uno en su rama y PR propio hacia main, SIN fusionar ni desplegar:
+  1. TOP_MIN_PX (src/process/volcat_colorbar.py) como área del sensor según
+     docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md §3.3: hoy cuenta píxeles del PNG
+     (0,2 km² en sector de 250 m); pasarlo a un área en píxeles IR (p. ej. 3 de
+     2 km, ~12 km²) convertida con px_km. TDD, mutación, ficha SDA en el mismo commit.
+  2. Volcanes del mapeo VOLCAT que faltan en el catálogo (Olca, Aucanquilcha,
+     Putana, Ojos del Salado, Cerro Azul/Quizapu, Lautaro) con coordenadas del
+     WFS del Smithsonian GVP (volcano.si.edu da 403 a bots), nunca adivinadas,
+     como se hizo con Lastarria.
+  3. Actualizar STATUS.md con los enlaces de los PR nuevos.
+Si el PR 42 ya se mergeó y desplegó: mirar la vista Series en la página pública
+(Láscar, radio 1°) y confirmar que la hora de Chile se ve entera.
+No empezar los pasos 3 a 6 de la validación VOLCAT sin el criterio de Nicolás.
+Reglas duras: la carpeta principal está en audit/2026-11-previa-local y no se toca;
+docs/auditoria_2026-11 nunca se sube ni se citan sus números de hallazgo; no borrar
+worktrees viejos; español de Chile sin voseo y sin guiones largos (grep); rutas
+absolutas; nada de VIIRS; ausencia de dato nunca es calma; SDA (CPLT 372).
+Si llegas al ~50 % de contexto, cierra con /cierre.
+```
+
+---
+
+## 0-prev. Cierre 2026-11-17 (merges 36 a 40, deploy y lo que sigue)
 
 > Reemplaza como estado vigente a los dos bloques "## 0-prev." de abajo (16-11),
 > que se conservan como histórico. Todo lo de la tabla se verificó hoy contra

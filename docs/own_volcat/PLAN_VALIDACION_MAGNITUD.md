@@ -3,7 +3,8 @@
 Estado: **paso 0 hecho** (16-11-2026): 989 archivos, 112 MB, 0 errores, en
 `data/raw/volcat_validacion/` con `manifiesto.json` (URL, bytes, sha256) y `eventos.json`.
 Script: `scripts/harvest_volcat_validacion.py`. **Paso 1 hecho** (16-11-2026, §3.1 abajo).
-**Paso 2 hecho** (16-11-2026, §3.2). Pasos 3 a 6 sin empezar.
+**Paso 2 hecho** (16-11-2026, §3.2). **Revisión a ojo previa al paso 3 hecha** (§3.3):
+encontró un umbral mal dimensionado que hay que corregir antes del paso 3. Pasos 3 a 6 sin empezar.
 
 ## 1. Por qué
 
@@ -110,6 +111,42 @@ descartó (un solo píxel). Dos hallazgos:
   **Reventador ancla mal** (3 a 9 de ~35 por evento) y **Cotopaxi** ancla mal con topes de
   12 a 18 km; Sabancaya 26-10 tiene 5 cuadros con 16 a 18 km. Hay que mirarlos a ojo
   antes del paso 3 (¿pluma desprendida, objeto meteorológico, o el radio de 10 km?).
+
+**3.3 Revisión a ojo de los anclajes raros (16-11-2026, antes del paso 3).** Recortes
+alrededor del volcán con el disco de 10 km dibujado, cuadro por cuadro:
+
+- **Reventador 07-11: ancla poco porque la pluma es un pulso, no por la lectura.** VOLCAT
+  no dibuja nada hasta las 20:40; de 20:40 a 21:00 hay una pluma compacta que nace en el
+  borde sur del disco (4 a 9 km del cráter) con tope de 7 a 10 km; a las 21:10 ya se
+  desprendió (20 km al sur) y a las 21:30 quedan 2 píxeles a 50 km. Tres cuadros firmes es
+  lo que el evento da. Además hay ~8.600 píxeles de color fijos en todos los cuadros, lejos
+  del volcán (90 km o más), que el anclaje ya deja fuera.
+- **Cotopaxi 25-10 19:40 a 20:20 (topes de 12 a 18 km): probable convección, se excluye.**
+  El objeto (núcleo magenta 14 a 16 km, borde azul) no nace en el cráter: aparece a las
+  19:00 y 19:30 unos 13 a 20 km al NE, crece, cruza sobre el volcán hacia el SW y a las
+  20:30 está 20 km al SSW; a las 21:10 hay una celda fría grande justo encima del volcán.
+  Es la hora de máxima convección en Ecuador (15 h local). Un tope de 14 a 16 km de
+  Cotopaxi sería una erupción mayor; no hay comprobación independiente aquí, así que el
+  caso queda fuera de la comparación y declarado como tal. El anclaje de 10 km no lo
+  atrapa porque el objeto pasa por encima del cráter. El cuadro de las 17:20 (6 a 7 km,
+  objeto chico al E de la cumbre de 5,9 km) es plausible pero es uno solo.
+- **Sabancaya 26-10 11:50 a 13:10 (topes de 16 a 18 km): ruido, y destapa un umbral mal
+  dimensionado.** Son 1 a 4 píxeles IR sueltos (bloques de ~2 km) morados y magenta sobre
+  un fondo IR oscuro, es decir CÁLIDO. Un tope real a 16 km en el trópico estaría a
+  ~200 K y se vería blanco en el IR de fondo. El tope pasó porque `TOP_MIN_PX = 3` cuenta
+  píxeles del PNG: en un sector de 250 m un píxel IR de ABI (~2 km) son ~7 x 7 píxeles del
+  PNG, así que "3 píxeles" son 0,2 km², una fracción de un píxel del satélite. En Chillán
+  (sector de 2 km) los mismos 3 píxeles son ~15 km². **Corrección pendiente (antes del
+  paso 3, con TDD y mutación):** el mínimo del tope tiene que ser un ÁREA en píxeles del
+  sensor (p. ej. 3 píxeles IR de 2 km, ~12 km², umbral nuestro), convertida a píxeles del
+  PNG con `px_km`. Revisar después qué cuadros de Sabancaya 01-11 quedan: los primeros de
+  7 a 8 km (03:00 a 03:20, 148 a 170 píxeles del PNG, ~11 a 13 km²) quedan justo en el
+  borde. Va en la ficha SDA en el mismo commit.
+
+Consecuencia para el paso 3: los casos utilizables son Sabancaya 01-11 (tope de 6 a 7 km
+de 23:10 a 02:50 y de 7 a 8 km desde 03:00, pluma de 1 a 2 % del sector que crece sin
+cortarse), Sabancaya 28-10 (6 a 7 km, 09:10 a 11:20) y Chillán 08-11 (3 a 4 km).
+Reventador 07-11 20:50 y 21:00 (8 a 10 km) como caso secundario.
 
 **Paso 2: volcanes fuera del catálogo.** Chillán ya está en el catálogo. Objetos `Volcano` para Reventador, Sabancaya,
 Cotopaxi y Ruiz con coordenadas y cota tomadas del GVP (Smithsonian), citadas, no de memoria.

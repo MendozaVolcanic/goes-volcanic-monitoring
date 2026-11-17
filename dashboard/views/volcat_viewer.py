@@ -1115,7 +1115,7 @@ def sector_y_encuadre_zona(zona: str) -> tuple[str, str, dict]:
 # FICHA SDA (Nivel 1): visualizacion, no decide nada. Ver la cabecera de
 # dashboard/volcat_loop.py y src/fetch/volcat_api.py::volcat_ventana.
 #
-# Ventanas de 2 h a 10 dias. SSEC guarda ~30 dias (4000+ cuadros por sector)
+# Ventanas de 2 h a 16 dias. SSEC guarda ~30 dias (4000+ cuadros por sector)
 # y cada cuadro es una descarga de ~0,4 MB (Chile_Central_2_km: 0,37 MB de
 # promedio, medido 16-11-2026). Hasta 12 h van todos los cuadros (cada
 # 10 min). Para ventanas de dias (pedido 16-11-2026: ver la evolucion de

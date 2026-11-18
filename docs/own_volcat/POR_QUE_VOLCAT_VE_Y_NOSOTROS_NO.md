@@ -174,6 +174,21 @@ el 01 al 16-11 da 0 nocturnos.
 - Con 7 episodios en total (25-10, 28-10, 07, 08, 10, 11 y 14-11), el patrón "sólo de día" ya no se
   sostiene: el 28-10 cruza la noche.
 
+**Prueba A repetida sobre el 28-10 (paralaje, H4).** Criterio escrito antes de medir:
+`criterio_pruebaA_28oct_2026-11-18.md` (carpeta de notas). Cuatro cuadros con escena en el caché (22:40,
+23:00, 23:20 y 23:40 UTC), huella = píxeles VOLCAT a ≤ 50 km del cráter. La altura VOLCAT es de 3,5 km
+en los cuatro cuadros, así que el paralaje predice una huella corrida 1,1 filas al sur (unos 3 km) y casi
+nada en E-O.
+- BTD < −1 K: no aparece en ningún corrimiento de hasta 5 píxeles (máximo 0,04). **Por el lado de la
+  ceniza, falsada en este episodio.**
+- ΔBT11 < −2 K: el máximo (0,61) queda en 2 filas al sur y **5 columnas al oeste**, en el borde del rango
+  buscado, y la fracción sigue creciendo hacia el SO. En (0, 0) es 0,07. En el corrimiento que predice el
+  paralaje (1 a 2 filas al sur, sin corrimiento E-O) es 0,15 a 0,32. Según el criterio, el resultado es
+  **"corrimiento no explicado por paralaje"**. Lo que hay es una zona fría extensa al SO, no una nube con
+  la forma de la huella movida unos pocos kilómetros. Corrige lo dicho más arriba: la nube fría no queda
+  "al lado" de la huella como un objeto propio, sino que la huella está en el borde de algo más grande.
+- H4 no se reabre ni para este episodio.
+
 ## 4. Hipótesis ordenadas por evidencia
 
 | # | Hipótesis | A favor | En contra o abierto | Qué la falsaría con datos que ya hay o casi |
@@ -181,7 +196,7 @@ el 01 al 16-11 da 0 nocturnos.
 | H1 | ~~VOLCAT ve estas plumas por los canales solares de día~~ **Falsada el 18-11** | SECO los usa con ABI; las 58 detecciones de noviembre eran de día | Paso 4: el 29-10 VOLCAT sigue una pluma anclada al cráter de noche (3 cuadros seguidos, cenit 110 a 113°) sin señal IR en la huella. Paso 2: los canales solares no separan la huella del control pareado (AUC 0,50) | Hecho (§3.1) |
 | H2 | **El trato especial al cráter** (objetos de 0 a 25 píxeles aceptados a menos de 5, 10 o 50 km de un volcán) deja pasar objetos que en otra parte se descartarían | SECO Part 2 Tabla 4; los objetos de Chillán son chicos (mediana 10 px del PNG) y todos anclados al cráter | Paso 3 no concluyente (R = 3,2, dominado por el 16-11); sin el 16-11, VOLCAT publica objetos chicos lejos de volcanes (R = 0,52), probablemente polvo de Cuyo con señal IR propia | Sigue abierta: haría falta comparar objetos chicos lejos de volcanes **sin** señal IR, que no se pueden separar sólo con el PNG |
 | H3 | El **fondo modelado** (cielo despejado con GFS y modelo radiativo) basta para ver la pluma en el IR | Es la diferencia de diseño más conocida | La huella está igual o más tibia que nuestro cielo despejado empírico; con ε(11) ≥ 0,02 VOLCAT pediría que esté ~1,5 K más fría que el suyo. El caso Kizimen y Karymsky (SECO Part 2 §6) es justo este síntoma y SECO no los vio | Calcular el cielo despejado GFS + RTM del 08 y 10-11, cuando la huella sí está 2 a 5 K más fría: si ni así sale ε(11) ≥ 0,02 con β de ceniza, cae |
-| H4 | La huella está **corrida por paralaje** y medimos en el lugar equivocado | Plausible en geometría (0,93 km por km de altura) | Prueba A: no hay señal fría en ningún corrimiento hasta 5 px | Falsada hoy |
+| H4 | La huella está **corrida por paralaje** y medimos en el lugar equivocado | Plausible en geometría (0,93 km por km de altura) | Noviembre: no hay señal fría en ningún corrimiento hasta 5 px. 28-10 (18-11): BTD < −1 K en ningún corrimiento; el frío de BT11 crece hacia el SO, no hacia donde predice el paralaje (1,1 filas al sur para 3,5 km) | Falsada, también en el episodio del 28-10 |
 | H5 | La señal está en la **banda de 8,5 µm** | Es una banda que VOLCAT usa y el detector no probó en anomalía | Prueba B: AUC 0,26 | Falsada hoy, con la salvedad del nulo nublado |
 | H6 | Parte de lo que VOLCAT dibuja **no es ceniza**: vapor de agua de la pluma, nube orográfica o superficie (nieve recién teñida de ceniza) | El 14-11 VOLCAT da 8 a 12 km sin ningún píxel frío (§3.5): el retrieval trabaja con casi nada de señal; la franja SE del cráter aparece también el 12-11, día sin pluma | Las cámaras del observatorio fueron coherentes con alturas de 3 a 5 km | Registro OVDAS (hora de cada pulso en cámara y REAV) contra la hora de cada cuadro VOLCAT |
 

@@ -5,8 +5,11 @@ descargados localmente ver `../manuales_pdf/`.
 
 ## Algoritmos de detección de ceniza y altura
 
-- Pavolonis, Sieglaff, Cintineo (2013). *Spectrally Enhanced Cloud Objects
-  Part 1.* JGR Atmos 118. https://doi.org/10.1002/jgrd.50173
+- Pavolonis, Sieglaff, Cintineo (2015). *Spectrally Enhanced Cloud Objects
+  Part 1.* JGR Atmos 120, 7813-7841. https://doi.org/10.1002/2014JD022968
+- Pavolonis, Heidinger, Sieglaff (2013). *Automated retrievals of volcanic ash
+  and dust cloud properties from upwelling infrared measurements.* JGR Atmos
+  118, 1436-1458. https://doi.org/10.1002/jgrd.50173
 - Pavolonis et al. (2015). *SECO Part 2: Volcanic ash detection retrievals.*
   JGR Atmos 120. https://doi.org/10.1002/2014JD022969
 - Pavolonis et al. (2018). *Automated detection of explosive volcanic eruptions

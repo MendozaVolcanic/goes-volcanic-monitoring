@@ -9,6 +9,7 @@ pluma volcánica / ceniza** desde GOES-19 ABI L1b, reduciendo la dependencia del
 | Archivo | Qué es |
 |---|---|
 | **`PLAN_VOLCAT_PROPIO.md`** | Documento principal: síntesis del algoritmo VOLCAT (desde el ATBD), gap analysis (tenemos vs. falta), investigación de código open-source, y **plan por fases** con esfuerzo. **Empezar acá.** |
+| `POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md` | Por qué VOLCAT ve las plumas chicas de Chillán (nov-2026) y nuestro detector no: fuentes SECO, pruebas medidas, hipótesis y plan. |
 | `Pavolonis_2010_CloudCompositionTheory.pdf` | Paper base teórico (β-ratios, emisividad efectiva). OA AMS. |
 | `HeidingerPavolonis_2009_SplitWindowCirrus.pdf` | Base del ACHA y de las a priori del optimal estimation. OA AMS. |
 

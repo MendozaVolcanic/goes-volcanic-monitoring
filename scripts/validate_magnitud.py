@@ -223,12 +223,13 @@ def _resumen(r: dict, metodo: str) -> dict:
     return o
 
 
-def _limpiar_l1b():
-    """Borra los full-disk L1b bajados a data/raw/ (caché, se re-baja si hace
-    falta). No toca data/raw/volcat_validacion/."""
+def _limpiar_l1b(dt):
+    """Borra los full-disk L1b de ESE scan bajados a data/raw/ (caché, se re-baja
+    si hace falta). Sólo los del scan: otros procesos del lote corren en paralelo.
+    No toca data/raw/volcat_validacion/."""
     from src.config import RAW_DIR
     n = 0
-    for p in RAW_DIR.glob("OR_ABI-L1b-RadF-*.nc"):
+    for p in RAW_DIR.glob(f"OR_ABI-L1b-RadF-*_s{dt:%Y%j%H%M}*.nc"):
         try:
             n += p.stat().st_size
             p.unlink()
@@ -245,8 +246,11 @@ def etapa_propios(args):
 
     lect = json.loads(F_VOLCAT.read_text(encoding="utf-8"))
     excl = json.loads(F_EXCL.read_text(encoding="utf-8"))
-    hechos = (json.loads(F_PROPIOS.read_text(encoding="utf-8"))
-              if F_PROPIOS.exists() else {})
+    hechos = _propios()
+    salida = (OUT / f"propios_parte{args.parte}.json" if args.partes > 1
+              else F_PROPIOS)
+    mios = (json.loads(salida.read_text(encoding="utf-8"))
+            if salida.exists() else {})
     perfiles = {}
 
     def perfil(lat, lon, dt):
@@ -258,12 +262,14 @@ def etapa_propios(args):
         return perfiles[k]
 
     n = 0
-    for ev, d, f in _cuadros_a_correr(lect, excl):
+    for i, (ev, d, f) in enumerate(_cuadros_a_correr(lect, excl)):
         if args.solo and ev != args.solo:
             continue
-        clave = f"{ev}/{f['cuadro']}"
-        if clave in hechos:
+        if i % args.partes != args.parte:
             continue
+        clave = f"{ev}/{f['cuadro']}"
+        if clave in hechos and "error" not in hechos[clave]:
+            continue                       # hecho; un error de red se reintenta
         if args.max and n >= args.max:
             break
         libre = shutil.disk_usage(ROOT).free / 1e9
@@ -284,17 +290,25 @@ def etapa_propios(args):
                                    "acha")
         except Exception as e:  # se registra y se sigue: un scan no tumba el lote
             res["error"] = f"{type(e).__name__}: {e}"
-        bytes_l1b = _limpiar_l1b()
+        bytes_l1b = _limpiar_l1b(dt)
         res["l1b_mb"] = round(bytes_l1b / 1e6, 1)
         res["seg"] = round(time.time() - t0, 1)
-        hechos[clave] = res
-        F_PROPIOS.write_text(json.dumps(hechos, indent=1, ensure_ascii=False,
-                                        default=str), encoding="utf-8")
+        mios[clave] = res
+        salida.write_text(json.dumps(mios, indent=1, ensure_ascii=False,
+                                     default=str), encoding="utf-8")
         n += 1
         st = {m: (res.get(m) or {}).get("status") for m in ("bt_matching", "wen_rose", "acha")}
         print(f"{clave}: {st} · {res['l1b_mb']} MB L1b · {res['seg']} s · "
               f"libre {shutil.disk_usage(ROOT).free / 1e9:.1f} GB", flush=True)
-    print(f"{n} scans nuevos; total {len(hechos)} → {F_PROPIOS}")
+    print(f"{n} scans nuevos → {salida}")
+
+
+def _propios() -> dict:
+    """Resultados propios de todas las corridas (archivo único o por partes)."""
+    out = {}
+    for p in sorted(OUT.glob("propios*.json")):
+        out.update(json.loads(p.read_text(encoding="utf-8")))
+    return out
 
 
 # ── Criterio (decidido por Nicolás el 16-11-2026, antes de ver números) ──────
@@ -323,7 +337,7 @@ def se_cruzan(a, b) -> bool:
 def etapa_comparar(_args):
     lect = json.loads(F_VOLCAT.read_text(encoding="utf-8"))
     excl = json.loads(F_EXCL.read_text(encoding="utf-8"))
-    hechos = json.loads(F_PROPIOS.read_text(encoding="utf-8"))
+    hechos = _propios()
     metodos = ("bt_matching", "wen_rose", "acha")
     tabla = {}
     detalle = []
@@ -392,6 +406,9 @@ def main():
     p.add_argument("--solo")
     p.add_argument("--max", type=int, default=0)
     p.add_argument("--min-libre-gb", type=float, default=8.0)
+    p.add_argument("--partes", type=int, default=1,
+                   help="procesos en paralelo; cada uno corre un scan de cada N")
+    p.add_argument("--parte", type=int, default=0)
     sub.add_parser("comparar")
     a = ap.parse_args()
     {"volcat": etapa_volcat, "recortes": etapa_recortes,

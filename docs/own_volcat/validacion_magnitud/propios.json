@@ -1,0 +1,42 @@
+{
+ "sabancaya_20261101/2026-10-31_23-10-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "scan_dt": "2026-10-31T23:10:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "top_bt_matching_km": null,
+   "ts_k": 290.4447937011719,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-31T23:10:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-31T23:10:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.2,
+  "seg": 450.3
+ }
+}

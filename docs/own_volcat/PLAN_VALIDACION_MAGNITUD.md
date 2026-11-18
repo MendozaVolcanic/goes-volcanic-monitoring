@@ -4,7 +4,9 @@ Estado: **paso 0 hecho** (16-11-2026): 989 archivos, 112 MB, 0 errores, en
 `data/raw/volcat_validacion/` con `manifiesto.json` (URL, bytes, sha256) y `eventos.json`.
 Script: `scripts/harvest_volcat_validacion.py`. **Paso 1 hecho** (16-11-2026, §3.1 abajo).
 **Paso 2 hecho** (16-11-2026, §3.2). **Revisión a ojo previa al paso 3 hecha** (§3.3):
-encontró un umbral mal dimensionado, **corregido el 17-11** (§3.3). Pasos 3 a 6 sin empezar.
+encontró un umbral mal dimensionado, **corregido el 17-11** (§3.3). **Pasos 3 a 6 hechos
+(18-11-2026, §3.7): la magnitud no se pudo validar, porque nuestra máscara de ceniza no ve
+ninguna de las plumas que VOLCAT mide (109 de 110 scans sin píxeles).**
 
 ## 1. Por qué
 
@@ -267,6 +269,49 @@ cada píxel sí la vería. **No se cambió código.**
 - **Sin probar:** β(8,5/11) y la banda de 10,3 µm; negativos a 10 min; GFS archivado para la T_ref
   de β (se usó una constante); otros volcanes y plumas más cargadas de ceniza. Scripts y huellas
   quedaron fuera del repo (dependen de ~60 MB de ventanas L1b cacheadas fuera del repo).
+
+**3.7 Resultado de los pasos 3 a 6 (18-11-2026): no hay magnitud que validar, falla la detección.**
+Criterio de aplicación y lista de exclusión commiteados antes de correr nuestros métodos
+(`docs/own_volcat/validacion_magnitud/CRITERIO.md` y `exclusiones.json`). Script reproducible
+`scripts/validate_magnitud.py` (etapas `volcat`, `recortes`, `propios`, `comparar`); resultados
+por scan en `docs/own_volcat/validacion_magnitud/propios_parte*.json` y tabla en `tabla.md`.
+
+- **Datos.** 122 cuadros VOLCAT con tope anclado en 9 eventos; 12 excluidos a ojo (Cotopaxi 25-10
+  entero, Sabancaya 17-10 entero, Sabancaya 26-10 12:20 a 12:40, Reventador 03-11 20:40); quedan
+  **110 scans**. Mismo scan GOES-19, caja de ±0,75° (la de la app), GFS archivado inyectado
+  (ningún scan quedó sin perfil). Cada escena bajó ~98 MB de L1b, borrados tras cada scan.
+- **Resultado por método** (criterio de Nicolás del 16-11: cruce de intervalos, sin margen):
+
+  | Método | Scans con tope propio | Se cruzan con VOLCAT | Sin tope propio |
+  |---|---|---|---|
+  | BT-matching | 1 de 110 | 0 de 1 | 109 `no_plume` |
+  | Wen-Rose (banda β) | 1 de 110 | 0 de 1 | 109 `no_plume` |
+  | ACHA ∩ ceniza | 1 de 110 | 0 de 1 | 107 `no_plume`, 2 `no_data` (sin gránulo ACHA) |
+
+  Por evento, los scans sin tope propio son: Sabancaya 01-11 46 de 46, Sabancaya 28-10 19 de 19,
+  Sabancaya 26-10 20 de 20, Chillán 08-11 13 de 13, Reventador 26-10 6 de 6, Reventador 03-11
+  3 de 3 y Reventador 07-11 2 de 3.
+- **El único scan con tope propio** (Reventador 07-11 20:40, VOLCAT 7 a 8 km) tiene **1 píxel** en
+  la máscara dentro de la caja de ±83 km: BT-matching 11,2 km, Wen-Rose 11,3 km con banda β 11,2 a
+  13,1 km (confianza "muy baja"), ACHA 14,8 km. Ninguno se cruza; los tres quedan sobre VOLCAT. Un
+  píxel no es una pluma y no se revisó si cae sobre ella: no se lee como sesgo.
+- **Por qué (comprobado, no supuesto).** Los tres métodos parten de la misma máscara
+  `detect_ash_enhanced` (BTD 11-12 < -1 K más tri-espectral); si está vacía, ninguno tiene píxel
+  que medir. En 109 de 110 scans la máscara tiene 0 píxeles. En Sabancaya 01-11 05:00, con VOLCAT
+  dibujando una pluma de 7 a 8 km que nace en el cráter, dentro de 15 km del volcán la BT 11,2 µm
+  mínima es 264,1 K (mediana 267,9 K) y la BTD 11-12 mínima es -0,56 K (percentil 5: -0,48 K;
+  lejos del volcán, percentil 5: -0,42 K). La pluma no tiene firma split-window que nuestro umbral
+  pueda separar y tampoco es fría: no es una nube opaca. Es lo mismo que §3.5 y §3.6 midieron en
+  Chillán, ahora en las plumas más densas de la ventana de 30 días de VOLCAT en Perú y Ecuador.
+- **Consecuencia.** La pregunta de este plan (¿es correcta la temperatura del tope que leemos?) no
+  se puede responder con estas plumas: nuestra cadena se detiene antes, en la detección. VOLCAT
+  asigna 6 a 8 km a plumas tibias y semitransparentes con pruebas que no tenemos (§3.6). Para
+  validar la magnitud hace falta una pluma que nuestra máscara sí vea (BTD bajo -1 K, ceniza densa
+  y opaca), dentro de los 30 días que guarda el API de VOLCAT, o el paso 7 (cosecha continua) para
+  no perderla. No se cambió lógica de la app ni la ficha SDA.
+- **Límites.** Un scan cada 10 min dentro de cada evento no son muestras independientes; el
+  resultado es por scan, como pide el criterio. La lista de exclusión es juicio a ojo, declarado y
+  commiteado antes de medir.
 
 **Paso 2: volcanes fuera del catálogo.** Chillán ya está en el catálogo. Objetos `Volcano` para Reventador, Sabancaya,
 Cotopaxi y Ruiz con coordenadas y cota tomadas del GVP (Smithsonian), citadas, no de memoria.

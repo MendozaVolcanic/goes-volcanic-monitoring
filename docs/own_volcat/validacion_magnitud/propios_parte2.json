@@ -1,0 +1,1080 @@
+{
+ "reventador_20261107/2026-11-07_21-00-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.64472,
+   "profile_time": "2026-11-08T00:00",
+   "scan_dt": "2026-11-07T21:00:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.64472,
+   "profile_time": "2026-11-08T00:00",
+   "top_bt_matching_km": null,
+   "ts_k": 292.3513598632813,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-07T21:00:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-07T21:00:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 98.0,
+  "seg": 412.0
+ },
+ "reventador_20261026/2026-10-26_10-30-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.64846875,
+   "profile_time": "2026-10-26T12:00",
+   "scan_dt": "2026-10-26T10:30:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.64846875,
+   "profile_time": "2026-10-26T12:00",
+   "top_bt_matching_km": null,
+   "ts_k": 288.2375793457031,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-26T10:30:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-26T10:30:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.1,
+  "seg": 300.8
+ },
+ "reventador_20261026/2026-10-26_11-10-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.64846875,
+   "profile_time": "2026-10-26T12:00",
+   "scan_dt": "2026-10-26T11:10:22Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.64846875,
+   "profile_time": "2026-10-26T12:00",
+   "top_bt_matching_km": null,
+   "ts_k": 288.3012390136719,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-26T11:10:22Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-26T11:10:22Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.1,
+  "seg": 176.8
+ },
+ "sabancaya_20261101/2026-10-31_23-30-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "scan_dt": "2026-10-31T23:30:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "top_bt_matching_km": null,
+   "ts_k": 289.787109375,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-31T23:30:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-31T23:30:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.2,
+  "seg": 277.7
+ },
+ "sabancaya_20261101/2026-11-01_00-10-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "scan_dt": "2026-11-01T00:10:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "top_bt_matching_km": null,
+   "ts_k": 288.777587890625,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-01T00:10:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-01T00:20:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.2,
+  "seg": 572.6
+ },
+ "sabancaya_20261101/2026-11-01_00-50-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "scan_dt": "2026-11-01T00:50:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "top_bt_matching_km": null,
+   "ts_k": 288.0463562011719,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-01T00:50:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-01T00:50:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.2,
+  "seg": 295.6
+ },
+ "sabancaya_20261101/2026-11-01_01-30-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "scan_dt": "2026-11-01T01:30:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "top_bt_matching_km": null,
+   "ts_k": 287.4066162109375,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-01T01:30:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-01T01:30:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.2,
+  "seg": 150.7
+ },
+ "sabancaya_20261101/2026-11-01_02-30-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "scan_dt": "2026-11-01T02:30:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.60440625,
+   "profile_time": "2026-11-01T00:00",
+   "top_bt_matching_km": null,
+   "ts_k": 286.6663818359375,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-01T02:30:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-01T02:30:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.3,
+  "seg": 304.0
+ },
+ "sabancaya_20261101/2026-11-01_03-10-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "scan_dt": "2026-11-01T03:10:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "top_bt_matching_km": null,
+   "ts_k": 286.3753662109375,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-01T03:10:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-01T03:10:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.3,
+  "seg": 259.9
+ },
+ "sabancaya_20261101/2026-11-01_03-50-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "scan_dt": "2026-11-01T03:50:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "top_bt_matching_km": null,
+   "ts_k": 286.180908203125,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-01T03:50:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-01T03:50:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.3,
+  "seg": 655.0
+ },
+ "sabancaya_20261101/2026-11-01_04-30-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "scan_dt": "2026-11-01T04:30:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "top_bt_matching_km": null,
+   "ts_k": 285.98614501953125,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-01T04:30:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-01T04:30:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.3,
+  "seg": 405.8
+ },
+ "sabancaya_20261101/2026-11-01_05-10-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "scan_dt": "2026-11-01T05:10:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "top_bt_matching_km": null,
+   "ts_k": 285.6933288574219,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-01T05:10:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-01T05:10:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.2,
+  "seg": 714.9
+ },
+ "sabancaya_20261101/2026-11-01_05-50-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "scan_dt": "2026-11-01T05:50:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "top_bt_matching_km": null,
+   "ts_k": 285.4324035644531,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-01T05:50:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-01T05:50:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.2,
+  "seg": 358.5
+ },
+ "sabancaya_20261101/2026-11-01_06-30-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "scan_dt": "2026-11-01T06:30:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.59524125,
+   "profile_time": "2026-11-01T06:00",
+   "top_bt_matching_km": null,
+   "ts_k": 285.20355224609375,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-01T06:30:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-01T06:30:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.1,
+  "seg": 99.2
+ },
+ "sabancaya_20261026/2026-10-26_08-10-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.6209175,
+   "profile_time": "2026-10-26T06:00",
+   "scan_dt": "2026-10-26T08:10:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.6209175,
+   "profile_time": "2026-10-26T06:00",
+   "top_bt_matching_km": null,
+   "ts_k": 279.663818359375,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-26T08:10:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-26T08:10:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.2,
+  "seg": 125.4
+ },
+ "sabancaya_20261026/2026-10-26_09-00-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.618828750000002,
+   "profile_time": "2026-10-26T12:00",
+   "scan_dt": "2026-10-26T09:00:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.618828750000002,
+   "profile_time": "2026-10-26T12:00",
+   "top_bt_matching_km": null,
+   "ts_k": 281.6441650390625,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-26T09:00:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-26T09:00:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.1,
+  "seg": 194.3
+ },
+ "sabancaya_20261026/2026-10-26_09-50-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.618828750000002,
+   "profile_time": "2026-10-26T12:00",
+   "scan_dt": "2026-10-26T09:50:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.618828750000002,
+   "profile_time": "2026-10-26T12:00",
+   "top_bt_matching_km": null,
+   "ts_k": 280.96551513671875,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-26T09:50:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-26T09:50:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.1,
+  "seg": 339.4
+ },
+ "sabancaya_20261026/2026-10-26_10-40-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.618828750000002,
+   "profile_time": "2026-10-26T12:00",
+   "scan_dt": "2026-10-26T10:40:22Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.618828750000002,
+   "profile_time": "2026-10-26T12:00",
+   "top_bt_matching_km": null,
+   "ts_k": 281.7117919921875,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-26T10:40:22Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-26T10:40:22Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 93.3,
+  "seg": 227.4
+ },
+ "sabancaya_20261026/2026-10-26_11-20-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.618828750000002,
+   "profile_time": "2026-10-26T12:00",
+   "scan_dt": "2026-10-26T11:20:22Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.618828750000002,
+   "profile_time": "2026-10-26T12:00",
+   "top_bt_matching_km": null,
+   "ts_k": 285.8560791015625,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-26T11:20:22Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-26T11:20:22Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.1,
+  "seg": 100.5
+ },
+ "sabancaya_20261028/2026-10-28_08-00-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.5860625,
+   "profile_time": "2026-10-28T06:00",
+   "scan_dt": "2026-10-28T08:00:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.5860625,
+   "profile_time": "2026-10-28T06:00",
+   "top_bt_matching_km": null,
+   "ts_k": 283.687744140625,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-28T08:00:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-28T08:00:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.8,
+  "seg": 161.9
+ },
+ "sabancaya_20261028/2026-10-28_09-30-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.600931250000002,
+   "profile_time": "2026-10-28T12:00",
+   "scan_dt": "2026-10-28T09:30:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.600931250000002,
+   "profile_time": "2026-10-28T12:00",
+   "top_bt_matching_km": null,
+   "ts_k": 283.3553771972656,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-28T09:30:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-28T09:30:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.6,
+  "seg": 166.1
+ },
+ "sabancaya_20261028/2026-10-28_10-10-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.600931250000002,
+   "profile_time": "2026-10-28T12:00",
+   "scan_dt": "2026-10-28T10:10:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.600931250000002,
+   "profile_time": "2026-10-28T12:00",
+   "top_bt_matching_km": null,
+   "ts_k": 283.4552001953125,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-28T10:10:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-28T10:10:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.5,
+  "seg": 431.8
+ },
+ "sabancaya_20261028/2026-10-28_10-50-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.600931250000002,
+   "profile_time": "2026-10-28T12:00",
+   "scan_dt": "2026-10-28T10:50:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.600931250000002,
+   "profile_time": "2026-10-28T12:00",
+   "top_bt_matching_km": null,
+   "ts_k": 285.3343505859375,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-28T10:50:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-10-28T10:50:20Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.5,
+  "seg": 316.1
+ },
+ "sabancaya_20261028/2026-10-28_11-40-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.600931250000002,
+   "profile_time": "2026-10-28T12:00",
+   "scan_dt": "2026-10-28T11:40:20Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.600931250000002,
+   "profile_time": "2026-10-28T12:00",
+   "top_bt_matching_km": null,
+   "ts_k": 291.06768798828125,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-10-28T11:40:20Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_data",
+   "reason": "sin gránulo ACHA accesible",
+   "scan_dt": null,
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.6,
+  "seg": 163.7
+ },
+ "chillan_20261108/2026-11-08_17-40-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.4941225,
+   "profile_time": "2026-11-08T18:00",
+   "scan_dt": "2026-11-08T17:40:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.4941225,
+   "profile_time": "2026-11-08T18:00",
+   "top_bt_matching_km": null,
+   "ts_k": 312.03489379882814,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-08T17:40:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-08T17:40:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 98.0,
+  "seg": 509.9
+ },
+ "chillan_20261108/2026-11-08_19-30-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.4941225,
+   "profile_time": "2026-11-08T18:00",
+   "scan_dt": "2026-11-08T19:30:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 16.4941225,
+   "profile_time": "2026-11-08T18:00",
+   "top_bt_matching_km": null,
+   "ts_k": 307.97119140625,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-08T19:30:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-08T19:30:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 97.6,
+  "seg": 241.6
+ },
+ "chillan_20261108/2026-11-08_21-00-30": {
+  "bt_matching": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 18.67417125,
+   "profile_time": "2026-11-09T00:00",
+   "scan_dt": "2026-11-08T21:00:21Z",
+   "metodo": "bt_matching"
+  },
+  "wen_rose": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "n_capped": 0,
+   "all_capped": false,
+   "tropopause_km": 18.67417125,
+   "profile_time": "2026-11-09T00:00",
+   "top_bt_matching_km": null,
+   "ts_k": 301.5555725097656,
+   "ts_source": "cielo claro (escena)",
+   "co2_semitransp_btd": null,
+   "scan_dt": "2026-11-08T21:00:21Z",
+   "metodo": "wen_rose"
+  },
+  "acha": {
+   "status": "no_plume",
+   "top_km": null,
+   "top_max_km": null,
+   "mask_px": 0,
+   "scan_dt": "2026-11-08T21:00:21Z",
+   "metodo": "acha"
+  },
+  "l1b_mb": 96.9,
+  "seg": 482.0
+ }
+}

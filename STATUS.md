@@ -20,7 +20,51 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre 2026-11-17 final (PR 45 en main, detector propio medido, próxima: por qué VOLCAT ve y nosotros no)
+## 0. Cierre 2026-11-17 noche tarde (por qué VOLCAT ve las plumas de Chillán y nosotros no)
+
+> Reemplaza como estado vigente al bloque "## 0-prev. Cierre 2026-11-17 final" de abajo, que se
+> conserva. Verificado al empezar: `main` remoto = `4a2d617`, sin PR abiertos, Space de HF `fd8d8ff`
+> RUNNING (build de `d62753a`, sin el texto del PR 45). Disco: 20 GB libres.
+
+**Entregable:** `docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md` (rama
+`claude/investigacion-volcat-deteccion-f4df71`, PR de sólo documentación). Sin cambio de código.
+
+- **Hallazgo principal (de los papers, DOI verificados):** VOLCAT/SECO no es sólo IR. De día usa
+  ρ(3,9/0,65) y el visible de 0,65 µm, y acepta objetos de 0 a 25 píxeles a menos de 5, 10 o 50 km de
+  un volcán (SECO Part 2, Tabla 4). En 2015 SECO no vio plumas de Kizimen y Karymsky con BT11 igual al
+  cielo despejado: el mismo síntoma de Chillán.
+- **Medido hoy:** las 58 detecciones VOLCAT ancladas al cráter (sin el 16-11) son de día (15:00 a
+  23:20 UTC), 0 en 16 noches. Prueba A (huella corrida por paralaje): falsada, no hay señal fría en
+  ningún corrimiento de hasta 5 px. Prueba B (8,5 µm): falsada, AUC 0,26. Ambas con nulo de días
+  nublados, dicho en el informe. Criterio y script en la carpeta de notas de la sesión
+  (`criterio_corrimiento_y_8p5_2026-11-17.md`, `prueba_AB.py`).
+- **Hipótesis vigente (SOSPECHA, no confirmada):** VOLCAT ve estas plumas por los canales solares
+  más el trato especial al cráter. Son 5 episodios; que todos caigan de día por azar tiene ~8 %.
+
+**Decisiones que esperan a Nicolás**
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Fusionar el PR de docs de esta sesión? | Sí: sólo agrega el informe, una fila del README y este traspaso |
+| 2 | ¿Pedir al OVDAS horas de pulsos en cámara y REAV del 08, 10, 11 y 14-11? | Sí: es lo único que dice si VOLCAT acierta (H6) |
+| 3 | ¿Siguiente medición? | Paso 2 del plan: C02 + C07 en la ventana del cache y ρ(3,9/0,65), con criterio escrito antes |
+
+**Prompt para la próxima sesión**
+
+```
+/retomar en Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes).
+Lee STATUS.md "## 0." y docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md. Si Nicolás aprobó,
+ejecuta el paso 2 del plan (§6): agrega C02 (0,64 µm) y C07 (3,9 µm) a la ventana del cache del
+detector para los 58 positivos y días negativos a la misma hora (mide el disco con un ensayo antes),
+escribe el criterio antes de medir y calcula ρ(3,9/0,65) restando la emisión térmica con BT11.
+Cache y scripts: C:\Users\nmend\AppData\Local\Temp\claude\d6ea8719dcf88502\536a0873-47fb-4b33-9ee5-de0197c3f321\scratchpad\det
+(es scratch y puede haberse borrado; si no está, rehacer con fetch_mp.py, ver INFORME_variantes.md).
+Sin VIIRS, sin guiones largos, ficha SDA en el mismo commit si cambia lógica.
+```
+
+---
+
+## 0-prev. Cierre 2026-11-17 final (PR 45 en main, detector propio medido, próxima: por qué VOLCAT ve y nosotros no)
 
 > Reemplaza como estado vigente al bloque "## 0-prev. 2026-11-17 cierre de noche" de abajo, que
 > se conserva. Verificado al escribir: `main` local = remoto = `8b4f3c1` (`git ls-remote`), sin PR

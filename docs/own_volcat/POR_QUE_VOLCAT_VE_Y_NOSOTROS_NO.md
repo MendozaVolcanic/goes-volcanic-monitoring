@@ -1,6 +1,6 @@
 # Por qué VOLCAT ve ceniza en Nevados de Chillán (nov-2026) y nuestro detector no
 
-Fecha: 17-11-2026. Estado: **informe con dos pruebas medidas y un plan; no cambia código de detección.**
+Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1). Estado: **informe con cinco pruebas medidas y un plan; no cambia código de detección.**
 Antecedentes: plan de validación §3.4 a §3.6 (`docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`) y el informe
 del detector (`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\INFORME_variantes.md`).
 
@@ -11,21 +11,24 @@ y casi transparentes en el infrarrojo térmico. Dentro de la zona donde VOLCAT d
 temperatura de brillo a 11 µm queda igual o **más tibia** que el cielo despejado del mismo píxel, y la
 diferencia 11 − 12 µm no se mueve. En el infrarrojo, la pluma prácticamente no está.
 
-**El mecanismo probable.** VOLCAT no es sólo infrarrojo. Según los papers del algoritmo (SECO,
-Pavolonis et al. 2015), de día también usa luz solar reflejada (canal visible de 0,65 µm y la
-reflectancia de 3,9 µm). Además acepta objetos muy chicos si nacen a menos de 5, 10 o 50 km de un volcán
-conocido. Nuestro detector usa sólo el infrarrojo y no le da trato especial al cráter. Las dos
-diferencias apuntan al mismo lado, y los datos de noviembre calzan: **las 58 detecciones de VOLCAT
-ancladas al cráter (sin contar el sistema del 16-11) son todas de día**, entre las 12:00 y las 20:20 de
-Chile, y en 16 noches no hay ninguna.
+**Lo que se creía el 17-11 y ya no se sostiene.** La sospecha principal era que VOLCAT ve estas plumas
+con la luz del sol (visible de 0,65 µm y reflectancia de 3,9 µm, SECO, Pavolonis et al. 2015), porque
+las 58 detecciones de noviembre ancladas al cráter eran de día. Las pruebas del 18-11 la descartan:
+- De noche también: el 28 y 29-10 VOLCAT siguió una pluma de Chillán de día y **de noche** (tres cuadros
+  seguidos a las 22:00 a 22:20 de Chile, con el sol 110° bajo el cenit). Dentro de esa huella, el IR
+  tampoco muestra frío ni BTD negativa.
+- De día, los canales solares no distinguen la huella del mismo lugar en un día sin pluma con el mismo
+  estado térmico (AUC 0,50 en las tres señales).
 
-**Lo que no está probado.** Que VOLCAT detecte de día no prueba que use el visible en estos cuadros:
-también puede ser que la actividad haya sido diurna por casualidad (son cinco episodios). Tampoco
-sabemos si cada detección de VOLCAT es ceniza real o vapor con poca ceniza: para eso hace falta el
-registro del OVDAS (cámaras, REAV), que no está en el repositorio.
+**Lo que queda.** VOLCAT dibuja estas plumas donde nuestro split-window no ve nada, de día y de noche, y
+la diferencia no está en el sol. Lo más probable ahora es su forma de medir el infrarrojo: compara contra
+un cielo despejado calculado con modelo de atmósfera (GFS) y usa razones β entre bandas, incluida la de
+vapor de agua de 7,3 µm, que ninguna prueba nuestra usó (H3). El trato especial a objetos chicos cerca de
+volcanes sigue abierto (H2). Y sigue sin saberse cuántas de esas detecciones son ceniza real: para eso
+hace falta el registro del OVDAS (cámaras, REAV), que no está en el repositorio.
 
 **Qué no es.** No es un problema de umbral (cuatro variantes lo descartaron) ni un corrimiento de la
-huella por paralaje (prueba A, abajo), ni una señal escondida en la banda de 8,5 µm (prueba B).
+huella por paralaje (prueba A, abajo), ni una señal escondida en la banda de 8,5 µm (prueba B), ni la luz solar (pasos 2 y 4, §3.1).
 
 ## 2. Qué hace VOLCAT para detectar, según sus fuentes
 
@@ -116,16 +119,67 @@ que la decodificación tomaba por ceniza.
 - Dato para H1: VOLCAT sí publica objetos chicos de noche, y por montones. Que en Chillán no aparezca
   ninguno de noche no se explica porque VOLCAT nunca dibuje de noche, y por eso pesa algo más.
 
-**Paso 2: canales solares (H1 b).** PENDIENTE, se completa abajo.
+**Paso 2: canales solares (H1 b).** Se leyeron por ventana C02 (0,64 µm, 0,5 km), C07 (3,9 µm) y C14
+(11,2 µm) de 366 escenas (61 MB): los 46 cuadros positivos con sol alto (cenit < 75°) y el mismo minuto
+UTC en los 10 días sin pluma. Señales por píxel de 2 km: reflectancia de 0,64 µm (r065), su textura
+dentro del píxel (sd065) y la razón ρ(3,9/0,65), con la reflectancia de 3,9 µm calculada restando la
+emisión térmica estimada con BT11. El control de cada positivo es el día sin pluma con el BT11 de la
+huella más parecido (diferencia mediana 1,5 K), elegido mirando sólo C14.
 
-**Paso 4: VOLCAT de noche en otras fechas (H1 a).** PENDIENTE, se completa abajo.
+| Señal | AUC con control pareado (decide) | Mediana positivo / control | AUC con los 10 días juntos |
+|---|---|---|---|
+| ρ(3,9/0,65) | 0,498 | 0,44 / 0,41 | 0,70 |
+| r065 | 0,509 | 0,155 / 0,155 | 0,29 |
+| sd065 | 0,499 | 0,038 / 0,041 | 0,43 |
+
+- Según el criterio (las tres con |AUC − 0,5| < 0,10): **falsada**. Por día, el AUC va de 0,34 a 0,60;
+  ningún día separa.
+- Con los 10 días juntos aparece una separación (ratio 0,70; r065 0,29), pero es la del nulo nublado ya
+  vista en las pruebas A y B: los controles brillantes son nubes. Cuando el control tiene el mismo
+  estado térmico, la diferencia desaparece.
+- La fracción de píxeles con ρ(3,9/0,65) > 0,5, el umbral de SECO, es 0,44 en la huella y 0,41 en el
+  control pareado. El suelo volcánico despejado ya pasa ese umbral, así que el umbral no sirve aquí.
+- Salvedad: la irradiancia solar a 3,9 µm no viene en el archivo y se tomó de un cuerpo negro a 5.778 K.
+  Ese error es multiplicativo, igual para la huella y el control, así que no cambia el AUC.
+
+**Paso 4: VOLCAT de noche en otras fechas (H1 a).** SSEC todavía publica el sector desde el 25-10 (el
+01-10 ya da 404). Se bajaron y decodificaron los 1.177 cuadros del 25 al 31-10 y del 17 y 18-11 (~0,5 GB).
+Antes de mirarlos, la validación del decodificador sobre el 01 al 16-11 mostró que la regla de manto no
+atrapaba el sistema grande del 16-11 (objeto de 16.000 a 27.000 px, bajo el 5 % del mapa) y sus
+fragmentos de madrugada. Por eso se enmendó el criterio antes de ver los días nuevos: cuentan sólo objetos
+de 4 a 500 px y sólo en cuadros sin un objeto de más de 500 px a menos de 50 km del cráter. Con esa regla,
+el 01 al 16-11 da 0 nocturnos.
+
+| Día | Cuadros anclados de día | Crepúsculo (cenit 80 a 90°) | Noche (cenit ≥ 90°) |
+|---|---|---|---|
+| 25-10 | 4 (14:40 a 18:00 UTC) | 0 | 0 |
+| 28-10 | 19 (18:30 a 22:10) | 5 | 2 (23:10 y 23:20, recién puesto el sol) |
+| 29-10 | 1 | 0 | **5 (00:10 a 01:20 UTC, cenit 101 a 113°)** |
+| 26, 27, 30 y 31-10; 17 y 18-11 | 0 | 0 | 0 |
+
+- **Según el criterio, H1 cae como explicación completa**: el 29-10 hay tres cuadros nocturnos
+  consecutivos (01:00, 01:10 y 01:20 UTC, es decir, 22:00 a 22:20 del 28-10 en Chile) con objetos de 5 a
+  10 px anclados al cráter, sin sistema grande cerca. En total hay 3 pares consecutivos.
+- En la imagen (`paso4_mosaico_28-29oct.png`, carpeta de notas) se ve un episodio continuo. Desde las
+  21:50 UTC del 28-10 hay un objeto en el cráter; a las 22:40 aparece una nube fría en el IR justo al SE.
+  VOLCAT la sigue mientras deriva al SE, ya de noche, hasta la 01:20 UTC, y a las 01:40 ya no queda nada.
+- Dato descriptivo que no estaba en el criterio. El caché del detector cubre el 28-10 hasta las 23:50
+  UTC. Dentro de la huella VOLCAT, la BT11 está 1,4 a 1,6 K **más tibia** que la referencia y la BTD es
+  positiva (mediana +0,4 a +0,7 K, mínimo −0,19 K, 0 píxeles bajo −1 K) en los cuatro cuadros con escena
+  (22:40, 23:00, 23:20, 23:40). La nube fría queda al lado de la huella, no adentro.
+- Lectura: VOLCAT ve las plumas de Chillán también **de noche, donde nuestro split-window no ve nada**.
+  El sol no es lo que hace la diferencia, o al menos no es lo único. Vuelve al frente H3: el cielo
+  despejado modelado y las razones β, incluida la β(7,3/11) con la banda de vapor de agua (C10), que
+  ninguna prueba nuestra usó todavía.
+- Con 7 episodios en total (25-10, 28-10, 07, 08, 10, 11 y 14-11), el patrón "sólo de día" ya no se
+  sostiene: el 28-10 cruza la noche.
 
 ## 4. Hipótesis ordenadas por evidencia
 
 | # | Hipótesis | A favor | En contra o abierto | Qué la falsaría con datos que ya hay o casi |
 |---|---|---|---|---|
-| H1 | **VOLCAT ve estas plumas por los canales solares de día** (ρ(3,9/0,65) y variabilidad del 0,65 µm) | SECO los usa con ABI; 58 de 58 detecciones de día y 0 de noche; en el IR la huella no tiene señal (pruebas A y B, diagnóstico del detector) | Son 5 episodios; con ~60 % del día iluminado, que todos caigan de día por azar tiene ~8 % de probabilidad (0,6⁵) | (a) Una detección VOLCAT anclada al cráter **de noche** en Chillán; (b) que ρ(3,9/0,65) en la huella no supere 0,5 ni se distinga del mismo lugar en días sin pluma |
-| H2 | **El trato especial al cráter** (objetos de 0 a 25 píxeles aceptados a menos de 5, 10 o 50 km de un volcán) deja pasar objetos que en otra parte se descartarían | SECO Part 2 Tabla 4; los objetos de Chillán son chicos (mediana 10 px del PNG) y todos anclados al cráter | No sabemos qué tamaño exacto usa la versión 2026 | Objetos VOLCAT de tamaño y estado espectral parecidos lejos de volcanes en el mismo sector (se puede contar en los PNG ya bajados) |
+| H1 | ~~VOLCAT ve estas plumas por los canales solares de día~~ **Falsada el 18-11** | SECO los usa con ABI; las 58 detecciones de noviembre eran de día | Paso 4: el 29-10 VOLCAT sigue una pluma anclada al cráter de noche (3 cuadros seguidos, cenit 110 a 113°) sin señal IR en la huella. Paso 2: los canales solares no separan la huella del control pareado (AUC 0,50) | Hecho (§3.1) |
+| H2 | **El trato especial al cráter** (objetos de 0 a 25 píxeles aceptados a menos de 5, 10 o 50 km de un volcán) deja pasar objetos que en otra parte se descartarían | SECO Part 2 Tabla 4; los objetos de Chillán son chicos (mediana 10 px del PNG) y todos anclados al cráter | Paso 3 no concluyente (R = 3,2, dominado por el 16-11); sin el 16-11, VOLCAT publica objetos chicos lejos de volcanes (R = 0,52), probablemente polvo de Cuyo con señal IR propia | Sigue abierta: haría falta comparar objetos chicos lejos de volcanes **sin** señal IR, que no se pueden separar sólo con el PNG |
 | H3 | El **fondo modelado** (cielo despejado con GFS y modelo radiativo) basta para ver la pluma en el IR | Es la diferencia de diseño más conocida | La huella está igual o más tibia que nuestro cielo despejado empírico; con ε(11) ≥ 0,02 VOLCAT pediría que esté ~1,5 K más fría que el suyo. El caso Kizimen y Karymsky (SECO Part 2 §6) es justo este síntoma y SECO no los vio | Calcular el cielo despejado GFS + RTM del 08 y 10-11, cuando la huella sí está 2 a 5 K más fría: si ni así sale ε(11) ≥ 0,02 con β de ceniza, cae |
 | H4 | La huella está **corrida por paralaje** y medimos en el lugar equivocado | Plausible en geometría (0,93 km por km de altura) | Prueba A: no hay señal fría en ningún corrimiento hasta 5 px | Falsada hoy |
 | H5 | La señal está en la **banda de 8,5 µm** | Es una banda que VOLCAT usa y el detector no probó en anomalía | Prueba B: AUC 0,26 | Falsada hoy, con la salvedad del nulo nublado |
@@ -151,15 +205,16 @@ que la decodificación tomaba por ceniza.
   gas, el detector propio hace bien en no llamarlas ceniza. Lo que falta es saber cuántas de las 58
   detecciones VOLCAT confirma el OVDAS. Si fueran pocas, el problema sería de VOLCAT, no nuestro.
 
-## 6. Plan con costo (nada de esto se hizo; cada paso con criterio escrito antes de medir)
+## 6. Plan con costo (cada paso con criterio escrito antes de medir; estado al 18-11)
 
 | Paso | Qué | Costo | Falsa o apoya |
 |---|---|---|---|
 | 1 | Pedir al OVDAS la hora de cada pulso visto en cámara y el REAV del 08, 10, 11 y 14-11 (Nicolás) | 0 de cómputo | H6 |
-| 2 | Agregar C02 y C07 a la ventana del cache para los 58 positivos y los días negativos a la misma hora; calcular ρ(3,9/0,65) restando la emisión térmica a 3,9 µm con BT11, y la variabilidad local del 0,65 µm | ~2 h; disco medido en ensayo antes de bajar (la ventana actual pesa 111 MB por 1.204 scans de 3 bandas; C02 es 4 veces más fino) | H1 (b) |
-| 3 | Contar en los PNG VOLCAT ya bajados los objetos lejos de volcanes, por tamaño | ~30 min | H2 |
-| 4 | Buscar detecciones VOLCAT nocturnas de Chillán en otras fechas (medir antes el tamaño: ~220 KB por cuadro) | ~1 h y hasta ~0,5 GB por mes | H1 (a) |
-| 5 | Sólo si el paso 2 cumple su criterio: prototipo de "señal diurna de pluma" como capa aparte, con su ficha SDA en el mismo commit | 1 a 2 días | |
+| 2 | C02 y C07 en la ventana del cache, ρ(3,9/0,65) y textura del 0,65 µm | Hecho el 18-11: 366 escenas, 61 MB, ~1 h | H1 (b): falsada |
+| 3 | Contar en los PNG VOLCAT los objetos lejos de volcanes, por tamaño | Hecho el 18-11: 2.181 cuadros, sin descarga | H2: no concluyente |
+| 4 | Detecciones VOLCAT nocturnas de Chillán en otras fechas | Hecho el 18-11: 1.177 cuadros, ~0,5 GB | H1 (a): falsada (29-10) |
+| 5 | ~~Prototipo de señal diurna~~: no corresponde, el paso 2 no cumplió | | |
+| 6 | **Siguiente, H3:** en la huella del 28-10 y del 14-11, calcular ε(11) y las razones β(12/11), β(8,5/11) y β(7,3/11) contra un cielo despejado con perfil GFS y modelo radiativo, con criterio escrito antes. Requiere agregar C10 (7,3 µm) a la ventana y un RTM (no está en el repo) | 1 a 2 días; decisión de Nicolás | H3 |
 
 Pasos que **no** conviene repetir: bajar el umbral BTD, anomalía de fondo, β(12/11) con temperatura de
 referencia fija y la banda de 8,5 µm sola. Están medidos.

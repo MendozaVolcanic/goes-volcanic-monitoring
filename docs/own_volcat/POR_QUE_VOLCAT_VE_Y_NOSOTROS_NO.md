@@ -82,6 +82,44 @@ publicados por hora UTC): fuera del 16-11, los 58 cuadros anclados al cráter ca
 23:20 UTC (12:00 a 20:20 de Chile). Entre 00 y 08 UTC (21:00 a 05:00 de Chile) hay 0 en 16 noches. Los
 objetos miden de 4 a 49 píxeles del PNG (mediana 10).
 
+### 3.1 Segunda tanda (18-11): pasos 3, 2 y 4 del plan
+
+Cada paso con su criterio escrito antes de medir, en la carpeta de notas de la sesión
+(`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\`):
+`criterio_paso3_objetos_lejos_2026-11-18.md`, `criterio_paso2_canales_solares_2026-11-18.md` y
+`criterio_paso4_volcat_nocturno_2026-11-18.md`. Los scripts quedaron en la misma carpeta.
+
+**Paso 3: ¿VOLCAT dibuja objetos chicos sólo cerca de volcanes? (H2).** Se decodificaron los 2.181
+cuadros del sector `Chile_Central_2_km` (01 al 16-11) y se contaron los objetos de 4 a 36 px del PNG
+(hasta ~25 px ABI, el techo de la Tabla 4 de SECO) según su distancia al volcán Holoceno más cercano
+(lista GVP del Smithsonian, 57 volcanes en el sector sin contar Chillán; se excluye todo lo que está a
+menos de 50 km de Chillán). Antes de contar hubo que enmascarar el título, el globo y los logos del PNG,
+que la decodificación tomaba por ceniza.
+
+| Zona | Área útil | Objetos chicos, 16 días | Sin el 16-11 |
+|---|---|---|---|
+| A: a ≤ 10 km de un volcán | 17.438 km² | 139 | 11 |
+| B: 10 a 50 km | 177.747 km² | 1.315 | 67 |
+| C: a más de 50 km | 2.349.386 km² | 5.482 | 1.804 |
+| R = densidad en A y B / densidad en C | | **3,2** | 0,52 |
+
+- Según el criterio, R = 3,2 es **no concluyente** (entre 2 y 5). El 16-11 pesa el 73 % de los objetos
+  chicos: ese día un sistema grande cubrió la cordillera y se partió en fragmentos cerca de muchos
+  volcanes (Tromen, Resago, Laguna del Maule, Infiernillo, Payún Matrú, Antuco).
+- Sin el 16-11 (sensibilidad, no decide) el cociente se invierte: R = 0,52. VOLCAT dibujó objetos
+  chicos lejos de todo volcán en 373 de 2.050 cuadros, casi todos al norte de 34° S y al este de la
+  cordillera (Cuyo), entre el 02 y el 06-11, y **tres de cada cuatro de noche** (454 de 1.804 con sol).
+  El producto se llama "Ash/Dust Cloud Height": es probable que sea polvo, pero no está verificado.
+- Lectura: **VOLCAT no necesita estar cerca de un volcán para publicar un objeto chico**. Eso no
+  descarta que el trato especial al cráter sea lo que deja pasar los objetos de Chillán: el polvo de
+  Cuyo trae una señal IR que la pluma de Chillán no tiene. La prueba era débil para H2 y H2 queda abierta.
+- Dato para H1: VOLCAT sí publica objetos chicos de noche, y por montones. Que en Chillán no aparezca
+  ninguno de noche no se explica porque VOLCAT nunca dibuje de noche, y por eso pesa algo más.
+
+**Paso 2: canales solares (H1 b).** PENDIENTE, se completa abajo.
+
+**Paso 4: VOLCAT de noche en otras fechas (H1 a).** PENDIENTE, se completa abajo.
+
 ## 4. Hipótesis ordenadas por evidencia
 
 | # | Hipótesis | A favor | En contra o abierto | Qué la falsaría con datos que ya hay o casi |
@@ -134,4 +172,5 @@ referencia fija y la banda de 8,5 µm sola. Están medidos.
 - El nulo de las pruebas A y B mezcla días nublados. Una repetición con un nulo despejado sería post hoc y
   no se hizo.
 - Error de cita encontrado de paso: `docs/altura_pluma/metodos_fisicos.md:125` y `docs/papers_links/LINKS.md:8`
-  fechan SECO Part 1 en 2013; es de 2015. No se corrigió en esta rama.
+  fechaban SECO Part 1 en 2013 con el DOI del paper de altura de 2013 (doi:10.1002/jgrd.50173).
+  Corregido el 18-11 en esta rama: ahora citan las dos obras por separado, cada una con su DOI.

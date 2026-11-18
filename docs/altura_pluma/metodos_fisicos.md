@@ -122,9 +122,13 @@ las cámaras cuando haya evento**.
 
 ## Referencias principales
 
-- Pavolonis, Sieglaff, Cintineo (2013). *Spectrally Enhanced Cloud Objects – a
-  generalized framework for automated detection of volcanic ash and dust clouds.*
-  J. Geophys. Res. Atmos. 118, 2022-2043. https://doi.org/10.1002/jgrd.50173
+- Pavolonis, Sieglaff, Cintineo (2015). *Spectrally Enhanced Cloud Objects, a
+  generalized framework for automated detection of volcanic ash and dust clouds
+  using passive satellite measurements: 1. Multispectral analysis.*
+  J. Geophys. Res. Atmos. 120, 7813-7841. https://doi.org/10.1002/2014JD022968
+- Pavolonis, Heidinger, Sieglaff (2013). *Automated retrievals of volcanic ash
+  and dust cloud properties from upwelling infrared measurements.*
+  J. Geophys. Res. Atmos. 118, 1436-1458. https://doi.org/10.1002/jgrd.50173
 - Pavolonis et al. (2015). *Spectrally Enhanced Cloud Objects Part 2:
   Volcanic ash detection retrievals.* J. Geophys. Res. Atmos. 120, 7842-7870.
   https://doi.org/10.1002/2014JD022969

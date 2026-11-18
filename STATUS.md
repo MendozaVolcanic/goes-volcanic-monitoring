@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-17 (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-18 tarde (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,59 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre 2026-11-18 (pasos 2, 3 y 4: el sol NO explica por qué VOLCAT ve Chillán)
+## 0. Cierre 2026-11-18 tarde (PR 48 y 49 en main: la detección falla antes que la altura)
+
+> Reemplaza como estado vigente al bloque "## 0-prev3" de abajo, que se conserva. Verificado al
+> escribir: `main` remoto = `a9f2819` (`git ls-remote`), sin PR abiertos fuera del de este traspaso
+> (`gh pr list`), Space de HF `fd8d8ff` RUNNING (API de HF: sigue sin el texto del PR 45).
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Por qué VOLCAT ve Chillán y nosotros no | **En `main`** (PR 48, merge `effd4eb`) | `docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md`. Falsadas: umbral más bajo, paralaje (también el 28-10), 8,5 µm, luz solar. Abiertas: H3 (cielo despejado GFS + RTM y β con C10), H2 (trato especial cerca de volcanes), H6 (¿es ceniza?) |
+| Validación de magnitud, pasos 3 a 6 | **En `main`** (PR 49, merge `a9f2819`) | plan §3.7 y `docs/own_volcat/validacion_magnitud/`. 122 escenas VOLCAT ancladas, 12 excluidas a ojo antes de medir, quedan 110. Altura propia en **1 de 110** (Reventador 07-11 20:40 UTC, 1 píxel: 11,2 a 14,8 km contra 7 a 8 km de VOLCAT, no se cruzan). En 109 la máscara `detect_ash_enhanced` queda vacía |
+| Volcanes VOLCAT fuera de la RNVV (Olca, Aucanquilcha, Putana, Ojos del Salado, Cerro Azul, Lautaro) | **Cerrado: quedan fuera** (decisión de Nicolás 18-11) | catálogo = 43 RNVV + Lastarria. No reproponer |
+| Hugging Face | build `d62753a`, sin el PR 45 (sólo texto) | desplegar con el próximo cambio de código |
+
+**Lectura de conjunto.** La altura propia no se puede validar contra VOLCAT porque falla antes la
+detección: en Sabancaya 01-11, a 15 km del volcán, BT11 mínima 264,1 K y BTD mínima -0,56 K. Es la
+misma pluma tibia y semitransparente sin firma split-window que se midió en Chillán. El siguiente paso
+de la magnitud depende de la detección, es decir de H3.
+
+**Lo aprendido**
+
+- Al contar resultados de un lote partido, contar escenas **resueltas**, no entradas en los archivos:
+  dije "109 de 109" cuando había 72 y el resto se relanzó. El total salió de las partes más
+  `propios.json` (110), comprobado contra `volcat_lecturas.json` y `exclusiones.json`.
+- Una sesión lateral que se cae por red (ENOTFOUND) deja el cálculo en disco: revisar los archivos
+  y reanudarla, no relanzar desde cero.
+
+**Decisiones que esperan a Nicolás**
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Pedir al OVDAS horas de pulsos en cámara y REAV del 25 y 28-10 y del 08, 10, 11 y 14-11? | Sí: es lo único que dice si VOLCAT acierta (H6) |
+| 2 | ¿Atacar H3 (β con GFS + RTM y C10, 1 a 2 días)? | Sí, empezando por el 28-10 nocturno, que descarta lo solar |
+| 3 | ¿Desplegar `main` a HF? | Con el próximo cambio de código: lo pendiente es sólo texto |
+
+**Prompt para la próxima sesión**
+
+```
+/retomar en Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes).
+1. Verifica: git fetch; git ls-remote origin -h refs/heads/main; gh pr list; API de HF (sha y stage).
+2. Lee STATUS.md "## 0.", docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md §3.1 y §6 y
+   docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md §3.7.
+3. Si Nicolás aprobó H3: escribe el criterio antes de medir; agrega C10 (7,3 µm) a la ventana del cache
+   para la huella VOLCAT del 28-10 22:40 a 23:40 UTC y del 14-11; calcula ε(11), β(12/11), β(8,5/11) y
+   β(7,3/11) contra un cielo despejado con perfil GFS y un modelo radiativo (no hay RTM en el repo:
+   evaluar opciones antes de instalar nada). Scripts previos en
+   C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266
+Sin VIIRS, sin guiones largos, ficha SDA en el mismo commit si cambia lógica, fusionar o desplegar
+sólo con el sí de Nicolás por PR, docs/auditoria_2026-11 no se sube.
+```
+
+---
+
+## 0-prev3. Cierre 2026-11-18 (pasos 2, 3 y 4: el sol NO explica por qué VOLCAT ve Chillán)
 
 > Reemplaza como estado vigente al bloque "## 0-prev2" de abajo, que se conserva. Todo en la rama
 > `docs/por-que-volcat-ve-chillan` (PR 48, sólo docs, sin fusionar). Detalle en

@@ -1,0 +1,23 @@
+{
+ "_nota": "Lista de exclusion del manto sinoptico y del ruido (plan 3.4, opcion c), hecha el 18-11-2026 mirando SOLO los cuadros VOLCAT (mosaicos de 80 x 80 km alrededor del volcan con el disco de anclaje de 10 km), antes de correr ningun metodo propio. Commiteada antes de la primera corrida de scripts/validate_magnitud.py propios.",
+ "cotopaxi_20261025": {
+  "todo": true,
+  "motivo": "Probable conveccion (plan 3.3): el objeto de 12 a 18 km no nace en el crater, aparece 13 a 20 km al NE a las 19:00, cruza sobre el volcan hacia el SW y a las 20:30 esta 20 km al SSW, a la hora de maxima conveccion en Ecuador. Los 5 cuadros con tope (19:40 a 20:20) quedan fuera."
+ },
+ "sabancaya_20261026": {
+  "cuadros": {
+   "2026-10-26_12-20-30": "1 a 2 pixeles IR sueltos morados y magenta (12 a 14 km) sobre fondo IR oscuro, es decir calido; sin continuidad con la pluma verde de 6 a 7 km que se disipa a las 11:50 (plan 3.3)",
+   "2026-10-26_12-30-30": "idem 12:20",
+   "2026-10-26_12-40-30": "idem 12:20"
+  }
+ },
+ "sabancaya_20261017": {
+  "todo": true,
+  "motivo": "Objetos de 1 a 2 pixeles IR en el borde E del disco de 10 km, sin pluma que salga del crater; el bloque del tope (4 a 5 km) queda entero bajo la cumbre (5,96 km), lo que una pluma del crater no puede dar. Ya se habia juzgado inutil en el sondeo del paso 0 (plan 2, un solo pixel)."
+ },
+ "reventador_20261103": {
+  "cuadros": {
+   "2026-11-03_20-40-30": "objeto de 3 a 4 km casi entero fuera del disco, al NNO, que aparece sin continuidad desde el crater (18:50 a 19:10 solo queda 1 pixel en el borde E)"
+  }
+ }
+}

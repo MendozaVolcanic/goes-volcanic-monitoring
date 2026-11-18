@@ -1,0 +1,5884 @@
+{
+ "reventador_20261107": {
+  "sector": "Reventador_250_m",
+  "volcan": "Reventador",
+  "lat": -0.077,
+  "lon": -77.656,
+  "cumbre_km": 3.562,
+  "px_volcan": [
+   396,
+   508
+  ],
+  "px_km": 0.27675183117955093,
+  "cuadros": [
+   {
+    "cuadro": "2026-11-07_17-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_18-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_18-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_18-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_18-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_18-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_18-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_19-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_19-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_19-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_19-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_19-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_19-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_20-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_20-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_20-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_20-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_20-40-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 182,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 7.5,
+     "n": 182,
+     "n_mezclados": 0,
+     "frac_sector": 0.0002410596026490066
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 182,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 7.5,
+     "n": 182,
+     "n_mezclados": 0,
+     "frac_sector": 0.0002410596026490066
+    }
+   },
+   {
+    "cuadro": "2026-11-07_20-50-30",
+    "entero": {
+     "top_lo_km": 8,
+     "top_hi_km": 9,
+     "n_top": 671,
+     "max_lo_km": 8,
+     "p95_mid_km": 8.5,
+     "median_mid_km": 7.5,
+     "n": 2250,
+     "n_mezclados": 24,
+     "frac_sector": 0.002980132450331126
+    },
+    "caja": {
+     "top_lo_km": 8,
+     "top_hi_km": 9,
+     "n_top": 671,
+     "max_lo_km": 8,
+     "p95_mid_km": 8.5,
+     "median_mid_km": 7.5,
+     "n": 2250,
+     "n_mezclados": 24,
+     "frac_sector": 0.002980132450331126
+    }
+   },
+   {
+    "cuadro": "2026-11-07_21-00-30",
+    "entero": {
+     "top_lo_km": 9,
+     "top_hi_km": 10,
+     "n_top": 593,
+     "max_lo_km": 9,
+     "p95_mid_km": 9.5,
+     "median_mid_km": 7.5,
+     "n": 2597,
+     "n_mezclados": 85,
+     "frac_sector": 0.0034397350993377483
+    },
+    "caja": {
+     "top_lo_km": 9,
+     "top_hi_km": 10,
+     "n_top": 593,
+     "max_lo_km": 9,
+     "p95_mid_km": 9.5,
+     "median_mid_km": 7.5,
+     "n": 2597,
+     "n_mezclados": 85,
+     "frac_sector": 0.0034397350993377483
+    }
+   },
+   {
+    "cuadro": "2026-11-07_21-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_21-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_21-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_21-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_21-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_22-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_22-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_22-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_22-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_22-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_23-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_23-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_23-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-07_23-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   }
+  ]
+ },
+ "reventador_20261103": {
+  "sector": "Reventador_250_m",
+  "volcan": "Reventador",
+  "lat": -0.077,
+  "lon": -77.656,
+  "cumbre_km": 3.562,
+  "px_volcan": [
+   396,
+   508
+  ],
+  "px_km": 0.27675183117955093,
+  "cuadros": [
+   {
+    "cuadro": "2026-11-03_17-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_18-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_18-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_18-20-30",
+    "entero": {
+     "note": "objeto VOLCAT de 205 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 205,
+     "max_lo_km": 5
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 205 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 205,
+     "max_lo_km": 5
+    }
+   },
+   {
+    "cuadro": "2026-11-03_18-30-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 332,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 332,
+     "n_mezclados": 52,
+     "frac_sector": 0.00043973509933774833
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 332,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 332,
+     "n_mezclados": 52,
+     "frac_sector": 0.00043973509933774833
+    }
+   },
+   {
+    "cuadro": "2026-11-03_18-40-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 210,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 259,
+     "n_mezclados": 61,
+     "frac_sector": 0.00034304635761589405
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 210,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 259,
+     "n_mezclados": 61,
+     "frac_sector": 0.00034304635761589405
+    }
+   },
+   {
+    "cuadro": "2026-11-03_18-50-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 213,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 213,
+     "n_mezclados": 49,
+     "frac_sector": 0.00028211920529801324
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 213,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 213,
+     "n_mezclados": 49,
+     "frac_sector": 0.00028211920529801324
+    }
+   },
+   {
+    "cuadro": "2026-11-03_19-00-30",
+    "entero": {
+     "note": "objeto VOLCAT de 51 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 51,
+     "max_lo_km": 4
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 51 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 51,
+     "max_lo_km": 4
+    }
+   },
+   {
+    "cuadro": "2026-11-03_19-10-30",
+    "entero": {
+     "note": "objeto VOLCAT de 51 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 51,
+     "max_lo_km": 4
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 51 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 51,
+     "max_lo_km": 4
+    }
+   },
+   {
+    "cuadro": "2026-11-03_19-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_19-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_19-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_19-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_20-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_20-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_20-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_20-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_20-40-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 812,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 812,
+     "n_mezclados": 92,
+     "frac_sector": 0.0010754966887417219
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 812,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 812,
+     "n_mezclados": 92,
+     "frac_sector": 0.0010754966887417219
+    }
+   },
+   {
+    "cuadro": "2026-11-03_20-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_21-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_21-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_21-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_21-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_21-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_21-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_22-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_22-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_22-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_22-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_22-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_22-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_23-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_23-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_23-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_23-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-03_23-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   }
+  ]
+ },
+ "reventador_20261026": {
+  "sector": "Reventador_250_m",
+  "volcan": "Reventador",
+  "lat": -0.077,
+  "lon": -77.656,
+  "cumbre_km": 3.562,
+  "px_volcan": [
+   396,
+   508
+  ],
+  "px_km": 0.27675183117955093,
+  "cuadros": [
+   {
+    "cuadro": "2026-10-26_08-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_09-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_09-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_09-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_09-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_09-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-30-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 234,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 234,
+     "n_mezclados": 47,
+     "frac_sector": 0.0003099337748344371
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 234,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 234,
+     "n_mezclados": 47,
+     "frac_sector": 0.0003099337748344371
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-40-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 176,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 224,
+     "n_mezclados": 32,
+     "frac_sector": 0.0002966887417218543
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 176,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 224,
+     "n_mezclados": 32,
+     "frac_sector": 0.0002966887417218543
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-50-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 282,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 326,
+     "n_mezclados": 64,
+     "frac_sector": 0.00043178807947019866
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 282,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 326,
+     "n_mezclados": 64,
+     "frac_sector": 0.00043178807947019866
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-00-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 389,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 389,
+     "n_mezclados": 48,
+     "frac_sector": 0.0005152317880794702
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 389,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 389,
+     "n_mezclados": 48,
+     "frac_sector": 0.0005152317880794702
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-10-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 273,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 273,
+     "n_mezclados": 56,
+     "frac_sector": 0.0003615894039735099
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 273,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 273,
+     "n_mezclados": 56,
+     "frac_sector": 0.0003615894039735099
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-40-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 169,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 169,
+     "n_mezclados": 24,
+     "frac_sector": 0.000223841059602649
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 169,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 169,
+     "n_mezclados": 24,
+     "frac_sector": 0.000223841059602649
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-50-30",
+    "entero": {
+     "note": "objeto VOLCAT de 121 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 121,
+     "max_lo_km": 3
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 121 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 121,
+     "max_lo_km": 3
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-00-30",
+    "entero": {
+     "note": "objeto VOLCAT de 58 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 58,
+     "max_lo_km": 3
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 58 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 58,
+     "max_lo_km": 3
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-10-30",
+    "entero": {
+     "note": "objeto VOLCAT de 62 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 62,
+     "max_lo_km": 4
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 62 píxeles: ningún bloque llega a 12 km² (157 píxeles del cuadro), no fija un tope",
+     "n": 62,
+     "max_lo_km": 4
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   }
+  ]
+ },
+ "sabancaya_20261101": {
+  "sector": "Sabancaya_250_m",
+  "volcan": "Sabancaya",
+  "lat": -15.787,
+  "lon": -71.857,
+  "cumbre_km": 5.96,
+  "px_volcan": [
+   412,
+   483
+  ],
+  "px_km": 0.27675183117955093,
+  "cuadros": [
+   {
+    "cuadro": "2026-10-31_21-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-31_21-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-31_21-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-31_22-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-31_22-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-31_22-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-31_22-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-31_23-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-31_23-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 226,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 281,
+     "n_mezclados": 69,
+     "frac_sector": 0.00037218543046357616
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 226,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 281,
+     "n_mezclados": 69,
+     "frac_sector": 0.00037218543046357616
+    }
+   },
+   {
+    "cuadro": "2026-10-31_23-20-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 246,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 246,
+     "n_mezclados": 56,
+     "frac_sector": 0.00032582781456953644
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 246,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 246,
+     "n_mezclados": 56,
+     "frac_sector": 0.00032582781456953644
+    }
+   },
+   {
+    "cuadro": "2026-10-31_23-30-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1102,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1102,
+     "n_mezclados": 169,
+     "frac_sector": 0.0014596026490066225
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1102,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1102,
+     "n_mezclados": 169,
+     "frac_sector": 0.0014596026490066225
+    }
+   },
+   {
+    "cuadro": "2026-10-31_23-40-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 2012,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2012,
+     "n_mezclados": 254,
+     "frac_sector": 0.0026649006622516554
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 2012,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2012,
+     "n_mezclados": 254,
+     "frac_sector": 0.0026649006622516554
+    }
+   },
+   {
+    "cuadro": "2026-10-31_23-50-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 2877,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2877,
+     "n_mezclados": 270,
+     "frac_sector": 0.003810596026490066
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 2877,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2877,
+     "n_mezclados": 270,
+     "frac_sector": 0.003810596026490066
+    }
+   },
+   {
+    "cuadro": "2026-11-01_00-00-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 3808,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 3808,
+     "n_mezclados": 213,
+     "frac_sector": 0.005043708609271523
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 3808,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 3808,
+     "n_mezclados": 213,
+     "frac_sector": 0.005043708609271523
+    }
+   },
+   {
+    "cuadro": "2026-11-01_00-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 4452,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 4452,
+     "n_mezclados": 216,
+     "frac_sector": 0.005896688741721855
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 4452,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 4452,
+     "n_mezclados": 216,
+     "frac_sector": 0.005896688741721855
+    }
+   },
+   {
+    "cuadro": "2026-11-01_00-20-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 5191,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 5191,
+     "n_mezclados": 312,
+     "frac_sector": 0.006875496688741722
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 5191,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 5191,
+     "n_mezclados": 312,
+     "frac_sector": 0.006875496688741722
+    }
+   },
+   {
+    "cuadro": "2026-11-01_00-30-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 6415,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 6415,
+     "n_mezclados": 383,
+     "frac_sector": 0.008496688741721855
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 6415,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 6415,
+     "n_mezclados": 383,
+     "frac_sector": 0.008496688741721855
+    }
+   },
+   {
+    "cuadro": "2026-11-01_00-40-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 7401,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 7461,
+     "n_mezclados": 375,
+     "frac_sector": 0.009882119205298013
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 7401,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 7461,
+     "n_mezclados": 375,
+     "frac_sector": 0.009882119205298013
+    }
+   },
+   {
+    "cuadro": "2026-11-01_00-50-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 8711,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 8760,
+     "n_mezclados": 429,
+     "frac_sector": 0.011602649006622516
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 8711,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 8760,
+     "n_mezclados": 429,
+     "frac_sector": 0.011602649006622516
+    }
+   },
+   {
+    "cuadro": "2026-11-01_01-00-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 9438,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 9828,
+     "n_mezclados": 424,
+     "frac_sector": 0.013017218543046358
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 9438,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 9828,
+     "n_mezclados": 424,
+     "frac_sector": 0.013017218543046358
+    }
+   },
+   {
+    "cuadro": "2026-11-01_01-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 9786,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 10375,
+     "n_mezclados": 471,
+     "frac_sector": 0.013741721854304636
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 9786,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 10375,
+     "n_mezclados": 471,
+     "frac_sector": 0.013741721854304636
+    }
+   },
+   {
+    "cuadro": "2026-11-01_01-20-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 10344,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 10758,
+     "n_mezclados": 434,
+     "frac_sector": 0.014249006622516555
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 10344,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 10758,
+     "n_mezclados": 434,
+     "frac_sector": 0.014249006622516555
+    }
+   },
+   {
+    "cuadro": "2026-11-01_01-30-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 10223,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 11056,
+     "n_mezclados": 530,
+     "frac_sector": 0.014643708609271524
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 10223,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 11056,
+     "n_mezclados": 530,
+     "frac_sector": 0.014643708609271524
+    }
+   },
+   {
+    "cuadro": "2026-11-01_01-50-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 11664,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 12364,
+     "n_mezclados": 516,
+     "frac_sector": 0.016376158940397352
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 11664,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 12364,
+     "n_mezclados": 516,
+     "frac_sector": 0.016376158940397352
+    }
+   },
+   {
+    "cuadro": "2026-11-01_02-00-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 11915,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 12507,
+     "n_mezclados": 574,
+     "frac_sector": 0.016565562913907286
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 11915,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 12507,
+     "n_mezclados": 574,
+     "frac_sector": 0.016565562913907286
+    }
+   },
+   {
+    "cuadro": "2026-11-01_02-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 12148,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 12964,
+     "n_mezclados": 555,
+     "frac_sector": 0.017170860927152316
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 12148,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 12964,
+     "n_mezclados": 555,
+     "frac_sector": 0.017170860927152316
+    }
+   },
+   {
+    "cuadro": "2026-11-01_02-30-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 13164,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 14111,
+     "n_mezclados": 551,
+     "frac_sector": 0.01869006622516556
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 13164,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 14111,
+     "n_mezclados": 551,
+     "frac_sector": 0.01869006622516556
+    }
+   },
+   {
+    "cuadro": "2026-11-01_02-40-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 13548,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 14440,
+     "n_mezclados": 478,
+     "frac_sector": 0.019125827814569535
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 13548,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 14440,
+     "n_mezclados": 478,
+     "frac_sector": 0.019125827814569535
+    }
+   },
+   {
+    "cuadro": "2026-11-01_02-50-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 13462,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 14215,
+     "n_mezclados": 544,
+     "frac_sector": 0.018827814569536423
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 13462,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 14215,
+     "n_mezclados": 544,
+     "frac_sector": 0.018827814569536423
+    }
+   },
+   {
+    "cuadro": "2026-11-01_03-00-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 12803,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 13709,
+     "n_mezclados": 638,
+     "frac_sector": 0.018157615894039737
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 12803,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 13709,
+     "n_mezclados": 638,
+     "frac_sector": 0.018157615894039737
+    }
+   },
+   {
+    "cuadro": "2026-11-01_03-10-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 170,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 15235,
+     "n_mezclados": 761,
+     "frac_sector": 0.02017880794701987
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 170,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 15235,
+     "n_mezclados": 761,
+     "frac_sector": 0.02017880794701987
+    }
+   },
+   {
+    "cuadro": "2026-11-01_03-20-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 13456,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 14471,
+     "n_mezclados": 794,
+     "frac_sector": 0.01916688741721854
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 13456,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 14471,
+     "n_mezclados": 794,
+     "frac_sector": 0.01916688741721854
+    }
+   },
+   {
+    "cuadro": "2026-11-01_03-30-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 365,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 13659,
+     "n_mezclados": 715,
+     "frac_sector": 0.018091390728476823
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 365,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 13659,
+     "n_mezclados": 715,
+     "frac_sector": 0.018091390728476823
+    }
+   },
+   {
+    "cuadro": "2026-11-01_03-40-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 641,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 15044,
+     "n_mezclados": 1075,
+     "frac_sector": 0.019925827814569537
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 641,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 15044,
+     "n_mezclados": 1075,
+     "frac_sector": 0.019925827814569537
+    }
+   },
+   {
+    "cuadro": "2026-11-01_03-50-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 779,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 14831,
+     "n_mezclados": 1103,
+     "frac_sector": 0.019643708609271525
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 779,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 14831,
+     "n_mezclados": 1103,
+     "frac_sector": 0.019643708609271525
+    }
+   },
+   {
+    "cuadro": "2026-11-01_04-00-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 829,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13870,
+     "n_mezclados": 876,
+     "frac_sector": 0.01837086092715232
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 829,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13870,
+     "n_mezclados": 876,
+     "frac_sector": 0.01837086092715232
+    }
+   },
+   {
+    "cuadro": "2026-11-01_04-10-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 1184,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 14958,
+     "n_mezclados": 1092,
+     "frac_sector": 0.019811920529801325
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 1184,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 14958,
+     "n_mezclados": 1092,
+     "frac_sector": 0.019811920529801325
+    }
+   },
+   {
+    "cuadro": "2026-11-01_04-20-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 1381,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 14425,
+     "n_mezclados": 1221,
+     "frac_sector": 0.019105960264900662
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 1381,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 14425,
+     "n_mezclados": 1221,
+     "frac_sector": 0.019105960264900662
+    }
+   },
+   {
+    "cuadro": "2026-11-01_04-30-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 1541,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13394,
+     "n_mezclados": 1113,
+     "frac_sector": 0.017740397350993378
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 1541,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13394,
+     "n_mezclados": 1113,
+     "frac_sector": 0.017740397350993378
+    }
+   },
+   {
+    "cuadro": "2026-11-01_04-40-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 1533,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 15490,
+     "n_mezclados": 1230,
+     "frac_sector": 0.02051655629139073
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 1533,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 15490,
+     "n_mezclados": 1230,
+     "frac_sector": 0.02051655629139073
+    }
+   },
+   {
+    "cuadro": "2026-11-01_04-50-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 2109,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13956,
+     "n_mezclados": 1390,
+     "frac_sector": 0.01848476821192053
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 2109,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13956,
+     "n_mezclados": 1390,
+     "frac_sector": 0.01848476821192053
+    }
+   },
+   {
+    "cuadro": "2026-11-01_05-00-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 2034,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 12566,
+     "n_mezclados": 842,
+     "frac_sector": 0.016643708609271522
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 2034,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 12566,
+     "n_mezclados": 842,
+     "frac_sector": 0.016643708609271522
+    }
+   },
+   {
+    "cuadro": "2026-11-01_05-10-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 2073,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 15107,
+     "n_mezclados": 1494,
+     "frac_sector": 0.020009271523178808
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 2073,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 15107,
+     "n_mezclados": 1494,
+     "frac_sector": 0.020009271523178808
+    }
+   },
+   {
+    "cuadro": "2026-11-01_05-20-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 2631,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13275,
+     "n_mezclados": 1171,
+     "frac_sector": 0.017582781456953644
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 2631,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13275,
+     "n_mezclados": 1171,
+     "frac_sector": 0.017582781456953644
+    }
+   },
+   {
+    "cuadro": "2026-11-01_05-30-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3076,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 14790,
+     "n_mezclados": 1455,
+     "frac_sector": 0.019589403973509934
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3076,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 14790,
+     "n_mezclados": 1455,
+     "frac_sector": 0.019589403973509934
+    }
+   },
+   {
+    "cuadro": "2026-11-01_05-40-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3827,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 15104,
+     "n_mezclados": 1381,
+     "frac_sector": 0.020005298013245035
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3827,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 15104,
+     "n_mezclados": 1381,
+     "frac_sector": 0.020005298013245035
+    }
+   },
+   {
+    "cuadro": "2026-11-01_05-50-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3806,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 15027,
+     "n_mezclados": 1419,
+     "frac_sector": 0.019903311258278145
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3806,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 15027,
+     "n_mezclados": 1419,
+     "frac_sector": 0.019903311258278145
+    }
+   },
+   {
+    "cuadro": "2026-11-01_06-00-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3422,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 12704,
+     "n_mezclados": 1146,
+     "frac_sector": 0.016826490066225167
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3422,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 12704,
+     "n_mezclados": 1146,
+     "frac_sector": 0.016826490066225167
+    }
+   },
+   {
+    "cuadro": "2026-11-01_06-10-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3832,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13309,
+     "n_mezclados": 1344,
+     "frac_sector": 0.017627814569536424
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3832,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13309,
+     "n_mezclados": 1344,
+     "frac_sector": 0.017627814569536424
+    }
+   },
+   {
+    "cuadro": "2026-11-01_06-20-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3836,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13430,
+     "n_mezclados": 1174,
+     "frac_sector": 0.017788079470198677
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3836,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13430,
+     "n_mezclados": 1174,
+     "frac_sector": 0.017788079470198677
+    }
+   },
+   {
+    "cuadro": "2026-11-01_06-30-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3618,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13369,
+     "n_mezclados": 1297,
+     "frac_sector": 0.01770728476821192
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3618,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 13369,
+     "n_mezclados": 1297,
+     "frac_sector": 0.01770728476821192
+    }
+   },
+   {
+    "cuadro": "2026-11-01_06-40-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3814,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 12268,
+     "n_mezclados": 1063,
+     "frac_sector": 0.016249006622516556
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3814,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 12268,
+     "n_mezclados": 1063,
+     "frac_sector": 0.016249006622516556
+    }
+   },
+   {
+    "cuadro": "2026-11-01_06-50-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3268,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 11401,
+     "n_mezclados": 1076,
+     "frac_sector": 0.01510066225165563
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3268,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 11401,
+     "n_mezclados": 1076,
+     "frac_sector": 0.01510066225165563
+    }
+   },
+   {
+    "cuadro": "2026-11-01_07-00-30",
+    "entero": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3745,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 11587,
+     "n_mezclados": 860,
+     "frac_sector": 0.01534701986754967
+    },
+    "caja": {
+     "top_lo_km": 7,
+     "top_hi_km": 8,
+     "n_top": 3745,
+     "max_lo_km": 7,
+     "p95_mid_km": 7.5,
+     "median_mid_km": 6.5,
+     "n": 11587,
+     "n_mezclados": 860,
+     "frac_sector": 0.01534701986754967
+    }
+   },
+   {
+    "cuadro": "2026-11-01_07-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_07-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_07-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_07-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_07-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_08-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_08-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_08-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_08-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_08-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_09-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_09-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-01_09-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   }
+  ]
+ },
+ "sabancaya_20261026": {
+  "sector": "Sabancaya_250_m",
+  "volcan": "Sabancaya",
+  "lat": -15.787,
+  "lon": -71.857,
+  "cumbre_km": 5.96,
+  "px_volcan": [
+   412,
+   483
+  ],
+  "px_km": 0.27675183117955093,
+  "cuadros": [
+   {
+    "cuadro": "2026-10-26_06-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_06-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_06-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_07-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_07-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_07-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_07-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_07-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_07-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_08-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_08-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 183,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 183,
+     "n_mezclados": 41,
+     "frac_sector": 0.0002423841059602649
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 183,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 183,
+     "n_mezclados": 41,
+     "frac_sector": 0.0002423841059602649
+    }
+   },
+   {
+    "cuadro": "2026-10-26_08-20-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 184,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 184,
+     "n_mezclados": 35,
+     "frac_sector": 0.00024370860927152319
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 184,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 184,
+     "n_mezclados": 35,
+     "frac_sector": 0.00024370860927152319
+    }
+   },
+   {
+    "cuadro": "2026-10-26_08-30-30",
+    "entero": {
+     "note": "objeto VOLCAT de 79 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 79,
+     "max_lo_km": 6
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 79 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 79,
+     "max_lo_km": 6
+    }
+   },
+   {
+    "cuadro": "2026-10-26_08-40-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 705,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 832,
+     "n_mezclados": 208,
+     "frac_sector": 0.0011019867549668875
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 705,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 832,
+     "n_mezclados": 208,
+     "frac_sector": 0.0011019867549668875
+    }
+   },
+   {
+    "cuadro": "2026-10-26_08-50-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 394,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 1017,
+     "n_mezclados": 187,
+     "frac_sector": 0.001347019867549669
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 394,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 1017,
+     "n_mezclados": 187,
+     "frac_sector": 0.001347019867549669
+    }
+   },
+   {
+    "cuadro": "2026-10-26_09-00-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1181,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1829,
+     "n_mezclados": 317,
+     "frac_sector": 0.0024225165562913905
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1181,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1829,
+     "n_mezclados": 317,
+     "frac_sector": 0.0024225165562913905
+    }
+   },
+   {
+    "cuadro": "2026-10-26_09-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1842,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2600,
+     "n_mezclados": 411,
+     "frac_sector": 0.003443708609271523
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1842,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2600,
+     "n_mezclados": 411,
+     "frac_sector": 0.003443708609271523
+    }
+   },
+   {
+    "cuadro": "2026-10-26_09-30-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1618,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2153,
+     "n_mezclados": 336,
+     "frac_sector": 0.0028516556291390727
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1618,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2153,
+     "n_mezclados": 336,
+     "frac_sector": 0.0028516556291390727
+    }
+   },
+   {
+    "cuadro": "2026-10-26_09-40-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1640,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2293,
+     "n_mezclados": 304,
+     "frac_sector": 0.003037086092715232
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1640,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2293,
+     "n_mezclados": 304,
+     "frac_sector": 0.003037086092715232
+    }
+   },
+   {
+    "cuadro": "2026-10-26_09-50-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 2958,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 3708,
+     "n_mezclados": 381,
+     "frac_sector": 0.004911258278145696
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 2958,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 3708,
+     "n_mezclados": 381,
+     "frac_sector": 0.004911258278145696
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1045,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1098,
+     "n_mezclados": 170,
+     "frac_sector": 0.0014543046357615894
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1045,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1098,
+     "n_mezclados": 170,
+     "frac_sector": 0.0014543046357615894
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-20-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 2513,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 3153,
+     "n_mezclados": 299,
+     "frac_sector": 0.004176158940397351
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 2513,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 3153,
+     "n_mezclados": 299,
+     "frac_sector": 0.004176158940397351
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-30-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 2969,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 3338,
+     "n_mezclados": 344,
+     "frac_sector": 0.0044211920529801324
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 2969,
+     "max_lo_km": 7,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 3338,
+     "n_mezclados": 344,
+     "frac_sector": 0.0044211920529801324
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-40-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 643,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1093,
+     "n_mezclados": 180,
+     "frac_sector": 0.001447682119205298
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 643,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1093,
+     "n_mezclados": 180,
+     "frac_sector": 0.001447682119205298
+    }
+   },
+   {
+    "cuadro": "2026-10-26_10-50-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 715,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1051,
+     "n_mezclados": 152,
+     "frac_sector": 0.0013920529801324504
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 715,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1051,
+     "n_mezclados": 152,
+     "frac_sector": 0.0013920529801324504
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-00-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 955,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1583,
+     "n_mezclados": 268,
+     "frac_sector": 0.0020966887417218543
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 955,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1583,
+     "n_mezclados": 268,
+     "frac_sector": 0.0020966887417218543
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1220,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1563,
+     "n_mezclados": 313,
+     "frac_sector": 0.0020701986754966886
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1220,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1563,
+     "n_mezclados": 313,
+     "frac_sector": 0.0020701986754966886
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-20-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 886,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1054,
+     "n_mezclados": 174,
+     "frac_sector": 0.001396026490066225
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 886,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1054,
+     "n_mezclados": 174,
+     "frac_sector": 0.001396026490066225
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-30-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 755,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 755,
+     "n_mezclados": 167,
+     "frac_sector": 0.001
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 755,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 755,
+     "n_mezclados": 167,
+     "frac_sector": 0.001
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-40-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 425,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 467,
+     "n_mezclados": 112,
+     "frac_sector": 0.0006185430463576159
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 425,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 467,
+     "n_mezclados": 112,
+     "frac_sector": 0.0006185430463576159
+    }
+   },
+   {
+    "cuadro": "2026-10-26_11-50-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 167,
+     "max_lo_km": 16,
+     "p95_mid_km": 17.0,
+     "median_mid_km": 7.5,
+     "n": 348,
+     "n_mezclados": 94,
+     "frac_sector": 0.0004609271523178808
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 167,
+     "max_lo_km": 16,
+     "p95_mid_km": 17.0,
+     "median_mid_km": 7.5,
+     "n": 348,
+     "n_mezclados": 94,
+     "frac_sector": 0.0004609271523178808
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-00-30",
+    "entero": {
+     "note": "objeto VOLCAT de 317 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 317,
+     "max_lo_km": 10
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 317 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 317,
+     "max_lo_km": 10
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-10-30",
+    "entero": {
+     "note": "objeto VOLCAT de 129 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 129,
+     "max_lo_km": 10
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 129 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 129,
+     "max_lo_km": 10
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-20-30",
+    "entero": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 170,
+     "max_lo_km": 16,
+     "p95_mid_km": 17.0,
+     "median_mid_km": 13.0,
+     "n": 422,
+     "n_mezclados": 96,
+     "frac_sector": 0.0005589403973509934
+    },
+    "caja": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 170,
+     "max_lo_km": 16,
+     "p95_mid_km": 17.0,
+     "median_mid_km": 13.0,
+     "n": 422,
+     "n_mezclados": 96,
+     "frac_sector": 0.0005589403973509934
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-30-30",
+    "entero": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 197,
+     "max_lo_km": 16,
+     "p95_mid_km": 17.0,
+     "median_mid_km": 13.0,
+     "n": 330,
+     "n_mezclados": 93,
+     "frac_sector": 0.0004370860927152318
+    },
+    "caja": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 197,
+     "max_lo_km": 16,
+     "p95_mid_km": 17.0,
+     "median_mid_km": 13.0,
+     "n": 330,
+     "n_mezclados": 93,
+     "frac_sector": 0.0004370860927152318
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-40-30",
+    "entero": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 206,
+     "max_lo_km": 16,
+     "p95_mid_km": 17.0,
+     "median_mid_km": 13.0,
+     "n": 266,
+     "n_mezclados": 82,
+     "frac_sector": 0.000352317880794702
+    },
+    "caja": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 206,
+     "max_lo_km": 16,
+     "p95_mid_km": 17.0,
+     "median_mid_km": 13.0,
+     "n": 266,
+     "n_mezclados": 82,
+     "frac_sector": 0.000352317880794702
+    }
+   },
+   {
+    "cuadro": "2026-10-26_12-50-30",
+    "entero": {
+     "note": "objeto VOLCAT de 188 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 188,
+     "max_lo_km": 16
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 188 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 188,
+     "max_lo_km": 16
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-00-30",
+    "entero": {
+     "note": "objeto VOLCAT de 78 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 78,
+     "max_lo_km": 12
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 78 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 78,
+     "max_lo_km": 12
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-10-30",
+    "entero": {
+     "note": "objeto VOLCAT de 78 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 78,
+     "max_lo_km": 12
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 78 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 78,
+     "max_lo_km": 12
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_13-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_14-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_15-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_15-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-26_15-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   }
+  ]
+ },
+ "sabancaya_20261028": {
+  "sector": "Sabancaya_250_m",
+  "volcan": "Sabancaya",
+  "lat": -15.787,
+  "lon": -71.857,
+  "cumbre_km": 5.96,
+  "px_volcan": [
+   412,
+   483
+  ],
+  "px_km": 0.27675183117955093,
+  "cuadros": [
+   {
+    "cuadro": "2026-10-28_06-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_06-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_06-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_07-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_07-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_07-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_07-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_07-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_07-50-30",
+    "entero": {
+     "note": "objeto VOLCAT de 120 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 120,
+     "max_lo_km": 5
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 120 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 120,
+     "max_lo_km": 5
+    }
+   },
+   {
+    "cuadro": "2026-10-28_08-00-30",
+    "entero": {
+     "top_lo_km": 5,
+     "top_hi_km": 6,
+     "n_top": 379,
+     "max_lo_km": 5,
+     "p95_mid_km": 5.5,
+     "median_mid_km": 5.5,
+     "n": 379,
+     "n_mezclados": 87,
+     "frac_sector": 0.0005019867549668875
+    },
+    "caja": {
+     "top_lo_km": 5,
+     "top_hi_km": 6,
+     "n_top": 379,
+     "max_lo_km": 5,
+     "p95_mid_km": 5.5,
+     "median_mid_km": 5.5,
+     "n": 379,
+     "n_mezclados": 87,
+     "frac_sector": 0.0005019867549668875
+    }
+   },
+   {
+    "cuadro": "2026-10-28_08-10-30",
+    "entero": {
+     "note": "objeto VOLCAT de 105 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 105,
+     "max_lo_km": 5
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 105 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 105,
+     "max_lo_km": 5
+    }
+   },
+   {
+    "cuadro": "2026-10-28_08-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_08-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_08-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-28_08-50-30",
+    "entero": {
+     "top_lo_km": 5,
+     "top_hi_km": 6,
+     "n_top": 169,
+     "max_lo_km": 5,
+     "p95_mid_km": 5.5,
+     "median_mid_km": 5.5,
+     "n": 169,
+     "n_mezclados": 21,
+     "frac_sector": 0.000223841059602649
+    },
+    "caja": {
+     "top_lo_km": 5,
+     "top_hi_km": 6,
+     "n_top": 169,
+     "max_lo_km": 5,
+     "p95_mid_km": 5.5,
+     "median_mid_km": 5.5,
+     "n": 169,
+     "n_mezclados": 21,
+     "frac_sector": 0.000223841059602649
+    }
+   },
+   {
+    "cuadro": "2026-10-28_09-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 802,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1557,
+     "n_mezclados": 291,
+     "frac_sector": 0.0020622516556291393
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 802,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1557,
+     "n_mezclados": 291,
+     "frac_sector": 0.0020622516556291393
+    }
+   },
+   {
+    "cuadro": "2026-10-28_09-20-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1281,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1964,
+     "n_mezclados": 331,
+     "frac_sector": 0.0026013245033112585
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1281,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 1964,
+     "n_mezclados": 331,
+     "frac_sector": 0.0026013245033112585
+    }
+   },
+   {
+    "cuadro": "2026-10-28_09-30-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1781,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2569,
+     "n_mezclados": 442,
+     "frac_sector": 0.0034026490066225165
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1781,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2569,
+     "n_mezclados": 442,
+     "frac_sector": 0.0034026490066225165
+    }
+   },
+   {
+    "cuadro": "2026-10-28_09-40-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1744,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2613,
+     "n_mezclados": 418,
+     "frac_sector": 0.003460927152317881
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1744,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 2613,
+     "n_mezclados": 418,
+     "frac_sector": 0.003460927152317881
+    }
+   },
+   {
+    "cuadro": "2026-10-28_09-50-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 3706,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 5201,
+     "n_mezclados": 631,
+     "frac_sector": 0.006888741721854305
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 3706,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 5201,
+     "n_mezclados": 631,
+     "frac_sector": 0.006888741721854305
+    }
+   },
+   {
+    "cuadro": "2026-10-28_10-00-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 4714,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 7830,
+     "n_mezclados": 688,
+     "frac_sector": 0.010370860927152318
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 4714,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 7830,
+     "n_mezclados": 688,
+     "frac_sector": 0.010370860927152318
+    }
+   },
+   {
+    "cuadro": "2026-10-28_10-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 5933,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 10497,
+     "n_mezclados": 678,
+     "frac_sector": 0.013903311258278145
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 5933,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 10497,
+     "n_mezclados": 678,
+     "frac_sector": 0.013903311258278145
+    }
+   },
+   {
+    "cuadro": "2026-10-28_10-20-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 6790,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 11615,
+     "n_mezclados": 647,
+     "frac_sector": 0.015384105960264901
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 6790,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 11615,
+     "n_mezclados": 647,
+     "frac_sector": 0.015384105960264901
+    }
+   },
+   {
+    "cuadro": "2026-10-28_10-30-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 8718,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 13182,
+     "n_mezclados": 634,
+     "frac_sector": 0.017459602649006624
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 8718,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 13182,
+     "n_mezclados": 634,
+     "frac_sector": 0.017459602649006624
+    }
+   },
+   {
+    "cuadro": "2026-10-28_10-40-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 7248,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 11616,
+     "n_mezclados": 789,
+     "frac_sector": 0.015385430463576159
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 7248,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 11616,
+     "n_mezclados": 789,
+     "frac_sector": 0.015385430463576159
+    }
+   },
+   {
+    "cuadro": "2026-10-28_10-50-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 3232,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 6233,
+     "n_mezclados": 686,
+     "frac_sector": 0.008255629139072847
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 3232,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 6.5,
+     "n": 6233,
+     "n_mezclados": 686,
+     "frac_sector": 0.008255629139072847
+    }
+   },
+   {
+    "cuadro": "2026-10-28_11-00-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1615,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 3786,
+     "n_mezclados": 472,
+     "frac_sector": 0.005014569536423841
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1615,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 3786,
+     "n_mezclados": 472,
+     "frac_sector": 0.005014569536423841
+    }
+   },
+   {
+    "cuadro": "2026-10-28_11-10-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1380,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 2992,
+     "n_mezclados": 374,
+     "frac_sector": 0.003962913907284768
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 1380,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 2992,
+     "n_mezclados": 374,
+     "frac_sector": 0.003962913907284768
+    }
+   },
+   {
+    "cuadro": "2026-10-28_11-20-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 872,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 2690,
+     "n_mezclados": 479,
+     "frac_sector": 0.003562913907284768
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 872,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 2690,
+     "n_mezclados": 479,
+     "frac_sector": 0.003562913907284768
+    }
+   },
+   {
+    "cuadro": "2026-10-28_11-40-30",
+    "entero": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 197,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 904,
+     "n_mezclados": 254,
+     "frac_sector": 0.0011973509933774834
+    },
+    "caja": {
+     "top_lo_km": 6,
+     "top_hi_km": 7,
+     "n_top": 197,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 904,
+     "n_mezclados": 254,
+     "frac_sector": 0.0011973509933774834
+    }
+   },
+   {
+    "cuadro": "2026-10-28_11-50-30",
+    "entero": {
+     "top_lo_km": 5,
+     "top_hi_km": 6,
+     "n_top": 650,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 838,
+     "n_mezclados": 272,
+     "frac_sector": 0.001109933774834437
+    },
+    "caja": {
+     "top_lo_km": 5,
+     "top_hi_km": 6,
+     "n_top": 650,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 838,
+     "n_mezclados": 272,
+     "frac_sector": 0.001109933774834437
+    }
+   },
+   {
+    "cuadro": "2026-10-28_12-00-30",
+    "entero": {
+     "note": "objeto VOLCAT de 71 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 71,
+     "max_lo_km": 6
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 71 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 71,
+     "max_lo_km": 6
+    }
+   },
+   {
+    "cuadro": "2026-10-28_12-10-30",
+    "entero": {
+     "top_lo_km": 5,
+     "top_hi_km": 6,
+     "n_top": 428,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 484,
+     "n_mezclados": 139,
+     "frac_sector": 0.0006410596026490066
+    },
+    "caja": {
+     "top_lo_km": 5,
+     "top_hi_km": 6,
+     "n_top": 428,
+     "max_lo_km": 6,
+     "p95_mid_km": 6.5,
+     "median_mid_km": 5.5,
+     "n": 484,
+     "n_mezclados": 139,
+     "frac_sector": 0.0006410596026490066
+    }
+   },
+   {
+    "cuadro": "2026-10-28_12-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   }
+  ]
+ },
+ "sabancaya_20261017": {
+  "sector": "Sabancaya_250_m",
+  "volcan": "Sabancaya",
+  "lat": -15.787,
+  "lon": -71.857,
+  "cumbre_km": 5.96,
+  "px_volcan": [
+   412,
+   483
+  ],
+  "px_km": 0.27675183117955093,
+  "cuadros": [
+   {
+    "cuadro": "2026-10-17_11-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_12-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_12-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_12-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_12-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_12-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_12-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_13-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_13-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_13-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_13-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_13-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_13-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_14-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_14-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_14-20-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 360,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 360,
+     "n_mezclados": 47,
+     "frac_sector": 0.0004768211920529801
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 360,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 360,
+     "n_mezclados": 47,
+     "frac_sector": 0.0004768211920529801
+    }
+   },
+   {
+    "cuadro": "2026-10-17_14-30-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 314,
+     "max_lo_km": 5,
+     "p95_mid_km": 5.5,
+     "median_mid_km": 4.5,
+     "n": 364,
+     "n_mezclados": 60,
+     "frac_sector": 0.0004821192052980132
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 314,
+     "max_lo_km": 5,
+     "p95_mid_km": 5.5,
+     "median_mid_km": 4.5,
+     "n": 364,
+     "n_mezclados": 60,
+     "frac_sector": 0.0004821192052980132
+    }
+   },
+   {
+    "cuadro": "2026-10-17_14-40-30",
+    "entero": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 360,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 360,
+     "n_mezclados": 54,
+     "frac_sector": 0.0004768211920529801
+    },
+    "caja": {
+     "top_lo_km": 4,
+     "top_hi_km": 5,
+     "n_top": 360,
+     "max_lo_km": 4,
+     "p95_mid_km": 4.5,
+     "median_mid_km": 4.5,
+     "n": 360,
+     "n_mezclados": 54,
+     "frac_sector": 0.0004768211920529801
+    }
+   },
+   {
+    "cuadro": "2026-10-17_14-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_15-00-30",
+    "entero": {
+     "note": "objeto VOLCAT de 57 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 57,
+     "max_lo_km": 5
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 57 píxeles: ningún bloque llega a 12 km² (163 píxeles del cuadro), no fija un tope",
+     "n": 57,
+     "max_lo_km": 5
+    }
+   },
+   {
+    "cuadro": "2026-10-17_15-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_15-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_15-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_15-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_15-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_16-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_16-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_16-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_16-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_16-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_16-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_17-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_17-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_17-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_17-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-17_17-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   }
+  ]
+ },
+ "cotopaxi_20261025": {
+  "sector": "Cotopaxi_150_m",
+  "volcan": "Cotopaxi",
+  "lat": -0.677,
+  "lon": -78.436,
+  "cumbre_km": 5.911,
+  "px_volcan": [
+   388,
+   489
+  ],
+  "px_km": 0.17296989080514466,
+  "cuadros": [
+   {
+    "cuadro": "2026-10-25_14-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_14-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_15-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_15-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_15-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_15-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_15-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_15-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_16-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_16-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_16-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_16-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_16-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_16-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_17-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_17-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_17-20-30",
+    "entero": {
+     "note": "objeto VOLCAT de 121 píxeles: ningún bloque llega a 12 km² (402 píxeles del cuadro), no fija un tope",
+     "n": 121,
+     "max_lo_km": 6
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 121 píxeles: ningún bloque llega a 12 km² (402 píxeles del cuadro), no fija un tope",
+     "n": 121,
+     "max_lo_km": 6
+    }
+   },
+   {
+    "cuadro": "2026-10-25_17-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_17-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_17-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_18-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_18-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_18-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_18-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_18-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_18-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_19-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_19-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_19-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_19-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_19-40-30",
+    "entero": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 1905,
+     "max_lo_km": 12,
+     "p95_mid_km": 13.0,
+     "median_mid_km": 11.0,
+     "n": 5211,
+     "n_mezclados": 259,
+     "frac_sector": 0.006901986754966887
+    },
+    "caja": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 1905,
+     "max_lo_km": 12,
+     "p95_mid_km": 13.0,
+     "median_mid_km": 11.0,
+     "n": 5211,
+     "n_mezclados": 259,
+     "frac_sector": 0.006901986754966887
+    }
+   },
+   {
+    "cuadro": "2026-10-25_19-50-30",
+    "entero": {
+     "top_lo_km": 16,
+     "top_hi_km": 18,
+     "n_top": 425,
+     "max_lo_km": 16,
+     "p95_mid_km": 13.0,
+     "median_mid_km": 11.0,
+     "n": 11383,
+     "n_mezclados": 365,
+     "frac_sector": 0.01507682119205298
+    },
+    "caja": {
+     "top_lo_km": 16,
+     "top_hi_km": 18,
+     "n_top": 425,
+     "max_lo_km": 16,
+     "p95_mid_km": 13.0,
+     "median_mid_km": 11.0,
+     "n": 11383,
+     "n_mezclados": 365,
+     "frac_sector": 0.01507682119205298
+    }
+   },
+   {
+    "cuadro": "2026-10-25_20-00-30",
+    "entero": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 5832,
+     "max_lo_km": 14,
+     "p95_mid_km": 13.0,
+     "median_mid_km": 11.0,
+     "n": 16088,
+     "n_mezclados": 498,
+     "frac_sector": 0.021308609271523178
+    },
+    "caja": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 5832,
+     "max_lo_km": 14,
+     "p95_mid_km": 13.0,
+     "median_mid_km": 11.0,
+     "n": 16088,
+     "n_mezclados": 498,
+     "frac_sector": 0.021308609271523178
+    }
+   },
+   {
+    "cuadro": "2026-10-25_20-10-30",
+    "entero": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 5878,
+     "max_lo_km": 16,
+     "p95_mid_km": 13.0,
+     "median_mid_km": 13.0,
+     "n": 10203,
+     "n_mezclados": 343,
+     "frac_sector": 0.013513907284768211
+    },
+    "caja": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 5878,
+     "max_lo_km": 16,
+     "p95_mid_km": 13.0,
+     "median_mid_km": 13.0,
+     "n": 10203,
+     "n_mezclados": 343,
+     "frac_sector": 0.013513907284768211
+    }
+   },
+   {
+    "cuadro": "2026-10-25_20-20-30",
+    "entero": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 3977,
+     "max_lo_km": 16,
+     "p95_mid_km": 13.0,
+     "median_mid_km": 11.0,
+     "n": 12734,
+     "n_mezclados": 426,
+     "frac_sector": 0.016866225165562913
+    },
+    "caja": {
+     "top_lo_km": 12,
+     "top_hi_km": 14,
+     "n_top": 3977,
+     "max_lo_km": 16,
+     "p95_mid_km": 13.0,
+     "median_mid_km": 11.0,
+     "n": 12734,
+     "n_mezclados": 426,
+     "frac_sector": 0.016866225165562913
+    }
+   },
+   {
+    "cuadro": "2026-10-25_20-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_20-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_21-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_21-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_21-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_21-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_21-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_21-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_22-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_22-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_22-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_22-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_22-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_22-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_23-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_23-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_23-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_23-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-10-25_23-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   }
+  ]
+ },
+ "chillan_20261108": {
+  "sector": "Chile_Central_2_km",
+  "volcan": "Nevados de Chillan",
+  "lat": -36.86,
+  "lon": -71.38,
+  "cumbre_km": 3.212,
+  "px_volcan": [
+   286,
+   480
+  ],
+  "px_km": 2.248608713021569,
+  "cuadros": [
+   {
+    "cuadro": "2026-11-08_12-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_12-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_12-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_12-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_12-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_12-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_13-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_13-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_13-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_13-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_13-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_13-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_14-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_14-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_14-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_14-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_14-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_14-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_15-00-30",
+    "entero": {
+     "note": "objeto VOLCAT de 3 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 3,
+     "max_lo_km": 3
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 3 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 3,
+     "max_lo_km": 3
+    }
+   },
+   {
+    "cuadro": "2026-11-08_15-10-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 3,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 3,
+     "n_mezclados": 3,
+     "frac_sector": 3.973509933774834e-06
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 3,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 3,
+     "n_mezclados": 3,
+     "frac_sector": 3.973509933774834e-06
+    }
+   },
+   {
+    "cuadro": "2026-11-08_15-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_15-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_15-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_15-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_16-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_16-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_16-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_16-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_16-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_16-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_17-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_17-10-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_17-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_17-30-30",
+    "entero": {
+     "note": "objeto VOLCAT de 1 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 1,
+     "max_lo_km": 3
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 1 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 1,
+     "max_lo_km": 3
+    }
+   },
+   {
+    "cuadro": "2026-11-08_17-40-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 4,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 4,
+     "n_mezclados": 4,
+     "frac_sector": 5.298013245033113e-06
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 4,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 4,
+     "n_mezclados": 4,
+     "frac_sector": 5.298013245033113e-06
+    }
+   },
+   {
+    "cuadro": "2026-11-08_17-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_18-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_18-10-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 5,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 5,
+     "n_mezclados": 5,
+     "frac_sector": 6.62251655629139e-06
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 5,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 5,
+     "n_mezclados": 5,
+     "frac_sector": 6.62251655629139e-06
+    }
+   },
+   {
+    "cuadro": "2026-11-08_18-20-30",
+    "entero": {
+     "note": "objeto VOLCAT de 2 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 2,
+     "max_lo_km": 3
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 2 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 2,
+     "max_lo_km": 3
+    }
+   },
+   {
+    "cuadro": "2026-11-08_18-30-30",
+    "entero": {
+     "note": "objeto VOLCAT de 1 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 1,
+     "max_lo_km": 3
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 1 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 1,
+     "max_lo_km": 3
+    }
+   },
+   {
+    "cuadro": "2026-11-08_18-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_18-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_19-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_19-10-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 4,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 4,
+     "n_mezclados": 4,
+     "frac_sector": 5.298013245033113e-06
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 4,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 4,
+     "n_mezclados": 4,
+     "frac_sector": 5.298013245033113e-06
+    }
+   },
+   {
+    "cuadro": "2026-11-08_19-20-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 9,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 9,
+     "n_mezclados": 8,
+     "frac_sector": 1.1920529801324503e-05
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 9,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 9,
+     "n_mezclados": 8,
+     "frac_sector": 1.1920529801324503e-05
+    }
+   },
+   {
+    "cuadro": "2026-11-08_19-30-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 5,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 5,
+     "n_mezclados": 5,
+     "frac_sector": 6.62251655629139e-06
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 5,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 5,
+     "n_mezclados": 5,
+     "frac_sector": 6.62251655629139e-06
+    }
+   },
+   {
+    "cuadro": "2026-11-08_19-40-30",
+    "entero": {
+     "note": "objeto VOLCAT de 2 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 2,
+     "max_lo_km": 3
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 2 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 2,
+     "max_lo_km": 3
+    }
+   },
+   {
+    "cuadro": "2026-11-08_19-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_20-10-30",
+    "entero": {
+     "note": "objeto VOLCAT de 3 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 3,
+     "max_lo_km": 16
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 3 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 3,
+     "max_lo_km": 16
+    }
+   },
+   {
+    "cuadro": "2026-11-08_20-20-30",
+    "entero": {
+     "note": "objeto VOLCAT de 2 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 2,
+     "max_lo_km": 5
+    },
+    "caja": {
+     "note": "objeto VOLCAT de 2 píxeles: ningún bloque llega a 12 km² (3 píxeles del cuadro), no fija un tope",
+     "n": 2,
+     "max_lo_km": 5
+    }
+   },
+   {
+    "cuadro": "2026-11-08_20-30-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 14,
+     "max_lo_km": 5,
+     "p95_mid_km": 4.699999999999999,
+     "median_mid_km": 3.5,
+     "n": 17,
+     "n_mezclados": 16,
+     "frac_sector": 2.251655629139073e-05
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 14,
+     "max_lo_km": 5,
+     "p95_mid_km": 4.699999999999999,
+     "median_mid_km": 3.5,
+     "n": 17,
+     "n_mezclados": 16,
+     "frac_sector": 2.251655629139073e-05
+    }
+   },
+   {
+    "cuadro": "2026-11-08_20-40-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 12,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 12,
+     "n_mezclados": 12,
+     "frac_sector": 1.5894039735099336e-05
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 12,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 12,
+     "n_mezclados": 12,
+     "frac_sector": 1.5894039735099336e-05
+    }
+   },
+   {
+    "cuadro": "2026-11-08_20-50-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 3,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 3,
+     "n_mezclados": 3,
+     "frac_sector": 3.973509933774834e-06
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 3,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 3,
+     "n_mezclados": 3,
+     "frac_sector": 3.973509933774834e-06
+    }
+   },
+   {
+    "cuadro": "2026-11-08_21-00-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 4,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 4,
+     "n_mezclados": 4,
+     "frac_sector": 5.298013245033113e-06
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 4,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 4,
+     "n_mezclados": 4,
+     "frac_sector": 5.298013245033113e-06
+    }
+   },
+   {
+    "cuadro": "2026-11-08_21-10-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 9,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 9,
+     "n_mezclados": 8,
+     "frac_sector": 1.1920529801324503e-05
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 9,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 9,
+     "n_mezclados": 8,
+     "frac_sector": 1.1920529801324503e-05
+    }
+   },
+   {
+    "cuadro": "2026-11-08_21-20-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 9,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 9,
+     "n_mezclados": 8,
+     "frac_sector": 1.1920529801324503e-05
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 9,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 9,
+     "n_mezclados": 8,
+     "frac_sector": 1.1920529801324503e-05
+    }
+   },
+   {
+    "cuadro": "2026-11-08_21-30-30",
+    "entero": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 5,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 5,
+     "n_mezclados": 4,
+     "frac_sector": 6.62251655629139e-06
+    },
+    "caja": {
+     "top_lo_km": 3,
+     "top_hi_km": 4,
+     "n_top": 5,
+     "max_lo_km": 3,
+     "p95_mid_km": 3.5,
+     "median_mid_km": 3.5,
+     "n": 5,
+     "n_mezclados": 4,
+     "frac_sector": 6.62251655629139e-06
+    }
+   },
+   {
+    "cuadro": "2026-11-08_21-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_21-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_22-00-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_22-20-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_22-30-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_22-40-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   },
+   {
+    "cuadro": "2026-11-08_22-50-30",
+    "entero": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    },
+    "caja": {
+     "note": "VOLCAT no dibuja ningún objeto que toque el volcán (radio 10 km)"
+    }
+   }
+  ]
+ }
+}

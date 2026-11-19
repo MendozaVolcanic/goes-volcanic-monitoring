@@ -89,7 +89,7 @@ def main():
         rows.append(dict(lat=la, lon=lo, energia_j=e, area_m2=ar, desde=a, hasta=b, d_km=float(hav(la, lo))))
     D = pd.DataFrame(rows)
     if len(D):
-        D = D.sort_values("desde"); D.to_csv(os.path.join(RES, "glm_destellos_chillan.csv"), index=False, float_format="%.5g")
+        D = D.sort_values("desde"); D.to_csv(os.path.join(RES, "glm_destellos_chillan.csv"), index=False, float_format="%.9g")
     p("destellos unicos listados por Lightning-v1 para la entrada de Chillan:", len(D))
     for lim in (100, 50, 30, 20):
         sub = D[D.d_km <= lim] if len(D) else D

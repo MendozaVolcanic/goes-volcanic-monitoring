@@ -1,0 +1,9 @@
+Hora 2026-10-26 22:00 UTC: archivos LCFA 179, leidos 179
+  <= 30 km del crater real: S3 26, Lightning-v1 26, de Lightning-v1 con un destello S3 a <= 50 m: 26
+  zona comun (<= 100 km del crater y del centro de Lightning-v1): S3 81, Lightning-v1 81, de Lightning-v1 con un destello S3 a <= 50 m: 81
+  <= 100 km del crater real (S3; Lightning-v1 no cubre todo): S3 394, Lightning-v1 81, de Lightning-v1 con un destello S3 a <= 50 m: 81
+  destellos de Lightning-v1 a <= 30 km cuya hora real (S3) cae en el intervalo asignado (+-20 s, duracion de un archivo): 26 de 26
+Hora 2026-11-14 17:00 UTC: archivos LCFA 180, leidos 180
+  <= 30 km del crater real: S3 0, Lightning-v1 0, de Lightning-v1 con un destello S3 a <= 50 m: 0
+  zona comun (<= 100 km del crater y del centro de Lightning-v1): S3 0, Lightning-v1 0, de Lightning-v1 con un destello S3 a <= 50 m: 0
+  <= 100 km del crater real (S3; Lightning-v1 no cubre todo): S3 0, Lightning-v1 0, de Lightning-v1 con un destello S3 a <= 50 m: 0

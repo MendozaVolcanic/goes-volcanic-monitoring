@@ -1,0 +1,23 @@
+H9 rayos, salida cruda. 2026-11-19 14:25
+versiones de glm_latest.json bajadas 8864 | sin error y con entrada de Chillan 8864
+ventanas declaradas: [15] | fuentes: ['GLM-G19']
+centro usado por Lightning-v1 para 'Nevados de Chillan': [(-37.411, -71.352)]
+tramos continuos de cobertura 4; huecos 3, suma 0:42:59.763858; mayores: [('11-11 20:15', '11-11 20:43'), ('11-05 15:55', '11-05 16:05'), ('10-21 10:25', '10-21 10:30')]
+destellos unicos listados por Lightning-v1 para la entrada de Chillan: 3477
+  a <= 100 km del crater real: 2010 | dias: ['2026-10-19', '2026-10-20', '2026-10-21', '2026-10-22', '2026-10-23', '2026-10-24', '2026-10-25', '2026-10-26', '2026-10-31', '2026-11-01', '2026-11-03', '2026-11-05', '2026-11-06', '2026-11-07', '2026-11-09', '2026-11-12', '2026-11-15', '2026-11-16', '2026-11-17', '2026-11-18']
+  a <= 50 km del crater real: 604 | dias: ['2026-10-20', '2026-10-21', '2026-10-22', '2026-10-23', '2026-10-24', '2026-10-26', '2026-10-31', '2026-11-03', '2026-11-05', '2026-11-06', '2026-11-15', '2026-11-16', '2026-11-17']
+  a <= 30 km del crater real: 205 | dias: ['2026-10-21', '2026-10-22', '2026-10-23', '2026-10-26', '2026-10-31', '2026-11-03', '2026-11-06', '2026-11-15', '2026-11-16', '2026-11-17']
+  a <= 20 km del crater real: 87 | dias: ['2026-10-21', '2026-10-22', '2026-10-26', '2026-10-31', '2026-11-03', '2026-11-06', '2026-11-15']
+  intervalo de hora de cada destello (mediana del ancho, min): 5.00277545
+
+=== H9d radio 30 km (DECIDE) ===
+  positivos 100, cubiertos 100 (100%); con rayo 0
+  negativos limpios 3526, cubiertos 3509; con rayo 132 (3.76%)
+  pareados: 100 positivos en 10 dias; tasa positivos 0.000, controles 0.088; diferencia IC95 [-0.133; -0.054]
+  VEREDICTO H9d (30 km): se falsa (< 5 % de los positivos cubiertos con rayo)
+
+=== H9d radio 20 km (sensibilidad) ===
+  positivos 100, cubiertos 100 (100%); con rayo 0
+  negativos limpios 3526, cubiertos 3509; con rayo 95 (2.71%)
+  pareados: 100 positivos en 10 dias; tasa positivos 0.000, controles 0.052; diferencia IC95 [-0.104; -0.016]
+  VEREDICTO H9d (20 km): se falsa (< 5 % de los positivos cubiertos con rayo)

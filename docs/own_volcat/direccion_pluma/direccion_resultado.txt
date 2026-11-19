@@ -1,0 +1,64 @@
+
+== Jornada 25-10: 68 slots; estados {'sin_objeto_anclado': 57, 'resuelta': 5, 'sin_cuadro': 6}
+  14:40 E4   npx=  9 P1 az=  209 d=10.2 km | P0 az=  231 d= 6.9 km | dREAV P1=  74 P0=  96 | GFS hacia  143 a  3.1 m/s (capa 4.1-4.9 km)
+  16:20 E4   npx=  4 P1 az=  176 d= 9.9 km | P0 az=  177 d= 5.4 km | dREAV P1=  41 P0=  42 | GFS hacia  142 a  4.5 m/s (capa 4.1-4.9 km)
+  16:50 E5   npx=  6 P1 az=  172 d=11.2 km | P0 az=  169 d= 6.1 km | dREAV P1=  37 P0=  34 | GFS hacia  130 a  5.5 m/s (capa 4.3-5.5 km)
+  17:00 E5   npx=  9 P1 az=  175 d=10.4 km | P0 az=  175 d= 5.3 km | dREAV P1=  40 P0=  40 | GFS hacia  130 a  5.5 m/s (capa 4.3-5.5 km)
+  18:00 E5   npx=  6 P1 az=  171 d= 9.3 km | P0 az=  165 d= 4.2 km | dREAV P1=  36 P0=  30 | GFS hacia  137 a  6.5 m/s (capa 4.3-5.5 km)
+  -> {'jornada': '25-10', 'resueltas': 5, 'P1_media': 180.5, 'P1_R': 0.97, 'P0_media': 182.4, 'P0_R': 0.92, 'frac45_P1': np.float64(1.0), 'frac45_P0': np.float64(0.8), 'gfs_hacia': 135.8, 'gfs_ms': 5.0, 'gfs_n': 5, 'gfs_capa_completa_hacia': 148.2, 'huella_vs_gfs': 'no concluyente', 'd_huella_gfs': [46.6, 44.7], 'az_reav': 135.0, 'd_P0': 47.4, 'd_P1': 45.5, 'huella_vs_reav': 'no concluyente', 'reav_vs_gfs': 'coincide', 'd_reav_gfs': 0.8}
+
+== Jornada 27-10: 42 slots; estados {'sin_objeto_anclado': 42}
+
+== Jornada 28-10: 16 slots; estados {'sin_objeto_anclado': 15, 'resuelta': 1}
+  18:30 E10  npx=  5 P1 az=  172 d= 9.6 km | P0 az=  168 d= 4.6 km | dREAV P1= 143 P0= 147 | GFS hacia    2 a  5.8 m/s (capa 4.3-5.4 km)
+  -> {'jornada': '28-10', 'resueltas': 1, 'P1_media': 171.9, 'P1_R': 1.0, 'P0_media': 168.0, 'P0_R': 1.0, 'frac45_P1': np.float64(1.0), 'frac45_P0': np.float64(1.0), 'gfs_hacia': 1.8, 'gfs_ms': 5.8, 'gfs_n': 1, 'gfs_capa_completa_hacia': 1.4, 'huella_vs_gfs': 'discrepa', 'd_huella_gfs': [166.2, 170.1], 'az_reav': 315.0, 'd_P0': 147.0, 'd_P1': 143.1, 'huella_vs_reav': 'no concluyente (menos de 2 escenas)', 'reav_vs_gfs': 'no concluyente', 'd_reav_gfs': 46.8}
+
+== Jornada 28-10b: 15 slots; estados {'resuelta': 14, 'sin_cuadro': 1}
+  20:20 E11  npx= 16 P1 az=  133 d= 5.8 km | P0 az=   71 d= 4.0 km | GFS hacia   10 a  6.5 m/s (capa 4.4-5.6 km)
+  20:30 E11  npx= 22 P1 az=  133 d= 6.0 km | P0 az=   74 d= 4.2 km | GFS hacia   15 a  6.5 m/s (capa 4.4-5.6 km)
+  20:40 E11  npx= 14 P1 az=  139 d= 2.5 km | P0 az=   21 d= 3.5 km | GFS hacia   15 a  6.5 m/s (capa 4.4-5.6 km)
+  20:50 E11  npx= 24 P1 az=  135 d= 6.3 km | P0 az=   80 d= 4.1 km | GFS hacia   15 a  6.5 m/s (capa 4.4-5.6 km)
+  21:00 E11  npx= 26 P1 az=  137 d= 6.2 km | P0 az=   81 d= 3.9 km | GFS hacia   15 a  6.5 m/s (capa 4.4-5.6 km)
+  21:10 E11  npx= 29 P1 az=  130 d= 9.1 km | P0 az=   95 d= 6.6 km | GFS hacia   15 a  6.5 m/s (capa 4.4-5.6 km)
+  21:20 E11  npx= 28 P1 az=  136 d= 8.6 km | P0 az=  100 d= 5.7 km | GFS hacia   15 a  6.5 m/s (capa 4.4-5.6 km)
+  21:30 E11  npx= 31 P1 az=  132 d= 6.9 km | P0 az=   83 d= 4.7 km | GFS hacia   18 a  6.5 m/s (capa 4.4-5.6 km)
+  21:50 E12  npx= 31 P1 az=  134 d= 8.6 km | P0 az=  101 d= 5.9 km | GFS hacia   22 a  5.2 m/s (capa 4.2-5.2 km)
+  22:00 E12  npx= 25 P1 az=  132 d= 7.7 km | P0 az=   94 d= 5.4 km | GFS hacia   22 a  5.2 m/s (capa 4.2-5.2 km)
+  22:10 E12  npx= 14 P1 az=  134 d= 9.8 km | P0 az=  106 d= 6.9 km | GFS hacia   22 a  5.2 m/s (capa 4.2-5.2 km)
+  22:20 E12  npx= 11 P1 az=  126 d= 6.2 km | P0 az=   76 d= 4.8 km | GFS hacia   22 a  5.2 m/s (capa 4.2-5.2 km)
+  22:30 E12  npx= 27 P1 az=  133 d= 9.9 km | P0 az=  106 d= 7.0 km | GFS hacia   25 a  4.8 m/s (capa 4.2-5.2 km)
+  22:40 E12  npx= 10 P1 az=  127 d=12.1 km | P0 az=  105 d= 9.6 km | GFS hacia   25 a  4.8 m/s (capa 4.2-5.2 km)
+  -> {'jornada': '28-10b', 'resueltas': 14, 'P1_media': 132.9, 'P1_R': 1.0, 'P0_media': 86.1, 'P0_R': 0.93, 'frac45_P1': np.float64(1.0), 'frac45_P0': np.float64(0.93), 'gfs_hacia': 17.6, 'gfs_ms': 5.8, 'gfs_n': 14, 'gfs_capa_completa_hacia': 22.8, 'huella_vs_gfs': 'no concluyente', 'd_huella_gfs': [68.5, 115.3]}
+
+== Jornada 10-11: 12 slots; estados {'resuelta': 10, 'sin_cuadro': 1, 'sin_objeto_anclado': 1}
+  21:40 E13  npx= 19 P1 az=  137 d= 7.0 km | P0 az=   89 d= 4.4 km | GFS hacia   46 a  6.6 m/s (capa 4.4-5.6 km)
+  21:50 E13  npx= 14 P1 az=  130 d= 5.2 km | P0 az=   63 d= 4.0 km | GFS hacia   46 a  6.6 m/s (capa 4.4-5.6 km)
+  22:10 E13  npx= 23 P1 az=  124 d= 8.3 km | P0 az=   86 d= 6.4 km | GFS hacia   46 a  6.6 m/s (capa 4.4-5.6 km)
+  22:20 E13  npx= 12 P1 az=  118 d= 5.3 km | P0 az=   58 d= 5.0 km | GFS hacia   46 a  6.6 m/s (capa 4.4-5.6 km)
+  22:30 E13  npx= 19 P1 az=  109 d= 5.2 km | P0 az=   52 d= 5.7 km | GFS hacia   41 a  6.6 m/s (capa 4.4-5.6 km)
+  22:40 E13  npx=  4 P1 az=  112 d= 5.5 km | P0 az=   57 d= 5.6 km | GFS hacia   41 a  6.6 m/s (capa 4.4-5.6 km)
+  22:50 E13  npx=  5 P1 az=   72 d= 5.6 km | P0 az=   36 d= 8.4 km | GFS hacia   41 a  6.6 m/s (capa 4.4-5.6 km)
+  23:00 E13  npx=  7 P1 az=  112 d= 8.5 km | P0 az=   75 d= 7.7 km | GFS hacia   41 a  6.6 m/s (capa 4.4-5.6 km)
+  23:20 E13  npx=  8 P1 az=  112 d= 5.5 km | P0 az=   57 d= 5.6 km | GFS hacia   41 a  6.6 m/s (capa 4.4-5.6 km)
+  23:30 E13  npx=  4 P1 az=  117 d=11.9 km | P0 az=   92 d=10.1 km | GFS hacia   33 a  6.5 m/s (capa 4.4-5.6 km)
+  -> {'jornada': '10-11', 'resueltas': 10, 'P1_media': 114.8, 'P1_R': 0.96, 'P0_media': 66.4, 'P0_R': 0.95, 'frac45_P1': np.float64(1.0), 'frac45_P0': np.float64(1.0), 'gfs_hacia': 42.1, 'gfs_ms': 6.6, 'gfs_n': 10, 'gfs_capa_completa_hacia': 51.3, 'huella_vs_gfs': 'no concluyente', 'd_huella_gfs': [24.3, 72.7]}
+
+== Jornada 12-11: 8 slots; estados {'sin_objeto_anclado': 8}
+
+== Viento GFS a la hora de cada REAV (capa H/2 a H sobre el crater)
+  E1   2026-10-25 10:41 REAV 135.0 | GFS hacia 346.0 a  0.9 m/s | dif 149.0 | crater 2,9/3,5 km: 305/9
+  E2   2026-10-25 11:27 REAV 135.0 | GFS hacia 304.3 a  1.1 m/s | dif 169.3 | crater 2,9/3,5 km: 285/348
+  E3   2026-10-25 13:15 REAV 135.0 | GFS hacia 172.8 a  0.5 m/s | dif 37.8 | crater 2,9/3,5 km: 215/105
+  E4   2026-10-25 14:44 REAV 135.0 | GFS hacia 143.2 a  3.1 m/s | dif 8.2 | crater 2,9/3,5 km: 160/128
+  E5   2026-10-25 16:23 REAV 135.0 | GFS hacia 127.1 a  4.7 m/s | dif 7.9 | crater 2,9/3,5 km: 138/115
+  E6   2026-10-27 09:26 REAV 315.0 | GFS hacia  16.9 a  6.9 m/s | dif 61.9 | crater 2,9/3,5 km: 15/20
+  E7   2026-10-27 10:26 REAV 22.5 | GFS hacia   6.1 a  5.7 m/s | dif 16.4 | crater 2,9/3,5 km: 5/8
+  E8   2026-10-27 11:04 REAV 0.0 | GFS hacia   2.9 a  7.3 m/s | dif 2.9 | crater 2,9/3,5 km: 360/6
+  E9   2026-10-28 15:34 REAV 315.0 | GFS hacia 318.4 a  4.9 m/s | dif 3.4 | crater 2,9/3,5 km: 306/328
+  E10  2026-10-28 17:38 REAV 315.0 | GFS hacia 351.5 a  6.0 m/s | dif 36.5 | crater 2,9/3,5 km: 347/356
+  E11  2026-10-28 20:32 REAV None | GFS hacia  14.8 a  6.5 m/s | dif None | crater 2,9/3,5 km: 17/13
+  E12  2026-10-28 21:49 REAV None | GFS hacia  21.9 a  5.2 m/s | dif None | crater 2,9/3,5 km: 28/18
+  E13  2026-11-10 21:54 REAV None | GFS hacia  45.5 a  6.6 m/s | dif None | crater 2,9/3,5 km: 45/46
+  E14  2026-11-12 20:03 REAV None | GFS hacia 118.9 a  9.9 m/s | dif None | crater 2,9/3,5 km: 122/117
+
+VEREDICTO H10 (criterio seccion 7): no concluyente | jornadas con direccion y escenas VOLCAT: [('25-10', 'no concluyente'), ('28-10', 'no concluyente (menos de 2 escenas)')]

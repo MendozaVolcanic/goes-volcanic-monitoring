@@ -1,6 +1,6 @@
 # Por qué VOLCAT ve ceniza en Nevados de Chillán (nov-2026) y nuestro detector no
 
-Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1). Estado: **informe con cinco pruebas medidas y un plan; no cambia código de detección.**
+Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1) y el 19-11 (H3 y H7, §3.2; H6 cerrada). Estado: **informe con siete pruebas medidas y un plan; no cambia código de detección.**
 Antecedentes: plan de validación §3.4 a §3.6 (`docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`) y el informe
 del detector (`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\INFORME_variantes.md`).
 
@@ -20,12 +20,26 @@ las 58 detecciones de noviembre ancladas al cráter eran de día. Las pruebas de
 - De día, los canales solares no distinguen la huella del mismo lugar en un día sin pluma con el mismo
   estado térmico (AUC 0,50 en las tres señales).
 
-**Lo que queda.** VOLCAT dibuja estas plumas donde nuestro split-window no ve nada, de día y de noche, y
-la diferencia no está en el sol. Lo más probable ahora es su forma de medir el infrarrojo: compara contra
-un cielo despejado calculado con modelo de atmósfera (GFS) y usa razones β entre bandas, incluida la de
-vapor de agua de 7,3 µm, que ninguna prueba nuestra usó (H3). El trato especial a objetos chicos cerca de
-volcanes sigue abierto (H2). Y sigue sin saberse cuántas de esas detecciones son ceniza real: para eso
-hace falta el registro del OVDAS (cámaras, REAV), que no está en el repositorio.
+**Es ceniza (19-11).** Nicolás, geólogo del OVDAS, cerró H6: "el volcán lleva muchos días con pulsos y
+columnas de gas y ceniza en cantidades variables". VOLCAT dibuja ceniza real; el problema es nuestro.
+
+**Lo medido el 19-11 (§3.2).** Ni el cielo despejado modelado ni el seguimiento entre cuadros
+explican la diferencia:
+- H3, cielo modelado y razones β con la banda de vapor de agua de 7,3 µm: **no concluyente, y en la
+  práctica no separa**. Con un cálculo radiativo propio (perfil GFS, líneas HITRAN, sesgo medido de
+  −0,29 K en 11,2 µm) la compuerta de VOLCAT deja pasar casi todo, huella y día sin pluma por igual
+  (90 % contra 88 %): sobre el volcán el modelo queda unos 7 K más tibio que lo observado porque el GFS
+  pone ese terreno a ~1.700 m y no a ~3.200 m. La compuerta mide el error del terreno, no la pluma.
+  Con el cielo despejado empírico, la huella casi no pasa la compuerta (3,5 %).
+- H7, VOLCAT sigue un objeto detectado antes con señal: **falsada**. En los tres episodios (28-10,
+  10-11, 14-11) el primer cuadro tampoco tiene señal propia: ni BTD, ni hot spot FDCF, ni enfriamiento
+  rápido.
+
+**Lo que queda.** H2 (trato especial cerca de volcanes) sigue abierta, ahora con un mecanismo concreto
+para probar: si el cielo modelado de VOLCAT comete el mismo error de terreno en la cumbre, el cráter pasa
+siempre su primera compuerta y la decisión cae en los criterios relajados del objeto chico anclado. Un
+indicio sin validar: en el episodio nocturno del 28 y 29-10, β(7,3/11) sí sale más alta en la huella
+(AUC 0,91 y 0,74), y de día (14-11) no.
 
 **Qué no es.** No es un problema de umbral (cuatro variantes lo descartaron) ni un corrimiento de la
 huella por paralaje (prueba A, abajo), ni una señal escondida en la banda de 8,5 µm (prueba B), ni la luz solar (pasos 2 y 4, §3.1).
@@ -189,16 +203,113 @@ nada en E-O.
   "al lado" de la huella como un objeto propio, sino que la huella está en el borde de algo más grande.
 - H4 no se reabre ni para este episodio.
 
+### 3.2 Tercera tanda (19-11): H3 (cielo modelado y β con C10) y H7 (seguimiento)
+
+Criterios escritos y commiteados antes del primer número, informes completos, salidas crudas y
+scripts en `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\h3_h7\`
+(`criterio_H3_cielo_modelado_2026-11-19.md`, `criterio_H7_seguimiento_2026-11-19.md`,
+`INFORME_H3.md`, `INFORME_H7.md`, `h3_resultado.txt`, `h7_resultado.txt`, `scripts_h3\`, `scripts_h7\`).
+
+**H3, la física.** VOLCAT no pregunta "¿la BTD es negativa?", sino "¿cuánto de la radiancia que debería
+llegar del suelo despejado falta, y en qué proporción entre bandas?". Eso es la emisividad efectiva ε
+contra un cielo despejado calculado, y las razones β entre bandas. Una pluma tibia y semitransparente
+podría tener BTD positiva y aun así un β de ceniza. Para que eso funcione hace falta un cielo despejado
+calculado con error menor que la señal: ε(11) = 0,02, la primera compuerta de VOLCAT, equivale a 0,7 a
+1,0 K de BT11, mientras la literatura da 4 a 5 K de error del cielo modelado sobre tierra (Heidinger y
+Pavolonis 2009; ATBD GOES-R VolAsh, Tabla 12), y SECO Part 1 §4.2 corrige la ε negativa sobre tierra
+con un sesgo de BTD.
+
+**H3, método.** No hay RTM en el repositorio, RTTOV pide registro, CRTM y PFAAST (el modelo de SECO)
+piden compilar Fortran y CAMEL (emisividad de superficie) pide cuenta Earthdata. Se hizo un cálculo
+línea por línea propio en Python, sin cuenta ni compilación: líneas HITRAN (HAPI 1.3: H2O, CO2, O3,
+N2O, CH4), continuo de vapor de agua MT_CKD 4.3 (AER), funciones de respuesta espectral del ABI de
+GOES-19 (reproducen el Planck de los coeficientes L1b a ≤ 0,004 K), perfil GFS 0,25° por píxel y
+emisividad de superficie fija declarada. Se agregó C10 (7,3 µm) a la ventana. Casos: 28-10 22:40 a
+23:40 UTC, 29-10 01:00 a 01:20 UTC (noche cerrada) y 14-11 (de día); 37 pares con control del mismo
+lugar y minuto en un día sin pluma, elegido por BT11 (dos cuadros del 14-11 quedaron sin control por
+diferencia > 3 K); 458 píxeles de huella.
+
+**Error del modelo** (observado menos modelo, 2.200 píxeles despejados de los controles, medido antes
+de mirar la huella): sesgo −0,48 / +0,63 / −0,29 / −0,14 K y dispersión 2,1 / 6,9 / 7,6 / 7,3 K en
+C10 / C11 / C14 / C15. De noche la dispersión en C14 baja a 2,4 K; de día sube a 8,2 K. Bajar la
+emisividad de superficie en 0,03 enfría el modelo 1,75 K en C14. El sesgo cumple el criterio (≤ 3 K);
+la dispersión es la de la literatura.
+
+| Cielo despejado | G huella | G control | AUC ε(11) | AUC β(12/11) | AUC β(8,5/11) | AUC β(7,3/11) |
+|---|---|---|---|---|---|---|
+| M, modelado (agrupado) | 0,902 | 0,876 | 0,541 | 0,387 | 0,452 | 0,536 |
+| E, empírico (agrupado) | 0,035 | 0,009 | 0,483 | no medible | no medible | no medible |
+
+G = fracción de píxeles que pasan la compuerta ε(11) ≥ 0,02. AUC = probabilidad de que un píxel de
+huella supere al mismo píxel en el control. Con E, menos de 20 píxeles pasan la compuerta y los β no se
+pueden medir.
+
+- **Veredicto según el criterio: no concluyente.** No se sostiene (G huella − G control = +0,026, se
+  pedía ≥ 0,25). No se falsa por (a) (G huella = 0,90) ni por (b), porque β(12/11) queda con
+  |AUC − 0,5| = 0,113, apenas sobre el 0,10 del criterio; apunta hacia "más ceniza" en los tres casos
+  (0,46, 0,30 y 0,38), con medianas casi iguales (0,86 contra 0,88).
+- **Lectura física.** Con el cielo modelado, la compuerta pasa en el 90 % de la huella y en el 88 % del
+  mismo lugar en un día sin pluma. Diagnóstico posterior a las tablas (no decide): en los controles, sobre
+  la huella, el modelo queda 7,07 K más tibio que lo observado en C14, porque el GFS pone ese terreno a
+  1.737 m de mediana contra unos 3.200 m de la cumbre. Un cielo modelado con terreno grueso hace que la
+  cumbre parezca siempre cubierta por una nube tenue. La comparación huella contra anillo vecino en la
+  misma escena (secundaria) da AUC ε(11) = 0,84 con el modelo y 0,52 sin él: lo que separa ahí es el
+  terreno, no la pluma.
+- **Atribución (paso 4).** Ninguna de las dos formas separa la huella del control: ni el modelo ni las
+  razones β. Con el cielo empírico la compuerta casi no deja pasar la pluma (3,5 %).
+- **Indicio sin validar.** β(7,3/11), la banda de vapor de agua, sale más alta en la huella en los dos
+  casos nocturnos de octubre (AUC 0,91 el 28-10 y 0,74 el 29-10) y no de día (0,41 el 14-11). Coincide
+  con lo que haría el vapor o el SO₂ de una pluma a 7,3 µm, pero las medianas de β(7,3/11) son cercanas a
+  cero o negativas (el modelo de C10 queda más frío que lo observado), son 106 píxeles de un solo episodio
+  y la lectura es posterior al criterio. Sirve para escribir el criterio de una prueba nueva, no como
+  resultado.
+- **Para `detect_ash_enhanced`: no se propone ningún cambio.** H3 no se sostuvo, y llevar un RTM a la
+  app costaría una tabla de consulta de ~184 MB, descargas GFS por escena y un error de terreno que hoy
+  haría saltar la compuerta en todas las cumbres.
+
+**H7, la física y el método.** El ATBD VOLCAT v1.0 (Pavolonis et al., enero 2025, §2.2) describe un
+seguidor que lleva cada nube de un cuadro al siguiente "desde la emisión hasta la disipación", un segundo
+detector por crecimiento de nube (Pavolonis et al. 2018) y umbrales que dependen del calor en el cráter.
+Si los cuadros sin señal IR fueran sólo continuación de un objeto detectado antes con señal, nuestro
+detector no tendría por qué verlos. Se revisó cuadro por cuadro si el primer cuadro de cada tramo tenía
+señal propia: (a) BTD < −1 K en la huella, (b) hot spot FDCF a ≤ 10 km del cráter en ese scan o en los
+dos anteriores, (c) al menos 2 píxeles a ≤ 10 km con BT11 2 K más fría que 10 min antes.
+
+| Episodio | Primer cuadro del tramo | ¿Señal propia? | Cuadros anclados | Sin señal | Sin señal con antecesor |
+|---|---|---|---|---|---|
+| 28-10 | 19:20 UTC | no | 15 | 9 | 9 |
+| 10-11 | 15:00 UTC | no | 12 | 5 | 2 |
+| 14-11 | 16:40 UTC | no | 33 | 9 | 8 |
+| Total | 0 de 3 con señal | | 60 | 23 | 19 (83 %) |
+
+- **Veredicto según el criterio: H7 se falsa.** El primer cuadro no tiene señal en 3 de 3 episodios (la
+  regla pedía 2). VOLCAT sí sigue los objetos de un cuadro a otro, pero el cuadro con que parte cada
+  tramo tampoco tiene señal en nuestros datos.
+- Hot spot FDCF: 0 % en los cuadros anclados y 0 % en los 465 scans sin objeto de esos días. El calor
+  del cráter que ve el FDCF no es lo que dispara VOLCAT aquí.
+- BTD mínima en las huellas de los tres episodios: −0,73 K (28-10 22:50 UTC). Ningún cuadro llega a −1 K.
+- El enfriamiento rápido (c) aparece también en el 19 al 61 % de los scans sin objeto; quitarlo no cambia
+  el veredicto.
+- Desviación declarada: el tramo del 28-10 empieza antes de la ventana del criterio (el cuadro de 21:30
+  ya tenía objeto anclado y el de 21:40 no se publicó), así que el primer cuadro es el de 19:20. Con
+  18:30, 19:00 o 21:50 como primer cuadro el resultado es el mismo.
+
+**Contexto oficial (REAV SERNAGEOMIN, leído por la sesión que encargó esto).** El 28-10 hubo columnas de
+1.320 a 2.440 m sobre el cráter, desviadas hacia el NW; el 10-11, de 2.340 a 2.400 m desde las 21:54 UTC.
+La huella VOLCAT del 28-10 que se midió deriva al SE (§3.1). Queda anotado como discrepancia por
+revisar, sin conclusión.
+
 ## 4. Hipótesis ordenadas por evidencia
 
 | # | Hipótesis | A favor | En contra o abierto | Qué la falsaría con datos que ya hay o casi |
 |---|---|---|---|---|
 | H1 | ~~VOLCAT ve estas plumas por los canales solares de día~~ **Falsada el 18-11** | SECO los usa con ABI; las 58 detecciones de noviembre eran de día | Paso 4: el 29-10 VOLCAT sigue una pluma anclada al cráter de noche (3 cuadros seguidos, cenit 110 a 113°) sin señal IR en la huella. Paso 2: los canales solares no separan la huella del control pareado (AUC 0,50) | Hecho (§3.1) |
 | H2 | **El trato especial al cráter** (objetos de 0 a 25 píxeles aceptados a menos de 5, 10 o 50 km de un volcán) deja pasar objetos que en otra parte se descartarían | SECO Part 2 Tabla 4; los objetos de Chillán son chicos (mediana 10 px del PNG) y todos anclados al cráter | Paso 3 no concluyente (R = 3,2, dominado por el 16-11); sin el 16-11, VOLCAT publica objetos chicos lejos de volcanes (R = 0,52), probablemente polvo de Cuyo con señal IR propia | Sigue abierta: haría falta comparar objetos chicos lejos de volcanes **sin** señal IR, que no se pueden separar sólo con el PNG |
-| H3 | El **fondo modelado** (cielo despejado con GFS y modelo radiativo) basta para ver la pluma en el IR | Es la diferencia de diseño más conocida | La huella está igual o más tibia que nuestro cielo despejado empírico; con ε(11) ≥ 0,02 VOLCAT pediría que esté ~1,5 K más fría que el suyo. El caso Kizimen y Karymsky (SECO Part 2 §6) es justo este síntoma y SECO no los vio | Calcular el cielo despejado GFS + RTM del 08 y 10-11, cuando la huella sí está 2 a 5 K más fría: si ni así sale ε(11) ≥ 0,02 con β de ceniza, cae |
+| H3 | El **fondo modelado** (cielo despejado con GFS y modelo radiativo) y las razones β, incluida β(7,3/11), bastan para ver la pluma en el IR | Es la diferencia de diseño más conocida; β(7,3/11) más alta en la huella en el episodio nocturno de octubre (AUC 0,91 y 0,74, indicio posterior al criterio) | 19-11 (§3.2): con cielo modelado la compuerta pasa igual en la huella y en el control (0,90 contra 0,88) porque el GFS pone la cumbre 1,5 km más abajo y el modelo queda ~7 K más tibio; con cielo empírico la huella casi no pasa (3,5 %); ningún β separa con |AUC − 0,5| ≥ 0,20 agrupado | **No concluyente según el criterio** (β(12/11) quedó a 0,013 del umbral de falsación); en la práctica no separa. Sólo una prueba nueva de β(7,3/11) en noches con pluma, con criterio propio, podría reabrirla |
 | H4 | La huella está **corrida por paralaje** y medimos en el lugar equivocado | Plausible en geometría (0,93 km por km de altura) | Noviembre: no hay señal fría en ningún corrimiento hasta 5 px. 28-10 (18-11): BTD < −1 K en ningún corrimiento; el frío de BT11 crece hacia el SO, no hacia donde predice el paralaje (1,1 filas al sur para 3,5 km) | Falsada, también en el episodio del 28-10 |
 | H5 | La señal está en la **banda de 8,5 µm** | Es una banda que VOLCAT usa y el detector no probó en anomalía | Prueba B: AUC 0,26 | Falsada hoy, con la salvedad del nulo nublado |
-| H6 | Parte de lo que VOLCAT dibuja **no es ceniza**: vapor de agua de la pluma, nube orográfica o superficie (nieve recién teñida de ceniza) | El 14-11 VOLCAT da 8 a 12 km sin ningún píxel frío (§3.5): el retrieval trabaja con casi nada de señal; la franja SE del cráter aparece también el 12-11, día sin pluma | Las cámaras del observatorio fueron coherentes con alturas de 3 a 5 km | Registro OVDAS (hora de cada pulso en cámara y REAV) contra la hora de cada cuadro VOLCAT |
+| H6 | ~~Parte de lo que VOLCAT dibuja **no es ceniza**~~ **Cerrada el 19-11 por Nicolás (OVDAS)** | | "El volcán lleva muchos días con pulsos y columnas de gas y ceniza en cantidades variables" | Cerrada: VOLCAT dibuja ceniza real |
+| H7 | VOLCAT **sigue** un objeto detectado antes con señal (seguidor kd-tree del ATBD 2025) y los cuadros sin señal son continuación | ATBD VOLCAT v1.0 §2.2; 19 de 23 cuadros sin señal tienen antecesor | 19-11 (§3.2): el primer cuadro de cada tramo tampoco tiene señal (0 de 3 episodios con BTD, hot spot FDCF o enfriamiento rápido) | **Falsada el 19-11** |
 
 ## 5. Perspectivas
 
@@ -224,12 +335,15 @@ nada en E-O.
 
 | Paso | Qué | Costo | Falsa o apoya |
 |---|---|---|---|
-| 1 | Pedir al OVDAS la hora de cada pulso visto en cámara y el REAV del 08, 10, 11 y 14-11 (Nicolás) | 0 de cómputo | H6 |
+| 1 | ~~Pedir al OVDAS la hora de cada pulso visto en cámara y el REAV~~ | No hace falta: Nicolás cerró H6 el 19-11 | H6: cerrada |
 | 2 | C02 y C07 en la ventana del cache, ρ(3,9/0,65) y textura del 0,65 µm | Hecho el 18-11: 366 escenas, 61 MB, ~1 h | H1 (b): falsada |
 | 3 | Contar en los PNG VOLCAT los objetos lejos de volcanes, por tamaño | Hecho el 18-11: 2.181 cuadros, sin descarga | H2: no concluyente |
 | 4 | Detecciones VOLCAT nocturnas de Chillán en otras fechas | Hecho el 18-11: 1.177 cuadros, ~0,5 GB | H1 (a): falsada (29-10) |
 | 5 | ~~Prototipo de señal diurna~~: no corresponde, el paso 2 no cumplió | | |
-| 6 | **Siguiente, H3:** en la huella del 28-10 y del 14-11, calcular ε(11) y las razones β(12/11), β(8,5/11) y β(7,3/11) contra un cielo despejado con perfil GFS y modelo radiativo, con criterio escrito antes. Requiere agregar C10 (7,3 µm) a la ventana y un RTM (no está en el repo) | 1 a 2 días; decisión de Nicolás | H3 |
+| 6 | H3: ε(11) y β(12/11), β(8,5/11), β(7,3/11) contra cielo despejado GFS + cálculo línea por línea propio, y variante empírica | Hecho el 19-11: 37 pares, 458 píxeles, ~1 día de cómputo | H3: no concluyente, no separa |
+| 7 | H7: ¿el primer cuadro de cada tramo VOLCAT tiene señal propia? | Hecho el 19-11: 3 episodios, 582 scans FDCF | H7: falsada |
+| 8 | **Siguiente, si Nicolás lo aprueba:** ¿VOLCAT dibuja objetos anclados en cumbres altas de volcanes sin actividad, donde un cielo modelado con terreno grueso también fallaría? Separaría el error de terreno + criterios relajados (H2) de una señal real. Con los PNG ya bajados | ~medio día, sin descarga grande | H2 |
+| 9 | β(7,3/11) en todas las noches con pluma VOLCAT (criterio nuevo, escrito antes) | ~medio día con el caché de C10 | Indicio de H3 |
 
 Pasos que **no** conviene repetir: bajar el umbral BTD, anomalía de fondo, β(12/11) con temperatura de
 referencia fija y la banda de 8,5 µm sola. Están medidos.

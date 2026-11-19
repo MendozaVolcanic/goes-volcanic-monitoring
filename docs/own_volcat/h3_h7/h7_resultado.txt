@@ -1,0 +1,167 @@
+H7 (VOLCAT sigue la nube entre cuadros): resultado, 19-11-2026
+Criterio: C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\criterio_H7_seguimiento_2026-11-19.md
+Scripts: C:\Users\nmend\AppData\Local\Temp\claude\caac88451b34493f\bd33fd70-a478-403d-be84-fcf2fda5792e\scratchpad\h7\ (volcat_obj.py, fetch_fdcf.py, fetch_l1b.py, h7_analisis.py); copia en esta carpeta (h7_volcat_obj.py, h7_fetch_fdcf.py, h7_fetch_l1b.py, h7_analisis.py).
+
+RESUMEN
+- Primer cuadro del primer tramo: E1 28-10 19:20 sin senal; E2 10-11 15:00 sin senal; E3 14-11 16:40 sin senal (0 de 3 con senal).
+- Cuadros anclados: 60 (E1 15, E2 12, E3 33). Sin senal propia: 23 (E1 9, E2 5, E3 9); con antecesor 19 (82,6 %), primeros de tramo 4 (17,4 %).
+- Linea base de (b): 0 % en los tres episodios (E1 0/240, E2 0/127, E3 0/98 scans sin objeto); (b) entra al veredicto, pero no se encendio en ningun cuadro anclado.
+- VEREDICTO: H7 SE FALSA, por la primera clausula de falsacion: en 3 de 3 episodios (>= 2) el primer cuadro del primer tramo NO tiene senal propia.
+  La segunda clausula no se cumple (17,4 % de primeros <= 30 %), y hay >= 5 cuadros sin senal (23), asi que no cae en "no concluyente".
+
+DESVIACIONES DEL CRITERIO (explicitas)
+1. E1 empieza antes de su ventana. El criterio pone E1 desde 28-10 21:50, pero el slot 21:40 no se publico y el de 21:30 tiene objeto anclado,
+   asi que 21:50 es continuacion y la cadena sin cortes llega hasta 28-10 19:20 (19:10 publicado y sin objeto). Tome 19:20 como "primer cuadro
+   del primer tramo". Los cuadros anclados que entran en los totales son solo los de la ventana 21:50 a 01:40 (15). Variantes informadas:
+   18:30 y 19:00 (tramos de un cuadro antes) y 21:50 literal: los cuatro sin senal, el veredicto no cambia con ninguna eleccion.
+2. "Anclado" sale de mi decodificacion (metodo de paso4/pruebaA: zona util VALIDO, haversine desde cada pixel del PNG), no de la columna
+   toca_crater_10km del CSV. Coinciden salvo 14-11 21:00 (8,8 km por haversine; el CSV da 9,5 km con distancia de grilla isotropa y toca=0).
+   Ese cuadro es continuacion y tiene (c); no cambia el conteo de cuadros sin senal.
+3. Huella de (a): union de los objetos anclados enteros, llevada a ABI con dos mapeos (pixel ABI -> VOLCAT mas cercano, como huellas.py, y
+   pixel VOLCAT -> ABI mas cercano), dilatada 1 px. Sensibilidad con todos los objetos a <= 50 km: tampoco hay (a) en ningun cuadro.
+4. Linea base de (a): en un scan sin objeto no hay huella; se trasplantan las huellas ancladas del episodio a cada scan sin objeto (pares).
+5. Linea base de (a) y (c) solo en horas con L1b en cache: 28-10 14:00-23:50; 29-10 00:00-01:40 y 14:00-23:50; 10-11 y 14-11 08:00-12:30 y
+   14:00-23:50. La de (b) cubre los dias completos (FDCF de los 144 slots). En E1, "mismo dia" = 28-10 y 29-10 juntos.
+6. (b) usa el conjunto por defecto del repo, Mask 10-15 (HOTSPOT_MASK_VALUES, extract_hotspots). Las detecciones con filtro temporal
+   (Mask 30-35) van como sensibilidad: 0 a <= 10 km en todos los cuadros anclados; en la linea base solo 14-11 00:10 y 00:30 (Mask 35, 5 km).
+7. (c) usa BT de 11,2 um (C14; en la cache se llama b14, porque b11 es C11 de 8,4 um).
+8. (c) se enciende mucho sin objeto: 19,3 % (E1), 34,3 % (E2), 61,0 % (E3) de los scans sin objeto. El criterio solo preve la regla del 80 %
+   para (b), asi que (c) se aplico tal cual. Si se excluyera (c), los 60 cuadros quedarian sin senal (5 primeros de tramo, 8,3 %) y el
+   veredicto seria el mismo (falsa por la primera clausula).
+9. L1b de 29-10 00:00-01:40 bajado nuevo a h7\cache (Planck del NetCDF L1b). La cache de H3 se dejo como respaldo de solo lectura en el
+   script (verificada identica a det en 28-10 22:40), pero no hizo falta: todos los scans estaban en det o h7.
+
+DETALLE (salida de h7_analisis.py)
+H7: resultado de la prueba (criterio_H7_seguimiento_2026-11-19.md). Generado por h7_analisis.py.
+Signo: (a) BTD 11,2-12,3 um < -1 K en huella anclada dilatada 1 px; (b) hot spot FDCF Mask 10-15 a <= 10 km en t, t-10 o t-20;
+(c) >= 2 px a <= 10 km con BT11,2 al menos 2 K mas fria que t-10. NA = dato faltante.
+
+LINEA BASE E1 (dias 2026-10-28, 2026-10-29; scans publicados SIN objeto VOLCAT a <= 50 km: 240)
+  (b) hot spot FDCF Mask 10-15 (t, t-10, t-20): 0/240 = 0.0 %   [sensibilidad con Mask 30-35: 0/240 = 0.0 %]
+  (c) crecimiento: 16/83 = 19.3 %  (solo scans con L1b en cache y su t-10)
+  (a) BTD<-1 en huellas ancladas del episodio (15 huellas) trasplantadas: pares 0/1275 = 0.0 %; scans con alguna huella positiva 0/85 = 0.0 %
+  horas con L1b en la linea base: 28 14 a 29 23 (85 scans)
+  (c) positivos en la linea base: 29/15:50 29/16:10 29/16:30 29/16:50 29/17:00 29/17:10 29/17:20 29/17:30 29/17:50 29/18:20 29/18:30 29/18:40 29/18:50 29/19:20 29/19:40 29/21:20
+
+LINEA BASE E2 (dias 2026-11-10; scans publicados SIN objeto VOLCAT a <= 50 km: 127)
+  (b) hot spot FDCF Mask 10-15 (t, t-10, t-20): 0/127 = 0.0 %   [sensibilidad con Mask 30-35: 0/127 = 0.0 %]
+  (c) crecimiento: 24/70 = 34.3 %  (solo scans con L1b en cache y su t-10)
+  (a) BTD<-1 en huellas ancladas del episodio (12 huellas) trasplantadas: pares 0/864 = 0.0 %; scans con alguna huella positiva 0/72 = 0.0 %
+  horas con L1b en la linea base: 10 08 a 10 23 (72 scans)
+  (c) positivos en la linea base: 10/12:00 10/15:20 10/16:40 10/17:00 10/17:10 10/17:20 10/17:40 10/17:50 10/18:00 10/18:10 10/18:20 10/18:30 10/18:40 10/18:50 10/19:00 10/19:20 10/19:50 10/20:20 10/20:30 10/20:40 10/20:50 10/21:00 10/23:10 10/23:50
+
+LINEA BASE E3 (dias 2026-11-14; scans publicados SIN objeto VOLCAT a <= 50 km: 98)
+  (b) hot spot FDCF Mask 10-15 (t, t-10, t-20): 0/98 = 0.0 %   [sensibilidad con Mask 30-35: 5/98 = 5.1 %]
+  (c) crecimiento: 25/41 = 61.0 %  (solo scans con L1b en cache y su t-10)
+  (a) BTD<-1 en huellas ancladas del episodio (33 huellas) trasplantadas: pares 0/1419 = 0.0 %; scans con alguna huella positiva 0/43 = 0.0 %
+  horas con L1b en la linea base: 14 08 a 14 23 (43 scans)
+  (c) positivos en la linea base: 14/09:10 14/09:20 14/09:50 14/10:10 14/10:20 14/10:40 14/10:50 14/11:00 14/11:20 14/11:30 14/12:10 14/14:20 14/14:30 14/14:40 14/14:50 14/15:00 14/15:10 14/15:20 14/15:30 14/15:40 14/15:50 14/16:00 14/21:30 14/23:30 14/23:40
+
+(b) discriminante? fraccion global de la linea base = 0.0 %; por episodio E1 0.0 %, E2 0.0 %, E3 0.0 % -> todas < 80 %: (b) ENTRA
+
+===== E1: 28-10 21:50 a 29-10 01:40 UTC, 15 cuadros anclados
+  slots no publicados por SSEC en la ventana: ninguno
+  tramo 1: 28-10 21:50 a 29-10 01:20 (15 anclados)  (empieza ANTES de la ventana: primer cuadro anclado del tramo 28-10 19:20)
+  cuadro       | antecesor (t_prev, objeto) | rol          | px VOLCAT | (a) BTDmin | (b) hs t,t-10,t-20 | (c) n px | propia
+  28-10 21:50  | 21:30 si                | continuacion |   31/ 23abi | no  -0.08  | no  [0, 0, 0]     | no  0   | no
+  28-10 22:00  | 21:50 si                | continuacion |   25/ 19abi | no  -0.37  | no  [0, 0, 0]     | no  0   | no
+  28-10 22:10  | 22:00 si                | continuacion |   14/ 13abi | no  -0.03  | no  [0, 0, 0]     | no  0   | no
+  28-10 22:20  | 22:10 si                | continuacion |   11/  9abi | no  -0.47  | no  [0, 0, 0]     | no  0   | no
+  28-10 22:30  | 22:20 si                | continuacion |   27/ 23abi | no  -0.27  | no  [0, 0, 0]     | no  1   | no
+  28-10 22:40  | 22:30 si                | continuacion |   10/  9abi | no  0.03   | no  [0, 0, 0]     | no  0   | no
+  28-10 22:50  | 22:40 si                | continuacion |    8/  8abi | no  -0.73  | no  [0, 0, 0]     | no  0   | no
+  28-10 23:00  | 22:50 si                | continuacion |   22/ 19abi | no  -0.12  | no  [0, 0, 0]     | si  5   | si
+  28-10 23:10  | 23:00 si                | continuacion |   24/ 21abi | no  0.2    | no  [0, 0, 0]     | si  13  | si
+  28-10 23:20  | 23:10 si                | continuacion |   18/ 13abi | no  0.26   | no  [0, 0, 0]     | si  24  | si
+  29-10 00:10  | 00:00 si                | continuacion |    4/  2abi | no  0.97   | no  [0, 0, 0]     | si  2   | si
+  29-10 00:30  | 00:20 si                | continuacion |    5/  5abi | no  0.2    | no  [0, 0, 0]     | si  4   | si
+  29-10 01:00  | 00:50 si                | continuacion |    9/  8abi | no  0.0    | no  [0, 0, 0]     | si  4   | si
+  29-10 01:10  | 01:00 si                | continuacion |    5/  4abi | no  -0.53  | no  [0, 0, 0]     | no  1   | no
+  29-10 01:20  | 01:10 si                | continuacion |   10/ 10abi | no  -0.28  | no  [0, 0, 0]     | no  0   | no
+  cuadros anclados del mismo dia ANTES de la ventana (informativo):
+    28-10 18:30 antecesor 18:20 no -> PRIMERO; (a) no -0.44, (b) no [0, 0, 0], (c) no 1 -> propia no
+    28-10 19:00 antecesor 18:50 no -> PRIMERO; (a) no 0.39, (b) no [0, 0, 0], (c) no 1 -> propia no
+    28-10 19:20 antecesor 19:10 no -> PRIMERO; (a) no -0.09, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 19:30 antecesor 19:20 si -> continuacion; (a) no 0.14, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 19:40 antecesor 19:30 si -> continuacion; (a) no -0.0, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 19:50 antecesor 19:40 si -> continuacion; (a) no 0.06, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 20:00 antecesor 19:50 si -> continuacion; (a) no 0.13, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 20:10 antecesor 20:00 si -> continuacion; (a) no 0.0, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 20:20 antecesor 20:10 si -> continuacion; (a) no -0.14, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 20:30 antecesor 20:20 si -> continuacion; (a) no 0.04, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 20:40 antecesor 20:30 si -> continuacion; (a) no -0.03, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 20:50 antecesor 20:40 si -> continuacion; (a) no -0.1, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 21:00 antecesor 20:50 si -> continuacion; (a) no 0.04, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 21:10 antecesor 21:00 si -> continuacion; (a) no -0.06, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 21:20 antecesor 21:10 si -> continuacion; (a) no -0.05, (b) no [0, 0, 0], (c) no 0 -> propia no
+    28-10 21:30 antecesor 21:20 si -> continuacion; (a) no -0.1, (b) no [0, 0, 0], (c) no 0 -> propia no
+  PRIMER CUADRO DEL PRIMER TRAMO: 28-10 19:20: (a) no BTDmin -0.085601806640625, (b) no [0, 0, 0], (c) no n=0 -> senal propia no
+  sensibilidad (a) con huella = todos los objetos a <= 50 km: 21:50:no 22:00:no 22:10:no 22:20:no 22:30:no 22:40:no 22:50:no 23:00:no 23:10:no 23:20:no 00:10:no 00:30:no 01:00:no 01:10:no 01:20:no
+
+===== E2: 10-11 00:00 a 10-11 23:50 UTC, 12 cuadros anclados
+  slots no publicados por SSEC en la ventana: 01:20, 10:30, 11:00, 22:00
+  tramo 1: 10-11 15:00 a 10-11 15:10 (2 anclados)
+  tramo 2: 10-11 21:30 a 10-11 23:00 (9 anclados)
+  tramo 3: 10-11 23:20 a 10-11 23:20 (1 anclados)
+  cuadro       | antecesor (t_prev, objeto) | rol          | px VOLCAT | (a) BTDmin | (b) hs t,t-10,t-20 | (c) n px | propia
+  10-11 15:00  | 14:50 no                | PRIMERO      |    6/  6abi | no  0.61   | no  [0, 0, 0]     | no  0   | no
+  10-11 15:10  | 15:00 si                | continuacion |   10/  9abi | no  0.42   | no  [0, 0, 0]     | no  0   | no
+  10-11 21:30  | 21:20 no                | PRIMERO      |   23/ 17abi | no  -0.0   | no  [0, 0, 0]     | no  0   | no
+  10-11 21:40  | 21:30 si                | continuacion |   19/ 16abi | no  0.41   | no  [0, 0, 0]     | si  2   | si
+  10-11 21:50  | 21:40 si                | continuacion |   14/ 13abi | no  0.53   | no  [0, 0, 0]     | si  14  | si
+  10-11 22:10  | 21:50 si                | continuacion |    9/  8abi | no  0.46   | no  [0, 0, 0]     | si  17  | si
+  10-11 22:20  | 22:10 si                | continuacion |   12/ 10abi | no  0.53   | no  [0, 0, 0]     | si  21  | si
+  10-11 22:30  | 22:20 si                | continuacion |   19/ 18abi | no  0.43   | no  [0, 0, 0]     | si  10  | si
+  10-11 22:40  | 22:30 si                | continuacion |    4/  4abi | no  0.28   | no  [0, 0, 0]     | si  3   | si
+  10-11 22:50  | 22:40 si                | continuacion |    5/  5abi | no  0.2    | no  [0, 0, 0]     | si  4   | si
+  10-11 23:00  | 22:50 si                | continuacion |    7/  6abi | no  0.25   | no  [0, 0, 0]     | no  0   | no
+  10-11 23:20  | 23:10 no                | PRIMERO      |    8/  8abi | no  0.45   | no  [0, 0, 0]     | no  0   | no
+  PRIMER CUADRO DEL PRIMER TRAMO: 10-11 15:00: (a) no BTDmin 0.6146240234375, (b) no [0, 0, 0], (c) no n=0 -> senal propia no
+  sensibilidad (a) con huella = todos los objetos a <= 50 km: 15:00:no 15:10:no 21:30:no 21:40:no 21:50:no 22:10:no 22:20:no 22:30:no 22:40:no 22:50:no 23:00:no 23:20:no
+
+===== E3: 14-11 16:40 a 14-11 22:40 UTC, 33 cuadros anclados
+  slots no publicados por SSEC en la ventana: 17:10, 20:20
+  tramo 1: 14-11 16:40 a 14-11 21:20 (26 anclados)
+  tramo 2: 14-11 21:40 a 14-11 22:40 (7 anclados)
+  cuadro       | antecesor (t_prev, objeto) | rol          | px VOLCAT | (a) BTDmin | (b) hs t,t-10,t-20 | (c) n px | propia
+  14-11 16:40  | 16:30 no                | PRIMERO      |    7/  6abi | no  -0.3   | no  [0, 0, 0]     | no  0   | no
+  14-11 16:50  | 16:40 si                | continuacion |    6/  5abi | no  -0.36  | no  [0, 0, 0]     | no  0   | no
+  14-11 17:00  | 16:50 si                | continuacion |    6/  6abi | no  0.33   | no  [0, 0, 0]     | no  0   | no
+  14-11 17:20  | 17:00 si                | continuacion |   16/ 12abi | no  0.16   | no  [0, 0, 0]     | no  0   | no
+  14-11 17:30  | 17:20 si                | continuacion |   13/ 11abi | no  0.04   | no  [0, 0, 0]     | no  0   | no
+  14-11 17:40  | 17:30 si                | continuacion |   15/ 11abi | no  0.07   | no  [0, 0, 0]     | no  0   | no
+  14-11 17:50  | 17:40 si                | continuacion |   19/ 16abi | no  -0.01  | no  [0, 0, 0]     | no  0   | no
+  14-11 18:00  | 17:50 si                | continuacion |   13/ 11abi | no  0.47   | no  [0, 0, 0]     | si  7   | si
+  14-11 18:10  | 18:00 si                | continuacion |   12/ 11abi | no  -0.02  | no  [0, 0, 0]     | si  28  | si
+  14-11 18:20  | 18:10 si                | continuacion |   16/ 13abi | no  -0.01  | no  [0, 0, 0]     | si  2   | si
+  14-11 18:40  | 18:30 si                | continuacion |   11/ 10abi | no  0.19   | no  [0, 0, 0]     | si  4   | si
+  14-11 18:50  | 18:40 si                | continuacion |    7/  6abi | no  0.38   | no  [0, 0, 0]     | si  7   | si
+  14-11 19:00  | 18:50 si                | continuacion |   12/ 11abi | no  -0.07  | no  [0, 0, 0]     | no  1   | no
+  14-11 19:10  | 19:00 si                | continuacion |   15/ 13abi | no  0.18   | no  [0, 0, 0]     | si  18  | si
+  14-11 19:20  | 19:10 si                | continuacion |   10/  9abi | no  -0.36  | no  [0, 0, 0]     | si  28  | si
+  14-11 19:30  | 19:20 si                | continuacion |    6/  6abi | no  0.34   | no  [0, 0, 0]     | si  9   | si
+  14-11 19:40  | 19:30 si                | continuacion |    6/  5abi | no  0.57   | no  [0, 0, 0]     | si  18  | si
+  14-11 19:50  | 19:40 si                | continuacion |   13/  9abi | no  -0.0   | no  [0, 0, 0]     | si  13  | si
+  14-11 20:00  | 19:50 si                | continuacion |   10/  9abi | no  0.06   | no  [0, 0, 0]     | si  5   | si
+  14-11 20:10  | 20:00 si                | continuacion |   13/ 10abi | no  0.29   | no  [0, 0, 0]     | si  5   | si
+  14-11 20:30  | 20:10 si                | continuacion |   16/ 12abi | no  -0.2   | no  [0, 0, 0]     | si  7   | si
+  14-11 20:40  | 20:30 si                | continuacion |   20/ 16abi | no  0.09   | no  [0, 0, 0]     | si  9   | si
+  14-11 20:50  | 20:40 si                | continuacion |   16/ 13abi | no  0.29   | no  [0, 0, 0]     | si  12  | si
+  14-11 21:00  | 20:50 si                | continuacion |    5/  5abi | no  0.45   | no  [0, 0, 0]     | si  33  | si
+  14-11 21:10  | 21:00 si                | continuacion |   14/ 11abi | no  0.13   | no  [0, 0, 0]     | si  4   | si
+  14-11 21:20  | 21:10 si                | continuacion |   10/  9abi | no  0.11   | no  [0, 0, 0]     | no  1   | no
+  14-11 21:40  | 21:30 no                | PRIMERO      |    6/  5abi | no  0.23   | no  [0, 0, 0]     | si  13  | si
+  14-11 21:50  | 21:40 si                | continuacion |    9/  9abi | no  0.31   | no  [0, 0, 0]     | si  8   | si
+  14-11 22:00  | 21:50 si                | continuacion |    7/  6abi | no  0.05   | no  [0, 0, 0]     | si  5   | si
+  14-11 22:10  | 22:00 si                | continuacion |   28/ 25abi | no  -0.11  | no  [0, 0, 0]     | si  21  | si
+  14-11 22:20  | 22:10 si                | continuacion |    6/  5abi | no  0.65   | no  [0, 0, 0]     | si  28  | si
+  14-11 22:30  | 22:20 si                | continuacion |   16/ 13abi | no  -0.18  | no  [0, 0, 0]     | si  10  | si
+  14-11 22:40  | 22:30 si                | continuacion |   23/ 20abi | no  0.16   | no  [0, 0, 0]     | si  40  | si
+  PRIMER CUADRO DEL PRIMER TRAMO: 14-11 16:40: (a) no BTDmin -0.301513671875, (b) no [0, 0, 0], (c) no n=0 -> senal propia no
+  sensibilidad (a) con huella = todos los objetos a <= 50 km: 16:40:no 16:50:no 17:00:no 17:20:no 17:30:no 17:40:no 17:50:no 18:00:no 18:10:no 18:20:no 18:40:no 18:50:no 19:00:no 19:10:no 19:20:no 19:30:no 19:40:no 19:50:no 20:00:no 20:10:no 20:30:no 20:40:no 20:50:no 21:00:no 21:10:no 21:20:no 21:40:no 21:50:no 22:00:no 22:10:no 22:20:no 22:30:no 22:40:no
+
+TOTALES
+  primer cuadro del primer tramo con senal propia: 0 de 3 episodios; sin senal: 3; NA: 0
+  cuadros anclados sin senal propia (incluye NA): 23; con antecesor (continuacion): 19; primeros de tramo: 4
+  fraccion continuacion = 82.6 %; fraccion primeros = 17.4 %
+  VEREDICTO: H7 SE FALSA (primer cuadro sin senal en >= 2 episodios)

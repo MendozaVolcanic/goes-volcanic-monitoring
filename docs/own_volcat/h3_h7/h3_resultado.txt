@@ -1,0 +1,217 @@
+H3: cielo despejado modelado (M) y empirico (E), razones beta con C10. Salida cruda. Corrida 19-11-2026.
+Criterio: /c/Users/nmend/AppData/Local/Claude-Data/claude_pzs8sxrjxfjjc/side-session-notes/local_f3a7d295-ddde-4b7c-b258-25e760c44266/criterio_H3_cielo_modelado_2026-11-19.md
+Scripts: C:\Users\nmend\AppData\Local\Temp\claude\caac88451b34493f\bd33fd70-a478-403d-be84-fcf2fda5792e\scratchpad\h3\ (copia en la carpeta de notas, subcarpeta h3_scripts)
+
+== Huellas (decodificacion de pruebaA_28oct.py: pixel clasificado en la barra Ash_Height, zona util VALIDO, <= 50 km del crater, vecino mas cercano a la grilla ABI, sin dilatar)
+20261028_2240 caso 1 ok n_px 7 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-10-28.22-40-30.Ash_Height.Chile_Central_2_km.png
+20261028_2300 caso 1 ok n_px 27 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-10-28.23-00-30.Ash_Height.Chile_Central_2_km.png
+20261028_2320 caso 1 ok n_px 27 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-10-28.23-20-30.Ash_Height.Chile_Central_2_km.png
+20261028_2340 caso 1 ok n_px 14 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-10-28.23-40-30.Ash_Height.Chile_Central_2_km.png
+20261029_0100 caso 2 ok n_px 12 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-10-29.01-00-30.Ash_Height.Chile_Central_2_km.png
+20261029_0110 caso 2 ok n_px 9 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-10-29.01-10-30.Ash_Height.Chile_Central_2_km.png
+20261029_0120 caso 2 ok n_px 10 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-10-29.01-20-30.Ash_Height.Chile_Central_2_km.png
+20261114_1640 caso 3 ok n_px 6 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.16-40-30.Ash_Height.Chile_Central_2_km.png
+20261114_1650 caso 3 ok n_px 4 altura VOLCAT mediana km 4.5 GOES-19.ABI.2026-11-14.16-50-30.Ash_Height.Chile_Central_2_km.png
+20261114_1700 caso 3 ok n_px 6 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.17-00-30.Ash_Height.Chile_Central_2_km.png
+20261114_1720 caso 3 ok n_px 8 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.17-20-30.Ash_Height.Chile_Central_2_km.png
+20261114_1730 caso 3 ok n_px 8 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.17-30-30.Ash_Height.Chile_Central_2_km.png
+20261114_1740 caso 3 ok n_px 9 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.17-40-30.Ash_Height.Chile_Central_2_km.png
+20261114_1750 caso 3 ok n_px 12 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.17-50-30.Ash_Height.Chile_Central_2_km.png
+20261114_1800 caso 3 ok n_px 12 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.18-00-30.Ash_Height.Chile_Central_2_km.png
+20261114_1810 caso 3 ok n_px 10 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.18-10-30.Ash_Height.Chile_Central_2_km.png
+20261114_1820 caso 3 ok n_px 12 altura VOLCAT mediana km 4.0 GOES-19.ABI.2026-11-14.18-20-30.Ash_Height.Chile_Central_2_km.png
+20261114_1840 caso 3 ok n_px 9 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.18-40-30.Ash_Height.Chile_Central_2_km.png
+20261114_1850 caso 3 ok n_px 8 altura VOLCAT mediana km 4.0 GOES-19.ABI.2026-11-14.18-50-30.Ash_Height.Chile_Central_2_km.png
+20261114_1900 caso 3 ok n_px 11 altura VOLCAT mediana km 5.5 GOES-19.ABI.2026-11-14.19-00-30.Ash_Height.Chile_Central_2_km.png
+20261114_1910 caso 3 ok n_px 8 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.19-10-30.Ash_Height.Chile_Central_2_km.png
+20261114_1920 caso 3 ok n_px 7 altura VOLCAT mediana km 4.5 GOES-19.ABI.2026-11-14.19-20-30.Ash_Height.Chile_Central_2_km.png
+20261114_1930 caso 3 ok n_px 12 altura VOLCAT mediana km 5.5 GOES-19.ABI.2026-11-14.19-30-30.Ash_Height.Chile_Central_2_km.png
+20261114_1940 caso 3 ok n_px 6 altura VOLCAT mediana km 11.0 GOES-19.ABI.2026-11-14.19-40-30.Ash_Height.Chile_Central_2_km.png
+20261114_1950 caso 3 ok n_px 8 altura VOLCAT mediana km 4.5 GOES-19.ABI.2026-11-14.19-50-30.Ash_Height.Chile_Central_2_km.png
+20261114_2000 caso 3 ok n_px 11 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.20-00-30.Ash_Height.Chile_Central_2_km.png
+20261114_2010 caso 3 ok n_px 13 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.20-10-30.Ash_Height.Chile_Central_2_km.png
+20261114_2030 caso 3 ok n_px 10 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.20-30-30.Ash_Height.Chile_Central_2_km.png
+20261114_2040 caso 3 ok n_px 14 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.20-40-30.Ash_Height.Chile_Central_2_km.png
+20261114_2050 caso 3 ok n_px 11 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.20-50-30.Ash_Height.Chile_Central_2_km.png
+20261114_2110 caso 3 ok n_px 9 altura VOLCAT mediana km 4.5 GOES-19.ABI.2026-11-14.21-10-30.Ash_Height.Chile_Central_2_km.png
+20261114_2120 caso 3 ok n_px 9 altura VOLCAT mediana km 7.5 GOES-19.ABI.2026-11-14.21-20-30.Ash_Height.Chile_Central_2_km.png
+20261114_2140 caso 3 ok n_px 9 altura VOLCAT mediana km 4.5 GOES-19.ABI.2026-11-14.21-40-30.Ash_Height.Chile_Central_2_km.png
+20261114_2150 caso 3 ok n_px 11 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.21-50-30.Ash_Height.Chile_Central_2_km.png
+20261114_2200 caso 3 ok n_px 11 altura VOLCAT mediana km 4.5 GOES-19.ABI.2026-11-14.22-00-30.Ash_Height.Chile_Central_2_km.png
+20261114_2210 caso 3 ok n_px 21 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.22-10-30.Ash_Height.Chile_Central_2_km.png
+20261114_2220 caso 3 ok n_px 36 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.22-20-30.Ash_Height.Chile_Central_2_km.png
+20261114_2230 caso 3 ok n_px 43 altura VOLCAT mediana km 3.5 GOES-19.ABI.2026-11-14.22-30-30.Ash_Height.Chile_Central_2_km.png
+20261114_2240 caso 3 ok n_px 29 altura VOLCAT mediana km 4.5 GOES-19.ABI.2026-11-14.22-40-30.Ash_Height.Chile_Central_2_km.png
+cuadros con < 3 px descartados antes de medir: 0
+
+== Pareo de control por BT11 (C14), criterio: |dif mediana huella| <= 3 K
+caso 1 20261028_2240 n=7 BT11med=276.41 K -> control 2026-10-27 dBT11=-0.82 K [ok] | 26-10:-35.6 27-10:-0.8 30-10:-1.4 31-10:-10.4 01-11:-6.4 02-11:-18.5 03-11:-18.3 04-11:-2.7 05-11:-14.8 06-11:-3.9
+caso 1 20261028_2300 n=27 BT11med=274.72 K -> control 2026-10-27 dBT11=-0.04 K [ok] | 26-10:-29.2 27-10:-0.0 30-10:-4.5 31-10:-7.7 01-11:-5.3 02-11:-10.2 03-11:-16.7 04-11:-2.6 05-11:-13.4 06-11:-3.6
+caso 1 20261028_2320 n=27 BT11med=274.14 K -> control 2026-10-27 dBT11=-0.55 K [ok] | 26-10:-25.6 27-10:-0.5 30-10:-3.6 31-10:-4.8 01-11:-4.7 02-11:-11.8 03-11:-13.4 04-11:-3.1 05-11:-8.8 06-11:-3.7
+caso 1 20261028_2340 n=14 BT11med=274.74 K -> control 2026-10-27 dBT11=-0.89 K [ok] | 26-10:-21.7 27-10:-0.9 30-10:-3.5 31-10:-6.3 01-11:-4.3 02-11:-13.7 03-11:-13.8 04-11:-3.2 05-11:-14.3 06-11:-4.4
+caso 2 20261029_0100 n=12 BT11med=277.77 K -> control 2026-10-31 dBT11=-2.47 K [ok] | 26-10:-2.8 27-10:-11.2 30-10:-2.7 31-10:-2.5 01-11:-11.7 02-11:-10.5 03-11:-10.9 04-11:-14.9 05-11:-4.8 06-11:-7.2
+caso 2 20261029_0110 n=9 BT11med=274.10 K -> control 2026-10-31 dBT11=-0.91 K [ok] | 26-10:-1.7 27-10:-6.6 30-10:-1.7 31-10:-0.9 01-11:-7.0 02-11:-5.1 03-11:-8.7 04-11:-10.5 05-11:-4.4 06-11:-10.9
+caso 2 20261029_0120 n=10 BT11med=275.71 K -> control 2026-10-31 dBT11=-1.86 K [ok] | 26-10:-2.6 27-10:-7.6 30-10:-7.5 31-10:-1.9 01-11:-9.3 02-11:-6.8 03-11:-7.9 04-11:-11.8 05-11:-5.2 06-11:-12.6
+caso 3 20261114_1640 n=6 BT11med=285.97 K -> control 2026-11-12 dBT11=-2.38 K [ok] | 01-11:-19.5 02-11:-28.5 03-11:-35.1 04-11:-11.4 05-11:-11.7 06-11:-24.2 09-11:-49.4 12-11:-2.4 13-11:-10.2 15-11:-15.2
+caso 3 20261114_1650 n=4 BT11med=286.06 K -> control 2026-11-12 dBT11=-2.45 K [ok] | 01-11:-20.1 02-11:-34.6 03-11:-35.1 04-11:-11.5 05-11:-11.5 06-11:-16.1 09-11:-45.5 12-11:-2.4 13-11:-6.2 15-11:-11.4
+caso 3 20261114_1700 n=6 BT11med=286.47 K -> control 2026-11-12 dBT11=-1.06 K [ok] | 01-11:-22.4 02-11:-25.7 03-11:-32.9 04-11:-11.7 05-11:-14.0 06-11:-14.0 09-11:-52.2 12-11:-1.1 13-11:-1.9 15-11:-17.0
+caso 3 20261114_1720 n=8 BT11med=286.52 K -> control 2026-11-12 dBT11=-2.21 K [ok] | 01-11:-18.9 02-11:-22.5 03-11:-35.3 04-11:-12.2 05-11:-16.9 06-11:-14.4 09-11:-61.0 12-11:-2.2 13-11:-31.4 15-11:-18.6
+caso 3 20261114_1730 n=8 BT11med=286.81 K -> control 2026-11-12 dBT11=-1.92 K [ok] | 01-11:-19.6 02-11:-14.8 03-11:-37.4 04-11:-12.5 05-11:-18.4 06-11:-15.1 09-11:-60.7 12-11:-1.9 13-11:-22.3 15-11:-17.3
+caso 3 20261114_1740 n=9 BT11med=287.21 K -> control 2026-11-12 dBT11=-2.44 K [ok] | 01-11:-17.3 02-11:-15.7 03-11:-36.5 04-11:-12.4 05-11:-18.3 06-11:-22.6 09-11:-58.6 12-11:-2.4 13-11:-5.3 15-11:-18.2
+caso 3 20261114_1750 n=12 BT11med=288.31 K -> control 2026-11-13 dBT11=-1.58 K [ok] | 01-11:-18.8 02-11:-18.6 03-11:-39.0 04-11:-12.8 05-11:-17.8 06-11:-24.2 09-11:-55.7 12-11:-2.1 13-11:-1.6 15-11:-21.3
+caso 3 20261114_1800 n=12 BT11med=285.66 K -> control 2026-11-13 dBT11=-1.50 K [ok] | 01-11:-16.4 02-11:-13.8 03-11:-32.4 04-11:-11.2 05-11:-15.6 06-11:-22.4 09-11:-55.5 12-11:-2.5 13-11:-1.5 15-11:-20.4
+caso 3 20261114_1810 n=10 BT11med=282.95 K -> control 2026-11-13 dBT11=-0.03 K [ok] | 01-11:-11.7 02-11:-11.5 03-11:-31.9 04-11:-8.5 05-11:-14.6 06-11:-12.8 09-11:-48.4 12-11:-0.6 13-11:-0.0 15-11:-17.6
+caso 3 20261114_1820 n=12 BT11med=283.66 K -> control 2026-11-13 dBT11=-0.58 K [ok] | 01-11:-14.5 02-11:-19.1 03-11:-33.2 04-11:-9.2 05-11:-15.1 06-11:-9.4 09-11:-29.3 12-11:-0.9 13-11:-0.6 15-11:-18.1
+caso 3 20261114_1840 n=9 BT11med=282.12 K -> control 2026-11-12 dBT11=-0.88 K [ok] | 01-11:-11.8 02-11:-24.8 03-11:-29.6 04-11:-7.7 05-11:-13.1 06-11:-7.7 09-11:-31.2 12-11:-0.9 13-11:-25.4 15-11:-15.9
+caso 3 20261114_1850 n=8 BT11med=286.17 K -> control 2026-11-12 dBT11=-1.73 K [ok] | 01-11:-19.2 02-11:-32.2 03-11:-34.4 04-11:-11.4 05-11:-19.5 06-11:-11.5 09-11:-23.6 12-11:-1.7 13-11:-4.5 15-11:-21.3
+caso 3 20261114_1900 n=11 BT11med=283.59 K -> control 2026-11-12 dBT11=-1.07 K [ok] | 01-11:-16.3 02-11:-25.6 03-11:-29.8 04-11:-9.1 05-11:-15.9 06-11:-8.9 09-11:-32.8 12-11:-1.1 13-11:-2.0 15-11:-16.6
+caso 3 20261114_1910 n=8 BT11med=286.06 K -> control 2026-11-13 dBT11=-0.17 K [ok] | 01-11:-19.9 02-11:-13.1 03-11:-32.1 04-11:-10.8 05-11:-21.0 06-11:-10.9 09-11:-37.0 12-11:-3.1 13-11:-0.2 15-11:-18.2
+caso 3 20261114_1920 n=7 BT11med=288.71 K -> control 2026-11-13 dBT11=+0.41 K [ok] | 01-11:-18.2 02-11:-18.7 03-11:-34.3 04-11:-11.4 05-11:-22.3 06-11:-10.4 09-11:-40.2 12-11:-2.3 13-11:+0.4 15-11:-24.3
+caso 3 20261114_1930 n=12 BT11med=287.20 K -> control 2026-11-13 dBT11=+3.27 K [sin_control] | 01-11:-17.1 02-11:-18.8 03-11:-32.1 04-11:-9.6 05-11:-18.7 06-11:-8.9 09-11:-48.1 12-11:-3.7 13-11:+3.3 15-11:-21.8
+caso 3 20261114_1940 n=6 BT11med=286.65 K -> control 2026-11-12 dBT11=-0.42 K [ok] | 01-11:-22.7 02-11:-26.6 03-11:-36.1 04-11:-12.0 05-11:-22.1 06-11:-13.6 09-11:-27.3 12-11:-0.4 13-11:+3.4 15-11:-22.1
+caso 3 20261114_1950 n=8 BT11med=281.36 K -> control 2026-11-13 dBT11=+1.66 K [ok] | 01-11:-16.8 02-11:-27.0 03-11:-28.3 04-11:-7.2 05-11:-14.3 06-11:-8.1 09-11:-13.5 12-11:-9.4 13-11:+1.7 15-11:-16.7
+caso 3 20261114_2000 n=11 BT11med=280.93 K -> control 2026-11-13 dBT11=+2.56 K [ok] | 01-11:-17.2 02-11:-25.9 03-11:-29.8 04-11:-6.8 05-11:-16.7 06-11:-9.0 09-11:-23.0 12-11:-11.6 13-11:+2.6 15-11:-16.6
+caso 3 20261114_2010 n=13 BT11med=282.89 K -> control 2026-11-13 dBT11=+0.13 K [ok] | 01-11:-19.5 02-11:-32.1 03-11:-31.0 04-11:-8.4 05-11:-18.8 06-11:-11.1 09-11:-24.1 12-11:-46.2 13-11:+0.1 15-11:-18.7
+caso 3 20261114_2030 n=10 BT11med=283.44 K -> control 2026-11-13 dBT11=+1.13 K [ok] | 01-11:-19.0 02-11:-43.4 03-11:-30.1 04-11:-9.6 05-11:-20.7 06-11:-14.4 09-11:-15.2 12-11:-46.8 13-11:+1.1 15-11:-18.8
+caso 3 20261114_2040 n=14 BT11med=283.94 K -> control 2026-11-13 dBT11=+1.74 K [ok] | 01-11:-17.9 02-11:-33.8 03-11:-30.9 04-11:-8.5 05-11:-23.1 06-11:-13.7 09-11:-7.7 12-11:-43.2 13-11:+1.7 15-11:-18.9
+caso 3 20261114_2050 n=11 BT11med=279.80 K -> control 2026-11-13 dBT11=+1.03 K [ok] | 01-11:-12.5 02-11:-21.4 03-11:-23.2 04-11:-6.7 05-11:-16.2 06-11:-15.0 09-11:-5.6 12-11:-31.8 13-11:+1.0 15-11:-15.8
+caso 3 20261114_2110 n=9 BT11med=284.61 K -> control 2026-11-13 dBT11=-0.53 K [ok] | 01-11:-20.6 02-11:-31.8 03-11:-29.6 04-11:-11.1 05-11:-25.2 06-11:-15.7 09-11:-40.2 12-11:-33.8 13-11:-0.5 15-11:-21.9
+caso 3 20261114_2120 n=9 BT11med=284.28 K -> control 2026-11-13 dBT11=+0.23 K [ok] | 01-11:-18.2 02-11:-23.6 03-11:-27.4 04-11:-9.6 05-11:-23.8 06-11:-12.6 09-11:-33.1 12-11:-7.3 13-11:+0.2 15-11:-21.2
+caso 3 20261114_2140 n=9 BT11med=283.46 K -> control 2026-11-13 dBT11=-0.47 K [ok] | 01-11:-15.9 02-11:-13.6 03-11:-26.9 04-11:-9.1 05-11:-22.8 06-11:-11.0 09-11:-12.7 12-11:-9.6 13-11:-0.5 15-11:-17.8
+caso 3 20261114_2150 n=11 BT11med=281.68 K -> control 2026-11-13 dBT11=+1.48 K [ok] | 01-11:-13.4 02-11:-12.9 03-11:-25.2 04-11:-7.9 05-11:-22.4 06-11:-8.9 09-11:-5.7 12-11:-23.2 13-11:+1.5 15-11:-19.3
+caso 3 20261114_2200 n=11 BT11med=282.25 K -> control 2026-11-13 dBT11=+0.50 K [ok] | 01-11:-15.1 02-11:-15.8 03-11:-26.6 04-11:-9.5 05-11:-22.7 06-11:-10.5 09-11:-6.5 12-11:-25.3 13-11:+0.5 15-11:-22.3
+caso 3 20261114_2210 n=21 BT11med=283.06 K -> control 2026-11-13 dBT11=-0.64 K [ok] | 01-11:-14.0 02-11:-12.9 03-11:-26.3 04-11:-9.4 05-11:-23.8 06-11:-10.5 09-11:-9.1 12-11:-22.5 13-11:-0.6 15-11:-25.5
+caso 3 20261114_2220 n=36 BT11med=283.59 K -> control 2026-11-13 dBT11=-0.13 K [ok] | 01-11:-13.6 02-11:-13.2 03-11:-25.5 04-11:-9.2 05-11:-21.7 06-11:-10.3 09-11:-9.1 12-11:-23.6 13-11:-0.1 15-11:-24.3
+caso 3 20261114_2230 n=43 BT11med=283.89 K -> control 2026-11-13 dBT11=+0.33 K [ok] | 01-11:-12.5 02-11:-11.7 03-11:-24.9 04-11:-9.7 05-11:-20.2 06-11:-10.7 09-11:-10.1 12-11:-13.8 13-11:+0.3 15-11:-31.1
+caso 3 20261114_2240 n=29 BT11med=280.66 K -> control 2026-11-13 dBT11=+3.06 K [sin_control] | 01-11:-9.7 02-11:-15.4 03-11:-21.8 04-11:-6.2 05-11:-18.9 06-11:-8.2 09-11:-13.4 12-11:-22.0 13-11:+3.1 15-11:-37.2
+horas GFS necesarias: 23
+
+Cuadros sin control (|dBT11| > 3 K, informados aparte, no se fuerzan): 20261114_1930 (+3.27 K, mejor 13-11) y 20261114_2240 (+3.06 K, mejor 13-11).
+
+== Error del modelo M (emisividad nominal): obs - modelo (K) en pixeles despejados de control
+todos n=2200 | C10: med -0.48 desv 2.13 (1,48MAD 1.71) C11: med +0.63 desv 6.94 (1,48MAD 4.53) C14: med -0.29 desv 7.60 (1,48MAD 5.07) C15: med -0.14 desv 7.28 (1,48MAD 4.90)
+caso 1 n=240 | C10: med +0.76 desv 0.65 (1,48MAD 0.62) C11: med +1.91 desv 2.77 (1,48MAD 1.94) C14: med +1.30 desv 2.94 (1,48MAD 2.32) C15: med +1.51 desv 2.75 (1,48MAD 1.87)
+caso 2 n=180 | C10: med +0.33 desv 1.01 (1,48MAD 0.85) C11: med +0.01 desv 2.05 (1,48MAD 1.72) C14: med -0.39 desv 2.42 (1,48MAD 1.62) C15: med -0.75 desv 2.37 (1,48MAD 1.88)
+caso 3 n=1780 | C10: med -0.93 desv 2.19 (1,48MAD 1.91) C11: med +0.52 desv 7.56 (1,48MAD 5.55) C14: med -0.59 desv 8.23 (1,48MAD 6.29) C15: med -0.48 desv 7.88 (1,48MAD 6.01)
+recortes de T en la LUT (interpolaciones fuera de rango): 0
+== Sensibilidad a emisividad de superficie -0,03 en las 4 bandas (n=740 px de control): dBT modelo (K) mediana [min, max]
+C10: -0.00 [-0.09, +0.00] C11: -1.19 [-1.51, -0.64] C14: -1.75 [-2.12, -0.75] C15: -1.54 [-2.06, -0.47]
+(60 px por escena de control elegidos al azar, semilla 0, entre los que cumplen |BT11 obs - E11| < 2 K y estan a > 5 px de la huella; 37 escenas; calculado ANTES de las metricas de huella)
+
+== Por cuadro: version caso positivo control n G_pos G_ctrl med_e11_pos med_e11_ctrl Ttropo_pos Ttropo_ctrl BTD_pos BTD_ctrl med_eps(C15,C11,C10)_pos nEscenasE
+M 1 20261028_2240 20261027_2240 7 0.86 0.71 +0.099 +0.069 215.1 219.6 +0.66 +0.74 +0.092 +0.097 -0.024 10
+E 1 20261028_2240 20261027_2240 7 0.00 0.00 -0.030 -0.007 215.1 219.6 +0.66 +0.74 -0.042 -0.048 -0.246 10
+M 1 20261028_2300 20261027_2300 27 0.93 0.89 +0.129 +0.102 215.1 219.6 +0.47 +0.69 +0.113 +0.130 -0.003 10
+E 1 20261028_2300 20261027_2300 27 0.11 0.00 -0.063 -0.059 215.1 219.6 +0.47 +0.69 -0.072 -0.086 -0.152 10
+M 1 20261028_2320 20261027_2320 27 1.00 1.00 +0.153 +0.131 215.1 219.6 +0.51 +0.70 +0.137 +0.152 +0.011 10
+E 1 20261028_2320 20261027_2320 27 0.26 0.00 -0.055 -0.045 215.1 219.6 +0.51 +0.70 -0.066 -0.070 -0.241 10
+M 1 20261028_2340 20261027_2340 14 0.93 0.93 +0.115 +0.094 215.8 220.0 +0.40 +0.60 +0.100 +0.115 +0.011 10
+E 1 20261028_2340 20261027_2340 14 0.00 0.00 -0.066 -0.049 215.8 220.0 +0.40 +0.60 -0.075 -0.083 -0.230 10
+M 2 20261029_0100 20261031_0100 12 0.58 0.75 +0.038 +0.058 216.4 216.1 +0.37 +0.86 +0.032 +0.027 -0.019 10
+E 2 20261029_0100 20261031_0100 12 0.00 0.17 -0.044 -0.001 216.4 216.1 +0.37 +0.86 -0.051 -0.056 -0.168 10
+M 2 20261029_0110 20261031_0110 9 0.67 0.78 +0.116 +0.112 216.4 216.2 +0.27 +0.67 +0.093 +0.099 -0.021 10
+E 2 20261029_0110 20261031_0110 9 0.00 0.00 -0.039 -0.008 216.4 216.2 +0.27 +0.67 -0.057 -0.061 -0.191 10
+M 2 20261029_0120 20261031_0120 10 0.80 0.90 +0.093 +0.092 216.4 216.2 +0.18 +0.80 +0.080 +0.086 -0.033 10
+E 2 20261029_0120 20261031_0120 10 0.00 0.00 -0.060 -0.018 216.4 216.2 +0.18 +0.80 -0.071 -0.078 -0.236 10
+M 3 20261114_1640 20261112_1640 6 1.00 1.00 +0.234 +0.215 215.3 212.4 +1.31 +1.24 +0.210 +0.229 -0.033 10
+E 3 20261114_1640 20261112_1640 6 0.00 0.00 -0.236 -0.177 215.3 212.4 +1.31 +1.24 -0.242 -0.264 -0.421 10
+M 3 20261114_1650 20261112_1650 4 1.00 1.00 +0.235 +0.215 215.3 212.4 +1.37 +1.42 +0.209 +0.232 -0.021 10
+E 3 20261114_1650 20261112_1650 4 0.00 0.00 -0.161 -0.091 215.3 212.4 +1.37 +1.42 -0.170 -0.158 -0.398 10
+M 3 20261114_1700 20261112_1700 6 0.83 0.83 +0.225 +0.184 215.2 212.2 +0.60 +1.66 +0.186 +0.216 -0.029 10
+E 3 20261114_1700 20261112_1700 6 0.17 0.00 -0.060 -0.027 215.2 212.2 +0.60 +1.66 -0.063 -0.070 -0.360 10
+M 3 20261114_1720 20261112_1720 8 0.88 0.75 +0.228 +0.202 215.2 212.2 +0.72 +1.23 +0.189 +0.215 -0.023 10
+E 3 20261114_1720 20261112_1720 8 0.00 0.00 -0.255 -0.189 215.2 212.2 +0.72 +1.23 -0.253 -0.312 -0.457 10
+M 3 20261114_1730 20261112_1730 8 0.88 0.88 +0.216 +0.188 214.4 212.0 +0.68 +1.04 +0.187 +0.215 -0.046 10
+E 3 20261114_1730 20261112_1730 8 0.00 0.00 -0.238 -0.171 214.4 212.0 +0.68 +1.04 -0.244 -0.258 -0.414 10
+M 3 20261114_1740 20261112_1740 9 1.00 1.00 +0.209 +0.187 214.4 212.2 +1.52 +1.64 +0.189 +0.201 -0.031 10
+E 3 20261114_1740 20261112_1740 9 0.00 0.00 -0.069 -0.000 214.4 212.2 +1.52 +1.64 -0.072 -0.091 -0.382 10
+M 3 20261114_1750 20261113_1750 12 0.83 0.83 +0.194 +0.200 214.4 214.3 +1.30 +1.56 +0.177 +0.197 -0.031 10
+E 3 20261114_1750 20261113_1750 12 0.08 0.00 -0.056 -0.017 214.4 214.3 +1.30 +1.56 -0.058 -0.079 -0.379 10
+M 3 20261114_1800 20261113_1800 12 0.92 0.92 +0.234 +0.240 214.4 214.3 +1.64 +1.22 +0.202 +0.233 -0.023 10
+E 3 20261114_1800 20261113_1800 12 0.00 0.17 -0.064 -0.010 214.4 214.3 +1.64 +1.22 -0.064 -0.085 -0.380 10
+M 3 20261114_1810 20261113_1810 10 1.00 1.00 +0.279 +0.262 214.4 214.3 +1.42 +1.54 +0.250 +0.280 +0.009 10
+E 3 20261114_1810 20261113_1810 10 0.00 0.00 -0.018 -0.021 214.4 214.3 +1.42 +1.54 -0.021 -0.054 -0.347 10
+M 3 20261114_1820 20261113_1820 12 0.92 0.83 +0.266 +0.257 214.4 214.3 +1.56 +1.14 +0.241 +0.256 +0.013 10
+E 3 20261114_1820 20261113_1820 12 0.08 0.00 -0.022 -0.002 214.4 214.3 +1.56 +1.14 -0.022 -0.053 -0.340 10
+M 3 20261114_1840 20261112_1840 9 1.00 1.00 +0.264 +0.233 214.1 212.1 +0.94 +1.61 +0.230 +0.266 -0.008 10
+E 3 20261114_1840 20261112_1840 9 0.00 0.00 -0.186 -0.159 214.1 212.1 +0.94 +1.61 -0.199 -0.249 -0.359 10
+M 3 20261114_1850 20261112_1850 8 0.88 0.88 +0.201 +0.181 214.1 212.2 +1.46 +1.43 +0.186 +0.203 -0.034 10
+E 3 20261114_1850 20261112_1850 8 0.12 0.00 -0.039 -0.000 214.1 212.2 +1.46 +1.43 -0.045 -0.070 -0.376 10
+M 3 20261114_1900 20261112_1900 11 0.91 0.91 +0.238 +0.211 214.2 212.1 +1.10 +1.21 +0.207 +0.243 -0.026 10
+E 3 20261114_1900 20261112_1900 11 0.00 0.00 -0.023 -0.000 214.2 212.1 +1.10 +1.21 -0.033 -0.059 -0.360 10
+M 3 20261114_1910 20261113_1910 8 0.88 0.88 +0.222 +0.206 214.2 215.0 +1.20 +0.91 +0.198 +0.224 -0.041 10
+E 3 20261114_1910 20261113_1910 8 0.00 0.00 -0.049 -0.048 214.2 215.0 +1.20 +0.91 -0.068 -0.099 -0.402 10
+M 3 20261114_1920 20261113_1920 7 1.00 0.86 +0.198 +0.171 214.2 215.0 +1.37 +1.34 +0.173 +0.188 -0.016 10
+E 3 20261114_1920 20261113_1920 7 0.00 0.00 -0.046 -0.079 214.2 215.0 +1.37 +1.34 -0.048 -0.051 -0.303 10
+M 3 20261114_1940 20261112_1940 6 1.00 0.83 +0.153 +0.120 213.4 212.5 +1.50 +1.50 +0.128 +0.121 +0.012 10
+E 3 20261114_1940 20261112_1940 6 0.33 0.00 -0.002 -0.000 213.4 212.5 +1.50 +1.50 -0.005 -0.026 -0.275 10
+M 3 20261114_1950 20261113_1950 8 1.00 1.00 +0.240 +0.231 213.4 214.6 +1.10 +1.35 +0.213 +0.238 -0.007 10
+E 3 20261114_1950 20261113_1950 8 0.00 0.00 -0.183 -0.227 213.4 214.6 +1.10 +1.35 -0.184 -0.224 -0.276 10
+M 3 20261114_2000 20261113_2000 11 0.91 0.91 +0.247 +0.222 213.4 214.6 +1.24 +0.98 +0.213 +0.241 +0.009 10
+E 3 20261114_2000 20261113_2000 11 0.00 0.00 -0.156 -0.205 213.4 214.6 +1.24 +0.98 -0.164 -0.209 -0.240 10
+M 3 20261114_2010 20261113_2010 13 0.92 0.92 +0.215 +0.230 213.4 214.6 +1.03 +1.21 +0.193 +0.232 -0.043 10
+E 3 20261114_2010 20261113_2010 13 0.00 0.00 -0.214 -0.205 213.4 214.6 +1.03 +1.21 -0.200 -0.250 -0.287 10
+M 3 20261114_2030 20261113_2030 10 0.80 0.80 +0.170 +0.180 212.8 214.6 +1.07 +0.97 +0.140 +0.161 -0.034 10
+E 3 20261114_2030 20261113_2030 10 0.00 0.00 -0.218 -0.248 212.8 214.6 +1.07 +0.97 -0.217 -0.282 -0.308 10
+M 3 20261114_2040 20261113_2040 14 0.86 0.86 +0.164 +0.155 212.9 214.6 +1.04 +1.09 +0.140 +0.148 -0.021 10
+E 3 20261114_2040 20261113_2040 14 0.00 0.00 -0.167 -0.199 212.9 214.6 +1.04 +1.09 -0.170 -0.201 -0.315 10
+M 3 20261114_2050 20261113_2050 11 1.00 0.91 +0.230 +0.239 212.8 214.6 +0.81 +1.03 +0.204 +0.236 -0.037 10
+E 3 20261114_2050 20261113_2050 11 0.00 0.00 -0.132 -0.165 212.8 214.6 +0.81 +1.03 -0.142 -0.160 -0.349 10
+M 3 20261114_2110 20261113_2110 9 1.00 0.89 +0.149 +0.189 212.8 214.6 +0.75 +0.97 +0.125 +0.146 -0.029 10
+E 3 20261114_2110 20261113_2110 9 0.00 0.00 -0.184 -0.225 212.8 214.6 +0.75 +0.97 -0.188 -0.248 -0.286 10
+M 3 20261114_2120 20261113_2120 9 0.78 0.89 +0.158 +0.173 212.8 214.6 +0.76 +1.04 +0.126 +0.144 -0.027 10
+E 3 20261114_2120 20261113_2120 9 0.00 0.00 -0.154 -0.162 212.8 214.6 +0.76 +1.04 -0.163 -0.171 -0.337 10
+M 3 20261114_2140 20261113_2140 9 0.78 0.78 +0.129 +0.163 212.1 215.2 +1.02 +1.19 +0.108 +0.128 -0.023 10
+E 3 20261114_2140 20261113_2140 9 0.00 0.00 -0.220 -0.210 212.1 215.2 +1.02 +1.19 -0.232 -0.230 -0.320 10
+M 3 20261114_2150 20261113_2150 11 0.91 0.82 +0.162 +0.160 212.0 215.0 +0.82 +1.04 +0.139 +0.149 +0.015 10
+E 3 20261114_2150 20261113_2150 11 0.00 0.00 -0.110 -0.160 212.0 215.0 +0.82 +1.04 -0.122 -0.143 -0.293 10
+M 3 20261114_2200 20261113_2200 11 0.82 0.82 +0.149 +0.168 212.0 215.0 +0.85 +0.87 +0.128 +0.156 -0.006 10
+E 3 20261114_2200 20261113_2200 11 0.00 0.00 -0.162 -0.189 212.0 215.0 +0.85 +0.87 -0.174 -0.183 -0.353 10
+M 3 20261114_2210 20261113_2210 21 0.86 0.90 +0.143 +0.170 212.1 215.1 +0.93 +0.96 +0.121 +0.151 -0.001 10
+E 3 20261114_2210 20261113_2210 21 0.00 0.00 -0.191 -0.214 212.1 215.1 +0.93 +0.96 -0.209 -0.231 -0.337 10
+M 3 20261114_2220 20261113_2220 36 1.00 0.97 +0.156 +0.169 212.3 215.3 +0.85 +0.90 +0.133 +0.163 +0.002 10
+E 3 20261114_2220 20261113_2220 36 0.00 0.00 -0.193 -0.188 212.3 215.3 +0.85 +0.90 -0.197 -0.215 -0.281 10
+M 3 20261114_2230 20261113_2230 43 0.88 0.70 +0.080 +0.063 212.0 214.0 +0.77 +0.75 +0.067 +0.083 +0.014 10
+E 3 20261114_2230 20261113_2230 43 0.00 0.00 -0.180 -0.209 212.0 214.0 +0.77 +0.75 -0.188 -0.205 -0.248 10
+recortes de T en la LUT: 0
+== Tablas (por caso y agrupado). AUC = P(positivo > control); beta sobre pixeles que pasan la compuerta en su escena
+M caso 1    n=  75 G_huella=0.947 G_ctrl=0.920 dG=+0.027 AUC(e11)=0.684 b12/11=0.461(n 71/69, med 0.89/0.90) b8,5/11=0.627(n 71/69, med 0.99/0.96) b7,3/11=0.912(n 71/69, med 0.07/-0.34) | sec. huella-vs-anillo AUC(e11)=0.764 b12/11=0.499 b8,5/11=0.575 b7,3/11=0.473 | beta invalidas (eps_lambda>=1 con compuerta) 0
+M caso 2    n=  31 G_huella=0.677 G_ctrl=0.806 dG=-0.129 AUC(e11)=0.490 b12/11=0.295(n 21/25, med 0.87/0.93) b8,5/11=0.499(n 21/25, med 0.90/0.92) b7,3/11=0.743(n 21/25, med -0.16/-0.32) | sec. huella-vs-anillo AUC(e11)=0.680 b12/11=0.392 b8,5/11=0.422 b7,3/11=0.384 | beta invalidas (eps_lambda>=1 con compuerta) 0
+M caso 3    n= 352 G_huella=0.912 G_ctrl=0.872 dG=+0.040 AUC(e11)=0.518 b12/11=0.376(n 321/307, med 0.85/0.88) b8,5/11=0.419(n 321/307, med 0.98/1.02) b7,3/11=0.407(n 321/307, med -0.03/0.04) | sec. huella-vs-anillo AUC(e11)=0.860 b12/11=0.395 b8,5/11=0.744 b7,3/11=0.434 | beta invalidas (eps_lambda>=1 con compuerta) 0
+M AGRUPADO  n= 458 G_huella=0.902 G_ctrl=0.876 dG=+0.026 AUC(e11)=0.541 b12/11=0.387(n 413/401, med 0.86/0.88) b8,5/11=0.452(n 413/401, med 0.98/1.00) b7,3/11=0.536(n 413/401, med -0.03/-0.04) | sec. huella-vs-anillo AUC(e11)=0.837 b12/11=0.410 b8,5/11=0.707 b7,3/11=0.443 | beta invalidas (eps_lambda>=1 con compuerta) 0
+E caso 1    n=  75 G_huella=0.133 G_ctrl=0.000 dG=+0.133 AUC(e11)=0.434 b12/11=no medible(n 10/0) b8,5/11=no medible(n 10/0) b7,3/11=no medible(n 10/0) | sec. huella-vs-anillo AUC(e11)=0.661 b12/11=nm b8,5/11=nm b7,3/11=nm | beta invalidas (eps_lambda>=1 con compuerta) 0
+E caso 2    n=  31 G_huella=0.000 G_ctrl=0.065 dG=-0.065 AUC(e11)=0.085 b12/11=no medible(n 0/2) b8,5/11=no medible(n 0/2) b7,3/11=no medible(n 0/2) | sec. huella-vs-anillo AUC(e11)=0.601 b12/11=nm b8,5/11=nm b7,3/11=nm | beta invalidas (eps_lambda>=1 con compuerta) 0
+E caso 3    n= 352 G_huella=0.017 G_ctrl=0.006 dG=+0.011 AUC(e11)=0.508 b12/11=no medible(n 6/2) b8,5/11=no medible(n 6/2) b7,3/11=no medible(n 6/2) | sec. huella-vs-anillo AUC(e11)=0.510 b12/11=nm b8,5/11=nm b7,3/11=nm | beta invalidas (eps_lambda>=1 con compuerta) 0
+E AGRUPADO  n= 458 G_huella=0.035 G_ctrl=0.009 dG=+0.026 AUC(e11)=0.483 b12/11=no medible(n 16/4) b8,5/11=no medible(n 16/4) b7,3/11=no medible(n 16/4) | sec. huella-vs-anillo AUC(e11)=0.520 b12/11=nm b8,5/11=nm b7,3/11=nm | beta invalidas (eps_lambda>=1 con compuerta) 0
+M beta C15/C14 AUC por caso (1,2,3): ['0.461', '0.295', '0.376']
+M beta C11/C14 AUC por caso (1,2,3): ['0.627', '0.499', '0.419']
+M beta C10/C14 AUC por caso (1,2,3): ['0.912', '0.743', '0.407']
+E beta C15/C14 AUC por caso (1,2,3): ['nm', 'nm', 'nm']
+E beta C11/C14 AUC por caso (1,2,3): ['nm', 'nm', 'nm']
+E beta C10/C14 AUC por caso (1,2,3): ['nm', 'nm', 'nm']
+
+Diagnostico posterior: obs-modelo C14 en pixeles de huella, escenas de control: n=458 mediana -7.07 K, p10 -15.60, p90 -0.26
+Altura de superficie GFS interpolada en esos pixeles: mediana 1737 m, rango 1537-1932 m (cumbre real ~3200 m)
+
+== Aplicacion de la regla de decision (version M, agrupado, sin reinterpretar)
+Error del modelo en C14 (sesgo mediano en pixeles despejados de control): -0.29 K, |sesgo| <= 3 K -> M es valida segun el criterio.
+G_huella = 0.902 (>= 0.5 si), G_huella - G_control = +0.026 (>= 0.25 NO) -> "H3 se sostiene" NO se cumple.
+Falsacion (a): G_huella < 0.10 -> no (0.902).
+Falsacion (b): dG = +0.026 < 0.10 si; |AUC-0.5|: e11 0.041, b12/11 0.113, b8,5/11 0.048, b7,3/11 0.036 -> b12/11 >= 0.10, (b) NO se cumple.
+VEREDICTO SEGUN EL CRITERIO: NO CONCLUYENTE (ni sostiene ni falsa; la falsacion (b) queda rota solo por b12/11, 0.013 sobre el umbral).
+Atribucion (no cambia el veredicto): M no separa (dG +0.026, ningun AUC agrupado con |AUC-0.5| >= 0.20); E no separa (G_huella 0.035, AUC e11 0.483, betas no medibles). Ninguna de las dos formas separa.
+Version E sola: G_huella = 0.035 < 0.10 (la compuerta con cielo empirico no deja pasar la pluma).
+
+== Desviaciones del criterio y supuestos (declarados)
+1. Huella: decodificacion de pruebaA_28oct.py para los tres casos (sin filtro de objetos ni de manto que huellas.py aplicaba en noviembre). Ningun cuadro quedo con < 3 px.
+2. GFS: hora valida = hora del scan redondeada; archivo = ultimo ciclo <= esa hora con plazo f000 a f005 (no estrictamente el analisis del ciclo mas cercano), para que la Tskin siga el ciclo diurno. T_tropo = campo TMP:tropopause del mismo archivo, interpolado bilineal al pixel.
+3. GFS de 12-11 19Z y 20Z y 13-11 18Z a 23Z bajados por el filtro GRIB de NOMADS (mismo GFS 0,25 grados, recorte espacial) porque la red bajo a ~50 KB/s; verificado contra S3 en 14-11 17Z: diferencia maxima 2e-5 K en T.
+4. La caja GFS termina en -70,25; la ventana llega a -70,20: extrapolacion lineal en las columnas mas orientales.
+5. Modelo: linea por linea propio (HITRAN via HAPI 1.3 sin cuenta; MT_CKD 4.3 de AER en GitHub, licencia de uso cientifico sin registro ni aceptacion activa). Voigt Humlicek W4, rejilla 0,01 cm-1, ala 25 cm-1 (pedestal restado en H2O), corte de lineas S*N_col >= 1e-5 cm-1 (H2O 3061, CO2 6020, O3 11581, N2O 2654, CH4 5771 lineas), sin auto-ensanchamiento de H2O, sin line mixing ni continuo de CO2, CO2 425 ppm, CH4 1,93 ppm, N2O 0,338 ppm fijos, capas isotermas entre niveles GFS, LUT en T (11 valores por capa, 0 recortes), plano-paralelo con sec(cenit satelital), cenit desde goes_imager_projection (-75,0), reflexion lambertiana con difusividad 1,66.
+6. SRF ABI FM4 (CIMSS/STAR, 10-mar-2016); comprobacion: Planck convolucionado con la SRF reproduce el de los coeficientes del L1b a <= 0,004 K en las cuatro bandas.
+7. Emisividad de superficie fija (C10 0,97; C11 0,95; C14 0,97; C15 0,97), supuesto sin fuente (CAMEL pide cuenta). Sensibilidad: -0,03 en emisividad baja el modelo -1,19 K en C11, -1,75 K en C14, -1,54 K en C15, 0,00 en C10 (medianas).
+8. Anillo de la metrica secundaria: muestra fija de 40 px por cuadro (costo del modelo).
+9. E incluye entre sus candidatos al dia de control elegido (tal como esta escrito).
+10. Error del modelo con 60 px por escena de control (muestra), no todos los despejados.
+11. AUC = P(positivo > control) con empates a 1/2 (Mann-Whitney).
+12. Datos L1b bajados de nuevo (cuatro bandas) a un cache propio; comparados con el cache viejo en 28-10 22:40: diferencia 0,0 K en C11 y C14.

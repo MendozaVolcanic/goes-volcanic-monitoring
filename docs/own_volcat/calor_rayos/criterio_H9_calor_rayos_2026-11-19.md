@@ -150,3 +150,20 @@ dentro de las ventanas de positivos y controles.
 
 Sólo docs y scripts de análisis en `docs/own_volcat/calor_rayos/` y una fila en `docs/paper/REGISTRO_PAPER.md`
 §3. Nada de código de la app, ni `POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md`, ni `docs/own_volcat/direccion_pluma/`.
+
+## 7. Enmienda 1 (19-11, antes del primer número): orden de descarga y corte
+
+La descarga de C07 y C14 resultó limitada por el enlace hacia S3 (unos 0,7 MB/s sumando conexiones, 34 KB/s
+y 8 s de latencia por conexión medidos con `curl`), y los NetCDF de ABI vienen en tiras comprimidas de 24
+filas por 5.424 columnas, así que cada cuadro cuesta ~2,6 MB aunque la ventana sea chica. Se baja por
+prioridad, sin mirar valores:
+
+0. Los 100 positivos y los seis cuadros de la hora previa a cada uno (199 cuadros).
+1. Los cuadros del mismo minuto UTC de los positivos nocturnos y de crepúsculo, en ±10 días (259).
+2. Lo mismo para los positivos de día (727).
+3. El resto: primero noche y crepúsculo, después día (2.931).
+
+H9a se calcula cuando terminan los niveles 0 y 1 (estrato N) y 0 a 2 (estrato D). Si el nivel 3 no termina,
+**H9b y la tasa base de H9c usan los cuadros disponibles a la hora del corte**, que es una muestra fijada por
+el orden de descarga (por fecha dentro de cada nivel), no por los valores; el informe dice cuántas noches
+quedaron completas. Ningún umbral cambia.

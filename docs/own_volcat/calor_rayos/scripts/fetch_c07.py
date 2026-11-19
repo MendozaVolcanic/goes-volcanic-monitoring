@@ -94,8 +94,26 @@ def get_scan(dt):
 
 
 def frames():
+    """Orden de prioridad (el ancho de banda manda, ~0,7 MB/s hacia S3 el 19-11):
+    0) positivos y la hora previa a cada uno; 1) mismos minutos UTC de los positivos nocturnos (cenit >= 80) en
+    +-10 dias, que deciden H9a; 2) mismos minutos de los positivos diurnos en +-10 dias (extension); 3) el resto,
+    noche antes que dia (H9b, tasa base de H9c)."""
     a = json.load(open(os.path.join(B73, "inv_local.json"))) + json.load(open(os.path.join(B73, "inv_new.json")))
-    return sorted({datetime.fromisoformat(r["t"]).replace(tzinfo=None, second=0) for r in a})
+    inv = {datetime.fromisoformat(r["t"]).replace(tzinfo=None, second=0): r for r in a}
+    pos = [t for t, r in inv.items() if r["barra"] and r["anc"] and not r["manto"]]
+    p0 = set(pos) | {t - timedelta(minutes=m) for t in pos for m in range(10, 61, 10)}
+    def cerca(t, grupo):
+        return any(abs((t - u).days) <= 10 and (t.hour, t.minute) == (u.hour, u.minute) for u in grupo)
+    pn = [t for t in pos if inv[t]["sza"] >= 80]; pd_ = [t for t in pos if inv[t]["sza"] < 80]
+    def prio(t):
+        if t in p0:
+            return 0
+        if cerca(t, pn):
+            return 1
+        if cerca(t, pd_):
+            return 2
+        return 3 if inv[t]["sza"] >= 80 else 4
+    return sorted(inv, key=lambda t: (prio(t), t))
 
 
 def run(dts, nproc):

@@ -1,14 +1,14 @@
-H9 calor, salida cruda. 2026-11-19 15:02
-cuadros del inventario 4116 | leidos C07+C14 572 | sin scan en S3 1 | sin leer (falla o pendiente) 3543
-positivos 100 leidos 100 | negativos limpios 3526 leidos 360
+H9 calor, salida cruda. 2026-11-19 20:05
+cuadros del inventario 4116 | leidos C07+C14 1730 | sin scan en S3 2 | sin leer (falla o pendiente) 2384
+positivos 100 leidos 100 | negativos limpios 3526 leidos 1383
 pixeles con DQF=1 en C07 (posible saturacion) en todo el set: 0
 pixeles por zona/anillo: {'chillan': (18, 71), 'antuco': (19, 67), 'longavi': (19, 72)}
 
 === visibilidad 4 K (DECIDE) ===
   N (noche y crepusculo, decide) clase P: leidos 19, crater visible 16
-  N (noche y crepusculo, decide) clase N: leidos 265, crater visible 121
-  D (dia, extension) clase P: leidos 81, crater visible 79
-  D (dia, extension) clase N: leidos 95, crater visible 46
+  N (noche y crepusculo, decide) clase N: leidos 693, crater visible 281
+  D (dia, extension) clase P: leidos 81, crater visible 74
+  D (dia, extension) clase N: leidos 690, crater visible 114
   H9a estrato N: positivos con al menos un control 16, controles por positivo (mediana) 5
     chillan: AUC 0.456 [0.197; 0.637] positivos 16 dias 3
       por dia (AUC, n): {'2026-10-28': (0.637, 7), '2026-10-29': (0.463, 4), '2026-11-10': (0.197, 5)}
@@ -16,49 +16,49 @@ pixeles por zona/anillo: {'chillan': (18, 71), 'antuco': (19, 67), 'longavi': (1
     longavi: AUC 0.373 [0.133; 0.536] positivos 16 dias 3
     VEREDICTO H9a estrato N: se falsa (AUC <= 0,60)
     mediana A Chillan positivos 7.68 K | controles 7.09 K | A7 positivos 1.00 K | controles 0.20 K
-  H9a estrato D: positivos con al menos un control 25, controles por positivo (mediana) 1
-    chillan: AUC 0.773 [0.250; 0.919] positivos 25 dias 5
-      por dia (AUC, n): {'2026-10-25': (0.5, 4), '2026-10-28': (0.941, 17), '2026-10-29': (1.0, 1), '2026-11-10': (0.0, 1), '2026-11-14': (0.167, 2)}
-    antuco: AUC 0.125 [0.062; 0.583] positivos 20 dias 4
-    longavi: AUC 0.250 [0.125; 0.571] positivos 18 dias 5
-    VEREDICTO H9a estrato D: no concluyente
-    mediana A Chillan positivos 7.82 K | controles 4.16 K | A7 positivos -0.80 K | controles 5.82 K
+  H9a estrato D: positivos con al menos un control 62, controles por positivo (mediana) 2
+    chillan: AUC 0.605 [0.443; 0.781] positivos 62 dias 7
+      por dia (AUC, n): {'2026-10-25': (0.375, 4), '2026-10-28': (0.838, 17), '2026-10-29': (1.0, 1), '2026-11-08': (0.708, 8), '2026-11-10': (0.533, 3), '2026-11-11': (0.167, 3), '2026-11-14': (0.5, 26)}
+    antuco: AUC 0.562 [0.167; 0.949] positivos 42 dias 5
+    longavi: AUC 0.583 [0.432; 0.800] positivos 38 dias 5
+    VEREDICTO H9a estrato D: se falsa (el efecto aparece igual en un control)
+    mediana A Chillan positivos 7.51 K | controles 7.09 K | A7 positivos 0.84 K | controles 0.03 K
 
-=== H9b contexto: T99 de Antuco+Longavi (N visibles, 277 valores) = 6.27 K ===
-  chillan: cuadros N visibles 158, mediana A 6.65 K, p90 10.65, fraccion > T99 0.557
-  antuco: cuadros N visibles 136, mediana A 0.90 K, p90 3.93, fraccion > T99 0.022
-  longavi: cuadros N visibles 141, mediana A 1.50 K, p90 2.52, fraccion > T99 0.000
-  noches con >= 6 cuadros N visibles: 10; con F >= 0,5: 7 (70%)
-  CONTEXTO NO ENCENDIDO (segun la regla)
-  F mediana en noches que preceden o contienen positivos: 0.80 (n=6); demas: 0.38 (n=4)
-  F por noche (fecha de la tarde, F, n): {'2026-10-20': (0.0, 30), '2026-10-21': (0.0, 3), '2026-10-24': (0.55, 11), '2026-10-25': (0.42, 12), '2026-10-26': (1.0, 1), '2026-10-27': (0.77, 13), '2026-10-28': (0.89, 19), '2026-10-29': (0.83, 12), '2026-10-30': (0.33, 12), '2026-11-01': (0.0, 2), '2026-11-02': (0.0, 1), '2026-11-04': (1.0, 5), '2026-11-06': (0.83, 6), '2026-11-07': (0.7, 10), '2026-11-08': (1.0, 5), '2026-11-09': (1.0, 2), '2026-11-10': (0.83, 6), '2026-11-11': (0.33, 3), '2026-11-12': (1.0, 2), '2026-11-13': (1.0, 3)}
+=== H9b contexto: T99 de Antuco+Longavi (N visibles, 623 valores) = 5.56 K ===
+  chillan: cuadros N visibles 346, mediana A 7.10 K, p90 10.79, fraccion > T99 0.711
+  antuco: cuadros N visibles 320, mediana A 0.70 K, p90 1.62, fraccion > T99 0.022
+  longavi: cuadros N visibles 303, mediana A 0.95 K, p90 2.20, fraccion > T99 0.000
+  noches con >= 6 cuadros N visibles: 10; con F >= 0,5: 9 (90%)
+  CONTEXTO ENCENDIDO
+  F mediana en noches que preceden o contienen positivos: 0.81 (n=6); demas: 0.58 (n=4)
+  F por noche (fecha de la tarde, F, n): {'2026-10-20': (0.0, 3), '2026-10-21': (0.0, 4), '2026-10-24': (0.77, 73), '2026-10-25': (0.41, 39), '2026-10-26': (0.58, 52), '2026-10-27': (0.86, 73), '2026-10-28': (0.79, 33), '2026-10-29': (1.0, 12), '2026-10-30': (0.58, 12), '2026-11-01': (0.0, 2), '2026-11-02': (0.0, 1), '2026-11-04': (1.0, 5), '2026-11-06': (0.83, 6), '2026-11-07': (0.7, 10), '2026-11-08': (1.0, 5), '2026-11-09': (1.0, 2), '2026-11-10': (0.83, 6), '2026-11-11': (0.67, 3), '2026-11-12': (1.0, 2), '2026-11-13': (1.0, 3)}
 
 === H9c arranques: umbral p95 de A' en negativos = 4.91 K ===
-  tramos 17, con dato visible en la hora previa 1, con subida 1 (100%); tasa base 12% sobre 90 negativos
+  tramos 17, con dato visible en la hora previa 7, con subida 1 (14%); tasa base 17% sobre 245 negativos
     2026-10-22 01:50 UTC, 1 cuadros, cenit 120, subida: None
     2026-10-24 19:10 UTC, 1 cuadros, cenit 44, subida: None
     2026-10-25 14:40 UTC, 1 cuadros, cenit 35, subida: None
-    2026-10-25 16:20 UTC, 1 cuadros, cenit 25, subida: None
-    2026-10-25 17:00 UTC, 1 cuadros, cenit 26, subida: None
-    2026-10-25 18:00 UTC, 1 cuadros, cenit 32, subida: None
+    2026-10-25 16:20 UTC, 1 cuadros, cenit 25, subida: False
+    2026-10-25 17:00 UTC, 1 cuadros, cenit 26, subida: False
+    2026-10-25 18:00 UTC, 1 cuadros, cenit 32, subida: False
     2026-10-28 18:30 UTC, 26 cuadros, cenit 36, subida: None
     2026-10-29 00:10 UTC, 5 cuadros, cenit 101, subida: True
     2026-10-29 19:50 UTC, 1 cuadros, cenit 51, subida: None
     2026-11-07 19:50 UTC, 1 cuadros, cenit 49, subida: None
-    2026-11-08 17:40 UTC, 2 cuadros, cenit 26, subida: None
+    2026-11-08 17:40 UTC, 2 cuadros, cenit 26, subida: False
     2026-11-08 19:10 UTC, 3 cuadros, cenit 41, subida: None
     2026-11-08 20:10 UTC, 8 cuadros, cenit 53, subida: None
     2026-11-10 15:00 UTC, 2 cuadros, cenit 28, subida: None
     2026-11-10 21:30 UTC, 10 cuadros, cenit 68, subida: None
-    2026-11-11 17:50 UTC, 3 cuadros, cenit 26, subida: None
-    2026-11-14 16:40 UTC, 33 cuadros, cenit 19, subida: None
-  LECTURA H9c: los arranques coinciden con subida de calor
+    2026-11-11 17:50 UTC, 3 cuadros, cenit 26, subida: False
+    2026-11-14 16:40 UTC, 33 cuadros, cenit 19, subida: False
+  LECTURA H9c: los arranques NO coinciden con subida de calor
 
 === visibilidad 2 K (sensibilidad) ===
   N (noche y crepusculo, decide) clase P: leidos 19, crater visible 10
-  N (noche y crepusculo, decide) clase N: leidos 265, crater visible 90
-  D (dia, extension) clase P: leidos 81, crater visible 75
-  D (dia, extension) clase N: leidos 95, crater visible 40
+  N (noche y crepusculo, decide) clase N: leidos 693, crater visible 206
+  D (dia, extension) clase P: leidos 81, crater visible 63
+  D (dia, extension) clase N: leidos 690, crater visible 90
   H9a estrato N: positivos con al menos un control 10, controles por positivo (mediana) 4
     chillan: AUC 0.683 [0.333; 0.792] positivos 10 dias 3
       por dia (AUC, n): {'2026-10-28': (0.792, 6), '2026-10-29': (0.583, 3), '2026-11-10': (0.333, 1)}
@@ -66,19 +66,19 @@ pixeles por zona/anillo: {'chillan': (18, 71), 'antuco': (19, 67), 'longavi': (1
     longavi: AUC 0.343 [0.333; 0.361] positivos 9 dias 2
     VEREDICTO H9a estrato N: no concluyente
     mediana A Chillan positivos 7.68 K | controles 6.77 K | A7 positivos 0.75 K | controles 0.08 K
-  H9a estrato D: positivos con al menos un control 24, controles por positivo (mediana) 1
-    chillan: AUC 0.792 [0.200; 0.945] positivos 24 dias 4
-      por dia (AUC, n): {'2026-10-25': (0.5, 4), '2026-10-28': (0.941, 17), '2026-10-29': (1.0, 1), '2026-11-14': (0.0, 2)}
-    antuco: AUC 0.150 [0.062; 0.667] positivos 20 dias 4
-    longavi: AUC 0.333 [0.231; 1.000] positivos 15 dias 4
-    VEREDICTO H9a estrato D: no concluyente
-    mediana A Chillan positivos 7.92 K | controles 3.92 K | A7 positivos -0.80 K | controles 7.14 K
+  H9a estrato D: positivos con al menos un control 43, controles por positivo (mediana) 2
+    chillan: AUC 0.612 [0.389; 0.850] positivos 43 dias 6
+      por dia (AUC, n): {'2026-10-25': (0.417, 2), '2026-10-28': (0.875, 16), '2026-10-29': (1.0, 1), '2026-11-08': (0.75, 2), '2026-11-11': (0.167, 3), '2026-11-14': (0.447, 19)}
+    antuco: AUC 0.510 [0.167; 0.900] positivos 32 dias 5
+    longavi: AUC 0.712 [0.444; 0.976] positivos 26 dias 5
+    VEREDICTO H9a estrato D: se falsa (el efecto aparece igual en un control)
+    mediana A Chillan positivos 7.46 K | controles 7.04 K | A7 positivos 0.88 K | controles 0.33 K
 
 === visibilidad 8 K (sensibilidad) ===
   N (noche y crepusculo, decide) clase P: leidos 19, crater visible 18
-  N (noche y crepusculo, decide) clase N: leidos 265, crater visible 167
+  N (noche y crepusculo, decide) clase N: leidos 693, crater visible 375
   D (dia, extension) clase P: leidos 81, crater visible 81
-  D (dia, extension) clase N: leidos 95, crater visible 53
+  D (dia, extension) clase N: leidos 690, crater visible 182
   H9a estrato N: positivos con al menos un control 18, controles por positivo (mediana) 8
     chillan: AUC 0.530 [0.257; 0.666] positivos 18 dias 4
       por dia (AUC, n): {'2026-10-28': (0.672, 7), '2026-10-29': (0.658, 5), '2026-11-10': (0.309, 5), '2026-11-14': (0.0, 1)}
@@ -86,10 +86,10 @@ pixeles por zona/anillo: {'chillan': (18, 71), 'antuco': (19, 67), 'longavi': (1
     longavi: AUC 0.430 [0.266; 0.568] positivos 18 dias 4
     VEREDICTO H9a estrato N: se falsa (AUC <= 0,60)
     mediana A Chillan positivos 7.68 K | controles 6.47 K | A7 positivos 1.11 K | controles 0.67 K
-  H9a estrato D: positivos con al menos un control 26, controles por positivo (mediana) 1
-    chillan: AUC 0.797 [0.406; 0.933] positivos 26 dias 6
-      por dia (AUC, n): {'2026-10-24': (1.0, 1), '2026-10-25': (0.5, 4), '2026-10-28': (0.941, 17), '2026-10-29': (1.0, 1), '2026-11-10': (0.4, 1), '2026-11-14': (0.167, 2)}
-    antuco: AUC 0.174 [0.083; 0.722] positivos 23 dias 4
-    longavi: AUC 0.292 [0.167; 0.625] positivos 20 dias 5
-    VEREDICTO H9a estrato D: no concluyente
-    mediana A Chillan positivos 7.81 K | controles 4.14 K | A7 positivos -0.80 K | controles 5.34 K
+  H9a estrato D: positivos con al menos un control 80, controles por positivo (mediana) 3
+    chillan: AUC 0.503 [0.349; 0.660] positivos 80 dias 9
+      por dia (AUC, n): {'2026-10-24': (0.0, 1), '2026-10-25': (0.562, 4), '2026-10-28': (0.703, 19), '2026-10-29': (0.667, 1), '2026-11-07': (0.0, 1), '2026-11-08': (0.69, 13), '2026-11-10': (0.571, 7), '2026-11-11': (0.167, 3), '2026-11-14': (0.34, 31)}
+    antuco: AUC 0.636 [0.268; 0.936] positivos 58 dias 6
+    longavi: AUC 0.409 [0.303; 0.545] positivos 63 dias 8
+    VEREDICTO H9a estrato D: se falsa (AUC <= 0,60)
+    mediana A Chillan positivos 7.48 K | controles 7.33 K | A7 positivos 0.79 K | controles 0.66 K

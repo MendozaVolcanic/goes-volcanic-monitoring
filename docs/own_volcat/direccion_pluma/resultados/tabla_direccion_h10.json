@@ -1,0 +1,271 @@
+{
+ "jornadas": [
+  {
+   "jornada": "25-10",
+   "resueltas": 5,
+   "P1_media": 180.5,
+   "P1_R": 0.97,
+   "P0_media": 182.4,
+   "P0_R": 0.92,
+   "frac45_P1": 1.0,
+   "frac45_P0": 0.8,
+   "gfs_hacia": 135.8,
+   "gfs_ms": 5.0,
+   "gfs_n": 5,
+   "gfs_capa_completa_hacia": 148.2,
+   "huella_vs_gfs": "no concluyente",
+   "d_huella_gfs": [
+    46.6,
+    44.7
+   ],
+   "az_reav": 135.0,
+   "d_P0": 47.4,
+   "d_P1": 45.5,
+   "huella_vs_reav": "no concluyente",
+   "reav_vs_gfs": "coincide",
+   "d_reav_gfs": 0.8
+  },
+  {
+   "jornada": "27-10",
+   "resueltas": 0
+  },
+  {
+   "jornada": "28-10",
+   "resueltas": 1,
+   "P1_media": 171.9,
+   "P1_R": 1.0,
+   "P0_media": 168.0,
+   "P0_R": 1.0,
+   "frac45_P1": 1.0,
+   "frac45_P0": 1.0,
+   "gfs_hacia": 1.8,
+   "gfs_ms": 5.8,
+   "gfs_n": 1,
+   "gfs_capa_completa_hacia": 1.4,
+   "huella_vs_gfs": "discrepa",
+   "d_huella_gfs": [
+    166.2,
+    170.1
+   ],
+   "az_reav": 315.0,
+   "d_P0": 147.0,
+   "d_P1": 143.1,
+   "huella_vs_reav": "no concluyente (menos de 2 escenas)",
+   "reav_vs_gfs": "no concluyente",
+   "d_reav_gfs": 46.8
+  },
+  {
+   "jornada": "28-10b",
+   "resueltas": 14,
+   "P1_media": 132.9,
+   "P1_R": 1.0,
+   "P0_media": 86.1,
+   "P0_R": 0.93,
+   "frac45_P1": 1.0,
+   "frac45_P0": 0.93,
+   "gfs_hacia": 17.6,
+   "gfs_ms": 5.8,
+   "gfs_n": 14,
+   "gfs_capa_completa_hacia": 22.8,
+   "huella_vs_gfs": "no concluyente",
+   "d_huella_gfs": [
+    68.5,
+    115.3
+   ]
+  },
+  {
+   "jornada": "10-11",
+   "resueltas": 10,
+   "P1_media": 114.8,
+   "P1_R": 0.96,
+   "P0_media": 66.4,
+   "P0_R": 0.95,
+   "frac45_P1": 1.0,
+   "frac45_P0": 1.0,
+   "gfs_hacia": 42.1,
+   "gfs_ms": 6.6,
+   "gfs_n": 10,
+   "gfs_capa_completa_hacia": 51.3,
+   "huella_vs_gfs": "no concluyente",
+   "d_huella_gfs": [
+    24.3,
+    72.7
+   ]
+  },
+  {
+   "jornada": "12-11",
+   "resueltas": 0
+  }
+ ],
+ "reav_gfs": [
+  {
+   "ep": "E1",
+   "hora": "2026-10-25 10:41",
+   "az_reav": 135.0,
+   "gfs_hacia": 346.0,
+   "gfs_ms": 0.9,
+   "d": 149.0,
+   "sens_crater_29_35": [
+    304.9,
+    8.8
+   ]
+  },
+  {
+   "ep": "E2",
+   "hora": "2026-10-25 11:27",
+   "az_reav": 135.0,
+   "gfs_hacia": 304.3,
+   "gfs_ms": 1.1,
+   "d": 169.3,
+   "sens_crater_29_35": [
+    285.4,
+    348.1
+   ]
+  },
+  {
+   "ep": "E3",
+   "hora": "2026-10-25 13:15",
+   "az_reav": 135.0,
+   "gfs_hacia": 172.8,
+   "gfs_ms": 0.5,
+   "d": 37.8,
+   "sens_crater_29_35": [
+    214.6,
+    105.1
+   ]
+  },
+  {
+   "ep": "E4",
+   "hora": "2026-10-25 14:44",
+   "az_reav": 135.0,
+   "gfs_hacia": 143.2,
+   "gfs_ms": 3.1,
+   "d": 8.2,
+   "sens_crater_29_35": [
+    159.6,
+    127.9
+   ]
+  },
+  {
+   "ep": "E5",
+   "hora": "2026-10-25 16:23",
+   "az_reav": 135.0,
+   "gfs_hacia": 127.1,
+   "gfs_ms": 4.7,
+   "d": 7.9,
+   "sens_crater_29_35": [
+    137.6,
+    115.4
+   ]
+  },
+  {
+   "ep": "E6",
+   "hora": "2026-10-27 09:26",
+   "az_reav": 315.0,
+   "gfs_hacia": 16.9,
+   "gfs_ms": 6.9,
+   "d": 61.9,
+   "sens_crater_29_35": [
+    15.5,
+    20.0
+   ]
+  },
+  {
+   "ep": "E7",
+   "hora": "2026-10-27 10:26",
+   "az_reav": 22.5,
+   "gfs_hacia": 6.1,
+   "gfs_ms": 5.7,
+   "d": 16.4,
+   "sens_crater_29_35": [
+    5.4,
+    8.2
+   ]
+  },
+  {
+   "ep": "E8",
+   "hora": "2026-10-27 11:04",
+   "az_reav": 0.0,
+   "gfs_hacia": 2.9,
+   "gfs_ms": 7.3,
+   "d": 2.9,
+   "sens_crater_29_35": [
+    359.8,
+    5.9
+   ]
+  },
+  {
+   "ep": "E9",
+   "hora": "2026-10-28 15:34",
+   "az_reav": 315.0,
+   "gfs_hacia": 318.4,
+   "gfs_ms": 4.9,
+   "d": 3.4,
+   "sens_crater_29_35": [
+    305.9,
+    327.8
+   ]
+  },
+  {
+   "ep": "E10",
+   "hora": "2026-10-28 17:38",
+   "az_reav": 315.0,
+   "gfs_hacia": 351.5,
+   "gfs_ms": 6.0,
+   "d": 36.5,
+   "sens_crater_29_35": [
+    346.8,
+    356.1
+   ]
+  },
+  {
+   "ep": "E11",
+   "hora": "2026-10-28 20:32",
+   "az_reav": null,
+   "gfs_hacia": 14.8,
+   "gfs_ms": 6.5,
+   "d": null,
+   "sens_crater_29_35": [
+    17.2,
+    13.1
+   ]
+  },
+  {
+   "ep": "E12",
+   "hora": "2026-10-28 21:49",
+   "az_reav": null,
+   "gfs_hacia": 21.9,
+   "gfs_ms": 5.2,
+   "d": null,
+   "sens_crater_29_35": [
+    28.3,
+    18.3
+   ]
+  },
+  {
+   "ep": "E13",
+   "hora": "2026-11-10 21:54",
+   "az_reav": null,
+   "gfs_hacia": 45.5,
+   "gfs_ms": 6.6,
+   "d": null,
+   "sens_crater_29_35": [
+    45.0,
+    46.4
+   ]
+  },
+  {
+   "ep": "E14",
+   "hora": "2026-11-12 20:03",
+   "az_reav": null,
+   "gfs_hacia": 118.9,
+   "gfs_ms": 9.9,
+   "d": null,
+   "sens_crater_29_35": [
+    122.2,
+    116.8
+   ]
+  }
+ ],
+ "veredicto": "no concluyente"
+}

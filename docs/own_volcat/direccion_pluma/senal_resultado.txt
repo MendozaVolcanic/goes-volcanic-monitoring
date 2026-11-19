@@ -1,0 +1,28 @@
+escenas por estado: Counter({('25-10', 'sin_control'): 30, ('27-10', 'sin_escena'): 29, ('25-10', 'sin_escena'): 19, ('25-10', 'pareada'): 19, ('28-10', 'sin_control'): 13, ('27-10', 'pareada'): 8, ('27-10', 'sin_control'): 5, ('28-10', 'pareada'): 3})
+25-10|O|BT11       AUC=0.347 [0.33; 0.36] escenas= 19 px=  298 med +281.83/+279.09
+25-10|O|BTD        AUC=0.561 [0.49; 0.64] escenas= 19 px=  298 med +1.28/+1.32 f_pos=0.000 f_ctl=0.000
+25-10|O|S          AUC=0.652 [0.61; 0.70] escenas= 19 px=  298 med +3.21/+3.68 f_pos=0.000 f_ctl=0.000
+25-10|R|BT11       AUC=0.518 [0.47; 0.56] escenas= 19 px=  278 med +280.49/+280.88
+25-10|R|BTD        AUC=0.684 [0.63; 0.74] escenas= 19 px=  278 med +0.82/+1.04 f_pos=0.000 f_ctl=0.000
+25-10|R|S          AUC=0.603 [0.55; 0.66] escenas= 19 px=  278 med +2.22/+2.51 f_pos=0.205 f_ctl=0.155
+25-10|V|BT11       AUC=0.000 [0.00; 0.00] escenas= 19 px=    5 med +290.16/+282.15
+25-10|V|BTD        AUC=1.000 [1.00; 1.00] escenas= 19 px=    5 med +0.65/+1.76 f_pos=0.000 f_ctl=0.000
+25-10|V|S          AUC=0.960 [0.96; 0.96] escenas= 19 px=    5 med +2.49/+3.90 f_pos=0.200 f_ctl=0.000
+27-10|O|BT11       AUC=0.335 [0.25; 0.42] escenas=  8 px=  128 med +286.71/+284.40
+27-10|O|BTD        AUC=0.572 [0.55; 0.59] escenas=  8 px=  128 med +1.57/+1.68 f_pos=0.000 f_ctl=0.000
+27-10|O|S          AUC=0.453 [0.40; 0.51] escenas=  8 px=  128 med +3.54/+3.42 f_pos=0.000 f_ctl=0.000
+27-10|R|BT11       AUC=0.547 [0.49; 0.61] escenas=  8 px=  120 med +281.39/+283.26
+27-10|R|BTD        AUC=0.698 [0.64; 0.75] escenas=  8 px=  120 med +1.46/+1.82 f_pos=0.000 f_ctl=0.000
+27-10|R|S          AUC=0.675 [0.61; 0.74] escenas=  8 px=  120 med +3.45/+3.82 f_pos=0.000 f_ctl=0.000
+27-10|V|BT11       AUC=nan [nan; nan] escenas=  8 px=    0 med +nan/+nan
+27-10|V|BTD        AUC=nan [nan; nan] escenas=  8 px=    0 med +nan/+nan f_pos=nan f_ctl=nan
+27-10|V|S          AUC=nan [nan; nan] escenas=  8 px=    0 med +nan/+nan f_pos=nan f_ctl=nan
+28-10|O|BT11       AUC=0.519 [0.51; 0.54] escenas=  3 px=   42 med +284.71/+285.56
+28-10|O|BTD        AUC=0.502 [0.46; 0.55] escenas=  3 px=   42 med +0.62/+0.71 f_pos=0.000 f_ctl=0.000
+28-10|O|S          AUC=0.560 [0.49; 0.60] escenas=  3 px=   42 med +1.98/+2.30 f_pos=0.238 f_ctl=0.286
+28-10|R|BT11       AUC=0.447 [0.43; 0.46] escenas=  3 px=   48 med +287.14/+286.70
+28-10|R|BTD        AUC=0.441 [0.42; 0.49] escenas=  3 px=   48 med +1.26/+1.04 f_pos=0.000 f_ctl=0.000
+28-10|R|S          AUC=0.429 [0.40; 0.46] escenas=  3 px=   48 med +3.21/+3.07 f_pos=0.042 f_ctl=0.125
+28-10|V|BT11       AUC=nan [nan; nan] escenas=  3 px=    0 med +nan/+nan
+28-10|V|BTD        AUC=nan [nan; nan] escenas=  3 px=    0 med +nan/+nan f_pos=nan f_ctl=nan
+28-10|V|S          AUC=nan [nan; nan] escenas=  3 px=    0 med +nan/+nan f_pos=nan f_ctl=nan

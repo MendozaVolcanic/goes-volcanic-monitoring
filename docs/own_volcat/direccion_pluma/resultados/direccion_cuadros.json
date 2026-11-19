@@ -1,0 +1,2178 @@
+[
+ {
+  "ep": "E1",
+  "jornada": "25-10",
+  "slot": "2026-10-25 10:30",
+  "az_reav": 135.0,
+  "H": 1320,
+  "sza": 82.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E1",
+  "jornada": "25-10",
+  "slot": "2026-10-25 10:40",
+  "az_reav": 135.0,
+  "H": 1320,
+  "sza": 80.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E1",
+  "jornada": "25-10",
+  "slot": "2026-10-25 10:50",
+  "az_reav": 135.0,
+  "H": 1320,
+  "sza": 78.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E1",
+  "jornada": "25-10",
+  "slot": "2026-10-25 11:00",
+  "az_reav": 135.0,
+  "H": 1320,
+  "sza": 76.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E1",
+  "jornada": "25-10",
+  "slot": "2026-10-25 11:10",
+  "az_reav": 135.0,
+  "H": 1320,
+  "sza": 74.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E1",
+  "jornada": "25-10",
+  "slot": "2026-10-25 11:20",
+  "az_reav": 135.0,
+  "H": 1320,
+  "sza": 72.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E1",
+  "jornada": "25-10",
+  "slot": "2026-10-25 11:30",
+  "az_reav": 135.0,
+  "H": 1320,
+  "sza": 70.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E1",
+  "jornada": "25-10",
+  "slot": "2026-10-25 11:40",
+  "az_reav": 135.0,
+  "H": 1320,
+  "sza": 68.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E2",
+  "jornada": "25-10",
+  "slot": "2026-10-25 11:10",
+  "az_reav": 135.0,
+  "H": 920,
+  "sza": 74.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E2",
+  "jornada": "25-10",
+  "slot": "2026-10-25 11:20",
+  "az_reav": 135.0,
+  "H": 920,
+  "sza": 72.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E2",
+  "jornada": "25-10",
+  "slot": "2026-10-25 11:30",
+  "az_reav": 135.0,
+  "H": 920,
+  "sza": 70.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E2",
+  "jornada": "25-10",
+  "slot": "2026-10-25 11:40",
+  "az_reav": 135.0,
+  "H": 920,
+  "sza": 68.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E2",
+  "jornada": "25-10",
+  "slot": "2026-10-25 11:50",
+  "az_reav": 135.0,
+  "H": 920,
+  "sza": 66.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E2",
+  "jornada": "25-10",
+  "slot": "2026-10-25 12:00",
+  "az_reav": 135.0,
+  "H": 920,
+  "sza": 64.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E2",
+  "jornada": "25-10",
+  "slot": "2026-10-25 12:10",
+  "az_reav": 135.0,
+  "H": 920,
+  "sza": 62.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E2",
+  "jornada": "25-10",
+  "slot": "2026-10-25 12:20",
+  "az_reav": 135.0,
+  "H": 920,
+  "sza": 60.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E2",
+  "jornada": "25-10",
+  "slot": "2026-10-25 12:30",
+  "az_reav": 135.0,
+  "H": 920,
+  "sza": 58.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E3",
+  "jornada": "25-10",
+  "slot": "2026-10-25 13:00",
+  "az_reav": 135.0,
+  "H": 1540,
+  "sza": 52.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E3",
+  "jornada": "25-10",
+  "slot": "2026-10-25 13:10",
+  "az_reav": 135.0,
+  "H": 1540,
+  "sza": 51.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E3",
+  "jornada": "25-10",
+  "slot": "2026-10-25 13:20",
+  "az_reav": 135.0,
+  "H": 1540,
+  "sza": 49.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E3",
+  "jornada": "25-10",
+  "slot": "2026-10-25 13:30",
+  "az_reav": 135.0,
+  "H": 1540,
+  "sza": 47.2,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E3",
+  "jornada": "25-10",
+  "slot": "2026-10-25 13:40",
+  "az_reav": 135.0,
+  "H": 1540,
+  "sza": 45.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E3",
+  "jornada": "25-10",
+  "slot": "2026-10-25 13:50",
+  "az_reav": 135.0,
+  "H": 1540,
+  "sza": 43.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E3",
+  "jornada": "25-10",
+  "slot": "2026-10-25 14:00",
+  "az_reav": 135.0,
+  "H": 1540,
+  "sza": 41.7,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E3",
+  "jornada": "25-10",
+  "slot": "2026-10-25 14:10",
+  "az_reav": 135.0,
+  "H": 1540,
+  "sza": 39.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 14:30",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 36.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 14:40",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 35.0,
+  "tams": [
+   9
+  ],
+  "npx": 9,
+  "P1_cx": -4.98,
+  "P1_cy": -8.93,
+  "P1_dist": 10.22,
+  "P1_az": 209.13,
+  "P1_az_lejano": 201.44,
+  "P1_dist_lejano": 13.06,
+  "P0_cx": -5.33,
+  "P0_cy": -4.36,
+  "P0_dist": 6.89,
+  "P0_az": 230.69,
+  "P0_az_lejano": 214.06,
+  "P0_dist_lejano": 9.16,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 14:50",
+  "az_reav": 135.0,
+  "H": 1740,
+  "estado": "sin_cuadro"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 15:00",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 32.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 15:10",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 30.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 15:20",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 29.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 15:30",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 28.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 15:40",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 27.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 15:50",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 26.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:00",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 25.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:10",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 25.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:20",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 25.0,
+  "tams": [
+   4
+  ],
+  "npx": 4,
+  "P1_cx": 0.63,
+  "P1_cy": -9.92,
+  "P1_dist": 9.94,
+  "P1_az": 176.38,
+  "P1_az_lejano": 177.04,
+  "P1_dist_lejano": 12.17,
+  "P0_cx": 0.27,
+  "P0_cy": -5.36,
+  "P0_dist": 5.36,
+  "P0_az": 177.15,
+  "P0_az_lejano": 177.99,
+  "P0_dist_lejano": 7.59,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:30",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 25.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:40",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 25.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:50",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 25.4,
+  "tams": [
+   6
+  ],
+  "npx": 6,
+  "P1_cx": 1.53,
+  "P1_cy": -11.04,
+  "P1_dist": 11.15,
+  "P1_az": 172.12,
+  "P1_az_lejano": 168.7,
+  "P1_dist_lejano": 12.4,
+  "P0_cx": 1.17,
+  "P0_cy": -6.47,
+  "P0_dist": 6.58,
+  "P0_az": 169.79,
+  "P0_az_lejano": 164.77,
+  "P0_dist_lejano": 7.86,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:00",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 25.9,
+  "tams": [
+   9
+  ],
+  "npx": 9,
+  "P1_cx": 0.83,
+  "P1_cy": -10.42,
+  "P1_dist": 10.45,
+  "P1_az": 175.46,
+  "P1_az_lejano": 184.66,
+  "P1_dist_lejano": 14.44,
+  "P0_cx": 0.47,
+  "P0_cy": -5.85,
+  "P0_dist": 5.87,
+  "P0_az": 175.44,
+  "P0_az_lejano": 188.87,
+  "P0_dist_lejano": 9.94,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:10",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 26.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:20",
+  "az_reav": 135.0,
+  "H": 1740,
+  "estado": "sin_cuadro"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:30",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 28.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E4",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:40",
+  "az_reav": 135.0,
+  "H": 1740,
+  "sza": 29.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:10",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 25.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:20",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 25.0,
+  "tams": [
+   4
+  ],
+  "npx": 4,
+  "P1_cx": 0.63,
+  "P1_cy": -9.92,
+  "P1_dist": 9.94,
+  "P1_az": 176.38,
+  "P1_az_lejano": 177.04,
+  "P1_dist_lejano": 12.17,
+  "P0_cx": 0.23,
+  "P0_cy": -4.84,
+  "P0_dist": 4.84,
+  "P0_az": 177.33,
+  "P0_az_lejano": 178.17,
+  "P0_dist_lejano": 7.07,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:30",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 25.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:40",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 25.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 16:50",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 25.4,
+  "tams": [
+   6
+  ],
+  "npx": 6,
+  "P1_cx": 1.53,
+  "P1_cy": -11.04,
+  "P1_dist": 11.15,
+  "P1_az": 172.12,
+  "P1_az_lejano": 168.7,
+  "P1_dist_lejano": 12.4,
+  "P0_cx": 1.13,
+  "P0_cy": -5.95,
+  "P0_dist": 6.06,
+  "P0_az": 169.3,
+  "P0_az_lejano": 164.02,
+  "P0_dist_lejano": 7.35,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:00",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 25.9,
+  "tams": [
+   9
+  ],
+  "npx": 9,
+  "P1_cx": 0.83,
+  "P1_cy": -10.42,
+  "P1_dist": 10.45,
+  "P1_az": 175.46,
+  "P1_az_lejano": 184.66,
+  "P1_dist_lejano": 14.44,
+  "P0_cx": 0.43,
+  "P0_cy": -5.33,
+  "P0_dist": 5.35,
+  "P0_az": 175.44,
+  "P0_az_lejano": 189.6,
+  "P0_dist_lejano": 9.43,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:10",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 26.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:20",
+  "az_reav": 135.0,
+  "H": 2300,
+  "estado": "sin_cuadro"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:30",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 28.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:40",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 29.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 17:50",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 30.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 18:00",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 32.2,
+  "tams": [
+   6
+  ],
+  "npx": 6,
+  "P1_cx": 1.53,
+  "P1_cy": -9.18,
+  "P1_dist": 9.3,
+  "P1_az": 170.55,
+  "P1_az_lejano": 177.04,
+  "P1_dist_lejano": 12.17,
+  "P0_cx": 1.13,
+  "P0_cy": -4.09,
+  "P0_dist": 4.25,
+  "P0_az": 164.63,
+  "P0_az_lejano": 178.17,
+  "P0_dist_lejano": 7.07,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 18:10",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 33.7,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 18:20",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 35.2,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 18:30",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 36.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 18:40",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 38.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 18:50",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 40.2,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 19:00",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 42.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 19:10",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 43.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 19:20",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 45.7,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 19:30",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 47.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 19:40",
+  "az_reav": 135.0,
+  "H": 2300,
+  "estado": "sin_cuadro"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 19:50",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 51.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 20:00",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 53.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 20:10",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 55.2,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 20:20",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 57.2,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 20:30",
+  "az_reav": 135.0,
+  "H": 2300,
+  "estado": "sin_cuadro"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 20:40",
+  "az_reav": 135.0,
+  "H": 2300,
+  "estado": "sin_cuadro"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 20:50",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 63.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 21:00",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 65.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 21:10",
+  "az_reav": 135.0,
+  "H": 2300,
+  "estado": "sin_cuadro"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 21:20",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 69.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 21:30",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 71.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 21:40",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 73.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 21:50",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 75.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 22:00",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 77.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E5",
+  "jornada": "25-10",
+  "slot": "2026-10-25 22:10",
+  "az_reav": 135.0,
+  "H": 2300,
+  "sza": 79.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E6",
+  "jornada": "27-10",
+  "slot": "2026-10-27 09:10",
+  "az_reav": 315.0,
+  "H": 2000,
+  "sza": 97.7,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E6",
+  "jornada": "27-10",
+  "slot": "2026-10-27 09:20",
+  "az_reav": 315.0,
+  "H": 2000,
+  "sza": 95.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E6",
+  "jornada": "27-10",
+  "slot": "2026-10-27 09:30",
+  "az_reav": 315.0,
+  "H": 2000,
+  "sza": 93.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E6",
+  "jornada": "27-10",
+  "slot": "2026-10-27 09:40",
+  "az_reav": 315.0,
+  "H": 2000,
+  "sza": 92.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E6",
+  "jornada": "27-10",
+  "slot": "2026-10-27 09:50",
+  "az_reav": 315.0,
+  "H": 2000,
+  "sza": 90.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E6",
+  "jornada": "27-10",
+  "slot": "2026-10-27 10:00",
+  "az_reav": 315.0,
+  "H": 2000,
+  "sza": 88.2,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E6",
+  "jornada": "27-10",
+  "slot": "2026-10-27 10:10",
+  "az_reav": 315.0,
+  "H": 2000,
+  "sza": 86.2,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E6",
+  "jornada": "27-10",
+  "slot": "2026-10-27 10:20",
+  "az_reav": 315.0,
+  "H": 2000,
+  "sza": 84.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E7",
+  "jornada": "27-10",
+  "slot": "2026-10-27 10:10",
+  "az_reav": 22.5,
+  "H": 960,
+  "sza": 86.2,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E7",
+  "jornada": "27-10",
+  "slot": "2026-10-27 10:20",
+  "az_reav": 22.5,
+  "H": 960,
+  "sza": 84.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E7",
+  "jornada": "27-10",
+  "slot": "2026-10-27 10:30",
+  "az_reav": 22.5,
+  "H": 960,
+  "sza": 82.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E7",
+  "jornada": "27-10",
+  "slot": "2026-10-27 10:40",
+  "az_reav": 22.5,
+  "H": 960,
+  "sza": 80.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E7",
+  "jornada": "27-10",
+  "slot": "2026-10-27 10:50",
+  "az_reav": 22.5,
+  "H": 960,
+  "sza": 78.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E7",
+  "jornada": "27-10",
+  "slot": "2026-10-27 11:00",
+  "az_reav": 22.5,
+  "H": 960,
+  "sza": 76.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E7",
+  "jornada": "27-10",
+  "slot": "2026-10-27 11:10",
+  "az_reav": 22.5,
+  "H": 960,
+  "sza": 74.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E7",
+  "jornada": "27-10",
+  "slot": "2026-10-27 11:20",
+  "az_reav": 22.5,
+  "H": 960,
+  "sza": 72.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 10:50",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 78.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 11:00",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 76.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 11:10",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 74.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 11:20",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 72.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 11:30",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 70.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 11:40",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 68.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 11:50",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 66.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 12:00",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 64.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 12:10",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 62.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 12:20",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 60.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 12:30",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 58.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 12:40",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 56.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 12:50",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 54.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 13:00",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 52.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 13:10",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 50.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 13:20",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 48.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 13:30",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 46.7,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 13:40",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 44.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 13:50",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 43.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 14:00",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 41.2,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 14:10",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 39.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 14:20",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 37.7,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 14:30",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 36.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 14:40",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 34.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 14:50",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 32.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 15:00",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 31.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 15:10",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 30.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 15:20",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 28.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 15:30",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 27.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 15:40",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 26.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 15:50",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 25.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E8",
+  "jornada": "27-10",
+  "slot": "2026-10-27 16:00",
+  "az_reav": 0.0,
+  "H": 1640,
+  "sza": 25.1,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E9",
+  "jornada": "28-10",
+  "slot": "2026-10-28 15:20",
+  "az_reav": 315.0,
+  "H": 1320,
+  "sza": 28.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E9",
+  "jornada": "28-10",
+  "slot": "2026-10-28 15:30",
+  "az_reav": 315.0,
+  "H": 1320,
+  "sza": 27.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E9",
+  "jornada": "28-10",
+  "slot": "2026-10-28 15:40",
+  "az_reav": 315.0,
+  "H": 1320,
+  "sza": 26.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E9",
+  "jornada": "28-10",
+  "slot": "2026-10-28 15:50",
+  "az_reav": 315.0,
+  "H": 1320,
+  "sza": 25.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E9",
+  "jornada": "28-10",
+  "slot": "2026-10-28 16:00",
+  "az_reav": 315.0,
+  "H": 1320,
+  "sza": 24.8,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E9",
+  "jornada": "28-10",
+  "slot": "2026-10-28 16:10",
+  "az_reav": 315.0,
+  "H": 1320,
+  "sza": 24.3,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E9",
+  "jornada": "28-10",
+  "slot": "2026-10-28 16:20",
+  "az_reav": 315.0,
+  "H": 1320,
+  "sza": 24.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E9",
+  "jornada": "28-10",
+  "slot": "2026-10-28 16:30",
+  "az_reav": 315.0,
+  "H": 1320,
+  "sza": 23.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E10",
+  "jornada": "28-10",
+  "slot": "2026-10-28 17:20",
+  "az_reav": 315.0,
+  "H": 2200,
+  "sza": 26.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E10",
+  "jornada": "28-10",
+  "slot": "2026-10-28 17:30",
+  "az_reav": 315.0,
+  "H": 2200,
+  "sza": 27.6,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E10",
+  "jornada": "28-10",
+  "slot": "2026-10-28 17:40",
+  "az_reav": 315.0,
+  "H": 2200,
+  "sza": 28.7,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E10",
+  "jornada": "28-10",
+  "slot": "2026-10-28 17:50",
+  "az_reav": 315.0,
+  "H": 2200,
+  "sza": 30.0,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E10",
+  "jornada": "28-10",
+  "slot": "2026-10-28 18:00",
+  "az_reav": 315.0,
+  "H": 2200,
+  "sza": 31.4,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E10",
+  "jornada": "28-10",
+  "slot": "2026-10-28 18:10",
+  "az_reav": 315.0,
+  "H": 2200,
+  "sza": 32.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E10",
+  "jornada": "28-10",
+  "slot": "2026-10-28 18:20",
+  "az_reav": 315.0,
+  "H": 2200,
+  "sza": 34.5,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E10",
+  "jornada": "28-10",
+  "slot": "2026-10-28 18:30",
+  "az_reav": 315.0,
+  "H": 2200,
+  "sza": 36.1,
+  "tams": [
+   5
+  ],
+  "npx": 5,
+  "P1_cx": 1.35,
+  "P1_cy": -9.48,
+  "P1_dist": 9.57,
+  "P1_az": 171.9,
+  "P1_az_lejano": 177.04,
+  "P1_dist_lejano": 12.17,
+  "P0_cx": 0.95,
+  "P0_cy": -4.48,
+  "P0_dist": 4.58,
+  "P0_az": 168.0,
+  "P0_az_lejano": 178.14,
+  "P0_dist_lejano": 7.17,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E11",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 20:20",
+  "az_reav": null,
+  "H": 2440,
+  "sza": 56.6,
+  "tams": [
+   16
+  ],
+  "npx": 16,
+  "P1_cx": 4.23,
+  "P1_cy": -3.91,
+  "P1_dist": 5.76,
+  "P1_az": 132.77,
+  "P1_az_lejano": 130.95,
+  "P1_dist_lejano": 15.14,
+  "P0_cx": 3.81,
+  "P0_cy": 1.29,
+  "P0_dist": 4.03,
+  "P0_az": 71.3,
+  "P0_az_lejano": 113.15,
+  "P0_dist_lejano": 11.97,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E11",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 20:30",
+  "az_reav": null,
+  "H": 2440,
+  "sza": 58.6,
+  "tams": [
+   22
+  ],
+  "npx": 22,
+  "P1_cx": 4.39,
+  "P1_cy": -4.03,
+  "P1_dist": 5.96,
+  "P1_az": 132.51,
+  "P1_az_lejano": 130.95,
+  "P1_dist_lejano": 15.14,
+  "P0_cx": 3.98,
+  "P0_cy": 1.18,
+  "P0_dist": 4.15,
+  "P0_az": 73.52,
+  "P0_az_lejano": 113.15,
+  "P0_dist_lejano": 11.97,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E11",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 20:40",
+  "az_reav": null,
+  "H": 2440,
+  "sza": 60.6,
+  "tams": [
+   14
+  ],
+  "npx": 14,
+  "P1_cx": 1.66,
+  "P1_cy": -1.94,
+  "P1_dist": 2.55,
+  "P1_az": 139.45,
+  "P1_az_lejano": 142.19,
+  "P1_dist_lejano": 6.9,
+  "P0_cx": 1.24,
+  "P0_cy": 3.26,
+  "P0_dist": 3.49,
+  "P0_az": 20.86,
+  "P0_az_lejano": 17.34,
+  "P0_dist_lejano": 6.76,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E11",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 20:50",
+  "az_reav": null,
+  "H": 2440,
+  "sza": 62.6,
+  "tams": [
+   24
+  ],
+  "npx": 24,
+  "P1_cx": 4.45,
+  "P1_cy": -4.52,
+  "P1_dist": 6.35,
+  "P1_az": 135.41,
+  "P1_az_lejano": 130.95,
+  "P1_dist_lejano": 15.14,
+  "P0_cx": 4.04,
+  "P0_cy": 0.69,
+  "P0_dist": 4.1,
+  "P0_az": 80.36,
+  "P0_az_lejano": 113.15,
+  "P0_dist_lejano": 11.97,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E11",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 21:00",
+  "az_reav": null,
+  "H": 2440,
+  "sza": 64.6,
+  "tams": [
+   26
+  ],
+  "npx": 26,
+  "P1_cx": 4.23,
+  "P1_cy": -4.59,
+  "P1_dist": 6.24,
+  "P1_az": 137.34,
+  "P1_az_lejano": 132.57,
+  "P1_dist_lejano": 17.97,
+  "P0_cx": 3.81,
+  "P0_cy": 0.61,
+  "P0_dist": 3.86,
+  "P0_az": 80.84,
+  "P0_az_lejano": 118.45,
+  "P0_dist_lejano": 14.56,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E11",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 21:10",
+  "az_reav": null,
+  "H": 2440,
+  "sza": 66.6,
+  "tams": [
+   29
+  ],
+  "npx": 29,
+  "P1_cx": 6.96,
+  "P1_cy": -5.84,
+  "P1_dist": 9.08,
+  "P1_az": 129.97,
+  "P1_az_lejano": 132.57,
+  "P1_dist_lejano": 17.97,
+  "P0_cx": 6.54,
+  "P0_cy": -0.63,
+  "P0_dist": 6.57,
+  "P0_az": 95.49,
+  "P0_az_lejano": 118.45,
+  "P0_dist_lejano": 14.56,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E11",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 21:20",
+  "az_reav": null,
+  "H": 2440,
+  "sza": 68.6,
+  "tams": [
+   28
+  ],
+  "npx": 28,
+  "P1_cx": 6.03,
+  "P1_cy": -6.17,
+  "P1_dist": 8.63,
+  "P1_az": 135.65,
+  "P1_az_lejano": 125.84,
+  "P1_dist_lejano": 20.77,
+  "P0_cx": 5.61,
+  "P0_cy": -0.96,
+  "P0_dist": 5.69,
+  "P0_az": 99.72,
+  "P0_az_lejano": 112.93,
+  "P0_dist_lejano": 17.81,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E11",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 21:30",
+  "az_reav": null,
+  "H": 2440,
+  "sza": 70.6,
+  "tams": [
+   31
+  ],
+  "npx": 31,
+  "P1_cx": 5.1,
+  "P1_cy": -4.66,
+  "P1_dist": 6.91,
+  "P1_az": 132.39,
+  "P1_az_lejano": 141.61,
+  "P1_dist_lejano": 15.51,
+  "P0_cx": 4.68,
+  "P0_cy": 0.55,
+  "P0_dist": 4.72,
+  "P0_az": 83.32,
+  "P0_az_lejano": 127.0,
+  "P0_dist_lejano": 11.53,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E12",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 21:30",
+  "az_reav": null,
+  "H": 2020,
+  "sza": 70.6,
+  "tams": [
+   31
+  ],
+  "npx": 31,
+  "P1_cx": 5.1,
+  "P1_cy": -4.66,
+  "P1_dist": 6.91,
+  "P1_az": 132.39,
+  "P1_az_lejano": 141.61,
+  "P1_dist_lejano": 15.51,
+  "P0_cx": 4.71,
+  "P0_cy": 0.16,
+  "P0_dist": 4.72,
+  "P0_az": 88.05,
+  "P0_az_lejano": 128.42,
+  "P0_dist_lejano": 11.79,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E12",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 21:40",
+  "az_reav": null,
+  "H": 2020,
+  "estado": "sin_cuadro"
+ },
+ {
+  "ep": "E12",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 21:50",
+  "az_reav": null,
+  "H": 2020,
+  "sza": 74.6,
+  "tams": [
+   31
+  ],
+  "npx": 31,
+  "P1_cx": 6.15,
+  "P1_cy": -5.96,
+  "P1_dist": 8.56,
+  "P1_az": 134.09,
+  "P1_az_lejano": 136.76,
+  "P1_dist_lejano": 16.69,
+  "P0_cx": 5.76,
+  "P0_cy": -1.14,
+  "P0_dist": 5.87,
+  "P0_az": 101.15,
+  "P0_az_lejano": 123.58,
+  "P0_dist_lejano": 13.25,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E12",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 22:00",
+  "az_reav": null,
+  "H": 2020,
+  "sza": 76.6,
+  "tams": [
+   25
+  ],
+  "npx": 25,
+  "P1_cx": 5.74,
+  "P1_cy": -5.18,
+  "P1_dist": 7.74,
+  "P1_az": 132.06,
+  "P1_az_lejano": 141.61,
+  "P1_dist_lejano": 15.51,
+  "P0_cx": 5.36,
+  "P0_cy": -0.36,
+  "P0_dist": 5.37,
+  "P0_az": 93.88,
+  "P0_az_lejano": 128.42,
+  "P0_dist_lejano": 11.79,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E12",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 22:10",
+  "az_reav": null,
+  "H": 2020,
+  "sza": 78.5,
+  "tams": [
+   14
+  ],
+  "npx": 14,
+  "P1_cx": 7.06,
+  "P1_cy": -6.73,
+  "P1_dist": 9.75,
+  "P1_az": 133.62,
+  "P1_az_lejano": 141.61,
+  "P1_dist_lejano": 15.51,
+  "P0_cx": 6.67,
+  "P0_cy": -1.91,
+  "P0_dist": 6.94,
+  "P0_az": 105.95,
+  "P0_az_lejano": 128.42,
+  "P0_dist_lejano": 11.79,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E12",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 22:20",
+  "az_reav": null,
+  "H": 2020,
+  "sza": 80.5,
+  "tams": [
+   11
+  ],
+  "npx": 11,
+  "P1_cx": 5.05,
+  "P1_cy": -3.62,
+  "P1_dist": 6.21,
+  "P1_az": 125.65,
+  "P1_az_lejano": 119.5,
+  "P1_dist_lejano": 11.07,
+  "P0_cx": 4.66,
+  "P0_cy": 1.19,
+  "P0_dist": 4.81,
+  "P0_az": 75.62,
+  "P0_az_lejano": 93.91,
+  "P0_dist_lejano": 9.26,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E12",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 22:30",
+  "az_reav": null,
+  "H": 2020,
+  "sza": 82.5,
+  "tams": [
+   27
+  ],
+  "npx": 27,
+  "P1_cx": 7.16,
+  "P1_cy": -6.78,
+  "P1_dist": 9.86,
+  "P1_az": 133.4,
+  "P1_az_lejano": 128.96,
+  "P1_dist_lejano": 19.34,
+  "P0_cx": 6.78,
+  "P0_cy": -1.95,
+  "P0_dist": 7.05,
+  "P0_az": 106.09,
+  "P0_az_lejano": 116.59,
+  "P0_dist_lejano": 16.37,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E12",
+  "jornada": "28-10b",
+  "slot": "2026-10-28 22:40",
+  "az_reav": null,
+  "H": 2020,
+  "sza": 84.4,
+  "tams": [
+   10
+  ],
+  "npx": 10,
+  "P1_cx": 9.63,
+  "P1_cy": -7.24,
+  "P1_dist": 12.05,
+  "P1_az": 126.93,
+  "P1_az_lejano": 136.76,
+  "P1_dist_lejano": 16.69,
+  "P0_cx": 9.24,
+  "P0_cy": -2.42,
+  "P0_dist": 9.55,
+  "P0_az": 104.66,
+  "P0_az_lejano": 123.58,
+  "P0_dist_lejano": 13.25,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 21:40",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 70.2,
+  "tams": [
+   19
+  ],
+  "npx": 19,
+  "P1_cx": 4.8,
+  "P1_cy": -5.1,
+  "P1_dist": 7.0,
+  "P1_az": 136.73,
+  "P1_az_lejano": 141.61,
+  "P1_dist_lejano": 15.51,
+  "P0_cx": 4.38,
+  "P0_cy": 0.07,
+  "P0_dist": 4.38,
+  "P0_az": 89.06,
+  "P0_az_lejano": 127.14,
+  "P0_dist_lejano": 11.56,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 21:50",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 72.2,
+  "tams": [
+   14
+  ],
+  "npx": 14,
+  "P1_cx": 3.97,
+  "P1_cy": -3.37,
+  "P1_dist": 5.21,
+  "P1_az": 130.34,
+  "P1_az_lejano": 148.71,
+  "P1_dist_lejano": 11.61,
+  "P0_cx": 3.56,
+  "P0_cy": 1.79,
+  "P0_dist": 3.98,
+  "P0_az": 63.28,
+  "P0_az_lejano": 60.56,
+  "P0_dist_lejano": 8.51,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 22:00",
+  "az_reav": null,
+  "H": 2400,
+  "estado": "sin_cuadro"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 22:10",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 76.1,
+  "tams": [
+   9,
+   14
+  ],
+  "npx": 23,
+  "P1_cx": 6.81,
+  "P1_cy": -4.67,
+  "P1_dist": 8.26,
+  "P1_az": 124.44,
+  "P1_az_lejano": 120.15,
+  "P1_dist_lejano": 15.3,
+  "P0_cx": 6.4,
+  "P0_cy": 0.5,
+  "P0_dist": 6.42,
+  "P0_az": 85.57,
+  "P0_az_lejano": 101.09,
+  "P0_dist_lejano": 13.05,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 22:20",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 78.1,
+  "tams": [
+   4,
+   8
+  ],
+  "npx": 12,
+  "P1_cx": 4.68,
+  "P1_cy": -2.47,
+  "P1_dist": 5.29,
+  "P1_az": 117.82,
+  "P1_az_lejano": 119.5,
+  "P1_dist_lejano": 11.07,
+  "P0_cx": 4.27,
+  "P0_cy": 2.7,
+  "P0_dist": 5.05,
+  "P0_az": 57.71,
+  "P0_az_lejano": 10.51,
+  "P0_dist_lejano": 11.06,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 22:30",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 80.0,
+  "tams": [
+   19
+  ],
+  "npx": 19,
+  "P1_cx": 4.89,
+  "P1_cy": -1.68,
+  "P1_dist": 5.18,
+  "P1_az": 109.0,
+  "P1_az_lejano": 148.71,
+  "P1_dist_lejano": 11.61,
+  "P0_cx": 4.48,
+  "P0_cy": 3.48,
+  "P0_dist": 5.67,
+  "P0_az": 52.17,
+  "P0_az_lejano": 19.33,
+  "P0_dist_lejano": 11.53,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 22:40",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 82.0,
+  "tams": [
+   4
+  ],
+  "npx": 4,
+  "P1_cx": 5.13,
+  "P1_cy": -2.1,
+  "P1_dist": 5.54,
+  "P1_az": 112.23,
+  "P1_az_lejano": 118.06,
+  "P1_dist_lejano": 6.83,
+  "P0_cx": 4.72,
+  "P0_cy": 3.07,
+  "P0_dist": 5.63,
+  "P0_az": 56.96,
+  "P0_az_lejano": 53.31,
+  "P0_dist_lejano": 7.0,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 22:50",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 83.9,
+  "tams": [
+   5
+  ],
+  "npx": 5,
+  "P1_cx": 5.31,
+  "P1_cy": 1.7,
+  "P1_dist": 5.58,
+  "P1_az": 72.2,
+  "P1_az_lejano": 59.92,
+  "P1_dist_lejano": 6.97,
+  "P0_cx": 4.9,
+  "P0_cy": 6.86,
+  "P0_dist": 8.43,
+  "P0_az": 35.51,
+  "P0_az_lejano": 33.0,
+  "P0_dist_lejano": 10.31,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 23:00",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 85.8,
+  "tams": [
+   7
+  ],
+  "npx": 7,
+  "P1_cx": 7.83,
+  "P1_cy": -3.21,
+  "P1_dist": 8.47,
+  "P1_az": 112.32,
+  "P1_az_lejano": 128.59,
+  "P1_dist_lejano": 12.32,
+  "P0_cx": 7.41,
+  "P0_cy": 1.95,
+  "P0_dist": 7.67,
+  "P0_az": 75.25,
+  "P0_az_lejano": 49.13,
+  "P0_dist_lejano": 9.8,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 23:10",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 87.7,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 23:20",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 89.5,
+  "tams": [
+   4,
+   4
+  ],
+  "npx": 8,
+  "P1_cx": 5.13,
+  "P1_cy": -2.1,
+  "P1_dist": 5.54,
+  "P1_az": 112.23,
+  "P1_az_lejano": 151.18,
+  "P1_dist_lejano": 8.77,
+  "P0_cx": 4.72,
+  "P0_cy": 3.07,
+  "P0_dist": 5.63,
+  "P0_az": 56.96,
+  "P0_az_lejano": 33.0,
+  "P0_dist_lejano": 10.31,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E13",
+  "jornada": "10-11",
+  "slot": "2026-11-10 23:30",
+  "az_reav": null,
+  "H": 2400,
+  "sza": 91.4,
+  "tams": [
+   4
+  ],
+  "npx": 4,
+  "P1_cx": 10.53,
+  "P1_cy": -5.45,
+  "P1_dist": 11.86,
+  "P1_az": 117.36,
+  "P1_az_lejano": 112.38,
+  "P1_dist_lejano": 14.31,
+  "P0_cx": 10.11,
+  "P0_cy": -0.28,
+  "P0_dist": 10.12,
+  "P0_az": 91.59,
+  "P0_az_lejano": 91.25,
+  "P0_dist_lejano": 12.81,
+  "estado": "resuelta"
+ },
+ {
+  "ep": "E14",
+  "jornada": "12-11",
+  "slot": "2026-11-12 19:50",
+  "az_reav": null,
+  "H": 400,
+  "sza": 47.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E14",
+  "jornada": "12-11",
+  "slot": "2026-11-12 20:00",
+  "az_reav": null,
+  "H": 400,
+  "sza": 49.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E14",
+  "jornada": "12-11",
+  "slot": "2026-11-12 20:10",
+  "az_reav": null,
+  "H": 400,
+  "sza": 51.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E14",
+  "jornada": "12-11",
+  "slot": "2026-11-12 20:20",
+  "az_reav": null,
+  "H": 400,
+  "sza": 53.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E14",
+  "jornada": "12-11",
+  "slot": "2026-11-12 20:30",
+  "az_reav": null,
+  "H": 400,
+  "sza": 55.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E14",
+  "jornada": "12-11",
+  "slot": "2026-11-12 20:40",
+  "az_reav": null,
+  "H": 400,
+  "sza": 57.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E14",
+  "jornada": "12-11",
+  "slot": "2026-11-12 20:50",
+  "az_reav": null,
+  "H": 400,
+  "sza": 59.9,
+  "estado": "sin_objeto_anclado"
+ },
+ {
+  "ep": "E14",
+  "jornada": "12-11",
+  "slot": "2026-11-12 21:00",
+  "az_reav": null,
+  "H": 400,
+  "sza": 61.9,
+  "estado": "sin_objeto_anclado"
+ }
+]

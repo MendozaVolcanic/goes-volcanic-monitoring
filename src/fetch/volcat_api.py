@@ -528,13 +528,13 @@ def volcat_height_at(volcano, dt, seed_radius_km: float = 10.0) -> Optional[dict
     """
     try:
         import io
-        import math
 
         import numpy as np
         import requests
         from PIL import Image
 
         from src.process.volcat_colorbar import volcat_object_heights
+        from src.process.volcat_deteccion import georef_pixel
     except Exception:
         logger.exception("volcat_height_at: deps no disponibles")
         return None
@@ -559,30 +559,23 @@ def volcat_height_at(volcano, dt, seed_radius_km: float = 10.0) -> Optional[dict
         return {"note": f"descarga del frame falló ({e})"}
     a = np.asarray(im).astype("float64")
 
-    # Georef CE lineal: píxel del volcán.
-    def _nlon(x):
-        return x - 360.0 if x > 180.0 else x
-    try:
-        dp = math.degrees(coords["SCALE_FACTOR"] / coords["EQ_RADIUS"])
-        lon0 = _nlon(coords["ORIGIN_LON"]) + coords.get("OFFSET_X", 0) * dp
-        lat0 = coords["ORIGIN_LAT"] + coords.get("OFFSET_Y", 0) * dp
-    except Exception:
+    # Georef CE lineal, la misma que usa la señal de detección del dashboard
+    # (src/process/volcat_deteccion.georef_pixel). OJO: SCALE_FACTOR NO está en
+    # km. SSEC entrega EQ_RADIUS = 206264,8 (segundos de arco por radián), así
+    # que SCALE_FACTOR es el píxel en segundos de arco (72,8″ en
+    # Chile_Central_2_km, 8,96″ en los sectores de 250 m); georef_pixel lo pasa
+    # a km con el radio medio terrestre. El píxel CE mide px_km N-S pero
+    # px_km·cos(lat) E-O: el mínimo del tope es un área del sensor (12 km²) y a
+    # -37° el píxel tiene un 20 % menos de área.
+    g = georef_pixel(coords, volcano.lat, volcano.lon)
+    if g is None:
         return {"note": "coords del sector incompletas"}
-    row = int(round((lat0 - volcano.lat) / dp))
-    col = int(round((volcano.lon - lon0) / dp))
-
+    row, col = g["row"], g["col"]
+    px_km, px_km_ew = g["px_km"], g["px_km_ew"]
     # Objeto VOLCAT que toca el volcán, leído por bloques de la barra (nov-2026).
     # Antes: color más cercano de un LUT lineal sobre todos los píxeles de una
     # caja de ±0,6°, que leía hasta 10 % alto, confundía colores mezclados con
     # el fondo y contaba como "altura" un manto sinóptico que cubría el sector.
-    # Tamaño N-S del píxel en km. OJO: SCALE_FACTOR NO está en km. SSEC entrega
-    # EQ_RADIUS = 206264,8 (segundos de arco por radián), así que SCALE_FACTOR es
-    # el píxel en segundos de arco (72,8″ en Chile_Central_2_km, 8,96″ en los
-    # sectores de 250 m). El ángulo `dp` por el radio medio terrestre da los km.
-    px_km = math.radians(dp) * R_TIERRA_MEDIO_KM
-    # El píxel CE mide px_km N-S pero px_km·cos(lat) E-O: el mínimo del tope es
-    # un área del sensor (12 km²) y a -37° el píxel tiene un 20 % menos de área.
-    px_km_ew = px_km * math.cos(math.radians(volcano.lat))
     res = volcat_object_heights(a, row, col, px_km=px_km, px_km_ew=px_km_ew,
                                 seed_radius_km=seed_radius_km)
     res.update({"frame": vc.get("datetime"),

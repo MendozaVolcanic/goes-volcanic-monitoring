@@ -523,6 +523,63 @@ def _zonas_subtab():
                       layout=layout_key, height=height)
 
 
+# Cadencia del panel VOLCAT de la grilla. Import con fallback (patrón del
+# proyecto para constantes cross-package, gotcha de hot-reload de Streamlit).
+try:
+    from dashboard.views.modo_guardia_volcan import VOLCAT_REFRESH_S as _VOLCAT_S
+except ImportError:
+    _VOLCAT_S = 120
+
+
+@st.fragment(run_every=f"{_VOLCAT_S}s")
+def _senal_volcat_nacional():
+    """Señal VOLCAT de los 44 volcanes: quién tiene un objeto anclado al
+    cráter en el último cuadro de su sector.
+
+    Por qué aquí: es la pestaña donde el turno ya mira VOLCAT, y sus celdas ya
+    bajan los PNG de los sectores regionales (la señal los reutiliza). Va
+    ARRIBA de los mapas porque responde la pregunta que los mapas obligan a
+    buscar a ojo: ¿VOLCAT dibuja algo sobre algún volcán? Cadencia de 120 s,
+    la misma del panel VOLCAT de la grilla (`VOLCAT_REFRESH_S`).
+
+    Muestra sólo los volcanes FUERA del estado normal; los 44 van en un
+    desplegable. Un "no disponible" se lista igual que una detección: no saber
+    no es calma.
+    """
+    from dashboard.map_helpers import AVISO_VOLCAT_FUENTE, estado_volcat
+    from dashboard.volcat_senal import (html_senal, resumen_nacional,
+                                        senales_volcat)
+
+    senales = senales_volcat()
+    r = resumen_nacional(senales)
+    c = r["cuenta"]
+    st.markdown(
+        "<div style='background:#0f1418; border-left:4px solid #4a9eff; "
+        "padding:0.5rem 0.9rem; border-radius:4px; margin-bottom:0.4rem;'>"
+        "<div style='font-weight:700; color:#c0ccd8;'>Señal VOLCAT por volcán"
+        "</div><div style='font-size:0.8rem; color:#9aaabb;'>"
+        f"{c['detecta']} con objeto anclado al cráter · "
+        f"{c['extenso']} con objeto extenso · "
+        f"{c['sin_deteccion']} sin detección (normal) · "
+        f"{c['atrasado']} sin cuadro reciente · "
+        f"{c['no_disponible']} no disponible · "
+        "último cuadro de cada sector, objeto que toca un disco de 10 km del "
+        f"cráter</div><div style='font-size:0.72rem; color:#7a8a9a;'>"
+        f"{AVISO_VOLCAT_FUENTE}</div></div>",
+        unsafe_allow_html=True)
+    for s in r["lista"]:
+        st.markdown(f"<div style='margin:0 0 0.3rem 0.4rem;'><b>{s['volcan']}"
+                    f"</b> {html_senal(s, aviso=False)}</div>",
+                    unsafe_allow_html=True)
+    with st.expander(f"Los {len(senales)} volcanes, uno por uno"):
+        filas = []
+        for s in senales.values():
+            e = estado_volcat(s)
+            filas.append({"Volcán": s["volcan"], "Estado": e["titulo"],
+                          "Detalle": e["detalle"]})
+        st.dataframe(filas, hide_index=True, width="stretch")
+
+
 def _volcat_zonas_subtab():
     """Sub-tab VOLCAT por zona: las zonas regionales con el producto
     cuantitativo VOLCAT (altura/carga/probabilidad/radio) lado a lado.
@@ -538,6 +595,8 @@ def _volcat_zonas_subtab():
     # Streamlit Cloud con imports cross-package top-level). El render por celda
     # vive en zonas_fullscreen (fuente unica compartida con el Modo Sala).
     from dashboard.views.volcat_viewer import VOLCAT_PRODUCTS
+
+    _senal_volcat_nacional()
 
     st.caption(
         "VOLCAT (SSEC/CIMSS · algoritmo Pavolonis 2013, sobre GOES-19) — "

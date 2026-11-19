@@ -774,3 +774,105 @@ def aviso_fdcf_html():
             "padding:0.35rem 0.7rem; border-radius:4px; color:#e6edf3; "
             "font-size:0.85rem;'>⚠ FDCF no consultable: la ausencia de "
             "diamantes NO descarta anomalía térmica</div>")
+
+
+# ── Señal VOLCAT por volcán (nov-2026) ───────────────────────────────────
+#
+# Mismo principio que `estado_hotspots`: un criterio, muchas vistas. El estado
+# lo decide `src/process/volcat_deteccion.evaluar_senal`; aquí sólo se elige
+# color y texto. Tres cosas que el texto dice SIEMPRE, porque sin ellas la
+# señal se lee como algo que no es:
+#   1. que la detección es de SSEC/CIMSS, experimental y no validada por
+#      nosotros, y que NO es una alerta del OVDAS;
+#   2. qué sector usa y con qué resolución (40 de 43 volcanes caen en uno
+#      regional de 2 km, donde VOLCAT pierde plumas chicas);
+#   3. la edad del cuadro. Un "sin detección" de hace tres horas no es calma.
+
+AVISO_VOLCAT_FUENTE = ("Detección de VOLCAT (SSEC/CIMSS), experimental y no "
+                       "validada por nosotros. No es una alerta del OVDAS.")
+
+COLOR_VOLCAT_DETECTA = "#ff6644"
+
+_ESTADO_VOLCAT_TXT = {
+    "detecta": "VOLCAT detecta un objeto anclado al cráter",
+    "extenso": "VOLCAT pinta un objeto extenso sobre el cráter",
+    "sin_deteccion": "VOLCAT sin detección",
+    "atrasado": "VOLCAT sin cuadro reciente",
+    "no_disponible": "VOLCAT no disponible",
+}
+
+
+def _miles(x) -> str:
+    """Entero con punto de miles, como se escribe en Chile: 2.320."""
+    return f"{x:,.0f}".replace(",", ".")
+
+
+def _edad_txt(edad_min):
+    if edad_min is None:
+        return "cuadro sin hora"
+    if edad_min >= 120:
+        return f"cuadro de hace {edad_min // 60} h {edad_min % 60:02d} min"
+    return f"cuadro de hace {edad_min} min"
+
+
+def _tope_txt(lo, hi):
+    if lo is None or hi is None:
+        return "tope no fijado"
+    return f"tope VOLCAT {lo} a {hi} km s.n.m."
+
+
+def estado_volcat(senal: dict) -> dict:
+    """Color y texto de la señal VOLCAT de un volcán, sin mentir.
+
+    ``senal`` es la salida de ``evaluar_senal`` más ``etiqueta_sector``.
+    Devuelve ``{color, titulo, detalle, verificado}``:
+
+    - ``detecta`` -> naranja, con área, tope y edad. Naranja y no rojo: es una
+      detección externa, no una alarma nuestra.
+    - ``extenso`` -> ámbar: VOLCAT pinta algo más grande que toda pluma medida
+      (o un manto del sector). Puede ser un sistema meteorológico o la nube de
+      una erupción grande: se pide mirar el loop, no se descarta.
+    - ``sin_deteccion`` -> verde, el ÚNICO verde: SSEC publicó hace poco y no
+      dibujó nada que toque el cráter. Es el estado normal.
+    - ``atrasado`` -> ámbar: el "nada" es viejo y no describe el presente.
+    - ``no_disponible`` -> gris "s/d". Nunca verde: no saber no es calma.
+    """
+    from src.process.volcat_deteccion import AREA_EXTENSO_KM2
+
+    estado = senal.get("estado", "no_disponible")
+    edad = _edad_txt(senal.get("edad_min"))
+    sector = senal.get("etiqueta_sector") or "sector desconocido"
+    atrasada = alerta_edad(senal.get("edad_min"), limite_min=120)
+    area = senal.get("area_km2")
+    area_txt = f"{_miles(area)} km²" if area is not None else ""
+    titulo = _ESTADO_VOLCAT_TXT.get(estado, _ESTADO_VOLCAT_TXT["no_disponible"])
+
+    if estado == "detecta":
+        color = COLOR_VOLCAT_DETECTA
+        detalle = (f"{area_txt} · "
+                   f"{_tope_txt(senal.get('top_lo_km'), senal.get('top_hi_km'))}"
+                   f" · {edad}{atrasada}")
+    elif estado == "extenso":
+        color = COLOR_DATO_VENCIDO
+        if senal.get("manto"):
+            tam = (f"manto del {100 * (senal.get('frac_sector') or 0):.0f} % "
+                   "del sector")
+        else:
+            tam = (f"{area_txt}, más que toda pluma medida (umbral "
+                   f"{_miles(AREA_EXTENSO_KM2)} km²)")
+        detalle = (f"{tam}: puede ser un sistema meteorológico o la nube de una "
+                   f"erupción grande, revisa el loop VOLCAT · {edad}{atrasada}")
+    elif estado == "sin_deteccion":
+        color = COLOR_CALMA
+        detalle = f"nada anclado al cráter, es el estado normal · {edad}"
+    elif estado == "atrasado":
+        color = COLOR_DATO_VENCIDO
+        detalle = (f"{edad}: no dice nada de lo que pasa ahora "
+                   "(SSEC publica con 30 a 50 min de atraso por diseño)")
+    else:
+        color = COLOR_SIN_DATO
+        motivo = senal.get("motivo") or "sin cuadro VOLCAT"
+        detalle = f"{motivo}. No descarta ceniza"
+    return {"color": color, "titulo": titulo,
+            "detalle": f"{detalle} · sector {sector}",
+            "verificado": estado != "no_disponible"}

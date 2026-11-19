@@ -257,16 +257,41 @@ def classify_pixels(rgb, bins) -> dict:
     return {"lo_km": out_lo, "hi_km": out_hi, "alpha": alpha, "ok": ok}
 
 
-def anchored_object(mask, row: int, col: int, seed_radius_px: int):
+def _etiquetas(m, gap_px: int):
+    """Componentes conexas (8 vecinos) de ``m`` dilatada con un disco de radio
+    ``gap_px`` (sin dilatar si es 0). Devuelve ``(lab, n)``."""
+    from scipy import ndimage
+    if gap_px > 0:
+        yy, xx = np.mgrid[-gap_px:gap_px + 1, -gap_px:gap_px + 1]
+        m = ndimage.binary_dilation(m, structure=(yy ** 2 + xx ** 2 <= gap_px ** 2))
+    return ndimage.label(m, structure=np.ones((3, 3), int))
+
+
+def anchored_object(mask, row: int, col: int, seed_radius_px: int,
+                    gap_px: int = 0, etiquetas=None):
     """Componentes conexas (8 vecinos) de ``mask`` que tocan el disco de radio
     ``seed_radius_px`` alrededor de (row, col), o None si ninguna lo toca. PURA.
 
     Una nube que no toca el volcán no se le atribuye: es conservador (un pulso
     ya desprendido queda afuera) pero no confunde nubes vecinas con la pluma.
+
+    ``gap_px`` > 0 une los pedazos separados por huecos de hasta ese radio
+    antes de etiquetar (dilatación con un disco), y devuelve sólo los píxeles
+    ORIGINALES del sistema unido. Por qué: un sistema grande sale roto al
+    decodificarlo, porque el bloque de 18 a 20 km de la barra es negro (no se
+    separa del suelo caliente, también negro en el IR) y los píxeles mezclados
+    ambiguos se descartan. Medido el 19-11-2026 en Chillán 16-11 de 08:30 a
+    09:30 UTC: sin unir, el objeto anclado medía 8 a 49 km² (una "pluma"); con
+    un píxel de unión era el sistema de ~87.000 a 102.000 km² que estaba al
+    lado. Un píxel ANCLADO sigue siendo obligatorio: la unión no ancla nada que
+    no toque el disco.
+
+    ``etiquetas``: ``_etiquetas(mask, gap_px)`` ya calculadas para este cuadro.
+    La dilatación y el etiquetado no dependen del volcán: con ``mapa`` en
+    ``volcat_object_heights`` se hacen una vez por cuadro, no una por volcán.
     """
-    from scipy import ndimage
     m = np.asarray(mask, bool)
-    lab, n = ndimage.label(m, structure=np.ones((3, 3), int))
+    lab, n = etiquetas if etiquetas is not None else _etiquetas(m, gap_px)
     if n == 0:
         return None
     H, W = m.shape
@@ -276,36 +301,30 @@ def anchored_object(mask, row: int, col: int, seed_radius_px: int):
         return None
     yy, xx = np.mgrid[r0:r1, c0:c1]
     disco = (yy - row) ** 2 + (xx - col) ** 2 <= seed_radius_px ** 2
-    ids = np.unique(lab[r0:r1, c0:c1][disco])
+    # Sólo anclan los píxeles de color REALES dentro del disco: la dilatación
+    # no puede inventar un anclaje.
+    ids = np.unique(lab[r0:r1, c0:c1][disco & m[r0:r1, c0:c1]])
     ids = ids[ids > 0]
     if len(ids) == 0:
         return None
-    return np.isin(lab, ids)
+    return np.isin(lab, ids) & m
 
 
-def volcat_object_heights(img_rgb, row: int, col: int, px_km: float,
-                          px_km_ew: float | None = None,
-                          seed_radius_km: float = SEED_RADIUS_KM,
-                          max_sector_frac: float = MAX_SECTOR_FRAC) -> dict:
-    """Altura VOLCAT del objeto que toca el volcán en un PNG Ash_Height. PURA.
+def clasificar_mapa(img_rgb) -> Optional[dict]:
+    """Bloque de altura de cada píxel del MAPA de un PNG Ash_Height. PURA.
 
-    ``row, col``: píxel del volcán; ``px_km``: lado N-S del píxel y
-    ``px_km_ew`` el E-O (por defecto igual a ``px_km``). Devuelve
-    ``{top_lo_km, top_hi_km, n_top, p95_mid_km, median_mid_km, n, n_mezclados,
-    frac_sector}`` o ``{"note": ...}`` (sin barra, volcán fuera, sin objeto, o
-    manto del tamaño del sector, este último con ``sector_wide: True``).
-
-    El tope se informa como INTERVALO del bloque más alto (la barra es discreta:
-    1 km hasta 10 km, 2 km arriba), no como un número con decimales que no tiene.
+    Es la parte cara de la lectura y no depende del volcán: la señal del
+    dashboard la hace una vez por cuadro y ancla después cada volcán del sector
+    (``volcat_object_heights(..., mapa=...)``). Devuelve ``{ok, lo_km, hi_km,
+    alpha}`` (arrays del alto del mapa, el 92 % superior del PNG) o None si no
+    hay barra que leer.
     """
     a = np.asarray(img_rgb, dtype="float64")
-    H, W = a.shape[:2]
+    H = a.shape[0]
     hmap = int(MAP_FRAC * H)
     bins = palette_bins(a[hmap:])
     if bins is None:
-        return {"note": "no se pudo leer la barra de altura del PNG"}
-    if not (0 <= row < hmap and 0 <= col < W):
-        return {"note": "el volcán cae fuera del mapa del sector"}
+        return None
     m = a[:hmap]
     cand = _saturation(m) >= 0.2
     okmask = np.zeros(cand.shape, bool)
@@ -316,16 +335,62 @@ def volcat_object_heights(img_rgb, row: int, col: int, px_km: float,
         c = classify_pixels(m[cand], bins)
         okmask[cand], lo_map[cand] = c["ok"], c["lo_km"]
         hi_map[cand], al_map[cand] = c["hi_km"], c["alpha"]
+    return {"ok": okmask, "lo_km": lo_map, "hi_km": hi_map, "alpha": al_map}
+
+
+def volcat_object_heights(img_rgb, row: int, col: int, px_km: float,
+                          px_km_ew: float | None = None,
+                          seed_radius_km: float = SEED_RADIUS_KM,
+                          max_sector_frac: float = MAX_SECTOR_FRAC,
+                          mapa: dict | None = None,
+                          gap_km: float = 0.0) -> dict:
+    """Altura VOLCAT del objeto que toca el volcán en un PNG Ash_Height. PURA.
+
+    ``row, col``: píxel del volcán; ``px_km``: lado N-S del píxel y
+    ``px_km_ew`` el E-O (por defecto igual a ``px_km``). Devuelve
+    ``{top_lo_km, top_hi_km, n_top, p95_mid_km, median_mid_km, n, n_mezclados,
+    frac_sector}`` o ``{"note": ...}`` (sin barra, volcán fuera, sin objeto, o
+    manto del tamaño del sector, este último con ``sector_wide: True``).
+
+    Toda salida lleva ``motivo``, legible por máquina, para que quien la use no
+    tenga que reconocer el texto de ``note``: ``sin_barra``, ``fuera``,
+    ``sin_objeto``, ``manto``, ``sin_tope`` (objeto anclado sin un bloque que
+    llegue al área mínima) o ``tope``. La señal de detección del dashboard
+    (``src/process/volcat_deteccion.py``) decide con él.
+
+    El tope se informa como INTERVALO del bloque más alto (la barra es discreta:
+    1 km hasta 10 km, 2 km arriba), no como un número con decimales que no tiene.
+    """
+    mapa = clasificar_mapa(img_rgb) if mapa is None else mapa
+    if mapa is None:
+        return {"note": "no se pudo leer la barra de altura del PNG",
+                "motivo": "sin_barra"}
+    okmask, lo_map = mapa["ok"], mapa["lo_km"]
+    hi_map, al_map = mapa["hi_km"], mapa["alpha"]
+    hmap, W = okmask.shape
+    if not (0 <= row < hmap and 0 <= col < W):
+        return {"note": "el volcán cae fuera del mapa del sector",
+                "motivo": "fuera"}
     seed = max(1, int(round(seed_radius_km / px_km)))
-    obj = anchored_object(okmask, int(row), int(col), seed)
+    gap = max(1, int(round(gap_km / px_km))) if gap_km > 0 else 0
+    etq = None
+    if mapa is not None:
+        cache = mapa.setdefault("_etiquetas", {})
+        if gap not in cache:
+            cache[gap] = _etiquetas(okmask, gap)
+        etq = cache[gap]
+    obj = anchored_object(okmask, int(row), int(col), seed, gap_px=gap,
+                          etiquetas=etq)
     if obj is None:
         return {"note": "VOLCAT no dibuja ningún objeto que toque el volcán "
-                        f"(radio {seed_radius_km:g} km)"}
+                        f"(radio {seed_radius_km:g} km)",
+                "motivo": "sin_objeto"}
     frac = float(obj.sum()) / obj.size
     if frac > max_sector_frac:
         return {"note": f"objeto VOLCAT cubre {frac:.0%} del sector: manto "
                         "sinóptico, no una pluma",
-                "sector_wide": True, "frac_sector": frac}
+                "sector_wide": True, "frac_sector": frac,
+                "n": int(obj.sum()), "motivo": "manto"}
     lo_o, hi_o, al_o = lo_map[obj], hi_map[obj], al_map[obj]
     # Tope = bloque más alto que cubre al menos TOP_MIN_AREA_KM2 (3 píxeles IR):
     # menos que eso es ruido del retrieval, no un tope (Chillán 08-11 20:10: 2 px
@@ -338,7 +403,8 @@ def volcat_object_heights(img_rgb, row: int, col: int, px_km: float,
         return {"note": f"objeto VOLCAT de {int(obj.sum())} píxeles: ningún "
                         f"bloque llega a {TOP_MIN_AREA_KM2:g} km² ({min_px} "
                         "píxeles del cuadro), no fija un tope",
-                "n": int(obj.sum()), "max_lo_km": int(lo_o.max())}
+                "n": int(obj.sum()), "max_lo_km": int(lo_o.max()),
+                "motivo": "sin_tope"}
     top = firmes.max()
     mid = (lo_o + hi_o) / 2.0
     return {
@@ -347,5 +413,5 @@ def volcat_object_heights(img_rgb, row: int, col: int, px_km: float,
         "p95_mid_km": float(np.percentile(mid, 95)),
         "median_mid_km": float(np.median(mid)),
         "n": int(obj.sum()), "n_mezclados": int((al_o < 1.0).sum()),
-        "frac_sector": frac,
+        "frac_sector": frac, "motivo": "tope",
     }

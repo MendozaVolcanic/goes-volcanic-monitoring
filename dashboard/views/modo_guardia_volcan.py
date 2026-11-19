@@ -146,7 +146,10 @@ PANEL_HEIGHT_TV_ROW = 620
 # Y por cada fila se suman la leyenda compacta, la linea de receta y el gap.
 # Son una ESTIMACION. Si sobra o falta, el panel queda un poco mas alto o mas
 # bajo, nunca una fila bajo el fold: `min-height` frena la division.
-GRID_CHROME_PAGE_PX = 470
+# 490 desde nov-2026 (antes 470): la cabecera suma la línea de la señal VOLCAT
+# y su aviso de fuente. Medido a 1920x1080 el 19-11-2026: el primer plot pasó a
+# y=520..570 y el borde inferior del Ash RGB quedaba en 1075 de 1080.
+GRID_CHROME_PAGE_PX = 490
 GRID_CHROME_TV_PX = 100
 GRID_CHROME_ROW_PX = 105
 # De esos 105, la leyenda compacta se lleva 64 (medido en el DOM a 1920x1080).
@@ -1040,7 +1043,8 @@ def _render_altura(v, wr: dict | None, acha: dict | None,
 @st.fragment(run_every=f"{RAMMB_REFRESH_S}s")
 def _grid_header(volcan_name: str, show_wind: bool,
                  radius_deg: float = RADIUS_DEG):
-    """Cabecera: nombre, coords, viento, conteo de hot spots, hora de render.
+    """Cabecera: nombre, coords, viento, conteo de hot spots, hora de render
+    y la señal VOLCAT del volcán (`dashboard/volcat_senal.py`).
 
     Fragment aparte y liviano: se refresca al ritmo de RAMMB sin arrastrar el
     redibujo de los cuatro mapas.
@@ -1068,6 +1072,18 @@ def _grid_header(volcan_name: str, show_wind: bool,
                     f"{level_id} {w['speed']:.0f} km/h@{w['direction']:.0f}°")
         if bits:
             wind_summary = " · " + " · ".join(bits)
+    # Señal VOLCAT del volcán (nov-2026): va en la cabecera y no en el panel
+    # VOLCAT porque es un estado del VOLCÁN, como el conteo de hot spots, y
+    # porque una línea más en una sola columna desalinearía la fila de mapas.
+    # Cuesta cero descargas: lee el mismo PNG que baja el panel VOLCAT.
+    from dashboard.volcat_senal import html_senal, senal_volcat
+    try:
+        senal = senal_volcat(volcan_name, ahora=now)
+    except Exception:
+        logger.exception("senal VOLCAT %s", volcan_name)
+        senal = {"estado": "no_disponible",
+                 "motivo": "error interno al leer la señal"}
+    senal_html = html_senal(senal, compacto=True) if senal else ""
     st.markdown(
         f"<div style='background:#0f1418; border-left:4px solid #ff6644; "
         f"padding:0.7rem 1rem; border-radius:4px; margin-bottom:0.8rem;'>"
@@ -1082,7 +1098,8 @@ def _grid_header(volcan_name: str, show_wind: bool,
         f"<span style='color:{est_hs['color']}; font-weight:700;'>"
         f"Hot spots {est_hs['valor']}</span> ({est_hs['detalle']}) · "
         f"Render {now.strftime('%H:%M:%S')} UTC / "
-        f"{fmt_chile(now)}</div></div></div>",
+        f"{fmt_chile(now)}</div></div>"
+        f"<div style='margin-top:0.35rem;'>{senal_html}</div></div>",
         unsafe_allow_html=True,
     )
 

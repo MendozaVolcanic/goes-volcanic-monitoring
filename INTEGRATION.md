@@ -1,7 +1,7 @@
 ---
 slug: goes
 title: GOES Volcanic Monitoring
-last_updated: 2026-11-15
+last_updated: 2026-11-19
 last_commit: 4eafc38
 status: producción
 tier: 1
@@ -87,7 +87,7 @@ Permalink: `?vista=<slug>` (los slugs viejos `live`/`zonas`/`animacion` redirige
 compatibilidad). Fuente de verdad: `PAGE_OPTIONS`/`PAGE_SLUGS` en `dashboard/app.py`.
 
 1. **🌎 Vista Operacional** (`operacional`): último scan, auto-refresh 60s. Tabs Nacional / Por Zona Volcánica (grid 4-zonas) / Volcán. El tab **Volcán** muestra los 4 productos a la vez en grilla 2×2 (GeoColor · Ash RGB · SO₂ · VOLCAT), cada panel con su propia cadencia de refresco (RAMMB 60 s, VOLCAT 120 s), radio ajustable de 0.35 a 3° y toggles de viento GFS, anillos y **📏 Regla**. Los cuatro paneles se dibujan en km centrados en el cráter (`dashboard/regla.py`), con barra de escala; con la regla prendida, arrastrar traza una línea rotulada con su largo en km, calculado por plotly en el navegador. Nacional y Zona llevan barra de escala N-S. Comparte implementación con Modo Guardia vía `modo_guardia_volcan.volcan_grid`. Desde nov-2026 las pestañas son perezosas (`dashboard/pestanas.py`): sólo corre y refresca la que se mira, y cambiar de pestaña pide un rerun.
-2. **🛡 Modo Guardia** (`guardia`) — vista de turno de sala: sub-tabs Vigilancia diaria (4 zonas RGB), Chile, VOLCAT por zona (4 zonas lado a lado), Mosaico, Volcán (grilla 2×2 de 4 productos) y Loop 2h. Con `?tv=1` entra en **Modo Sala TV** (rotación fullscreen sin controles, pensada para monitor 24/7).
+2. **🛡 Modo Guardia** (`guardia`): vista de turno de sala: sub-tabs Vigilancia diaria (4 zonas RGB), Chile, VOLCAT por zona (4 zonas lado a lado), Mosaico, Volcán (grilla 2×2 de 4 productos) y Loop 2h. Desde nov-2026 la pestaña VOLCAT por zona abre con la **señal VOLCAT por volcán** (cuántos de los 44 volcanes tienen un objeto VOLCAT anclado al cráter en el último cuadro, y cuáles), y la cabecera de la grilla de volcán (aquí y en Vista Operacional) muestra la misma señal para el volcán elegido. Es detección de SSEC/CIMSS, experimental y no validada por nosotros, no una alerta del OVDAS (ficha SDA §A.7). Con `?tv=1` entra en **Modo Sala TV** (rotación fullscreen sin controles, pensada para monitor 24/7).
 3. **🔀 Comparador** (`comparador`) — dos frames lado a lado (baseline histórico vs actual, o dos productos).
 4. **🚨 Modo Evento** (`evento`) — foco en un volcán en crisis, con productos y altura.
 5. **📅 Heatmap actividad** (`heatmap`) — pulso térmico intradía de FRP (serie pre-cocinada `data/frp_timeline.json`) + heatmap semanal día × volcán.
@@ -121,6 +121,7 @@ streamlit run dashboard/app.py
 | Hot spots FDCF | List[HotSpot] con (lat, lon, FRP_MW, T_K, area_km², confidence) | `src/fetch/goes_fdcf.py::fetch_latest_hotspots(bounds)` | 10 min |
 | Series de tiempo por volcán | List[TimeSeriesPoint] / CSV | `src/fetch/timeseries.py::fetch_volcano_timeseries(lat, lon, product)` | on-demand |
 | Altura de pluma VOLCAT | PNG con colorbar (no NetCDF) | `src/fetch/volcat_api.py::volcat_latest(sector, ...)` | 10 min |
+| Señal VOLCAT por volcán (objeto anclado al cráter) | dict {estado: detecta/extenso/sin_deteccion/atrasado/no_disponible, edad_min, area_km2, top_lo_km, top_hi_km, sector, etiqueta_sector} | `dashboard/volcat_senal.py::senal_volcat(nombre)` / `senales_volcat()`; lógica pura en `src/process/volcat_deteccion.py` | 10 min (cuadro VOLCAT) |
 | Ventana de cuadros VOLCAT (loop) | dict {ok, error, frames[{dt, image_url, coords...}], faltantes[dt], inicio, fin} | `src/fetch/volcat_api.py::volcat_ventana(sector, instr, image_type, horas)` | on-demand |
 | Loop VOLCAT de un volcán o una zona | GIF + MP4 (H.264) | `dashboard/volcat_loop.py` (`encuadre_volcan` / `encuadre_zona`, `componer_cuadro`, `armar_gif`, `armar_mp4`) | on-demand |
 | Altura de tope ACHA (INDICATIVO) | dict {top_km p95, top_max_km, field_km, lat/lon, latency} | `src/process/acha_plume_height.py::plume_top_height(dt, volcano, radius)` | 10 min |

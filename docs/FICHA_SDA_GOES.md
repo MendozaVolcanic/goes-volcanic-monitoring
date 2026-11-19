@@ -1,6 +1,6 @@
 # Ficha de Transparencia Algorítmica — Monitoreo Volcánico GOES-19 (dashboard + retrieval de altura de pluma)
 
-**Identificador interno:** SDA-GOES-01   **Versión:** v2.7, 2026-11-17
+**Identificador interno:** SDA-GOES-01   **Versión:** v2.8, 2026-11-19
 *(Resolución CPLT N°372; ver `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` del workspace)*
 
 > **Qué cambió respecto de la v1.0 (2026-07-01):** ver §"Historial de versiones" al final.
@@ -47,7 +47,10 @@
   meteorológico GFS. Métodos encadenados: detección BTD/tri-espectral (Prata
   1989), cota por BT-matching, corrección de emisividad de 2 canales (Wen &
   Rose 1994), composición por β-ratios (Pavolonis 2010), árbitro CO₂ 13.3 µm
-  con gate de altura, y cruce con el producto ACHA de NOAA.
+  con gate de altura, y cruce con el producto ACHA de NOAA. Además, desde
+  nov-2026, el sistema lee el último cuadro de VOLCAT (SSEC/CIMSS) y dice por
+  volcán si VOLCAT dibuja un objeto que toca el cráter (§A.7): esa detección es
+  de SSEC/CIMSS, no nuestra, y no es una alerta del OVDAS.
 - **¿Categoriza/perfila individuos?:** **No** (sistema geofísico).
 - **Método/modelo:** reglas determinísticas + umbrales físicos publicados +
   inversión radiativa simple (búsqueda en grilla). **Sin machine learning, sin
@@ -207,6 +210,74 @@ degradación va en `scene.py` y en esta ficha, mismo commit.
   (decisión pendiente, comentada en `goes_lvtp.py`): no está cableado al
   dashboard y un perfil clear-sky a 40 min puede seguir siendo útil.
 
+### A.7 Señal por volcán: "VOLCAT detecta un objeto anclado al cráter" (nov-2026)
+- **Archivos:** `src/process/volcat_deteccion.py` (`georef_pixel`,
+  `leer_objeto_anclado`, `evaluar_senal`), `src/process/volcat_colorbar.py`
+  (`clasificar_mapa`, `volcat_object_heights`, `anchored_object`),
+  `dashboard/volcat_senal.py` (lectura cacheada por cuadro),
+  `dashboard/map_helpers.py` (`estado_volcat`, `AVISO_VOLCAT_FUENTE`). Se ve en
+  la cabecera de la grilla de volcán (Modo Guardia pestaña Volcán y Vista
+  Operacional pestaña Volcán) y en el resumen de los 44 volcanes de la pestaña
+  "VOLCAT por zona" del Modo Guardia. **No** está en la pared del Modo Sala.
+- **Por qué existe:** nuestro detector split-window (§A.1) no ve las plumas
+  débiles de Nevados de Chillán de octubre y noviembre de 2026, que VOLCAT sí
+  dibuja y que el OVDAS confirmó como ceniza; reproducir VOLCAT no es posible
+  (umbrales por volcán y aprendizaje automático no públicos,
+  `docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md`). Decisión del 19-11-2026:
+  usar VOLCAT como capa de detección.
+- **Qué decide:** nada por sí sola. Pone a cada volcán en uno de cinco estados
+  según lo que VOLCAT dibujó en el **último cuadro publicado** del sector que
+  le corresponde (`resolve_volcat_sector`):
+  - **detecta**: objeto que toca un disco de 10 km alrededor del cráter, no
+    manto, de **12 km² o más** (3 píxeles IR de 2 km, el mismo mínimo que fija
+    un tope, §C) y de **2.000 km² o menos**;
+  - **extenso**: objeto anclado de más de 2.000 km² o manto de más del 5 % del
+    sector. Puede ser un sistema meteorológico o la nube de una erupción
+    grande: se muestra aparte y se pide revisar el loop, no se descarta;
+  - **sin detección**: cuadro de menos de 120 min sin objeto anclado (o con uno
+    de menos de 12 km²). Es el estado normal y el único en verde;
+  - **atrasado**: sin objeto, pero el cuadro tiene 120 min o más;
+  - **no disponible**: SSEC no respondió, no publicó, el PNG no bajó o no se
+    pudo leer, o el volcán cae fuera del sector. En gris, nunca verde.
+- **Umbrales nuestros y su porqué:**
+  - **2.000 km² (objeto extenso):** la pluma anclada más grande de Chillán en
+    2.181 cuadros del 01 al 16-11 midió ~270 km²; las de los sectores de 250 m
+    llegan al 1,7 % del sector (~950 km²); los mantos de esos sectores van
+    desde ~6.700 km² y el sistema del 16-11 sobre Chillán midió ~126.000 km².
+  - **Unión de pedazos a 6 km (3 píxeles IR):** un sistema grande sale roto al
+    leer el PNG (el bloque de 18 a 20 km de la barra es negro, como el suelo
+    caliente en el IR) y un pedazo anclado se leía como pluma. Criterio escrito
+    antes de medir (carpeta de notas de la sesión, 19-11-2026), contra 100
+    cuadros de pulsos de Chillán (08, 10, 11 y 14-11), 22 del sistema del 16-11
+    y 108 lecturas de volcanes del norte con un sistema de 16 a 18 km el
+    19-11: sin unión, 4 cuadros del 16-11 y 13 lecturas del norte salían como
+    detección; con 2 km quedaban 2 (Taapaca, un pedazo de 3 a 4 píxeles a 3
+    píxeles del sistema); con 6 km, ninguna, y los pulsos de Chillán siguen
+    todos como detección (el mayor, 247 km²).
+  - **120 min (atrasado):** el mismo límite de `alerta_edad` para VOLCAT; SSEC
+    publica con 30 a 50 min de atraso por diseño.
+- **Georreferencia:** CE lineal (segundos de arco por píxel) y estereográfica
+  polar para Chile_South_2_km (9 volcanes de Huequi a Hudson). Comprobada el
+  19-11-2026 contra la capa de volcanes de SSEC: los 44 volcanes caen a 0 a 2
+  píxeles del marcador de SSEC.
+- **Costo:** cero descargas extra; lee el mismo PNG que ya baja el panel VOLCAT
+  y lo clasifica una vez por cuadro y sector. Los 6 sectores se consultan en
+  paralelo.
+- **Límites conocidos:** la detección es de SSEC/CIMSS, experimental en GOES-19
+  y **no validada por nosotros**; en VIIRS el método vigente tiene una tasa de
+  falsas alarmas de 0,75 según los informes JPSS de 2026, y no hay cifra para
+  GOES. 40 de 43 volcanes caen en sectores regionales de 2 km, donde VOLCAT
+  pierde plumas chicas. VOLCAT también dibuja objetos que no son volcánicos: el
+  19-11-2026, de 10:00 a 13:30 UTC, pintó sobre el Altiplano y Atacama un
+  sistema de 16 a 18 km sin erupción; con la unión de 6 km los volcanes del
+  norte que toca quedan en "extenso", no en "detecta", pero un objeto chico
+  y aislado que VOLCAT pinte cerca de un cráter sí saldría como detección.
+  Sin corrección de
+  paralaje (§C); un pulso ya desprendido a más de 10 km del cráter no se
+  atribuye. Un criterio temporal (el objeto tiene que existir anclado antes de
+  crecer) atraparía mejor los sistemas que pasan por encima, pero pide varios
+  cuadros por ciclo y queda como mejora posible.
+
 ---
 
 ## B. Límites, sesgos y usos excluidos
@@ -359,12 +430,31 @@ conectarlos exige actualizar esta ficha.
 | `src/process/wind_shear_height.py` | Estimar altura por deriva/cizalle del viento (árbitro independiente del IR) | `scripts/validate_fase3c.py` (validación offline) |
 | `src/process/bt_matching_height.py` | Módulo autónomo de cota por BT-matching | scripts de validación y tests. *(El **método** BT-matching sí está en producción, calculado dentro de `wen_rose_height.py` como `top_bt_matching_km`; lo no cableado es el módulo separado.)* |
 | `src/fetch/goes_lvtp.py` | Perfil T(z) del propio GOES-19 (LVTPF) como cross-check del GFS | `scripts/compare_lvtp_vs_gfs.py`. Ver §B.8.1: cablearlo obliga a revisar el guard de tropopausa. |
-| `src/process/volcat_colorbar.py` (`volcat_object_heights`) y `src/fetch/volcat_api.py` (`volcat_height_at`) | Leer la altura VOLCAT del PNG de SSEC (barra por bloques discretos, objeto que toca el volcán, rechazo de mantos del tamaño del sector) como **referencia de validación** de la altura propia | `scripts/validate_fase3b.py` y el plan `docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`. El dashboard muestra el PNG de VOLCAT tal cual, sin leerle números. |
+| `src/fetch/volcat_api.py` (`volcat_height_at`) | Leer la altura VOLCAT del PNG de SSEC (barra por bloques discretos, objeto que toca el volcán, rechazo de mantos del tamaño del sector) como **referencia de validación** de la altura propia | `scripts/validate_fase3b.py` y el plan `docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`. *(Desde v2.8 la lectura por objeto de `volcat_colorbar.py` SÍ está en producción, como señal de detección por volcán, §A.7; lo que sigue fuera del dashboard es el uso de esa lectura como altura de validación. La validación lee sin unión de pedazos, la señal con unión de 6 km.)* |
 | `src/fetch/viirs_firms.py`, `src/fetch/viirs_gibs.py` | Hot spots térmicos VIIRS 375 m e imagen VIIRS para volcanes australes | `scripts/viirs_patagonia_snapshots.py` (uso manual) |
 
 ---
 
 ## Historial de versiones
+
+### v2.8: 2026-11-19 (señal por volcán "VOLCAT detecta un objeto anclado al cráter")
+**Componente nuevo en producción (§A.7).** El dashboard dice por volcán si
+VOLCAT (SSEC/CIMSS) dibuja un objeto que toca el cráter en su último cuadro, en
+cinco estados (detecta, extenso, sin detección, atrasado, no disponible), en la
+cabecera de la grilla de volcán y en un resumen de los 44 volcanes en "VOLCAT
+por zona". La detección es de SSEC/CIMSS y el texto lo dice; no es una alerta
+del OVDAS.
+- La lectura por objeto de `volcat_colorbar.py`, que sólo se usaba para validar
+  alturas (§C), pasa a producción. Cambios en ella: devuelve un `motivo`
+  legible por máquina, separa la clasificación del cuadro
+  (`clasificar_mapa`) del anclaje por volcán, y acepta una unión de pedazos en
+  km (`gap_km`, 0 por defecto: la validación no cambia).
+- Umbrales nuevos, nuestros y medidos: objeto extenso sobre 2.000 km², unión de
+  pedazos a 6 km, cuadro atrasado desde 120 min. Su porqué está en §A.7.
+- `volcat_height_at` usa la misma georreferencia que la señal
+  (`volcat_deteccion.georef_pixel`), sin cambio de resultado.
+- `_volcat_image_bytes` ya no memoriza una descarga fallida: antes el vacío
+  quedaba guardado las 2 h del caché para ese cuadro.
 
 ### v2.7: 2026-11-17 (mínimo del tope VOLCAT como área del sensor)
 **Sólo cambia un componente de validación (§C); nada de lo que ve el operador

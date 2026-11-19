@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-18 tarde (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-19 (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,64 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre 2026-11-18 tarde (PR 48 y 49 en main: la detección falla antes que la altura)
+## 0. Cierre 2026-11-19 (PR 51 en main: H3 no separa, H7 falsada, búsqueda bibliográfica nueva)
+
+> Reemplaza como estado vigente al bloque "## 0-prev4" de abajo, que se conserva. Verificado al
+> escribir: `main` remoto = `601dc4c` (`git ls-remote`), sin PR abiertos fuera del de este traspaso
+> (`gh pr list`), Space de HF `fd8d8ff` RUNNING (sigue sin el texto del PR 45).
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| H6 (¿es ceniza?) | **Cerrada por Nicolás el 19-11**: sí, Chillán lleva muchos días con pulsos y columnas de gas y ceniza | `docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md` |
+| H3 (cielo despejado modelado + β con C10) | **No concluyente por la regla; en la práctica no separa** (PR 51, merge `601dc4c`) | `docs/own_volcat/h3_h7/INFORME_H3.md`. Modelo LBL propio (HITRAN + MT_CKD + SRF ABI + GFS 0,25°). GFS pone la cumbre ~1,5 km más abajo y el cielo modelado queda ~7 K más tibio: la compuerta ε(11) ≥ 0,02 pasa en 90 % de la huella y 88 % del control. Ningún β separa; β(12/11) queda 0,013 sobre la línea de falsación |
+| H7 (VOLCAT sigue la nube desde un cuadro con señal) | **Falsada** (PR 51) | `docs/own_volcat/h3_h7/INFORME_H7.md`. En 3 de 3 episodios el primer cuadro de la cadena no tiene BTD < -1 K, hot spot FDCF ni enfriamiento rápido. VOLCAT sí arrastra objetos (19 de 23 cuadros sin señal tienen antecesor), pero la semilla tampoco tiene señal en nuestros datos |
+| Búsqueda bibliográfica 19-11 (4 frentes) | **Hecha**, fuera del repo | síntesis `C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_1055cba6-2c2f-4aa4-9119-82691ee2ed22\SINTESIS_busqueda_2026-11-19.md`, PDF en `pdfs\` |
+| Hugging Face | build `d62753a`, sin el PR 45 (sólo texto) | desplegar con el próximo cambio de código |
+
+**Lectura de conjunto.** Falsadas: umbral más bajo, paralaje, 8,5 µm, luz solar, seguimiento desde una
+semilla con señal. H3 no separa. Lo que VOLCAT usa y no podemos reproducir son sus umbrales por volcán y su
+aprendizaje automático, que no son públicos (ATBD VOLCAT v1.0, enero 2025, y presentación CDR 2022 en
+https://bin.ssec.wisc.edu/pub/volcat/). Ningún método publicado demuestra detectar una pluma con BTD más
+alta que su entorno, que es el caso de Chillán. Dato de la búsqueda: el OVDAS ya usa VOLCAT para la altura
+(REAV Chillán 25-10-2026).
+
+**Indicio sin validar (posterior al criterio):** β(7,3/11) más alta en la huella las noches del 28 y 29-10.
+No cuenta como resultado; sólo vale si se prueba con criterio nuevo en episodios nuevos.
+
+**Lo aprendido**
+
+- Un cielo despejado modelado con GFS 0,25° sobre un volcán de alta montaña mide el error del terreno,
+  no la pluma: la cumbre del modelo queda ~1,5 km más baja. Comparar siempre contra el cielo empírico de la
+  escena y contra un control pareado antes de atribuirle sensibilidad.
+- La documentación de un algoritmo (seguimiento kd-tree del ATBD) sugería H7 y los datos la falsaron en una
+  hora: probar barato antes de construir.
+- Un reinicio del PC mata subagentes y procesos en segundo plano de las sesiones laterales; lo que sobrevive
+  es lo commiteado y lo escrito a disco. Pedir siempre resultados parciales a disco.
+
+**Decisiones que esperan a Nicolás**
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | ¿Cómo seguir con la detección de plumas débiles? | (a) usar VOLCAT como capa de detección, como ya hace el OVDAS; (b) escribir a Pavolonis por Chillán; (c) probar β(7,3/11) con criterio nuevo; (d) prueba tolerante del VAAC de Londres (Francis 2012, 2 a 4 días) | (a) y (b) juntas; (c) sólo con episodios nuevos |
+| 2 | ¿Instalar gfortran o WSL para PFAAST (el modelo de SECO)? | sí / no | No por ahora: H3 ya no separa con un modelo LBL propio |
+| 3 | ¿Desplegar `main` a HF? | ahora / con el próximo cambio | Con el próximo cambio de código |
+
+**Prompt para la próxima sesión**
+
+```
+/retomar en Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes).
+1. Verifica: git fetch; git ls-remote origin -h refs/heads/main; gh pr list; API de HF (sha y stage).
+2. Lee STATUS.md "## 0.", docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md (§1, §3.2, §4, §6) y la síntesis
+   C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_1055cba6-2c2f-4aa4-9119-82691ee2ed22\SINTESIS_busqueda_2026-11-19.md
+3. Pregunta a Nicolás la decisión #1 antes de tocar código. Si elige (b), redacta el correo a Pavolonis para
+   que él lo envíe (no lo envíes tú). Si elige (c) o (d), escribe el criterio antes de medir.
+Sin VIIRS, sin guiones largos, ficha SDA en el mismo commit si cambia lógica, fusionar o desplegar sólo con
+el sí de Nicolás por PR, docs/auditoria_2026-11 no se sube.
+```
+
+---
+
+## 0-prev4. Cierre 2026-11-18 tarde (PR 48 y 49 en main: la detección falla antes que la altura)
 
 > Reemplaza como estado vigente al bloque "## 0-prev3" de abajo, que se conserva. Verificado al
 > escribir: `main` remoto = `a9f2819` (`git ls-remote`), sin PR abiertos fuera del de este traspaso

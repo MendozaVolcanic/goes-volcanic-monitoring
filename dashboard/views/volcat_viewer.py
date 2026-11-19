@@ -348,13 +348,28 @@ def _fetch_vaa_cached():
 
 
 @st.cache_data(ttl=TTL_FRAME_IMAGE, show_spinner=False)
-def _volcat_image_bytes(image_url: str) -> bytes:
-    """Descargar PNG raw del VOLCAT (cache 10 min por URL — la URL incluye timestamp)."""
+def _volcat_image_bytes_cached(image_url: str) -> bytes:
+    """Core cacheado: LANZA si la descarga falla o viene vacía.
+
+    st.cache_data no guarda excepciones, así que una falla no queda memorizada
+    y el próximo llamado reintenta. Antes devolvía b"" desde aquí y ese vacío
+    quedaba guardado las 2 h del TTL para ese cuadro: el colorbar y la señal
+    VOLCAT por volcán (dashboard/volcat_senal.py) se quedaban sin PNG aunque
+    SSEC ya respondiera.
+    """
     import requests
+    r = requests.get(image_url, timeout=30)
+    r.raise_for_status()
+    if not r.content:
+        raise ValueError("PNG VOLCAT vacío")
+    return r.content
+
+
+def _volcat_image_bytes(image_url: str) -> bytes:
+    """PNG raw del VOLCAT, cacheado por URL (la URL incluye el timestamp del
+    cuadro). b"" si no se pudo bajar en este intento."""
     try:
-        r = requests.get(image_url, timeout=30)
-        r.raise_for_status()
-        return r.content
+        return _volcat_image_bytes_cached(image_url)
     except Exception as e:
         logger.warning("Error bajando %s: %s", image_url, e)
         return b""

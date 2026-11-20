@@ -1,0 +1,19 @@
+scans 795
+== SECO propio, validacion dejando una jornada afuera (decide)
+  1 sensibilidad: 0/100 = 0.000 (pide >= 0,50) -> False
+  2 falsa alarma: 0/655 = 0.0000 (pide <= 0,02), max por jornada 0 (pide <= 3) -> True
+  3 manto 16-11: 0/40 = 0.000 (pide <= 0,10) -> True
+  4 coincidencia: 0/0 = nan (pide >= 0,50) -> False
+  CUMPLE: False
+  sensibilidad por jornada: 20261021 0/1; 20261024 0/1; 20261025 0/4; 20261028 0/31; 20261029 0/1; 20261107 0/1; 20261108 0/13; 20261110 0/12; 20261111 0/3; 20261114 0/33
+== Diagnostico de la cadena en los positivos (no decide)
+  pixeles de ceniza VOLCAT en el disco de 40 km: 1155; con prefiltros SECO: 631 (0.546)
+  scans positivos con algun objeto (cualquier tamano) a <= 10 km: 100/100
+  fraccion de pixeles con prefiltros en scans negativos: 0.285
+== Bosque aleatorio, misma validacion (informativo, no decide)
+  1 sensibilidad: 38/100 = 0.380 (pide >= 0,50) -> False
+  2 falsa alarma: 28/655 = 0.0427 (pide <= 0,02), max por jornada 15 (pide <= 3) -> False
+  3 manto 16-11: 0/40 = 0.000 (pide <= 0,10) -> True
+  4 coincidencia: 232/361 = 0.643 (pide >= 0,50) -> True
+  CUMPLE: False
+  sensibilidad por jornada: 20261021 0/1; 20261024 0/1; 20261025 2/4; 20261028 9/31; 20261029 1/1; 20261107 1/1; 20261108 11/13; 20261110 1/12; 20261111 2/3; 20261114 11/33

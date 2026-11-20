@@ -1,0 +1,30 @@
+Diagnostico posterior (no decide): cuadros sin control. dif = mediana BT11 huella del mejor candidato menos la del positivo, en t.
+20261025_1440 sin_control BT11pos=290.2 K mejor_dif=+4.7 K candidatos=13 todos_mas_frios=False
+20261025_1700 sin_control BT11pos=289.3 K mejor_dif=-3.2 K candidatos=13 todos_mas_frios=False
+20261028_1830 sin_control BT11pos=288.0 K mejor_dif=-7.3 K candidatos=15 todos_mas_frios=True
+20261028_1930 sin_control BT11pos=278.4 K mejor_dif=-3.8 K candidatos=12 todos_mas_frios=True
+20261107_1950 sin_control BT11pos=290.1 K mejor_dif=-9.6 K candidatos=12 todos_mas_frios=True
+20261108_1810 huella<3px_en_disco
+20261108_2010 sin_control BT11pos=289.9 K mejor_dif=-4.1 K candidatos=12 todos_mas_frios=True
+20261108_2030 sin_control BT11pos=279.6 K mejor_dif=-5.7 K candidatos=9 todos_mas_frios=True
+20261108_2040 sin_control BT11pos=282.0 K mejor_dif=-6.1 K candidatos=10 todos_mas_frios=True
+20261108_2100 sin_control BT11pos=281.2 K mejor_dif=-3.8 K candidatos=12 todos_mas_frios=True
+20261108_2120 sin_control BT11pos=281.7 K mejor_dif=-5.0 K candidatos=10 todos_mas_frios=True
+20261110_2140 sin_control BT11pos=279.0 K mejor_dif=-6.2 K candidatos=11 todos_mas_frios=True
+20261110_2250 sin_control BT11pos=278.8 K mejor_dif=-3.2 K candidatos=10 todos_mas_frios=False
+20261111_1750 huella<3px_en_disco
+20261114_1910 sin_control BT11pos=286.1 K mejor_dif=-3.1 K candidatos=8 todos_mas_frios=True
+20261114_2010 sin_control BT11pos=282.9 K mejor_dif=-3.3 K candidatos=9 todos_mas_frios=True
+20261114_2030 sin_control BT11pos=283.4 K mejor_dif=-9.6 K candidatos=7 todos_mas_frios=True
+20261114_2040 sin_control BT11pos=283.9 K mejor_dif=-7.7 K candidatos=8 todos_mas_frios=True
+20261114_2050 sin_control BT11pos=279.8 K mejor_dif=-5.6 K candidatos=7 todos_mas_frios=True
+20261114_2100 sin_control BT11pos=284.4 K mejor_dif=-7.0 K candidatos=8 todos_mas_frios=True
+20261114_2110 sin_control BT11pos=284.6 K mejor_dif=-6.8 K candidatos=6 todos_mas_frios=True
+20261114_2120 sin_control BT11pos=284.3 K mejor_dif=-7.3 K candidatos=7 todos_mas_frios=True
+20261114_2140 sin_control BT11pos=283.5 K mejor_dif=-9.1 K candidatos=8 todos_mas_frios=True
+20261114_2150 sin_control BT11pos=281.7 K mejor_dif=-5.7 K candidatos=8 todos_mas_frios=True
+20261114_2200 sin_control BT11pos=282.3 K mejor_dif=-6.5 K candidatos=5 todos_mas_frios=True
+20261114_2210 sin_control BT11pos=283.1 K mejor_dif=-9.1 K candidatos=7 todos_mas_frios=True
+20261114_2220 sin_control BT11pos=283.4 K mejor_dif=-8.4 K candidatos=7 todos_mas_frios=True
+20261114_2230 sin_control BT11pos=283.6 K mejor_dif=-9.5 K candidatos=8 todos_mas_frios=True
+pares ok: dif BT11 (control menos positivo) mediana -0.98 K

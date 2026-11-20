@@ -11,9 +11,29 @@ from datetime import datetime, timedelta
 AQUI = os.path.dirname(os.path.abspath(__file__))
 RV_SCRIPTS = os.path.abspath(os.path.join(AQUI, "..", "..", "reproducir_volcat", "scripts"))
 sys.path.insert(0, RV_SCRIPTS)
-import comun_h11 as C  # noqa: E402
 
-H13DIR = os.environ.get("H13_DIR", r"C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_a7c21f45-ef62-4270-9e3a-c053b95c331e\h13")
+H13DIR = os.environ.get("H13_DIR", r"D:\goes_cache\h13")   # en D: porque C: quedo casi lleno (20-11)
+
+# Los scratchpads de H3, beta73 y reproducir VOLCAT se borraron el 20-11 para liberar C:. Sus copias rescatadas
+# (inventario VOLCAT, huellas, pareos, rt.py, caches L1b y GFS) se copiaron a <H13DIR>/shim con la misma
+# estructura. comun_h11 tiene esas rutas escritas como literales: se carga su fuente cambiando solo esos
+# literales, sin editar el archivo de la etapa 2.
+SHIM = os.path.join(H13DIR, "shim")
+os.environ["H11_TRABAJO"] = os.path.join(SHIM, "rv")
+
+
+def _cargar_comun_h11():
+    import types, re
+    src = open(os.path.join(RV_SCRIPTS, "comun_h11.py"), encoding="utf-8").read()
+    src = re.sub(r'^H3 = r".*"$', lambda _m: f'H3 = r"{os.path.join(SHIM, "h3")}"', src, count=1, flags=re.M)
+    src = re.sub(r'^B73 = r".*"$', lambda _m: f'B73 = r"{os.path.join(SHIM, "b73")}"', src, count=1, flags=re.M)
+    m = types.ModuleType("comun_h11"); m.__file__ = os.path.join(RV_SCRIPTS, "comun_h11.py")
+    sys.modules["comun_h11"] = m
+    exec(compile(src, m.__file__, "exec"), m.__dict__)
+    return m
+
+
+C = sys.modules.get("comun_h11") or _cargar_comun_h11()
 CACHE13 = os.path.join(H13DIR, "cache"); os.makedirs(CACHE13, exist_ok=True)
 GFS13 = os.path.join(H13DIR, "gfs"); os.makedirs(GFS13, exist_ok=True)
 RTH = os.path.join(H13DIR, "rt_hora"); os.makedirs(RTH, exist_ok=True)

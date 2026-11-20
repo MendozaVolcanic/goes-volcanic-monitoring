@@ -1,8 +1,9 @@
 # H12: Test 3 original del VAAC de Londres (Francis et al. 2012) en Nevados de Chillán. Informe, 20-11-2026
 
 Criterio commiteado y subido antes del primer número: `criterio_H12_2026-11-20.md` (commit ae954b0, rama
-`claude/h12-francis-test3`). Salida cruda: `resultados/h12_resultado.txt`; diagnóstico posterior (no decide):
-`resultados/h12_posterior_6de9.txt`. Scripts: `scripts/comun_h12.py`, `scripts/h12_rt_sitios.py`,
+`claude/h12-francis-test3`). Salida cruda: `resultados/h12_resultado.txt` (corrida original) y
+`resultados/h12_resultado_correccionB.txt` (conjunto B corregido, §6); diagnóstico posterior (no decide):
+`resultados/h12_posterior_6de9.txt` y `resultados/h12_posterior_6de9_correccionB.txt`. Scripts: `scripts/comun_h12.py`, `scripts/h12_rt_sitios.py`,
 `scripts/h12_analisis.py`, `scripts/h12_posterior_69.py`. Datos derivados (no se suben):
 `C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\h12_datos\`.
 
@@ -31,7 +32,7 @@ que lo observado en Antuco y Longaví, contra 8 a 9 K en la huella de Chillán. 
 salieron mucho más "fáciles" para el modelo que el macizo de Chillán.
 
 **Lectura.** Dos cosas apuntan a que el Test 3 mide el lugar y no la pluma, aunque el criterio no permita
-decirlo como veredicto: (1) en las 795 escenas de E2 encuentra un objeto anclado al cráter en 83 % de los
+decirlo como veredicto: (1) en las 795 escenas de E2 (corregido, §6) encuentra un objeto anclado al cráter en 83 % de los
 cuadros VOLCAT, pero también en 60 % de las escenas sin pluma (68 % de día) y en 75 % del manto del 16-11;
 (2) en el llano, donde el GFS acierta la altura, la brecha es 0,0 K y el test casi no dispara (3 %). El test
 reacciona a donde el cielo despejado modelado está más equivocado, y en esta ventana ese lugar es el macizo
@@ -45,9 +46,10 @@ admitir estas plumas y no se haya probado (la versión 2023 de Londres corta en 
   umbrales de SEVIRI sin recalibrar. **Por cuadro**: al menos un píxel de la huella.
 - **Conjunto A (decide)**: los 66 pares de H11 tal cual (control = mismo minuto UTC en día sin pluma, pareado
   por BT11), cielo despejado directo por píxel.
-- **Conjunto B (réplica)**: las 795 escenas de E2; pareo nuevo fijado en el criterio (mismo minuto ±10 min,
-  otra jornada, BT11 de la huella más cercana, máximo 3 K): 89 pares, 9 sin control a menos de 3 K, 2 sin
-  candidatos. Cielo despejado de la rejilla de E2.
+- **Conjunto B (réplica)**: las 795 escenas de E2 (100 con pluma, 655 negativos limpios, 40 del manto);
+  pareo nuevo fijado en el criterio (mismo minuto ±10 min, otra jornada, BT11 de la huella más cercana,
+  máximo 3 K): 85 pares, 13 sin control a menos de 3 K, 2 sin candidatos. La primera corrida metió 10
+  negativos no limpios y armó 89 pares; ver §6. Cielo despejado de la rejilla de E2.
 - **Control de terreno**: la huella de cada par trasladada a Antuco y a Nevado de Longaví (misma forma y
   tamaño), en las mismas dos escenas del par, con cielo despejado directo (10.458 píxeles más). Llano
   (Valle Central) como referencia informativa.
@@ -104,10 +106,10 @@ Variantes (conjunto A agrupado, cuadros pluma / control / cumbres):
 El filtro β saca un poco de todo por igual (β medible en ~95 % de los píxeles T3 de la huella con pluma). Ningún píxel llega a
 ceniza definitiva (Test 1).
 
-### Conjunto B (réplica): 89 pares, 10 días, 1.010 píxeles
+### Conjunto B (réplica, corregido en §6): 85 pares, 10 días, 976 píxeles
 
-AUC 0,659 [0,543; 0,756], 7 de 10 días > 0,5; cuadros pluma / control 0,764 / 0,517 (+0,25); cumbres
-0,382; llano 0,062. Día 0,684 y 0,847 / 0,597; noche 0,618 y 0,412 / 0,176. La regla 1 pedía en B AUC
+AUC 0,666 [0,549; 0,756], 7 de 10 días > 0,5; cuadros pluma / control 0,753 / 0,518 (+0,24); cumbres
+0,386; llano 0,066. Día 0,692 y 0,838 / 0,603; noche 0,618 y 0,412 / 0,176 (sin cambio). La regla 1 pedía en B AUC
 ≥ 0,65 y diferencia ≥ 0,20, que se cumplen, pero sólo valen si A cumple, y A no cumple.
 
 ### Escenas de E2 enteras (informativo): objeto T3 anclado al cráter
@@ -115,7 +117,7 @@ AUC 0,659 [0,543; 0,756], 7 de 10 días > 0,5; cuadros pluma / control 0,764 / 0
 | | Día | Noche | Todas |
 |---|---|---|---|
 | Con pluma (100) | 78 de 81 = 0,96 | 5 de 19 = 0,26 | 0,83 |
-| Sin pluma (665) | 363 de 538 = 0,67 | 37 de 127 = 0,29 | 0,60 |
+| Sin pluma (655) | 357 de 528 = 0,68 | 37 de 127 = 0,29 | 0,60 |
 | Manto 16-11 (40) | 18 de 22 = 0,82 | 12 de 18 = 0,67 | 0,75 |
 
 Con la vara del 17-11 (falsa alarma ≤ 2 %) el Test 3 queda a 30 veces del límite.
@@ -124,7 +126,7 @@ Con la vara del 17-11 (falsa alarma ≤ 2 %) el Test 3 queda a 30 veces del lím
 
 En los pares, el 6 de 9 se veía limpio (23 % y 37 % de los cuadros con pluma contra 3 % de los controles,
 0 % en cumbres y llano). Antes de proponerlo se miró la escena entera con la vara del 17-11: objeto anclado
-en 35 de 100 cuadros con pluma, 228 de 665 escenas sin pluma (34 %; 16 jornadas con más de 3) y 17 de 40 del
+en 35 de 100 cuadros con pluma, 228 de 655 escenas sin pluma (35 %; 16 jornadas con más de 3) y 17 de 40 del
 manto. Coincidencia con la huella VOLCAT 79 %. La limpieza en los pares era de los píxeles de la huella; en
 el resto del disco a ≤ 10 km del cráter el 6 de 9 se enciende igual sin pluma. **No es candidato.**
 
@@ -160,3 +162,23 @@ el resto del disco a ≤ 10 km del cráter el 6 de 9 se enciende igual sin pluma
 - El conjunto A está cargado al 14-11 (32 de 66 pares) y la noche tiene 14 pares en 5 días.
 - La corrida del modelo en las cumbres se cortó una vez por disco lleno (el disco C quedó con ~10 GB libres);
   se reanudó y las 930 tareas terminaron completas.
+
+## 6. Corrección posterior (20-11, revisión del PR 65)
+
+La revisión del PR notó que el conjunto B tenía 665 negativos y E2 tiene 655. Causa: `comun_h12.escenas_e2`
+no aplicaba el filtro `_limpio` de E2 (`e2_clasificador.py`, función `cargar`), que saca los negativos a menos
+de 60 min de un objeto VOLCAT. Entraban 10 escenas del 13-11 (18:20 a 22:00 UTC): sin objeto a ≤ 50 km en
+ese cuadro, pero con uno a menos de una hora. **8 de ellas habían quedado como control de pares de B**
+(positivos del 14-11). Con el filtro (posterior, cambia sólo B):
+
+- Pareo de B: 85 pares en vez de 89. Cuatro positivos del 14-11 (21:00 a 21:40 UTC) quedan sin control a
+  menos de 3 K; otros cuatro cambian de control (al 12-11, al 07-11 y al 13-11 22:10, que sí es limpio).
+- B: AUC 0,666 en vez de 0,659; cuadros 0,753 / 0,518 en vez de 0,764 / 0,517. Escenas sin pluma con objeto
+  T3 anclado: 394 de 655 (0,60, igual). 6 de 9 por escena: 228 de 655 (0,35).
+- **El conjunto A no cambia** (salida idéntica salvo el encabezado de B) **y el veredicto tampoco**.
+- Cumbres de B: para los 4 controles nuevos no hay cielo despejado en las cumbres a la hora del control
+  (332 cuadros de cumbre en vez de 340). No se pudo calcular: la carpeta `dl/` del modelo radiativo de H3 (el
+  continuo MT_CKD 4.3 y las SRF del ABI) se perdió con el scratchpad de H3, que se borró el 20-11 después del
+  rescate. Volver a correr el modelo exige descargar esos dos insumos otra vez. El análisis ahora descarta
+  cualquier archivo de cumbre calculado para otra escena (`pix_sitio` compara con `sitios_meta.json`).
+- Pareo viejo guardado como `pareo_e2_v1_sin_limpio.json` en la carpeta de datos de H12.

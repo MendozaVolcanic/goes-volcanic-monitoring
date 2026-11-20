@@ -39,7 +39,19 @@ def variantes(btd, btdc, b85, b12, n9):
             "t1": btd < -2.0, "b_nomed": t & nomed}
 
 
+_ESC_SITIO = None
+
+
 def pix_sitio(cj, kp, rol, sitio, dt):
+    """Cielo despejado en la huella trasladada. Solo vale si el archivo se calculo para ESA escena: tras la
+    correccion del pareo de B (posterior), 8 controles cambiaron y su archivo de cumbre es de la escena vieja.
+    El modelo radiativo ya no se puede volver a correr (dl/ de H3 perdido), asi que esos quedan sin dato."""
+    global _ESC_SITIO
+    if _ESC_SITIO is None:
+        _ESC_SITIO = {(m["conj"], m["pos"], m["rol"], m["sitio"]): m["escena"]
+                      for m in json.load(open(os.path.join(H.OUT, "sitios_meta.json")))}
+    if _ESC_SITIO.get((cj, kp, rol, sitio)) != C.k(dt):
+        return None
     p = os.path.join(H.RTSIT, f"{cj}_{kp}_{rol}_{sitio}.npz")
     if not os.path.exists(p):
         return None

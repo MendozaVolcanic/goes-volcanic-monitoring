@@ -1,0 +1,13 @@
+T3 + 6 de 9 por escena (POSTERIOR, no decide). Vara del 17-11 aplicada a las 795 escenas de E2.
+  pos   D     objeto anclado: 34 de 81 = 0.420
+  pos   N     objeto anclado: 1 de 19 = 0.053
+  pos   todos objeto anclado: 35 de 100 = 0.350
+  neg   D     objeto anclado: 213 de 528 = 0.403
+  neg   N     objeto anclado: 15 de 127 = 0.118
+  neg   todos objeto anclado: 228 de 655 = 0.348
+  manto D     objeto anclado: 12 de 22 = 0.545
+  manto N     objeto anclado: 5 de 18 = 0.278
+  manto todos objeto anclado: 17 de 40 = 0.425
+  negativos: maximo por jornada 34 (2026-11-17); jornadas con > 3: 16
+  coincidencia (positivos, px a <= 30 km dentro de la ceniza VOLCAT dilatada 1 px): 287 de 363 = 0.791
+  positivos por jornada: 2026-10-21 0/1; 2026-10-24 0/1; 2026-10-25 3/4; 2026-10-28 19/31; 2026-10-29 0/1; 2026-11-07 1/1; 2026-11-08 6/13; 2026-11-10 0/12; 2026-11-11 0/3; 2026-11-14 6/33

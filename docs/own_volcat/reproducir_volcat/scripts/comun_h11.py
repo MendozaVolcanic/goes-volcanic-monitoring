@@ -8,8 +8,10 @@ import numpy as np
 from datetime import datetime, timedelta
 from scipy import ndimage
 
-H3 = r"C:\Users\nmend\AppData\Local\Temp\claude\caac88451b34493f\bd33fd70-a478-403d-be84-fcf2fda5792e\scratchpad\h3"
-B73 = r"C:\Users\nmend\AppData\Local\Temp\claude\f4710304fa6a9a5b\6cc950d4-5fd7-4e45-a0af-882008093b90\scratchpad\b73"
+# Los scratchpads originales se borraron el 20-11; la copia rescatada se elige con H11_H3, H11_B73 y H11_TRABAJO
+# (ver LEEME_rescate_2026-11-20.md en la carpeta de notas h12_datos).
+H3 = os.environ.get("H11_H3", r"C:\Users\nmend\AppData\Local\Temp\claude\caac88451b34493f\bd33fd70-a478-403d-be84-fcf2fda5792e\scratchpad\h3")
+B73 = os.environ.get("H11_B73", r"C:\Users\nmend\AppData\Local\Temp\claude\f4710304fa6a9a5b\6cc950d4-5fd7-4e45-a0af-882008093b90\scratchpad\b73")
 TRABAJO = os.environ.get("H11_TRABAJO", r"C:\Users\nmend\AppData\Local\Temp\claude\a2570b18d9d77a03\d3ce10df-b230-48d8-900a-293980f29716\scratchpad\rv")
 RTDIR = os.path.join(TRABAJO, "rt_h11"); os.makedirs(RTDIR, exist_ok=True)
 sys.path.insert(0, H3)

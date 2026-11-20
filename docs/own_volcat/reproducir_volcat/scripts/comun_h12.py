@@ -82,10 +82,15 @@ def feat(dt):
 
 
 def escenas_e2():
+    """Escenas de E2 tal como las uso E2: los negativos a menos de 60 min de un objeto VOLCAT quedan fuera
+    (C._limpio, igual que e2_clasificador.cargar). Correccion posterior del 20-11: la primera version no
+    aplicaba el filtro y metia 10 negativos del 13-11 (665 en vez de 655), 8 de ellos como control en B."""
     out = {}
     for f in sorted(glob.glob(os.path.join(FEAT, "*.npz"))):
         kk = os.path.basename(f)[:-4]
         z = np.load(f, allow_pickle=True)
+        if str(z["tipo"]) == "neg" and not C._limpio(C.dtk(kk)):
+            continue
         out[kk] = str(z["tipo"])
     return out
 

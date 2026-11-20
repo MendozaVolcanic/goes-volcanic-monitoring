@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-19 noche (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-20 (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,108 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre 2026-11-19 noche (PR 53 a 59 en main: capa VOLCAT desplegada; H8, H9, H10 cerradas; lectura completa de SECO; H11 abierta)
+## 0. Cierre 2026-11-20 (PR 60 a 63 en main: H11 no concluyente, SECO propio no cumple; tesis de Pavolonis leída; H12 y H13 corriendo; limpieza de disco)
+
+> **Estado fijado con trabajo en curso.** Al cerrar seguían vivas dos sesiones hijas, sin rama subida:
+> H12 "Goes: H12, Test 3 original de Francis 2012 en Chillán" (`local_45e706c6-ebec-46c0-a547-4c7136a2428a`,
+> rama `claude/competent-raman-259e42`, corriendo) y H13 "Goes: H13, dimensión temporal de la pluma de
+> Chillán" (`local_6d39c8ff-7bbe-4a6a-9d73-546147fe9854`, rama `claude/intelligent-volhard-0a6fe2`, detenida
+> esperando). Ambas abren PR sin fusionar. Revisa `gh pr list` antes de creerle a esta tabla.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Traspaso del 19-11 noche | En main | PR 60, merge `bacae60` |
+| H11 (terreno del cielo despejado, filas de volcán, atajo de SO₂) | **No concluyente** | PR 61, merge `014cfd1`. CF ≥ 3 de día 0,71 con pluma y 0,83 sin pluma; de noche 0,29 y 0,00; A5 en 0 de 733 píxeles; βtot(12/11) AUC 0,58 [0,54; 0,64] (`docs/own_volcat/reproducir_volcat/resultados/h11_resultado.txt`) |
+| Etapa 2, SECO propio entrenado con VOLCAT | **No cumple** | PR 62, merge `ffa13d1`. 0 de 100 cuadros, 0 de 655 falsas alarmas; mediana de probabilidad por píxel 1,6 % (máx. 34 %) contra 80 %; bosque aleatorio informativo 38 de 100 con 4,3 % de falsa alarma (`e2_resultado.txt`, `e2_diagnostico_objetos.txt`) |
+| `POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md` al día (§3.5 nueva, filas H11 y E2, corrección de H8) | En main | PR 63, merge `b9f3f19` |
+| Lectura completa de 8 documentos (Francis 2012, Saint 2023, Watson 2004, Doutriaux-Boucher 2009, Seemann 2008, Pavolonis 2013, Heidinger 2012, ATBD SO₂) | Hecha | `C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\SINTESIS_lecturas_2026-11-20.md` y `LECTURA_*.md` en la misma carpeta |
+| Tesis de Pavolonis 2014 | Bajada (191.259.165 bytes, 307 pp) y leída (cap. 1 a 6, 8 y apéndices C y E) | `...\local_1055cba6-2c2f-4aa4-9119-82691ee2ed22\pdfs\Pavolonis_2014_tesis_doctoral.pdf`; lecturas `LECTURA_tesis_Pavolonis_A_cap3-4.md`, `_B_cap4-6.md`, `_C_cap1-2-5-8.md` en la carpeta de notas `local_f3a7d295-...`; Fig. 4.12 digitalizada en `fig4_12_tierra_razones_digitizadas.csv` (aproximada, por década) |
+| Correo v4 a Pavolonis (3 preguntas: terreno, tablas para ABI, tiempo) | Redactado, **sin enviar** | `C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_1055cba6-2c2f-4aa4-9119-82691ee2ed22\Correo_VOLCAT_Pavolonis_v4.docx` |
+| Lightning-v1: Chillán en sus coordenadas GVP y hora GLM con decodificación CF | Fusionado en ese repo | PR 1 de Lightning-v1, merge `2108b02` (14:23 UTC). Datos publicados desde el 24-04 siguen con los dos defectos |
+| Limpieza de disco | Hecha: 24 → 33,5 GB libres | 437 L1b de `data/raw` borrados (siguen en S3); 21 sesiones archivadas; `volcat_validacion` rescatado a `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\data\raw\volcat_validacion` (989 sha256 verificados); cachés de oct-nov en `...\local_f3a7d295-...\cache_rescatada\` y `h12_datos\` |
+| H12 y H13 | **Corriendo** en sesiones hijas | ver aviso arriba |
+| main | `53a8aae` en el remoto (bot de FRP sobre `b9f3f19`) | `git ls-remote` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | ¿Fusionar este traspaso? | sí / no | Sí: sólo STATUS.md |
+| 2 | ¿Enviar el correo v4 a Pavolonis? | ya / después de H12 y H13 | Ya: las tres preguntas valen con cualquier resultado; completa los campos [cargo], [correo institucional] y [teléfono] |
+| 3 | ¿H14: SECO con las razones de verosimilitud de la tesis (Fig. 4.12 a 4.14, digitalizadas) sobre huella y control? | sí / no | Sí, en sesión aparte y con criterio antes de medir: dice si las tablas de VOLCAT bastan para ver la pluma. Advertencia: lectura por década, ±1 bin, y los clasificadores 3D sólo están para εtot 0,10 a 0,20 |
+| 4 | ¿Borrar los 4 scratchpads de Temp (1,7 GB) y el worktree `pr39` (0,14 GB)? | sí / no | Sí: lo que servía ya está rescatado y verificado |
+| 5 | ¿Capa térmica propia a 3,9 µm en el dashboard? | ahora / después | Después de H12 y H13, con criterio y ficha SDA |
+| 6 | ¿Regenerar los datos históricos de Lightning-v1 desde el 24-04? | sí / no | Sí, si alguien usa los conteos históricos de Chillán; decidir en ese repo |
+
+### c. Lo aprendido
+
+- **Umbral desde la fuente primaria** (regla general del workspace, ya en `POR_QUE` §7): el Test 3 de Francis
+  2012 es BTD < **+0,7 K** y BTD < BTD_clr − 1 K; Falconieri 2018 lo resumió como −2 ≤ BTD ≤ −0,7 K y la prueba
+  del 19-11 siguió el resumen. Todo umbral se mira en la imagen del PDF original antes de escribir el criterio.
+- **Leer la tesis antes que los papers que la resumen**: SECO Parte 1 dice "not shown" para las razones sobre
+  tierra; la tesis las publica (Fig. 4.12 a 4.14). También trae σ_clr = 5 K en BT11 sobre tierra (Tabla 5.2).
+- **Datos irreemplazables en carpetas ignoradas de un worktree** (regla general): `volcat_validacion` vivía
+  sólo en `data/raw` de dos worktrees y la API de VOLCAT guarda 30 días. Antes de archivar una sesión, mirar
+  `git status --ignored` de su worktree. Ya está en la memoria del proyecto.
+- **Archivar no libera el disco al tiro**: la app deja los worktrees en una reserva y los reutiliza (H12 y H13
+  tomaron dos). Lo que sí libera de inmediato es borrar datos.
+- **Brief de sesión hija**: la de Lightning-v1 fusionó su PR sin pasar por la revisión de esta sesión. En los
+  briefs, escribir que la fusión la pide la sesión coordinadora con el sí de Nicolás para ese PR.
+- `python -I` ignora `PYTHONIOENCODING`: usar `sys.stdout.reconfigure(encoding="utf-8")`.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** la etapa 2 ya midió la mediana de probabilidad por píxel (`np.nanmedian(pv)` en
+  `e2_clasificador.py`) e implementó las filas "mediana > 80 %, objeto > 0" de la Tabla 4 (= Tabla 6.3 de la
+  tesis). El cuello de botella es la probabilidad por píxel, no la del objeto.
+- **CONFIRMADO:** la tesis (t195, t241 y t242) deja el uso de varios tiempos como trabajo futuro y lo propone
+  justo para plumas sin contraste con el cielo despejado. Pasado a H13.
+- **CONFIRMADO:** ninguna de las fuentes leídas (SECO 1 y 2, ATBD 2025, CDR 2022, Pavolonis 2013, Heidinger
+  2012, ATBD SO₂, tesis 2014) corrige el terreno del cielo despejado.
+- **SOSPECHA:** con las razones de la tesis multiplicadas (5 a 8 clasificadores) la huella llegaría a 80 %
+  mientras el control no; no medido (decisión b.3).
+- **SOSPECHA:** VOLCAT ABI usa hoy las tablas entrenadas con MODIS de la tesis; no verificado (pregunta b del
+  correo v4).
+- **SOSPECHA:** quién autorizó la fusión del PR 1 de Lightning-v1 (cuenta MendozaVolcanic, desde su sesión).
+- **SOSPECHA:** los PNG VOLCAT de Chillán del 08-11 vencen en SSEC hacia el 08-12 (30 días rodantes, dicho por
+  la sesión de validación de magnitud, no leído de la fuente).
+
+### e. Cerrado, no rehacer (con el número que lo cerró)
+
+Todo lo de la lista "## 0-prev6 e." más: H11 (CF ≥ 3 sin distinguir de día, 0,71 contra 0,83; A5 0 de 733;
+βtot(12/11) AUC 0,58), SECO propio con variables públicas (0 de 100; mediana por píxel 1,6 %), la probabilidad
+del objeto como cuello de botella (ya cubierta), atajo de SO₂ en pluma baja (Doutriaux-Boucher 2009: ~1,2 K con
+150 DU a 600 hPa), Saint 2023 (en GOES nada con BTD > −0,29 K es ceniza), ATBD SO₂ v1.0 (no usa εtot ni βtot) y
+la prueba de Londres en la versión de Falconieri (2 de 35). El Test 3 original de Francis está en H12, no cerrado.
+
+### f. Prompt para la próxima sesión
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF).
+
+1. Verifica antes de creer: git fetch; git ls-remote origin -h refs/heads/main; gh pr list.
+   Lista las sesiones vinculadas: H12 (local_45e706c6-ebec-46c0-a547-4c7136a2428a) y H13
+   (local_6d39c8ff-7bbe-4a6a-9d73-546147fe9854) pueden haber abierto PR. Revisa cada uno (criterio
+   commiteado antes de medir y sin cambios después, números contra la salida cruda, sin guiones
+   largos, sin referencias a la auditoría, ficha SDA si toca código) y pide el sí de Nicolás.
+2. Lee CLAUDE.md, este STATUS.md "## 0.", docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md
+   (§1, §3.5, §4, §6) y, en C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\ :
+   SINTESIS_lecturas_2026-11-20.md y LECTURA_tesis_Pavolonis_A_cap3-4.md.
+3. Orden: (a) integrar H12 y H13 en POR_QUE (PR aparte, con sí); (b) decisiones b.2 a b.6 de este
+   bloque, sobre todo el correo v4 y H14; (c) si H13 o H14 dan un detector que cumpla la vara del
+   17-11, diseñarlo con Nicolás con ficha SDA en el mismo commit.
+4. Reglas: español de Chile sin voseo ni guiones largos; rutas absolutas; no VIIRS; la carpeta
+   principal (rama audit/2026-11-previa-local) no se toca, salvo data/raw/volcat_validacion que no
+   se modifica nunca; docs/auditoria_2026-11 no se sube; token HF sin imprimir; cambio de lógica =
+   ficha SDA en el mismo commit; fusionar o desplegar sólo con el sí de Nicolás para ESE PR;
+   criterio antes de medir y control pareado por BT11; umbrales leídos en la imagen del PDF original.
+5. Si la sesión no alcanza: /cierre al llegar a base + 250 mil tokens de contexto.
+```
+
+## 0-prev6. Cierre 2026-11-19 noche (PR 53 a 59 en main: capa VOLCAT desplegada; H8, H9, H10 cerradas; lectura completa de SECO; H11 abierta)
 
 > **Estado fijado con trabajo en curso.** La sesión "Goes: reproducir la detección VOLCAT en Chillán
 > (H11 y SECO)" (id `local_debe03b3-3cc8-4666-9ecf-fd396b031db4`, rama `claude/reproducir-volcat-*`)

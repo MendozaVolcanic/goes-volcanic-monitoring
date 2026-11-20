@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-19 (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-19 noche (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,104 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre 2026-11-19 (PR 51 en main: H3 no separa, H7 falsada, búsqueda bibliográfica nueva)
+## 0. Cierre 2026-11-19 noche (PR 53 a 59 en main: capa VOLCAT desplegada; H8, H9, H10 cerradas; lectura completa de SECO; H11 abierta)
+
+> **Estado fijado con trabajo en curso.** La sesión "Goes: reproducir la detección VOLCAT en Chillán
+> (H11 y SECO)" (id `local_debe03b3-3cc8-4666-9ecf-fd396b031db4`, rama `claude/reproducir-volcat-*`)
+> seguía corriendo al cerrar: etapa 0 (leer la presentación CDR 2022), etapa 1 (H11) y etapa 2 (SECO
+> propio calibrado contra VOLCAT). Puede haber abierto PR después de este commit: revisa `gh pr list`
+> antes de creerle a esta tabla.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Capa VOLCAT por volcán en el dashboard (cabecera de la grilla y resumen de 44 en "VOLCAT por zona"; ficha SDA v2.8 §A.7) | **En main y desplegada en HF** | PR 53, merge `2d730d1`; Space sha `34607e1` RUNNING 14:10 UTC, health ok; no revisada en navegador |
+| β(7,3/11) fuera de muestra | Cerrada: noche no concluyente (anillo 0,90 > huella 0,82), día falsada (AUC 0,41); mide humedad | PR 55, `docs/own_volcat/beta73/` |
+| Prueba tolerante del VAAC de Londres (H8) | Cerrada: no cumple (2 de 35 cuadros, 0 de 82 px en huella) | PR 54; implementación comprobada contra Falconieri 2018 completo (5 pruebas, coherencia 6 de 9) |
+| Dirección de la pluma (H10) | No concluyente (2 jornadas comparables); BTD en el sector REAV AUC 0,68 y 0,70, bajo umbral | PR 57, `docs/own_volcat/direccion_pluma/` |
+| Calor 3,9 µm y rayos GLM (H9) | Falsada como gatillo del momento (noche AUC 0,46; 0 de 100 cuadros con rayos); cráter caliente el 71 % de las noches desde el 24-10 | PR 58, `docs/own_volcat/calor_rayos/` |
+| Documento de conjunto | Al día con H8, H9, H10 (§3.3, §3.4) | PR 56 y 59, `docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md` |
+| Lectura completa de papers | SECO 1 y 2, Pavolonis 2018, Mackie 2014, Falconieri 2018, Piscini 2011 | `C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_1055cba6-2c2f-4aa4-9119-82691ee2ed22\LECTURA_PAPERS_2026-11-19.md` y `LECTURA_SECO_PARTE1.md` |
+| Referencias faltantes | 60 revisadas, 10 priorizadas; Nicolás bajó 7 (copiadas a `pdfs\`, sin leer aún); faltan Prata y Kerkmann 2007, Lucas y Majewski 2015 (lo bajado fue otro PDF del BoM) y la tesis de Pavolonis 2014 | `REFERENCIAS_FALTANTES_2026-11-19.md` en la misma carpeta de notas |
+| Reproducir VOLCAT (H11 + SECO propio) | **Corriendo** en otra sesión | ver aviso arriba |
+| main | `aa05502` en el remoto; sin PR abiertos al cerrar salvo el de este traspaso | `git ls-remote` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | ¿Fusionar este traspaso? | sí / no | Sí: sólo STATUS.md |
+| 2 | Correo v3 a Pavolonis (`Correo_VOLCAT_Pavolonis_v3.docx` en la carpeta de notas) | enviar ya / esperar H11 | Esperar el veredicto de la etapa 1 de H11 y agregar una línea concreta (¿corrigen el terreno en el cielo despejado?); pedir también la tesis 2014 y el paper térmico "en preparación" |
+| 3 | Defectos de Lightning-v1 (Chillán con coordenadas de Antuco; hora de destello sin factor de escala, hasta ~9 h corrida) | arreglar en ese repo / dejar | Arreglar en una sesión en ese repo: el sitio público muestra datos de Antuco como si fueran de Chillán |
+| 4 | Capa térmica propia a 3,9 µm (H9 mostró un indicador que el FDCF no ve) | proponer como capa / no | Esperar a cerrar H11; después evaluarla con criterio y ficha SDA |
+
+### c. Lo aprendido
+
+- **Leer completo antes de diseñar una prueba** (regla general del workspace): la Tabla 4 y el Apéndice A
+  de SECO Parte 2 traen las filas de volcán (objetos de 0 a 25 px con bandera de nube CF ≥ 3) y la
+  compuerta de SO2 (ec. A5) que ninguna prueba había usado; se habían leído "por secciones" en HTML.
+  Las tablas y ecuaciones de los PDF de AGU salen desordenadas al convertir: leerlas como imagen
+  (PyMuPDF, `get_pixmap`).
+- **Subagentes de lectura**: rinden con preguntas cerradas, citas cortas y "último título leído" como
+  prueba de cobertura; contrastar una tabla clave contra el PDF (se hizo con la Tabla 7 de Pavolonis 2018).
+- **Cierre por contexto** (CLAUDE.md global): esta sesión pasó el umbral por pedidos encadenados; lo
+  pesado se movió a sesiones hijas.
+
+### d. Problemas abiertos e hipótesis
+
+- **SOSPECHA (H11):** VOLCAT calcula el cielo despejado con el GFS sin corregir el terreno (SECO 1 §4.1,
+  CONFIRMADO en el texto), así que en la cumbre de Chillán su despejado saldría tibio (nuestro GFS da ~7 K,
+  CONFIRMADO en H3) y la bandera CF ≥ 3 de las filas de volcán pasaría siempre. SECO 1 la debilita: exige
+  firma de ceniza en βtot(12/11), y un error sólo de superficie deja βtot(7,3/11) cerca de 0, así que el
+  atajo de SO2 no se abriría solo. Variante: emisividad SeeBor a 8,5 µm mal en la cumbre (subiría
+  β(8,5/11) sin SO2). En prueba (etapa 1).
+- **SOSPECHA:** que la huella VOLCAT quede casi siempre al S o SE del cráter es paralaje y no "ignorar el
+  viento" (H10); depende de la altura supuesta.
+- **CONFIRMADO:** Lightning-v1 ubica "Nevados de Chillán" en -37,411, -71,352 (Antuco) (PR 58, contraste
+  contra GLM de NOAA).
+- **CONFIRMADO:** VOLCAT no dibujó objeto anclado en 42 cuadros del 27-10, con columnas en el REAV (PR 57).
+
+### e. Cerrado, no rehacer (con el número que lo cerró)
+
+Canales solares (AUC 0,50 pareado), paralaje (sin señal hasta 5 px), 8,5 µm sola (AUC 0,26), umbral BTD
+y anomalía de fondo (17-11), cielo GFS como compuerta (90 % huella contra 88 % control), seguimiento H7
+(0 de 3 primeros cuadros con señal), β(7,3/11) (noche 0,82 con anillo 0,90; día 0,41), prueba de Londres
+(2 de 35), RSTASH (sólo anomalía bajo -2σ), BTD corregida por vapor (constante por escena), calor como
+gatillo (AUC 0,46), rayos (0 de 100), crecimiento vertical de Pavolonis 2018 (pide dBT < -10 K; nuestra
+prueba de 2 K tampoco se cumplió), bayesiano de Mackie 2014 (ruido de despejado 1,6 a 2,4 K sobre tierra,
+prior sin volcán). H6 cerrada por Nicolás (es ceniza).
+
+### f. Prompt para la próxima sesión
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF).
+
+1. Verifica antes de creer: git fetch, git ls-remote origin -h refs/heads/main, gh pr list.
+   Lista las sesiones vinculadas y su estado; la de "reproducir la detección VOLCAT en Chillán
+   (H11 y SECO)" (local_debe03b3-3cc8-4666-9ecf-fd396b031db4) puede haber abierto PR. Revisa
+   cada PR (criterio commiteado antes de medir, números contra salida cruda, sin guiones largos,
+   sin referencias a la auditoría, ficha SDA si toca código) y pide el sí de Nicolás antes de
+   fusionar.
+2. Lee CLAUDE.md, este STATUS.md "## 0." y docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md,
+   y en la carpeta de notas local_1055cba6-...: LECTURA_PAPERS_2026-11-19.md,
+   LECTURA_SECO_PARTE1.md, REFERENCIAS_FALTANTES_2026-11-19.md.
+3. Objetivo de Nicolás: conseguir lo mismo que VOLCAT en Chillán y luego mejorarlo. Orden:
+   (a) leer con agentes y preguntas cerradas los 7 papers nuevos de pdfs\ (Francis 2012,
+   Saint 2023, Watson 2004, Doutriaux-Boucher 2009, Seemann 2008, Pavolonis 2013,
+   Heidinger 2012) y el ATBD de SO2 del repo (docs/Aviation_SO2_v1.0_no_color.pdf); pasar lo
+   que sirva a la sesión de reproducir VOLCAT. (b) Buscar la tesis de Pavolonis 2014
+   (UW-Madison) con la skill investigacion. (c) Integrar los veredictos de H11 y del SECO
+   propio en POR_QUE (PR aparte, con sí). (d) Decisiones b.2 a b.4 de este bloque.
+4. Reglas: español de Chile sin voseo ni guiones largos; rutas absolutas; no VIIRS; la carpeta
+   principal (rama audit/2026-11-previa-local) no se toca; docs/auditoria_2026-11 no se sube;
+   token HF de ~/.hf_token sin imprimir; cambio de lógica = ficha SDA en el mismo commit;
+   fusionar o desplegar sólo con el sí explícito de Nicolás para ESE PR.
+5. Si la sesión no alcanza: cierra con /cierre al llegar a base + 250 mil tokens.
+```
+
+## 0-prev5. Cierre 2026-11-19 (PR 51 en main: H3 no separa, H7 falsada, búsqueda bibliográfica nueva)
 
 > Reemplaza como estado vigente al bloque "## 0-prev4" de abajo, que se conserva. Verificado al
 > escribir: `main` remoto = `601dc4c` (`git ls-remote`), sin PR abiertos fuera del de este traspaso

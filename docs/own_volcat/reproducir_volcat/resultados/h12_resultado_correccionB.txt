@@ -1,0 +1,108 @@
+Conjunto A (H11): 66 pares | Conjunto B (E2, pareo nuevo): 85 pares; pareo {'dif_bt11>3K': 13, 'ok': 85, 'sin_candidatos': 2}
+Sitios: antuco: 3486 px, ceniza VOLCAT excluida 0; longavi: 3486 px, ceniza VOLCAT excluida 0; llano: 3486 px, ceniza VOLCAT excluida 0 | mascara VOLCAT usada: {'huellas_b73': 115, 'png': 40, 'sin_mascara': 155}
+
+==== Conjunto A AGRUPADO: 66 pares, 10 dias, px huella 733
+  AUC margen huella=0.581 IC95dia=[0.543,0.710] anillo=0.491 h-an=+0.090 dias>0,5=7/10
+  por dia: 20261022:0.17 20261024:0.25 20261025:0.94 20261028:0.59 20261029:0.76 20261107:1.00 20261108:0.76 20261110:0.55 20261111:0.38 20261114:0.55
+  T3                             cuadros P_pos=0.758 P_ctrl=0.515 dif=+0.242 (n 66) | px pos/ctrl 0.216/0.106 | P_cumbre=0.348 (antuco 0.386, longavi 0.311; hora pos 0.364, hora ctrl 0.333; n 264) | llano 0.030
+  T3+beta (no medible = borra)   cuadros P_pos=0.682 P_ctrl=0.424 dif=+0.258 (n 66) | px pos/ctrl 0.151/0.078 | P_cumbre=0.227 (antuco 0.250, longavi 0.205; hora pos 0.235, hora ctrl 0.220; n 264) | llano 0.008
+  T3+beta (no medible = queda)   cuadros P_pos=0.712 P_ctrl=0.455 dif=+0.258 (n 66) | px pos/ctrl 0.162/0.087 | P_cumbre=0.265 (antuco 0.311, longavi 0.220; hora pos 0.265, hora ctrl 0.265; n 264) | llano 0.008
+  T3+6 de 9                      cuadros P_pos=0.227 P_ctrl=0.030 dif=+0.197 (n 66) | px pos/ctrl 0.041/0.003 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 264) | llano 0.000
+  Test 1 (BTD<-2)                cuadros P_pos=0.000 P_ctrl=0.000 dif=+0.000 (n 66) | px pos/ctrl 0.000/0.000 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 264) | llano 0.000
+  anillo 2-6 px: T3 px pos/ctrl 0.030/0.027
+  T3 con beta no medible (huella pos, fraccion de px): 0.011
+  fisica (medianas, K):
+    huella pos   zsfc GFS  1727 m | BT11clr-BT11 +8.32 | BTD +0.90 | BTD_clr +1.84 | BTD_clr-BTD +0.85 | BTD<0,7: 0.35 | BTD<BTDclr-1: 0.43 | T3 px: 0.22 (n 733)
+    huella ctrl  zsfc GFS  1727 m | BT11clr-BT11 +6.93 | BTD +0.93 | BTD_clr +1.82 | BTD_clr-BTD +0.61 | BTD<0,7: 0.30 | BTD<BTDclr-1: 0.27 | T3 px: 0.11 (n 733)
+    cumbres      zsfc GFS  1696 m | BT11clr-BT11 +2.12 | BTD +1.38 | BTD_clr +1.86 | BTD_clr-BTD +0.32 | BTD<0,7: 0.17 | BTD<BTDclr-1: 0.16 | T3 px: 0.05 (n 2932)
+    llano        zsfc GFS   216 m | BT11clr-BT11 -0.62 | BTD +1.94 | BTD_clr +2.10 | BTD_clr-BTD +0.00 | BTD<0,7: 0.04 | BTD<BTDclr-1: 0.03 | T3 px: 0.01 (n 1466)
+
+==== Conjunto A NOCHE (cenit >= 80): 14 pares, 5 dias, px huella 182
+  AUC margen huella=0.586 IC95dia=[0.463,0.678] anillo=0.443 h-an=+0.142 dias>0,5=3/5
+  por dia: 20261022:0.17 20261028:0.59 20261029:0.76 20261110:0.64 20261114:0.49
+  T3                             cuadros P_pos=0.357 P_ctrl=0.071 dif=+0.286 (n 14) | px pos/ctrl 0.033/0.005 | P_cumbre=0.089 (antuco 0.071, longavi 0.107; hora pos 0.179, hora ctrl 0.000; n 56) | llano 0.071
+  T3+beta (no medible = borra)   cuadros P_pos=0.214 P_ctrl=0.000 dif=+0.214 (n 14) | px pos/ctrl 0.016/0.000 | P_cumbre=0.036 (antuco 0.071, longavi 0.000; hora pos 0.071, hora ctrl 0.000; n 56) | llano 0.036
+  T3+beta (no medible = queda)   cuadros P_pos=0.214 P_ctrl=0.000 dif=+0.214 (n 14) | px pos/ctrl 0.016/0.000 | P_cumbre=0.036 (antuco 0.071, longavi 0.000; hora pos 0.071, hora ctrl 0.000; n 56) | llano 0.036
+  T3+6 de 9                      cuadros P_pos=0.000 P_ctrl=0.000 dif=+0.000 (n 14) | px pos/ctrl 0.000/0.000 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 56) | llano 0.000
+  Test 1 (BTD<-2)                cuadros P_pos=0.000 P_ctrl=0.000 dif=+0.000 (n 14) | px pos/ctrl 0.000/0.000 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 56) | llano 0.000
+  anillo 2-6 px: T3 px pos/ctrl 0.010/0.014
+  T3 con beta no medible (huella pos, fraccion de px): 0.000
+  fisica (medianas, K):
+    huella pos   zsfc GFS  1757 m | BT11clr-BT11 +6.18 | BTD +0.68 | BTD_clr +1.00 | BTD_clr-BTD +0.43 | BTD<0,7: 0.52 | BTD<BTDclr-1: 0.03 | T3 px: 0.03 (n 182)
+    huella ctrl  zsfc GFS  1757 m | BT11clr-BT11 +4.39 | BTD +0.68 | BTD_clr +0.96 | BTD_clr-BTD +0.27 | BTD<0,7: 0.53 | BTD<BTDclr-1: 0.01 | T3 px: 0.01 (n 182)
+    cumbres      zsfc GFS  1741 m | BT11clr-BT11 +0.80 | BTD +0.78 | BTD_clr +0.95 | BTD_clr-BTD +0.18 | BTD<0,7: 0.41 | BTD<BTDclr-1: 0.01 | T3 px: 0.01 (n 728)
+    llano        zsfc GFS   234 m | BT11clr-BT11 -1.16 | BTD +1.17 | BTD_clr +1.36 | BTD_clr-BTD +0.04 | BTD<0,7: 0.14 | BTD<BTDclr-1: 0.04 | T3 px: 0.02 (n 364)
+
+==== Conjunto A DIA: 52 pares, 7 dias, px huella 551
+  AUC margen huella=0.592 IC95dia=[0.547,0.773] anillo=0.504 h-an=+0.088 dias>0,5=5/7
+  por dia: 20261024:0.25 20261025:0.94 20261107:1.00 20261108:0.76 20261110:0.54 20261111:0.38 20261114:0.56
+  T3                             cuadros P_pos=0.865 P_ctrl=0.635 dif=+0.231 (n 52) | px pos/ctrl 0.276/0.140 | P_cumbre=0.418 (antuco 0.471, longavi 0.365; hora pos 0.413, hora ctrl 0.423; n 208) | llano 0.019
+  T3+beta (no medible = borra)   cuadros P_pos=0.808 P_ctrl=0.538 dif=+0.269 (n 52) | px pos/ctrl 0.196/0.103 | P_cumbre=0.279 (antuco 0.298, longavi 0.260; hora pos 0.279, hora ctrl 0.279; n 208) | llano 0.000
+  T3+beta (no medible = queda)   cuadros P_pos=0.846 P_ctrl=0.577 dif=+0.269 (n 52) | px pos/ctrl 0.211/0.116 | P_cumbre=0.327 (antuco 0.375, longavi 0.279; hora pos 0.317, hora ctrl 0.337; n 208) | llano 0.000
+  T3+6 de 9                      cuadros P_pos=0.288 P_ctrl=0.038 dif=+0.250 (n 52) | px pos/ctrl 0.054/0.004 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 208) | llano 0.000
+  Test 1 (BTD<-2)                cuadros P_pos=0.000 P_ctrl=0.000 dif=+0.000 (n 52) | px pos/ctrl 0.000/0.000 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 208) | llano 0.000
+  anillo 2-6 px: T3 px pos/ctrl 0.036/0.031
+  T3 con beta no medible (huella pos, fraccion de px): 0.015
+  fisica (medianas, K):
+    huella pos   zsfc GFS  1712 m | BT11clr-BT11 +9.57 | BTD +0.97 | BTD_clr +2.09 | BTD_clr-BTD +1.09 | BTD<0,7: 0.29 | BTD<BTDclr-1: 0.56 | T3 px: 0.28 (n 551)
+    huella ctrl  zsfc GFS  1712 m | BT11clr-BT11 +8.71 | BTD +1.10 | BTD_clr +2.15 | BTD_clr-BTD +0.78 | BTD<0,7: 0.22 | BTD<BTDclr-1: 0.36 | T3 px: 0.14 (n 551)
+    cumbres      zsfc GFS  1690 m | BT11clr-BT11 +2.82 | BTD +1.62 | BTD_clr +2.13 | BTD_clr-BTD +0.40 | BTD<0,7: 0.08 | BTD<BTDclr-1: 0.21 | T3 px: 0.07 (n 2204)
+    llano        zsfc GFS   212 m | BT11clr-BT11 -0.16 | BTD +2.30 | BTD_clr +2.32 | BTD_clr-BTD -0.03 | BTD<0,7: 0.00 | BTD<BTDclr-1: 0.03 | T3 px: 0.00 (n 1102)
+
+==== Conjunto B AGRUPADO: 85 pares, 10 dias, px huella 976
+  AUC margen huella=0.666 IC95dia=[0.549,0.756] anillo=nan h-an=+nan dias>0,5=7/10
+  por dia: 20261022:0.17 20261024:0.00 20261025:0.89 20261028:0.77 20261029:0.74 20261107:1.00 20261108:0.78 20261110:0.53 20261111:0.30 20261114:0.56
+  T3                             cuadros P_pos=0.753 P_ctrl=0.518 dif=+0.235 (n 85) | px pos/ctrl 0.305/0.103 | P_cumbre=0.386 (antuco 0.386, longavi 0.386; hora pos 0.435, hora ctrl 0.333; n 332) | llano 0.066
+  T3+beta (no medible = borra)   cuadros P_pos=0.682 P_ctrl=0.447 dif=+0.235 (n 85) | px pos/ctrl 0.181/0.061 | P_cumbre=0.220 (antuco 0.217, longavi 0.223; hora pos 0.271, hora ctrl 0.167; n 332) | llano 0.018
+  T3+beta (no medible = queda)   cuadros P_pos=0.706 P_ctrl=0.447 dif=+0.259 (n 85) | px pos/ctrl 0.194/0.071 | P_cumbre=0.265 (antuco 0.277, longavi 0.253; hora pos 0.312, hora ctrl 0.216; n 332) | llano 0.018
+  T3+6 de 9                      cuadros P_pos=0.353 P_ctrl=0.024 dif=+0.329 (n 85) | px pos/ctrl 0.132/0.003 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 332) | llano 0.000
+  Test 1 (BTD<-2)                cuadros P_pos=0.000 P_ctrl=0.000 dif=+0.000 (n 85) | px pos/ctrl 0.000/0.000 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 332) | llano 0.000
+  T3 con beta no medible (huella pos, fraccion de px): 0.012
+  fisica (medianas, K):
+    huella pos   zsfc GFS  1712 m | BT11clr-BT11 +9.66 | BTD +0.77 | BTD_clr +1.80 | BTD_clr-BTD +0.95 | BTD<0,7: 0.44 | BTD<BTDclr-1: 0.47 | T3 px: 0.31 (n 976)
+    huella ctrl  zsfc GFS  1712 m | BT11clr-BT11 +8.24 | BTD +0.96 | BTD_clr +1.72 | BTD_clr-BTD +0.59 | BTD<0,7: 0.30 | BTD<BTDclr-1: 0.25 | T3 px: 0.10 (n 976)
+    cumbres      zsfc GFS  1693 m | BT11clr-BT11 +2.73 | BTD +1.28 | BTD_clr +1.80 | BTD_clr-BTD +0.38 | BTD<0,7: 0.18 | BTD<BTDclr-1: 0.18 | T3 px: 0.07 (n 3806)
+    llano        zsfc GFS   215 m | BT11clr-BT11 -1.13 | BTD +1.83 | BTD_clr +1.95 | BTD_clr-BTD +0.01 | BTD<0,7: 0.04 | BTD<BTDclr-1: 0.04 | T3 px: 0.02 (n 1903)
+
+==== Conjunto B NOCHE (cenit >= 80): 17 pares, 5 dias, px huella 234
+  AUC margen huella=0.618 IC95dia=[0.483,0.674] anillo=nan h-an=+nan dias>0,5=3/5
+  por dia: 20261022:0.17 20261028:0.64 20261029:0.76 20261110:0.62 20261114:0.49
+  T3                             cuadros P_pos=0.412 P_ctrl=0.176 dif=+0.235 (n 17) | px pos/ctrl 0.047/0.017 | P_cumbre=0.147 (antuco 0.088, longavi 0.206; hora pos 0.235, hora ctrl 0.059; n 68) | llano 0.059
+  T3+beta (no medible = borra)   cuadros P_pos=0.294 P_ctrl=0.118 dif=+0.176 (n 17) | px pos/ctrl 0.034/0.009 | P_cumbre=0.088 (antuco 0.088, longavi 0.088; hora pos 0.118, hora ctrl 0.059; n 68) | llano 0.029
+  T3+beta (no medible = queda)   cuadros P_pos=0.294 P_ctrl=0.118 dif=+0.176 (n 17) | px pos/ctrl 0.034/0.009 | P_cumbre=0.088 (antuco 0.088, longavi 0.088; hora pos 0.118, hora ctrl 0.059; n 68) | llano 0.029
+  T3+6 de 9                      cuadros P_pos=0.059 P_ctrl=0.000 dif=+0.059 (n 17) | px pos/ctrl 0.017/0.000 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 68) | llano 0.000
+  Test 1 (BTD<-2)                cuadros P_pos=0.000 P_ctrl=0.000 dif=+0.000 (n 17) | px pos/ctrl 0.000/0.000 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 68) | llano 0.000
+  T3 con beta no medible (huella pos, fraccion de px): 0.000
+  fisica (medianas, K):
+    huella pos   zsfc GFS  1747 m | BT11clr-BT11 +6.40 | BTD +0.62 | BTD_clr +0.99 | BTD_clr-BTD +0.44 | BTD<0,7: 0.55 | BTD<BTDclr-1: 0.05 | T3 px: 0.05 (n 234)
+    huella ctrl  zsfc GFS  1747 m | BT11clr-BT11 +5.29 | BTD +0.80 | BTD_clr +1.04 | BTD_clr-BTD +0.20 | BTD<0,7: 0.41 | BTD<BTDclr-1: 0.02 | T3 px: 0.02 (n 234)
+    cumbres      zsfc GFS  1723 m | BT11clr-BT11 +1.48 | BTD +0.81 | BTD_clr +1.04 | BTD_clr-BTD +0.23 | BTD<0,7: 0.39 | BTD<BTDclr-1: 0.02 | T3 px: 0.02 (n 936)
+    llano        zsfc GFS   225 m | BT11clr-BT11 -1.16 | BTD +1.26 | BTD_clr +1.41 | BTD_clr-BTD -0.00 | BTD<0,7: 0.12 | BTD<BTDclr-1: 0.03 | T3 px: 0.02 (n 468)
+
+==== Conjunto B DIA: 68 pares, 9 dias, px huella 742
+  AUC margen huella=0.692 IC95dia=[0.550,0.825] anillo=nan h-an=+nan dias>0,5=7/9
+  por dia: 20261024:0.00 20261025:0.89 20261028:0.86 20261029:0.94 20261107:1.00 20261108:0.78 20261110:0.51 20261111:0.30 20261114:0.57
+  T3                             cuadros P_pos=0.838 P_ctrl=0.603 dif=+0.235 (n 68) | px pos/ctrl 0.387/0.131 | P_cumbre=0.447 (antuco 0.462, longavi 0.432; hora pos 0.485, hora ctrl 0.406; n 264) | llano 0.068
+  T3+beta (no medible = borra)   cuadros P_pos=0.779 P_ctrl=0.529 dif=+0.250 (n 68) | px pos/ctrl 0.228/0.078 | P_cumbre=0.254 (antuco 0.250, longavi 0.258; hora pos 0.309, hora ctrl 0.195; n 264) | llano 0.015
+  T3+beta (no medible = queda)   cuadros P_pos=0.809 P_ctrl=0.529 dif=+0.279 (n 68) | px pos/ctrl 0.244/0.090 | P_cumbre=0.311 (antuco 0.326, longavi 0.295; hora pos 0.360, hora ctrl 0.258; n 264) | llano 0.015
+  T3+6 de 9                      cuadros P_pos=0.426 P_ctrl=0.029 dif=+0.397 (n 68) | px pos/ctrl 0.168/0.004 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 264) | llano 0.000
+  Test 1 (BTD<-2)                cuadros P_pos=0.000 P_ctrl=0.000 dif=+0.000 (n 68) | px pos/ctrl 0.000/0.000 | P_cumbre=0.000 (antuco 0.000, longavi 0.000; hora pos 0.000, hora ctrl 0.000; n 264) | llano 0.000
+  T3 con beta no medible (huella pos, fraccion de px): 0.016
+  fisica (medianas, K):
+    huella pos   zsfc GFS  1702 m | BT11clr-BT11 +10.82 | BTD +0.81 | BTD_clr +1.92 | BTD_clr-BTD +1.15 | BTD<0,7: 0.41 | BTD<BTDclr-1: 0.61 | T3 px: 0.39 (n 742)
+    huella ctrl  zsfc GFS  1702 m | BT11clr-BT11 +9.25 | BTD +1.06 | BTD_clr +2.14 | BTD_clr-BTD +0.74 | BTD<0,7: 0.27 | BTD<BTDclr-1: 0.32 | T3 px: 0.13 (n 742)
+    cumbres      zsfc GFS  1690 m | BT11clr-BT11 +3.46 | BTD +1.48 | BTD_clr +2.07 | BTD_clr-BTD +0.47 | BTD<0,7: 0.12 | BTD<BTDclr-1: 0.24 | T3 px: 0.08 (n 2870)
+    llano        zsfc GFS   208 m | BT11clr-BT11 -1.11 | BTD +2.10 | BTD_clr +2.26 | BTD_clr-BTD +0.02 | BTD<0,7: 0.01 | BTD<BTDclr-1: 0.04 | T3 px: 0.01 (n 1435)
+
+==== Conjunto B entero (informativo): escenas con objeto T3 anclado (>= 2 px, uno a <= 10 km)
+  pos   D     78 de 81 = 0.963 | fraccion media de px T3 a <= 10 km 0.149
+  pos   N     5 de 19 = 0.263 | fraccion media de px T3 a <= 10 km 0.032
+  pos   todos 83 de 100 = 0.830 | fraccion media de px T3 a <= 10 km 0.127
+  neg   D     357 de 528 = 0.676 | fraccion media de px T3 a <= 10 km 0.237
+  neg   N     37 de 127 = 0.291 | fraccion media de px T3 a <= 10 km 0.095
+  neg   todos 394 de 655 = 0.602 | fraccion media de px T3 a <= 10 km 0.210
+  manto D     18 de 22 = 0.818 | fraccion media de px T3 a <= 10 km 0.295
+  manto N     12 de 18 = 0.667 | fraccion media de px T3 a <= 10 km 0.147
+  manto todos 30 de 40 = 0.750 | fraccion media de px T3 a <= 10 km 0.228
+
+VEREDICTO H12: NO CONCLUYENTE

@@ -1,0 +1,6 @@
+BT clr C10: n=4255 p50=0.001 p95=0.053 max=0.465 K
+BT clr C11: n=4255 p50=0.004 p95=0.180 max=0.769 K
+BT clr C14: n=4255 p50=0.004 p95=0.196 max=0.840 K
+BT clr C15: n=4255 p50=0.004 p95=0.180 max=0.750 K
+BT R_cld tropopausa C14: p95=0.013 max=0.039 K
+eps_tot(11): p50=0.0001 p95=0.0042 max=0.0277 | pixeles 4255, sin niveles 0

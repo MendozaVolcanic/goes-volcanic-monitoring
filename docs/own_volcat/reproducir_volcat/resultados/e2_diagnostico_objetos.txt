@@ -1,0 +1,4 @@
+Diagnostico posterior (no decide): objetos anclados (pixel a <= 10 km), hasta 5 por scan
+pos: scans 100, objetos 122; tamano mediana 23 (p90 75); prob mediana del objeto: mediana 1.6300 %, max 33.620 %, >80 %: 0; CF>=3: 0.73; con >=1 pixel RR>=4/3/2/1: 0.00/0.15/0.50/0.76
+neg: scans 655, objetos 934; tamano mediana 12 (p90 544); prob mediana del objeto: mediana 0.0100 %, max 87.320 %, >80 %: 1; CF>=3: 0.21; con >=1 pixel RR>=4/3/2/1: 0.00/0.02/0.20/0.44
+manto: scans 40, objetos 52; tamano mediana 42 (p90 316); prob mediana del objeto: mediana 0.0000 %, max 6.970 %, >80 %: 0; CF>=3: 0.52; con >=1 pixel RR>=4/3/2/1: 0.00/0.00/0.13/0.44

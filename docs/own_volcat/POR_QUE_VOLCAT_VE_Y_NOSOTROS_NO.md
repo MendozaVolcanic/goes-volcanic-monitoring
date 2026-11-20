@@ -1,6 +1,6 @@
 # Por qué VOLCAT ve ceniza en Nevados de Chillán (nov-2026) y nuestro detector no
 
-Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1), el 19-11 (H3 y H7, §3.2; H6 cerrada) y el 19-11 en la tarde (β(7,3/11) fuera de muestra y prueba tolerante del VAAC de Londres, §3.3). Estado: **informe con nueve pruebas medidas y un plan; no cambia código de detección.** Desde el 19-11 el dashboard muestra la detección VOLCAT por volcán como capa externa (ficha SDA v2.8, §A.7).
+Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1), el 19-11 (H3 y H7, §3.2; H6 cerrada) el 19-11 en la tarde (β(7,3/11) fuera de muestra y prueba tolerante del VAAC de Londres, §3.3) y el 19-11 en la noche (calor a 3,9 µm, rayos GLM y dirección de la pluma, §3.4). Estado: **informe con once pruebas medidas y un plan; no cambia código de detección.** Desde el 19-11 el dashboard muestra la detección VOLCAT por volcán como capa externa (ficha SDA v2.8, §A.7).
 Antecedentes: plan de validación §3.4 a §3.6 (`docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`) y el informe
 del detector (`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\INFORME_variantes.md`).
 
@@ -49,6 +49,16 @@ siempre su primera compuerta y la decisión cae en los criterios relajados del o
 
 Con esto se agotan los mecanismos espectrales publicados que podemos reproducir. Lo que queda sin probar
 son los umbrales por volcán y el clasificador de VOLCAT, que no son públicos.
+
+**Lo medido el 19-11 en la noche (§3.4).** Tampoco es el contexto ni el lugar:
+- **Calor y rayos (H9).** El cráter está caliente a 3,9 µm casi todas las noches desde el 24-10 (71 % de
+  las noches despejadas sobre el p99 de dos volcanes de control), así que VOLCAT probablemente tiene a
+  Chillán marcado como activo todo el periodo. Pero el calor no dice **cuándo** dibuja la pluma (AUC
+  0,46 de noche) ni marca el arranque de los tramos, y ningún cuadro con pluma tiene rayos GLM cerca.
+  Puede explicar un trato especial permanente del cráter, no el momento.
+- **Dirección (H10).** No concluyente con dos jornadas comparables. El viento GFS reproduce la dirección
+  del REAV, pero la huella VOLCAT queda entre el S y el E del cráter casi siempre. Y donde el OVDAS vio
+  la pluma, la split-window tampoco pasa el umbral: la pluma es casi transparente en el IR también ahí.
 
 **Qué no es.** No es un problema de umbral (cuatro variantes lo descartaron) ni un corrimiento de la
 huella por paralaje (prueba A, abajo), ni una señal escondida en la banda de 8,5 µm (prueba B), ni la luz solar (pasos 2 y 4, §3.1).
@@ -359,6 +369,57 @@ variantes.
 - **Lectura:** la pluma deja una huella débil en 8,4 µm que la prueba tolerante alcanza a tocar, pero no
   basta para separarla de la nieve y las nubes sin un criterio de lugar y tiempo como el de VOLCAT.
 
+### 3.4 Quinta tanda (19-11, noche): calor a 3,9 µm, rayos GLM (H9) y dirección de la pluma (H10)
+
+Dos pruebas, cada una con su criterio commiteado antes del primer número. Informes completos:
+`docs/own_volcat/calor_rayos/INFORME.md` y `docs/own_volcat/direccion_pluma/INFORME.md`.
+
+**H9, la física.** Según la presentación CDR de VOLCAT de 2022 (diapositivas 82 y 83, leídas por un agente,
+no verificadas aquí) y el ATBD v1.0 §2.2, VOLCAT afloja sus umbrales cuando ve actividad térmica intensa o
+rayos en un volcán. Un cráter con material incandescente subpíxel sube mucho más la BT de 3,9 µm que la de
+11 µm, así que la señal es BT7 − BT14 en el cráter menos la de un anillo de fondo, con la noche como estrato
+que decide (de día C07 lleva reflexión solar). Antuco y Longaví sirven de volcanes de control. Las pruebas
+anteriores sólo miraron los hot spots FDCF, que son demasiado gruesos para esto.
+
+| Parte | Resultado | Veredicto |
+|---|---|---|
+| Calor en el momento del cuadro, noche (decide) | AUC 0,46 [0,20; 0,64], 16 cuadros con pluma en 3 días; Antuco 0,34, Longaví 0,37 | Se falsa |
+| Calor en el momento del cuadro, día | AUC 0,61 [0,44; 0,78]; Antuco 0,56, Longaví 0,58 | Se falsa: el efecto aparece igual en los controles |
+| Calor de fondo | 71 % de 346 cuadros nocturnos despejados de Chillán sobre el p99 de los controles (5,56 K), contra 2 % y 0 %; encendido desde el 24-10 | El cráter está caliente casi siempre |
+| Arranque de los tramos de VOLCAT | 1 de 7 tramos con subida de calor en la hora previa, contra 17 % de tasa base | No coinciden |
+| Rayos GLM a ≤ 30 km | 0 de 100 cuadros con pluma, contra 8,8 % de los controles pareados | Se falsa |
+
+- La serie GLM de Lightning-v1 se contrastó contra el GLM-L2-LCFA de NOAA en dos horas: 26 de 26
+  destellos a ≤ 30 km coinciden.
+- **Lectura:** el calor del cráter, que coincide con la colada activa que informa el RAV, puede tener a
+  Chillán en la lista de volcanes activos de VOLCAT todo el periodo y explicar un trato especial
+  permanente, pero no cuándo aparece la pluma. Un "modo volcán activo" gatillado por calor no le sirve a
+  nuestro detector de ceniza: en Chillán estaría siempre encendido y no hay señal espectral que aflojar.
+  Sí deja un indicador térmico propio a 3,9 µm que el FDCF no ve, candidato a capa térmica aparte.
+
+**H10, la física.** Todas las pruebas anteriores midieron dentro de la huella VOLCAT. Si la huella no está
+donde estuvo la pluma, midieron píxeles sin pluma. El REAV del 28-10 informa columnas desviadas al NO y la
+huella de ese día deriva al S. Una pluma de 1 a 2,5 km sobre el cráter queda entre ~4,5 y ~5,7 km s.n.m.
+y la lleva el viento de ese nivel; el paralaje de GOES-19 corre su imagen hacia el S y algo al E.
+
+| Jornada | Dirección REAV | Viento GFS | Huella VOLCAT (sin / con paralaje) | Resultado |
+|---|---|---|---|---|
+| 25-10 | SE (135°) | 136° | 181° / 182°, 5 escenas | Diferencia de 45 a 47°: borde del criterio, no concluyente |
+| 27-10 | N a NO | 3 a 17° | sin objeto anclado en 42 cuadros | Sin escenas |
+| 28-10 tarde | NO (315°) | 2° | 172° / 168°, 1 escena | Discrepa, pero con una sola escena |
+| 28-10 anochecer y 10-11 | sin dirección | 18° y 42° | SE y E | La huella se aparta del viento entre 24 y 115° |
+
+- El GFS reproduce la dirección del REAV en 6 de 7 horas con viento definido.
+- Señal en el sector hacia donde el REAV dice que fue la pluma, contra control pareado por BT11: AUC de la
+  BTD 0,68 (25-10) y 0,70 (27-10), sector opuesto 0,56 a 0,57; ningún píxel con BTD < −1 K. Bajo el umbral
+  del criterio por menos de 0,02.
+- Desviación declarada: 726 escenas L1b no se alcanzaron a bajar (S3 lento); la prueba de señal usó las
+  que ya estaban en disco.
+- **Lectura:** no queda probado que las pruebas anteriores midieran en el lugar equivocado. Que la huella
+  quede casi siempre entre el S y el E del cráter coincide con el sentido del paralaje, y la corrección
+  depende de la altura que se suponga para la pluma; no se lee como "VOLCAT ignora el viento". Llama la
+  atención que VOLCAT no dibujara nada el 27-10, con columnas documentadas por el OVDAS.
+
 ## 4. Hipótesis ordenadas por evidencia
 
 | # | Hipótesis | A favor | En contra o abierto | Qué la falsaría con datos que ya hay o casi |
@@ -371,6 +432,8 @@ variantes.
 | H6 | ~~Parte de lo que VOLCAT dibuja **no es ceniza**~~ **Cerrada el 19-11 por Nicolás (OVDAS)** | | "El volcán lleva muchos días con pulsos y columnas de gas y ceniza en cantidades variables" | Cerrada: VOLCAT dibuja ceniza real |
 | H7 | VOLCAT **sigue** un objeto detectado antes con señal (seguidor kd-tree del ATBD 2025) y los cuadros sin señal son continuación | ATBD VOLCAT v1.0 §2.2; 19 de 23 cuadros sin señal tienen antecesor | 19-11 (§3.2): el primer cuadro de cada tramo tampoco tiene señal (0 de 3 episodios con BTD, hot spot FDCF o enfriamiento rápido) | **Falsada el 19-11** |
 | H8 | Una prueba espectral **más tolerante** que la nuestra (la del VAAC de Londres, que acepta BTD positiva compensada por 8,7 µm) alcanza a ver la pluma | Francis et al. 2012; Falconieri et al. 2018; sin filtros marca 21 % de la huella contra 8 % del mismo lugar sin pluma | 19-11 tarde (§3.3): el método completo ve 2 de 35 cuadros y 0 píxeles en la huella; sin filtros dispara en 51 a 63 % de los scans sin pluma | **No cumple el 19-11** |
+| H9 | El **calor en el cráter** (3,9 µm) o los **rayos GLM** aflojan los umbrales de VOLCAT y marcan cuándo dibuja | CDR 2022 diapositivas 82 y 83 (vía agente); el cráter está caliente el 71 % de las noches despejadas desde el 24-10 | 19-11 noche (§3.4): el calor no separa los cuadros con pluma (AUC 0,46 de noche) ni marca el arranque de los tramos; 0 de 100 cuadros con rayos | **Falsada como gatillo del momento el 19-11**; queda posible como trato especial permanente (volcán activo) |
+| H10 | La huella VOLCAT **no está donde estuvo la pluma**, y las pruebas midieron en el lugar equivocado | REAV 28-10 al NO contra huella al S | 19-11 noche (§3.4): dos jornadas comparables, ambas en el borde o con una escena; la huella sigue el sentido del paralaje; en el sector del REAV la BTD tampoco pasa el umbral (AUC 0,68 y 0,70) | **No concluyente el 19-11** |
 
 ## 5. Perspectivas
 
@@ -407,9 +470,12 @@ variantes.
 | 9 | β(7,3/11) en todos los episodios con pluma VOLCAT fuera del 28 y 29-10 (criterio nuevo, escrito antes) | Hecho el 19-11: 49 pares en 10 días | Indicio de H3: no se repite (noche no concluyente, día falsado) |
 | 10 | Prueba tolerante del VAAC de Londres contra las huellas VOLCAT | Hecho el 19-11: 12 configuraciones, 1.204 scans de C13 | H8: no cumple |
 | 11 | Usar VOLCAT como capa de detección por volcán en el dashboard, marcada como externa y no validada | Hecho el 19-11 (ficha SDA v2.8, §A.7) | No es prueba: es la decisión operativa mientras no tengamos detector propio |
+| 12 | H9: calor a 3,9 µm en el cráter y rayos GLM contra los cuadros VOLCAT | Hecho el 19-11: C07 por ventana, GLM vía Lightning-v1 contrastado con NOAA | H9: falsada como gatillo del momento |
+| 13 | H10: dirección de la huella VOLCAT contra REAV y viento GFS, y señal en el sector del REAV | Hecho el 19-11: 6 jornadas, 2 comparables; 726 escenas sin bajar | H10: no concluyente |
 
 Pasos que **no** conviene repetir: bajar el umbral BTD, anomalía de fondo, β(12/11) con temperatura de
-referencia fija, la banda de 8,5 µm sola, β(7,3/11) y la prueba tolerante del VAAC de Londres. Están medidos.
+referencia fija, la banda de 8,5 µm sola, β(7,3/11), la prueba tolerante del VAAC de Londres, y el calor del
+cráter o los rayos como gatillo del momento. Están medidos.
 
 ## 7. Advertencias de método
 

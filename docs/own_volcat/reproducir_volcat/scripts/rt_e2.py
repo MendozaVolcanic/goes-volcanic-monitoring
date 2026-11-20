@@ -61,7 +61,7 @@ def interp(z, ys, xs):
     iy = np.clip(np.floor(fy).astype(int), 0, ny - 2); ix = np.clip(np.floor(fx).astype(int), 0, nx - 2)
     wy = (fy - iy)[:, None]; wx = (fx - ix)[:, None]
     def bil(a):  # noqa: E306
-        sh = (-1,) + (1,) * (a.ndim - 3)
+        sh = (-1,) + (1,) * (a.ndim - 2)
         w00 = ((1 - wy) * (1 - wx)).reshape(sh); w01 = ((1 - wy) * wx).reshape(sh)
         w10 = (wy * (1 - wx)).reshape(sh); w11 = (wy * wx).reshape(sh)
         return a[iy, ix] * w00 + a[iy, ix + 1] * w01 + a[iy + 1, ix] * w10 + a[iy + 1, ix + 1] * w11

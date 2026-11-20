@@ -1,0 +1,121 @@
+H13 cambio entre cuadros consecutivos. Cuadros anclados 100; pares ok 72; descartados 28
+  descartes: Counter({'sin_control': 26, 'huella<3px_en_disco': 2})
+    ('20261025_1440', 'sin_control', 13)
+    ('20261025_1700', 'sin_control', 13)
+    ('20261028_1830', 'sin_control', 15)
+    ('20261028_1930', 'sin_control', 12)
+    ('20261107_1950', 'sin_control', 12)
+    ('20261108_1810', 'huella<3px_en_disco', 1)
+    ('20261108_2010', 'sin_control', 12)
+    ('20261108_2030', 'sin_control', 9)
+    ('20261108_2040', 'sin_control', 10)
+    ('20261108_2100', 'sin_control', 12)
+    ('20261108_2120', 'sin_control', 10)
+    ('20261110_2140', 'sin_control', 11)
+    ('20261110_2250', 'sin_control', 10)
+    ('20261111_1750', 'huella<3px_en_disco', 2)
+    ('20261114_1910', 'sin_control', 8)
+    ('20261114_2010', 'sin_control', 9)
+    ('20261114_2030', 'sin_control', 7)
+    ('20261114_2040', 'sin_control', 8)
+    ('20261114_2050', 'sin_control', 7)
+    ('20261114_2100', 'sin_control', 8)
+    ('20261114_2110', 'sin_control', 6)
+    ('20261114_2120', 'sin_control', 7)
+    ('20261114_2140', 'sin_control', 8)
+    ('20261114_2150', 'sin_control', 8)
+    ('20261114_2200', 'sin_control', 5)
+    ('20261114_2210', 'sin_control', 7)
+    ('20261114_2220', 'sin_control', 7)
+    ('20261114_2230', 'sin_control', 8)
+  pixeles de huella a <= 50 km fuera del disco de 40 km: 7 (dentro: 865)
+  |dif BT11| de los pares: mediana 1.07 K; candidatos con historia por cuadro: mediana 12
+  por jornada: 2026-10-21 1; 2026-10-24 1; 2026-10-25 2; 2026-10-28 29; 2026-10-29 1; 2026-11-08 7; 2026-11-10 10; 2026-11-11 2; 2026-11-14 19
+  pares: 20261022_0150->20261101_0150 (+2.5 K, 8 px, noche); 20261024_1910->20261102_1910 (-2.0 K, 4 px, dia); 20261025_1620->20261029_1620 (-1.6 K, 4 px, dia); 20261025_1800->20261027_1800 (-2.4 K, 12 px, dia); 20261028_1900->20261027_1900 (-2.1 K, 3 px, dia); 20261028_1920->20261027_1920 (-1.2 K, 9 px, dia); 20261028_1940->20261027_1940 (-1.3 K, 11 px, dia); 20261028_1950->20261027_1950 (-1.5 K, 13 px, dia); 20261028_2000->20261104_2000 (-2.3 K, 11 px, dia); 20261028_2010->20261027_2010 (-1.3 K, 12 px, dia); 20261028_2020->20261027_2020 (-1.0 K, 11 px, dia); 20261028_2030->20261027_2030 (-1.6 K, 16 px, dia); 20261028_2040->20261027_2040 (-1.0 K, 11 px, dia); 20261028_2050->20261027_2050 (-1.3 K, 18 px, dia); 20261028_2100->20261030_2100 (-1.2 K, 18 px, dia); 20261028_2110->20261030_2110 (-0.7 K, 22 px, dia); 20261028_2120->20261030_2120 (-1.0 K, 21 px, dia); 20261028_2130->20261107_2130 (+0.6 K, 25 px, dia); 20261028_2150->20261030_2150 (-1.0 K, 22 px, dia); 20261028_2200->20261029_2200 (-0.3 K, 22 px, dia); 20261028_2210->20261029_2210 (-0.6 K, 12 px, dia); 20261028_2220->20261029_2220 (+0.0 K, 7 px, noche); 20261028_2230->20261027_2230 (-0.8 K, 21 px, noche); 20261028_2240->20261029_2240 (-0.4 K, 7 px, noche); 20261028_2250->20261027_2250 (-0.2 K, 17 px, noche); 20261028_2300->20261027_2300 (-0.0 K, 27 px, noche); 20261028_2310->20261027_2310 (-0.3 K, 23 px, noche); 20261028_2320->20261029_2320 (+0.5 K, 26 px, noche); 20261029_0010->20261031_0010 (+0.2 K, 38 px, noche); 20261029_0030->20261028_0030 (+0.1 K, 29 px, noche); 20261029_0100->20261028_0100 (-2.0 K, 12 px, noche); 20261029_0110->20261108_0110 (-0.4 K, 9 px, noche); 20261029_0120->20261108_0120 (-0.8 K, 10 px, noche); 20261029_1950->20261027_1950 (-1.2 K, 4 px, dia); 20261108_1740->20261113_1740 (+0.4 K, 9 px, dia); 20261108_1910->20261112_1910 (+1.6 K, 11 px, dia); 20261108_1920->20261112_1920 (+0.5 K, 10 px, dia); 20261108_1930->20261112_1930 (+1.6 K, 6 px, dia); 20261108_2020->20261110_2020 (+0.1 K, 9 px, dia); 20261108_2110->20261111_2110 (-1.4 K, 5 px, dia); 20261108_2130->20261107_2130 (-1.7 K, 8 px, dia); 20261110_1500->20261107_1500 (-1.9 K, 4 px, dia); 20261110_1510->20261113_1510 (-1.0 K, 8 px, dia); 20261110_2130->20261107_2130 (-1.3 K, 16 px, dia); 20261110_2150->20261109_2150 (+1.3 K, 12 px, dia); 20261110_2210->20261117_2210 (-0.3 K, 17 px, dia); 20261110_2220->20261109_2220 (-0.5 K, 7 px, dia); 20261110_2230->20261101_2230 (+0.1 K, 14 px, noche); 20261110_2240->20261104_2240 (-0.4 K, 6 px, noche); 20261110_2300->20261112_2300 (-0.5 K, 6 px, noche); 20261110_2320->20261109_2320 (+0.3 K, 7 px, noche); 20261111_1800->20261112_1800 (+1.0 K, 5 px, dia); 20261111_1810->20261112_1810 (+0.6 K, 4 px, dia); 20261114_1640->20261112_1640 (-2.4 K, 6 px, dia); 20261114_1650->20261112_1650 (-2.4 K, 4 px, dia); 20261114_1700->20261112_1700 (-1.1 K, 6 px, dia); 20261114_1720->20261112_1720 (-2.2 K, 8 px, dia); 20261114_1730->20261112_1730 (-1.9 K, 8 px, dia); 20261114_1740->20261112_1740 (-2.4 K, 9 px, dia); 20261114_1750->20261113_1750 (-1.6 K, 12 px, dia); 20261114_1800->20261113_1800 (-1.5 K, 12 px, dia); 20261114_1810->20261113_1810 (-0.0 K, 10 px, dia); 20261114_1820->20261112_1820 (-0.9 K, 12 px, dia); 20261114_1840->20261112_1840 (-0.9 K, 9 px, dia); 20261114_1850->20261112_1850 (-1.7 K, 8 px, dia); 20261114_1900->20261112_1900 (-1.1 K, 11 px, dia); 20261114_1920->20261112_1920 (-2.3 K, 7 px, dia); 20261114_1930->20261110_1930 (-1.4 K, 11 px, dia); 20261114_1940->20261112_1940 (-0.4 K, 6 px, dia); 20261114_1950->20261110_1950 (-1.7 K, 8 px, dia); 20261114_2000->20261110_2000 (-1.2 K, 11 px, dia); 20261114_2240->20261113_2240 (+2.4 K, 28 px, noche)
+=== Principal (pareo por BT11 en t)
+pares 72 | jornadas 9 | dia 54 noche 18
+-- variables temporales (deciden)
+  d1_bt11   AUC=0.544 IC95dia=[0.510,0.567] anillo=0.519 h-an=+0.025 dias>0,5=5/9 | mediana pos/ctrl -0.215/-0.179 (n 865/865) | SEPARA=False  | estratos dia n=54 AUC=0.542 noche n=18 AUC=0.548
+  d3_bt11   AUC=0.582 IC95dia=[0.523,0.631] anillo=0.547 h-an=+0.035 dias>0,5=6/9 | mediana pos/ctrl -0.430/-0.292 (n 865/865) | SEPARA=False  | estratos dia n=54 AUC=0.582 noche n=18 AUC=0.586
+  p_bt11    AUC=0.490 IC95dia=[0.413,0.566] anillo=0.549 h-an=-0.059 dias>0,5=5/9 | mediana pos/ctrl +0.667/+0.667 (n 865/865) | SEPARA=False  | estratos dia n=54 AUC=0.527 noche n=18 AUC=0.425
+  d1_btd    AUC=0.462 IC95dia=[0.444,0.489] anillo=0.494 h-an=-0.032 dias>0,5=2/9 | mediana pos/ctrl -0.000/-0.037 (n 865/865) | SEPARA=False  | estratos dia n=54 AUC=0.461 noche n=18 AUC=0.460
+  d3_btd    AUC=0.445 IC95dia=[0.428,0.464] anillo=0.488 h-an=-0.044 dias>0,5=2/9 | mediana pos/ctrl -0.031/-0.058 (n 865/865) | SEPARA=False  | estratos dia n=54 AUC=0.444 noche n=18 AUC=0.446
+  p_btd     AUC=0.480 IC95dia=[0.464,0.490] anillo=0.500 h-an=-0.020 dias>0,5=3/9 | mediana pos/ctrl +0.667/+0.667 (n 865/865) | SEPARA=False  | estratos dia n=54 AUC=0.479 noche n=18 AUC=0.480
+  d1_e11    AUC=0.550 IC95dia=[0.527,0.566] anillo=0.515 h-an=+0.036 dias>0,5=6/9 | mediana pos/ctrl -0.002/-0.002 (n 865/865) | SEPARA=False  | estratos dia n=54 AUC=0.527 noche n=18 AUC=0.580
+  d3_e11    AUC=0.582 IC95dia=[0.541,0.650] anillo=0.543 h-an=+0.039 dias>0,5=6/9 | mediana pos/ctrl -0.003/-0.005 (n 865/865) | SEPARA=False  | estratos dia n=54 AUC=0.552 noche n=18 AUC=0.607
+  p_e11     AUC=0.514 IC95dia=[0.454,0.622] anillo=0.538 h-an=-0.024 dias>0,5=6/9 | mediana pos/ctrl +0.333/+0.333 (n 865/865) | SEPARA=False  | estratos dia n=54 AUC=0.486 noche n=18 AUC=0.568
+  d1_bt12   AUC=0.457 IC95dia=[0.439,0.480] anillo=0.497 h-an=-0.040 dias>0,5=2/9 | mediana pos/ctrl +0.002/-0.002 (n 788/755) | SEPARA=False  | estratos dia n=54 AUC=0.451 noche n=18 AUC=0.464
+  d3_bt12   AUC=0.444 IC95dia=[0.409,0.467] anillo=0.485 h-an=-0.041 dias>0,5=2/9 | mediana pos/ctrl +0.002/-0.001 (n 792/763) | SEPARA=False  | estratos dia n=54 AUC=0.440 noche n=18 AUC=0.446
+  p_bt12    AUC=0.476 IC95dia=[0.446,0.485] anillo=0.501 h-an=-0.025 dias>0,5=1/9 | mediana pos/ctrl +0.333/+0.667 (n 798/775) | SEPARA=False  | estratos dia n=54 AUC=0.467 noche n=18 AUC=0.493
+  d1_bt85   AUC=0.494 IC95dia=[0.465,0.537] anillo=0.492 h-an=+0.002 dias>0,5=5/9 | mediana pos/ctrl -0.004/-0.001 (n 775/739) | SEPARA=False  | estratos dia n=54 AUC=0.505 noche n=18 AUC=0.473
+  d3_bt85   AUC=0.512 IC95dia=[0.486,0.563] anillo=0.493 h-an=+0.019 dias>0,5=5/9 | mediana pos/ctrl -0.005/-0.006 (n 781/745) | SEPARA=False  | estratos dia n=54 AUC=0.529 noche n=18 AUC=0.475
+  p_bt85    AUC=0.466 IC95dia=[0.443,0.502] anillo=0.475 h-an=-0.009 dias>0,5=3/9 | mediana pos/ctrl +0.333/+0.333 (n 789/764) | SEPARA=False  | estratos dia n=54 AUC=0.465 noche n=18 AUC=0.468
+  d1_bt73   AUC=0.539 IC95dia=[0.496,0.602] anillo=0.478 h-an=+0.061 dias>0,5=6/9 | mediana pos/ctrl +0.003/+0.000 (n 246/253) | SEPARA=False  | estratos dia n=54 AUC=0.569 noche n=18 AUC=0.491
+  d3_bt73   AUC=0.562 IC95dia=[0.499,0.651] anillo=0.508 h-an=+0.054 dias>0,5=5/9 | mediana pos/ctrl +0.013/+0.008 (n 262/268) | SEPARA=False  | estratos dia n=54 AUC=0.576 noche n=18 AUC=0.529
+  p_bt73    AUC=0.514 IC95dia=[0.461,0.569] anillo=0.482 h-an=+0.033 dias>0,5=5/9 | mediana pos/ctrl +0.500/+0.500 (n 288/345) | SEPARA=False  | estratos dia n=54 AUC=0.502 noche n=18 AUC=0.477
+-- un solo cuadro X(t), referencia (no decide)
+  x_bt11    AUC=0.462 IC95dia=[0.444,0.479] anillo=0.420 h-an=+0.042 dias>0,5=2/9 | mediana pos/ctrl +277.926/+276.975 (n 865/865) | SEPARA=False
+  x_btd     AUC=0.612 IC95dia=[0.507,0.692] anillo=0.490 h-an=+0.122 dias>0,5=5/9 | mediana pos/ctrl +0.713/+0.918 (n 865/865) | SEPARA=False
+  x_e11     AUC=0.597 IC95dia=[0.525,0.618] anillo=0.508 h-an=+0.089 dias>0,5=6/9 | mediana pos/ctrl +0.189/+0.153 (n 865/865) | SEPARA=False
+  x_bt12    AUC=0.585 IC95dia=[0.516,0.626] anillo=0.513 h-an=+0.072 dias>0,5=5/9 | mediana pos/ctrl +0.880/+0.898 (n 796/767) | SEPARA=False
+  x_bt85    AUC=0.494 IC95dia=[0.418,0.544] anillo=0.449 h-an=+0.045 dias>0,5=4/9 | mediana pos/ctrl +1.005/+1.015 (n 784/748) | SEPARA=False
+  x_bt73    AUC=0.540 IC95dia=[0.278,0.754] anillo=0.556 h-an=-0.016 dias>0,5=3/9 | mediana pos/ctrl +0.237/+0.236 (n 298/296) | SEPARA=False
+VEREDICTO: H13 SE FALSA (AUC maximo de las 18 variables temporales = 0.582 < 0,60)
+=== Sensibilidad (a): pareo por BT11 de la huella en t - 30 min (no decide)
+pares 74 | jornadas 9 | dia 55 noche 19
+-- variables temporales (deciden)
+  d1_bt11   AUC=0.481 IC95dia=[0.409,0.535] anillo=0.500 h-an=-0.019 dias>0,5=3/9 | mediana pos/ctrl -0.180/-0.213 (n 878/878) | SEPARA=False  | estratos dia n=55 AUC=0.449 noche n=19 AUC=0.540
+  d3_bt11   AUC=0.451 IC95dia=[0.361,0.495] anillo=0.492 h-an=-0.040 dias>0,5=3/9 | mediana pos/ctrl -0.371/-0.452 (n 878/878) | SEPARA=False  | estratos dia n=55 AUC=0.420 noche n=19 AUC=0.520
+  p_bt11    AUC=0.400 IC95dia=[0.333,0.447] anillo=0.501 h-an=-0.101 dias>0,5=2/9 | mediana pos/ctrl +0.667/+0.667 (n 878/878) | SEPARA=False  | estratos dia n=55 AUC=0.412 noche n=19 AUC=0.380
+  d1_btd    AUC=0.459 IC95dia=[0.431,0.494] anillo=0.502 h-an=-0.043 dias>0,5=3/9 | mediana pos/ctrl -0.000/-0.041 (n 878/878) | SEPARA=False  | estratos dia n=55 AUC=0.460 noche n=19 AUC=0.458
+  d3_btd    AUC=0.469 IC95dia=[0.445,0.495] anillo=0.505 h-an=-0.036 dias>0,5=3/9 | mediana pos/ctrl -0.031/-0.036 (n 878/878) | SEPARA=False  | estratos dia n=55 AUC=0.470 noche n=19 AUC=0.469
+  p_btd     AUC=0.494 IC95dia=[0.480,0.522] anillo=0.512 h-an=-0.018 dias>0,5=5/9 | mediana pos/ctrl +0.667/+0.667 (n 878/878) | SEPARA=False  | estratos dia n=55 AUC=0.494 noche n=19 AUC=0.492
+  d1_e11    AUC=0.487 IC95dia=[0.432,0.527] anillo=0.494 h-an=-0.007 dias>0,5=4/9 | mediana pos/ctrl -0.002/-0.001 (n 878/878) | SEPARA=False  | estratos dia n=55 AUC=0.434 noche n=19 AUC=0.570
+  d3_e11    AUC=0.451 IC95dia=[0.390,0.477] anillo=0.485 h-an=-0.034 dias>0,5=3/9 | mediana pos/ctrl -0.004/-0.001 (n 878/878) | SEPARA=False  | estratos dia n=55 AUC=0.387 noche n=19 AUC=0.535
+  p_e11     AUC=0.439 IC95dia=[0.390,0.552] anillo=0.501 h-an=-0.062 dias>0,5=4/9 | mediana pos/ctrl +0.333/+0.333 (n 878/878) | SEPARA=False  | estratos dia n=55 AUC=0.394 noche n=19 AUC=0.523
+  d1_bt12   AUC=0.474 IC95dia=[0.442,0.508] anillo=0.510 h-an=-0.036 dias>0,5=4/9 | mediana pos/ctrl +0.002/-0.001 (n 793/775) | SEPARA=False  | estratos dia n=55 AUC=0.473 noche n=19 AUC=0.473
+  d3_bt12   AUC=0.507 IC95dia=[0.483,0.529] anillo=0.519 h-an=-0.012 dias>0,5=5/9 | mediana pos/ctrl +0.001/+0.003 (n 797/779) | SEPARA=False  | estratos dia n=55 AUC=0.514 noche n=19 AUC=0.488
+  p_bt12    AUC=0.521 IC95dia=[0.505,0.563] anillo=0.514 h-an=+0.008 dias>0,5=6/9 | mediana pos/ctrl +0.333/+0.333 (n 804/780) | SEPARA=False  | estratos dia n=55 AUC=0.525 noche n=19 AUC=0.516
+  d1_bt85   AUC=0.500 IC95dia=[0.444,0.527] anillo=0.476 h-an=+0.024 dias>0,5=6/9 | mediana pos/ctrl -0.003/-0.001 (n 780/759) | SEPARA=False  | estratos dia n=55 AUC=0.502 noche n=19 AUC=0.494
+  d3_bt85   AUC=0.490 IC95dia=[0.452,0.521] anillo=0.460 h-an=+0.030 dias>0,5=2/9 | mediana pos/ctrl -0.005/-0.003 (n 786/761) | SEPARA=False  | estratos dia n=55 AUC=0.495 noche n=19 AUC=0.474
+  p_bt85    AUC=0.469 IC95dia=[0.411,0.536] anillo=0.456 h-an=+0.013 dias>0,5=3/9 | mediana pos/ctrl +0.333/+0.333 (n 794/768) | SEPARA=False  | estratos dia n=55 AUC=0.468 noche n=19 AUC=0.472
+  d1_bt73   AUC=0.491 IC95dia=[0.379,0.553] anillo=0.457 h-an=+0.033 dias>0,5=3/9 | mediana pos/ctrl -0.000/+0.006 (n 219/308) | SEPARA=False  | estratos dia n=55 AUC=0.481 noche n=19 AUC=0.495
+  d3_bt73   AUC=0.477 IC95dia=[0.299,0.567] anillo=0.461 h-an=+0.016 dias>0,5=4/9 | mediana pos/ctrl +0.002/+0.014 (n 235/318) | SEPARA=False  | estratos dia n=55 AUC=0.442 noche n=19 AUC=0.474
+  p_bt73    AUC=0.423 IC95dia=[0.268,0.470] anillo=0.462 h-an=-0.039 dias>0,5=1/9 | mediana pos/ctrl +0.500/+0.667 (n 271/333) | SEPARA=False  | estratos dia n=55 AUC=0.381 noche n=19 AUC=0.414
+-- un solo cuadro X(t), referencia (no decide)
+  x_bt11    AUC=0.428 IC95dia=[0.402,0.442] anillo=0.402 h-an=+0.026 dias>0,5=1/9 | mediana pos/ctrl +278.346/+276.727 (n 878/878) | SEPARA=False
+  x_btd     AUC=0.608 IC95dia=[0.528,0.673] anillo=0.486 h-an=+0.122 dias>0,5=5/9 | mediana pos/ctrl +0.710/+0.896 (n 878/878) | SEPARA=False
+  x_e11     AUC=0.565 IC95dia=[0.480,0.597] anillo=0.496 h-an=+0.070 dias>0,5=5/9 | mediana pos/ctrl +0.185/+0.162 (n 878/878) | SEPARA=False
+  x_bt12    AUC=0.621 IC95dia=[0.568,0.643] anillo=0.531 h-an=+0.090 dias>0,5=5/9 | mediana pos/ctrl +0.878/+0.901 (n 800/784) | SEPARA=False
+  x_bt85    AUC=0.477 IC95dia=[0.399,0.537] anillo=0.425 h-an=+0.052 dias>0,5=4/9 | mediana pos/ctrl +1.007/+1.020 (n 788/768) | SEPARA=False
+  x_bt73    AUC=0.489 IC95dia=[0.220,0.775] anillo=0.522 h-an=-0.033 dias>0,5=3/9 | mediana pos/ctrl +0.195/+0.286 (n 272/350) | SEPARA=False
+  veredicto que daria: H13 SE FALSA (AUC maximo de las 18 variables temporales = 0.521 < 0,60)
+=== Sensibilidad (b): solo cuadros de arranque y sus 2 siguientes (no decide)
+pares 14 | jornadas 8 | dia 13 noche 1
+-- variables temporales (deciden)
+  d1_bt11   AUC=0.576 IC95dia=[0.446,0.686] anillo=0.524 h-an=+0.052 dias>0,5=4/8 | mediana pos/ctrl -0.172/-0.099 (n 102/102) | SEPARA=False  | estratos dia n=13 AUC=0.550 noche n=1 AUC=0.891
+  d3_bt11   AUC=0.595 IC95dia=[0.455,0.723] anillo=0.542 h-an=+0.053 dias>0,5=5/8 | mediana pos/ctrl -0.204/-0.159 (n 102/102) | SEPARA=False  | estratos dia n=13 AUC=0.598 noche n=1 AUC=0.781
+  p_bt11    AUC=0.506 IC95dia=[0.401,0.590] anillo=0.530 h-an=-0.024 dias>0,5=4/8 | mediana pos/ctrl +0.667/+0.667 (n 102/102) | SEPARA=False  | estratos dia n=13 AUC=0.495 noche n=1 AUC=0.688
+  d1_btd    AUC=0.445 IC95dia=[0.366,0.557] anillo=0.492 h-an=-0.047 dias>0,5=3/8 | mediana pos/ctrl -0.013/-0.119 (n 102/102) | SEPARA=False  | estratos dia n=13 AUC=0.423 noche n=1 AUC=0.797
+  d3_btd    AUC=0.448 IC95dia=[0.341,0.520] anillo=0.489 h-an=-0.041 dias>0,5=2/8 | mediana pos/ctrl -0.019/-0.056 (n 102/102) | SEPARA=False  | estratos dia n=13 AUC=0.427 noche n=1 AUC=0.750
+  p_btd     AUC=0.508 IC95dia=[0.419,0.551] anillo=0.507 h-an=+0.001 dias>0,5=5/8 | mediana pos/ctrl +0.667/+0.667 (n 102/102) | SEPARA=False  | estratos dia n=13 AUC=0.504 noche n=1 AUC=0.555
+  d1_e11    AUC=0.596 IC95dia=[0.465,0.703] anillo=0.543 h-an=+0.053 dias>0,5=5/8 | mediana pos/ctrl +0.001/-0.001 (n 102/102) | SEPARA=False  | estratos dia n=13 AUC=0.570 noche n=1 AUC=0.891
+  d3_e11    AUC=0.624 IC95dia=[0.505,0.745] anillo=0.575 h-an=+0.049 dias>0,5=5/8 | mediana pos/ctrl +0.001/-0.001 (n 102/102) | SEPARA=False  | estratos dia n=13 AUC=0.633 noche n=1 AUC=0.781
+  p_e11     AUC=0.542 IC95dia=[0.398,0.640] anillo=0.558 h-an=-0.017 dias>0,5=5/8 | mediana pos/ctrl +0.667/+0.333 (n 102/102) | SEPARA=False  | estratos dia n=13 AUC=0.531 noche n=1 AUC=0.688
+  d1_bt12   AUC=0.401 IC95dia=[0.333,0.496] anillo=0.498 h-an=-0.097 dias>0,5=2/8 | mediana pos/ctrl +0.006/-0.010 (n 84/82) | SEPARA=False  | estratos dia n=13 AUC=0.381 noche n=1 AUC=nan
+  d3_bt12   AUC=0.394 IC95dia=[0.307,0.510] anillo=0.489 h-an=-0.095 dias>0,5=2/8 | mediana pos/ctrl +0.005/-0.007 (n 84/86) | SEPARA=False  | estratos dia n=13 AUC=0.374 noche n=1 AUC=nan
+  p_bt12    AUC=0.422 IC95dia=[0.341,0.493] anillo=0.509 h-an=-0.087 dias>0,5=1/8 | mediana pos/ctrl +0.333/+0.667 (n 84/91) | SEPARA=False  | estratos dia n=13 AUC=0.403 noche n=1 AUC=nan
+  d1_bt85   AUC=0.521 IC95dia=[0.472,0.644] anillo=0.503 h-an=+0.018 dias>0,5=5/8 | mediana pos/ctrl -0.004/-0.007 (n 83/80) | SEPARA=False  | estratos dia n=13 AUC=0.538 noche n=1 AUC=nan
+  d3_bt85   AUC=0.538 IC95dia=[0.410,0.658] anillo=0.482 h-an=+0.056 dias>0,5=3/8 | mediana pos/ctrl +0.004/-0.003 (n 83/84) | SEPARA=False  | estratos dia n=13 AUC=0.559 noche n=1 AUC=nan
+  p_bt85    AUC=0.447 IC95dia=[0.295,0.527] anillo=0.438 h-an=+0.009 dias>0,5=4/8 | mediana pos/ctrl +0.333/+0.333 (n 84/90) | SEPARA=False  | estratos dia n=13 AUC=0.459 noche n=1 AUC=nan
+  d1_bt73   AUC=0.573 IC95dia=[0.474,0.691] anillo=0.468 h-an=+0.105 dias>0,5=6/8 | mediana pos/ctrl +0.007/-0.000 (n 49/49) | SEPARA=False  | estratos dia n=13 AUC=0.546 noche n=1 AUC=nan
+  d3_bt73   AUC=0.538 IC95dia=[0.408,0.812] anillo=0.541 h-an=-0.003 dias>0,5=4/8 | mediana pos/ctrl +0.001/-0.003 (n 54/53) | SEPARA=False  | estratos dia n=13 AUC=0.527 noche n=1 AUC=nan
+  p_bt73    AUC=0.520 IC95dia=[0.383,0.733] anillo=0.549 h-an=-0.029 dias>0,5=4/8 | mediana pos/ctrl +0.333/+0.333 (n 52/67) | SEPARA=False  | estratos dia n=13 AUC=0.532 noche n=1 AUC=nan
+-- un solo cuadro X(t), referencia (no decide)
+  x_bt11    AUC=0.478 IC95dia=[0.431,0.529] anillo=0.464 h-an=+0.014 dias>0,5=3/8 | mediana pos/ctrl +279.939/+278.520 (n 102/102) | SEPARA=False
+  x_btd     AUC=0.612 IC95dia=[0.511,0.772] anillo=0.555 h-an=+0.057 dias>0,5=5/8 | mediana pos/ctrl +1.035/+1.249 (n 102/102) | SEPARA=False
+  x_e11     AUC=0.488 IC95dia=[0.450,0.590] anillo=0.473 h-an=+0.015 dias>0,5=3/8 | mediana pos/ctrl +0.201/+0.203 (n 102/102) | SEPARA=False
+  x_bt12    AUC=0.600 IC95dia=[0.427,0.676] anillo=0.545 h-an=+0.056 dias>0,5=3/8 | mediana pos/ctrl +0.896/+0.911 (n 85/86) | SEPARA=False
+  x_bt85    AUC=0.531 IC95dia=[0.448,0.610] anillo=0.598 h-an=-0.067 dias>0,5=5/8 | mediana pos/ctrl +1.037/+1.032 (n 84/84) | SEPARA=False
+  x_bt73    AUC=0.438 IC95dia=[0.124,0.663] anillo=0.461 h-an=-0.024 dias>0,5=3/8 | mediana pos/ctrl +0.132/+0.231 (n 56/54) | SEPARA=False
+  veredicto que daria: NO CONCLUYENTE (menos de 30 pares o menos de 4 jornadas)

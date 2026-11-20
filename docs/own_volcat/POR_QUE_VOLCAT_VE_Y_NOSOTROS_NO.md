@@ -636,7 +636,7 @@ sin pluma pareado por BT11, 9 jornadas, 865 píxeles.
 | 13 | H10: dirección de la huella VOLCAT contra REAV y viento GFS, y señal en el sector del REAV | Hecho el 19-11: 6 jornadas, 2 comparables; 726 escenas sin bajar | H10: no concluyente |
 | 14 | H11: bandera CF, filas de volcán y atajo de SO₂ con cielo modelado y nube negra por nivel | Hecho el 20-11: 66 pares, 733 píxeles de huella | H11: no concluyente |
 | 15 | Etapa 2: SECO propio con VOLCAT como etiqueta, validado dejando una jornada afuera | Hecho el 20-11: 795 scans | No cumple |
-| 16 | H12, Test 3 original de Francis 2012 con el cielo modelado ya calculado, control pareado y cumbres sin actividad como prueba de terreno | Hecho el 20-11: 66 pares (decide) más réplica, 10.458 píxeles de cumbres y llano, sin descarga | H12: no concluyente |
+| 16 | H12, Test 3 original de Francis 2012 con el cielo modelado ya calculado, control pareado y cumbres sin actividad como prueba de terreno | Hecho el 20-11: 66 pares (decide) más réplica, 10.458 píxeles de cumbres y llano calculados, sin descarga | H12: no concluyente |
 | 17 | Leer la tesis de Pavolonis 2014 buscando las tablas de probabilidad de SECO | Hecho el 20-11: capítulos 1 a 6, 8 y apéndices C y E; las razones sobre tierra están como figuras (Fig. 4.12 a 4.14), sin tabla numérica | Fig. 4.12 digitalizada aproximada; insumo de un SECO con esas razones |
 | 18 | H13, cambio entre cuadros consecutivos de 10 min | Hecho el 20-11: 1.527 escenas, 72 pares; bosque aleatorio informativo sin completar | H13: falsada |
 

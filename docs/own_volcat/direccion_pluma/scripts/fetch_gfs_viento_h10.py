@@ -3,7 +3,7 @@ Chillan, del archivo noaa-gfs-bdp-pds por byte-range (reusa _parse_idx y _read_r
 src/fetch/gfs_archive.py sin editarlo). Hora valida = hora del cuadro redondeada; ciclo = ultimo 00/06/12/18Z
 <= esa hora; plazo f000 a f005 (criterio seccion 5).
 Uso: python -I fetch_gfs_viento_h10.py YYYYmmddHH [YYYYmmddHH ...] -> h10/gfs/gfsv_YYYYmmddHH.npz"""
-import os, sys, tempfile, uuid
+import os, sys
 from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor
 import numpy as np
@@ -44,20 +44,19 @@ def bajar(h):
     import eccodes
     vals = {}
     for kk, raw in zip(need, raws):
-        tmp = os.path.join(tempfile.gettempdir(), f"h10gfs_{uuid.uuid4().hex}.grib2")
-        open(tmp, "wb").write(raw)
-        with open(tmp, "rb") as fo:
-            gid = eccodes.codes_grib_new_from_file(fo)
+        # El mensaje GRIB se decodifica desde memoria, sin archivo temporal. Antes se escribia a %TEMP% y se
+        # leia con codes_grib_new_from_file: cffi le pasa a eccodes un FILE* duplicado que nunca se cierra, asi
+        # que en Windows os.remove fallaba (WinError 32) y el except OSError: pass lo callaba. Quedaban ~100 MB
+        # de GRIB2 por hora GFS (12,1 GB en C: el 20-11-2026). codes_new_from_message copia los bytes.
+        gid = eccodes.codes_new_from_message(raw)
+        try:
             ni = eccodes.codes_get(gid, "Ni"); nj = eccodes.codes_get(gid, "Nj")
             lat0 = eccodes.codes_get(gid, "latitudeOfFirstGridPointInDegrees")
             lon0 = eccodes.codes_get(gid, "longitudeOfFirstGridPointInDegrees")
             d = eccodes.codes_get(gid, "iDirectionIncrementInDegrees")
             v = eccodes.codes_get_values(gid).reshape(nj, ni)
+        finally:
             eccodes.codes_release(gid)
-        try:
-            os.remove(tmp)
-        except OSError:
-            pass
         jj = np.rint((lat0 - LATS) / d).astype(int); ii = np.rint(((LONS - lon0) % 360) / d).astype(int)
         vals[kk] = v[np.ix_(jj, ii)]
     o = {"lat": LATS, "lon": LONS - 360.0, "p": np.array(LEVELS, float),

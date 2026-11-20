@@ -1,6 +1,6 @@
 # Por qué VOLCAT ve ceniza en Nevados de Chillán (nov-2026) y nuestro detector no
 
-Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1), el 19-11 (H3 y H7, §3.2; H6 cerrada) el 19-11 en la tarde (β(7,3/11) fuera de muestra y prueba tolerante del VAAC de Londres, §3.3), el 19-11 en la noche (calor a 3,9 µm, rayos GLM y dirección de la pluma, §3.4) y el 20-11 (H11 y SECO propio entrenado con VOLCAT, §3.5; corrección del alcance de H8). Estado: **informe con trece pruebas medidas y un plan; no cambia código de detección.** Desde el 19-11 el dashboard muestra la detección VOLCAT por volcán como capa externa (ficha SDA v2.8, §A.7).
+Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1), el 19-11 (H3 y H7, §3.2; H6 cerrada) el 19-11 en la tarde (β(7,3/11) fuera de muestra y prueba tolerante del VAAC de Londres, §3.3), el 19-11 en la noche (calor a 3,9 µm, rayos GLM y dirección de la pluma, §3.4) el 20-11 (H11 y SECO propio entrenado con VOLCAT, §3.5; corrección del alcance de H8) y el 20-11 en la noche (Test 3 original de Francis 2012 y cambio entre cuadros consecutivos, §3.6). Estado: **informe con quince pruebas medidas y un plan; no cambia código de detección.** Desde el 19-11 el dashboard muestra la detección VOLCAT por volcán como capa externa (ficha SDA v2.8, §A.7).
 Antecedentes: plan de validación §3.4 a §3.6 (`docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`) y el informe
 del detector (`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\INFORME_variantes.md`).
 
@@ -72,8 +72,20 @@ cielo despejado modelado, y no alcanza:
   0 de 100 cuadros VOLCAT reproducidos. Con las variables públicas, la pluma de Chillán se parece demasiado
   al cráter sin pluma.
 
+**Lo medido el 20-11 en la noche (§3.6).** Las dos últimas vías publicadas tampoco alcanzan:
+- **Test 3 original del VAAC de Londres (H12): no concluyente.** Es la única compuerta publicada que admite
+  diferencias 11 − 12 µm positivas, justo donde viven estas plumas, porque compara contra el cielo despejado
+  modelado. Marca la huella en 76 % de los cuadros con pluma, pero también en 52 % del mismo lugar sin pluma,
+  y en el píxel apenas distingue (AUC 0,58). La razón es el terreno otra vez: sin pluma, el cielo modelado ya
+  espera 0,6 K más de lo observado sobre el cráter, y la pluma agrega sólo ~0,25 K. El control de cumbres
+  (Antuco y Longaví) no tuvo el error de Chillán y no pudo cerrar la prueba como "mide el terreno".
+- **Cambio entre cuadros de 10 min (H13): se falsa.** Restar el cuadro anterior no limpia el cráter: los
+  cambios con pluma son del mismo tamaño que los del cráter sin pluma a esa hora (mejor AUC 0,58 de 18
+  variables). Lo que no deja marca en un cuadro tampoco la deja en la diferencia entre dos.
+
 Lo que hace que VOLCAT publique estas plumas está en lo que no es público: sus tablas de probabilidad
-(entrenadas con MODIS, no con Chillán) o un criterio temporal que no está en SECO 2015.
+(entrenadas con MODIS, no con Chillán), su configuración por volcán, o un uso del tiempo distinto del que
+medimos (la tesis de Pavolonis 2014 lo deja como trabajo futuro).
 
 **Qué no es.** No es un problema de umbral (cuatro variantes lo descartaron) ni un corrimiento de la
 huella por paralaje (prueba A, abajo), ni una señal escondida en la banda de 8,5 µm (prueba B), ni la luz solar (pasos 2 y 4, §3.1).
@@ -506,6 +518,66 @@ tampoco llega, la diferencia no está en las variables que podemos calcular.
   bosque aleatorio marca el techo de nuestras variables: ve más de un tercio de los cuadros, pero con
   demasiadas falsas alarmas para una capa operativa.
 
+### 3.6 Séptima tanda (20-11, noche): H12 (Test 3 original de Francis 2012) y H13 (cambio entre cuadros)
+
+Dos pruebas en paralelo, cada una con su criterio subido a GitHub antes de medir (21:01 y 21:02 UTC; los
+resultados, desde las 22:38 UTC) y sin cambios después. Informes completos:
+`docs/own_volcat/reproducir_volcat/INFORME_H12.md` y `docs/own_volcat/temporal_h13/INFORME_H13.md`.
+
+**H12, la física.** El Test 3 de Francis, Cooke y Saunders 2012 (ec. 3, p. 3, leído en la imagen de la
+página) marca ceniza tentativa si BTD = BT10,8 − BT12,0 < +0,7 K **y** BTD < BTD_clr − 1,0 K, con el cielo
+despejado de un modelo numérico. La segunda condición corrige el vapor: el cielo húmedo ya da BTD positiva y
+una capa con firma de ceniza la baja. Admite BTD positivas, el tramo donde cae la huella de Chillán (−0,6 a
++0,5 K). La prueba del 19-11 (§3.3) había seguido el resumen de Falconieri 2018, que cambia el signo del
+umbral. Riesgo dicho antes de medir: si el GFS pone la cumbre baja, BTD_clr sale inflada y la segunda
+condición se cumple sin pluma; por eso la prueba llevó un control de terreno, la misma huella trasladada a
+Antuco y Nevado de Longaví en las mismas escenas, y el llano como referencia.
+
+**H12, método.** Los 66 pares de H11 deciden (733 píxeles, 10 días, cielo despejado directo por píxel); los
+pares nuevos sobre las escenas de la etapa 2 replican. Margen continuo para el AUC y fracción de cuadros con
+al menos un píxel T3.
+
+| Lugar (conjunto A, medianas) | Altura GFS | BT11 despejado − observado | BTD_clr − BTD | T3 en cuadros |
+|---|---|---|---|---|
+| Huella con pluma | 1.727 m | +8,3 K | +0,85 K | 0,76 |
+| Mismo lugar sin pluma | 1.727 m | +6,9 K | +0,61 K | 0,52 |
+| Cumbres de Antuco y Longaví | 1.696 m | +2,1 K | +0,32 K | 0,35 |
+| Llano | 216 m | −0,6 K | 0,00 K | 0,03 |
+
+- AUC del margen 0,58 [0,54; 0,71], anillo 0,49; de día los cuadros pasan 0,87 con pluma y 0,64 sin pluma,
+  de noche 0,36 y 0,07. El filtro β de la ec. 5 y la regla 6 de 9 no lo arreglan, y ningún píxel llega al
+  Test 1 (BTD < −2 K).
+- **Veredicto según el criterio: no concluyente.** No separa (pedía AUC ≥ 0,70 y 0,30 de diferencia en
+  cuadros), y la falsación por terreno pedía que disparara en ≥ 50 % de las cumbres, que dieron 35 %.
+- **Lectura:** la brecha que el test exige sobre 1 K ya es ~0,6 K sin pluma en el cráter y la pluma agrega
+  ~0,25 K; pasar o no depende del error del modelo de ese día. Las cumbres de control tuvieron la misma altura
+  GFS que Chillán pero un error de BT11 de 2 a 3 K, no de 8 a 9 K: el error no lo pone la altura del GFS sola,
+  sino algo propio del macizo de Chillán (forma y extensión, nieve o gas permanente, sin medir). Un control de
+  terreno nuevo tendría que elegir cumbres por su error de BT11, no por su altura.
+
+**H13, la idea.** La CDR 2022 (diapositiva 80) nombra la dimensión temporal para emisiones de muy pocos
+píxeles, y la tesis de Pavolonis 2014 la deja como trabajo futuro para plumas sin contraste con el cielo
+despejado. Si el cráter sin pluma tiene una firma propia y estable, restar el cuadro anterior debería
+borrarla y dejar sólo lo que cambió: una pluma que sale enfría el 11 µm, sube la emisividad y mueve las β.
+
+**H13, método.** Secuencias completas de 10 min de los 12 tramos con pluma anclada (de una hora antes a una
+hora después) y 30 min de historia de los días candidatos a control: 1.527 escenas. 18 variables por píxel
+(cambio contra el cuadro anterior, contra la mediana de los tres anteriores y persistencia del signo, para
+BT11, BTD, ε(11), β(12/11), β(8,5/11) y β(7,3/11)). 72 pares huella contra el mismo píxel y minuto en un día
+sin pluma pareado por BT11, 9 jornadas, 865 píxeles.
+
+- Mejor variable: AUC 0,582 (cambio de BT11 y de ε(11) contra la mediana de los tres anteriores), anillo
+  0,54 a 0,55; ninguna cumple la condición del anillo. Con el pareo hecho 30 min antes, máximo 0,52.
+- BT11 baja 0,43 K con pluma y 0,29 K sin pluma en 30 min (medianas); ε(11) cambia menos de 0,005 en ambos.
+- **Veredicto según el criterio: se falsa** (ninguna de las 18 llega a 0,60).
+- **Lectura:** la diferencia entre cuadros hereda lo que un cuadro no tiene. Con ABI a 2 km y cada 10 min,
+  estas plumas no dejan señal propia ni quieta ni en movimiento. De paso: en 23 de los 26 cuadros sin control,
+  **todos** los días candidatos estaban de 3 a 10 K más fríos en la cumbre; los cuadros con pluma VOLCAT caen
+  en condiciones más tibias que los días sin pluma a la misma hora. No se midió si es cielo más despejado o
+  suelo más tibio.
+- El bosque aleatorio informativo (etapa 2 más las variables temporales) quedó sin correr: se detuvo tras 2
+  pliegues por memoria y disco. No cambia el veredicto.
+
 ## 4. Hipótesis ordenadas por evidencia
 
 | # | Hipótesis | A favor | En contra o abierto | Qué la falsaría con datos que ya hay o casi |
@@ -517,11 +589,13 @@ tampoco llega, la diferencia no está en las variables que podemos calcular.
 | H5 | La señal está en la **banda de 8,5 µm** | Es una banda que VOLCAT usa y el detector no probó en anomalía | Prueba B: AUC 0,26 | Falsada hoy, con la salvedad del nulo nublado |
 | H6 | ~~Parte de lo que VOLCAT dibuja **no es ceniza**~~ **Cerrada el 19-11 por Nicolás (OVDAS)** | | "El volcán lleva muchos días con pulsos y columnas de gas y ceniza en cantidades variables" | Cerrada: VOLCAT dibuja ceniza real |
 | H7 | VOLCAT **sigue** un objeto detectado antes con señal (seguidor kd-tree del ATBD 2025) y los cuadros sin señal son continuación | ATBD VOLCAT v1.0 §2.2; 19 de 23 cuadros sin señal tienen antecesor | 19-11 (§3.2): el primer cuadro de cada tramo tampoco tiene señal (0 de 3 episodios con BTD, hot spot FDCF o enfriamiento rápido) | **Falsada el 19-11** |
-| H8 | Una prueba espectral **más tolerante** que la nuestra (la del VAAC de Londres, que acepta BTD positiva compensada por 8,7 µm) alcanza a ver la pluma | Francis et al. 2012; Falconieri et al. 2018; sin filtros marca 21 % de la huella contra 8 % del mismo lugar sin pluma | 19-11 tarde (§3.3): el método completo ve 2 de 35 cuadros y 0 píxeles en la huella; sin filtros dispara en 51 a 63 % de los scans sin pluma | **No cumple el 19-11, en la versión de Falconieri.** El Test 3 original de Francis 2012 (BTD < +0,7 K y 1 K bajo el despejado modelado) no se ha probado (paso 16) |
+| H8 | Una prueba espectral **más tolerante** que la nuestra (la del VAAC de Londres, que acepta BTD positiva compensada por 8,7 µm) alcanza a ver la pluma | Francis et al. 2012; Falconieri et al. 2018; sin filtros marca 21 % de la huella contra 8 % del mismo lugar sin pluma | 19-11 tarde (§3.3): el método completo ve 2 de 35 cuadros y 0 píxeles en la huella; sin filtros dispara en 51 a 63 % de los scans sin pluma | **No cumple el 19-11, en la versión de Falconieri.** El Test 3 original de Francis 2012 se probó el 20-11 como H12: no concluyente |
 | H11 | El **error de terreno** del cielo despejado de VOLCAT pone el cráter "confiadamente nublado" y, con las filas de volcán de SECO Parte 2 y el atajo de SO₂ (ec. A5), deja pasar las plumas chicas | Ninguna fuente pública corrige el terreno; el GFS pone la cumbre a 1,5 a 1,9 km | 20-11 (§3.5): de día CF ≥ 3 en 71 % con pluma y 83 % sin pluma; de noche 29 % y 0 %; A5 en 0 de 733 píxeles; βtot(12/11) AUC 0,58 | **No concluyente el 20-11**: el terreno explica la bandera de día, pero ninguna compuerta pública separa la pluma |
 | E2 | Un **SECO propio** entrenado con VOLCAT como etiqueta reproduce sus detecciones de Chillán | Todo lo público de SECO es reproducible con ABI L1b y GFS | 20-11 (§3.5): 0 de 100 cuadros; probabilidad del objeto 1,6 % de mediana contra 80 % pedido | **No cumple el 20-11**: lo que decide está en las tablas de probabilidad no públicas o en un criterio temporal |
 | H9 | El **calor en el cráter** (3,9 µm) o los **rayos GLM** aflojan los umbrales de VOLCAT y marcan cuándo dibuja | CDR 2022 diapositivas 82 y 83 (vía agente); el cráter está caliente el 71 % de las noches despejadas desde el 24-10 | 19-11 noche (§3.4): el calor no separa los cuadros con pluma (AUC 0,46 de noche) ni marca el arranque de los tramos; 0 de 100 cuadros con rayos | **Falsada como gatillo del momento el 19-11**; queda posible como trato especial permanente (volcán activo) |
 | H10 | La huella VOLCAT **no está donde estuvo la pluma**, y las pruebas midieron en el lugar equivocado | REAV 28-10 al NO contra huella al S | 19-11 noche (§3.4): dos jornadas comparables, ambas en el borde o con una escena; la huella sigue el sentido del paralaje; en el sector del REAV la BTD tampoco pasa el umbral (AUC 0,68 y 0,70) | **No concluyente el 19-11** |
+| H12 | El **Test 3 original** del VAAC de Londres (BTD < +0,7 K y BTD < BTD_clr − 1 K, Francis et al. 2012) admite las BTD positivas de Chillán y separa la pluma | Es la única compuerta publicada que admite BTD positivas; marca 76 % de los cuadros con pluma | 20-11 noche (§3.6): 52 % del mismo lugar sin pluma; AUC 0,58; sin pluma la brecha BTD_clr − BTD ya es 0,6 K y la pluma agrega ~0,25 K; las cumbres de control dieron 35 % pero con un error de BT11 de 2 a 3 K, no de 8 a 9 K | **No concluyente el 20-11**: no separa; el control de terreno no tuvo el error de Chillán |
+| H13 | El **cambio entre cuadros** de 10 min resta la firma estable del cráter y deja la pluma | CDR 2022 (diapositiva 80); la tesis de Pavolonis 2014 lo propone como trabajo futuro | 20-11 noche (§3.6): mejor AUC 0,582 de 18 variables, anillo 0,54 a 0,55; con pareo 30 min antes, 0,52 | **Falsada el 20-11** |
 
 ## 5. Perspectivas
 
@@ -562,13 +636,18 @@ tampoco llega, la diferencia no está en las variables que podemos calcular.
 | 13 | H10: dirección de la huella VOLCAT contra REAV y viento GFS, y señal en el sector del REAV | Hecho el 19-11: 6 jornadas, 2 comparables; 726 escenas sin bajar | H10: no concluyente |
 | 14 | H11: bandera CF, filas de volcán y atajo de SO₂ con cielo modelado y nube negra por nivel | Hecho el 20-11: 66 pares, 733 píxeles de huella | H11: no concluyente |
 | 15 | Etapa 2: SECO propio con VOLCAT como etiqueta, validado dejando una jornada afuera | Hecho el 20-11: 795 scans | No cumple |
-| 16 | **Siguiente, propuesto:** H12, Test 3 original de Francis 2012 (BTD < +0,7 K y BTD < BTD_clr − 1 K) con el cielo modelado ya calculado, control pareado y cumbres sin actividad como prueba de terreno | Casi gratis si se rescata el cielo modelado antes de que se borre | H8 en su versión original |
-| 17 | Leer la tesis de Pavolonis 2014 (ya local) buscando las tablas de probabilidad de SECO, y preguntarlas en el correo a Pavolonis si no están | Lectura con agentes | Es lo único público que podría cerrar la brecha de la etapa 2 |
+| 16 | H12, Test 3 original de Francis 2012 con el cielo modelado ya calculado, control pareado y cumbres sin actividad como prueba de terreno | Hecho el 20-11: 66 pares (decide) más réplica, 10.458 píxeles de cumbres y llano, sin descarga | H12: no concluyente |
+| 17 | Leer la tesis de Pavolonis 2014 buscando las tablas de probabilidad de SECO | Hecho el 20-11: capítulos 1 a 6, 8 y apéndices C y E; las razones sobre tierra están como figuras (Fig. 4.12 a 4.14), sin tabla numérica | Fig. 4.12 digitalizada aproximada; insumo de un SECO con esas razones |
+| 18 | H13, cambio entre cuadros consecutivos de 10 min | Hecho el 20-11: 1.527 escenas, 72 pares; bosque aleatorio informativo sin completar | H13: falsada |
+
+El plan siguiente (SECO con las razones de la tesis, correo a Pavolonis, VOLCAT en grilla, capa térmica a
+3,9 µm y lo que traiga la búsqueda bibliográfica del 20-11) se decide con Nicolás y se escribe aparte.
 
 Pasos que **no** conviene repetir: bajar el umbral BTD, anomalía de fondo, β(12/11) con temperatura de
 referencia fija, la banda de 8,5 µm sola, β(7,3/11), la prueba tolerante del VAAC de Londres en la versión de
-Falconieri, el calor del cráter o los rayos como gatillo del momento, la bandera CF y el atajo de SO₂ de SECO,
-y un SECO propio con sólo las variables públicas. Están medidos.
+Falconieri y su Test 3 original con el cielo modelado sin corregir el terreno, el calor del cráter o los rayos
+como gatillo del momento, la bandera CF y el atajo de SO₂ de SECO, un SECO propio con sólo las variables
+públicas y el cambio entre cuadros de 10 min. Están medidos.
 
 ## 7. Advertencias de método
 
@@ -586,3 +665,9 @@ y un SECO propio con sólo las variables públicas. Están medidos.
 - Etapa 2: después de commitear el criterio se corrigió una línea de `scripts/rt_e2.py` (la forma de un
   arreglo al interpolar la rejilla), antes del primer número y en el commit que valida la rejilla; la
   validación pasa (error p95 de BT despejada en C14 de 0,20 K contra 0,3 K pedido).
+- H12: el control de cumbres se eligió por altura GFS y no por error de BT11, y resultó mucho más fácil para
+  el modelo que el macizo de Chillán; la regla de falsación por terreno quedó sin poder. "Sin pluma" quiere
+  decir sin objeto VOLCAT a ≤ 50 km: el cráter desgasifica y tiene calor desde el 24-10 (H9).
+- H13: la muestra de pares pierde justo los cuadros más tibios (26 sin control, casi todos del 08-11 y del
+  14-11 en la tarde y noche); la sensibilidad que parea 30 min antes los recupera en parte y da un resultado
+  aún más bajo. El bosque aleatorio informativo no terminó (memoria y disco).

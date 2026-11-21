@@ -1,0 +1,188 @@
+{
+ "C13": {
+  "20223320916": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.03775024414062,
+   "focal_plane_temperature_threshold_increasing": 100.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320921": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.04113006591797,
+   "focal_plane_temperature_threshold_increasing": 100.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320926": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.05467224121094,
+   "focal_plane_temperature_threshold_increasing": 100.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320931": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.07835388183594,
+   "focal_plane_temperature_threshold_increasing": 100.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320936": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.05128479003906,
+   "focal_plane_temperature_threshold_increasing": 100.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320941": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.06143188476562,
+   "focal_plane_temperature_threshold_increasing": 100.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320946": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.17643737792969,
+   "focal_plane_temperature_threshold_increasing": 100.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320951": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.3353271484375,
+   "focal_plane_temperature_threshold_increasing": 100.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320956": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.56861114501953,
+   "focal_plane_temperature_threshold_increasing": 100.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223321001": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.88593292236328,
+   "focal_plane_temperature_threshold_increasing": 100.0,
+   "dqf_frac_no_cero": 0.0
+  }
+ },
+ "C14": {
+  "20223320916": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.03775024414062,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320921": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.04113006591797,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320926": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.05467224121094,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320931": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.07835388183594,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320936": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.05128479003906,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320941": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.06143188476562,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320946": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.17643737792969,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320951": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.3353271484375,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320956": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.56861114501953,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223321001": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.88593292236328,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  }
+ },
+ "C15": {
+  "20223320916": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.03775024414062,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320921": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.04113006591797,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320926": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.05467224121094,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320931": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.07835388183594,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320936": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.05128479003906,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320941": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.06143188476562,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320946": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.17643737792969,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320951": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.3353271484375,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223320956": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.56861114501953,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  },
+  "20223321001": {
+   "focal_plane_temperature_threshold_exceeded_count": 0,
+   "maximum_focal_plane_temperature": 84.88593292236328,
+   "focal_plane_temperature_threshold_increasing": 93.0,
+   "dqf_frac_no_cero": 0.0
+  }
+ }
+}

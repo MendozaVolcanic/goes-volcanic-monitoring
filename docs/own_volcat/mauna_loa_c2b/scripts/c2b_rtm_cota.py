@@ -39,7 +39,7 @@ def main(npz, mapas, gfs, salida):
     zs = s.select("surface height")[:].astype(float) * 1000.0  # el archivo dice UNITS = km
     tsf = s.select("surface temperature")[:].astype(float)
     T3 = s.select("temperature")[:].astype(float); H3 = s.select("height")[:].astype(float) * 1000.0  # km -> m
-    plev = s.select("pressure levels")[:].astype(float); lm = s.select("land mask")[:].astype(float)
+    lm = s.select("land mask")[:].astype(float)
     s.end()
     res = {"gfs": os.path.basename(gfs), "notas": []}
 

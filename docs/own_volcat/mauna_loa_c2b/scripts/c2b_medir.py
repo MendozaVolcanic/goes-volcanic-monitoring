@@ -16,7 +16,7 @@ Pasos:
 
 Uso: python -I c2b_medir.py <carpeta npz> <carpeta dem> <L1b C14 NetCDF de input> <carpeta salida>
 """
-import os, sys, glob, json, math
+import os, sys, glob, json
 sys.stdout.reconfigure(encoding="utf-8")
 import numpy as np  # noqa: E402
 from PIL import Image  # noqa: E402

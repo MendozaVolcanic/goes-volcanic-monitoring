@@ -1,0 +1,652 @@
+
+==== l1_data/geocatL1: 10 archivos
+(sin pyhdf: no se lee HDF4)
+
+==== rtm_data/geocatRTM: 10 archivos
+(sin pyhdf: no se lee HDF4)
+
+==== l2_data/geocatL2.: 10 archivos
+(sin pyhdf: no se lee HDF4)
+
+==== l2_data/geocatL2S1: 10 archivos
+(sin pyhdf: no se lee HDF4)
+
+==== l2_data/geocatASHOBJ: 10 archivos
+(sin pyhdf: no se lee HDF4)
+
+==== diag_data/geocatDIAG.: 10 archivos
+(sin pyhdf: no se lee HDF4)
+
+==== diag_data/geocatDIAGS1: 10 archivos
+(sin pyhdf: no se lee HDF4)
+
+==== l2_data/geocatHOTOBJ: 10 archivos
+(sin pyhdf: no se lee HDF4)
+
+==== l2_data/geocatICEOBJ: 10 archivos
+(sin pyhdf: no se lee HDF4)
+
+######## VOLCAT-CONUS-vid332020_v3p9_g17_s202211280941144_e202211280943528_c202607092040463.nc
+  @Conventions = 'CF-1.8, ACDD-1.3'
+  @standard_name_vocabulary = 'CF Standard Name Table (v35, 20 July 2016)'
+  @project = 'NESDIS Common Cloud Framework'
+  @institution = 'DOC/NOAA/NESDIS/OSPO > Office of Satellite and Product Operations, NESDIS, NOAA, U.S. Department of Commerce'
+  @naming_authority = 'gov.noaa.nesdis.ncei'
+  @platform = 'GOES-17'
+  @platform_type = 'Geostationary'
+  @instrument = 'ABI'
+  @title = 'VOLCAT_CONUS'
+  @scan_domain = 'CONUS'
+  @summary = 'This file contains information on volcanic cloud properties associated with eruptive event(s), as automatically determined by the VOLcanic Cloud Analysis Toolkit (VOLCAT). Volcanic cloud properties include volcanic cloud mapping, height maps (relative to the highest cloud layer), total column loadi...
+  @history = 'VOLCAT v3.9.16'
+  @processing_level = 'NOAA Level 2'
+  @source = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320941144_e20223320943528_c20223320943568.nc'
+  @keywords = 'ATMOSPHERE > AEROSOLS > DUST/ASH/SMOKE'
+  @keywords_vocabulary = 'NASA Global Change Master Directory (GCMD) Earth Science Keywords, Version 23.4'
+  @id = '355b9671-fe00-48d5-a60f-fe7bc8ab933e'
+  @production_site = 'NCCF'
+  @production_environment = 'dev'
+  @metadata_link = 'https://data.noaa.gov/onestop/'
+  @day_night_data_flag = 'night'
+  @time_coverage_start = '2022-11-28T09:41:14Z'
+  @time_coverage_end = '2022-11-28T09:43:52Z'
+  @date_created = '2026-07-09T20:40:46Z'
+  @cdm_data_type = 'Image'
+  @geospatial_lat_max = np.float32(20.786385)
+  @geospatial_lat_min = np.float32(14.651236)
+  @geospatial_lon_min = np.float32(-162.65826)
+  @geospatial_lon_max = np.float32(-151.28651)
+  @geospatial_lat_units = 'degrees_north'
+  @geospatial_lon_units = 'degrees_east'
+  @resolution = '2000.0 m'
+  @creator_name = 'DOC/NOAA/NESDIS/STAR > NOAA Satellites Volcanic Cloud Monitoring, Center for Satellite Applications and Research, NESDIS, NOAA, Department of Commerce'
+  @creator_email = 'ESPCoperations@noaa.gov'
+  @creator_url = 'https://volcano.ssec.wisc.edu/'
+  @publisher_name = 'DOC/NOAA/NESDIS/OSPO > Office of Satellite and Product Operations, NESDIS, NOAA, U.S. Department of Commerce'
+  @publisher_email = 'espcoperations@noaa.gov'
+  @publisher_url = 'http://www.ospo.noaa.gov/'
+  @volcano_name = 'Mauna Loa'
+  @vaac_name = 'washington'
+  event_type (1,) <class 'str'> | long_name='Type of VOLCAT event'
+  event_observation_time (1,) <class 'str'> | long_name='Time given event was observed'
+  time_coverage_start_first_detection (1,) <class 'str'> | long_name='Satellite coverage start time for initial detection of given event'
+  event_observation_time_first_detection (1,) <class 'str'> | long_name='Initial time given event was observed'
+  x_image_processing_bounds (2,) int32 | long_name='Extent of x image coordinates in processed region of full image/granule (1-base...
+  y_image_processing_bounds (2,) int32 | long_name='Extent of y image coordinates in processed region of full image/granule (1-base...
+  x_image_feature_region_bounds (2,) int32 | long_name='Extent of x image coordinates in feature extraction region of full image/granul...
+  y_image_feature_region_bounds (2,) int32 | long_name='Extent of y image coordinates in feature extraction region of full image/granul...
+  x_image_feature_bounds (1, 2) int32 | long_name='Extent of volcanic feature in x image coordinates relative to full image/granul...
+  y_image_feature_bounds (1, 2) int32 | long_name='Extent of volcanic feature in y image coordinates relative to full image/granul...
+  x_feature_bounds (1, 2) int32 | long_name='Extent of volcanic feature in x image coordinates relative to processed region ...
+  y_feature_bounds (1, 2) int32 | long_name='Extent of volcanic feature in y image coordinates relative to processed region ...
+  feature_lat_lon_extent_geospatial_westbound_longitude (1,) float32 | long_name='feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  feature_lat_lon_extent_geospatial_northbound_latitude (1,) float32 | long_name='feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  feature_lat_lon_extent_geospatial_eastbound_longitude (1,) float32 | long_name='feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  feature_lat_lon_extent_geospatial_southbound_latitude (1,) float32 | long_name='feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  pc_feature_lat_lon_extent_geospatial_westbound_longitude (1,) float32 | long_name='parallax corrected feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  pc_feature_lat_lon_extent_geospatial_northbound_latitude (1,) float32 | long_name='parallax corrected feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  pc_feature_lat_lon_extent_geospatial_eastbound_longitude (1,) float32 | long_name='parallax corrected feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  pc_feature_lat_lon_extent_geospatial_southbound_latitude (1,) float32 | long_name='parallax corrected feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  volcano_info () |S1 | long_name='Information on source volcano from Global Volcanism Program database'; id=np.int64(332020); name='Mauna Loa'; country='United States'; region='Hawaii and Pacific Ocean'; subregion='Hawaiian Islands'; status='Eruption Observed'; latitude=np.float32(19.475); longitude=np.float32(-155.608); elevation=np.float32(4170.0); type='Shield'; timeframe='1984 CE'; latitude_units='degrees_north'; longitude_units='degrees_east'; elevation_units='m'; vaac_region='Washington'
+  time_bounds (2,) int32 | long_name='Scan start and end times in seconds since epoch (1970-01-01 00:00:00)'; units='seconds since 1970-01-01 00:00:00'
+  volcano_thermal_activity () |S1 | long_name='Information on recent satellite detected thermal activity, given by the radiati...; units='days'; time_since_0MW=np.float32(0.0); time_since_10MW=np.float32(0.0); time_since_100MW=np.float32(0.0); time_since_1000MW=np.float32(0.0)
+  minimum_volcano_distance (1,) float32 | long_name='The smallest distance between the detected feature and the source volcano'; units='km'
+  maximum_volcano_distance (1,) float32 | long_name='The largest distance between the detected feature and the source volcano'; units='km'
+  wmo_satellite_id (1,) int32 | long_name='WMO assigned spacecraft identifier'
+  scan_domain_id (1,) int32 | long_name='The GEOCAT assigned ID associated with the sensor scan mode'
+  feature_id (1,) int32 | long_name='The feature ID within the current image'
+  mean_feature_time (1,) int32 | long_name='Mean volcanic feature time in seconds since epoch (1970-01-01 00:00:00)'; units='seconds since 1970-01-01 00:00:00'
+  feature_age (1,) float32 | long_name='The time that has elapsed between the current detection of the feature and the ...; units='minutes'
+  full_image_start_time (1,) int32 | long_name='Start time of full image/granule in seconds since epoch (1970-01-01 00:00:00)'; units='seconds since 1970-01-01 00:00:00'
+  full_image_end_time (1,) int32 | long_name='End time of full image/granule in seconds since epoch (1970-01-01 00:00:00)'; units='seconds since 1970-01-01 00:00:00'
+  first_detection_full_image_start_time (1,) int32 | long_name='Start time of full image/granule when the volcanic feature was first detected i...; units='seconds since 1970-01-01 00:00:00'
+  first_detection_mean_feature_time (1,) int32 | long_name='Mean time when the volcanic feature was first detected in seconds since epoch (...; units='seconds since 1970-01-01 00:00:00'
+  first_detection_wmo_satellite_id (1,) int32 | long_name='WMO assigned spacecraft identifier when the volcanic feature was first detected...
+  first_detection_scan_domain_id (1,) int32 | long_name='The GEOCAT assigned ID associated with the sensor scan mode when the volcanic f...
+  first_detection_feature_id (1,) int32 | long_name='The feature ID when the volcanic feature was first detected'
+  feature_latitude (1,) float32 | long_name='The latitude of the radiative center of the volcanic feature'; units='degrees_north'
+  feature_longitude (1,) float32 | long_name='The longitude of the radiative center of the volcanic feature'; units='degrees_east'
+  pc_feature_latitude (1,) float32 | long_name='The parallax corrected (pc) latitude of the radiative center of the volcanic fe...; units='degrees_north'
+  pc_feature_longitude (1,) float32 | long_name='The parallax corrected (pc) longitude of the radiative center of the volcanic f...; units='degrees_east'
+  mean_feature_solar_zenith_angle (1,) float32 | long_name='The mean solar zenith angle within the volcanic feature'; units='degree'
+  mean_feature_viewing_zenith_angle (1,) float32 | long_name='The mean viewing zenith angle within the volcanic feature'; units='degree'
+  feature_water_fraction (1,) float32 | long_name='The fraction of the volcanic feature that is over water'
+  mean_feature_tropopause_altitude (1,) float32 | long_name='The mean height of the tropopause'; units='km'
+  mean_feature_tropopause_temperature (1,) float32 | long_name='The mean temperature of the tropopause'; units='K'
+  feature_area (1,) float32 | long_name='The total area of the detected volcanic feature'; units='km2'
+  feature_area_bt240K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  feature_area_bt233K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  feature_area_bt230K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  feature_area_bt220K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  feature_area_bt210K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  feature_area_bt200K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  ash_mass_loading_total_mass (1,) float32 | long_name='The total mass of volcanic ash in the feature'; units='Tg'
+  ash_mass_loading_percentile25 (1,) float32 | long_name='The 25th percentile value of ash mass loading within the feature'; units='gm-2'
+  ash_mass_loading_percentile50 (1,) float32 | long_name='The 50th percentile value of ash mass loading within the feature'; units='gm-2'
+  ash_mass_loading_percentile75 (1,) float32 | long_name='The 75th percentile value of ash mass loading within the feature'; units='gm-2'
+  ash_mass_loading_percentile90 (1,) float32 | long_name='The 90th percentile value of ash mass loading within the feature'; units='gm-2'
+  ash_mass_loading_percentile95 (1,) float32 | long_name='The 95th percentile value of ash mass loading within the feature'; units='gm-2'
+  ash_mass_loading_maximum (1,) float32 | long_name='The maximum value of ash mass loading within the feature'; units='gm-2'
+  effective_radius_of_ash_percentile25 (1,) float32 | long_name='The 25th percentile value of ash effective radius within the feature'; units='um'
+  effective_radius_of_ash_percentile50 (1,) float32 | long_name='The 50th percentile value of ash effective radius within the feature'; units='um'
+  effective_radius_of_ash_percentile75 (1,) float32 | long_name='The 75th percentile value of ash effective radius within the feature'; units='um'
+  effective_radius_of_ash_percentile90 (1,) float32 | long_name='The 90th percentile value of ash effective radius within the feature'; units='um'
+  effective_radius_of_ash_percentile95 (1,) float32 | long_name='The 95th percentile value of ash effective radius within the feature'; units='um'
+  effective_radius_of_ash_maximum (1,) float32 | long_name='The maximum value of ash effective radius within the feature'; units='um'
+  ash_cloud_height_percentile50 (1,) float32 | long_name='The 50th percentile value of ash cloud top height within the feature'; units='km'
+  ash_cloud_height_percentile75 (1,) float32 | long_name='The 75th percentile value of ash cloud top height within the feature'; units='km'
+  ash_cloud_height_percentile90 (1,) float32 | long_name='The 90th percentile value of ash cloud top height within the feature'; units='km'
+  ash_cloud_height_percentile95 (1,) float32 | long_name='The 95th percentile value of ash cloud top height within the feature'; units='km'
+  ash_cloud_height_maximum (1,) float32 | long_name='The maximum value of ash cloud top height within the feature'; units='km'
+  infrared_window_brightness_temperature_minimum (1,) float32 | long_name='The minimum value of infrared window brightness temperature within the feature'; units='K'
+  ash_cloud_height_opaque_assumption_maximum (1,) float32 | long_name='The maximum value of ash cloud top height within the feature (assuming the feat...; units='km'
+  total_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of Earth Networks lightning strokes within the feature since t...
+  cg_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground Earth Networks lightning strokes within the featu...
+  near_vent_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of Earth Networks lightning strokes within 20 km of the vent s...
+  near_vent_cg_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground Earth Networks lightning strokes within 20 km of ...
+  total_environmental_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of Earth Networks lightning strokes, within the environment th...
+  cg_environmental_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground Earth Networks lightning strokes, within the envi...
+  minimum_stroke_distance_to_vent_eni (1,) float32 | _FillValue=np.float32(-999.0); long_name='The minimum Earth Networks stroke to vent distance since the last satellite ima...; units='km'
+  total_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of WWLLN lightning strokes within the feature since the last s...
+  cg_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The number of WWLLN lightning strokes within the feature since the last satelli...
+  near_vent_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of WWLLN lightning strokes within 20 km of the vent since the ...
+  near_vent_cg_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground WWLLN lightning strokes within 20 km of the vent ...
+  total_environmental_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of WWLLN lightning strokes, within the environment that surrou...
+  cg_environmental_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The number of WWLLN lightning strokes, within the environment that surrounds th...
+  minimum_stroke_distance_to_vent_wwlln (1,) float32 | _FillValue=np.float32(-999.0); long_name='The minimum WWLLN stroke to vent distance since the last satellite image'; units='km'
+  total_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLD360 lightning strokes within the feature since the last ...
+  cg_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground GLD360 lightning strokes within the feature since...
+  near_vent_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLD360 lightning strokes within 20 km of the vent since the...
+  near_vent_cg_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground GLD360 lightning strokes within 20 km of the vent...
+  total_environmental_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLD360 lightning strokes, within the environment that surro...
+  cg_environmental_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground GLD360 lightning strokes, within the environment ...
+  minimum_stroke_distance_to_vent_gld360 (1,) float32 | _FillValue=np.float32(-999.0); long_name='The minimum GLD360 stroke to vent distance since the last satellite image'; units='km'
+  total_lightning_stroke_count_glm (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLM lightning groups within the feature since the last sate...
+  near_vent_lightning_stroke_count_glm (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLM lightning groups within 20 km of the vent since the las...
+  total_environmental_lightning_stroke_count_glm (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLM lightning groups, within the environment that surrounds...
+  minimum_stroke_distance_to_vent_glm (1,) float32 | _FillValue=np.float32(-999.0); long_name='The minimum GLM group to vent distance since the last satellite image'; units='km'
+  total_lightning_energy_glm (1,) float32 | _FillValue=np.float32(-999.0); long_name='The total GLM optical energy within the feature since the last satellite image'; units='J'
+  feature_polygon_latitude (1, 10) float32 | _FillValue=np.float32(-999.0); long_name='The latitude of the autogenerated feature polygon'; units='degrees_north'
+  feature_polygon_longitude (1, 10) float32 | _FillValue=np.float32(-999.0); long_name='The longitude of the autogenerated feature polygon'; units='degrees_east'
+  pc_feature_polygon_latitude (1, 10) float32 | _FillValue=np.float32(-999.0); long_name='The parallax corrected latitude of the autogenerated feature polygon'; units='degrees_north'
+  pc_feature_polygon_longitude (1, 10) float32 | _FillValue=np.float32(-999.0); long_name='The parallax corrected longitude of the autogenerated feature polygon'; units='degrees_east'
+  latitude (155, 208) float32 | _FillValue=np.float32(-999.0); standard_name='latitude'; long_name='Latitude of the pixel center'; units='degrees_north'
+  longitude (155, 208) float32 | _FillValue=np.float32(-999.0); standard_name='longitude'; long_name='Longitude of the pixel center'; units='degrees_east'
+  pc_latitude (155, 208) float32 | _FillValue=np.float32(-999.0); standard_name='latitude_pc'; long_name='Parallax corrected latitude of the pixel center (only valid where feature is va...; units='degrees_north'
+  pc_longitude (155, 208) float32 | _FillValue=np.float32(-999.0); standard_name='longitude_pc'; long_name='Parallax corrected longitude of the pixel center (only valid where feature is v...; units='degrees_east'
+  time (155, 208) int32 | _FillValue=np.int32(-999); long_name='Observation time in seconds since epoch (1970-01-01 00:00:00)'; units='seconds since 1970-01-01 00:00:00'
+  brightness_temperature_4micron (155, 208) int16 | _FillValue=np.int16(-1); long_name='The brightness temperature that corresponds to a channel centered near 4 um'; units='K'; scale_factor=np.float32(0.01); add_offset=np.float32(150.0)
+  brightness_temperature_8micron (155, 208) int16 | _FillValue=np.int16(-1); long_name='The brightness temperature that corresponds to a channel centered near 8.5 um'; units='K'; scale_factor=np.float32(0.01); add_offset=np.float32(150.0)
+  brightness_temperature_10micron (155, 208) int16 | _FillValue=np.int16(-1); long_name='The brightness temperature that corresponds to a channel centered near 10 um'; units='K'; scale_factor=np.float32(0.01); add_offset=np.float32(150.0)
+  brightness_temperature_11micron (155, 208) int16 | _FillValue=np.int16(-1); long_name='The brightness temperature that corresponds to a channel centered near 11 um'; units='K'; scale_factor=np.float32(0.01); add_offset=np.float32(150.0)
+  brightness_temperature_12micron (155, 208) int16 | _FillValue=np.int16(-1); long_name='The brightness temperature that corresponds to a channel centered near 12 um'; units='K'; scale_factor=np.float32(0.01); add_offset=np.float32(150.0)
+  angular_index (155, 208) int8 | _FillValue=np.int8(-1); long_name='The index corresponding to the angular bin, relative to the source volcano, tha...
+  radius_index_km (155, 208) int8 | _FillValue=np.int8(-1); long_name='The index corresponding to the km based radius bin, relative to the source volc...
+  radius_index_nm (155, 208) int8 | _FillValue=np.int8(-1); long_name='The index corresponding to the nm based radius bin, relative to the source volc...
+  distance_traveled (155, 208) float32 | _FillValue=np.float32(-999.0); long_name='The approximate cumulative trajectory distance at a given location in the volca...; units='km'
+  residence_time (155, 208) float32 | _FillValue=np.float32(-999.0); long_name='The approximate cumulative time associated with a given trajectory'; units='h'
+  ash_spectral_signature_strength (155, 208) float32 | _FillValue=np.float32(-999.0); long_name='Indicator of spectral ambiguity between detected ash and non-ash features [0.0-...
+  ash_spectral_signature_strength_lwir_only (155, 208) float32 | _FillValue=np.float32(-999.0); long_name='Indicator of spectral ambiguity between detected ash and non-ash features [0.0-...
+  ash_mass_loading (155, 208) float32 | _FillValue=np.float32(-999.0); long_name='The total column loading of ash in the highest continuous ash layer'; units='gm-2'
+  event_idx (155, 208) int16 | long_name='2-d grid that maps each nevent array dimension [0-based] to the pixel locations...
+  ash_cloud_height (155, 208) int16 | _FillValue=np.int16(-1); long_name='The cloud top height of the highest continuous ash layer'; units='km'; scale_factor=np.float32(0.01); add_offset=np.float32(0.0)
+  effective_radius_of_ash (155, 208) int16 | _FillValue=np.int16(-1); long_name='The effective radius of ash in the highest continuous ash layer'; units='um'; scale_factor=np.float32(0.01); add_offset=np.float32(0.0)
+  radius_bins (15,) float32 | long_name='The radius binning scheme used to characterize the distance from the source vol...; units='km or nm'
+  angular_bins (16,) float32 | long_name='The angular binning scheme used to characterize the position of the feature rel...; units='degrees'; angle_meanings='S, SSW, SW, WSW, W, WNW, NW, NNW, N, NNE, NE, ENE, E, ESE, SE, SSE'
+  field_bins (3,) float32 | long_name='The coarse radius binning scheme used to characterize the distance from the sou...; units='km or nm'; field_meanings='near field, intermediate field, far field'; field_meanings_km='<20 km, 20 - 100 km, >100 km'; field_meanings_nm='<20 nm, 20 - 100 nm, >80 nm'
+  polar_histogram_km (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels as a f...
+  polar_histogram_nm (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels as a f...
+  polar_histogram_concentration_gt0p2_thk0p5 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt2p0_thk0p5 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt5p0_thk0p5 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt10p0_thk0p5 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt0p2_thk1p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt2p0_thk1p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt5p0_thk1p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt10p0_thk1p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt0p2_thk2p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt2p0_thk2p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt5p0_thk2p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt10p0_thk2p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_field_histogram_km (1, 3, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels as a f...; field_meanings='<20 km, 20 - 100 km, >100 km'
+  polar_field_histogram_nm (1, 3, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels as a f...; field_meanings='<20 nm, 20 - 100 nm, >80 nm'
+  dominant_polar_grid_cell_km_angle (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_km_angle_meaning (1,) <class 'str'> | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_km_pixel_count (1,) int32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_km_minimum_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='km'
+  dominant_polar_grid_cell_km_median_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='km'
+  dominant_polar_grid_cell_km_maximum_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='km'
+  dominant_polar_grid_cell_nm_angle (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_nm_angle_meaning (1,) <class 'str'> | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_nm_pixel_count (1,) int32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_nm_minimum_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='nm'
+  dominant_polar_grid_cell_nm_median_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='nm'
+  dominant_polar_grid_cell_nm_maximum_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='nm'
+  dominant_polar_grid_cell_near_field_angle (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'
+  dominant_polar_grid_cell_near_field_angle_meaning (1,) <class 'str'> | long_name='The near field angle with the greatest number of volcanic cloud pixels'
+  dominant_polar_grid_cell_near_field_minimum_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='nm'
+  dominant_polar_grid_cell_near_field_median_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='nm'
+  dominant_polar_grid_cell_near_field_maximum_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='nm'
+  dominant_polar_grid_cell_near_field_speed (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='kts'
+  dominant_polar_grid_cell_near_field_uncertainty_speed (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='kts'
+  dominant_polar_grid_cell_near_field_minimum_height (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='km'
+  dominant_polar_grid_cell_near_field_median_height (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='km'
+  dominant_polar_grid_cell_near_field_maximum_height (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='km'
+  dominant_polar_grid_cell_near_field_minimum_loading (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='gm-2'
+  dominant_polar_grid_cell_near_field_median_loading (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='gm-2'
+  dominant_polar_grid_cell_near_field_maximum_loading (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='gm-2'
+  dominant_polar_grid_cell_near_field_minimum_effective_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='um'
+  dominant_polar_grid_cell_near_field_median_effective_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='um'
+  dominant_polar_grid_cell_near_field_maximum_effective_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='um'
+  ash_concentration_statistics_count_gt0p2_thk0p5 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt2p0_thk0p5 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt5p0_thk0p5 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt10p0_thk0p5 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt0p2_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt2p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt5p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt10p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt0p2_thk1p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt2p0_thk1p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt5p0_thk1p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt10p0_thk1p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt0p2_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt2p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt5p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt10p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt0p2_thk2p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt2p0_thk2p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt5p0_thk2p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt10p0_thk2p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt0p2_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt2p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt5p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt10p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  near_field_ash_concentration_statistics_count_gt0p2_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt2p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt5p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt10p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt0p2_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt2p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt5p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt10p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt0p2_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt2p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt5p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt10p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt0p2_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt2p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt5p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt10p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt0p2_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt2p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt5p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt10p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt0p2_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt2p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt5p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt10p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  intermediate_field_ash_concentration_statistics_count_gt0p2_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt2p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt5p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt10p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt0p2_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt2p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt5p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt10p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt0p2_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt2p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt5p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt10p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt0p2_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt2p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt5p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt10p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt0p2_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt2p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt5p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt10p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt0p2_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt2p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt5p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt10p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  far_field_ash_concentration_statistics_count_gt0p2_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt2p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt5p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt10p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt0p2_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt2p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt5p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt10p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt0p2_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt2p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt5p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt10p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt0p2_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt2p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt5p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt10p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt0p2_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt2p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt5p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt10p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt0p2_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt2p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt5p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt10p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  DQF (155, 208) int16 | long_name='Packed data quality flags'; flag_meanings='Bit positions:: 0: _FillValue/no issues, 1: MWIR saturation - high gain/low tem...
+  ash_retv_qf (155, 208) int8 | _FillValue=np.int8(-2); standard_name='quality_flag'; long_name='Ash retrieval quality flags'; valid_range=array([0, 7], dtype=int8); flag_meanings='0: invalid_product, 1: unknown_product_quality, 2: low_product_quality, 3: high...
+
+######## VOLCAT-CONUS-vid332020_v3p9_g17_s202211280941144_e202211280943528_c202607092040463.nc
+  @Conventions = 'CF-1.8, ACDD-1.3'
+  @standard_name_vocabulary = 'CF Standard Name Table (v35, 20 July 2016)'
+  @project = 'NESDIS Common Cloud Framework'
+  @institution = 'DOC/NOAA/NESDIS/OSPO > Office of Satellite and Product Operations, NESDIS, NOAA, U.S. Department of Commerce'
+  @naming_authority = 'gov.noaa.nesdis.ncei'
+  @platform = 'GOES-17'
+  @platform_type = 'Geostationary'
+  @instrument = 'ABI'
+  @title = 'VOLCAT_CONUS'
+  @scan_domain = 'CONUS'
+  @summary = 'This file contains information on volcanic cloud properties associated with eruptive event(s), as automatically determined by the VOLcanic Cloud Analysis Toolkit (VOLCAT). Volcanic cloud properties include volcanic cloud mapping, height maps (relative to the highest cloud layer), total column loadi...
+  @history = 'VOLCAT v3.9.16'
+  @processing_level = 'NOAA Level 2'
+  @source = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320941144_e20223320943528_c20223320943568.nc'
+  @keywords = 'ATMOSPHERE > AEROSOLS > DUST/ASH/SMOKE'
+  @keywords_vocabulary = 'NASA Global Change Master Directory (GCMD) Earth Science Keywords, Version 23.4'
+  @id = '355b9671-fe00-48d5-a60f-fe7bc8ab933e'
+  @production_site = 'NCCF'
+  @production_environment = 'dev'
+  @metadata_link = 'https://data.noaa.gov/onestop/'
+  @day_night_data_flag = 'night'
+  @time_coverage_start = '2022-11-28T09:41:14Z'
+  @time_coverage_end = '2022-11-28T09:43:52Z'
+  @date_created = '2026-07-09T20:40:46Z'
+  @cdm_data_type = 'Image'
+  @geospatial_lat_max = np.float32(20.786385)
+  @geospatial_lat_min = np.float32(14.651236)
+  @geospatial_lon_min = np.float32(-162.65826)
+  @geospatial_lon_max = np.float32(-151.28651)
+  @geospatial_lat_units = 'degrees_north'
+  @geospatial_lon_units = 'degrees_east'
+  @resolution = '2000.0 m'
+  @creator_name = 'DOC/NOAA/NESDIS/STAR > NOAA Satellites Volcanic Cloud Monitoring, Center for Satellite Applications and Research, NESDIS, NOAA, Department of Commerce'
+  @creator_email = 'ESPCoperations@noaa.gov'
+  @creator_url = 'https://volcano.ssec.wisc.edu/'
+  @publisher_name = 'DOC/NOAA/NESDIS/OSPO > Office of Satellite and Product Operations, NESDIS, NOAA, U.S. Department of Commerce'
+  @publisher_email = 'espcoperations@noaa.gov'
+  @publisher_url = 'http://www.ospo.noaa.gov/'
+  @volcano_name = 'Mauna Loa'
+  @vaac_name = 'washington'
+  event_type (1,) <class 'str'> | long_name='Type of VOLCAT event'
+  event_observation_time (1,) <class 'str'> | long_name='Time given event was observed'
+  time_coverage_start_first_detection (1,) <class 'str'> | long_name='Satellite coverage start time for initial detection of given event'
+  event_observation_time_first_detection (1,) <class 'str'> | long_name='Initial time given event was observed'
+  x_image_processing_bounds (2,) int32 | long_name='Extent of x image coordinates in processed region of full image/granule (1-base...
+  y_image_processing_bounds (2,) int32 | long_name='Extent of y image coordinates in processed region of full image/granule (1-base...
+  x_image_feature_region_bounds (2,) int32 | long_name='Extent of x image coordinates in feature extraction region of full image/granul...
+  y_image_feature_region_bounds (2,) int32 | long_name='Extent of y image coordinates in feature extraction region of full image/granul...
+  x_image_feature_bounds (1, 2) int32 | long_name='Extent of volcanic feature in x image coordinates relative to full image/granul...
+  y_image_feature_bounds (1, 2) int32 | long_name='Extent of volcanic feature in y image coordinates relative to full image/granul...
+  x_feature_bounds (1, 2) int32 | long_name='Extent of volcanic feature in x image coordinates relative to processed region ...
+  y_feature_bounds (1, 2) int32 | long_name='Extent of volcanic feature in y image coordinates relative to processed region ...
+  feature_lat_lon_extent_geospatial_westbound_longitude (1,) float32 | long_name='feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  feature_lat_lon_extent_geospatial_northbound_latitude (1,) float32 | long_name='feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  feature_lat_lon_extent_geospatial_eastbound_longitude (1,) float32 | long_name='feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  feature_lat_lon_extent_geospatial_southbound_latitude (1,) float32 | long_name='feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  pc_feature_lat_lon_extent_geospatial_westbound_longitude (1,) float32 | long_name='parallax corrected feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  pc_feature_lat_lon_extent_geospatial_northbound_latitude (1,) float32 | long_name='parallax corrected feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  pc_feature_lat_lon_extent_geospatial_eastbound_longitude (1,) float32 | long_name='parallax corrected feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  pc_feature_lat_lon_extent_geospatial_southbound_latitude (1,) float32 | long_name='parallax corrected feature latitude and longitude references'; geospatial_lat_units='degrees_north'; geospatial_lon_units='degrees_east'
+  volcano_info () |S1 | long_name='Information on source volcano from Global Volcanism Program database'; id=np.int64(332020); name='Mauna Loa'; country='United States'; region='Hawaii and Pacific Ocean'; subregion='Hawaiian Islands'; status='Eruption Observed'; latitude=np.float32(19.475); longitude=np.float32(-155.608); elevation=np.float32(4170.0); type='Shield'; timeframe='1984 CE'; latitude_units='degrees_north'; longitude_units='degrees_east'; elevation_units='m'; vaac_region='Washington'
+  time_bounds (2,) int32 | long_name='Scan start and end times in seconds since epoch (1970-01-01 00:00:00)'; units='seconds since 1970-01-01 00:00:00'
+  volcano_thermal_activity () |S1 | long_name='Information on recent satellite detected thermal activity, given by the radiati...; units='days'; time_since_0MW=np.float32(0.0); time_since_10MW=np.float32(0.0); time_since_100MW=np.float32(0.0); time_since_1000MW=np.float32(0.0)
+  minimum_volcano_distance (1,) float32 | long_name='The smallest distance between the detected feature and the source volcano'; units='km'
+  maximum_volcano_distance (1,) float32 | long_name='The largest distance between the detected feature and the source volcano'; units='km'
+  wmo_satellite_id (1,) int32 | long_name='WMO assigned spacecraft identifier'
+  scan_domain_id (1,) int32 | long_name='The GEOCAT assigned ID associated with the sensor scan mode'
+  feature_id (1,) int32 | long_name='The feature ID within the current image'
+  mean_feature_time (1,) int32 | long_name='Mean volcanic feature time in seconds since epoch (1970-01-01 00:00:00)'; units='seconds since 1970-01-01 00:00:00'
+  feature_age (1,) float32 | long_name='The time that has elapsed between the current detection of the feature and the ...; units='minutes'
+  full_image_start_time (1,) int32 | long_name='Start time of full image/granule in seconds since epoch (1970-01-01 00:00:00)'; units='seconds since 1970-01-01 00:00:00'
+  full_image_end_time (1,) int32 | long_name='End time of full image/granule in seconds since epoch (1970-01-01 00:00:00)'; units='seconds since 1970-01-01 00:00:00'
+  first_detection_full_image_start_time (1,) int32 | long_name='Start time of full image/granule when the volcanic feature was first detected i...; units='seconds since 1970-01-01 00:00:00'
+  first_detection_mean_feature_time (1,) int32 | long_name='Mean time when the volcanic feature was first detected in seconds since epoch (...; units='seconds since 1970-01-01 00:00:00'
+  first_detection_wmo_satellite_id (1,) int32 | long_name='WMO assigned spacecraft identifier when the volcanic feature was first detected...
+  first_detection_scan_domain_id (1,) int32 | long_name='The GEOCAT assigned ID associated with the sensor scan mode when the volcanic f...
+  first_detection_feature_id (1,) int32 | long_name='The feature ID when the volcanic feature was first detected'
+  feature_latitude (1,) float32 | long_name='The latitude of the radiative center of the volcanic feature'; units='degrees_north'
+  feature_longitude (1,) float32 | long_name='The longitude of the radiative center of the volcanic feature'; units='degrees_east'
+  pc_feature_latitude (1,) float32 | long_name='The parallax corrected (pc) latitude of the radiative center of the volcanic fe...; units='degrees_north'
+  pc_feature_longitude (1,) float32 | long_name='The parallax corrected (pc) longitude of the radiative center of the volcanic f...; units='degrees_east'
+  mean_feature_solar_zenith_angle (1,) float32 | long_name='The mean solar zenith angle within the volcanic feature'; units='degree'
+  mean_feature_viewing_zenith_angle (1,) float32 | long_name='The mean viewing zenith angle within the volcanic feature'; units='degree'
+  feature_water_fraction (1,) float32 | long_name='The fraction of the volcanic feature that is over water'
+  mean_feature_tropopause_altitude (1,) float32 | long_name='The mean height of the tropopause'; units='km'
+  mean_feature_tropopause_temperature (1,) float32 | long_name='The mean temperature of the tropopause'; units='K'
+  feature_area (1,) float32 | long_name='The total area of the detected volcanic feature'; units='km2'
+  feature_area_bt240K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  feature_area_bt233K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  feature_area_bt230K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  feature_area_bt220K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  feature_area_bt210K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  feature_area_bt200K (1,) float32 | long_name='The area within the detected volcanic feature that has an infrared window brigh...; units='km2'
+  ash_mass_loading_total_mass (1,) float32 | long_name='The total mass of volcanic ash in the feature'; units='Tg'
+  ash_mass_loading_percentile25 (1,) float32 | long_name='The 25th percentile value of ash mass loading within the feature'; units='gm-2'
+  ash_mass_loading_percentile50 (1,) float32 | long_name='The 50th percentile value of ash mass loading within the feature'; units='gm-2'
+  ash_mass_loading_percentile75 (1,) float32 | long_name='The 75th percentile value of ash mass loading within the feature'; units='gm-2'
+  ash_mass_loading_percentile90 (1,) float32 | long_name='The 90th percentile value of ash mass loading within the feature'; units='gm-2'
+  ash_mass_loading_percentile95 (1,) float32 | long_name='The 95th percentile value of ash mass loading within the feature'; units='gm-2'
+  ash_mass_loading_maximum (1,) float32 | long_name='The maximum value of ash mass loading within the feature'; units='gm-2'
+  effective_radius_of_ash_percentile25 (1,) float32 | long_name='The 25th percentile value of ash effective radius within the feature'; units='um'
+  effective_radius_of_ash_percentile50 (1,) float32 | long_name='The 50th percentile value of ash effective radius within the feature'; units='um'
+  effective_radius_of_ash_percentile75 (1,) float32 | long_name='The 75th percentile value of ash effective radius within the feature'; units='um'
+  effective_radius_of_ash_percentile90 (1,) float32 | long_name='The 90th percentile value of ash effective radius within the feature'; units='um'
+  effective_radius_of_ash_percentile95 (1,) float32 | long_name='The 95th percentile value of ash effective radius within the feature'; units='um'
+  effective_radius_of_ash_maximum (1,) float32 | long_name='The maximum value of ash effective radius within the feature'; units='um'
+  ash_cloud_height_percentile50 (1,) float32 | long_name='The 50th percentile value of ash cloud top height within the feature'; units='km'
+  ash_cloud_height_percentile75 (1,) float32 | long_name='The 75th percentile value of ash cloud top height within the feature'; units='km'
+  ash_cloud_height_percentile90 (1,) float32 | long_name='The 90th percentile value of ash cloud top height within the feature'; units='km'
+  ash_cloud_height_percentile95 (1,) float32 | long_name='The 95th percentile value of ash cloud top height within the feature'; units='km'
+  ash_cloud_height_maximum (1,) float32 | long_name='The maximum value of ash cloud top height within the feature'; units='km'
+  infrared_window_brightness_temperature_minimum (1,) float32 | long_name='The minimum value of infrared window brightness temperature within the feature'; units='K'
+  ash_cloud_height_opaque_assumption_maximum (1,) float32 | long_name='The maximum value of ash cloud top height within the feature (assuming the feat...; units='km'
+  total_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of Earth Networks lightning strokes within the feature since t...
+  cg_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground Earth Networks lightning strokes within the featu...
+  near_vent_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of Earth Networks lightning strokes within 20 km of the vent s...
+  near_vent_cg_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground Earth Networks lightning strokes within 20 km of ...
+  total_environmental_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of Earth Networks lightning strokes, within the environment th...
+  cg_environmental_lightning_stroke_count_eni (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground Earth Networks lightning strokes, within the envi...
+  minimum_stroke_distance_to_vent_eni (1,) float32 | _FillValue=np.float32(-999.0); long_name='The minimum Earth Networks stroke to vent distance since the last satellite ima...; units='km'
+  total_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of WWLLN lightning strokes within the feature since the last s...
+  cg_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The number of WWLLN lightning strokes within the feature since the last satelli...
+  near_vent_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of WWLLN lightning strokes within 20 km of the vent since the ...
+  near_vent_cg_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground WWLLN lightning strokes within 20 km of the vent ...
+  total_environmental_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of WWLLN lightning strokes, within the environment that surrou...
+  cg_environmental_lightning_stroke_count_wwlln (1,) int32 | _FillValue=np.int32(-999); long_name='The number of WWLLN lightning strokes, within the environment that surrounds th...
+  minimum_stroke_distance_to_vent_wwlln (1,) float32 | _FillValue=np.float32(-999.0); long_name='The minimum WWLLN stroke to vent distance since the last satellite image'; units='km'
+  total_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLD360 lightning strokes within the feature since the last ...
+  cg_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground GLD360 lightning strokes within the feature since...
+  near_vent_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLD360 lightning strokes within 20 km of the vent since the...
+  near_vent_cg_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground GLD360 lightning strokes within 20 km of the vent...
+  total_environmental_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLD360 lightning strokes, within the environment that surro...
+  cg_environmental_lightning_stroke_count_gld360 (1,) int32 | _FillValue=np.int32(-999); long_name='The number of cloud-to-ground GLD360 lightning strokes, within the environment ...
+  minimum_stroke_distance_to_vent_gld360 (1,) float32 | _FillValue=np.float32(-999.0); long_name='The minimum GLD360 stroke to vent distance since the last satellite image'; units='km'
+  total_lightning_stroke_count_glm (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLM lightning groups within the feature since the last sate...
+  near_vent_lightning_stroke_count_glm (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLM lightning groups within 20 km of the vent since the las...
+  total_environmental_lightning_stroke_count_glm (1,) int32 | _FillValue=np.int32(-999); long_name='The total number of GLM lightning groups, within the environment that surrounds...
+  minimum_stroke_distance_to_vent_glm (1,) float32 | _FillValue=np.float32(-999.0); long_name='The minimum GLM group to vent distance since the last satellite image'; units='km'
+  total_lightning_energy_glm (1,) float32 | _FillValue=np.float32(-999.0); long_name='The total GLM optical energy within the feature since the last satellite image'; units='J'
+  feature_polygon_latitude (1, 10) float32 | _FillValue=np.float32(-999.0); long_name='The latitude of the autogenerated feature polygon'; units='degrees_north'
+  feature_polygon_longitude (1, 10) float32 | _FillValue=np.float32(-999.0); long_name='The longitude of the autogenerated feature polygon'; units='degrees_east'
+  pc_feature_polygon_latitude (1, 10) float32 | _FillValue=np.float32(-999.0); long_name='The parallax corrected latitude of the autogenerated feature polygon'; units='degrees_north'
+  pc_feature_polygon_longitude (1, 10) float32 | _FillValue=np.float32(-999.0); long_name='The parallax corrected longitude of the autogenerated feature polygon'; units='degrees_east'
+  latitude (155, 208) float32 | _FillValue=np.float32(-999.0); standard_name='latitude'; long_name='Latitude of the pixel center'; units='degrees_north'
+  longitude (155, 208) float32 | _FillValue=np.float32(-999.0); standard_name='longitude'; long_name='Longitude of the pixel center'; units='degrees_east'
+  pc_latitude (155, 208) float32 | _FillValue=np.float32(-999.0); standard_name='latitude_pc'; long_name='Parallax corrected latitude of the pixel center (only valid where feature is va...; units='degrees_north'
+  pc_longitude (155, 208) float32 | _FillValue=np.float32(-999.0); standard_name='longitude_pc'; long_name='Parallax corrected longitude of the pixel center (only valid where feature is v...; units='degrees_east'
+  time (155, 208) int32 | _FillValue=np.int32(-999); long_name='Observation time in seconds since epoch (1970-01-01 00:00:00)'; units='seconds since 1970-01-01 00:00:00'
+  brightness_temperature_4micron (155, 208) int16 | _FillValue=np.int16(-1); long_name='The brightness temperature that corresponds to a channel centered near 4 um'; units='K'; scale_factor=np.float32(0.01); add_offset=np.float32(150.0)
+  brightness_temperature_8micron (155, 208) int16 | _FillValue=np.int16(-1); long_name='The brightness temperature that corresponds to a channel centered near 8.5 um'; units='K'; scale_factor=np.float32(0.01); add_offset=np.float32(150.0)
+  brightness_temperature_10micron (155, 208) int16 | _FillValue=np.int16(-1); long_name='The brightness temperature that corresponds to a channel centered near 10 um'; units='K'; scale_factor=np.float32(0.01); add_offset=np.float32(150.0)
+  brightness_temperature_11micron (155, 208) int16 | _FillValue=np.int16(-1); long_name='The brightness temperature that corresponds to a channel centered near 11 um'; units='K'; scale_factor=np.float32(0.01); add_offset=np.float32(150.0)
+  brightness_temperature_12micron (155, 208) int16 | _FillValue=np.int16(-1); long_name='The brightness temperature that corresponds to a channel centered near 12 um'; units='K'; scale_factor=np.float32(0.01); add_offset=np.float32(150.0)
+  angular_index (155, 208) int8 | _FillValue=np.int8(-1); long_name='The index corresponding to the angular bin, relative to the source volcano, tha...
+  radius_index_km (155, 208) int8 | _FillValue=np.int8(-1); long_name='The index corresponding to the km based radius bin, relative to the source volc...
+  radius_index_nm (155, 208) int8 | _FillValue=np.int8(-1); long_name='The index corresponding to the nm based radius bin, relative to the source volc...
+  distance_traveled (155, 208) float32 | _FillValue=np.float32(-999.0); long_name='The approximate cumulative trajectory distance at a given location in the volca...; units='km'
+  residence_time (155, 208) float32 | _FillValue=np.float32(-999.0); long_name='The approximate cumulative time associated with a given trajectory'; units='h'
+  ash_spectral_signature_strength (155, 208) float32 | _FillValue=np.float32(-999.0); long_name='Indicator of spectral ambiguity between detected ash and non-ash features [0.0-...
+  ash_spectral_signature_strength_lwir_only (155, 208) float32 | _FillValue=np.float32(-999.0); long_name='Indicator of spectral ambiguity between detected ash and non-ash features [0.0-...
+  ash_mass_loading (155, 208) float32 | _FillValue=np.float32(-999.0); long_name='The total column loading of ash in the highest continuous ash layer'; units='gm-2'
+  event_idx (155, 208) int16 | long_name='2-d grid that maps each nevent array dimension [0-based] to the pixel locations...
+  ash_cloud_height (155, 208) int16 | _FillValue=np.int16(-1); long_name='The cloud top height of the highest continuous ash layer'; units='km'; scale_factor=np.float32(0.01); add_offset=np.float32(0.0)
+  effective_radius_of_ash (155, 208) int16 | _FillValue=np.int16(-1); long_name='The effective radius of ash in the highest continuous ash layer'; units='um'; scale_factor=np.float32(0.01); add_offset=np.float32(0.0)
+  radius_bins (15,) float32 | long_name='The radius binning scheme used to characterize the distance from the source vol...; units='km or nm'
+  angular_bins (16,) float32 | long_name='The angular binning scheme used to characterize the position of the feature rel...; units='degrees'; angle_meanings='S, SSW, SW, WSW, W, WNW, NW, NNW, N, NNE, NE, ENE, E, ESE, SE, SSE'
+  field_bins (3,) float32 | long_name='The coarse radius binning scheme used to characterize the distance from the sou...; units='km or nm'; field_meanings='near field, intermediate field, far field'; field_meanings_km='<20 km, 20 - 100 km, >100 km'; field_meanings_nm='<20 nm, 20 - 100 nm, >80 nm'
+  polar_histogram_km (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels as a f...
+  polar_histogram_nm (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels as a f...
+  polar_histogram_concentration_gt0p2_thk0p5 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt2p0_thk0p5 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt5p0_thk0p5 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt10p0_thk0p5 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt0p2_thk1p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt2p0_thk1p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt5p0_thk1p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt10p0_thk1p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt0p2_thk2p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt2p0_thk2p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt5p0_thk2p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_histogram_concentration_gt10p0_thk2p0 (1, 15, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels with a...; radius_units='nm'
+  polar_field_histogram_km (1, 3, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels as a f...; field_meanings='<20 km, 20 - 100 km, >100 km'
+  polar_field_histogram_nm (1, 3, 16) int32 | long_name='A polar coordinate histogram that indicates the number of feature pixels as a f...; field_meanings='<20 nm, 20 - 100 nm, >80 nm'
+  dominant_polar_grid_cell_km_angle (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_km_angle_meaning (1,) <class 'str'> | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_km_pixel_count (1,) int32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_km_minimum_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='km'
+  dominant_polar_grid_cell_km_median_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='km'
+  dominant_polar_grid_cell_km_maximum_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='km'
+  dominant_polar_grid_cell_nm_angle (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_nm_angle_meaning (1,) <class 'str'> | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_nm_pixel_count (1,) int32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...
+  dominant_polar_grid_cell_nm_minimum_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='nm'
+  dominant_polar_grid_cell_nm_median_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='nm'
+  dominant_polar_grid_cell_nm_maximum_radius (1,) float32 | long_name='The polar coordinate angle/radius histogram with the greatest number of volcani...; units='nm'
+  dominant_polar_grid_cell_near_field_angle (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'
+  dominant_polar_grid_cell_near_field_angle_meaning (1,) <class 'str'> | long_name='The near field angle with the greatest number of volcanic cloud pixels'
+  dominant_polar_grid_cell_near_field_minimum_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='nm'
+  dominant_polar_grid_cell_near_field_median_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='nm'
+  dominant_polar_grid_cell_near_field_maximum_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='nm'
+  dominant_polar_grid_cell_near_field_speed (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='kts'
+  dominant_polar_grid_cell_near_field_uncertainty_speed (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='kts'
+  dominant_polar_grid_cell_near_field_minimum_height (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='km'
+  dominant_polar_grid_cell_near_field_median_height (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='km'
+  dominant_polar_grid_cell_near_field_maximum_height (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='km'
+  dominant_polar_grid_cell_near_field_minimum_loading (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='gm-2'
+  dominant_polar_grid_cell_near_field_median_loading (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='gm-2'
+  dominant_polar_grid_cell_near_field_maximum_loading (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='gm-2'
+  dominant_polar_grid_cell_near_field_minimum_effective_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='um'
+  dominant_polar_grid_cell_near_field_median_effective_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='um'
+  dominant_polar_grid_cell_near_field_maximum_effective_radius (1,) float32 | long_name='The near field angle with the greatest number of volcanic cloud pixels'; units='um'
+  ash_concentration_statistics_count_gt0p2_thk0p5 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt2p0_thk0p5 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt5p0_thk0p5 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt10p0_thk0p5 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt0p2_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt2p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt5p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt10p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt0p2_thk1p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt2p0_thk1p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt5p0_thk1p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt10p0_thk1p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt0p2_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt2p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt5p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt10p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt0p2_thk2p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt2p0_thk2p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt5p0_thk2p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_count_gt10p0_thk2p0 (1,) int64 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt0p2_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt2p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt5p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  ash_concentration_statistics_frac_gt10p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance'
+  near_field_ash_concentration_statistics_count_gt0p2_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt2p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt5p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt10p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt0p2_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt2p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt5p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt10p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt0p2_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt2p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt5p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt10p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt0p2_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt2p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt5p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt10p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt0p2_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt2p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt5p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_count_gt10p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt0p2_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt2p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt5p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  near_field_ash_concentration_statistics_frac_gt10p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the near field (<20 nm)'
+  intermediate_field_ash_concentration_statistics_count_gt0p2_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt2p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt5p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt10p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt0p2_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt2p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt5p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt10p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt0p2_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt2p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt5p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt10p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt0p2_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt2p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt5p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt10p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt0p2_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt2p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt5p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_count_gt10p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt0p2_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt2p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt5p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  intermediate_field_ash_concentration_statistics_frac_gt10p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the intermediate field (20 - 100 ...
+  far_field_ash_concentration_statistics_count_gt0p2_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt2p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt5p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt10p0_thk0p5 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt0p2_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt2p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt5p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt10p0_thk0p5 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt0p2_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt2p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt5p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt10p0_thk1p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt0p2_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt2p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt5p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt10p0_thk1p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt0p2_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt2p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt5p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_count_gt10p0_thk2p0 (1,) int32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt0p2_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt2p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt5p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  far_field_ash_concentration_statistics_frac_gt10p0_thk2p0 (1,) float32 | long_name='Statistics on ash concentration exceedance in the far field (>80 nm)'
+  DQF (155, 208) int16 | long_name='Packed data quality flags'; flag_meanings='Bit positions:: 0: _FillValue/no issues, 1: MWIR saturation - high gain/low tem...
+  ash_retv_qf (155, 208) int8 | _FillValue=np.int8(-2); standard_name='quality_flag'; long_name='Ash retrieval quality flags'; valid_range=array([0, 7], dtype=int8); flag_meanings='0: invalid_product, 1: unknown_product_quality, 2: low_product_quality, 3: high...
+
+==== lineas con posibles condiciones de uso
+(ninguna)

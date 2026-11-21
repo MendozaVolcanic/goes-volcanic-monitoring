@@ -1,0 +1,1660 @@
+
+==== l1_data/geocatL1: 10 archivos
+
+######## geocatL1.GOES-17.CONUS.2022332.091600.hdf
+  @uuid = '83ea6ae0-048e-421b-b6c6-abad47cc6f91'
+  @Output_Library_Version = 'HDF Version 4.2 Release 15, November 28, 2019'
+  @GEOCAT_Version = '3.4.5'
+  @Ancillary_Package_Version = 'NA'
+  @Test_Package_Version = 'NA'
+  @Processing_Machine = 'blast'
+  @Production_DateTime = '2026-07-09T20:38:52-00:00'
+  @Platform_Name = 'GOES-17'
+  @Spacecraft_Name = 'GOES-17'
+  @WMO_Spacecraft_ID = 664
+  @WMO_BUFR_Spacecraft_ID = 271
+  @Platform_ID = 188
+  @Sensor_ID = 188
+  @Sensor_Name = 'goesr'
+  @Sensor_Name_Imager = 'ABI'
+  @Sensor_Name_HyperIR = 'MISSING'
+  @Scanning_Domain_Name = 'CONUS'
+  @Scanning_Domain_Options = 'FULL_DISK,CONUS,MEOSCALE1,MESOSCALE2'
+  @Scanning_Domain_Id = 2
+  @Modified_Scanning_Domain_Name = 'CONUS'
+  @Projection_Longitude = -137.0
+  @Subsatellite_Longitude = -137.3300018310547
+  @Satellite_Height = 42165620.0
+  @X_Offset_Nav = -0.06997200101613998
+  @Y_Offset_Nav = 0.12821200489997864
+  @X_Scale_Nav = 5.6000000768108293e-05
+  @Y_Scale_Nav = -5.6000000768108293e-05
+  @Years_Since_Launch = 4.744695663452148
+  @Image_Date = 122332
+  @Image_Time = 91600
+  @Actual_Image_Date = 122332
+  @Actual_Image_Time = 91614
+  @First_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Last_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Element_Resolution = 2.0
+  @Line_Resolution = 2.0
+  @Original_NumberOfElements = 2500
+  @Original_NumberOfLines = 1500
+  @Original_UpperLeftElement_Coordinate = -999
+  @Original_UpperLeftLine_Coordinate = -999
+  @First_Element_Processed = 1
+  @Last_Element_Processed = 500
+  @Element_Stride = 1
+  @First_Line_Processed = 1200
+  @Last_Line_Processed = 1500
+  @Line_Segment_Size = 301
+  @Max_Pixel_Overlap = 2
+  @Maximum_Valid_Viewing_Zenith_Angle = 85
+  @Earth-Sun_Distance = 0.9865911602973938
+  @Level1a_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1a_File = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Level1b_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1b_File = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Ancillary_Data_Directory = './data/'
+  @Navigation_Method = 'On-the-fly'
+  @Precomputed_Navigation_File = 'NA'
+  @Terrain_Corrected_Nav_Option = 0
+  @Terrain_Corrected_Nav_Source = 'None'
+  @Percentage_Day = 0.0
+  @Percentage_Night = 100.0
+  @Percentage_Terminator = 0.0
+  @Latitude_Range = [14.651235580444336, 20.78638458251953]
+  @Longitude_Range = [-162.65826416015625, -151.28651428222656]
+  @Planck_Method = 'FUNCTION'
+  @GEOCAT_Total_Runtime = 14.367600440979004
+  channel_central_wavelength 18 tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='um'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_sr_central_wavelength 29 tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='um'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_se_central_wavelength 17 tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='um'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_wavenumber [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='cm-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_sr_wavenumber [1, 29] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='cm-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_se_wavenumber [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='cm-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  fk1_planck [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='see manual for planck function form'; units='mWm-2sr-1(cm-1)-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  fk1_se_planck [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='see manual for planck function form'; units='mWm-2sr-1(cm-1)-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  fk2_planck [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='see manual for planck function form'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  fk2_se_planck [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='see manual for planck function form'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  bc1_planck [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='see manual for planck function form'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  bc1_se_planck [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='see manual for planck function form'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  bc2_planck [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='see manual for planck function form'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  bc2_se_planck [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='see manual for planck function form'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_slope [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_sr_slope [1, 29] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_se_slope [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_offset [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_sr_offset [1, 29] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_se_offset [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_slope_degrade [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_sr_slope_degrade [1, 29] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_solar_constant [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='mWm-2str-1(cm-1)-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_sr_solar_constant [1, 29] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='mWm-2str-1(cm-1)-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_se_solar_constant [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='mWm-2str-1(cm-1)-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  calibration_focal_plane_temperature 18 tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='calibration block'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  scan_line_time 301 tipo=24 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='none'; units='seconds_since_jan_1_'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  pixel_latitude [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='none'; units='degrees_north'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  pixel_longitude [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='none'; units='degrees_east'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  pixel_latitude_tc [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='none'; units='degrees_north'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  pixel_longitude_tc [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='none'; units='degrees_east'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  pixel_solar_zenith_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.0027466658528397473; add_offset=90.0; _FillValue=-32768
+  pixel_satellite_zenith_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.0027466658528397473; add_offset=90.0; _FillValue=-32768
+  pixel_relative_azimuth_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.005493331705679495; add_offset=-0.0; _FillValue=-32768
+  pixel_surface_type [301, 500] tipo=20 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='none'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  pixel_ecosystem_type [301, 500] tipo=20 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='none'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  channel_2_reflectance [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='%'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_2_reflectance_max [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='%'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_5_reflectance [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='%'; scaling_method=1; scale_factor=0.0021362956633198035; add_offset=50.0; _FillValue=-32768
+  channel_5_radiance [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='W m-2 sr-1 um-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_5_reflectance_max [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='%'; scaling_method=1; scale_factor=0.0021362956633198035; add_offset=50.0; _FillValue=-32768
+  channel_6_reflectance [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='%'; scaling_method=1; scale_factor=0.0021362956633198035; add_offset=50.0; _FillValue=-32768
+  channel_6_radiance [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='W m-2 sr-1 um-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_7_reflectance [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='%'; scaling_method=1; scale_factor=0.0021362956633198035; add_offset=50.0; _FillValue=-32768
+  channel_7_emissivity [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_7_brightness_temperature [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_10_brightness_temperature [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=1; scale_factor=0.0019837031159398175; add_offset=235.0; _FillValue=-32768
+  channel_11_brightness_temperature [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=1; scale_factor=0.003357036042359691; add_offset=280.0; _FillValue=-32768
+  channel_13_brightness_temperature [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=1; scale_factor=0.003357036042359691; add_offset=280.0; _FillValue=-32768
+  channel_14_brightness_temperature [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=1; scale_factor=0.003357036042359691; add_offset=280.0; _FillValue=-32768
+  channel_15_brightness_temperature [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=124; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=1; scale_factor=0.003357036042359691; add_offset=280.0; _FillValue=-32768
+
+==== rtm_data/geocatRTM: 10 archivos
+
+######## geocatRTM.GOES-17.CONUS.2022332.091600.hdf
+  @uuid = '83ea6ae0-048e-421b-b6c6-abad47cc6f91'
+  @Output_Library_Version = 'HDF Version 4.2 Release 15, November 28, 2019'
+  @GEOCAT_Version = '3.4.5'
+  @Ancillary_Package_Version = 'NA'
+  @Test_Package_Version = 'NA'
+  @Processing_Machine = 'blast'
+  @Production_DateTime = '2026-07-09T20:38:52-00:00'
+  @Platform_Name = 'GOES-17'
+  @Spacecraft_Name = 'GOES-17'
+  @WMO_Spacecraft_ID = 664
+  @WMO_BUFR_Spacecraft_ID = 271
+  @Platform_ID = 188
+  @Sensor_ID = 188
+  @Sensor_Name = 'goesr'
+  @Sensor_Name_Imager = 'ABI'
+  @Sensor_Name_HyperIR = 'MISSING'
+  @Scanning_Domain_Name = 'CONUS'
+  @Scanning_Domain_Options = 'FULL_DISK,CONUS,MEOSCALE1,MESOSCALE2'
+  @Scanning_Domain_Id = 2
+  @Modified_Scanning_Domain_Name = 'CONUS'
+  @Projection_Longitude = -137.0
+  @Subsatellite_Longitude = -137.3300018310547
+  @Satellite_Height = 42165620.0
+  @X_Offset_Nav = -0.06997200101613998
+  @Y_Offset_Nav = 0.12821200489997864
+  @X_Scale_Nav = 5.6000000768108293e-05
+  @Y_Scale_Nav = -5.6000000768108293e-05
+  @Years_Since_Launch = 4.744695663452148
+  @Image_Date = 122332
+  @Image_Time = 91600
+  @Actual_Image_Date = 122332
+  @Actual_Image_Time = 91614
+  @First_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Last_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Element_Resolution = 2.0
+  @Line_Resolution = 2.0
+  @Original_NumberOfElements = 2500
+  @Original_NumberOfLines = 1500
+  @Original_UpperLeftElement_Coordinate = -999
+  @Original_UpperLeftLine_Coordinate = -999
+  @First_Element_Processed = 1
+  @Last_Element_Processed = 500
+  @Element_Stride = 1
+  @First_Line_Processed = 1200
+  @Last_Line_Processed = 1500
+  @Line_Segment_Size = 301
+  @Max_Pixel_Overlap = 2
+  @Maximum_Valid_Viewing_Zenith_Angle = 85
+  @Earth-Sun_Distance = 0.9865911602973938
+  @Level1a_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1a_File = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Level1b_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1b_File = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Ancillary_Data_Directory = './data/'
+  @Navigation_Method = 'On-the-fly'
+  @Precomputed_Navigation_File = 'NA'
+  @Terrain_Corrected_Nav_Option = 0
+  @Terrain_Corrected_Nav_Source = 'None'
+  @Percentage_Day = 0.0
+  @Percentage_Night = 100.0
+  @Percentage_Terminator = 0.0
+  @Latitude_Range = [14.651235580444336, 20.78638458251953]
+  @Longitude_Range = [-162.65826416015625, -151.28651428222656]
+  @NWP_Source = 'gfs'
+  @NWP_Resolution = 0.5
+  @NWP_Directory = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/gfs_hdf/'
+  @First_NWP_File = 'gfs.22112718_F012.hdf'
+  @Second_NWP_File = 'gfs.22112800_F012.hdf'
+  @Mesoscale_NWP_Source = 'no_nwp_meso'
+  @Mesoscale_NWP_Directory = 'NA'
+  @First_Mesoscale_NWP_File = 'NA'
+  @Second_Mesoscale_NWP_File = 'NA'
+  @Imager_RTM_Source = 'pfaast'
+  @HyperIR_RTM_Source = 'Nonest'
+  @Imager_Land_Surface_Emissivity_Source = 'SEEBOR'
+  @Imager_Sea_Surface_Emissivity_Source = 'CONST'
+  @Imager_Land_Surface_Albedo_Source = 'MODIS_WS'
+  @Imager_Sea_Surface_Albedo_Source = 'NONE'
+  @HyperIR_Land_Surface_Emissivity_Source = 'SEEBOR'
+  @HyperIR_Sea_Surface_Emissivity_Source = 'CONST'
+  @Surface_Emissivity_Source = 'SEEBOR'
+  @Surface_Emissivity_Filename = 'global_emiss_intABI_2005305.hdf'
+  @Snow_Mask_Source = 'IMS'
+  @Snow_Mask_Directory = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/snow_data/'
+  @Snow_Mask_Filename = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/snow_data/snow_map_4km_221128.hdf'
+  @Sea_Surface_Temperature_Source = 'NA'
+  @Sea_Surface_Temperature_Directory = 'NA'
+  @Sea_Surface_Temperature_Filename = 'NA'
+  @GEOCAT_Total_Runtime = 14.367600440979004
+  channel_wavenumber [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='calibration block'; units='cm-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_se_wavenumber [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='calibration block'; units='cm-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  fk1_planck [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='see manual for planck function form'; units='mWm-2sr-1(cm-1)-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  fk1_se_planck [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='see manual for planck function form'; units='mWm-2sr-1(cm-1)-1'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  fk2_planck [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='see manual for planck function form'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  fk2_se_planck [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='see manual for planck function form'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  bc1_planck [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='see manual for planck function form'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  bc1_se_planck [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='see manual for planck function form'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  bc2_planck [1, 18] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='see manual for planck function form'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  bc2_se_planck [1, 17] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='see manual for planck function form'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  scan_line_time 301 tipo=24 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='none'; units='seconds_since_jan_1_'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  pixel_latitude [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='none'; units='degrees_north'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  pixel_longitude [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='none'; units='degrees_east'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  pixel_solar_zenith_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.0027466658528397473; add_offset=90.0; _FillValue=-32768
+  pixel_satellite_zenith_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.0027466658528397473; add_offset=90.0; _FillValue=-32768
+  pixel_relative_azimuth_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.005493331705679495; add_offset=-0.0; _FillValue=-32768
+  pixel_surface_type [301, 500] tipo=20 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='none'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  pixel_ecosystem_type [301, 500] tipo=20 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='none'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  nwp_x_index [301, 500] tipo=24 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='x-coordinate in NWP grid for a given satellite pixel'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  nwp_y_index [301, 500] tipo=24 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='y-coordinate in NWP grid for a given satellite pixel'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  channel_7_brightness_temperature_clear [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_10_brightness_temperature_clear [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=1; scale_factor=0.0019837031159398175; add_offset=235.0; _FillValue=-32768
+  channel_11_brightness_temperature_clear [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=1; scale_factor=0.003357036042359691; add_offset=280.0; _FillValue=-32768
+  channel_11_surface_emissivity [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='all data are referenced to the GEOCAT channels'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_13_brightness_temperature_clear [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=1; scale_factor=0.003357036042359691; add_offset=280.0; _FillValue=-32768
+  channel_13_surface_emissivity [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='all data are referenced to the GEOCAT channels'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_14_brightness_temperature_clear [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=1; scale_factor=0.003357036042359691; add_offset=280.0; _FillValue=-32768
+  channel_14_surface_emissivity [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='all data are referenced to the GEOCAT channels'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  channel_15_brightness_temperature_clear [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='all data are referenced to the GEOCAT channels'; units='K'; scaling_method=1; scale_factor=0.003357036042359691; add_offset=280.0; _FillValue=-32768
+  channel_15_surface_emissivity [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=126; reference='all data are referenced to the GEOCAT channels'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+
+==== l2_data/geocatL2.: 10 archivos
+
+######## geocatL2.GOES-17.CONUS.2022332.091600.hdf
+  @uuid = '83ea6ae0-048e-421b-b6c6-abad47cc6f91'
+  @Output_Library_Version = 'HDF Version 4.2 Release 15, November 28, 2019'
+  @GEOCAT_Version = '3.4.5'
+  @Ancillary_Package_Version = 'NA'
+  @Test_Package_Version = 'NA'
+  @Processing_Machine = 'blast'
+  @Production_DateTime = '2026-07-09T20:38:52-00:00'
+  @Platform_Name = 'GOES-17'
+  @Spacecraft_Name = 'GOES-17'
+  @WMO_Spacecraft_ID = 664
+  @WMO_BUFR_Spacecraft_ID = 271
+  @Platform_ID = 188
+  @Sensor_ID = 188
+  @Sensor_Name = 'goesr'
+  @Sensor_Name_Imager = 'ABI'
+  @Sensor_Name_HyperIR = 'MISSING'
+  @Scanning_Domain_Name = 'CONUS'
+  @Scanning_Domain_Options = 'FULL_DISK,CONUS,MEOSCALE1,MESOSCALE2'
+  @Scanning_Domain_Id = 2
+  @Modified_Scanning_Domain_Name = 'CONUS'
+  @Projection_Longitude = -137.0
+  @Subsatellite_Longitude = -137.3300018310547
+  @Satellite_Height = 42165620.0
+  @X_Offset_Nav = -0.06997200101613998
+  @Y_Offset_Nav = 0.12821200489997864
+  @X_Scale_Nav = 5.6000000768108293e-05
+  @Y_Scale_Nav = -5.6000000768108293e-05
+  @Years_Since_Launch = 4.744695663452148
+  @Image_Date = 122332
+  @Image_Time = 91600
+  @Actual_Image_Date = 122332
+  @Actual_Image_Time = 91614
+  @First_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Last_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Element_Resolution = 2.0
+  @Line_Resolution = 2.0
+  @Original_NumberOfElements = 2500
+  @Original_NumberOfLines = 1500
+  @Original_UpperLeftElement_Coordinate = -999
+  @Original_UpperLeftLine_Coordinate = -999
+  @First_Element_Processed = 1
+  @Last_Element_Processed = 500
+  @Element_Stride = 1
+  @First_Line_Processed = 1200
+  @Last_Line_Processed = 1500
+  @Line_Segment_Size = 301
+  @Max_Pixel_Overlap = 2
+  @Maximum_Valid_Viewing_Zenith_Angle = 85
+  @Earth-Sun_Distance = 0.9865911602973938
+  @Level1a_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1a_File = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Level1b_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1b_File = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Ancillary_Data_Directory = './data/'
+  @Navigation_Method = 'On-the-fly'
+  @Precomputed_Navigation_File = 'NA'
+  @Terrain_Corrected_Nav_Option = 0
+  @Terrain_Corrected_Nav_Source = 'None'
+  @Percentage_Day = 0.0
+  @Percentage_Night = 100.0
+  @Percentage_Terminator = 0.0
+  @Latitude_Range = [14.651235580444336, 20.78638458251953]
+  @Longitude_Range = [-162.65826416015625, -151.28651428222656]
+  @NWP_Source = 'gfs'
+  @NWP_Resolution = 0.5
+  @NWP_Directory = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/gfs_hdf/'
+  @First_NWP_File = 'gfs.22112718_F012.hdf'
+  @Second_NWP_File = 'gfs.22112800_F012.hdf'
+  @Mesoscale_NWP_Source = 'no_nwp_meso'
+  @Mesoscale_NWP_Directory = 'NA'
+  @First_Mesoscale_NWP_File = 'NA'
+  @Second_Mesoscale_NWP_File = 'NA'
+  @Imager_RTM_Source = 'pfaast'
+  @HyperIR_RTM_Source = 'Nonest'
+  @Imager_Land_Surface_Emissivity_Source = 'SEEBOR'
+  @Imager_Sea_Surface_Emissivity_Source = 'CONST'
+  @Imager_Land_Surface_Albedo_Source = 'MODIS_WS'
+  @Imager_Sea_Surface_Albedo_Source = 'NONE'
+  @HyperIR_Land_Surface_Emissivity_Source = 'SEEBOR'
+  @HyperIR_Sea_Surface_Emissivity_Source = 'CONST'
+  @Surface_Emissivity_Source = 'SEEBOR'
+  @Surface_Emissivity_Filename = 'global_emiss_intABI_2005305.hdf'
+  @Snow_Mask_Source = 'IMS'
+  @Snow_Mask_Directory = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/snow_data/'
+  @Snow_Mask_Filename = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/snow_data/snow_map_4km_221128.hdf'
+  @Sea_Surface_Temperature_Source = 'NA'
+  @Sea_Surface_Temperature_Directory = 'NA'
+  @Sea_Surface_Temperature_Filename = 'NA'
+  @Default_Name_pix_tracking = 'vcat_tracking_2_5_7_10_11_13_14_15'
+  @Default_Index_pix_tracking = 2
+  @Default_Name_cmask = 'NA'
+  @Default_Index_cmask = -999
+  @Default_Name_ctype = 'NA'
+  @Default_Index_ctype = -999
+  @Default_Name_amask = 'NA'
+  @Default_Index_amask = -999
+  @Default_Name_cldz = 'NA'
+  @Default_Index_cldz = -999
+  @Default_Name_cldtau_day = 'NA'
+  @Default_Index_cldtau_day = -999
+  @Default_Name_fog = 'NA'
+  @Default_Index_fog = -999
+  @Default_Name_ash_det = 'vcat_ashdet_pix_2_7_10_11_13_14_15'
+  @Default_Index_ash_det = 62
+  @Default_Name_ash_hyperir = 'NA'
+  @Default_Index_ash_hyperir = -999
+  @Default_Name_so2_det = 'NA'
+  @Default_Index_so2_det = -999
+  @Default_Name_so2_hyperir = 'NA'
+  @Default_Index_so2_hyperir = -999
+  @Default_Name_ash_ret = 'vcat_ashprop_13_14_15_16'
+  @Default_Index_ash_ret = 74
+  @Default_Name_so2_ret = 'NA'
+  @Default_Index_so2_ret = -999
+  @NumberOf_Algorithms_Processed = 6
+  @GEOCAT_Total_Runtime = 14.367600440979004
+  @Ash_Mask_Status = 'APPLIED'
+  @Ash_Qc_Status = 'APPLIED'
+  @Ash_Fill_Status = 'APPLIED'
+  @Hot_Mask_Status = 'NOT APPLIED'
+  @Hot_Qc_Status = 'NOT APPLIED'
+  @Hot_Fill_Status = 'NOT APPLIED'
+  scan_line_time 301 tipo=24 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=125; reference='none'; units='seconds_since_jan_1_'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  pixel_latitude [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=125; reference='none'; units='degrees_north'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  pixel_longitude [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=125; reference='none'; units='degrees_east'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  pixel_solar_zenith_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=125; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.0027466658528397473; add_offset=90.0; _FillValue=-32768
+  pixel_satellite_zenith_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=125; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.0027466658528397473; add_offset=90.0; _FillValue=-32768
+  pixel_relative_azimuth_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=125; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.005493331705679495; add_offset=-0.0; _FillValue=-32768
+  pixel_surface_type [301, 500] tipo=20 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=125; reference='none'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  pixel_ecosystem_type [301, 500] tipo=20 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=125; reference='none'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  nwp_x_index [301, 500] tipo=24 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=125; reference='x-coordinate in NWP grid for a given satellite pixel'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  nwp_y_index [301, 500] tipo=24 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=125; reference='y-coordinate in NWP grid for a given satellite pixel'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_ashdet_pix_2_7_10_11_13_14_15_ash_probability [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_ash_probability_IR [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_ash_probability_SW_IR [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_ash_probability_subset [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_pixel_area [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='km^2'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_ash_top_temperature [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_ash_top_pressure [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_ash_top_height [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_ash_emissivity [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_Ash_Beta [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_ash_optical_depth_ir [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_Ash_Retv_Qf [301, 500] tipo=20 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  vcat_ashprop_13_14_15_16_Ash_PQI [301, 500, 1] tipo=20 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  vcat_ashprop_13_14_15_16_ash_mass_loading [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_ash_effective_radius [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_Ash_Temperature_Error [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_Ash_Pressure_Error [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_Ash_Height_Error [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_Ash_Emissivity_Error [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_Ash_Beta_Error [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_cloud_emissivity_ch14_tot [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_reff_tot [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='um'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_cloud_beta_8511_opaque [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_thermal_2_5_6_7_11_13_14_15_DQF_Thermal [301, 500] tipo=22 | algorithm_name='VOLCAT Thermal Anomaly Analysis'; algorithm_version='none'; algorithm_index=18; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-32768
+  vcat_thermal_2_5_6_7_11_13_14_15_VRP [301, 500] tipo=5 | algorithm_name='VOLCAT Thermal Anomaly Analysis'; algorithm_version='none'; algorithm_index=18; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_thermal_2_5_6_7_11_13_14_15_VRP_Unmodified [301, 500] tipo=5 | algorithm_name='VOLCAT Thermal Anomaly Analysis'; algorithm_version='none'; algorithm_index=18; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_thermal_2_5_6_7_11_13_14_15_Thermal_Background_Trans_Mean [301, 500] tipo=5 | algorithm_name='VOLCAT Thermal Anomaly Analysis'; algorithm_version='none'; algorithm_index=18; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_thermal_2_5_6_7_11_13_14_15_X_Hires_SWIR_Max [301, 500] tipo=24 | algorithm_name='VOLCAT Thermal Anomaly Analysis'; algorithm_version='none'; algorithm_index=18; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_thermal_2_5_6_7_11_13_14_15_Y_Hires_SWIR_Max [301, 500] tipo=24 | algorithm_name='VOLCAT Thermal Anomaly Analysis'; algorithm_version='none'; algorithm_index=18; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_ashdet_obj_2_7_10_11_13_14_15_Robust_So2_Mask [301, 500] tipo=20 | algorithm_name='VOLCAT Volcanic Ash Detection (Part II)'; algorithm_version='none'; algorithm_index=72; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  Ash_Group_Id_2d [301, 500] tipo=24 | scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  Ice_Group_Id_2d [301, 500] tipo=24 | scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  Hot_Group_Id_2d [301, 500] tipo=24 | scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+
+==== l2_data/geocatL2S1: 10 archivos
+
+######## geocatL2S1.GOES-17.CONUS.2022332.091600.hdf
+  @uuid = '83ea6ae0-048e-421b-b6c6-abad47cc6f91'
+  @Output_Library_Version = 'HDF Version 4.2 Release 15, November 28, 2019'
+  @GEOCAT_Version = '3.4.5'
+  @Ancillary_Package_Version = 'NA'
+  @Test_Package_Version = 'NA'
+  @Processing_Machine = 'blast'
+  @Production_DateTime = '2026-07-09T20:38:52-00:00'
+  @Platform_Name = 'GOES-17'
+  @Spacecraft_Name = 'GOES-17'
+  @WMO_Spacecraft_ID = 664
+  @WMO_BUFR_Spacecraft_ID = 271
+  @Platform_ID = 188
+  @Sensor_ID = 188
+  @Sensor_Name = 'goesr'
+  @Sensor_Name_Imager = 'ABI'
+  @Sensor_Name_HyperIR = 'MISSING'
+  @Scanning_Domain_Name = 'CONUS'
+  @Scanning_Domain_Options = 'FULL_DISK,CONUS,MEOSCALE1,MESOSCALE2'
+  @Scanning_Domain_Id = 2
+  @Modified_Scanning_Domain_Name = 'CONUS'
+  @Projection_Longitude = -137.0
+  @Subsatellite_Longitude = -137.3300018310547
+  @Satellite_Height = 42165620.0
+  @X_Offset_Nav = -0.06997200101613998
+  @Y_Offset_Nav = 0.12821200489997864
+  @X_Scale_Nav = 5.6000000768108293e-05
+  @Y_Scale_Nav = -5.6000000768108293e-05
+  @Years_Since_Launch = 4.744695663452148
+  @Image_Date = 122332
+  @Image_Time = 91600
+  @Actual_Image_Date = 122332
+  @Actual_Image_Time = 91614
+  @First_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Last_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Element_Resolution = 2.0
+  @Line_Resolution = 2.0
+  @Original_NumberOfElements = 2500
+  @Original_NumberOfLines = 1500
+  @Original_UpperLeftElement_Coordinate = -999
+  @Original_UpperLeftLine_Coordinate = -999
+  @First_Element_Processed = 1
+  @Last_Element_Processed = 500
+  @Element_Stride = 1
+  @First_Line_Processed = 1200
+  @Last_Line_Processed = 1500
+  @Line_Segment_Size = 301
+  @Max_Pixel_Overlap = 2
+  @Maximum_Valid_Viewing_Zenith_Angle = 85
+  @Earth-Sun_Distance = 0.9865911602973938
+  @Level1a_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1a_File = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Level1b_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1b_File = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Ancillary_Data_Directory = './data/'
+  @Navigation_Method = 'On-the-fly'
+  @Precomputed_Navigation_File = 'NA'
+  @Terrain_Corrected_Nav_Option = 0
+  @Terrain_Corrected_Nav_Source = 'None'
+  @Percentage_Day = 0.0
+  @Percentage_Night = 100.0
+  @Percentage_Terminator = 0.0
+  @Latitude_Range = [14.651235580444336, 20.78638458251953]
+  @Longitude_Range = [-162.65826416015625, -151.28651428222656]
+  @NWP_Source = 'gfs'
+  @NWP_Resolution = 0.5
+  @NWP_Directory = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/gfs_hdf/'
+  @First_NWP_File = 'gfs.22112718_F012.hdf'
+  @Second_NWP_File = 'gfs.22112800_F012.hdf'
+  @Mesoscale_NWP_Source = 'no_nwp_meso'
+  @Mesoscale_NWP_Directory = 'NA'
+  @First_Mesoscale_NWP_File = 'NA'
+  @Second_Mesoscale_NWP_File = 'NA'
+  @Imager_RTM_Source = 'pfaast'
+  @HyperIR_RTM_Source = 'Nonest'
+  @Imager_Land_Surface_Emissivity_Source = 'SEEBOR'
+  @Imager_Sea_Surface_Emissivity_Source = 'CONST'
+  @Imager_Land_Surface_Albedo_Source = 'MODIS_WS'
+  @Imager_Sea_Surface_Albedo_Source = 'NONE'
+  @HyperIR_Land_Surface_Emissivity_Source = 'SEEBOR'
+  @HyperIR_Sea_Surface_Emissivity_Source = 'CONST'
+  @Surface_Emissivity_Source = 'SEEBOR'
+  @Surface_Emissivity_Filename = 'global_emiss_intABI_2005305.hdf'
+  @Snow_Mask_Source = 'IMS'
+  @Snow_Mask_Directory = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/snow_data/'
+  @Snow_Mask_Filename = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/snow_data/snow_map_4km_221128.hdf'
+  @Sea_Surface_Temperature_Source = 'NA'
+  @Sea_Surface_Temperature_Directory = 'NA'
+  @Sea_Surface_Temperature_Filename = 'NA'
+  @Default_Name_pix_tracking = 'vcat_tracking_2_5_7_10_11_13_14_15'
+  @Default_Index_pix_tracking = 2
+  @Default_Name_cmask = 'NA'
+  @Default_Index_cmask = -999
+  @Default_Name_ctype = 'NA'
+  @Default_Index_ctype = -999
+  @Default_Name_amask = 'NA'
+  @Default_Index_amask = -999
+  @Default_Name_cldz = 'NA'
+  @Default_Index_cldz = -999
+  @Default_Name_cldtau_day = 'NA'
+  @Default_Index_cldtau_day = -999
+  @Default_Name_fog = 'NA'
+  @Default_Index_fog = -999
+  @Default_Name_ash_det = 'vcat_ashdet_pix_2_7_10_11_13_14_15'
+  @Default_Index_ash_det = 62
+  @Default_Name_ash_hyperir = 'NA'
+  @Default_Index_ash_hyperir = -999
+  @Default_Name_so2_det = 'NA'
+  @Default_Index_so2_det = -999
+  @Default_Name_so2_hyperir = 'NA'
+  @Default_Index_so2_hyperir = -999
+  @Default_Name_ash_ret = 'vcat_ashprop_13_14_15_16'
+  @Default_Index_ash_ret = 74
+  @Default_Name_so2_ret = 'NA'
+  @Default_Index_so2_ret = -999
+  @NumberOf_Algorithms_Processed = 6
+  @GEOCAT_Total_Runtime = 14.367600440979004
+  scan_line_time 301 tipo=24 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=128; reference='none'; units='seconds_since_jan_1_'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  pixel_latitude [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=128; reference='none'; units='degrees_north'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  pixel_longitude [301, 500] tipo=5 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=128; reference='none'; units='degrees_east'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  pixel_solar_zenith_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=128; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.0027466658528397473; add_offset=90.0; _FillValue=-32768
+  pixel_satellite_zenith_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=128; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.0027466658528397473; add_offset=90.0; _FillValue=-32768
+  pixel_relative_azimuth_angle [301, 500] tipo=22 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=128; reference='none'; units='degrees'; scaling_method=1; scale_factor=0.005493331705679495; add_offset=-0.0; _FillValue=-32768
+  pixel_surface_type [301, 500] tipo=20 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=128; reference='none'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  pixel_ecosystem_type [301, 500] tipo=20 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=128; reference='none'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  nwp_x_index [301, 500] tipo=24 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=128; reference='x-coordinate in NWP grid for a given satellite pixel'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  nwp_y_index [301, 500] tipo=24 | algorithm_name='NA'; algorithm_version='NA'; algorithm_index=128; reference='y-coordinate in NWP grid for a given satellite pixel'; units='no units'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_time_diff_images [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='s'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_neighbor_range [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_x_idx_neighbors [301, 500, 5] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_y_idx_neighbors [301, 500, 5] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_dist_neighbors [301, 500, 5] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_min_idx_in_ash [301, 500] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_min_idx_in_so2 [301, 500] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_vcbdet_9_13_ashprop_cloud_emissivity_ch14_tot [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_vcbdet_9_13_ashprop_ash_top_height [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_vcbdet_9_13_ashprop_cape [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_vcbdet_9_13_ashprop_cloud_wind_speed [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_vcbdet_9_13_ashprop_ash_probability [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_vcbdet_9_13_ashprop_bt14_min [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_vcbdet_9_13_ashprop_cloud_emissivity_ch14_tot_max [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_vcbdet_9_13_ashprop_object_area [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='km^2'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_vcbdet_9_13_ashprop_object_xmin [301, 500] tipo=22 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-32768
+  vcat_vcbdet_9_13_ashprop_object_xmax [301, 500] tipo=22 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-32768
+  vcat_vcbdet_9_13_ashprop_object_ymin [301, 500] tipo=22 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-32768
+  vcat_vcbdet_9_13_ashprop_object_ymax [301, 500] tipo=22 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-32768
+  vcat_vcbdet_9_13_ashprop_object_id [301, 500] tipo=24 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_vcbdet_9_13_ashprop_object_median_emiss14_tot [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_vcbdet_9_13_ashprop_Ice_Object_Mask [301, 500] tipo=20 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  vcat_vcbdet_9_13_ashprop_cloud_emissivity_ch14_tot_max_prev [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_vcbdet_9_13_ashprop_ishighlevel [301, 500] tipo=20 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  vcat_vcbdet_9_13_ashprop_pixel_time [301, 500] tipo=24 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_vcbdet_9_13_ashprop_cld_temp_diff [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Cb Detection'; algorithm_version='none'; algorithm_index=98; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+
+==== l2_data/geocatASHOBJ: 10 archivos
+
+######## geocatASHOBJ.GOES-17.CONUS.2022332.091600.hdf
+  @uuid = '83ea6ae0-048e-421b-b6c6-abad47cc6f91'
+  @Object_Type = 'ASHOBJ'
+  @Production_System = 'GEOCAT'
+  @Production_DateTime = '2026-07-09T20:38:50-00:00'
+  @Scanning_Domain_Name = 'CONUS'
+  @Scanning_Domain_Options = 'FULL_DISK,CONUS,MEOSCALE1,MESOSCALE2'
+  @Scanning_Domain_Id = 2
+  @Modified_Scanning_Domain_Name = 'CONUS'
+  @Image_Stamp = 'GOES-17 ABI (11/28/2022 - 09:16:00 UTC)'
+  @Processing_Machine = 'UNKNOWN'
+  @Object_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l2_data/geocatASHOBJ.GOES-17.CONUS.2022332.091600.hdf'
+  @Primary_Level1_File = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Temporal_L1b_List = 'NONE'
+  @Level1_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1.GOES-17.CONUS.2022332.091600.hdf'
+  @Level1_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1HIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Level2_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l2_data/geocatL2.GOES-17.CONUS.2022332.091600.hdf'
+  @Level2_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l2_data/geocatL2HIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Nav_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1.GOES-17.CONUS.2022332.091600.hdf'
+  @Nav_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1HIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Rtm_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//rtm_data/geocatRTM.GOES-17.CONUS.2022332.091600.hdf'
+  @Rtm_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//rtm_data/geocatRTMHIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Detection_Keyword = 'vcat_ashdet_pix_2_7_10_11_13_14_15'
+  @Retrieval_Keyword = 'vcat_ashprop_13_14_15_16'
+  @Retrieval_Form = 'BT13_BTD1315_BTD1316'
+  @Retrieval_Coeff_Filename = 'ir_retrieval_coeffs_Oct26_2023_143009.hdf'
+  @Thermal_Keyword = 'NA'
+  @HyperIR_Enabled = 'NO'
+  @Spacecraft_Name = 'GOES-17'
+  @Hires_SWIR_Lat_Name = 'MISSING'
+  @Hires_SWIR_Lon_Name = 'MISSING'
+  @Hires_X_Overlap_Name = 'MISSING'
+  @Hires_Y_Overlap_Name = 'MISSING'
+  @Hires_Earth_Scan_Index_Name = 'MISSING'
+  @Hires_SWIR_Lat_Name2 = 'MISSING'
+  @Hires_SWIR_Lon_Name2 = 'MISSING'
+  @Hires_X_Overlap_Name2 = 'MISSING'
+  @Hires_Y_Overlap_Name2 = 'MISSING'
+  @Hires_Earth_Scan_Index_Name2 = 'MISSING'
+  @Scan_Overlap_Is_Present = 0
+  @History_Flag = 1
+  @Hires_Flag = 0
+  @Sensor_Capability_Detection = 0
+  @Sensor_Capability_Retv = 1
+  @WMO_Sc_ID = 664
+  @Imager_Name = 'ABI'
+  @Imager_ID = 188
+  @HyperIR_Name = 'MISSING'
+  @HyperIR_ID = 188
+  @Image_Start_Year = 2022
+  @Image_End_Year = 2022
+  @Image_Start_Julian_Day = 332
+  @Image_End_Julian_Day = 332
+  @Image_Start_Time = 9.266666412353516
+  @Image_End_Time = 9.266666412353516
+  @Image_Start_Time_Epoch = 1669627094
+  @Actual_Image_Start_Time_Epoch = 1669626974
+  @Start_Second_Frac = 0.4
+  @Image_End_Time_Epoch = 1669627126
+  @Actual_Image_End_Time_Epoch = 1669627132
+  @End_Second_Frac = 0.8
+  @Image_Date = 122332
+  @Image_Time = -999
+  @Data_Start_Time_Iso = '2022-11-28T09:16:00Z'
+  @Data_End_Time_Iso = '2022-11-28T09:18:46Z'
+  @Original_NumberOfElements = 500
+  @Original_NumberOfLines = 301
+  @Original_NumberOfElements_Hires = -999
+  @Original_NumberOfLines_Hires = -999
+  @MWIR_Resolution_Meters = 2000.0
+  @NumberOfObjects = 588
+  @NumberOfPixInObjects = 1530
+  @NumberOfHistBins = 140
+  @NumberOfObjectSciCat = 1
+  @Max_Pixel_Overlap = 2
+  @Satellite_Latitude = 0.0
+  @Satellite_Longitude = -137.3300018310547
+  @Satellite_Height = 42165620.0
+  @Minimum_Valid_Latitude = 14.651235580444336
+  @Maximum_Valid_Latitude = 20.78638458251953
+  @Minimum_Valid_Longitude = -162.65826416015625
+  @Maximum_Valid_Longitude = -151.28651428222656
+  @Wall_Time_Algo_Component_01 = 0.0
+  @Wall_Time_Algo_Component_02 = 0.0
+  @Wall_Time_Algo_Component_03 = 0.0
+  @Wall_Time_Algo_Component_04 = 0.0
+  @Wall_Time_Algo_Component_05 = 0.0
+  @Geocat_Channel_Qf = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  @DQF_Counts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  @Mask_Status = 'APPLIED'
+  @QC_Status = 'APPLIED'
+  @Fill_Status = 'APPLIED'
+  @Max_Groups = 10
+  @Num_Groups = 0
+  @Mask_Tag = 'Volcat_Alert_Volcano_Database_Oct8_2021_145852'
+  ASHOBJ_Object_Id 588 tipo=24 | 
+  ASHOBJ_Object_Size 588 tipo=24 | 
+  ASHOBJ_X_Min 588 tipo=24 | 
+  ASHOBJ_X_Max 588 tipo=24 | 
+  ASHOBJ_Y_Min 588 tipo=24 | 
+  ASHOBJ_Y_Max 588 tipo=24 | 
+  ASHOBJ_Object_X_Centroid 588 tipo=5 | 
+  ASHOBJ_Object_Y_Centroid 588 tipo=5 | 
+  ASHOBJ_Object_X_Index 1530 tipo=24 | 
+  ASHOBJ_Object_Y_Index 1530 tipo=24 | 
+  ASHOBJ_Orbit_Node 588 tipo=24 | 
+  ASHOBJ_Total_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Day_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Day_NIR_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Night_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Night_NIR_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Water_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Coastline_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Overlap_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Weird_Ocean_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Non_Low_Stratus_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_NIR_Robust_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_NIR_Robust_Desert_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Btd8511_Robust_Desert_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Bias_Eligible_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Bias_Valid_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Beta8511_Tot1p30_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Beta8511_Opaque2p00_Pixels 588 tipo=24 | 
+  ASHOBJ_Maximum_Bt14_Bias_Obj 588 tipo=5 | 
+  ASHOBJ_Mean_Bt14_Bias_Obj 588 tipo=5 | 
+  ASHOBJ_Maximum_Bt14_Bias_Env 588 tipo=5 | 
+  ASHOBJ_Mean_Bt14_Bias_Env 588 tipo=5 | 
+  ASHOBJ_Total_Ref7_Eligible_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Ref7_Valid_Pixels 588 tipo=24 | 
+  ASHOBJ_Maximum_Ref7_Obj 588 tipo=5 | 
+  ASHOBJ_Mean_Ref7_Obj 588 tipo=5 | 
+  ASHOBJ_Maximum_Ref7_Env 588 tipo=5 | 
+  ASHOBJ_Mean_Ref7_Env 588 tipo=5 | 
+  ASHOBJ_Total_Area 588 tipo=5 | 
+  ASHOBJ_Total_Day_Area 588 tipo=5 | 
+  ASHOBJ_Total_Night_Area 588 tipo=5 | 
+  ASHOBJ_Total_Noise_Area 588 tipo=5 | 
+  ASHOBJ_Total_So2_Area 588 tipo=5 | 
+  ASHOBJ_Total_Btd8511_Eligible_Pixels 588 tipo=24 | 
+  ASHOBJ_Total_Btd8511_Valid_Pixels 588 tipo=24 | 
+  ASHOBJ_Mean_Btd8511_Obj 588 tipo=5 | 
+  ASHOBJ_Mean_Btd8511_Env 588 tipo=5 | 
+  ASHOBJ_Water_Fraction 588 tipo=5 | 
+  ASHOBJ_Snow_Fraction 588 tipo=5 | 
+  ASHOBJ_Desert_Fraction 588 tipo=5 | 
+  ASHOBJ_Latitude_Minimum 588 tipo=5 | 
+  ASHOBJ_Longitude_Minimum 588 tipo=5 | 
+  ASHOBJ_Latitude_Maximum 588 tipo=5 | 
+  ASHOBJ_Longitude_Maximum 588 tipo=5 | 
+  ASHOBJ_Latitude_Minimum_Subset 588 tipo=5 | 
+  ASHOBJ_Longitude_Minimum_Subset 588 tipo=5 | 
+  ASHOBJ_Latitude_Maximum_Subset 588 tipo=5 | 
+  ASHOBJ_Longitude_Maximum_Subset 588 tipo=5 | 
+  ASHOBJ_Latitude_Minimum_Subset_Orig 588 tipo=5 | 
+  ASHOBJ_Longitude_Minimum_Subset_Orig 588 tipo=5 | 
+  ASHOBJ_Latitude_Maximum_Subset_Orig 588 tipo=5 | 
+  ASHOBJ_Longitude_Maximum_Subset_Orig 588 tipo=5 | 
+  ASHOBJ_Scatzen_Mean 588 tipo=5 | 
+  ASHOBJ_Glintzen_Sum 588 tipo=5 | 
+  ASHOBJ_Glintzen_Mean 588 tipo=5 | 
+  ASHOBJ_Solzen_Sum 588 tipo=5 | 
+  ASHOBJ_Solzen_Mean 588 tipo=5 | 
+  ASHOBJ_Cos_Satzen_Sum 588 tipo=5 | 
+  ASHOBJ_Cos_Satzen_Mean 588 tipo=5 | 
+  ASHOBJ_Tpw_Mean 588 tipo=5 | 
+  ASHOBJ_Tropopause_Height_Sum 588 tipo=5 | 
+  ASHOBJ_Tropopause_Height_Mean 588 tipo=5 | 
+  ASHOBJ_Tropopause_Temperature_Sum 588 tipo=5 | 
+  ASHOBJ_Tropopause_Temperature_Mean 588 tipo=5 | 
+  ASHOBJ_Btd1112_Count 588 tipo=24 | 
+  ASHOBJ_Btd1112_Mean 588 tipo=5 | 
+  ASHOBJ_Btd1112_Sum 588 tipo=5 | 
+  ASHOBJ_Btd8511_Count 588 tipo=24 | 
+  ASHOBJ_Btd8511_Mean 588 tipo=5 | 
+  ASHOBJ_Btd8511_Sum 588 tipo=5 | 
+  ASHOBJ_Btd8511_Bias_Mean 588 tipo=5 | 
+  ASHOBJ_Btd8511_Bias_Sum 588 tipo=5 | 
+  ASHOBJ_Btd3911_Count 588 tipo=24 | 
+  ASHOBJ_Btd3911_Mean 588 tipo=5 | 
+  ASHOBJ_Btd3911_Sum 588 tipo=5 | 
+  ASHOBJ_Nrat_Count 588 tipo=24 | 
+  ASHOBJ_Nrat_Mean 588 tipo=5 | 
+  ASHOBJ_Nrat_Sum 588 tipo=5 | 
+  ASHOBJ_Probability_Mean 588 tipo=6 | 
+  ASHOBJ_Probability_Mean_IR 588 tipo=6 | 
+  ASHOBJ_Feature_Prob_Term 588 tipo=6 | 
+  ASHOBJ_Non_Feature_Prob_Term 588 tipo=6 | 
+  ASHOBJ_Feature_Prob 588 tipo=6 | 
+  ASHOBJ_Feature_Prob_Term_IR 588 tipo=6 | 
+  ASHOBJ_Non_Feature_Prob_Term_IR 588 tipo=6 | 
+  ASHOBJ_Feature_Prob_IR 588 tipo=6 | 
+  ASHOBJ_Feature_Prob_Term_Loose 588 tipo=6 | 
+  ASHOBJ_Non_Feature_Prob_Term_Loose 588 tipo=6 | 
+  ASHOBJ_Feature_Prob_Loose 588 tipo=6 | 
+  ASHOBJ_Feature_Prob_Term_IR_Loose 588 tipo=6 | 
+  ASHOBJ_Non_Feature_Prob_Term_IR_Loose 588 tipo=6 | 
+  ASHOBJ_Feature_Prob_IR_Loose 588 tipo=6 | 
+  ASHOBJ_Latitude_Radiative_Center 588 tipo=5 | 
+  ASHOBJ_Longitude_Radiative_Center 588 tipo=5 | 
+  ASHOBJ_Latitude_Radiative_Center_NC 588 tipo=5 | 
+  ASHOBJ_Longitude_Radiative_Center_NC 588 tipo=5 | 
+  ASHOBJ_Latitude_Radiative_Center_PC 588 tipo=5 | 
+  ASHOBJ_Longitude_Radiative_Center_PC 588 tipo=5 | 
+  ASHOBJ_Surface_Elevation_Radiative_Center 588 tipo=5 | 
+  ASHOBJ_Valid_Beta1112_Count 588 tipo=24 | 
+  ASHOBJ_Valid_Beta1113_Count 588 tipo=24 | 
+  ASHOBJ_Emiss14_Tot_Min 588 tipo=5 | 
+  ASHOBJ_Emiss14_Tot_Max 588 tipo=5 | 
+  ASHOBJ_HyperIR_Robust_Count_L1 588 tipo=24 | 
+  ASHOBJ_HyperIR_Robust_Count_L2 588 tipo=24 | 
+  ASHOBJ_HyperIR_Robust_Count_L3 588 tipo=24 | 
+  ASHOBJ_HyperIR_Robust_Count_L4 588 tipo=24 | 
+  ASHOBJ_Robust_Count_L1 588 tipo=24 | 
+  ASHOBJ_Robust_Count_L2 588 tipo=24 | 
+  ASHOBJ_Robust_Count_L3 588 tipo=24 | 
+  ASHOBJ_Robust_Count_L4 588 tipo=24 | 
+  ASHOBJ_Robust_Area_L1 588 tipo=5 | 
+  ASHOBJ_Robust_Area_L2 588 tipo=5 | 
+  ASHOBJ_Robust_Area_L3 588 tipo=5 | 
+  ASHOBJ_Robust_Area_L4 588 tipo=5 | 
+  ASHOBJ_Total_Cloud_Edge_Count_L1 588 tipo=24 | 
+  ASHOBJ_Total_Cloud_Edge_Count_L2 588 tipo=24 | 
+  ASHOBJ_Total_Cloud_Edge_Count_L3 588 tipo=24 | 
+  ASHOBJ_Total_Cloud_Edge_Count_L4 588 tipo=24 | 
+  ASHOBJ_Btd1112_Stddev_Mean 588 tipo=5 | 
+  ASHOBJ_Non_Uniform_Area 588 tipo=5 | 
+  ASHOBJ_Total_Loading 588 tipo=5 | 
+  ASHOBJ_Max_Height 588 tipo=5 | 
+  ASHOBJ_Max_Height_Uncertainty 588 tipo=5 | 
+  ASHOBJ_Max_Height_Blackbody 588 tipo=5 | 
+  ASHOBJ_Bt_MWIR_Clr_Bias_Max 588 tipo=5 | 
+  ASHOBJ_Ref_Rat_MWIR_Max 588 tipo=5 | 
+  ASHOBJ_Bt14_Min 588 tipo=5 | 
+  ASHOBJ_Emiss14_Tot_Median 588 tipo=5 | 
+  ASHOBJ_Emiss14_Tot_Per 588 tipo=5 | 
+  ASHOBJ_Reff_Median 588 tipo=5 | 
+  ASHOBJ_Height_Median 588 tipo=5 | 
+  ASHOBJ_Height_Per90 588 tipo=5 | 
+  ASHOBJ_Emissivity_Median 588 tipo=5 | 
+  ASHOBJ_Probability_Median 588 tipo=5 | 
+  ASHOBJ_Probability_Subset_Median 588 tipo=5 | 
+  ASHOBJ_Demiss14_Tot 588 tipo=5 | 
+  ASHOBJ_Dbt14 588 tipo=5 | 
+  ASHOBJ_Dt 588 tipo=5 | 
+  ASHOBJ_Dt_Start 588 tipo=24 | 
+  ASHOBJ_Dark_Pixel_Count 588 tipo=24 | 
+  ASHOBJ_Local_Prob_Max_Pixel_Count 588 tipo=24 | 
+  ASHOBJ_Aspect_Ratio 588 tipo=5 | 
+  ASHOBJ_Shape 588 tipo=5 | 
+  ASHOBJ_High_Cloud_Count 588 tipo=24 | 
+  ASHOBJ_High_Cloud_Count_Prev 588 tipo=24 | 
+  ASHOBJ_Max_Emiss14_Tot_Prev_Footprint 588 tipo=5 | 
+  ASHOBJ_Min_Bt14_Prev_Footprint 588 tipo=5 | 
+  ASHOBJ_Ref7_Bt14_Bias_Corr 588 tipo=5 | 
+  ASHOBJ_Btd1112_Bias_150_Count 588 tipo=24 | 
+  ASHOBJ_Btd1112_Bias_200_Count 588 tipo=24 | 
+  ASHOBJ_Btd8511_Bias_200_Count 588 tipo=24 | 
+  ASHOBJ_Btd8511_Bias_500_Count 588 tipo=24 | 
+  ASHOBJ_Object_Id_Match 588 tipo=24 | 
+  ASHOBJ_Object_Id_Match2 588 tipo=24 | 
+  ASHOBJ_Object_Id_Match3 588 tipo=24 | 
+  ASHOBJ_Object_Id_Match4 588 tipo=24 | 
+  ASHOBJ_Qc_Match 588 tipo=24 | 
+  ASHOBJ_Dist_Ratio_Match 588 tipo=5 | 
+  ASHOBJ_Cost_Match 588 tipo=5 | 
+  ASHOBJ_Fraction_Overlap_Match 588 tipo=5 | 
+  ASHOBJ_Growth_Rate_Anom_Emiss14_Tot 588 tipo=5 | 
+  ASHOBJ_Growth_Rate_Anom_Bt14 588 tipo=5 | 
+  ASHOBJ_Group_Id_Prev_Match 588 tipo=24 | 
+  ASHOBJ_Robust_Neighbor_Count 588 tipo=24 | 
+  ASHOBJ_Max_Neighbor_Count 588 tipo=24 | 
+  ASHOBJ_Closest_Neighbor_Count 588 tipo=24 | 
+  ASHOBJ_Btd3911_Day_Count 588 tipo=24 | 
+  ASHOBJ_Btd3911_Day_Mean 588 tipo=5 | 
+  ASHOBJ_Object_Time_Sum 588 tipo=24 | 
+  ASHOBJ_Object_Time_Epoch 588 tipo=24 | 
+  ASHOBJ_Btd8511_Btd1112_Corr_Count 588 tipo=24 | 
+  ASHOBJ_Btd8511_Btd1112_Corr_Count_Robust 588 tipo=24 | 
+  ASHOBJ_Btd8511_Btd1112_Corr_Mean 588 tipo=5 | 
+  ASHOBJ_Env_Prev_Match 588 tipo=5 | 
+  ASHOBJ_Env_Curr_Match 588 tipo=5 | 
+  ASHOBJ_Count_Bad_10_11_12 588 tipo=24 | 
+  ASHOBJ_Btd1112_Bias_Per01 588 tipo=5 | 
+  ASHOBJ_Btd1112_Bias_Per05 588 tipo=5 | 
+  ASHOBJ_Btd1112_Bias_Per50 588 tipo=5 | 
+  ASHOBJ_Btd8511_Bias_Per01 588 tipo=5 | 
+  ASHOBJ_Btd8511_Bias_Per05 588 tipo=5 | 
+  ASHOBJ_Btd8511_Bias_Per50 588 tipo=5 | 
+  ASHOBJ_Count_Valid_Retv 588 tipo=24 | 
+  ASHOBJ_NN_Dist_Median 588 tipo=5 | 
+  ASHOBJ_Valid_NN_Count 588 tipo=24 | 
+  ASHOBJ_Spectral_Time_Trend_Count 588 tipo=24 | 
+  ASHOBJ_Time_Trend_Count 588 tipo=24 | 
+  ASHOBJ_New_Emission_Count 588 tipo=24 | 
+  ASHOBJ_New_Emission_Count2 588 tipo=24 | 
+  ASHOBJ_Minor_New_Emission_Count 588 tipo=24 | 
+  ASHOBJ_Bad_Emission_Count 588 tipo=24 | 
+  ASHOBJ_Dynamic_Corr_Count 588 tipo=24 | 
+  ASHOBJ_Btd_Bullseye_Count 588 tipo=24 | 
+  ASHOBJ_Cirrus_Advection_Count 588 tipo=24 | 
+  ASHOBJ_New_Emission_AshSo2_Count 588 tipo=24 | 
+  ASHOBJ_New_Emission_Unveil_Count 588 tipo=24 | 
+  ASHOBJ_Coherent_Btd_Time_Trend 588 tipo=24 | 
+  ASHOBJ_Btd_Stripe_Count1 588 tipo=24 | 
+  ASHOBJ_Bt_MWIR_Max 588 tipo=5 | 
+  ASHOBJ_Bt_MWIR_Env 588 tipo=5 | 
+  ASHOBJ_Bt_MWIR_Anom 588 tipo=5 | 
+  ASHOBJ_Btd_MWIR_Max 588 tipo=5 | 
+  ASHOBJ_Btd_MWIR_Env 588 tipo=5 | 
+  ASHOBJ_Btd_MWIR_Anom 588 tipo=5 | 
+  ASHOBJ_VRP_Max 588 tipo=5 | 
+  ASHOBJ_VRP_Max_Uncertainty 588 tipo=5 | 
+  ASHOBJ_VRP_Total 588 tipo=5 | 
+  ASHOBJ_VRP_Total_Uncertainty 588 tipo=5 | 
+  ASHOBJ_Thermal_Background_Count 588 tipo=24 | 
+  ASHOBJ_Thermal_Background_Dist_Min 588 tipo=5 | 
+  ASHOBJ_Thermal_Background_Trans_Mean 588 tipo=5 | 
+  ASHOBJ_Thermal_Background_Trans_Sdev 588 tipo=5 | 
+  ASHOBJ_Thermal_Background_Trans_Min 588 tipo=5 | 
+  ASHOBJ_Thermal_Background_Rad_Mean 588 tipo=5 | 
+  ASHOBJ_Thermal_Background_Rad_Sdev 588 tipo=5 | 
+  ASHOBJ_Thermal_Anom_Rad 588 tipo=5 | 
+  ASHOBJ_Bt_MWIR_Clr_Bias_Diff 588 tipo=5 | 
+  ASHOBJ_Bt_MWIR_LWIR_Tendency_Diff 588 tipo=5 | 
+  ASHOBJ_Time_Since_Robust 588 tipo=5 | 
+  ASHOBJ_Rad_SWIR16_Max 588 tipo=5 | 
+  ASHOBJ_Rad_SWIR16_Env 588 tipo=5 | 
+  ASHOBJ_Rad_SWIR16_Anom 588 tipo=5 | 
+  ASHOBJ_Rad_SWIR22_Max 588 tipo=5 | 
+  ASHOBJ_Rad_SWIR22_Env 588 tipo=5 | 
+  ASHOBJ_Rad_SWIR22_Anom 588 tipo=5 | 
+  ASHOBJ_Index_Hires1 588 tipo=24 | 
+  ASHOBJ_Xmin_Hires1 588 tipo=24 | 
+  ASHOBJ_Xmax_Hires1 588 tipo=24 | 
+  ASHOBJ_Ymin_Hires1 588 tipo=24 | 
+  ASHOBJ_Ymax_Hires1 588 tipo=24 | 
+  ASHOBJ_Index_Hires2 588 tipo=24 | 
+  ASHOBJ_Xmin_Hires2 588 tipo=24 | 
+  ASHOBJ_Xmax_Hires2 588 tipo=24 | 
+  ASHOBJ_Ymin_Hires2 588 tipo=24 | 
+  ASHOBJ_Ymax_Hires2 588 tipo=24 | 
+  ASHOBJ_Artifact_Flag 588 tipo=24 | 
+  Mask_Volcat_Alert_Volcano_Database_Oct8_2021_145852 588 tipo=24 | 
+  Status_Volcat_Alert_Volcano_Database_Oct8_2021_145852 588 tipo=24 | 
+  Cmask_Volcat_Alert_Volcano_Database_Oct8_2021_145852 588 tipo=24 | 
+  Group_Id_Volcat_Alert_Volcano_Database_Oct8_2021_145852 588 tipo=24 | 
+  Group_Id_2d_Volcat_Alert_Volcano_Database_Oct8_2021_145852 [301, 500] tipo=24 | 
+
+==== diag_data/geocatDIAG.: 10 archivos
+
+######## geocatDIAG.GOES-17.CONUS.2022332.091600.hdf
+  @uuid = '83ea6ae0-048e-421b-b6c6-abad47cc6f91'
+  @Output_Library_Version = 'HDF Version 4.2 Release 15, November 28, 2019'
+  @GEOCAT_Version = '3.4.5'
+  @Ancillary_Package_Version = 'NA'
+  @Test_Package_Version = 'NA'
+  @Processing_Machine = 'blast'
+  @Production_DateTime = '2026-07-09T20:38:52-00:00'
+  @Platform_Name = 'GOES-17'
+  @Spacecraft_Name = 'GOES-17'
+  @WMO_Spacecraft_ID = 664
+  @WMO_BUFR_Spacecraft_ID = 271
+  @Platform_ID = 188
+  @Sensor_ID = 188
+  @Sensor_Name = 'goesr'
+  @Sensor_Name_Imager = 'ABI'
+  @Sensor_Name_HyperIR = 'MISSING'
+  @Scanning_Domain_Name = 'CONUS'
+  @Scanning_Domain_Options = 'FULL_DISK,CONUS,MEOSCALE1,MESOSCALE2'
+  @Scanning_Domain_Id = 2
+  @Modified_Scanning_Domain_Name = 'CONUS'
+  @Projection_Longitude = -137.0
+  @Subsatellite_Longitude = -137.3300018310547
+  @Satellite_Height = 42165620.0
+  @X_Offset_Nav = -0.06997200101613998
+  @Y_Offset_Nav = 0.12821200489997864
+  @X_Scale_Nav = 5.6000000768108293e-05
+  @Y_Scale_Nav = -5.6000000768108293e-05
+  @Years_Since_Launch = 4.744695663452148
+  @Image_Date = 122332
+  @Image_Time = 91600
+  @Actual_Image_Date = 122332
+  @Actual_Image_Time = 91614
+  @First_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Last_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Element_Resolution = 2.0
+  @Line_Resolution = 2.0
+  @Original_NumberOfElements = 2500
+  @Original_NumberOfLines = 1500
+  @Original_UpperLeftElement_Coordinate = -999
+  @Original_UpperLeftLine_Coordinate = -999
+  @First_Element_Processed = 1
+  @Last_Element_Processed = 500
+  @Element_Stride = 1
+  @First_Line_Processed = 1200
+  @Last_Line_Processed = 1500
+  @Line_Segment_Size = 301
+  @Max_Pixel_Overlap = 2
+  @Maximum_Valid_Viewing_Zenith_Angle = 85
+  @Earth-Sun_Distance = 0.9865911602973938
+  @Level1a_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1a_File = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Level1b_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1b_File = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Ancillary_Data_Directory = './data/'
+  @Navigation_Method = 'On-the-fly'
+  @Precomputed_Navigation_File = 'NA'
+  @Terrain_Corrected_Nav_Option = 0
+  @Terrain_Corrected_Nav_Source = 'None'
+  @Percentage_Day = 0.0
+  @Percentage_Night = 100.0
+  @Percentage_Terminator = 0.0
+  @Latitude_Range = [14.651235580444336, 20.78638458251953]
+  @Longitude_Range = [-162.65826416015625, -151.28651428222656]
+  @NWP_Source = 'gfs'
+  @NWP_Resolution = 0.5
+  @NWP_Directory = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/gfs_hdf/'
+  @First_NWP_File = 'gfs.22112718_F012.hdf'
+  @Second_NWP_File = 'gfs.22112800_F012.hdf'
+  @Mesoscale_NWP_Source = 'no_nwp_meso'
+  @Mesoscale_NWP_Directory = 'NA'
+  @First_Mesoscale_NWP_File = 'NA'
+  @Second_Mesoscale_NWP_File = 'NA'
+  @Imager_RTM_Source = 'pfaast'
+  @HyperIR_RTM_Source = 'Nonest'
+  @Imager_Land_Surface_Emissivity_Source = 'SEEBOR'
+  @Imager_Sea_Surface_Emissivity_Source = 'CONST'
+  @Imager_Land_Surface_Albedo_Source = 'MODIS_WS'
+  @Imager_Sea_Surface_Albedo_Source = 'NONE'
+  @HyperIR_Land_Surface_Emissivity_Source = 'SEEBOR'
+  @HyperIR_Sea_Surface_Emissivity_Source = 'CONST'
+  @Surface_Emissivity_Source = 'SEEBOR'
+  @Surface_Emissivity_Filename = 'global_emiss_intABI_2005305.hdf'
+  @Snow_Mask_Source = 'IMS'
+  @Snow_Mask_Directory = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/snow_data/'
+  @Snow_Mask_Filename = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/snow_data/snow_map_4km_221128.hdf'
+  @Sea_Surface_Temperature_Source = 'NA'
+  @Sea_Surface_Temperature_Directory = 'NA'
+  @Sea_Surface_Temperature_Filename = 'NA'
+  @Default_Name_pix_tracking = 'vcat_tracking_2_5_7_10_11_13_14_15'
+  @Default_Index_pix_tracking = 2
+  @Default_Name_cmask = 'NA'
+  @Default_Index_cmask = -999
+  @Default_Name_ctype = 'NA'
+  @Default_Index_ctype = -999
+  @Default_Name_amask = 'NA'
+  @Default_Index_amask = -999
+  @Default_Name_cldz = 'NA'
+  @Default_Index_cldz = -999
+  @Default_Name_cldtau_day = 'NA'
+  @Default_Index_cldtau_day = -999
+  @Default_Name_fog = 'NA'
+  @Default_Index_fog = -999
+  @Default_Name_ash_det = 'vcat_ashdet_pix_2_7_10_11_13_14_15'
+  @Default_Index_ash_det = 62
+  @Default_Name_ash_hyperir = 'NA'
+  @Default_Index_ash_hyperir = -999
+  @Default_Name_so2_det = 'NA'
+  @Default_Index_so2_det = -999
+  @Default_Name_so2_hyperir = 'NA'
+  @Default_Index_so2_hyperir = -999
+  @Default_Name_ash_ret = 'vcat_ashprop_13_14_15_16'
+  @Default_Index_ash_ret = 74
+  @Default_Name_so2_ret = 'NA'
+  @Default_Index_so2_ret = -999
+  @NumberOf_Algorithms_Processed = 6
+  @GEOCAT_Total_Runtime = 14.367600440979004
+  vcat_tracking_2_5_7_10_11_13_14_15_Btd1112_Time_Diff [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_Btd8511_Time_Diff [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_Bt11_Time_Diff [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_Bt73_Time_Diff [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_Ref2_Time_Diff [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_ash_probability_IR_prev [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_displacement_distance [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_neighbor_range_prev [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_min_idx_out_ash [301, 500] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_displacement_distance_in_ash [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_Dist_Diff_In_Out_Ash [301, 500] tipo=5 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_tracking_2_5_7_10_11_13_14_15_Btd_Trend_Obj_Size_Ash [301, 500] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_Btd_Trend_Obj_Size_Ice [301, 500] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_NN_Obj_Size_Ash [301, 500] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_NN_Robust_Count_Ash [301, 500] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_count_in_ash [301, 500] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_min_idx_out_so2 [301, 500] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_tracking_2_5_7_10_11_13_14_15_count_in_so2 [301, 500] tipo=24 | algorithm_name='VOLCAT Pixel Tracking'; algorithm_version='none'; algorithm_index=2; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_ashprop_13_14_15_16_Ash_Emissivity_Error_Baseline [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_Ash_Emissivity_Baseline [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashprop_13_14_15_16_Ash_Effective_Radius_Baseline [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Characterization'; algorithm_version='none'; algorithm_index=74; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+
+==== diag_data/geocatDIAGS1: 10 archivos
+
+######## geocatDIAGS1.GOES-17.CONUS.2022332.091600.hdf
+  @uuid = '83ea6ae0-048e-421b-b6c6-abad47cc6f91'
+  @Output_Library_Version = 'HDF Version 4.2 Release 15, November 28, 2019'
+  @GEOCAT_Version = '3.4.5'
+  @Ancillary_Package_Version = 'NA'
+  @Test_Package_Version = 'NA'
+  @Processing_Machine = 'blast'
+  @Production_DateTime = '2026-07-09T20:38:52-00:00'
+  @Platform_Name = 'GOES-17'
+  @Spacecraft_Name = 'GOES-17'
+  @WMO_Spacecraft_ID = 664
+  @WMO_BUFR_Spacecraft_ID = 271
+  @Platform_ID = 188
+  @Sensor_ID = 188
+  @Sensor_Name = 'goesr'
+  @Sensor_Name_Imager = 'ABI'
+  @Sensor_Name_HyperIR = 'MISSING'
+  @Scanning_Domain_Name = 'CONUS'
+  @Scanning_Domain_Options = 'FULL_DISK,CONUS,MEOSCALE1,MESOSCALE2'
+  @Scanning_Domain_Id = 2
+  @Modified_Scanning_Domain_Name = 'CONUS'
+  @Projection_Longitude = -137.0
+  @Subsatellite_Longitude = -137.3300018310547
+  @Satellite_Height = 42165620.0
+  @X_Offset_Nav = -0.06997200101613998
+  @Y_Offset_Nav = 0.12821200489997864
+  @X_Scale_Nav = 5.6000000768108293e-05
+  @Y_Scale_Nav = -5.6000000768108293e-05
+  @Years_Since_Launch = 4.744695663452148
+  @Image_Date = 122332
+  @Image_Time = 91600
+  @Actual_Image_Date = 122332
+  @Actual_Image_Time = 91614
+  @First_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Last_Observation_Time_Iso = '1969-12-31T23:43:21Z'
+  @Element_Resolution = 2.0
+  @Line_Resolution = 2.0
+  @Original_NumberOfElements = 2500
+  @Original_NumberOfLines = 1500
+  @Original_UpperLeftElement_Coordinate = -999
+  @Original_UpperLeftLine_Coordinate = -999
+  @First_Element_Processed = 1
+  @Last_Element_Processed = 500
+  @Element_Stride = 1
+  @First_Line_Processed = 1200
+  @Last_Line_Processed = 1500
+  @Line_Segment_Size = 301
+  @Max_Pixel_Overlap = 2
+  @Maximum_Valid_Viewing_Zenith_Angle = 85
+  @Earth-Sun_Distance = 0.9865911602973938
+  @Level1a_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1a_File = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Level1b_Directory = '///ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/input/'
+  @Level1b_File = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Ancillary_Data_Directory = './data/'
+  @Navigation_Method = 'On-the-fly'
+  @Precomputed_Navigation_File = 'NA'
+  @Terrain_Corrected_Nav_Option = 0
+  @Terrain_Corrected_Nav_Source = 'None'
+  @Percentage_Day = 0.0
+  @Percentage_Night = 100.0
+  @Percentage_Terminator = 0.0
+  @Latitude_Range = [14.651235580444336, 20.78638458251953]
+  @Longitude_Range = [-162.65826416015625, -151.28651428222656]
+  @NWP_Source = 'gfs'
+  @NWP_Resolution = 0.5
+  @NWP_Directory = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/gfs_hdf/'
+  @First_NWP_File = 'gfs.22112718_F012.hdf'
+  @Second_NWP_File = 'gfs.22112800_F012.hdf'
+  @Mesoscale_NWP_Source = 'no_nwp_meso'
+  @Mesoscale_NWP_Directory = 'NA'
+  @First_Mesoscale_NWP_File = 'NA'
+  @Second_Mesoscale_NWP_File = 'NA'
+  @Imager_RTM_Source = 'pfaast'
+  @HyperIR_RTM_Source = 'Nonest'
+  @Imager_Land_Surface_Emissivity_Source = 'SEEBOR'
+  @Imager_Sea_Surface_Emissivity_Source = 'CONST'
+  @Imager_Land_Surface_Albedo_Source = 'MODIS_WS'
+  @Imager_Sea_Surface_Albedo_Source = 'NONE'
+  @HyperIR_Land_Surface_Emissivity_Source = 'SEEBOR'
+  @HyperIR_Sea_Surface_Emissivity_Source = 'CONST'
+  @Surface_Emissivity_Source = 'SEEBOR'
+  @Surface_Emissivity_Filename = 'global_emiss_intABI_2005305.hdf'
+  @Snow_Mask_Source = 'IMS'
+  @Snow_Mask_Directory = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/snow_data/'
+  @Snow_Mask_Filename = '/ships22/grain/ccalvert/volcat_test_cases/inputs-and-ancil/mauna-loa_g17-conus_nov2022/ancillary/snow_data/snow_map_4km_221128.hdf'
+  @Sea_Surface_Temperature_Source = 'NA'
+  @Sea_Surface_Temperature_Directory = 'NA'
+  @Sea_Surface_Temperature_Filename = 'NA'
+  @Default_Name_pix_tracking = 'vcat_tracking_2_5_7_10_11_13_14_15'
+  @Default_Index_pix_tracking = 2
+  @Default_Name_cmask = 'NA'
+  @Default_Index_cmask = -999
+  @Default_Name_ctype = 'NA'
+  @Default_Index_ctype = -999
+  @Default_Name_amask = 'NA'
+  @Default_Index_amask = -999
+  @Default_Name_cldz = 'NA'
+  @Default_Index_cldz = -999
+  @Default_Name_cldtau_day = 'NA'
+  @Default_Index_cldtau_day = -999
+  @Default_Name_fog = 'NA'
+  @Default_Index_fog = -999
+  @Default_Name_ash_det = 'vcat_ashdet_pix_2_7_10_11_13_14_15'
+  @Default_Index_ash_det = 62
+  @Default_Name_ash_hyperir = 'NA'
+  @Default_Index_ash_hyperir = -999
+  @Default_Name_so2_det = 'NA'
+  @Default_Index_so2_det = -999
+  @Default_Name_so2_hyperir = 'NA'
+  @Default_Index_so2_hyperir = -999
+  @Default_Name_ash_ret = 'vcat_ashprop_13_14_15_16'
+  @Default_Index_ash_ret = 74
+  @Default_Name_so2_ret = 'NA'
+  @Default_Index_so2_ret = -999
+  @NumberOf_Algorithms_Processed = 6
+  @GEOCAT_Total_Runtime = 14.367600440979004
+  vcat_ashdet_pix_2_7_10_11_13_14_15_Ash_Object_Mask [301, 500] tipo=20 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  vcat_ashdet_pix_2_7_10_11_13_14_15_lower_cloud_max_rh [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_total_precipitable_water [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='cm'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_ref_rat_nir_lrc [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_emissivity_ch14_tot [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_tot [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_opaque [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_tot_multi_low [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_tot_multi_mid [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_tot_multi_nwp [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1113_tot [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1113_opaque [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1113_tot_multi_low [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1113_tot_multi_mid [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1113_tot_multi_nwp [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_8511_tot [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_8511_opaque [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_cloud_beta_7311_tot [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_pix_2_7_10_11_13_14_15_lower_cloud_idx [301, 500] tipo=24 | algorithm_name='VOLCAT Volcanic Ash Detection (Part I)'; algorithm_version='none'; algorithm_index=62; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_ashdet_obj_2_7_10_11_13_14_15_Robust_Pixel_Flag [301, 500] tipo=24 | algorithm_name='VOLCAT Volcanic Ash Detection (Part II)'; algorithm_version='none'; algorithm_index=72; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999
+  vcat_ashdet_obj_2_7_10_11_13_14_15_Contrast_Rgb1112_3911_11 [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part II)'; algorithm_version='none'; algorithm_index=72; reference='VOLCAT Team - Pavolonis et al.'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_obj_2_7_10_11_13_14_15_Contrast_Rgb1112_8511_11 [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part II)'; algorithm_version='none'; algorithm_index=72; reference='VOLCAT Team - Pavolonis et al.'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_obj_2_7_10_11_13_14_15_Btd8511_Env_Per50 [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part II)'; algorithm_version='none'; algorithm_index=72; reference='VOLCAT Team - Pavolonis et al.'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_obj_2_7_10_11_13_14_15_Bt14_Bias_Env_Per75 [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part II)'; algorithm_version='none'; algorithm_index=72; reference='VOLCAT Team - Pavolonis et al.'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_obj_2_7_10_11_13_14_15_Ref7_Env_Per75 [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part II)'; algorithm_version='none'; algorithm_index=72; reference='VOLCAT Team - Pavolonis et al.'; units='K'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_obj_2_7_10_11_13_14_15_Btd8511_Btd1112_Corr [301, 500] tipo=5 | algorithm_name='VOLCAT Volcanic Ash Detection (Part II)'; algorithm_version='none'; algorithm_index=72; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-999.0
+  vcat_ashdet_obj_2_7_10_11_13_14_15_History_Flag_Det_In [301, 500] tipo=20 | algorithm_name='VOLCAT Volcanic Ash Detection (Part II)'; algorithm_version='none'; algorithm_index=72; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+  vcat_ashdet_obj_2_7_10_11_13_14_15_History_Flag_Det_Out [301, 500] tipo=20 | algorithm_name='VOLCAT Volcanic Ash Detection (Part II)'; algorithm_version='none'; algorithm_index=72; reference='VOLCAT Team - Pavolonis et al.'; units='none'; scaling_method=0; scale_factor=1.0; add_offset=0.0; _FillValue=-128
+
+==== l2_data/geocatHOTOBJ: 10 archivos
+
+######## geocatHOTOBJ.GOES-17.CONUS.2022332.091600.hdf
+  @uuid = '83ea6ae0-048e-421b-b6c6-abad47cc6f91'
+  @Object_Type = 'HOTOBJ'
+  @Production_System = 'GEOCAT'
+  @Production_DateTime = '2026-07-09T20:38:49-00:00'
+  @Scanning_Domain_Name = 'CONUS'
+  @Scanning_Domain_Options = 'FULL_DISK,CONUS,MEOSCALE1,MESOSCALE2'
+  @Scanning_Domain_Id = 2
+  @Modified_Scanning_Domain_Name = 'CONUS'
+  @Image_Stamp = 'GOES-17 ABI (11/28/2022 - 09:16:00 UTC)'
+  @Processing_Machine = 'UNKNOWN'
+  @Object_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l2_data/geocatHOTOBJ.GOES-17.CONUS.2022332.091600.hdf'
+  @Primary_Level1_File = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Temporal_L1b_List = 'NONE'
+  @Level1_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1.GOES-17.CONUS.2022332.091600.hdf'
+  @Level1_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1HIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Level2_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l2_data/geocatL2.GOES-17.CONUS.2022332.091600.hdf'
+  @Level2_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l2_data/geocatL2HIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Nav_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1.GOES-17.CONUS.2022332.091600.hdf'
+  @Nav_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1HIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Rtm_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//rtm_data/geocatRTM.GOES-17.CONUS.2022332.091600.hdf'
+  @Rtm_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//rtm_data/geocatRTMHIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Detection_Keyword = 'NA'
+  @Retrieval_Keyword = 'NA'
+  @Retrieval_Form = 'NA'
+  @Retrieval_Coeff_Filename = 'NA'
+  @Thermal_Keyword = 'vcat_thermal_2_5_6_7_11_13_14_15'
+  @HyperIR_Enabled = 'NO'
+  @Spacecraft_Name = 'GOES-17'
+  @Hires_SWIR_Lat_Name = 'pixel_latitude02'
+  @Hires_SWIR_Lon_Name = 'pixel_longitude02'
+  @Hires_X_Overlap_Name = 'pixel_x_idx_overlap02'
+  @Hires_Y_Overlap_Name = 'pixel_y_idx_overlap02'
+  @Hires_Earth_Scan_Index_Name = 'pixel_earth_scan_index02'
+  @Hires_SWIR_Lat_Name2 = 'MISSING'
+  @Hires_SWIR_Lon_Name2 = 'MISSING'
+  @Hires_X_Overlap_Name2 = 'MISSING'
+  @Hires_Y_Overlap_Name2 = 'MISSING'
+  @Hires_Earth_Scan_Index_Name2 = 'MISSING'
+  @Scan_Overlap_Is_Present = 0
+  @History_Flag = 1
+  @Hires_Flag = 0
+  @Sensor_Capability_Detection = 1
+  @Sensor_Capability_Retv = 1
+  @WMO_Sc_ID = 664
+  @Imager_Name = 'ABI'
+  @Imager_ID = 188
+  @HyperIR_Name = 'MISSING'
+  @HyperIR_ID = 188
+  @Image_Start_Year = 2022
+  @Image_End_Year = 2022
+  @Image_Start_Julian_Day = 332
+  @Image_End_Julian_Day = 332
+  @Image_Start_Time = 9.266666412353516
+  @Image_End_Time = 9.266666412353516
+  @Image_Start_Time_Epoch = 1669627094
+  @Actual_Image_Start_Time_Epoch = 1669626974
+  @Start_Second_Frac = 0.4
+  @Image_End_Time_Epoch = 1669627126
+  @Actual_Image_End_Time_Epoch = 1669627132
+  @End_Second_Frac = 0.8
+  @Image_Date = 122332
+  @Image_Time = -999
+  @Data_Start_Time_Iso = '2022-11-28T09:16:00Z'
+  @Data_End_Time_Iso = '2022-11-28T09:18:46Z'
+  @Original_NumberOfElements = 500
+  @Original_NumberOfLines = 301
+  @Original_NumberOfElements_Hires = -999
+  @Original_NumberOfLines_Hires = -999
+  @MWIR_Resolution_Meters = 2000.0
+  @NumberOfObjects = 0
+  @NumberOfPixInObjects = 0
+  @NumberOfHistBins = 140
+  @NumberOfObjectSciCat = 1
+  @Max_Pixel_Overlap = 2
+  @Satellite_Latitude = 0.0
+  @Satellite_Longitude = -137.3300018310547
+  @Satellite_Height = 42165620.0
+  @Minimum_Valid_Latitude = 14.651235580444336
+  @Maximum_Valid_Latitude = 20.78638458251953
+  @Minimum_Valid_Longitude = -162.65826416015625
+  @Maximum_Valid_Longitude = -151.28651428222656
+  @Wall_Time_Algo_Component_01 = 0.005499999970197678
+  @Wall_Time_Algo_Component_02 = 0.0
+  @Wall_Time_Algo_Component_03 = 0.000699999975040555
+  @Wall_Time_Algo_Component_04 = 0.0
+  @Wall_Time_Algo_Component_05 = -999.0
+  @Geocat_Channel_Qf = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  @DQF_Counts = [0, 0, 0, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 0, 0, 26]
+  @Mask_Status = 'NOT APPLIED'
+  @QC_Status = 'NOT APPLIED'
+  @Fill_Status = 'NOT APPLIED'
+  @Max_Groups = 10
+  @Num_Groups = 0
+  @Mask_Tag = 'Volcat_Alert_Volcano_Database_Oct8_2021_145852'
+
+==== l2_data/geocatICEOBJ: 10 archivos
+
+######## geocatICEOBJ.GOES-17.CONUS.2022332.091600.hdf
+  @uuid = '83ea6ae0-048e-421b-b6c6-abad47cc6f91'
+  @Object_Type = 'ICEOBJ'
+  @Production_System = 'GEOCAT'
+  @Production_DateTime = '2026-07-09T20:38:52-00:00'
+  @Scanning_Domain_Name = 'CONUS'
+  @Scanning_Domain_Options = 'FULL_DISK,CONUS,MEOSCALE1,MESOSCALE2'
+  @Scanning_Domain_Id = 2
+  @Modified_Scanning_Domain_Name = 'CONUS'
+  @Image_Stamp = 'GOES-17 ABI (11/28/2022 - 09:16:00 UTC)'
+  @Processing_Machine = 'UNKNOWN'
+  @Object_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l2_data/geocatICEOBJ.GOES-17.CONUS.2022332.091600.hdf'
+  @Primary_Level1_File = 'OR_ABI-L1b-RadC-M6C13_G17_s20223320916144_e20223320918528_c20223320918565.nc'
+  @Temporal_L1b_List = 'NONE'
+  @Level1_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1.GOES-17.CONUS.2022332.091600.hdf'
+  @Level1_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1HIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Level2_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l2_data/geocatL2.GOES-17.CONUS.2022332.091600.hdf'
+  @Level2_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l2_data/geocatL2HIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Nav_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1.GOES-17.CONUS.2022332.091600.hdf'
+  @Nav_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//l1_data/geocatL1HIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Rtm_File = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//rtm_data/geocatRTM.GOES-17.CONUS.2022332.091600.hdf'
+  @Rtm_File_Hires = '/ships22/grain/ccalvert/r20260706-volcat-ngfs-code-ancil-run//goes_west_conus//rtm_data/geocatRTMHIRES.GOES-17.CONUS.2022332.091600.hdf'
+  @Detection_Keyword = 'vcat_ashdet_pix_2_7_10_11_13_14_15'
+  @Retrieval_Keyword = 'vcat_ashprop_13_14_15_16'
+  @Retrieval_Form = 'BT13_BTD1315_BTD1316'
+  @Retrieval_Coeff_Filename = 'ir_retrieval_coeffs_Oct26_2023_143009.hdf'
+  @Thermal_Keyword = 'NA'
+  @HyperIR_Enabled = 'NO'
+  @Spacecraft_Name = 'GOES-17'
+  @Hires_SWIR_Lat_Name = 'MISSING'
+  @Hires_SWIR_Lon_Name = 'MISSING'
+  @Hires_X_Overlap_Name = 'MISSING'
+  @Hires_Y_Overlap_Name = 'MISSING'
+  @Hires_Earth_Scan_Index_Name = 'MISSING'
+  @Hires_SWIR_Lat_Name2 = 'MISSING'
+  @Hires_SWIR_Lon_Name2 = 'MISSING'
+  @Hires_X_Overlap_Name2 = 'MISSING'
+  @Hires_Y_Overlap_Name2 = 'MISSING'
+  @Hires_Earth_Scan_Index_Name2 = 'MISSING'
+  @Scan_Overlap_Is_Present = 0
+  @History_Flag = 2
+  @Hires_Flag = 0
+  @Sensor_Capability_Detection = 0
+  @Sensor_Capability_Retv = -999
+  @WMO_Sc_ID = 664
+  @Imager_Name = 'ABI'
+  @Imager_ID = 188
+  @HyperIR_Name = 'MISSING'
+  @HyperIR_ID = 188
+  @Image_Start_Year = 2022
+  @Image_End_Year = 2022
+  @Image_Start_Julian_Day = 332
+  @Image_End_Julian_Day = 332
+  @Image_Start_Time = 9.266666412353516
+  @Image_End_Time = 9.266666412353516
+  @Image_Start_Time_Epoch = 1669627094
+  @Actual_Image_Start_Time_Epoch = 1669626974
+  @Start_Second_Frac = 0.4
+  @Image_End_Time_Epoch = 1669627126
+  @Actual_Image_End_Time_Epoch = 1669627132
+  @End_Second_Frac = 0.8
+  @Image_Date = 122332
+  @Image_Time = -999
+  @Data_Start_Time_Iso = '2022-11-28T09:16:00Z'
+  @Data_End_Time_Iso = '2022-11-28T09:18:46Z'
+  @Original_NumberOfElements = 500
+  @Original_NumberOfLines = 301
+  @Original_NumberOfElements_Hires = -999
+  @Original_NumberOfLines_Hires = -999
+  @MWIR_Resolution_Meters = 2000.0
+  @NumberOfObjects = 129
+  @NumberOfPixInObjects = 1543
+  @NumberOfHistBins = 140
+  @NumberOfObjectSciCat = 1
+  @Max_Pixel_Overlap = 2
+  @Satellite_Latitude = 0.0
+  @Satellite_Longitude = -137.3300018310547
+  @Satellite_Height = 42165620.0
+  @Minimum_Valid_Latitude = 14.651235580444336
+  @Maximum_Valid_Latitude = 20.78638458251953
+  @Minimum_Valid_Longitude = -162.65826416015625
+  @Maximum_Valid_Longitude = -151.28651428222656
+  @Wall_Time_Algo_Component_01 = 0.0
+  @Wall_Time_Algo_Component_02 = 0.0
+  @Wall_Time_Algo_Component_03 = 0.0
+  @Wall_Time_Algo_Component_04 = 0.0
+  @Wall_Time_Algo_Component_05 = 0.0
+  @Geocat_Channel_Qf = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  @DQF_Counts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  @Mask_Status = 'APPLIED'
+  @QC_Status = 'APPLIED'
+  @Fill_Status = 'APPLIED'
+  @Max_Groups = 10
+  @Num_Groups = 0
+  @Mask_Tag = 'Volcat_Alert_Volcano_Database_Oct8_2021_145852'
+  ICEOBJ_Object_Id 129 tipo=24 | 
+  ICEOBJ_Object_Size 129 tipo=24 | 
+  ICEOBJ_X_Min 129 tipo=24 | 
+  ICEOBJ_X_Max 129 tipo=24 | 
+  ICEOBJ_Y_Min 129 tipo=24 | 
+  ICEOBJ_Y_Max 129 tipo=24 | 
+  ICEOBJ_Object_X_Centroid 129 tipo=5 | 
+  ICEOBJ_Object_Y_Centroid 129 tipo=5 | 
+  ICEOBJ_Object_X_Index 1543 tipo=24 | 
+  ICEOBJ_Object_Y_Index 1543 tipo=24 | 
+  ICEOBJ_Orbit_Node 129 tipo=24 | 
+  ICEOBJ_Total_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Day_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Day_NIR_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Night_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Night_NIR_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Water_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Coastline_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Overlap_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Weird_Ocean_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Non_Low_Stratus_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_NIR_Robust_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_NIR_Robust_Desert_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Btd8511_Robust_Desert_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Bias_Eligible_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Bias_Valid_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Beta8511_Tot1p30_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Beta8511_Opaque2p00_Pixels 129 tipo=24 | 
+  ICEOBJ_Maximum_Bt14_Bias_Obj 129 tipo=5 | 
+  ICEOBJ_Mean_Bt14_Bias_Obj 129 tipo=5 | 
+  ICEOBJ_Maximum_Bt14_Bias_Env 129 tipo=5 | 
+  ICEOBJ_Mean_Bt14_Bias_Env 129 tipo=5 | 
+  ICEOBJ_Total_Ref7_Eligible_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Ref7_Valid_Pixels 129 tipo=24 | 
+  ICEOBJ_Maximum_Ref7_Obj 129 tipo=5 | 
+  ICEOBJ_Mean_Ref7_Obj 129 tipo=5 | 
+  ICEOBJ_Maximum_Ref7_Env 129 tipo=5 | 
+  ICEOBJ_Mean_Ref7_Env 129 tipo=5 | 
+  ICEOBJ_Total_Area 129 tipo=5 | 
+  ICEOBJ_Total_Day_Area 129 tipo=5 | 
+  ICEOBJ_Total_Night_Area 129 tipo=5 | 
+  ICEOBJ_Total_Noise_Area 129 tipo=5 | 
+  ICEOBJ_Total_So2_Area 129 tipo=5 | 
+  ICEOBJ_Total_Btd8511_Eligible_Pixels 129 tipo=24 | 
+  ICEOBJ_Total_Btd8511_Valid_Pixels 129 tipo=24 | 
+  ICEOBJ_Mean_Btd8511_Obj 129 tipo=5 | 
+  ICEOBJ_Mean_Btd8511_Env 129 tipo=5 | 
+  ICEOBJ_Water_Fraction 129 tipo=5 | 
+  ICEOBJ_Snow_Fraction 129 tipo=5 | 
+  ICEOBJ_Desert_Fraction 129 tipo=5 | 
+  ICEOBJ_Latitude_Minimum 129 tipo=5 | 
+  ICEOBJ_Longitude_Minimum 129 tipo=5 | 
+  ICEOBJ_Latitude_Maximum 129 tipo=5 | 
+  ICEOBJ_Longitude_Maximum 129 tipo=5 | 
+  ICEOBJ_Latitude_Minimum_Subset 129 tipo=5 | 
+  ICEOBJ_Longitude_Minimum_Subset 129 tipo=5 | 
+  ICEOBJ_Latitude_Maximum_Subset 129 tipo=5 | 
+  ICEOBJ_Longitude_Maximum_Subset 129 tipo=5 | 
+  ICEOBJ_Latitude_Minimum_Subset_Orig 129 tipo=5 | 
+  ICEOBJ_Longitude_Minimum_Subset_Orig 129 tipo=5 | 
+  ICEOBJ_Latitude_Maximum_Subset_Orig 129 tipo=5 | 
+  ICEOBJ_Longitude_Maximum_Subset_Orig 129 tipo=5 | 
+  ICEOBJ_Scatzen_Mean 129 tipo=5 | 
+  ICEOBJ_Glintzen_Sum 129 tipo=5 | 
+  ICEOBJ_Glintzen_Mean 129 tipo=5 | 
+  ICEOBJ_Solzen_Sum 129 tipo=5 | 
+  ICEOBJ_Solzen_Mean 129 tipo=5 | 
+  ICEOBJ_Cos_Satzen_Sum 129 tipo=5 | 
+  ICEOBJ_Cos_Satzen_Mean 129 tipo=5 | 
+  ICEOBJ_Tpw_Mean 129 tipo=5 | 
+  ICEOBJ_Tropopause_Height_Sum 129 tipo=5 | 
+  ICEOBJ_Tropopause_Height_Mean 129 tipo=5 | 
+  ICEOBJ_Tropopause_Temperature_Sum 129 tipo=5 | 
+  ICEOBJ_Tropopause_Temperature_Mean 129 tipo=5 | 
+  ICEOBJ_Btd1112_Count 129 tipo=24 | 
+  ICEOBJ_Btd1112_Mean 129 tipo=5 | 
+  ICEOBJ_Btd1112_Sum 129 tipo=5 | 
+  ICEOBJ_Btd8511_Count 129 tipo=24 | 
+  ICEOBJ_Btd8511_Mean 129 tipo=5 | 
+  ICEOBJ_Btd8511_Sum 129 tipo=5 | 
+  ICEOBJ_Btd8511_Bias_Mean 129 tipo=5 | 
+  ICEOBJ_Btd8511_Bias_Sum 129 tipo=5 | 
+  ICEOBJ_Btd3911_Count 129 tipo=24 | 
+  ICEOBJ_Btd3911_Mean 129 tipo=5 | 
+  ICEOBJ_Btd3911_Sum 129 tipo=5 | 
+  ICEOBJ_Nrat_Count 129 tipo=24 | 
+  ICEOBJ_Nrat_Mean 129 tipo=5 | 
+  ICEOBJ_Nrat_Sum 129 tipo=5 | 
+  ICEOBJ_Probability_Mean 129 tipo=6 | 
+  ICEOBJ_Probability_Mean_IR 129 tipo=6 | 
+  ICEOBJ_Feature_Prob_Term 129 tipo=6 | 
+  ICEOBJ_Non_Feature_Prob_Term 129 tipo=6 | 
+  ICEOBJ_Feature_Prob 129 tipo=6 | 
+  ICEOBJ_Feature_Prob_Term_IR 129 tipo=6 | 
+  ICEOBJ_Non_Feature_Prob_Term_IR 129 tipo=6 | 
+  ICEOBJ_Feature_Prob_IR 129 tipo=6 | 
+  ICEOBJ_Feature_Prob_Term_Loose 129 tipo=6 | 
+  ICEOBJ_Non_Feature_Prob_Term_Loose 129 tipo=6 | 
+  ICEOBJ_Feature_Prob_Loose 129 tipo=6 | 
+  ICEOBJ_Feature_Prob_Term_IR_Loose 129 tipo=6 | 
+  ICEOBJ_Non_Feature_Prob_Term_IR_Loose 129 tipo=6 | 
+  ICEOBJ_Feature_Prob_IR_Loose 129 tipo=6 | 
+  ICEOBJ_Latitude_Radiative_Center 129 tipo=5 | 
+  ICEOBJ_Longitude_Radiative_Center 129 tipo=5 | 
+  ICEOBJ_Latitude_Radiative_Center_NC 129 tipo=5 | 
+  ICEOBJ_Longitude_Radiative_Center_NC 129 tipo=5 | 
+  ICEOBJ_Latitude_Radiative_Center_PC 129 tipo=5 | 
+  ICEOBJ_Longitude_Radiative_Center_PC 129 tipo=5 | 
+  ICEOBJ_Surface_Elevation_Radiative_Center 129 tipo=5 | 
+  ICEOBJ_Valid_Beta1112_Count 129 tipo=24 | 
+  ICEOBJ_Valid_Beta1113_Count 129 tipo=24 | 
+  ICEOBJ_Emiss14_Tot_Min 129 tipo=5 | 
+  ICEOBJ_Emiss14_Tot_Max 129 tipo=5 | 
+  ICEOBJ_HyperIR_Robust_Count_L1 129 tipo=24 | 
+  ICEOBJ_HyperIR_Robust_Count_L2 129 tipo=24 | 
+  ICEOBJ_HyperIR_Robust_Count_L3 129 tipo=24 | 
+  ICEOBJ_HyperIR_Robust_Count_L4 129 tipo=24 | 
+  ICEOBJ_Robust_Count_L1 129 tipo=24 | 
+  ICEOBJ_Robust_Count_L2 129 tipo=24 | 
+  ICEOBJ_Robust_Count_L3 129 tipo=24 | 
+  ICEOBJ_Robust_Count_L4 129 tipo=24 | 
+  ICEOBJ_Robust_Area_L1 129 tipo=5 | 
+  ICEOBJ_Robust_Area_L2 129 tipo=5 | 
+  ICEOBJ_Robust_Area_L3 129 tipo=5 | 
+  ICEOBJ_Robust_Area_L4 129 tipo=5 | 
+  ICEOBJ_Total_Cloud_Edge_Count_L1 129 tipo=24 | 
+  ICEOBJ_Total_Cloud_Edge_Count_L2 129 tipo=24 | 
+  ICEOBJ_Total_Cloud_Edge_Count_L3 129 tipo=24 | 
+  ICEOBJ_Total_Cloud_Edge_Count_L4 129 tipo=24 | 
+  ICEOBJ_Btd1112_Stddev_Mean 129 tipo=5 | 
+  ICEOBJ_Non_Uniform_Area 129 tipo=5 | 
+  ICEOBJ_Total_Loading 129 tipo=5 | 
+  ICEOBJ_Max_Height 129 tipo=5 | 
+  ICEOBJ_Max_Height_Uncertainty 129 tipo=5 | 
+  ICEOBJ_Max_Height_Blackbody 129 tipo=5 | 
+  ICEOBJ_Bt_MWIR_Clr_Bias_Max 129 tipo=5 | 
+  ICEOBJ_Ref_Rat_MWIR_Max 129 tipo=5 | 
+  ICEOBJ_Bt14_Min 129 tipo=5 | 
+  ICEOBJ_Emiss14_Tot_Median 129 tipo=5 | 
+  ICEOBJ_Emiss14_Tot_Per 129 tipo=5 | 
+  ICEOBJ_Reff_Median 129 tipo=5 | 
+  ICEOBJ_Height_Median 129 tipo=5 | 
+  ICEOBJ_Height_Per90 129 tipo=5 | 
+  ICEOBJ_Emissivity_Median 129 tipo=5 | 
+  ICEOBJ_Probability_Median 129 tipo=5 | 
+  ICEOBJ_Probability_Subset_Median 129 tipo=5 | 
+  ICEOBJ_Demiss14_Tot 129 tipo=5 | 
+  ICEOBJ_Dbt14 129 tipo=5 | 
+  ICEOBJ_Dt 129 tipo=5 | 
+  ICEOBJ_Dt_Start 129 tipo=24 | 
+  ICEOBJ_Dark_Pixel_Count 129 tipo=24 | 
+  ICEOBJ_Local_Prob_Max_Pixel_Count 129 tipo=24 | 
+  ICEOBJ_Aspect_Ratio 129 tipo=5 | 
+  ICEOBJ_Shape 129 tipo=5 | 
+  ICEOBJ_High_Cloud_Count 129 tipo=24 | 
+  ICEOBJ_High_Cloud_Count_Prev 129 tipo=24 | 
+  ICEOBJ_Max_Emiss14_Tot_Prev_Footprint 129 tipo=5 | 
+  ICEOBJ_Min_Bt14_Prev_Footprint 129 tipo=5 | 
+  ICEOBJ_Ref7_Bt14_Bias_Corr 129 tipo=5 | 
+  ICEOBJ_Btd1112_Bias_150_Count 129 tipo=24 | 
+  ICEOBJ_Btd1112_Bias_200_Count 129 tipo=24 | 
+  ICEOBJ_Btd8511_Bias_200_Count 129 tipo=24 | 
+  ICEOBJ_Btd8511_Bias_500_Count 129 tipo=24 | 
+  ICEOBJ_Object_Id_Match 129 tipo=24 | 
+  ICEOBJ_Object_Id_Match2 129 tipo=24 | 
+  ICEOBJ_Object_Id_Match3 129 tipo=24 | 
+  ICEOBJ_Object_Id_Match4 129 tipo=24 | 
+  ICEOBJ_Qc_Match 129 tipo=24 | 
+  ICEOBJ_Dist_Ratio_Match 129 tipo=5 | 
+  ICEOBJ_Cost_Match 129 tipo=5 | 
+  ICEOBJ_Fraction_Overlap_Match 129 tipo=5 | 
+  ICEOBJ_Growth_Rate_Anom_Emiss14_Tot 129 tipo=5 | 
+  ICEOBJ_Growth_Rate_Anom_Bt14 129 tipo=5 | 
+  ICEOBJ_Group_Id_Prev_Match 129 tipo=24 | 
+  ICEOBJ_Robust_Neighbor_Count 129 tipo=24 | 
+  ICEOBJ_Max_Neighbor_Count 129 tipo=24 | 
+  ICEOBJ_Closest_Neighbor_Count 129 tipo=24 | 
+  ICEOBJ_Btd3911_Day_Count 129 tipo=24 | 
+  ICEOBJ_Btd3911_Day_Mean 129 tipo=5 | 
+  ICEOBJ_Object_Time_Sum 129 tipo=24 | 
+  ICEOBJ_Object_Time_Epoch 129 tipo=24 | 
+  ICEOBJ_Btd8511_Btd1112_Corr_Count 129 tipo=24 | 
+  ICEOBJ_Btd8511_Btd1112_Corr_Count_Robust 129 tipo=24 | 
+  ICEOBJ_Btd8511_Btd1112_Corr_Mean 129 tipo=5 | 
+  ICEOBJ_Env_Prev_Match 129 tipo=5 | 
+  ICEOBJ_Env_Curr_Match 129 tipo=5 | 
+  ICEOBJ_Count_Bad_10_11_12 129 tipo=24 | 
+  ICEOBJ_Btd1112_Bias_Per01 129 tipo=5 | 
+  ICEOBJ_Btd1112_Bias_Per05 129 tipo=5 | 
+  ICEOBJ_Btd1112_Bias_Per50 129 tipo=5 | 
+  ICEOBJ_Btd8511_Bias_Per01 129 tipo=5 | 
+  ICEOBJ_Btd8511_Bias_Per05 129 tipo=5 | 
+  ICEOBJ_Btd8511_Bias_Per50 129 tipo=5 | 
+  ICEOBJ_Count_Valid_Retv 129 tipo=24 | 
+  ICEOBJ_NN_Dist_Median 129 tipo=5 | 
+  ICEOBJ_Valid_NN_Count 129 tipo=24 | 
+  ICEOBJ_Spectral_Time_Trend_Count 129 tipo=24 | 
+  ICEOBJ_Time_Trend_Count 129 tipo=24 | 
+  ICEOBJ_New_Emission_Count 129 tipo=24 | 
+  ICEOBJ_New_Emission_Count2 129 tipo=24 | 
+  ICEOBJ_Minor_New_Emission_Count 129 tipo=24 | 
+  ICEOBJ_Bad_Emission_Count 129 tipo=24 | 
+  ICEOBJ_Dynamic_Corr_Count 129 tipo=24 | 
+  ICEOBJ_Btd_Bullseye_Count 129 tipo=24 | 
+  ICEOBJ_Cirrus_Advection_Count 129 tipo=24 | 
+  ICEOBJ_New_Emission_AshSo2_Count 129 tipo=24 | 
+  ICEOBJ_New_Emission_Unveil_Count 129 tipo=24 | 
+  ICEOBJ_Coherent_Btd_Time_Trend 129 tipo=24 | 
+  ICEOBJ_Btd_Stripe_Count1 129 tipo=24 | 
+  ICEOBJ_Bt_MWIR_Max 129 tipo=5 | 
+  ICEOBJ_Bt_MWIR_Env 129 tipo=5 | 
+  ICEOBJ_Bt_MWIR_Anom 129 tipo=5 | 
+  ICEOBJ_Btd_MWIR_Max 129 tipo=5 | 
+  ICEOBJ_Btd_MWIR_Env 129 tipo=5 | 
+  ICEOBJ_Btd_MWIR_Anom 129 tipo=5 | 
+  ICEOBJ_VRP_Max 129 tipo=5 | 
+  ICEOBJ_VRP_Max_Uncertainty 129 tipo=5 | 
+  ICEOBJ_VRP_Total 129 tipo=5 | 
+  ICEOBJ_VRP_Total_Uncertainty 129 tipo=5 | 
+  ICEOBJ_Thermal_Background_Count 129 tipo=24 | 
+  ICEOBJ_Thermal_Background_Dist_Min 129 tipo=5 | 
+  ICEOBJ_Thermal_Background_Trans_Mean 129 tipo=5 | 
+  ICEOBJ_Thermal_Background_Trans_Sdev 129 tipo=5 | 
+  ICEOBJ_Thermal_Background_Trans_Min 129 tipo=5 | 
+  ICEOBJ_Thermal_Background_Rad_Mean 129 tipo=5 | 
+  ICEOBJ_Thermal_Background_Rad_Sdev 129 tipo=5 | 
+  ICEOBJ_Thermal_Anom_Rad 129 tipo=5 | 
+  ICEOBJ_Bt_MWIR_Clr_Bias_Diff 129 tipo=5 | 
+  ICEOBJ_Bt_MWIR_LWIR_Tendency_Diff 129 tipo=5 | 
+  ICEOBJ_Time_Since_Robust 129 tipo=5 | 
+  ICEOBJ_Rad_SWIR16_Max 129 tipo=5 | 
+  ICEOBJ_Rad_SWIR16_Env 129 tipo=5 | 
+  ICEOBJ_Rad_SWIR16_Anom 129 tipo=5 | 
+  ICEOBJ_Rad_SWIR22_Max 129 tipo=5 | 
+  ICEOBJ_Rad_SWIR22_Env 129 tipo=5 | 
+  ICEOBJ_Rad_SWIR22_Anom 129 tipo=5 | 
+  ICEOBJ_Index_Hires1 129 tipo=24 | 
+  ICEOBJ_Xmin_Hires1 129 tipo=24 | 
+  ICEOBJ_Xmax_Hires1 129 tipo=24 | 
+  ICEOBJ_Ymin_Hires1 129 tipo=24 | 
+  ICEOBJ_Ymax_Hires1 129 tipo=24 | 
+  ICEOBJ_Index_Hires2 129 tipo=24 | 
+  ICEOBJ_Xmin_Hires2 129 tipo=24 | 
+  ICEOBJ_Xmax_Hires2 129 tipo=24 | 
+  ICEOBJ_Ymin_Hires2 129 tipo=24 | 
+  ICEOBJ_Ymax_Hires2 129 tipo=24 | 
+  ICEOBJ_Artifact_Flag 129 tipo=24 | 
+  Mask_Volcat_Alert_Volcano_Database_Oct8_2021_145852 129 tipo=24 | 
+  Status_Volcat_Alert_Volcano_Database_Oct8_2021_145852 129 tipo=24 | 
+  Cmask_Volcat_Alert_Volcano_Database_Oct8_2021_145852 129 tipo=24 | 
+  Group_Id_Volcat_Alert_Volcano_Database_Oct8_2021_145852 129 tipo=24 | 
+  Group_Id_2d_Volcat_Alert_Volcano_Database_Oct8_2021_145852 [301, 500] tipo=24 | 
+(sin netCDF4: no se lee VOLCAT-CONUS-vid332020_v3p9_g17_s202211280941144_e202211280943528_c202607092040463.nc)
+(sin netCDF4: no se lee VOLCAT-CONUS-vid332020_v3p9_g17_s202211280941144_e202211280943528_c202607092040463.nc)
+
+==== lineas con posibles condiciones de uso
+(ninguna)

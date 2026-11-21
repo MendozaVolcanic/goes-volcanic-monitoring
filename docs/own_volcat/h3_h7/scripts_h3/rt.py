@@ -22,6 +22,9 @@ import numpy as np
 import lbl
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+# Tabla de coeficientes (lut.npz, lineas.npz): por defecto en ./lbl; H3_RT_LBL apunta a otra carpeta (C2, 21-11-2026).
+# El continuo MT_CKD se busca en lbl.DL (variable H3_RT_DL).
+LBL = os.environ.get("H3_RT_LBL", os.path.join(HERE, "lbl"))
 G = 9.80665; NA = 6.02214076e23; MD = 28.9647e-3; MW = 18.01528e-3; MO3 = 47.9982e-3
 VMR_FIJO = {2: 425e-6, 6: 1.93e-6, 4: 0.338e-6}
 NCOL = {1: 3e22, 2: 9e21, 3: 8e18, 4: 7e18, 6: 4e19}   # columnas tipicas (molec/cm2) para el corte de lineas
@@ -34,10 +37,10 @@ PMID = 0.5 * (PBOT + PTOP)
 NL = len(PMID)
 
 
-def construir_lut(tmin, tmax, nT=7, out=os.path.join(HERE, "lbl", "lut.npz")):
+def construir_lut(tmin, tmax, nT=7, out=os.path.join(LBL, "lut.npz")):
     """k por molecula (H2O, O3) y por molecula de aire seco (gases fijos), en (capa, T, nu)."""
     import hapi
-    L = dict(np.load(os.path.join(HERE, "lbl", "lineas.npz")))
+    L = dict(np.load(os.path.join(LBL, "lineas.npz")))
     nu = lbl.rejilla()
     keep = np.zeros(len(L["nu"]), bool)
     for M, N in NCOL.items():
@@ -55,11 +58,11 @@ def construir_lut(tmin, tmax, nT=7, out=os.path.join(HERE, "lbl", "lut.npz")):
 
 
 class Modelo:
-    def __init__(self, lut=os.path.join(HERE, "lbl", "lut.npz")):
+    def __init__(self, lut=os.path.join(LBL, "lut.npz")):
         z = np.load(lut)
         self.nu = z["nu"]; self.TG = z["TG"]; self.kh = z["kh"]; self.ko = z["ko"]; self.kf = z["kf"]
         import netCDF4
-        d = netCDF4.Dataset(os.path.join(HERE, "dl", "mtckd", "absco-ref_wv-mt-ckd.nc"))
+        d = netCDF4.Dataset(os.path.join(lbl.DL, "mtckd", "absco-ref_wv-mt-ckd.nc"))
         w = d["wavenumbers"][:].data
         self.c_s = np.interp(self.nu, w, d["self_absco_ref"][:].data)
         self.c_f = np.interp(self.nu, w, d["for_absco_ref"][:].data)

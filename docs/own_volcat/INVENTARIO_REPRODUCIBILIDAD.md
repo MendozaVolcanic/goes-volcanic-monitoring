@@ -91,8 +91,8 @@ Rutas cortas: `<R>` = `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Go
 | H15 etapa 1, lectura de las tablas (`lut_h15\LECTURA_LUT.md`) | `lut_estructura.py`, `lut_exportar.py` (venv_hdf4), `lut_cordura.py` | `D:\goes_notas\busqueda_2026-11-20\volcat_static_anc\volcat-ancillary\luts` (84 MB), salida `D:\goes_cache\lut_h15\lut_pixel.npz` (1,7 MB) | **Sí** | compila, insumos presentes | **Reproducible**; tablas de SSEC sin otra copia (públicas en `static_ancillary`) |
 | H15 etapa 2, validación en Mauna Loa (`lut_h15\INFORME_H15.md`) | `ml_extraer.py` (venv_hdf4), `lut_volcat.py`, `etapa2_validar.py`, `etapa2_diag*.py`, `etapa2_posterior.py` | `D:\goes_cache\lut_h15\ml\` (10 `ml_*.npz` + `gfs_ttropo.npz`), `D:\goes_cache\volcat_test_mauna_loa\npz\` (10 `c2b_*.npz`), `lut_pixel.npz` | **Sí** | ver §2 | **Reproducible** |
 | H15 frente 1, nube tenue (PR 75, **no fusionado**) | `lut_h15\nube_tenue\scripts\nt_comun.py`, `nt_regla.py`, `nt_validar.py`, `nt_explorar*.py` | los mismos de la etapa 2 (importa `lut_volcat` y `etapa2_validar`) | **Sí** | ver §2 | **Reproducible**, pero el código sólo vive en la rama `analisis/h15-nube-tenue` (en GitHub) |
-| H15 nivel B, cielo despejado (PR 76, **no fusionado**) | `lut_h15\cielo_sesgo\scripts\*` (vueltas 1 a 5) | `D:\goes_cache\lut_h15\cielo_sesgo\gfs_punto_frio.npz`, `D:\goes_cache\cielo_sesgo\` (`tpw.npz`, `gfs_sfc.npz`, y una copia de los scripts de PR 75 en `nt\`), `ext\` de Mauna Loa | **Sí** | compila, insumos presentes (no re-ejecutado) | **Frágil leve**: importa los scripts de nube tenue desde la copia `D:\goes_cache\cielo_sesgo\nt\...`, no del repo; si PR 75 cambia, esa copia no |
-| H15 LRC y vecindad (PR 77, **no fusionado**) | `lut_h15\cielo_lrc\scripts\*` | `D:\goes_cache\cielo_lrc\` (53 MB, con su propia copia de los scripts de PR 75 en `nt\`), `ext\` de Mauna Loa | **Sí** | compila, insumos presentes (no re-ejecutado) | **Frágil leve**, igual que PR 76 |
+| H15 nivel B, cielo despejado (PR 76, fusionado 21-11) | `lut_h15\cielo_sesgo\scripts\*` (vueltas 1 a 5) | `D:\goes_cache\lut_h15\cielo_sesgo\gfs_punto_frio.npz`, `D:\goes_cache\cielo_sesgo\` (`tpw.npz`, `gfs_sfc.npz`), `ext\` de Mauna Loa | **Sí** | vuelta 2 re-ejecutada el 21-11: `vuelta2_beta.json` idéntico | **Reproducible** desde el 21-11: importa nube tenue del repo (§3, punto 4) |
+| H15 LRC y vecindad (PR 77, fusionado 21-11) | `lut_h15\cielo_lrc\scripts\*` | `D:\goes_cache\cielo_lrc\` (53 MB, con su propia copia de los scripts de PR 75 en `nt\`), `ext\` de Mauna Loa | **Sí** | compila, insumos presentes (no re-ejecutado) | **Reproducible** desde el 21-11, igual que PR 76 |
 | Validación de magnitud VOLCAT (`validacion_magnitud\`, `PLAN_VALIDACION_MAGNITUD.md`) | `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\scripts\harvest_volcat_validacion.py`, `scripts\validate_magnitud.py` | `ROOT\data\raw\volcat_validacion\` (122 MB, gitignored), o la carpeta que diga `--raw` / `VOLCAT_VALIDACION_RAW` | **Sí**: carpeta principal y copia `D:\goes_notas\volcat_validacion_copia_2026-11-21\` | **Sí**: la etapa `volcat` corrió con `--raw` en un worktree y rehízo los 824 valores (§0) | **Reproducible** con la copia de `D:` (era frágil: sólo corría desde la carpeta principal) |
 
 La etapa 3 de H15 (Chillán) la corre otra sesión ahora y no se inventarió.
@@ -129,9 +129,10 @@ Estado de cada punto:
    disco, pero ya tienen URL exactas y MD5 para volver a bajarlos y comprobarlos:
    `D:\goes_cache\volcat_test_mauna_loa\LEEME.md` y `D:\goes_notas\busqueda_2026-11-20\volcat_static_anc\LEEME.md`
    (fuera del repo, como todo lo de SSEC).
-4. **PENDIENTE (depende de fusionar PR 75).** PR 76 y 77 importan copias de los scripts de PR 75 desde
-   `D:\goes_cache\cielo_sesgo\nt\` y `D:\goes_cache\cielo_lrc\nt\`. Acción: al fusionar PR 75, apuntarlos a
-   `<R>\lut_h15\nube_tenue\scripts`.
+4. **HECHO (21-11, tras fusionar PR 75 a 79).** `cielo_sesgo\scripts\vuelta2_beta.py` y `cielo_lrc\scripts\comun.py`
+   importan `nt_regla` de `<R>\lut_h15\nube_tenue\scripts` y ya no de las copias en `D:\goes_cache\cielo_sesgo\nt\` y
+   `D:\goes_cache\cielo_lrc\nt\` (idénticas archivo por archivo al código fusionado, comprobado con `diff`).
+   `vuelta2_beta.py` re-ejecutado: `vuelta2_beta.json` sale idéntico byte a byte. Las copias de `D:` quedan, sin uso.
 5. **HECHO.** Scripts, criterios y salidas de las pruebas del 17 y 18-11 en `<R>\pruebas_17_18nov\`, con LEEME
    "insumos perdidos".
 6. **HECHO.** Las 4 constantes `REPO` resuelven la raíz desde el propio archivo.
@@ -182,8 +183,9 @@ De **20 resultados** inventariados (incluye los tres PR sin fusionar; excluye la
   validación de magnitud. Cinco reproducidos completos con cifras iguales (H11, C2, etapa 2, nube tenue y la etapa
   `volcat` de magnitud). H11, E2, H12 y C2 lo son **desde hoy**: hasta esta sesión sus insumos vivían sólo en la
   carpeta de notas de sesión. H12 y magnitud pasaron de frágiles a reproducibles en la segunda vuelta.
-- **3 frágiles**: H14 (eventos SSEC restringidos y con plazo), PR 76 y PR 77 (importan copias de scripts desde
-  `D:`; se arregla al fusionar PR 75).
+- **3 frágiles** al cerrar el inventario: H14 (eventos SSEC restringidos y con plazo), PR 76 y PR 77 (importaban
+  copias de scripts desde `D:`). **Actualización 21-11:** PR 76 y 77 pasan a reproducibles (punto 4 de §3; la
+  vuelta 2 de PR 76 se rehízo con cifras idénticas), así que quedan **12 reproducibles, 1 frágil (H14), 7 rotos**.
 - **7 rotos**: pruebas A/B y pasos 2 a 4 del 17 y 18-11, H3, H7, β73, VAAC de Londres, H9 y H10. H9 es
   reparable cambiando tres rutas; H3 lo es en su parte de métricas. Los demás perdieron el caché del detector
   o los PNG VOLCAT de oct-nov, que no tienen copia.

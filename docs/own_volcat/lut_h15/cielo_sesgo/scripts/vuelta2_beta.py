@@ -2,7 +2,7 @@ r"""Vuelta 2: β(12/11) en nube tenue. Aplica `criterio_vuelta2_beta_2026-11-21.
 script). Base V1 (ε al nadir), N1 (punto frío GFS). H1 = corrección por vapor de la tabla de VOLCAT
 (+0,2 si TPW > 2,5 cm, +0,05 si 1,5 < TPW ≤ 2,5, sólo con εtot < 0,25). Elige S en los cuadros 1 a 5 con
 0,25 ≤ ε_VOLCAT < 0,5, valida en 6 a 10 y calcula el nivel B con las reglas del frente 1 (nt_regla.py, PR 75,
-commit af0e8ca, copia de lectura en D:\goes_cache\cielo_sesgo\nt).
+commit af0e8ca; desde el 21-11 se importa del repo, docs/own_volcat/lut_h15/nube_tenue/scripts).
 
 Uso: python -I vuelta2_beta.py   (antes: extraer_tpw.py en venv_hdf4 y gfs_punto_frio.py)
 """
@@ -17,7 +17,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import cielo_sesgo as CS  # noqa: E402
 
-NT = r"D:\goes_cache\cielo_sesgo\nt\docs\own_volcat\lut_h15\nube_tenue\scripts"
+# Reglas de nube tenue (PR 75) desde el repo: antes se leían de una copia en D:\goes_cache\cielo_sesgo\nt,
+# idéntica al commit af0e8ca; leerlas del repo evita que la copia se desfase si el código cambia.
+NT = os.path.join(os.path.dirname(os.path.dirname(HERE)), "nube_tenue", "scripts")
 sys.path.insert(1, NT)
 import nt_regla as R  # noqa: E402
 

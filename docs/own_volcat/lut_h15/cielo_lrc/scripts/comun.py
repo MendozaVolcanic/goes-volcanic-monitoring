@@ -1,7 +1,8 @@
 r"""Piezas comunes del frente cielo_lrc: carga de cuadros (reutiliza cielo_sesgo), LRC por filtro de gradiente,
 y recálculo de ε(11) al nadir con observación, cielo despejado o nube negra reemplazados.
 
-nt_regla.py (commit af0e8ca) se lee de D:\goes_cache\cielo_lrc\nt (no está en el repo).
+nt_regla.py (PR 75) se lee del repo, docs/own_volcat/lut_h15/nube_tenue/scripts (antes, de una copia idéntica en
+D:\goes_cache\cielo_lrc\nt).
 """
 import os
 import sys
@@ -12,7 +13,7 @@ from scipy.ndimage import distance_transform_edt, maximum_filter, median_filter
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(HERE)), "cielo_sesgo", "scripts"))
 import cielo_sesgo  # noqa: E402,F401  (fija lut_volcat y etapa2_validar del worktree, como en cielo_sesgo)
-sys.path.insert(1, r"D:\goes_cache\cielo_lrc\nt\docs\own_volcat\lut_h15\nube_tenue\scripts")
+sys.path.insert(1, os.path.join(os.path.dirname(os.path.dirname(HERE)), "nube_tenue", "scripts"))
 import nt_regla  # noqa: E402,F401  (queda en caché para vuelta2_beta)
 import vuelta2_beta as V2  # noqa: E402
 import vuelta3_eps11 as V3  # noqa: E402

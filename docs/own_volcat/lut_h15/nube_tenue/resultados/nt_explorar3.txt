@@ -1,0 +1,39 @@
+(a) eps<0,2 no saturados: 24854; exactos con R1: 0.0004
+  con algún casillero de β total (en las tablas que lo usan): 0.0013
+  número de casilleros que sirven: p50 1.0
+  β de VOLCAT en eps<0,2: p5/50/95 [0.519 0.895 1.037]
+  sesgo BTD en eps<0,2: p5/50/95 [-2.175 -1.104 -0.544]
+  β_fct: p5/50/95 [1.001 1.116 1.335]
+  el casillero de β_fct es uno de los que sirven: 0.0000
+  casillero requerido (primero) menos casillero de VOLCAT, distribución:
+    [(-12, 1), (-11, 2), (-4, 20), (0, 9)]
+  subconjuntos de las 7 (sin cambiar entradas): explican 0.0051
+  residuo dL (R1 − VOLCAT) en eps<0,2 por bin de eps:
+   bin -1: n=479 dL p5/50/95 [-1.851 -0.579  1.246]  logitV p5/50/95 [-11.639 -10.097  -5.343]  L1 p50 -10.003
+   bin 0: n=7835 dL p5/50/95 [-2.887 -0.66   0.098]  logitV p5/50/95 [-11.639 -10.417  -6.12 ]  L1 p50 -10.951
+   bin 1: n=14374 dL p5/50/95 [-5.053 -3.509 -0.15 ]  logitV p5/50/95 [-11.102  -7.539  -0.108]  L1 p50 -11.511
+   bin 2: n=2166 dL p5/50/95 [-4.16  -0.39  -0.334]  logitV p5/50/95 [-13.521 -10.797  -6.196]  L1 p50 -11.285
+  valores distintos de P_VOLCAT en eps<0,2: 680; los 10 más frecuentes:
+   P=0.000015 n=3470 eps p50 0.051 b_tot p50 1.019 b_op p50 3.361 sesgo p50 -0.92 agua 1.00
+   P=0.000317 n=2371 eps p50 0.062 b_tot p50 0.975 b_op p50 3.057 sesgo p50 -1.09 agua 1.00
+   P=0.000532 n=1950 eps p50 0.064 b_tot p50 0.926 b_op p50 2.711 sesgo p50 -1.22 agua 1.00
+   P=0.001043 n=1593 eps p50 0.061 b_tot p50 0.877 b_op p50 2.443 sesgo p50 -1.33 agua 1.00
+   P=0.000041 n=1185 eps p50 0.020 b_tot p50 1.025 b_op p50 4.459 sesgo p50 -0.68 agua 1.00
+   P=0.000009 n=878 eps p50 0.020 b_tot p50 0.975 b_op p50 4.068 sesgo p50 -0.73 agua 1.00
+   P=0.002346 n=855 eps p50 0.049 b_tot p50 0.830 b_op p50 2.245 sesgo p50 -1.28 agua 1.00
+   P=0.000030 n=852 eps p50 0.017 b_tot p50 0.762 b_op p50 2.384 sesgo p50 -0.83 agua 1.00
+   P=0.000021 n=845 eps p50 0.019 b_tot p50 0.926 b_op p50 3.703 sesgo p50 -0.75 agua 1.00
+   P=0.000018 n=712 eps p50 0.019 b_tot p50 0.829 b_op p50 2.911 sesgo p50 -0.84 agua 1.00
+
+(b) 0,2-0,5: resto 588, se arreglan sin 8,5: 584
+   b85       sin85 p0/5/50/95/100 [1.011 1.062 1.104 1.142 1.181] NaN 0.00 | exactos [0.939 1.058 1.082 1.116 1.201] NaN 0.00
+   b85op     sin85 p0/5/50/95/100 [0.878 1.003 1.16  1.393 1.928] NaN 0.00 | exactos [0.75  0.977 1.035 1.157 3.165] NaN 0.00
+   b_tot     sin85 p0/5/50/95/100 [0.713 0.742 0.789 0.837 0.849] NaN 0.00 | exactos [0.71  0.774 0.82  0.856 0.994] NaN 0.00
+   b_op      sin85 p0/5/50/95/100 [0.971 1.279 1.598 1.822 1.887] NaN 0.00 | exactos [0.708 1.203 1.411 1.75  2.217] NaN 0.00
+   eps       sin85 p0/5/50/95/100 [0.251 0.265 0.316 0.361 0.395] NaN 0.00 | exactos [0.2   0.316 0.429 0.494 0.5  ] NaN 0.00
+   e73       sin85 p0/5/50/95/100 [0.03  0.032 0.041 0.049 0.05 ] NaN 0.66 | exactos [0.03  0.063 0.131 0.216 0.379] NaN 0.03
+   sesgo     sin85 p0/5/50/95/100 [-4.723 -4.148 -3.253 -2.411 -1.823] NaN 0.00 | exactos [-5.771 -4.589 -3.748 -2.606 -0.081] NaN 0.00
+   btd       sin85 p0/5/50/95/100 [-0.389  0.276  1.078  1.762  2.142] NaN 0.00 | exactos [-1.202 -0.067  0.722  1.551  2.682] NaN 0.00
+   lower_idx sin85 p0/5/50/95/100 [34. 37. 46. 52. 52.] NaN 0.00 | exactos [22. 34. 46. 52. 53.] NaN 0.00
+   b_low     sin85 p0/5/50/95/100 [0.782 0.825 0.9   0.957 0.977] NaN 0.00 | exactos [0.76  0.849 0.896 0.951 1.299] NaN 0.00
+   b_nwp     sin85 p0/5/50/95/100 [  0.77    0.821   0.889   5.24  546.842] NaN 0.00 | exactos [7.000000e-01 8.390000e-01 8.920000e-01 2.223000e+00 1.295403e+03] NaN 0.00

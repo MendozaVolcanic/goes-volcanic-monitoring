@@ -1,0 +1,1920 @@
+# D:\goes_notas\busqueda_2026-11-20\volcat_static_anc\volcat-ancillary\luts\GOESR_ASH_pixel_probability_LUT_Jan11_2017_142740.hdf
+## Atributos globales
+BETA1112_DB_PIX = 0.05000000074505806
+BETA1112_FCT2_FILENAME = 'modis_emiss14_tot_btd1112_bias_relationship_Jul16_2012_194821.idl'
+BETA1112_FCT3_FILENAME = 'modis_emiss14_tot_btd1112_relationship_Jul16_2012_194821.idl'
+BETA1112_FCT4_FILENAME = 'modis_beta1112_opaque_relationship_Jul16_2012_194821.idl'
+BETA1112_FCT5_FILENAME = 'modis_emiss14_tot_ref2_uni_beta1112_relationship_Jul16_2012_194821.idl'
+BETA1112_FROM_BTD_BIAS_BTD_BIAS_DELTA = 0.10000000149011612
+BETA1112_FROM_BTD_BIAS_EMISS14_DELTA = 0.009999999776482582
+BETA1112_FROM_BTD_BIAS_EMISS14_FILL = 0.10999999940395355
+BETA1112_FROM_BTD_BIAS_EMISS14_INTERCEPT = 0.05000000074505806
+BETA1112_FROM_BTD_BIAS_LB_BTD = 0.0
+BETA1112_FROM_BTD_BIAS_LB_EMISS14_LAND = 0.05000000074505806
+BETA1112_FROM_BTD_BIAS_LB_EMISS14_TRAINING = 0.05000000074505806
+BETA1112_FROM_BTD_BIAS_LB_EMISS14_WATER = 0.019999999552965164
+BETA1112_FROM_BTD_BIAS_UB_EMISS14_TRAINING = 0.10000000149011612
+BETA1112_MARINE_STRATUS_MAX = 0.699999988079071
+BETA1112_MAX_PIX = 1.9500000476837158
+BETA1112_MIN_PIX = -0.10000000149011612
+BETA1112_OPAQUE_BETA8511_OPAQUE_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_beta8511)'
+BETA1112_OPAQUE_BETA8511_OPAQUE_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_beta8511)'
+BETA1112_OPAQUE_BETA8511_OPAQUE_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_beta8511)'
+BETA1112_OPAQUE_DB_PIX = 0.05000000074505806
+BETA1112_OPAQUE_EMS7_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_ems7)'
+BETA1112_OPAQUE_FCT1_FILENAME = 'modis_btd1112_bias_beta1112_opaque_relationship_Jul17_2012_145618.idl'
+BETA1112_OPAQUE_MAX_PIX = 1.5
+BETA1112_OPAQUE_MIN_PIX = -0.10000000149011612
+BETA1112_OPAQUE_NRAT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_nrat)'
+BETA1112_OPAQUE_NRAT_LRC_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_nrat)'
+BETA1112_PIX_LUT = 'YES'
+BETA1112_TOT_BETA7311_TOT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_beta7311)'
+BETA1112_TOT_BETA7311_TOT_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_beta7311)'
+BETA1112_TOT_BETA7311_TOT_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_beta7311)'
+BETA1112_TOT_BETA8511_TOT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_beta8511)'
+BETA1112_TOT_BETA8511_TOT_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_beta8511)'
+BETA1112_TOT_BETA8511_TOT_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_beta8511)'
+BETA1112_TOT_EMS7_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_ems7)'
+BETA1112_TOT_FCT1_FILENAME = 'modis_btd1112_bias_beta1112_tot_relationship_Jul17_2012_145618.idl'
+BETA1112_TOT_H20_CORRECTION_FILENAME = 'modis_beta1112_tot_h20_correction_Jul16_2012_194821.idl'
+BETA1112_TOT_MAX_VALID = 1.0499999523162842
+BETA1112_TOT_MAX_VALID_LOOSE = 1.100000023841858
+BETA1112_TOT_MIN_VALID = 0.0
+BETA1112_TOT_MIN_VALID_LOOSE = 0.0
+BETA1112_TOT_MULTI_LOW_EMS7_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_ems7)'
+BETA1112_TOT_MULTI_LOW_NRAT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_nrat)'
+BETA1112_TOT_MULTI_LOW_NRAT_LRC_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_nrat)'
+BETA1112_TOT_MULTI_MID_EMS7_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_ems7)'
+BETA1112_TOT_MULTI_MID_NRAT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_nrat)'
+BETA1112_TOT_MULTI_MID_NRAT_LRC_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_nrat)'
+BETA1112_TOT_NRAT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_nrat)'
+BETA1112_TOT_NRAT_LRC_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1112,h.nbins_nrat)'
+BETA1113_DB_PIX = 0.05000000074505806
+BETA1113_FCT2_FILENAME = 'modis_emiss14_tot_btd1113_bias_relationship_Jul16_2012_194821.idl'
+BETA1113_FCT3_FILENAME = 'modis_emiss14_tot_btd1113_relationship_Jul16_2012_194821.idl'
+BETA1113_FCT4_FILENAME = 'modis_beta1113_opaque_relationship_Jul16_2012_194821.idl'
+BETA1113_FCT5_FILENAME = 'modis_emiss14_tot_ref2_uni_beta1113_relationship_Jul16_2012_194821.idl'
+BETA1113_FROM_BTD_BIAS_BTD_BIAS_DELTA = 0.10000000149011612
+BETA1113_FROM_BTD_BIAS_EMISS14_DELTA = 0.009999999776482582
+BETA1113_FROM_BTD_BIAS_EMISS14_FILL = 0.10999999940395355
+BETA1113_FROM_BTD_BIAS_EMISS14_INTERCEPT = 0.05000000074505806
+BETA1113_FROM_BTD_BIAS_LB_BTD = -10000.0
+BETA1113_FROM_BTD_BIAS_LB_EMISS14_LAND = -10000.0
+BETA1113_FROM_BTD_BIAS_LB_EMISS14_TRAINING = 0.05000000074505806
+BETA1113_FROM_BTD_BIAS_LB_EMISS14_WATER = -10000.0
+BETA1113_FROM_BTD_BIAS_UB_EMISS14_TRAINING = 0.10000000149011612
+BETA1113_MARINE_STRATUS_MAX = 0.699999988079071
+BETA1113_MAX_PIX = 1.9500000476837158
+BETA1113_MIN_PIX = -0.10000000149011612
+BETA1113_OPAQUE_EMS7_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_ems7)'
+BETA1113_OPAQUE_FCT1_FILENAME = 'modis_btd1113_bias_beta1113_opaque_relationship_Jul17_2012_145618.idl'
+BETA1113_OPAQUE_NRAT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_nrat)'
+BETA1113_OPAQUE_NRAT_LRC_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_nrat)'
+BETA1113_PIX_LUT = 'NO'
+BETA1113_TOT_EMS7_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_ems7)'
+BETA1113_TOT_FCT1_FILENAME = 'modis_btd1113_bias_beta1113_tot_relationship_Jul17_2012_145618.idl'
+BETA1113_TOT_H20_CORRECTION_FILENAME = 'modis_beta1113_tot_h20_correction_Jul16_2012_194821.idl'
+BETA1113_TOT_MAX_VALID = 1.0499999523162842
+BETA1113_TOT_MAX_VALID_LOOSE = 1.0499999523162842
+BETA1113_TOT_MIN_VALID = 0.0
+BETA1113_TOT_MIN_VALID_LOOSE = 0.0
+BETA1113_TOT_MULTI_LOW_EMS7_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_ems7)'
+BETA1113_TOT_MULTI_LOW_NRAT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_nrat)'
+BETA1113_TOT_MULTI_LOW_NRAT_LRC_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_nrat)'
+BETA1113_TOT_MULTI_MID_EMS7_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_ems7)'
+BETA1113_TOT_MULTI_MID_NRAT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_nrat)'
+BETA1113_TOT_MULTI_MID_NRAT_LRC_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_nrat)'
+BETA1113_TOT_NRAT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_nrat)'
+BETA1113_TOT_NRAT_LRC_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_beta1113,h.nbins_nrat)'
+BETA7311_DB_PIX = 0.10000000149011612
+BETA7311_MAX_PIX = 1.899999976158142
+BETA7311_MIN_PIX = -0.10000000149011612
+BETA7311_PIX_LUT = 'YES'
+BETA8511_DB_PIX = 0.10000000149011612
+BETA8511_FROM_BTD_BIAS_BTD_BIAS_DELTA = 0.10000000149011612
+BETA8511_FROM_BTD_BIAS_EMISS14_DELTA = 0.009999999776482582
+BETA8511_FROM_BTD_BIAS_EMISS14_FILL = 0.10999999940395355
+BETA8511_FROM_BTD_BIAS_EMISS14_INTERCEPT = 0.05000000074505806
+BETA8511_FROM_BTD_BIAS_LB_BTD = -1.0
+BETA8511_FROM_BTD_BIAS_LB_EMISS14_LAND = 0.009999999776482582
+BETA8511_FROM_BTD_BIAS_LB_EMISS14_TRAINING = 0.05000000074505806
+BETA8511_FROM_BTD_BIAS_LB_EMISS14_WATER = 0.009999999776482582
+BETA8511_FROM_BTD_BIAS_UB_EMISS14_TRAINING = 0.10000000149011612
+BETA8511_MAX_PIX = 1.899999976158142
+BETA8511_MIN_PIX = -0.10000000149011612
+BETA8511_OPAQUE_FCT1_FILENAME = 'modis_btd8511_bias_beta8511_opaque_relationship_Jul17_2012_145618.idl'
+BETA8511_OPAQUE_MAX_NON_STRATUS = 1.2000000476837158
+BETA8511_OPAQUE_MIN_NON_STRATUS = 0.0
+BETA8511_PIX_LUT = 'YES'
+BETA8511_TOT_FCT1_FILENAME = 'modis_btd8511_bias_beta8511_tot_relationship_Jul17_2012_145618.idl'
+BETA8511_TOT_H20_CORRECTION_FILENAME = 'modis_beta8511_tot_h20_correction_Jul16_2012_194821.idl'
+BETA8511_TOT_MAX_8511_PREDICTORS = 1.0499999523162842
+BETA8511_TOT_MAX_NON_STRATUS = 1.2000000476837158
+BETA8511_TOT_MIN_8511_PREDICTORS = 2.0
+BETA8511_TOT_MIN_NON_STRATUS = 0.0
+BETA_CONSTRAINT_FILELIST = 'modis_constraint_training_v1.txt'
+BT14_NON_UNI_THRESH = 10.0
+BT7_BIAS_HOT_SPOT_MAX = 1000.0
+BT7_BIAS_HOT_SPOT_MIN = 10.0
+BTD1112_BIAS_DB_PIX = 0.25
+BTD1112_BIAS_EB_DB_PIX = 0.10000000149011612
+BTD1112_BIAS_EB_MAX_PIX = 2.0
+BTD1112_BIAS_EB_MIN_PIX = -1.0
+BTD1112_BIAS_MAX_PIX = 3.0
+BTD1112_BIAS_MIN_PIX = -3.0
+BTD1112_EB_DB_PIX = 0.25
+BTD1112_EB_MAX_PIX = 5.0
+BTD1112_EB_MIN_PIX = -3.0
+BTD1112_EMS7_NIGHT_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_bt14_clr,h.nbins_emiss14_tot,h.nbins_btd1112,h.nbins_ems7)'
+BTD1112_IFFY_NON_DESERT_SURFACE = -0.25
+BTD1112_LUT_MAX_VALID = 0.0
+BTD1112_LUT_MIN_VALID = -5.0
+BTD1112_MAX_NON_DESERT_SURFACE = -0.5
+BTD1112_MAX_NON_STRATUS = -2.5
+BTD1112_MAX_VALID = 20.0
+BTD1112_MIN_NON_DESERT_SURFACE = -25.0
+BTD1112_MIN_NON_STRATUS = -25.0
+BTD1112_MIN_VALID = -25.0
+BTD1112_NRAT_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_bt14_clr,h.nbins_emiss14_tot,h.nbins_btd1112,h.nbins_nrat)'
+BTD1112_NRAT_LRC_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_bt14_clr,h.nbins_emiss14_tot,h.nbins_btd1112,h.nbins_nrat)'
+BTD1112_PIX_LUT = 'YES'
+BTD1112_RETRIEVAL_MAX = 0.0
+BTD1112_RETRIEVAL_MIN = -25.0
+BTD1113_MAX_VALID = 80.0
+BTD1113_MIN_VALID = -20.0
+BTD3911_HOT_SPOT_MAX = 500.0
+BTD3911_HOT_SPOT_MIN = 15.0
+BTD3911_MIN_DAY_NON_DESERT_SURFACE = 0.0
+BTD3911_MIN_DAY_NON_STRATUS = 0.0
+BTD3911_REF_RATIO_IFFY_DAY_NON_DESERT_SURFACE = 0.10000000149011612
+BTD3911_REF_RATIO_MIN_DAY_NON_DESERT_SURFACE = 0.5
+BTD3911_REF_RATIO_MIN_DAY_NON_STRATUS = 2.0
+BTD7311_MAX_VALID = 20.0
+BTD7311_MIN_VALID = -90.0
+BTD8511_MAX_VALID = 20.0
+BTD8511_MIN_VALID = -50.0
+CREATION_DATE = 'Wed Jan 11 14:27:40 2017'
+DARK_PIXEL_EMISS14_TOT_MIN = 0.8999999761581421
+DARK_PIXEL_REF2_MAX = 50.0
+DARK_PIXEL_REF2_MIN = 10.0
+DAYTIME_SOLZEN = 85.0
+DAYTIME_SOLZEN_HOT_SPOT = 80.0
+EMISS10_TOT_MIN_8511_PREDICTORS = 0.05000000074505806
+EMISS14_MIN_BETA8511_NON_STRATUS = 0.019999999552965164
+EMISS14_MIN_IFFY_NON_DESERT_SURFACE = 0.05000000074505806
+EMISS14_ROBUST_NON_DESERT_SURFACE = 0.30000001192092896
+EMISS14_ROBUST_NON_STRATUS = 0.15000000596046448
+EMISS14_TOT_BETA1112_OPAQUE_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112)'
+EMISS14_TOT_BETA1112_TOT_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112)'
+EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112)'
+EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1112)'
+EMISS14_TOT_BETA1113_OPAQUE_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1113)'
+EMISS14_TOT_BETA1113_TOT_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1113)'
+EMISS14_TOT_BETA1113_TOT_MULTI_LOW_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1113)'
+EMISS14_TOT_BETA1113_TOT_MULTI_MID_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_emiss14_tot,h.nbins_beta1113)'
+EMISS14_TOT_BTD1112_IR_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_bt14_clr,h.nbins_emiss14_tot,h.nbins_btd1112)'
+EMISS14_TOT_DESERT_MAX = 0.30000001192092896
+EMISS14_TOT_EB_DB_PIX = 0.05000000074505806
+EMISS14_TOT_EB_MAX_PIX = 1.0
+EMISS14_TOT_EB_MIN_PIX = 0.0
+EMISS14_TOT_MEAN_PROB = 0.30000001192092896
+EMISS14_TOT_MIN_8511_PREDICTORS = 0.10000000149011612
+EMISS14_TOT_VREF_DAY_PIX = 'dblarr(h.nbins_cos_satzen,h.nbins_scatang,h.nbins_emiss14_tot,h.nbins_ref2)'
+EMISS_MAX_NOISE = 1000.0
+EMISS_R_BETA1112_OPAQUE_FCT1 = 0.9999999403953552
+EMISS_R_BETA1112_TOT_FCT1 = 0.9999999403953552
+EMISS_R_BETA1113_OPAQUE_FCT1 = 0.0
+EMISS_R_BETA1113_TOT_FCT1 = 0.0
+EMISS_R_BETA8511_OPAQUE_FCT1 = 1.0
+EMISS_R_BETA8511_TOT_FCT1 = 1.0
+EMISS_UNCERTAINTY_MEAN_PROB = 0.5
+EMS39_IFFY_NIGHT_NON_DESERT_SURFACE = 0.8500000238418579
+EMS39_MIN_NIGHT_NON_DESERT_SURFACE = 0.8999999761581421
+EMS39_MIN_NIGHT_NON_STRATUS = 1.0
+EMS7_DB_PIX = 0.05000000074505806
+EMS7_H20_CORRECTION_FILENAME = 'modis_ems7_h20_correction_Jul16_2012_194821.idl'
+EMS7_MAX_PIX = 2.0
+EMS7_MAX_VALID = 10.0
+EMS7_MIN_PIX = 0.800000011920929
+EMS7_MIN_VALID = 0.5
+EMS7_PIX_LUT = 'YES'
+MASS_LOADING_MEAN_PROB = 500.0
+MAX_BETA1112_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BETA8511_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BETASW_MULTILAYER_RETV = 1.0
+MAX_BT14_SDEV_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BTD1112_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BTD1112_BIAS_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BTD8511_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BTD8511_BIAS_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_EMISS14_LRC_ROBUST = 0.20000000298023224
+MAX_EMISS14_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_EMISS14_TOT_H20_CORRECTION = 0.25
+MAX_VOLCANO_DIST_8511_CONTRAST_EXEMPTION = 200.0
+MIN_73EMISS_TOT = 0.10000000149011612
+MIN_ALLOWED_GLINTZEN = 40.0
+MIN_AREA_OBJ_PDF = 1.0
+MIN_ASH_FRAC_OBJ_TRUTH = 0.25
+MIN_BETA1112_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BETA7311_TOT_SO2_EXEMPTION = 1.0
+MIN_BETA7311_TOT_STRONG_SO2 = 1.5
+MIN_BETA7311_TROPO_RETV = 2.0
+MIN_BETA8511_OPAQUE_SO2_EXEMPTION = 2.5
+MIN_BETA8511_OPAQUE_STRONG_SO2 = 2.0
+MIN_BETA8511_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BETA8511_TOT_SO2_EXEMPTION = 1.5
+MIN_BETA8511_TOT_STRONG_SO2 = 1.2000000476837158
+MIN_BETASW_MULTILAYER_RETV = 0.20000000298023224
+MIN_BT10_BIAS = 1.0
+MIN_BT10_BIAS_SO2_EXEMPTION_LOOSE = 3.0
+MIN_BT11_BIAS_SO2_EXEMPTION_LOOSE = 1.0
+MIN_BT14_CLR_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BTD1112_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BTD1112_BIAS_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BTD1112_LRC_ROBUST = -0.25
+MIN_BTD8511_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BTD8511_BIAS_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_EMISS14_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_EMISS14_TOT_SO2_EXEMPTION = 0.05000000074505806
+MIN_EMISS14_TOT_SO2_EXEMPTION_LOOSE = 0.0010000000474974513
+MIN_EMISS14_TOT_STRONG_SO2 = 0.019999999552965164
+MIN_NUM_PIXELS_OBJECT = 10
+MIN_PROB_LRC_ROBUST = 0.009999999776482582
+MIN_PROB_MULTILAYER_RETV = 0.0
+NBINS_BETA1112_OPAQUE_PIX = 33
+NBINS_BETA1112_PIX = 42
+NBINS_BETA1113_PIX = 42
+NBINS_BETA7311_PIX = 21
+NBINS_BETA8511_PIX = 21
+NBINS_BT14_CLR_PIX = 5
+NBINS_BTD1112_BIAS_EB_PIX = 31
+NBINS_BTD1112_BIAS_PIX = 25
+NBINS_BTD1112_EB_PIX = 33
+NBINS_BTD1112_PIX = 6
+NBINS_COS_SATZEN_PIX = 1
+NBINS_EMISS14_TOT_EB_PIX = 21
+NBINS_EMISS14_TOT_PIX = 6
+NBINS_EMS7_PIX = 25
+NBINS_NRAT_PIX = 13
+NBINS_REF2_PIX = 11
+NBINS_REF2_UNI_PIX = 11
+NBINS_SCATANG_PIX = 2
+NIGHTTIME_SOLZEN = 91.0
+NIGHTTIME_SOLZEN_HOT_SPOT = 95.0
+NPARAMS_ROBUST_PIX_THRESHOLDS = 21
+NRAT_DB_PIX = 0.10000000149011612
+NRAT_HOT_SPOT_MAX = 20.0
+NRAT_HOT_SPOT_MIN = 2.0
+NRAT_LRC_PIX_LUT = 'YES'
+NRAT_MARINE_STRATUS_CHECK = 1.0
+NRAT_MAX_PIX = 1.2000000476837158
+NRAT_MAX_VALID = 20.0
+NRAT_MIN_PIX = 0.0
+NRAT_MIN_VALID = 0.0
+NRAT_PIX_LUT = 'YES'
+NTHRESH_ROBUST_PIX_THRESHOLDS = 25
+NTHRESH_TERTIARY_ASH = 2
+N_BETA1112_OPAQUE_FCT1 = 15349
+N_BETA1112_TOT_FCT1 = 15365
+N_BETA1113_OPAQUE_FCT1 = 0
+N_BETA1113_TOT_FCT1 = 0
+N_BETA8511_OPAQUE_FCT1 = 9803
+N_BETA8511_TOT_FCT1 = 15442
+N_LOOP_DIM_DAY_PIX = 2
+N_LOOP_DIM_IR_PIX = 1
+N_LOOP_DIM_NIGHT_PIX = 1
+N_PRIMARY_OBJ_MEM = 5
+N_PRIMARY_OBJ_MEM_DESERT = 1
+N_QUATERNARY_OBJ_MEM = 1
+N_QUINTENARY_OBJ_MEM = 1
+N_SECONDARY_OBJ_MEM = 13
+OBJECT_ASH_PROB_CLIMO = 0.001
+OBJECT_CLD_PROB_CLIMO = 0.999
+OBJECT_DATA_READ_ROUTINE = 'read_object_training_ash'
+PIXEL_ASH_PROB_CLIMO = 0.001
+PIXEL_CLD_PROB_CLIMO = 0.999
+PIXEL_DATA_READ_ROUTINE = 'read_geocat_pixel_training_ash'
+PIXEL_PROBABILITY_MEAN_PROB = 0.009999999776482582
+PIXEL_PROB_RETRIEVAL_THRESH = 9.99999993922529e-09
+REF2_DB_PIX = 10.0
+REF2_MAX_PIX = 100.0
+REF2_MAX_VALID = 120.0
+REF2_MIN_PIX = 0.0
+REF2_MIN_VALID = 0.0
+REF2_PIX_LUT = 'YES'
+REF2_UNI_DB_PIX = 0.5
+REF2_UNI_MAX_PIX = 5.0
+REF2_UNI_MIN_PIX = 0.0
+REF39_MIN_DAY_NON_DESERT_SURFACE = 0.0
+REF39_MIN_DAY_NON_STRATUS = 0.0
+REF7_MAX_VALID = 120.0
+REF7_MIN_VALID = 0.0
+REFF_MAX_NOISE = 1000.0
+ROBUST_EMISS14_REF2 = 0.75
+R_BETA1112_FCT2 = -0.7361412048339844
+R_BETA1112_FCT3 = -0.8622640371322632
+R_BETA1112_FCT4 = 0.0
+R_BETA1112_FCT5 = -0.5742681622505188
+R_BETA1112_OPAQUE_FCT1 = -0.012864649295806885
+R_BETA1112_TOT_FCT1 = -0.7772135138511658
+R_BETA1112_TOT_H20_CORRECTION_FCT = -999.0
+R_BETA1113_FCT2 = 0.0
+R_BETA1113_FCT3 = 0.0
+R_BETA1113_FCT4 = 0.0
+R_BETA1113_FCT5 = 0.0
+R_BETA1113_OPAQUE_FCT1 = 0.0
+R_BETA1113_TOT_FCT1 = 0.0
+R_BETA1113_TOT_H20_CORRECTION_FCT = -999.0
+R_BETA8511_OPAQUE_FCT1 = 0.7556688785552979
+R_BETA8511_TOT_FCT1 = 0.9699970483779907
+R_BETA8511_TOT_H20_CORRECTION_FCT = -999.0
+R_EMS7_H20_CORRECTION_FCT = -999.0
+SECONDARY_ASH_MEMBERSHIP_BT14_SDEV_MAX = 2.0
+SECONDARY_ASH_MEMBERSHIP_BTD1112_MAX = 2.0
+SECONDARY_ASH_MEMBERSHIP_BTD1112_MIN = -25.0
+SECONDARY_ASH_MEMBERSHIP_EMISS14_TOT_MAX = 0.25
+SECONDARY_ASH_MEMBERSHIP_EMISS14_TOT_MIN = 0.0010000000474974513
+SECONDARY_ASH_MEMBERSHIP_EMISS_MAX = 0.5
+SECONDARY_ASH_MEMBERSHIP_EMISS_MIN = 0.0
+SECONDARY_ASH_MEMBERSHIP_PROB_MIN = 9.999999747378752e-06
+SENARY_ASH_MEMBERSHIP_85_11_12_CORR_MAX = -0.5
+SENARY_ASH_MEMBERSHIP_85_11_12_CORR_MIN = -1.0499999523162842
+SENSOR_SERIES = 'goesr'
+SEPTENARY_ASH_MEMBERSHIP_BETA8511_OPAQUE_MAX = 1.100000023841858
+SEPTENARY_ASH_MEMBERSHIP_BETA8511_OPAQUE_MIN = 0.30000001192092896
+SEPTENARY_ASH_MEMBERSHIP_BETA8511_TOT_MAX = 1.2000000476837158
+SEPTENARY_ASH_MEMBERSHIP_BETA8511_TOT_MIN = 0.30000001192092896
+SEPTENARY_ASH_MEMBERSHIP_BTD1112_MAX = 0.0
+SEPTENARY_ASH_MEMBERSHIP_BTD1112_MIN = -5.0
+SEPTENARY_ASH_MEMBERSHIP_EMISS14_MAX = 0.20000000298023224
+SEPTENARY_ASH_MEMBERSHIP_EMISS14_MIN = 0.019999999552965164
+SEPTENARY_ASH_MEMBERSHIP_EMISS_UNCERT_MAX = 0.9800000190734863
+SEPTENARY_ASH_MEMBERSHIP_EMISS_UNCERT_MIN = 0.0
+SEPTENARY_ASH_MEMBERSHIP_PROB_MIN = 9.999999974752427e-07
+SOLZEN_DAY_NON_DESERT_SURFACE = 80.0
+SOLZEN_DAY_NON_STRATUS = 80.0
+SOLZEN_NIGHT_NON_DESERT_SURFACE = 90.0
+SOLZEN_NIGHT_NON_STRATUS = 90.0
+TERTIARY_ASH_MEMBERSHIP_BTD1112_MAX = -0.5
+TERTIARY_ASH_MEMBERSHIP_BTD1112_MIN = -25.0
+TERTIARY_ASH_MEMBERSHIP_EMISS14_MAX = 1.0
+TERTIARY_ASH_MEMBERSHIP_EMISS14_MIN = 0.05000000074505806
+TERTIARY_ASH_MEMBERSHIP_EMISS14_SWEET_LB = 0.30000001192092896
+TERTIARY_ASH_MEMBERSHIP_EMISS14_SWEET_UB = 0.699999988079071
+TRAINING_ANALYSIS_DIRECTORY = '/data/mpav/bayes_training//GOESR_ASH/analysis/'
+TRAINING_DATA_GENERATION_SCRIPT = './geocat_training_main.sh'
+TRAINING_FILELIST_ASH = '/home/mpav/bayes_training/filelists//GOESR_ASH//modis_pixel_training_ASH_v1.txt.pixel.ACTUAL'
+TRAINING_FILELIST_NOASH = '/home/mpav/bayes_training/filelists//GOESR_ASH//modis_pixel_training_NOASH_v1.txt.pixel.ACTUAL'
+TRAINING_HIST_DIRECTORY = '/data/mpav/bayes_training//MODIS_ASH/pixel_histograms/'
+TRAINING_HIST_FILENAME = 'modis_merged_pixel_histograms_Apr26_2013_114348.idl'
+TRAINING_L2_DIRECTORY = '/data/mpav/bayes_training//GOESR_ASH/hdf_output/'
+VMAX_BETA1112_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BETA8511_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BT14_SDEV_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BTD1112_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BTD1112_BIAS_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BTD8511_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BTD8511_BIAS_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_EMISS14_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+VMIN_BETA1112_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BETA8511_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BT14_CLR_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BTD1112_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BTD1112_BIAS_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BTD8511_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BTD8511_BIAS_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_EMISS14_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+
+## Conjuntos
+   0 ROBUST_PIX_THRESHOLDS dims=('fakeDim0', 'fakeDim1') shape=(25, 21) type=6 min=-1e+05 max=1e+05 sum=-219442 ceros=0.042
+      dim fakeDim0: (25, 0, 0, 0, 0)
+      dim fakeDim1: (21, 1, 0, 0, 0)
+   1 EMISS_UNCERTAINTY_PRIMARY_OBJ_MEM dims=('fakeDim2',) shape=(5,) type=5 min=0.3 max=0.9 sum=2.8 ceros=0.000
+      dim fakeDim2: (5, 0, 0, 0, 0)
+      valores = [0.30000001192092896, 0.4000000059604645, 0.5, 0.699999988079071, 0.8999999761581421]
+   2 PIXEL_PROBABILITY_PRIMARY_OBJ_MEM dims=('fakeDim3',) shape=(5,) type=6 min=0.01 max=0.95 sum=2.01 ceros=0.000
+      dim fakeDim3: (5, 0, 0, 0, 0)
+      valores = [0.01, 0.05, 0.1, 0.9, 0.95]
+   3 EMISS14_TOT_PRIMARY_OBJ_MEM dims=('fakeDim4',) shape=(5,) type=5 min=0.25 max=0.25 sum=1.25 ceros=0.000
+      dim fakeDim4: (5, 0, 0, 0, 0)
+      valores = [0.25, 0.25, 0.25, 0.25, 0.25]
+   4 BTD1112_PRIMARY_OBJ_MEM dims=('fakeDim5',) shape=(5,) type=5 min=-0.5 max=-0.5 sum=-2.5 ceros=0.000
+      dim fakeDim5: (5, 0, 0, 0, 0)
+      valores = [-0.5, -0.5, -0.5, -0.5, -0.5]
+   5 EMISS_UNCERTAINTY_PRIMARY_OBJ_MEM_DESERT dims=('fakeDim6',) shape=(1,) type=5 min=1.01 max=1.01 sum=1.01 ceros=0.000
+      dim fakeDim6: (1, 0, 0, 0, 0)
+      valores = [1.0099999904632568]
+   6 PIXEL_PROBABILITY_PRIMARY_OBJ_MEM_DESERT dims=('fakeDim7',) shape=(1,) type=6 min=0.01 max=0.01 sum=0.01 ceros=0.000
+      dim fakeDim7: (1, 0, 0, 0, 0)
+      valores = [0.01]
+   7 EMISS14_TOT_PRIMARY_OBJ_MEM_DESERT dims=('fakeDim8',) shape=(1,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim8: (1, 0, 0, 0, 0)
+      valores = [0.0]
+   8 BTD1112_PRIMARY_OBJ_MEM_DESERT dims=('fakeDim9',) shape=(1,) type=5 min=-2 max=-2 sum=-2 ceros=0.000
+      dim fakeDim9: (1, 0, 0, 0, 0)
+      valores = [-2.0]
+   9 BTD1112_ABS_DIFF_SECONDARY_OBJ_MEM dims=('fakeDim10',) shape=(13,) type=5 min=0.25 max=0.25 sum=3.25 ceros=0.000
+      dim fakeDim10: (13, 0, 0, 0, 0)
+      valores = [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25]
+  10 BTD1112_REL_DIFF_SECONDARY_OBJ_MEM dims=('fakeDim11',) shape=(13,) type=5 min=0.25 max=0.85 sum=7.15 ceros=0.000
+      dim fakeDim11: (13, 0, 0, 0, 0)
+      valores = [0.25, 0.30000001192092896, 0.3499999940395355, 0.4000000059604645, 0.44999998807907104, 0.5, 0.550000011920929, 0.6000000238418579, 0.6499999761581421, 0.699999988079071, 0.75, 0.800000011920929, 0.8500000238418579]
+  11 EMISS_UNCERTAINTY_SECONDARY_OBJ_MEM dims=('fakeDim12',) shape=(13,) type=5 min=0.3 max=0.9 sum=7.8 ceros=0.000
+      dim fakeDim12: (13, 0, 0, 0, 0)
+      valores = [0.30000001192092896, 0.3499999940395355, 0.4000000059604645, 0.44999998807907104, 0.5, 0.550000011920929, 0.6000000238418579, 0.6499999761581421, 0.699999988079071, 0.75, 0.800000011920929, 0.8500000238418579, 0.8999999761581421]
+  12 TERTIARY_ASH_MEMBERSHIP_BTD1112_BIAS_MIN dims=('fakeDim13',) shape=(2,) type=5 min=1 max=1.5 sum=2.5 ceros=0.000
+      dim fakeDim13: (2, 0, 0, 0, 0)
+      valores = [1.0, 1.5]
+  13 TERTIARY_ASH_MEMBERSHIP_PROB_MIN dims=('fakeDim14',) shape=(2,) type=6 min=0 max=0.0001 sum=0.0001 ceros=0.500
+      dim fakeDim14: (2, 0, 0, 0, 0)
+      valores = [0.0001, 0.0]
+  14 EMISS_UNCERTAINTY_QUATERNARY_OBJ_MEM dims=('fakeDim15',) shape=(1,) type=5 min=0.95 max=0.95 sum=0.95 ceros=0.000
+      dim fakeDim15: (1, 0, 0, 0, 0)
+      valores = [0.949999988079071]
+  15 PIXEL_PROBABILITY_QUATERNARY_OBJ_MEM dims=('fakeDim16',) shape=(1,) type=6 min=1e-10 max=1e-10 sum=1e-10 ceros=0.000
+      dim fakeDim16: (1, 0, 0, 0, 0)
+      valores = [0.0]
+  16 MAX_ASH_LOADING_QUINTENARY_OBJ_MEM dims=('fakeDim17',) shape=(1,) type=5 min=1 max=1 sum=1 ceros=0.000
+      dim fakeDim17: (1, 0, 0, 0, 0)
+      valores = [1.0]
+  17 PIXEL_PROBABILITY_QUINTENARY_OBJ_MEM dims=('fakeDim18',) shape=(1,) type=6 min=1e-15 max=1e-15 sum=1e-15 ceros=0.000
+      dim fakeDim18: (1, 0, 0, 0, 0)
+      valores = [0.0]
+  18 COS_SATZEN_BINS_PIX dims=('fakeDim19',) shape=(1,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim19: (1, 0, 0, 0, 0)
+      valores = [0.0]
+  19 COS_SATZEN_BINS_FULL_PIX dims=('fakeDim20',) shape=(2,) type=5 min=0 max=1 sum=1 ceros=0.500
+      dim fakeDim20: (2, 0, 0, 0, 0)
+      valores = [0.0, 1.0]
+  20 SCATANG_BINS_PIX dims=('fakeDim21',) shape=(2,) type=5 min=0 max=90 sum=90 ceros=0.500
+      dim fakeDim21: (2, 0, 0, 0, 0)
+      valores = [0.0, 90.0]
+  21 SCATANG_BINS_FULL_PIX dims=('fakeDim22',) shape=(3,) type=5 min=0 max=180 sum=270 ceros=0.333
+      dim fakeDim22: (3, 0, 0, 0, 0)
+      valores = [0.0, 90.0, 180.0]
+  22 EMISS14_TOT_BINS_PIX dims=('fakeDim23',) shape=(6,) type=5 min=0.01 max=0.9 sum=1.74 ceros=0.000
+      dim fakeDim23: (6, 0, 0, 0, 0)
+      valores = [0.009999999776482582, 0.029999999329447746, 0.10000000149011612, 0.20000000298023224, 0.5, 0.8999999761581421]
+  23 EMISS14_TOT_BINS_FULL_PIX dims=('fakeDim24',) shape=(7,) type=5 min=0.01 max=1 sum=2.74 ceros=0.000
+      dim fakeDim24: (7, 0, 0, 0, 0)
+      valores = [0.009999999776482582, 0.029999999329447746, 0.10000000149011612, 0.20000000298023224, 0.5, 0.8999999761581421, 1.0]
+  24 BT14_CLR_BINS_PIX dims=('fakeDim25',) shape=(5,) type=5 min=160 max=270 sum=1210 ceros=0.000
+      dim fakeDim25: (5, 0, 0, 0, 0)
+      valores = [160.0, 255.0, 260.0, 265.0, 270.0]
+  25 BT14_CLR_BINS_FULL_PIX dims=('fakeDim26',) shape=(6,) type=5 min=160 max=400 sum=1610 ceros=0.000
+      dim fakeDim26: (6, 0, 0, 0, 0)
+      valores = [160.0, 255.0, 260.0, 265.0, 270.0, 400.0]
+  26 BTD1112_BINS_PIX dims=('fakeDim27',) shape=(6,) type=5 min=-10 max=0 sum=-11.85 ceros=0.167
+      dim fakeDim27: (6, 0, 0, 0, 0)
+      valores = [-10.0, -1.0, -0.5, -0.25, -0.10000000149011612, 0.0]
+  27 BTD1112_BINS_FULL_PIX dims=('fakeDim28',) shape=(7,) type=5 min=-10 max=10 sum=-1.85 ceros=0.143
+      dim fakeDim28: (7, 0, 0, 0, 0)
+      valores = [-10.0, -1.0, -0.5, -0.25, -0.10000000149011612, 0.0, 10.0]
+  28 COEFF_BETA1112_TOT_FCT1 dims=('fakeDim29',) shape=(2,) type=5 min=-0.2046 max=0.8896 sum=0.685034 ceros=0.000
+      dim fakeDim29: (2, 0, 0, 0, 0)
+      valores = [0.8896399736404419, -0.20461000502109528]
+  29 EMISS_COEFF_BETA1112_TOT_FCT1 dims=('fakeDim30',) shape=(2,) type=5 min=7.451e-09 max=0.1 sum=0.1 ceros=0.000
+      dim fakeDim30: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.10000000149011612]
+  30 BTD_BIAS_RANGE_BETA1112_TOT_FCT1 dims=('fakeDim31',) shape=(2,) type=5 min=0.5 max=2 sum=2.5 ceros=0.000
+      dim fakeDim31: (2, 0, 0, 0, 0)
+      valores = [0.5, 2.0]
+  31 BETA_RANGE_BETA1112_TOT_FCT1 dims=('fakeDim32',) shape=(2,) type=5 min=0.2 max=1.05 sum=1.25 ceros=0.000
+      dim fakeDim32: (2, 0, 0, 0, 0)
+      valores = [0.20000000298023224, 1.0499999523162842]
+  32 ACTUAL_BETA_RANGE_BETA1112_TOT_FCT1 dims=('fakeDim33',) shape=(2,) type=5 min=0.4804 max=0.7873 sum=1.26776 ceros=0.000
+      dim fakeDim33: (2, 0, 0, 0, 0)
+      valores = [0.480430006980896, 0.787339985370636]
+  33 COEFF_BETA1112_OPAQUE_FCT1 dims=('fakeDim34',) shape=(2,) type=5 min=-0.0005591 max=0.4258 sum=0.425194 ceros=0.000
+      dim fakeDim34: (2, 0, 0, 0, 0)
+      valores = [0.4257499873638153, -0.0005600000149570405]
+  34 EMISS_COEFF_BETA1112_OPAQUE_FCT1 dims=('fakeDim35',) shape=(2,) type=5 min=7.451e-09 max=0.1 sum=0.1 ceros=0.000
+      dim fakeDim35: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.10000000149011612]
+  35 BTD_BIAS_RANGE_BETA1112_OPAQUE_FCT1 dims=('fakeDim36',) shape=(2,) type=5 min=0.5 max=2 sum=2.5 ceros=0.000
+      dim fakeDim36: (2, 0, 0, 0, 0)
+      valores = [0.5, 2.0]
+  36 BETA_RANGE_BETA1112_OPAQUE_FCT1 dims=('fakeDim37',) shape=(2,) type=5 min=0.2 max=1.05 sum=1.25 ceros=0.000
+      dim fakeDim37: (2, 0, 0, 0, 0)
+      valores = [0.20000000298023224, 1.0499999523162842]
+  37 ACTUAL_BETA_RANGE_BETA1112_OPAQUE_FCT1 dims=('fakeDim38',) shape=(2,) type=5 min=0.4246 max=0.4255 sum=0.850108 ceros=0.000
+      dim fakeDim38: (2, 0, 0, 0, 0)
+      valores = [0.42462998628616333, 0.4254699945449829]
+  38 X_COND_BETA1112_FCT2 dims=('fakeDim39',) shape=(2,) type=5 min=0 max=0.5 sum=0.5 ceros=0.500
+      dim fakeDim39: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.5]
+  39 SLOPE_BETA1112_FCT2 dims=('fakeDim40',) shape=(2,) type=5 min=-0.7009 max=0 sum=-0.700909 ceros=0.500
+      dim fakeDim40: (2, 0, 0, 0, 0)
+      valores = [-0.7009099721908569, 0.0]
+  40 INTERCEPT_BETA1112_FCT2 dims=('fakeDim41',) shape=(2,) type=5 min=-10 max=0.03122 sum=-9.96878 ceros=0.000
+      dim fakeDim41: (2, 0, 0, 0, 0)
+      valores = [0.031220000237226486, -10.0]
+  41 X_COND_BETA1112_FCT3 dims=('fakeDim42',) shape=(2,) type=5 min=0 max=0.5 sum=0.5 ceros=0.500
+      dim fakeDim42: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.5]
+  42 SLOPE_BETA1112_FCT3 dims=('fakeDim43',) shape=(2,) type=5 min=-1.194 max=0 sum=-1.19446 ceros=0.500
+      dim fakeDim43: (2, 0, 0, 0, 0)
+      valores = [0.0, -1.1944600343704224]
+  43 INTERCEPT_BETA1112_FCT3 dims=('fakeDim44',) shape=(2,) type=5 min=1.142 max=10 sum=11.1421 ceros=0.000
+      dim fakeDim44: (2, 0, 0, 0, 0)
+      valores = [10.0, 1.1421300172805786]
+  44 X_COND_BETA1112_FCT4 dims=('fakeDim45',) shape=(2,) type=5 min=-25 max=0 sum=-25 ceros=0.500
+      dim fakeDim45: (2, 0, 0, 0, 0)
+      valores = [-25.0, 0.0]
+  45 SLOPE_BETA1112_FCT4 dims=('fakeDim46',) shape=(2,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim46: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.0]
+  46 INTERCEPT_BETA1112_FCT4 dims=('fakeDim47',) shape=(2,) type=5 min=1.363 max=10 sum=11.3626 ceros=0.000
+      dim fakeDim47: (2, 0, 0, 0, 0)
+      valores = [10.0, 1.362589955329895]
+  47 X_COND_BETA1112_FCT5 dims=('fakeDim48',) shape=(2,) type=5 min=0 max=0.2 sum=0.2 ceros=0.500
+      dim fakeDim48: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.20000000298023224]
+  48 SLOPE_BETA1112_FCT5 dims=('fakeDim49',) shape=(2,) type=5 min=-6.349 max=0 sum=-6.34932 ceros=0.500
+      dim fakeDim49: (2, 0, 0, 0, 0)
+      valores = [-6.349319934844971, 0.0]
+  49 INTERCEPT_BETA1112_FCT5 dims=('fakeDim50',) shape=(2,) type=5 min=0 max=1.96 sum=1.96 ceros=0.500
+      dim fakeDim50: (2, 0, 0, 0, 0)
+      valores = [1.9600000381469727, 0.0]
+  50 COEFF_BETA1113_TOT_FCT1 dims=('fakeDim51',) shape=(2,) type=5 min=-999 max=-999 sum=-1998 ceros=0.000
+      dim fakeDim51: (2, 0, 0, 0, 0)
+      valores = [-999.0, -999.0]
+  51 EMISS_COEFF_BETA1113_TOT_FCT1 dims=('fakeDim52',) shape=(2,) type=5 min=-999 max=-999 sum=-1998 ceros=0.000
+      dim fakeDim52: (2, 0, 0, 0, 0)
+      valores = [-999.0, -999.0]
+  52 BTD_BIAS_RANGE_BETA1113_TOT_FCT1 dims=('fakeDim53',) shape=(2,) type=5 min=-1e+04 max=-1e+04 sum=-20000 ceros=0.000
+      dim fakeDim53: (2, 0, 0, 0, 0)
+      valores = [-10000.0, -10000.0]
+  53 BETA_RANGE_BETA1113_TOT_FCT1 dims=('fakeDim54',) shape=(2,) type=5 min=0.2 max=1.05 sum=1.25 ceros=0.000
+      dim fakeDim54: (2, 0, 0, 0, 0)
+      valores = [0.20000000298023224, 1.0499999523162842]
+  54 ACTUAL_BETA_RANGE_BETA1113_TOT_FCT1 dims=('fakeDim55',) shape=(2,) type=5 min=0.2 max=1.05 sum=1.25 ceros=0.000
+      dim fakeDim55: (2, 0, 0, 0, 0)
+      valores = [0.20000000298023224, 1.0499999523162842]
+  55 COEFF_BETA1113_OPAQUE_FCT1 dims=('fakeDim56',) shape=(2,) type=5 min=-999 max=-999 sum=-1998 ceros=0.000
+      dim fakeDim56: (2, 0, 0, 0, 0)
+      valores = [-999.0, -999.0]
+  56 EMISS_COEFF_BETA1113_OPAQUE_FCT1 dims=('fakeDim57',) shape=(2,) type=5 min=-999 max=-999 sum=-1998 ceros=0.000
+      dim fakeDim57: (2, 0, 0, 0, 0)
+      valores = [-999.0, -999.0]
+  57 BTD_BIAS_RANGE_BETA1113_OPAQUE_FCT1 dims=('fakeDim58',) shape=(2,) type=5 min=-1e+04 max=-1e+04 sum=-20000 ceros=0.000
+      dim fakeDim58: (2, 0, 0, 0, 0)
+      valores = [-10000.0, -10000.0]
+  58 BETA_RANGE_BETA1113_OPAQUE_FCT1 dims=('fakeDim59',) shape=(2,) type=5 min=0.2 max=1.05 sum=1.25 ceros=0.000
+      dim fakeDim59: (2, 0, 0, 0, 0)
+      valores = [0.20000000298023224, 1.0499999523162842]
+  59 ACTUAL_BETA_RANGE_BETA1113_OPAQUE_FCT1 dims=('fakeDim60',) shape=(2,) type=5 min=0.2 max=1.05 sum=1.25 ceros=0.000
+      dim fakeDim60: (2, 0, 0, 0, 0)
+      valores = [0.20000000298023224, 1.0499999523162842]
+  60 X_COND_BETA1113_FCT2 dims=('fakeDim61',) shape=(2,) type=5 min=0 max=0.5 sum=0.5 ceros=0.500
+      dim fakeDim61: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.5]
+  61 SLOPE_BETA1113_FCT2 dims=('fakeDim62',) shape=(2,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim62: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.0]
+  62 INTERCEPT_BETA1113_FCT2 dims=('fakeDim63',) shape=(2,) type=5 min=-1e+04 max=-1e+04 sum=-20000 ceros=0.000
+      dim fakeDim63: (2, 0, 0, 0, 0)
+      valores = [-10000.0, -10000.0]
+  63 X_COND_BETA1113_FCT3 dims=('fakeDim64',) shape=(2,) type=5 min=0 max=0.5 sum=0.5 ceros=0.500
+      dim fakeDim64: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.5]
+  64 SLOPE_BETA1113_FCT3 dims=('fakeDim65',) shape=(2,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim65: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.0]
+  65 INTERCEPT_BETA1113_FCT3 dims=('fakeDim66',) shape=(2,) type=5 min=1e+04 max=1e+04 sum=20000 ceros=0.000
+      dim fakeDim66: (2, 0, 0, 0, 0)
+      valores = [10000.0, 10000.0]
+  66 X_COND_BETA1113_FCT4 dims=('fakeDim67',) shape=(2,) type=5 min=-20 max=0 sum=-20 ceros=0.500
+      dim fakeDim67: (2, 0, 0, 0, 0)
+      valores = [-20.0, 0.0]
+  67 SLOPE_BETA1113_FCT4 dims=('fakeDim68',) shape=(2,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim68: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.0]
+  68 INTERCEPT_BETA1113_FCT4 dims=('fakeDim69',) shape=(2,) type=5 min=1e+04 max=1e+04 sum=20000 ceros=0.000
+      dim fakeDim69: (2, 0, 0, 0, 0)
+      valores = [10000.0, 10000.0]
+  69 X_COND_BETA1113_FCT5 dims=('fakeDim70',) shape=(2,) type=5 min=0 max=0.2 sum=0.2 ceros=0.500
+      dim fakeDim70: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.20000000298023224]
+  70 SLOPE_BETA1113_FCT5 dims=('fakeDim71',) shape=(2,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim71: (2, 0, 0, 0, 0)
+      valores = [0.0, 0.0]
+  71 INTERCEPT_BETA1113_FCT5 dims=('fakeDim72',) shape=(2,) type=5 min=1e+04 max=1e+04 sum=20000 ceros=0.000
+      dim fakeDim72: (2, 0, 0, 0, 0)
+      valores = [10000.0, 10000.0]
+  72 COEFF_BETA8511_TOT_FCT1 dims=('fakeDim73',) shape=(2,) type=5 min=0.332 max=1.172 sum=1.50402 ceros=0.000
+      dim fakeDim73: (2, 0, 0, 0, 0)
+      valores = [1.1720499992370605, 0.3319700062274933]
+  73 EMISS_COEFF_BETA8511_TOT_FCT1 dims=('fakeDim74',) shape=(2,) type=5 min=0.1 max=0.25 sum=0.35 ceros=0.000
+      dim fakeDim74: (2, 0, 0, 0, 0)
+      valores = [0.25, 0.10000000149011612]
+  74 BTD_BIAS_RANGE_BETA8511_TOT_FCT1 dims=('fakeDim75',) shape=(2,) type=5 min=-2 max=2 sum=0 ceros=0.000
+      dim fakeDim75: (2, 0, 0, 0, 0)
+      valores = [-2.0, 2.0]
+  75 BETA_RANGE_BETA8511_TOT_FCT1 dims=('fakeDim76',) shape=(2,) type=5 min=0.5 max=1.8 sum=2.3 ceros=0.000
+      dim fakeDim76: (2, 0, 0, 0, 0)
+      valores = [0.5, 1.7999999523162842]
+  76 ACTUAL_BETA_RANGE_BETA8511_TOT_FCT1 dims=('fakeDim77',) shape=(2,) type=5 min=0.5081 max=1.836 sum=2.3441 ceros=0.000
+      dim fakeDim77: (2, 0, 0, 0, 0)
+      valores = [0.508109986782074, 1.8359899520874023]
+  77 COEFF_BETA8511_OPAQUE_FCT1 dims=('fakeDim78',) shape=(2,) type=5 min=0.4311 max=0.9681 sum=1.39916 ceros=0.000
+      dim fakeDim78: (2, 0, 0, 0, 0)
+      valores = [0.9680699706077576, 0.4311000108718872]
+  78 EMISS_COEFF_BETA8511_OPAQUE_FCT1 dims=('fakeDim79',) shape=(2,) type=5 min=0.1 max=0.25 sum=0.35 ceros=0.000
+      dim fakeDim79: (2, 0, 0, 0, 0)
+      valores = [0.25, 0.10000000149011612]
+  79 BTD_BIAS_RANGE_BETA8511_OPAQUE_FCT1 dims=('fakeDim80',) shape=(2,) type=5 min=-2 max=2 sum=0 ceros=0.000
+      dim fakeDim80: (2, 0, 0, 0, 0)
+      valores = [-2.0, 2.0]
+  80 BETA_RANGE_BETA8511_OPAQUE_FCT1 dims=('fakeDim81',) shape=(2,) type=5 min=0.5 max=1.8 sum=2.3 ceros=0.000
+      dim fakeDim81: (2, 0, 0, 0, 0)
+      valores = [0.5, 1.7999999523162842]
+  81 ACTUAL_BETA_RANGE_BETA8511_OPAQUE_FCT1 dims=('fakeDim82',) shape=(2,) type=5 min=0.1059 max=1.83 sum=1.93613 ceros=0.000
+      dim fakeDim82: (2, 0, 0, 0, 0)
+      valores = [0.1058799996972084, 1.8302600383758545]
+  82 X_COND_EMS7_H20_CORRECTION_FCT dims=('fakeDim83',) shape=(3,) type=5 min=-999 max=2.5 sum=-995 ceros=0.000
+      dim fakeDim83: (3, 0, 0, 0, 0)
+      valores = [-999.0, 1.5, 2.5]
+  83 SLOPE_EMS7_H20_CORRECTION_FCT dims=('fakeDim84',) shape=(3,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim84: (3, 0, 0, 0, 0)
+      valores = [0.0, 0.0, 0.0]
+  84 INTERCEPT_EMS7_H20_CORRECTION_FCT dims=('fakeDim85',) shape=(3,) type=5 min=0 max=0.1 sum=0.15 ceros=0.333
+      dim fakeDim85: (3, 0, 0, 0, 0)
+      valores = [0.0, 0.05000000074505806, 0.10000000149011612]
+  85 X_COND_BETA1112_TOT_H20_CORRECTION_FCT dims=('fakeDim86',) shape=(3,) type=5 min=-999 max=2.5 sum=-995 ceros=0.000
+      dim fakeDim86: (3, 0, 0, 0, 0)
+      valores = [-999.0, 1.5, 2.5]
+  86 SLOPE_BETA1112_TOT_H20_CORRECTION_FCT dims=('fakeDim87',) shape=(3,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim87: (3, 0, 0, 0, 0)
+      valores = [0.0, 0.0, 0.0]
+  87 INTERCEPT_BETA1112_TOT_H20_CORRECTION_FCT dims=('fakeDim88',) shape=(3,) type=5 min=0 max=0.2 sum=0.25 ceros=0.333
+      dim fakeDim88: (3, 0, 0, 0, 0)
+      valores = [0.0, 0.05000000074505806, 0.20000000298023224]
+  88 X_COND_BETA1113_TOT_H20_CORRECTION_FCT dims=('fakeDim89',) shape=(3,) type=5 min=-999 max=2.5 sum=-995 ceros=0.000
+      dim fakeDim89: (3, 0, 0, 0, 0)
+      valores = [-999.0, 1.5, 2.5]
+  89 SLOPE_BETA1113_TOT_H20_CORRECTION_FCT dims=('fakeDim90',) shape=(3,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim90: (3, 0, 0, 0, 0)
+      valores = [0.0, 0.0, 0.0]
+  90 INTERCEPT_BETA1113_TOT_H20_CORRECTION_FCT dims=('fakeDim91',) shape=(3,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim91: (3, 0, 0, 0, 0)
+      valores = [0.0, 0.0, 0.0]
+  91 X_COND_BETA8511_TOT_H20_CORRECTION_FCT dims=('fakeDim92',) shape=(3,) type=5 min=-999 max=2.5 sum=-995 ceros=0.000
+      dim fakeDim92: (3, 0, 0, 0, 0)
+      valores = [-999.0, 1.5, 2.5]
+  92 SLOPE_BETA8511_TOT_H20_CORRECTION_FCT dims=('fakeDim93',) shape=(3,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim93: (3, 0, 0, 0, 0)
+      valores = [0.0, 0.0, 0.0]
+  93 INTERCEPT_BETA8511_TOT_H20_CORRECTION_FCT dims=('fakeDim94',) shape=(3,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim94: (3, 0, 0, 0, 0)
+      valores = [0.0, 0.0, 0.0]
+  94 BETA1112_TOT_EMS7_NIGHT_ASH_LAND_PIX dims=('fakeDim95', 'fakeDim96', 'fakeDim97', 'fakeDim98') shape=(25, 42, 6, 1) type=6 min=2.525e-09 max=0.0206 sum=1 ceros=0.000
+      dim fakeDim95: (25, 0, 0, 0, 0)
+      dim fakeDim96: (42, 1, 0, 0, 0)
+      dim fakeDim97: (6, 2, 0, 0, 0)
+      dim fakeDim98: (1, 3, 0, 0, 0)
+  95 BETA1112_OPAQUE_EMS7_NIGHT_ASH_LAND_PIX dims=('fakeDim99', 'fakeDim100', 'fakeDim101', 'fakeDim102') shape=(25, 42, 6, 1) type=6 min=2.585e-09 max=0.09793 sum=1 ceros=0.000
+      dim fakeDim99: (25, 0, 0, 0, 0)
+      dim fakeDim100: (42, 1, 0, 0, 0)
+      dim fakeDim101: (6, 2, 0, 0, 0)
+      dim fakeDim102: (1, 3, 0, 0, 0)
+  96 BETA1112_TOT_MULTI_LOW_EMS7_NIGHT_ASH_LAND_PIX dims=('fakeDim103', 'fakeDim104', 'fakeDim105', 'fakeDim106') shape=(25, 42, 6, 1) type=6 min=2.656e-09 max=0.05152 sum=1 ceros=0.000
+      dim fakeDim103: (25, 0, 0, 0, 0)
+      dim fakeDim104: (42, 1, 0, 0, 0)
+      dim fakeDim105: (6, 2, 0, 0, 0)
+      dim fakeDim106: (1, 3, 0, 0, 0)
+  97 BETA1112_TOT_MULTI_MID_EMS7_NIGHT_ASH_LAND_PIX dims=('fakeDim107', 'fakeDim108', 'fakeDim109', 'fakeDim110') shape=(25, 42, 6, 1) type=6 min=2.656e-09 max=0.09575 sum=1 ceros=0.000
+      dim fakeDim107: (25, 0, 0, 0, 0)
+      dim fakeDim108: (42, 1, 0, 0, 0)
+      dim fakeDim109: (6, 2, 0, 0, 0)
+      dim fakeDim110: (1, 3, 0, 0, 0)
+  98 BTD1112_EMS7_NIGHT_ASH_LAND_PIX dims=('fakeDim111', 'fakeDim112', 'fakeDim113', 'fakeDim114', 'fakeDim115') shape=(25, 33, 6, 5, 1) type=6 min=2.382e-09 max=0.03654 sum=1 ceros=0.000
+      dim fakeDim111: (25, 0, 0, 0, 0)
+      dim fakeDim112: (33, 1, 0, 0, 0)
+      dim fakeDim113: (6, 2, 0, 0, 0)
+      dim fakeDim114: (5, 3, 0, 0, 0)
+      dim fakeDim115: (1, 4, 0, 0, 0)
+  99 BETA1113_TOT_EMS7_NIGHT_ASH_LAND_PIX dims=('fakeDim116', 'fakeDim117', 'fakeDim118', 'fakeDim119') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim116: (25, 0, 0, 0, 0)
+      dim fakeDim117: (42, 1, 0, 0, 0)
+      dim fakeDim118: (6, 2, 0, 0, 0)
+      dim fakeDim119: (1, 3, 0, 0, 0)
+ 100 BETA1113_OPAQUE_EMS7_NIGHT_ASH_LAND_PIX dims=('fakeDim120', 'fakeDim121', 'fakeDim122', 'fakeDim123') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim120: (25, 0, 0, 0, 0)
+      dim fakeDim121: (42, 1, 0, 0, 0)
+      dim fakeDim122: (6, 2, 0, 0, 0)
+      dim fakeDim123: (1, 3, 0, 0, 0)
+ 101 BETA1113_TOT_MULTI_LOW_EMS7_NIGHT_ASH_LAND_PIX dims=('fakeDim124', 'fakeDim125', 'fakeDim126', 'fakeDim127') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim124: (25, 0, 0, 0, 0)
+      dim fakeDim125: (42, 1, 0, 0, 0)
+      dim fakeDim126: (6, 2, 0, 0, 0)
+      dim fakeDim127: (1, 3, 0, 0, 0)
+ 102 BETA1113_TOT_MULTI_MID_EMS7_NIGHT_ASH_LAND_PIX dims=('fakeDim128', 'fakeDim129', 'fakeDim130', 'fakeDim131') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim128: (25, 0, 0, 0, 0)
+      dim fakeDim129: (42, 1, 0, 0, 0)
+      dim fakeDim130: (6, 2, 0, 0, 0)
+      dim fakeDim131: (1, 3, 0, 0, 0)
+ 103 BETA1112_TOT_BETA8511_TOT_NIGHT_ASH_LAND_PIX dims=('fakeDim132', 'fakeDim133', 'fakeDim134', 'fakeDim135') shape=(21, 42, 6, 1) type=6 min=2.485e-09 max=0.01115 sum=1 ceros=0.000
+      dim fakeDim132: (21, 0, 0, 0, 0)
+      dim fakeDim133: (42, 1, 0, 0, 0)
+      dim fakeDim134: (6, 2, 0, 0, 0)
+      dim fakeDim135: (1, 3, 0, 0, 0)
+ 104 BETA1112_OPAQUE_BETA8511_OPAQUE_NIGHT_ASH_LAND_PIX dims=('fakeDim136', 'fakeDim137', 'fakeDim138', 'fakeDim139') shape=(21, 42, 6, 1) type=6 min=2.551e-09 max=0.1211 sum=1 ceros=0.000
+      dim fakeDim136: (21, 0, 0, 0, 0)
+      dim fakeDim137: (42, 1, 0, 0, 0)
+      dim fakeDim138: (6, 2, 0, 0, 0)
+      dim fakeDim139: (1, 3, 0, 0, 0)
+ 105 BETA1112_TOT_BETA7311_TOT_NIGHT_ASH_LAND_PIX dims=('fakeDim140', 'fakeDim141', 'fakeDim142', 'fakeDim143') shape=(21, 42, 6, 1) type=6 min=2.656e-09 max=0.02348 sum=1 ceros=0.000
+      dim fakeDim140: (21, 0, 0, 0, 0)
+      dim fakeDim141: (42, 1, 0, 0, 0)
+      dim fakeDim142: (6, 2, 0, 0, 0)
+      dim fakeDim143: (1, 3, 0, 0, 0)
+ 106 BETA1112_TOT_EMS7_NIGHT_ASH_WATER_PIX dims=('fakeDim144', 'fakeDim145', 'fakeDim146', 'fakeDim147') shape=(25, 42, 6, 1) type=6 min=9.796e-10 max=0.02153 sum=1 ceros=0.000
+      dim fakeDim144: (25, 0, 0, 0, 0)
+      dim fakeDim145: (42, 1, 0, 0, 0)
+      dim fakeDim146: (6, 2, 0, 0, 0)
+      dim fakeDim147: (1, 3, 0, 0, 0)
+ 107 BETA1112_OPAQUE_EMS7_NIGHT_ASH_WATER_PIX dims=('fakeDim148', 'fakeDim149', 'fakeDim150', 'fakeDim151') shape=(25, 42, 6, 1) type=6 min=9.815e-10 max=0.06428 sum=1 ceros=0.000
+      dim fakeDim148: (25, 0, 0, 0, 0)
+      dim fakeDim149: (42, 1, 0, 0, 0)
+      dim fakeDim150: (6, 2, 0, 0, 0)
+      dim fakeDim151: (1, 3, 0, 0, 0)
+ 108 BETA1112_TOT_MULTI_LOW_EMS7_NIGHT_ASH_WATER_PIX dims=('fakeDim152', 'fakeDim153', 'fakeDim154', 'fakeDim155') shape=(25, 42, 6, 1) type=6 min=9.836e-10 max=0.04793 sum=1 ceros=0.000
+      dim fakeDim152: (25, 0, 0, 0, 0)
+      dim fakeDim153: (42, 1, 0, 0, 0)
+      dim fakeDim154: (6, 2, 0, 0, 0)
+      dim fakeDim155: (1, 3, 0, 0, 0)
+ 109 BETA1112_TOT_MULTI_MID_EMS7_NIGHT_ASH_WATER_PIX dims=('fakeDim156', 'fakeDim157', 'fakeDim158', 'fakeDim159') shape=(25, 42, 6, 1) type=6 min=9.836e-10 max=0.06401 sum=1 ceros=0.000
+      dim fakeDim156: (25, 0, 0, 0, 0)
+      dim fakeDim157: (42, 1, 0, 0, 0)
+      dim fakeDim158: (6, 2, 0, 0, 0)
+      dim fakeDim159: (1, 3, 0, 0, 0)
+ 110 BTD1112_EMS7_NIGHT_ASH_WATER_PIX dims=('fakeDim160', 'fakeDim161', 'fakeDim162', 'fakeDim163', 'fakeDim164') shape=(25, 33, 6, 5, 1) type=6 min=9.747e-10 max=0.02566 sum=1 ceros=0.000
+      dim fakeDim160: (25, 0, 0, 0, 0)
+      dim fakeDim161: (33, 1, 0, 0, 0)
+      dim fakeDim162: (6, 2, 0, 0, 0)
+      dim fakeDim163: (5, 3, 0, 0, 0)
+      dim fakeDim164: (1, 4, 0, 0, 0)
+ 111 BETA1113_TOT_EMS7_NIGHT_ASH_WATER_PIX dims=('fakeDim165', 'fakeDim166', 'fakeDim167', 'fakeDim168') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim165: (25, 0, 0, 0, 0)
+      dim fakeDim166: (42, 1, 0, 0, 0)
+      dim fakeDim167: (6, 2, 0, 0, 0)
+      dim fakeDim168: (1, 3, 0, 0, 0)
+ 112 BETA1113_OPAQUE_EMS7_NIGHT_ASH_WATER_PIX dims=('fakeDim169', 'fakeDim170', 'fakeDim171', 'fakeDim172') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim169: (25, 0, 0, 0, 0)
+      dim fakeDim170: (42, 1, 0, 0, 0)
+      dim fakeDim171: (6, 2, 0, 0, 0)
+      dim fakeDim172: (1, 3, 0, 0, 0)
+ 113 BETA1113_TOT_MULTI_LOW_EMS7_NIGHT_ASH_WATER_PIX dims=('fakeDim173', 'fakeDim174', 'fakeDim175', 'fakeDim176') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim173: (25, 0, 0, 0, 0)
+      dim fakeDim174: (42, 1, 0, 0, 0)
+      dim fakeDim175: (6, 2, 0, 0, 0)
+      dim fakeDim176: (1, 3, 0, 0, 0)
+ 114 BETA1113_TOT_MULTI_MID_EMS7_NIGHT_ASH_WATER_PIX dims=('fakeDim177', 'fakeDim178', 'fakeDim179', 'fakeDim180') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim177: (25, 0, 0, 0, 0)
+      dim fakeDim178: (42, 1, 0, 0, 0)
+      dim fakeDim179: (6, 2, 0, 0, 0)
+      dim fakeDim180: (1, 3, 0, 0, 0)
+ 115 BETA1112_TOT_BETA8511_TOT_NIGHT_ASH_WATER_PIX dims=('fakeDim181', 'fakeDim182', 'fakeDim183', 'fakeDim184') shape=(21, 42, 6, 1) type=6 min=9.783e-10 max=0.02824 sum=1 ceros=0.000
+      dim fakeDim181: (21, 0, 0, 0, 0)
+      dim fakeDim182: (42, 1, 0, 0, 0)
+      dim fakeDim183: (6, 2, 0, 0, 0)
+      dim fakeDim184: (1, 3, 0, 0, 0)
+ 116 BETA1112_OPAQUE_BETA8511_OPAQUE_NIGHT_ASH_WATER_PIX dims=('fakeDim185', 'fakeDim186', 'fakeDim187', 'fakeDim188') shape=(21, 42, 6, 1) type=6 min=9.804e-10 max=0.1295 sum=1 ceros=0.000
+      dim fakeDim185: (21, 0, 0, 0, 0)
+      dim fakeDim186: (42, 1, 0, 0, 0)
+      dim fakeDim187: (6, 2, 0, 0, 0)
+      dim fakeDim188: (1, 3, 0, 0, 0)
+ 117 BETA1112_TOT_BETA7311_TOT_NIGHT_ASH_WATER_PIX dims=('fakeDim189', 'fakeDim190', 'fakeDim191', 'fakeDim192') shape=(21, 42, 6, 1) type=6 min=9.836e-10 max=0.04175 sum=1 ceros=0.000
+      dim fakeDim189: (21, 0, 0, 0, 0)
+      dim fakeDim190: (42, 1, 0, 0, 0)
+      dim fakeDim191: (6, 2, 0, 0, 0)
+      dim fakeDim192: (1, 3, 0, 0, 0)
+ 118 BETA1112_TOT_EMS7_NIGHT_CLD_LAND_PIX dims=('fakeDim193', 'fakeDim194', 'fakeDim195', 'fakeDim196') shape=(25, 42, 6, 1) type=6 min=2.656e-09 max=0.02232 sum=1 ceros=0.000
+      dim fakeDim193: (25, 0, 0, 0, 0)
+      dim fakeDim194: (42, 1, 0, 0, 0)
+      dim fakeDim195: (6, 2, 0, 0, 0)
+      dim fakeDim196: (1, 3, 0, 0, 0)
+ 119 BETA1112_OPAQUE_EMS7_NIGHT_CLD_LAND_PIX dims=('fakeDim197', 'fakeDim198', 'fakeDim199', 'fakeDim200') shape=(25, 42, 6, 1) type=6 min=2.656e-09 max=0.05871 sum=1 ceros=0.000
+      dim fakeDim197: (25, 0, 0, 0, 0)
+      dim fakeDim198: (42, 1, 0, 0, 0)
+      dim fakeDim199: (6, 2, 0, 0, 0)
+      dim fakeDim200: (1, 3, 0, 0, 0)
+ 120 BETA1112_TOT_MULTI_LOW_EMS7_NIGHT_CLD_LAND_PIX dims=('fakeDim201', 'fakeDim202', 'fakeDim203', 'fakeDim204') shape=(25, 42, 6, 1) type=6 min=2.656e-09 max=0.0463 sum=1 ceros=0.000
+      dim fakeDim201: (25, 0, 0, 0, 0)
+      dim fakeDim202: (42, 1, 0, 0, 0)
+      dim fakeDim203: (6, 2, 0, 0, 0)
+      dim fakeDim204: (1, 3, 0, 0, 0)
+ 121 BETA1112_TOT_MULTI_MID_EMS7_NIGHT_CLD_LAND_PIX dims=('fakeDim205', 'fakeDim206', 'fakeDim207', 'fakeDim208') shape=(25, 42, 6, 1) type=6 min=2.656e-09 max=0.05905 sum=1 ceros=0.000
+      dim fakeDim205: (25, 0, 0, 0, 0)
+      dim fakeDim206: (42, 1, 0, 0, 0)
+      dim fakeDim207: (6, 2, 0, 0, 0)
+      dim fakeDim208: (1, 3, 0, 0, 0)
+ 122 BTD1112_EMS7_NIGHT_CLD_LAND_PIX dims=('fakeDim209', 'fakeDim210', 'fakeDim211', 'fakeDim212', 'fakeDim213') shape=(25, 33, 6, 5, 1) type=6 min=2.656e-09 max=0.0154 sum=1 ceros=0.000
+      dim fakeDim209: (25, 0, 0, 0, 0)
+      dim fakeDim210: (33, 1, 0, 0, 0)
+      dim fakeDim211: (6, 2, 0, 0, 0)
+      dim fakeDim212: (5, 3, 0, 0, 0)
+      dim fakeDim213: (1, 4, 0, 0, 0)
+ 123 BETA1113_TOT_EMS7_NIGHT_CLD_LAND_PIX dims=('fakeDim214', 'fakeDim215', 'fakeDim216', 'fakeDim217') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim214: (25, 0, 0, 0, 0)
+      dim fakeDim215: (42, 1, 0, 0, 0)
+      dim fakeDim216: (6, 2, 0, 0, 0)
+      dim fakeDim217: (1, 3, 0, 0, 0)
+ 124 BETA1113_OPAQUE_EMS7_NIGHT_CLD_LAND_PIX dims=('fakeDim218', 'fakeDim219', 'fakeDim220', 'fakeDim221') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim218: (25, 0, 0, 0, 0)
+      dim fakeDim219: (42, 1, 0, 0, 0)
+      dim fakeDim220: (6, 2, 0, 0, 0)
+      dim fakeDim221: (1, 3, 0, 0, 0)
+ 125 BETA1113_TOT_MULTI_LOW_EMS7_NIGHT_CLD_LAND_PIX dims=('fakeDim222', 'fakeDim223', 'fakeDim224', 'fakeDim225') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim222: (25, 0, 0, 0, 0)
+      dim fakeDim223: (42, 1, 0, 0, 0)
+      dim fakeDim224: (6, 2, 0, 0, 0)
+      dim fakeDim225: (1, 3, 0, 0, 0)
+ 126 BETA1113_TOT_MULTI_MID_EMS7_NIGHT_CLD_LAND_PIX dims=('fakeDim226', 'fakeDim227', 'fakeDim228', 'fakeDim229') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim226: (25, 0, 0, 0, 0)
+      dim fakeDim227: (42, 1, 0, 0, 0)
+      dim fakeDim228: (6, 2, 0, 0, 0)
+      dim fakeDim229: (1, 3, 0, 0, 0)
+ 127 BETA1112_TOT_BETA8511_TOT_NIGHT_CLD_LAND_PIX dims=('fakeDim230', 'fakeDim231', 'fakeDim232', 'fakeDim233') shape=(21, 42, 6, 1) type=6 min=2.656e-09 max=0.07261 sum=1 ceros=0.000
+      dim fakeDim230: (21, 0, 0, 0, 0)
+      dim fakeDim231: (42, 1, 0, 0, 0)
+      dim fakeDim232: (6, 2, 0, 0, 0)
+      dim fakeDim233: (1, 3, 0, 0, 0)
+ 128 BETA1112_OPAQUE_BETA8511_OPAQUE_NIGHT_CLD_LAND_PIX dims=('fakeDim234', 'fakeDim235', 'fakeDim236', 'fakeDim237') shape=(21, 42, 6, 1) type=6 min=2.656e-09 max=0.02193 sum=1 ceros=0.000
+      dim fakeDim234: (21, 0, 0, 0, 0)
+      dim fakeDim235: (42, 1, 0, 0, 0)
+      dim fakeDim236: (6, 2, 0, 0, 0)
+      dim fakeDim237: (1, 3, 0, 0, 0)
+ 129 BETA1112_TOT_BETA7311_TOT_NIGHT_CLD_LAND_PIX dims=('fakeDim238', 'fakeDim239', 'fakeDim240', 'fakeDim241') shape=(21, 42, 6, 1) type=6 min=2.656e-09 max=0.0291 sum=1 ceros=0.000
+      dim fakeDim238: (21, 0, 0, 0, 0)
+      dim fakeDim239: (42, 1, 0, 0, 0)
+      dim fakeDim240: (6, 2, 0, 0, 0)
+      dim fakeDim241: (1, 3, 0, 0, 0)
+ 130 BETA1112_TOT_EMS7_NIGHT_CLD_WATER_PIX dims=('fakeDim242', 'fakeDim243', 'fakeDim244', 'fakeDim245') shape=(25, 42, 6, 1) type=6 min=9.836e-10 max=0.03761 sum=1 ceros=0.000
+      dim fakeDim242: (25, 0, 0, 0, 0)
+      dim fakeDim243: (42, 1, 0, 0, 0)
+      dim fakeDim244: (6, 2, 0, 0, 0)
+      dim fakeDim245: (1, 3, 0, 0, 0)
+ 131 BETA1112_OPAQUE_EMS7_NIGHT_CLD_WATER_PIX dims=('fakeDim246', 'fakeDim247', 'fakeDim248', 'fakeDim249') shape=(25, 42, 6, 1) type=6 min=9.836e-10 max=0.01818 sum=1 ceros=0.000
+      dim fakeDim246: (25, 0, 0, 0, 0)
+      dim fakeDim247: (42, 1, 0, 0, 0)
+      dim fakeDim248: (6, 2, 0, 0, 0)
+      dim fakeDim249: (1, 3, 0, 0, 0)
+ 132 BETA1112_TOT_MULTI_LOW_EMS7_NIGHT_CLD_WATER_PIX dims=('fakeDim250', 'fakeDim251', 'fakeDim252', 'fakeDim253') shape=(25, 42, 6, 1) type=6 min=9.836e-10 max=0.02248 sum=1 ceros=0.000
+      dim fakeDim250: (25, 0, 0, 0, 0)
+      dim fakeDim251: (42, 1, 0, 0, 0)
+      dim fakeDim252: (6, 2, 0, 0, 0)
+      dim fakeDim253: (1, 3, 0, 0, 0)
+ 133 BETA1112_TOT_MULTI_MID_EMS7_NIGHT_CLD_WATER_PIX dims=('fakeDim254', 'fakeDim255', 'fakeDim256', 'fakeDim257') shape=(25, 42, 6, 1) type=6 min=9.836e-10 max=0.03362 sum=1 ceros=0.000
+      dim fakeDim254: (25, 0, 0, 0, 0)
+      dim fakeDim255: (42, 1, 0, 0, 0)
+      dim fakeDim256: (6, 2, 0, 0, 0)
+      dim fakeDim257: (1, 3, 0, 0, 0)
+ 134 BTD1112_EMS7_NIGHT_CLD_WATER_PIX dims=('fakeDim258', 'fakeDim259', 'fakeDim260', 'fakeDim261', 'fakeDim262') shape=(25, 33, 6, 5, 1) type=6 min=9.836e-10 max=0.03025 sum=1 ceros=0.000
+      dim fakeDim258: (25, 0, 0, 0, 0)
+      dim fakeDim259: (33, 1, 0, 0, 0)
+      dim fakeDim260: (6, 2, 0, 0, 0)
+      dim fakeDim261: (5, 3, 0, 0, 0)
+      dim fakeDim262: (1, 4, 0, 0, 0)
+ 135 BETA1113_TOT_EMS7_NIGHT_CLD_WATER_PIX dims=('fakeDim263', 'fakeDim264', 'fakeDim265', 'fakeDim266') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim263: (25, 0, 0, 0, 0)
+      dim fakeDim264: (42, 1, 0, 0, 0)
+      dim fakeDim265: (6, 2, 0, 0, 0)
+      dim fakeDim266: (1, 3, 0, 0, 0)
+ 136 BETA1113_OPAQUE_EMS7_NIGHT_CLD_WATER_PIX dims=('fakeDim267', 'fakeDim268', 'fakeDim269', 'fakeDim270') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim267: (25, 0, 0, 0, 0)
+      dim fakeDim268: (42, 1, 0, 0, 0)
+      dim fakeDim269: (6, 2, 0, 0, 0)
+      dim fakeDim270: (1, 3, 0, 0, 0)
+ 137 BETA1113_TOT_MULTI_LOW_EMS7_NIGHT_CLD_WATER_PIX dims=('fakeDim271', 'fakeDim272', 'fakeDim273', 'fakeDim274') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim271: (25, 0, 0, 0, 0)
+      dim fakeDim272: (42, 1, 0, 0, 0)
+      dim fakeDim273: (6, 2, 0, 0, 0)
+      dim fakeDim274: (1, 3, 0, 0, 0)
+ 138 BETA1113_TOT_MULTI_MID_EMS7_NIGHT_CLD_WATER_PIX dims=('fakeDim275', 'fakeDim276', 'fakeDim277', 'fakeDim278') shape=(25, 42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim275: (25, 0, 0, 0, 0)
+      dim fakeDim276: (42, 1, 0, 0, 0)
+      dim fakeDim277: (6, 2, 0, 0, 0)
+      dim fakeDim278: (1, 3, 0, 0, 0)
+ 139 BETA1112_TOT_BETA8511_TOT_NIGHT_CLD_WATER_PIX dims=('fakeDim279', 'fakeDim280', 'fakeDim281', 'fakeDim282') shape=(21, 42, 6, 1) type=6 min=9.836e-10 max=0.1502 sum=1 ceros=0.000
+      dim fakeDim279: (21, 0, 0, 0, 0)
+      dim fakeDim280: (42, 1, 0, 0, 0)
+      dim fakeDim281: (6, 2, 0, 0, 0)
+      dim fakeDim282: (1, 3, 0, 0, 0)
+ 140 BETA1112_OPAQUE_BETA8511_OPAQUE_NIGHT_CLD_WATER_PIX dims=('fakeDim283', 'fakeDim284', 'fakeDim285', 'fakeDim286') shape=(21, 42, 6, 1) type=6 min=9.836e-10 max=0.02085 sum=1 ceros=0.000
+      dim fakeDim283: (21, 0, 0, 0, 0)
+      dim fakeDim284: (42, 1, 0, 0, 0)
+      dim fakeDim285: (6, 2, 0, 0, 0)
+      dim fakeDim286: (1, 3, 0, 0, 0)
+ 141 BETA1112_TOT_BETA7311_TOT_NIGHT_CLD_WATER_PIX dims=('fakeDim287', 'fakeDim288', 'fakeDim289', 'fakeDim290') shape=(21, 42, 6, 1) type=6 min=9.836e-10 max=0.05831 sum=1 ceros=0.000
+      dim fakeDim287: (21, 0, 0, 0, 0)
+      dim fakeDim288: (42, 1, 0, 0, 0)
+      dim fakeDim289: (6, 2, 0, 0, 0)
+      dim fakeDim290: (1, 3, 0, 0, 0)
+ 142 BETA1112_TOT_NRAT_DAY_ASH_LAND_PIX dims=('fakeDim291', 'fakeDim292', 'fakeDim293', 'fakeDim294', 'fakeDim295') shape=(13, 42, 6, 2, 1) type=6 min=1.003e-08 max=0.02855 sum=2 ceros=0.000
+      dim fakeDim291: (13, 0, 0, 0, 0)
+      dim fakeDim292: (42, 1, 0, 0, 0)
+      dim fakeDim293: (6, 2, 0, 0, 0)
+      dim fakeDim294: (2, 3, 0, 0, 0)
+      dim fakeDim295: (1, 4, 0, 0, 0)
+ 143 BETA1112_OPAQUE_NRAT_DAY_ASH_LAND_PIX dims=('fakeDim296', 'fakeDim297', 'fakeDim298', 'fakeDim299', 'fakeDim300') shape=(13, 42, 6, 2, 1) type=6 min=1.126e-08 max=0.07009 sum=2 ceros=0.000
+      dim fakeDim296: (13, 0, 0, 0, 0)
+      dim fakeDim297: (42, 1, 0, 0, 0)
+      dim fakeDim298: (6, 2, 0, 0, 0)
+      dim fakeDim299: (2, 3, 0, 0, 0)
+      dim fakeDim300: (1, 4, 0, 0, 0)
+ 144 BETA1112_TOT_MULTI_LOW_NRAT_DAY_ASH_LAND_PIX dims=('fakeDim301', 'fakeDim302', 'fakeDim303', 'fakeDim304', 'fakeDim305') shape=(13, 42, 6, 2, 1) type=6 min=1.311e-08 max=0.0796 sum=2 ceros=0.000
+      dim fakeDim301: (13, 0, 0, 0, 0)
+      dim fakeDim302: (42, 1, 0, 0, 0)
+      dim fakeDim303: (6, 2, 0, 0, 0)
+      dim fakeDim304: (2, 3, 0, 0, 0)
+      dim fakeDim305: (1, 4, 0, 0, 0)
+ 145 BETA1112_TOT_MULTI_MID_NRAT_DAY_ASH_LAND_PIX dims=('fakeDim306', 'fakeDim307', 'fakeDim308', 'fakeDim309', 'fakeDim310') shape=(13, 42, 6, 2, 1) type=6 min=1.311e-08 max=0.08319 sum=2 ceros=0.000
+      dim fakeDim306: (13, 0, 0, 0, 0)
+      dim fakeDim307: (42, 1, 0, 0, 0)
+      dim fakeDim308: (6, 2, 0, 0, 0)
+      dim fakeDim309: (2, 3, 0, 0, 0)
+      dim fakeDim310: (1, 4, 0, 0, 0)
+ 146 BETA1112_TOT_NRAT_LRC_DAY_ASH_LAND_PIX dims=('fakeDim311', 'fakeDim312', 'fakeDim313', 'fakeDim314', 'fakeDim315') shape=(13, 42, 6, 2, 1) type=6 min=1.311e-08 max=0.05591 sum=2 ceros=0.000
+      dim fakeDim311: (13, 0, 0, 0, 0)
+      dim fakeDim312: (42, 1, 0, 0, 0)
+      dim fakeDim313: (6, 2, 0, 0, 0)
+      dim fakeDim314: (2, 3, 0, 0, 0)
+      dim fakeDim315: (1, 4, 0, 0, 0)
+ 147 BETA1112_OPAQUE_NRAT_LRC_DAY_ASH_LAND_PIX dims=('fakeDim316', 'fakeDim317', 'fakeDim318', 'fakeDim319', 'fakeDim320') shape=(13, 42, 6, 2, 1) type=6 min=1.311e-08 max=0.09836 sum=2 ceros=0.000
+      dim fakeDim316: (13, 0, 0, 0, 0)
+      dim fakeDim317: (42, 1, 0, 0, 0)
+      dim fakeDim318: (6, 2, 0, 0, 0)
+      dim fakeDim319: (2, 3, 0, 0, 0)
+      dim fakeDim320: (1, 4, 0, 0, 0)
+ 148 BETA1112_TOT_MULTI_LOW_NRAT_LRC_DAY_ASH_LAND_PIX dims=('fakeDim321', 'fakeDim322', 'fakeDim323', 'fakeDim324', 'fakeDim325') shape=(13, 42, 6, 2, 1) type=6 min=1.311e-08 max=0.06829 sum=2 ceros=0.000
+      dim fakeDim321: (13, 0, 0, 0, 0)
+      dim fakeDim322: (42, 1, 0, 0, 0)
+      dim fakeDim323: (6, 2, 0, 0, 0)
+      dim fakeDim324: (2, 3, 0, 0, 0)
+      dim fakeDim325: (1, 4, 0, 0, 0)
+ 149 BETA1112_TOT_MULTI_MID_NRAT_LRC_DAY_ASH_LAND_PIX dims=('fakeDim326', 'fakeDim327', 'fakeDim328', 'fakeDim329', 'fakeDim330') shape=(13, 42, 6, 2, 1) type=6 min=1.311e-08 max=0.07155 sum=2 ceros=0.000
+      dim fakeDim326: (13, 0, 0, 0, 0)
+      dim fakeDim327: (42, 1, 0, 0, 0)
+      dim fakeDim328: (6, 2, 0, 0, 0)
+      dim fakeDim329: (2, 3, 0, 0, 0)
+      dim fakeDim330: (1, 4, 0, 0, 0)
+ 150 BTD1112_NRAT_DAY_ASH_LAND_PIX dims=('fakeDim331', 'fakeDim332', 'fakeDim333', 'fakeDim334', 'fakeDim335', 'fakeDim336') shape=(13, 33, 6, 5, 2, 1) type=6 min=1.029e-08 max=0.04333 sum=2 ceros=0.000
+      dim fakeDim331: (13, 0, 0, 0, 0)
+      dim fakeDim332: (33, 1, 0, 0, 0)
+      dim fakeDim333: (6, 2, 0, 0, 0)
+      dim fakeDim334: (5, 3, 0, 0, 0)
+      dim fakeDim335: (2, 4, 0, 0, 0)
+      dim fakeDim336: (1, 5, 0, 0, 0)
+ 151 BTD1112_NRAT_LRC_DAY_ASH_LAND_PIX dims=('fakeDim337', 'fakeDim338', 'fakeDim339', 'fakeDim340', 'fakeDim341', 'fakeDim342') shape=(13, 33, 6, 5, 2, 1) type=6 min=1.311e-08 max=0.0836 sum=2 ceros=0.000
+      dim fakeDim337: (13, 0, 0, 0, 0)
+      dim fakeDim338: (33, 1, 0, 0, 0)
+      dim fakeDim339: (6, 2, 0, 0, 0)
+      dim fakeDim340: (5, 3, 0, 0, 0)
+      dim fakeDim341: (2, 4, 0, 0, 0)
+      dim fakeDim342: (1, 5, 0, 0, 0)
+ 152 BETA1113_TOT_NRAT_DAY_ASH_LAND_PIX dims=('fakeDim343', 'fakeDim344', 'fakeDim345', 'fakeDim346', 'fakeDim347') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim343: (13, 0, 0, 0, 0)
+      dim fakeDim344: (42, 1, 0, 0, 0)
+      dim fakeDim345: (6, 2, 0, 0, 0)
+      dim fakeDim346: (2, 3, 0, 0, 0)
+      dim fakeDim347: (1, 4, 0, 0, 0)
+ 153 BETA1113_OPAQUE_NRAT_DAY_ASH_LAND_PIX dims=('fakeDim348', 'fakeDim349', 'fakeDim350', 'fakeDim351', 'fakeDim352') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim348: (13, 0, 0, 0, 0)
+      dim fakeDim349: (42, 1, 0, 0, 0)
+      dim fakeDim350: (6, 2, 0, 0, 0)
+      dim fakeDim351: (2, 3, 0, 0, 0)
+      dim fakeDim352: (1, 4, 0, 0, 0)
+ 154 BETA1113_TOT_MULTI_LOW_NRAT_DAY_ASH_LAND_PIX dims=('fakeDim353', 'fakeDim354', 'fakeDim355', 'fakeDim356', 'fakeDim357') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim353: (13, 0, 0, 0, 0)
+      dim fakeDim354: (42, 1, 0, 0, 0)
+      dim fakeDim355: (6, 2, 0, 0, 0)
+      dim fakeDim356: (2, 3, 0, 0, 0)
+      dim fakeDim357: (1, 4, 0, 0, 0)
+ 155 BETA1113_TOT_MULTI_MID_NRAT_DAY_ASH_LAND_PIX dims=('fakeDim358', 'fakeDim359', 'fakeDim360', 'fakeDim361', 'fakeDim362') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim358: (13, 0, 0, 0, 0)
+      dim fakeDim359: (42, 1, 0, 0, 0)
+      dim fakeDim360: (6, 2, 0, 0, 0)
+      dim fakeDim361: (2, 3, 0, 0, 0)
+      dim fakeDim362: (1, 4, 0, 0, 0)
+ 156 BETA1113_TOT_NRAT_LRC_DAY_ASH_LAND_PIX dims=('fakeDim363', 'fakeDim364', 'fakeDim365', 'fakeDim366', 'fakeDim367') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim363: (13, 0, 0, 0, 0)
+      dim fakeDim364: (42, 1, 0, 0, 0)
+      dim fakeDim365: (6, 2, 0, 0, 0)
+      dim fakeDim366: (2, 3, 0, 0, 0)
+      dim fakeDim367: (1, 4, 0, 0, 0)
+ 157 BETA1113_OPAQUE_NRAT_LRC_DAY_ASH_LAND_PIX dims=('fakeDim368', 'fakeDim369', 'fakeDim370', 'fakeDim371', 'fakeDim372') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim368: (13, 0, 0, 0, 0)
+      dim fakeDim369: (42, 1, 0, 0, 0)
+      dim fakeDim370: (6, 2, 0, 0, 0)
+      dim fakeDim371: (2, 3, 0, 0, 0)
+      dim fakeDim372: (1, 4, 0, 0, 0)
+ 158 BETA1113_TOT_MULTI_LOW_NRAT_LRC_DAY_ASH_LAND_PIX dims=('fakeDim373', 'fakeDim374', 'fakeDim375', 'fakeDim376', 'fakeDim377') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim373: (13, 0, 0, 0, 0)
+      dim fakeDim374: (42, 1, 0, 0, 0)
+      dim fakeDim375: (6, 2, 0, 0, 0)
+      dim fakeDim376: (2, 3, 0, 0, 0)
+      dim fakeDim377: (1, 4, 0, 0, 0)
+ 159 BETA1113_TOT_MULTI_MID_NRAT_LRC_DAY_ASH_LAND_PIX dims=('fakeDim378', 'fakeDim379', 'fakeDim380', 'fakeDim381', 'fakeDim382') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim378: (13, 0, 0, 0, 0)
+      dim fakeDim379: (42, 1, 0, 0, 0)
+      dim fakeDim380: (6, 2, 0, 0, 0)
+      dim fakeDim381: (2, 3, 0, 0, 0)
+      dim fakeDim382: (1, 4, 0, 0, 0)
+ 160 EMISS14_TOT_VREF_DAY_ASH_LAND_PIX dims=('fakeDim383', 'fakeDim384', 'fakeDim385', 'fakeDim386') shape=(11, 6, 2, 1) type=6 min=1.311e-08 max=0.1727 sum=2 ceros=0.000
+      dim fakeDim383: (11, 0, 0, 0, 0)
+      dim fakeDim384: (6, 1, 0, 0, 0)
+      dim fakeDim385: (2, 2, 0, 0, 0)
+      dim fakeDim386: (1, 3, 0, 0, 0)
+ 161 BETA1112_TOT_BETA8511_TOT_DAY_ASH_LAND_PIX dims=('fakeDim387', 'fakeDim388', 'fakeDim389', 'fakeDim390', 'fakeDim391') shape=(21, 42, 6, 2, 1) type=6 min=1.182e-08 max=0.05444 sum=2 ceros=0.000
+      dim fakeDim387: (21, 0, 0, 0, 0)
+      dim fakeDim388: (42, 1, 0, 0, 0)
+      dim fakeDim389: (6, 2, 0, 0, 0)
+      dim fakeDim390: (2, 3, 0, 0, 0)
+      dim fakeDim391: (1, 4, 0, 0, 0)
+ 162 BETA1112_OPAQUE_BETA8511_OPAQUE_DAY_ASH_LAND_PIX dims=('fakeDim392', 'fakeDim393', 'fakeDim394', 'fakeDim395', 'fakeDim396') shape=(21, 42, 6, 2, 1) type=6 min=1.23e-08 max=0.1293 sum=2 ceros=0.000
+      dim fakeDim392: (21, 0, 0, 0, 0)
+      dim fakeDim393: (42, 1, 0, 0, 0)
+      dim fakeDim394: (6, 2, 0, 0, 0)
+      dim fakeDim395: (2, 3, 0, 0, 0)
+      dim fakeDim396: (1, 4, 0, 0, 0)
+ 163 BETA1112_TOT_BETA7311_TOT_DAY_ASH_LAND_PIX dims=('fakeDim397', 'fakeDim398', 'fakeDim399', 'fakeDim400', 'fakeDim401') shape=(21, 42, 6, 2, 1) type=6 min=1.311e-08 max=0.07942 sum=2 ceros=0.000
+      dim fakeDim397: (21, 0, 0, 0, 0)
+      dim fakeDim398: (42, 1, 0, 0, 0)
+      dim fakeDim399: (6, 2, 0, 0, 0)
+      dim fakeDim400: (2, 3, 0, 0, 0)
+      dim fakeDim401: (1, 4, 0, 0, 0)
+ 164 BETA1112_TOT_NRAT_DAY_ASH_SNOW_PIX dims=('fakeDim402', 'fakeDim403', 'fakeDim404', 'fakeDim405', 'fakeDim406') shape=(13, 42, 6, 2, 1) type=6 min=2.179e-09 max=0.04614 sum=2 ceros=0.000
+      dim fakeDim402: (13, 0, 0, 0, 0)
+      dim fakeDim403: (42, 1, 0, 0, 0)
+      dim fakeDim404: (6, 2, 0, 0, 0)
+      dim fakeDim405: (2, 3, 0, 0, 0)
+      dim fakeDim406: (1, 4, 0, 0, 0)
+ 165 BETA1112_OPAQUE_NRAT_DAY_ASH_SNOW_PIX dims=('fakeDim407', 'fakeDim408', 'fakeDim409', 'fakeDim410', 'fakeDim411') shape=(13, 42, 6, 2, 1) type=6 min=2.885e-09 max=0.06565 sum=2 ceros=0.000
+      dim fakeDim407: (13, 0, 0, 0, 0)
+      dim fakeDim408: (42, 1, 0, 0, 0)
+      dim fakeDim409: (6, 2, 0, 0, 0)
+      dim fakeDim410: (2, 3, 0, 0, 0)
+      dim fakeDim411: (1, 4, 0, 0, 0)
+ 166 BETA1112_TOT_MULTI_LOW_NRAT_DAY_ASH_SNOW_PIX dims=('fakeDim412', 'fakeDim413', 'fakeDim414', 'fakeDim415', 'fakeDim416') shape=(13, 42, 6, 2, 1) type=6 min=4.607e-09 max=0.1233 sum=2 ceros=0.000
+      dim fakeDim412: (13, 0, 0, 0, 0)
+      dim fakeDim413: (42, 1, 0, 0, 0)
+      dim fakeDim414: (6, 2, 0, 0, 0)
+      dim fakeDim415: (2, 3, 0, 0, 0)
+      dim fakeDim416: (1, 4, 0, 0, 0)
+ 167 BETA1112_TOT_MULTI_MID_NRAT_DAY_ASH_SNOW_PIX dims=('fakeDim417', 'fakeDim418', 'fakeDim419', 'fakeDim420', 'fakeDim421') shape=(13, 42, 6, 2, 1) type=6 min=4.607e-09 max=0.1665 sum=2 ceros=0.000
+      dim fakeDim417: (13, 0, 0, 0, 0)
+      dim fakeDim418: (42, 1, 0, 0, 0)
+      dim fakeDim419: (6, 2, 0, 0, 0)
+      dim fakeDim420: (2, 3, 0, 0, 0)
+      dim fakeDim421: (1, 4, 0, 0, 0)
+ 168 BETA1112_TOT_NRAT_LRC_DAY_ASH_SNOW_PIX dims=('fakeDim422', 'fakeDim423', 'fakeDim424', 'fakeDim425', 'fakeDim426') shape=(13, 42, 6, 2, 1) type=6 min=4.607e-09 max=0.1211 sum=2 ceros=0.000
+      dim fakeDim422: (13, 0, 0, 0, 0)
+      dim fakeDim423: (42, 1, 0, 0, 0)
+      dim fakeDim424: (6, 2, 0, 0, 0)
+      dim fakeDim425: (2, 3, 0, 0, 0)
+      dim fakeDim426: (1, 4, 0, 0, 0)
+ 169 BETA1112_OPAQUE_NRAT_LRC_DAY_ASH_SNOW_PIX dims=('fakeDim427', 'fakeDim428', 'fakeDim429', 'fakeDim430', 'fakeDim431') shape=(13, 42, 6, 2, 1) type=6 min=4.607e-09 max=0.1197 sum=2 ceros=0.000
+      dim fakeDim427: (13, 0, 0, 0, 0)
+      dim fakeDim428: (42, 1, 0, 0, 0)
+      dim fakeDim429: (6, 2, 0, 0, 0)
+      dim fakeDim430: (2, 3, 0, 0, 0)
+      dim fakeDim431: (1, 4, 0, 0, 0)
+ 170 BETA1112_TOT_MULTI_LOW_NRAT_LRC_DAY_ASH_SNOW_PIX dims=('fakeDim432', 'fakeDim433', 'fakeDim434', 'fakeDim435', 'fakeDim436') shape=(13, 42, 6, 2, 1) type=6 min=4.607e-09 max=0.1461 sum=2 ceros=0.000
+      dim fakeDim432: (13, 0, 0, 0, 0)
+      dim fakeDim433: (42, 1, 0, 0, 0)
+      dim fakeDim434: (6, 2, 0, 0, 0)
+      dim fakeDim435: (2, 3, 0, 0, 0)
+      dim fakeDim436: (1, 4, 0, 0, 0)
+ 171 BETA1112_TOT_MULTI_MID_NRAT_LRC_DAY_ASH_SNOW_PIX dims=('fakeDim437', 'fakeDim438', 'fakeDim439', 'fakeDim440', 'fakeDim441') shape=(13, 42, 6, 2, 1) type=6 min=4.607e-09 max=0.1989 sum=2 ceros=0.000
+      dim fakeDim437: (13, 0, 0, 0, 0)
+      dim fakeDim438: (42, 1, 0, 0, 0)
+      dim fakeDim439: (6, 2, 0, 0, 0)
+      dim fakeDim440: (2, 3, 0, 0, 0)
+      dim fakeDim441: (1, 4, 0, 0, 0)
+ 172 BTD1112_NRAT_DAY_ASH_SNOW_PIX dims=('fakeDim442', 'fakeDim443', 'fakeDim444', 'fakeDim445', 'fakeDim446', 'fakeDim447') shape=(13, 33, 6, 5, 2, 1) type=6 min=2.309e-09 max=0.02599 sum=2 ceros=0.000
+      dim fakeDim442: (13, 0, 0, 0, 0)
+      dim fakeDim443: (33, 1, 0, 0, 0)
+      dim fakeDim444: (6, 2, 0, 0, 0)
+      dim fakeDim445: (5, 3, 0, 0, 0)
+      dim fakeDim446: (2, 4, 0, 0, 0)
+      dim fakeDim447: (1, 5, 0, 0, 0)
+ 173 BTD1112_NRAT_LRC_DAY_ASH_SNOW_PIX dims=('fakeDim448', 'fakeDim449', 'fakeDim450', 'fakeDim451', 'fakeDim452', 'fakeDim453') shape=(13, 33, 6, 5, 2, 1) type=6 min=4.606e-09 max=0.06 sum=2 ceros=0.000
+      dim fakeDim448: (13, 0, 0, 0, 0)
+      dim fakeDim449: (33, 1, 0, 0, 0)
+      dim fakeDim450: (6, 2, 0, 0, 0)
+      dim fakeDim451: (5, 3, 0, 0, 0)
+      dim fakeDim452: (2, 4, 0, 0, 0)
+      dim fakeDim453: (1, 5, 0, 0, 0)
+ 174 BETA1113_TOT_NRAT_DAY_ASH_SNOW_PIX dims=('fakeDim454', 'fakeDim455', 'fakeDim456', 'fakeDim457', 'fakeDim458') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim454: (13, 0, 0, 0, 0)
+      dim fakeDim455: (42, 1, 0, 0, 0)
+      dim fakeDim456: (6, 2, 0, 0, 0)
+      dim fakeDim457: (2, 3, 0, 0, 0)
+      dim fakeDim458: (1, 4, 0, 0, 0)
+ 175 BETA1113_OPAQUE_NRAT_DAY_ASH_SNOW_PIX dims=('fakeDim459', 'fakeDim460', 'fakeDim461', 'fakeDim462', 'fakeDim463') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim459: (13, 0, 0, 0, 0)
+      dim fakeDim460: (42, 1, 0, 0, 0)
+      dim fakeDim461: (6, 2, 0, 0, 0)
+      dim fakeDim462: (2, 3, 0, 0, 0)
+      dim fakeDim463: (1, 4, 0, 0, 0)
+ 176 BETA1113_TOT_MULTI_LOW_NRAT_DAY_ASH_SNOW_PIX dims=('fakeDim464', 'fakeDim465', 'fakeDim466', 'fakeDim467', 'fakeDim468') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim464: (13, 0, 0, 0, 0)
+      dim fakeDim465: (42, 1, 0, 0, 0)
+      dim fakeDim466: (6, 2, 0, 0, 0)
+      dim fakeDim467: (2, 3, 0, 0, 0)
+      dim fakeDim468: (1, 4, 0, 0, 0)
+ 177 BETA1113_TOT_MULTI_MID_NRAT_DAY_ASH_SNOW_PIX dims=('fakeDim469', 'fakeDim470', 'fakeDim471', 'fakeDim472', 'fakeDim473') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim469: (13, 0, 0, 0, 0)
+      dim fakeDim470: (42, 1, 0, 0, 0)
+      dim fakeDim471: (6, 2, 0, 0, 0)
+      dim fakeDim472: (2, 3, 0, 0, 0)
+      dim fakeDim473: (1, 4, 0, 0, 0)
+ 178 BETA1113_TOT_NRAT_LRC_DAY_ASH_SNOW_PIX dims=('fakeDim474', 'fakeDim475', 'fakeDim476', 'fakeDim477', 'fakeDim478') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim474: (13, 0, 0, 0, 0)
+      dim fakeDim475: (42, 1, 0, 0, 0)
+      dim fakeDim476: (6, 2, 0, 0, 0)
+      dim fakeDim477: (2, 3, 0, 0, 0)
+      dim fakeDim478: (1, 4, 0, 0, 0)
+ 179 BETA1113_OPAQUE_NRAT_LRC_DAY_ASH_SNOW_PIX dims=('fakeDim479', 'fakeDim480', 'fakeDim481', 'fakeDim482', 'fakeDim483') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim479: (13, 0, 0, 0, 0)
+      dim fakeDim480: (42, 1, 0, 0, 0)
+      dim fakeDim481: (6, 2, 0, 0, 0)
+      dim fakeDim482: (2, 3, 0, 0, 0)
+      dim fakeDim483: (1, 4, 0, 0, 0)
+ 180 BETA1113_TOT_MULTI_LOW_NRAT_LRC_DAY_ASH_SNOW_PIX dims=('fakeDim484', 'fakeDim485', 'fakeDim486', 'fakeDim487', 'fakeDim488') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim484: (13, 0, 0, 0, 0)
+      dim fakeDim485: (42, 1, 0, 0, 0)
+      dim fakeDim486: (6, 2, 0, 0, 0)
+      dim fakeDim487: (2, 3, 0, 0, 0)
+      dim fakeDim488: (1, 4, 0, 0, 0)
+ 181 BETA1113_TOT_MULTI_MID_NRAT_LRC_DAY_ASH_SNOW_PIX dims=('fakeDim489', 'fakeDim490', 'fakeDim491', 'fakeDim492', 'fakeDim493') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim489: (13, 0, 0, 0, 0)
+      dim fakeDim490: (42, 1, 0, 0, 0)
+      dim fakeDim491: (6, 2, 0, 0, 0)
+      dim fakeDim492: (2, 3, 0, 0, 0)
+      dim fakeDim493: (1, 4, 0, 0, 0)
+ 182 EMISS14_TOT_VREF_DAY_ASH_SNOW_PIX dims=('fakeDim494', 'fakeDim495', 'fakeDim496', 'fakeDim497') shape=(11, 6, 2, 1) type=6 min=4.607e-09 max=0.1244 sum=2 ceros=0.000
+      dim fakeDim494: (11, 0, 0, 0, 0)
+      dim fakeDim495: (6, 1, 0, 0, 0)
+      dim fakeDim496: (2, 2, 0, 0, 0)
+      dim fakeDim497: (1, 3, 0, 0, 0)
+ 183 BETA1112_TOT_BETA8511_TOT_DAY_ASH_SNOW_PIX dims=('fakeDim498', 'fakeDim499', 'fakeDim500', 'fakeDim501', 'fakeDim502') shape=(21, 42, 6, 2, 1) type=6 min=3.295e-09 max=0.03823 sum=2 ceros=0.000
+      dim fakeDim498: (21, 0, 0, 0, 0)
+      dim fakeDim499: (42, 1, 0, 0, 0)
+      dim fakeDim500: (6, 2, 0, 0, 0)
+      dim fakeDim501: (2, 3, 0, 0, 0)
+      dim fakeDim502: (1, 4, 0, 0, 0)
+ 184 BETA1112_OPAQUE_BETA8511_OPAQUE_DAY_ASH_SNOW_PIX dims=('fakeDim503', 'fakeDim504', 'fakeDim505', 'fakeDim506', 'fakeDim507') shape=(21, 42, 6, 2, 1) type=6 min=3.719e-09 max=0.1269 sum=2 ceros=0.000
+      dim fakeDim503: (21, 0, 0, 0, 0)
+      dim fakeDim504: (42, 1, 0, 0, 0)
+      dim fakeDim505: (6, 2, 0, 0, 0)
+      dim fakeDim506: (2, 3, 0, 0, 0)
+      dim fakeDim507: (1, 4, 0, 0, 0)
+ 185 BETA1112_TOT_BETA7311_TOT_DAY_ASH_SNOW_PIX dims=('fakeDim508', 'fakeDim509', 'fakeDim510', 'fakeDim511', 'fakeDim512') shape=(21, 42, 6, 2, 1) type=6 min=4.607e-09 max=0.04162 sum=2 ceros=0.000
+      dim fakeDim508: (21, 0, 0, 0, 0)
+      dim fakeDim509: (42, 1, 0, 0, 0)
+      dim fakeDim510: (6, 2, 0, 0, 0)
+      dim fakeDim511: (2, 3, 0, 0, 0)
+      dim fakeDim512: (1, 4, 0, 0, 0)
+ 186 BETA1112_TOT_NRAT_DAY_ASH_WATER_PIX dims=('fakeDim513', 'fakeDim514', 'fakeDim515', 'fakeDim516', 'fakeDim517') shape=(13, 42, 6, 2, 1) type=6 min=1.553e-09 max=0.03276 sum=2 ceros=0.000
+      dim fakeDim513: (13, 0, 0, 0, 0)
+      dim fakeDim514: (42, 1, 0, 0, 0)
+      dim fakeDim515: (6, 2, 0, 0, 0)
+      dim fakeDim516: (2, 3, 0, 0, 0)
+      dim fakeDim517: (1, 4, 0, 0, 0)
+ 187 BETA1112_OPAQUE_NRAT_DAY_ASH_WATER_PIX dims=('fakeDim518', 'fakeDim519', 'fakeDim520', 'fakeDim521', 'fakeDim522') shape=(13, 42, 6, 2, 1) type=6 min=1.558e-09 max=0.1147 sum=2 ceros=0.000
+      dim fakeDim518: (13, 0, 0, 0, 0)
+      dim fakeDim519: (42, 1, 0, 0, 0)
+      dim fakeDim520: (6, 2, 0, 0, 0)
+      dim fakeDim521: (2, 3, 0, 0, 0)
+      dim fakeDim522: (1, 4, 0, 0, 0)
+ 188 BETA1112_TOT_MULTI_LOW_NRAT_DAY_ASH_WATER_PIX dims=('fakeDim523', 'fakeDim524', 'fakeDim525', 'fakeDim526', 'fakeDim527') shape=(13, 42, 6, 2, 1) type=6 min=1.564e-09 max=0.1076 sum=2 ceros=0.000
+      dim fakeDim523: (13, 0, 0, 0, 0)
+      dim fakeDim524: (42, 1, 0, 0, 0)
+      dim fakeDim525: (6, 2, 0, 0, 0)
+      dim fakeDim526: (2, 3, 0, 0, 0)
+      dim fakeDim527: (1, 4, 0, 0, 0)
+ 189 BETA1112_TOT_MULTI_MID_NRAT_DAY_ASH_WATER_PIX dims=('fakeDim528', 'fakeDim529', 'fakeDim530', 'fakeDim531', 'fakeDim532') shape=(13, 42, 6, 2, 1) type=6 min=1.564e-09 max=0.1196 sum=2 ceros=0.000
+      dim fakeDim528: (13, 0, 0, 0, 0)
+      dim fakeDim529: (42, 1, 0, 0, 0)
+      dim fakeDim530: (6, 2, 0, 0, 0)
+      dim fakeDim531: (2, 3, 0, 0, 0)
+      dim fakeDim532: (1, 4, 0, 0, 0)
+ 190 BETA1112_TOT_NRAT_LRC_DAY_ASH_WATER_PIX dims=('fakeDim533', 'fakeDim534', 'fakeDim535', 'fakeDim536', 'fakeDim537') shape=(13, 42, 6, 2, 1) type=6 min=1.564e-09 max=0.03721 sum=2 ceros=0.000
+      dim fakeDim533: (13, 0, 0, 0, 0)
+      dim fakeDim534: (42, 1, 0, 0, 0)
+      dim fakeDim535: (6, 2, 0, 0, 0)
+      dim fakeDim536: (2, 3, 0, 0, 0)
+      dim fakeDim537: (1, 4, 0, 0, 0)
+ 191 BETA1112_OPAQUE_NRAT_LRC_DAY_ASH_WATER_PIX dims=('fakeDim538', 'fakeDim539', 'fakeDim540', 'fakeDim541', 'fakeDim542') shape=(13, 42, 6, 2, 1) type=6 min=1.564e-09 max=0.1018 sum=2 ceros=0.000
+      dim fakeDim538: (13, 0, 0, 0, 0)
+      dim fakeDim539: (42, 1, 0, 0, 0)
+      dim fakeDim540: (6, 2, 0, 0, 0)
+      dim fakeDim541: (2, 3, 0, 0, 0)
+      dim fakeDim542: (1, 4, 0, 0, 0)
+ 192 BETA1112_TOT_MULTI_LOW_NRAT_LRC_DAY_ASH_WATER_PIX dims=('fakeDim543', 'fakeDim544', 'fakeDim545', 'fakeDim546', 'fakeDim547') shape=(13, 42, 6, 2, 1) type=6 min=1.564e-09 max=0.09319 sum=2 ceros=0.000
+      dim fakeDim543: (13, 0, 0, 0, 0)
+      dim fakeDim544: (42, 1, 0, 0, 0)
+      dim fakeDim545: (6, 2, 0, 0, 0)
+      dim fakeDim546: (2, 3, 0, 0, 0)
+      dim fakeDim547: (1, 4, 0, 0, 0)
+ 193 BETA1112_TOT_MULTI_MID_NRAT_LRC_DAY_ASH_WATER_PIX dims=('fakeDim548', 'fakeDim549', 'fakeDim550', 'fakeDim551', 'fakeDim552') shape=(13, 42, 6, 2, 1) type=6 min=1.564e-09 max=0.1052 sum=2 ceros=0.000
+      dim fakeDim548: (13, 0, 0, 0, 0)
+      dim fakeDim549: (42, 1, 0, 0, 0)
+      dim fakeDim550: (6, 2, 0, 0, 0)
+      dim fakeDim551: (2, 3, 0, 0, 0)
+      dim fakeDim552: (1, 4, 0, 0, 0)
+ 194 BTD1112_NRAT_DAY_ASH_WATER_PIX dims=('fakeDim553', 'fakeDim554', 'fakeDim555', 'fakeDim556', 'fakeDim557', 'fakeDim558') shape=(13, 33, 6, 5, 2, 1) type=6 min=1.54e-09 max=0.04626 sum=2 ceros=0.000
+      dim fakeDim553: (13, 0, 0, 0, 0)
+      dim fakeDim554: (33, 1, 0, 0, 0)
+      dim fakeDim555: (6, 2, 0, 0, 0)
+      dim fakeDim556: (5, 3, 0, 0, 0)
+      dim fakeDim557: (2, 4, 0, 0, 0)
+      dim fakeDim558: (1, 5, 0, 0, 0)
+ 195 BTD1112_NRAT_LRC_DAY_ASH_WATER_PIX dims=('fakeDim559', 'fakeDim560', 'fakeDim561', 'fakeDim562', 'fakeDim563', 'fakeDim564') shape=(13, 33, 6, 5, 2, 1) type=6 min=1.564e-09 max=0.06917 sum=2 ceros=0.000
+      dim fakeDim559: (13, 0, 0, 0, 0)
+      dim fakeDim560: (33, 1, 0, 0, 0)
+      dim fakeDim561: (6, 2, 0, 0, 0)
+      dim fakeDim562: (5, 3, 0, 0, 0)
+      dim fakeDim563: (2, 4, 0, 0, 0)
+      dim fakeDim564: (1, 5, 0, 0, 0)
+ 196 BETA1113_TOT_NRAT_DAY_ASH_WATER_PIX dims=('fakeDim565', 'fakeDim566', 'fakeDim567', 'fakeDim568', 'fakeDim569') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim565: (13, 0, 0, 0, 0)
+      dim fakeDim566: (42, 1, 0, 0, 0)
+      dim fakeDim567: (6, 2, 0, 0, 0)
+      dim fakeDim568: (2, 3, 0, 0, 0)
+      dim fakeDim569: (1, 4, 0, 0, 0)
+ 197 BETA1113_OPAQUE_NRAT_DAY_ASH_WATER_PIX dims=('fakeDim570', 'fakeDim571', 'fakeDim572', 'fakeDim573', 'fakeDim574') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim570: (13, 0, 0, 0, 0)
+      dim fakeDim571: (42, 1, 0, 0, 0)
+      dim fakeDim572: (6, 2, 0, 0, 0)
+      dim fakeDim573: (2, 3, 0, 0, 0)
+      dim fakeDim574: (1, 4, 0, 0, 0)
+ 198 BETA1113_TOT_MULTI_LOW_NRAT_DAY_ASH_WATER_PIX dims=('fakeDim575', 'fakeDim576', 'fakeDim577', 'fakeDim578', 'fakeDim579') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim575: (13, 0, 0, 0, 0)
+      dim fakeDim576: (42, 1, 0, 0, 0)
+      dim fakeDim577: (6, 2, 0, 0, 0)
+      dim fakeDim578: (2, 3, 0, 0, 0)
+      dim fakeDim579: (1, 4, 0, 0, 0)
+ 199 BETA1113_TOT_MULTI_MID_NRAT_DAY_ASH_WATER_PIX dims=('fakeDim580', 'fakeDim581', 'fakeDim582', 'fakeDim583', 'fakeDim584') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim580: (13, 0, 0, 0, 0)
+      dim fakeDim581: (42, 1, 0, 0, 0)
+      dim fakeDim582: (6, 2, 0, 0, 0)
+      dim fakeDim583: (2, 3, 0, 0, 0)
+      dim fakeDim584: (1, 4, 0, 0, 0)
+ 200 BETA1113_TOT_NRAT_LRC_DAY_ASH_WATER_PIX dims=('fakeDim585', 'fakeDim586', 'fakeDim587', 'fakeDim588', 'fakeDim589') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim585: (13, 0, 0, 0, 0)
+      dim fakeDim586: (42, 1, 0, 0, 0)
+      dim fakeDim587: (6, 2, 0, 0, 0)
+      dim fakeDim588: (2, 3, 0, 0, 0)
+      dim fakeDim589: (1, 4, 0, 0, 0)
+ 201 BETA1113_OPAQUE_NRAT_LRC_DAY_ASH_WATER_PIX dims=('fakeDim590', 'fakeDim591', 'fakeDim592', 'fakeDim593', 'fakeDim594') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim590: (13, 0, 0, 0, 0)
+      dim fakeDim591: (42, 1, 0, 0, 0)
+      dim fakeDim592: (6, 2, 0, 0, 0)
+      dim fakeDim593: (2, 3, 0, 0, 0)
+      dim fakeDim594: (1, 4, 0, 0, 0)
+ 202 BETA1113_TOT_MULTI_LOW_NRAT_LRC_DAY_ASH_WATER_PIX dims=('fakeDim595', 'fakeDim596', 'fakeDim597', 'fakeDim598', 'fakeDim599') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim595: (13, 0, 0, 0, 0)
+      dim fakeDim596: (42, 1, 0, 0, 0)
+      dim fakeDim597: (6, 2, 0, 0, 0)
+      dim fakeDim598: (2, 3, 0, 0, 0)
+      dim fakeDim599: (1, 4, 0, 0, 0)
+ 203 BETA1113_TOT_MULTI_MID_NRAT_LRC_DAY_ASH_WATER_PIX dims=('fakeDim600', 'fakeDim601', 'fakeDim602', 'fakeDim603', 'fakeDim604') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim600: (13, 0, 0, 0, 0)
+      dim fakeDim601: (42, 1, 0, 0, 0)
+      dim fakeDim602: (6, 2, 0, 0, 0)
+      dim fakeDim603: (2, 3, 0, 0, 0)
+      dim fakeDim604: (1, 4, 0, 0, 0)
+ 204 EMISS14_TOT_VREF_DAY_ASH_WATER_PIX dims=('fakeDim605', 'fakeDim606', 'fakeDim607', 'fakeDim608') shape=(11, 6, 2, 1) type=6 min=1.564e-09 max=0.3112 sum=2 ceros=0.000
+      dim fakeDim605: (11, 0, 0, 0, 0)
+      dim fakeDim606: (6, 1, 0, 0, 0)
+      dim fakeDim607: (2, 2, 0, 0, 0)
+      dim fakeDim608: (1, 3, 0, 0, 0)
+ 205 BETA1112_TOT_BETA8511_TOT_DAY_ASH_WATER_PIX dims=('fakeDim609', 'fakeDim610', 'fakeDim611', 'fakeDim612', 'fakeDim613') shape=(21, 42, 6, 2, 1) type=6 min=1.554e-09 max=0.05872 sum=2 ceros=0.000
+      dim fakeDim609: (21, 0, 0, 0, 0)
+      dim fakeDim610: (42, 1, 0, 0, 0)
+      dim fakeDim611: (6, 2, 0, 0, 0)
+      dim fakeDim612: (2, 3, 0, 0, 0)
+      dim fakeDim613: (1, 4, 0, 0, 0)
+ 206 BETA1112_OPAQUE_BETA8511_OPAQUE_DAY_ASH_WATER_PIX dims=('fakeDim614', 'fakeDim615', 'fakeDim616', 'fakeDim617', 'fakeDim618') shape=(21, 42, 6, 2, 1) type=6 min=1.558e-09 max=0.1396 sum=2 ceros=0.000
+      dim fakeDim614: (21, 0, 0, 0, 0)
+      dim fakeDim615: (42, 1, 0, 0, 0)
+      dim fakeDim616: (6, 2, 0, 0, 0)
+      dim fakeDim617: (2, 3, 0, 0, 0)
+      dim fakeDim618: (1, 4, 0, 0, 0)
+ 207 BETA1112_TOT_BETA7311_TOT_DAY_ASH_WATER_PIX dims=('fakeDim619', 'fakeDim620', 'fakeDim621', 'fakeDim622', 'fakeDim623') shape=(21, 42, 6, 2, 1) type=6 min=1.564e-09 max=0.1208 sum=2 ceros=0.000
+      dim fakeDim619: (21, 0, 0, 0, 0)
+      dim fakeDim620: (42, 1, 0, 0, 0)
+      dim fakeDim621: (6, 2, 0, 0, 0)
+      dim fakeDim622: (2, 3, 0, 0, 0)
+      dim fakeDim623: (1, 4, 0, 0, 0)
+ 208 BETA1112_TOT_NRAT_DAY_CLD_LAND_PIX dims=('fakeDim624', 'fakeDim625', 'fakeDim626', 'fakeDim627', 'fakeDim628') shape=(13, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.08805 sum=2 ceros=0.000
+      dim fakeDim624: (13, 0, 0, 0, 0)
+      dim fakeDim625: (42, 1, 0, 0, 0)
+      dim fakeDim626: (6, 2, 0, 0, 0)
+      dim fakeDim627: (2, 3, 0, 0, 0)
+      dim fakeDim628: (1, 4, 0, 0, 0)
+ 209 BETA1112_OPAQUE_NRAT_DAY_CLD_LAND_PIX dims=('fakeDim629', 'fakeDim630', 'fakeDim631', 'fakeDim632', 'fakeDim633') shape=(13, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.04648 sum=2 ceros=0.000
+      dim fakeDim629: (13, 0, 0, 0, 0)
+      dim fakeDim630: (42, 1, 0, 0, 0)
+      dim fakeDim631: (6, 2, 0, 0, 0)
+      dim fakeDim632: (2, 3, 0, 0, 0)
+      dim fakeDim633: (1, 4, 0, 0, 0)
+ 210 BETA1112_TOT_MULTI_LOW_NRAT_DAY_CLD_LAND_PIX dims=('fakeDim634', 'fakeDim635', 'fakeDim636', 'fakeDim637', 'fakeDim638') shape=(13, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.07044 sum=2 ceros=0.000
+      dim fakeDim634: (13, 0, 0, 0, 0)
+      dim fakeDim635: (42, 1, 0, 0, 0)
+      dim fakeDim636: (6, 2, 0, 0, 0)
+      dim fakeDim637: (2, 3, 0, 0, 0)
+      dim fakeDim638: (1, 4, 0, 0, 0)
+ 211 BETA1112_TOT_MULTI_MID_NRAT_DAY_CLD_LAND_PIX dims=('fakeDim639', 'fakeDim640', 'fakeDim641', 'fakeDim642', 'fakeDim643') shape=(13, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.05409 sum=2 ceros=0.000
+      dim fakeDim639: (13, 0, 0, 0, 0)
+      dim fakeDim640: (42, 1, 0, 0, 0)
+      dim fakeDim641: (6, 2, 0, 0, 0)
+      dim fakeDim642: (2, 3, 0, 0, 0)
+      dim fakeDim643: (1, 4, 0, 0, 0)
+ 212 BETA1112_TOT_NRAT_LRC_DAY_CLD_LAND_PIX dims=('fakeDim644', 'fakeDim645', 'fakeDim646', 'fakeDim647', 'fakeDim648') shape=(13, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.09295 sum=2 ceros=0.000
+      dim fakeDim644: (13, 0, 0, 0, 0)
+      dim fakeDim645: (42, 1, 0, 0, 0)
+      dim fakeDim646: (6, 2, 0, 0, 0)
+      dim fakeDim647: (2, 3, 0, 0, 0)
+      dim fakeDim648: (1, 4, 0, 0, 0)
+ 213 BETA1112_OPAQUE_NRAT_LRC_DAY_CLD_LAND_PIX dims=('fakeDim649', 'fakeDim650', 'fakeDim651', 'fakeDim652', 'fakeDim653') shape=(13, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.0445 sum=2 ceros=0.000
+      dim fakeDim649: (13, 0, 0, 0, 0)
+      dim fakeDim650: (42, 1, 0, 0, 0)
+      dim fakeDim651: (6, 2, 0, 0, 0)
+      dim fakeDim652: (2, 3, 0, 0, 0)
+      dim fakeDim653: (1, 4, 0, 0, 0)
+ 214 BETA1112_TOT_MULTI_LOW_NRAT_LRC_DAY_CLD_LAND_PIX dims=('fakeDim654', 'fakeDim655', 'fakeDim656', 'fakeDim657', 'fakeDim658') shape=(13, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.0714 sum=2 ceros=0.000
+      dim fakeDim654: (13, 0, 0, 0, 0)
+      dim fakeDim655: (42, 1, 0, 0, 0)
+      dim fakeDim656: (6, 2, 0, 0, 0)
+      dim fakeDim657: (2, 3, 0, 0, 0)
+      dim fakeDim658: (1, 4, 0, 0, 0)
+ 215 BETA1112_TOT_MULTI_MID_NRAT_LRC_DAY_CLD_LAND_PIX dims=('fakeDim659', 'fakeDim660', 'fakeDim661', 'fakeDim662', 'fakeDim663') shape=(13, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.05998 sum=2 ceros=0.000
+      dim fakeDim659: (13, 0, 0, 0, 0)
+      dim fakeDim660: (42, 1, 0, 0, 0)
+      dim fakeDim661: (6, 2, 0, 0, 0)
+      dim fakeDim662: (2, 3, 0, 0, 0)
+      dim fakeDim663: (1, 4, 0, 0, 0)
+ 216 BTD1112_NRAT_DAY_CLD_LAND_PIX dims=('fakeDim664', 'fakeDim665', 'fakeDim666', 'fakeDim667', 'fakeDim668', 'fakeDim669') shape=(13, 33, 6, 5, 2, 1) type=6 min=1.195e-08 max=0.05321 sum=2 ceros=0.000
+      dim fakeDim664: (13, 0, 0, 0, 0)
+      dim fakeDim665: (33, 1, 0, 0, 0)
+      dim fakeDim666: (6, 2, 0, 0, 0)
+      dim fakeDim667: (5, 3, 0, 0, 0)
+      dim fakeDim668: (2, 4, 0, 0, 0)
+      dim fakeDim669: (1, 5, 0, 0, 0)
+ 217 BTD1112_NRAT_LRC_DAY_CLD_LAND_PIX dims=('fakeDim670', 'fakeDim671', 'fakeDim672', 'fakeDim673', 'fakeDim674', 'fakeDim675') shape=(13, 33, 6, 5, 2, 1) type=6 min=1.195e-08 max=0.05565 sum=2 ceros=0.000
+      dim fakeDim670: (13, 0, 0, 0, 0)
+      dim fakeDim671: (33, 1, 0, 0, 0)
+      dim fakeDim672: (6, 2, 0, 0, 0)
+      dim fakeDim673: (5, 3, 0, 0, 0)
+      dim fakeDim674: (2, 4, 0, 0, 0)
+      dim fakeDim675: (1, 5, 0, 0, 0)
+ 218 BETA1113_TOT_NRAT_DAY_CLD_LAND_PIX dims=('fakeDim676', 'fakeDim677', 'fakeDim678', 'fakeDim679', 'fakeDim680') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim676: (13, 0, 0, 0, 0)
+      dim fakeDim677: (42, 1, 0, 0, 0)
+      dim fakeDim678: (6, 2, 0, 0, 0)
+      dim fakeDim679: (2, 3, 0, 0, 0)
+      dim fakeDim680: (1, 4, 0, 0, 0)
+ 219 BETA1113_OPAQUE_NRAT_DAY_CLD_LAND_PIX dims=('fakeDim681', 'fakeDim682', 'fakeDim683', 'fakeDim684', 'fakeDim685') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim681: (13, 0, 0, 0, 0)
+      dim fakeDim682: (42, 1, 0, 0, 0)
+      dim fakeDim683: (6, 2, 0, 0, 0)
+      dim fakeDim684: (2, 3, 0, 0, 0)
+      dim fakeDim685: (1, 4, 0, 0, 0)
+ 220 BETA1113_TOT_MULTI_LOW_NRAT_DAY_CLD_LAND_PIX dims=('fakeDim686', 'fakeDim687', 'fakeDim688', 'fakeDim689', 'fakeDim690') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim686: (13, 0, 0, 0, 0)
+      dim fakeDim687: (42, 1, 0, 0, 0)
+      dim fakeDim688: (6, 2, 0, 0, 0)
+      dim fakeDim689: (2, 3, 0, 0, 0)
+      dim fakeDim690: (1, 4, 0, 0, 0)
+ 221 BETA1113_TOT_MULTI_MID_NRAT_DAY_CLD_LAND_PIX dims=('fakeDim691', 'fakeDim692', 'fakeDim693', 'fakeDim694', 'fakeDim695') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim691: (13, 0, 0, 0, 0)
+      dim fakeDim692: (42, 1, 0, 0, 0)
+      dim fakeDim693: (6, 2, 0, 0, 0)
+      dim fakeDim694: (2, 3, 0, 0, 0)
+      dim fakeDim695: (1, 4, 0, 0, 0)
+ 222 BETA1113_TOT_NRAT_LRC_DAY_CLD_LAND_PIX dims=('fakeDim696', 'fakeDim697', 'fakeDim698', 'fakeDim699', 'fakeDim700') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim696: (13, 0, 0, 0, 0)
+      dim fakeDim697: (42, 1, 0, 0, 0)
+      dim fakeDim698: (6, 2, 0, 0, 0)
+      dim fakeDim699: (2, 3, 0, 0, 0)
+      dim fakeDim700: (1, 4, 0, 0, 0)
+ 223 BETA1113_OPAQUE_NRAT_LRC_DAY_CLD_LAND_PIX dims=('fakeDim701', 'fakeDim702', 'fakeDim703', 'fakeDim704', 'fakeDim705') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim701: (13, 0, 0, 0, 0)
+      dim fakeDim702: (42, 1, 0, 0, 0)
+      dim fakeDim703: (6, 2, 0, 0, 0)
+      dim fakeDim704: (2, 3, 0, 0, 0)
+      dim fakeDim705: (1, 4, 0, 0, 0)
+ 224 BETA1113_TOT_MULTI_LOW_NRAT_LRC_DAY_CLD_LAND_PIX dims=('fakeDim706', 'fakeDim707', 'fakeDim708', 'fakeDim709', 'fakeDim710') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim706: (13, 0, 0, 0, 0)
+      dim fakeDim707: (42, 1, 0, 0, 0)
+      dim fakeDim708: (6, 2, 0, 0, 0)
+      dim fakeDim709: (2, 3, 0, 0, 0)
+      dim fakeDim710: (1, 4, 0, 0, 0)
+ 225 BETA1113_TOT_MULTI_MID_NRAT_LRC_DAY_CLD_LAND_PIX dims=('fakeDim711', 'fakeDim712', 'fakeDim713', 'fakeDim714', 'fakeDim715') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim711: (13, 0, 0, 0, 0)
+      dim fakeDim712: (42, 1, 0, 0, 0)
+      dim fakeDim713: (6, 2, 0, 0, 0)
+      dim fakeDim714: (2, 3, 0, 0, 0)
+      dim fakeDim715: (1, 4, 0, 0, 0)
+ 226 EMISS14_TOT_VREF_DAY_CLD_LAND_PIX dims=('fakeDim716', 'fakeDim717', 'fakeDim718', 'fakeDim719') shape=(11, 6, 2, 1) type=6 min=1.195e-08 max=0.1088 sum=2 ceros=0.000
+      dim fakeDim716: (11, 0, 0, 0, 0)
+      dim fakeDim717: (6, 1, 0, 0, 0)
+      dim fakeDim718: (2, 2, 0, 0, 0)
+      dim fakeDim719: (1, 3, 0, 0, 0)
+ 227 BETA1112_TOT_BETA8511_TOT_DAY_CLD_LAND_PIX dims=('fakeDim720', 'fakeDim721', 'fakeDim722', 'fakeDim723', 'fakeDim724') shape=(21, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.1416 sum=2 ceros=0.000
+      dim fakeDim720: (21, 0, 0, 0, 0)
+      dim fakeDim721: (42, 1, 0, 0, 0)
+      dim fakeDim722: (6, 2, 0, 0, 0)
+      dim fakeDim723: (2, 3, 0, 0, 0)
+      dim fakeDim724: (1, 4, 0, 0, 0)
+ 228 BETA1112_OPAQUE_BETA8511_OPAQUE_DAY_CLD_LAND_PIX dims=('fakeDim725', 'fakeDim726', 'fakeDim727', 'fakeDim728', 'fakeDim729') shape=(21, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.03164 sum=2 ceros=0.000
+      dim fakeDim725: (21, 0, 0, 0, 0)
+      dim fakeDim726: (42, 1, 0, 0, 0)
+      dim fakeDim727: (6, 2, 0, 0, 0)
+      dim fakeDim728: (2, 3, 0, 0, 0)
+      dim fakeDim729: (1, 4, 0, 0, 0)
+ 229 BETA1112_TOT_BETA7311_TOT_DAY_CLD_LAND_PIX dims=('fakeDim730', 'fakeDim731', 'fakeDim732', 'fakeDim733', 'fakeDim734') shape=(21, 42, 6, 2, 1) type=6 min=1.195e-08 max=0.05517 sum=2 ceros=0.000
+      dim fakeDim730: (21, 0, 0, 0, 0)
+      dim fakeDim731: (42, 1, 0, 0, 0)
+      dim fakeDim732: (6, 2, 0, 0, 0)
+      dim fakeDim733: (2, 3, 0, 0, 0)
+      dim fakeDim734: (1, 4, 0, 0, 0)
+ 230 BETA1112_TOT_NRAT_DAY_CLD_SNOW_PIX dims=('fakeDim735', 'fakeDim736', 'fakeDim737', 'fakeDim738', 'fakeDim739') shape=(13, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.205 sum=2 ceros=0.000
+      dim fakeDim735: (13, 0, 0, 0, 0)
+      dim fakeDim736: (42, 1, 0, 0, 0)
+      dim fakeDim737: (6, 2, 0, 0, 0)
+      dim fakeDim738: (2, 3, 0, 0, 0)
+      dim fakeDim739: (1, 4, 0, 0, 0)
+ 231 BETA1112_OPAQUE_NRAT_DAY_CLD_SNOW_PIX dims=('fakeDim740', 'fakeDim741', 'fakeDim742', 'fakeDim743', 'fakeDim744') shape=(13, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.05868 sum=2 ceros=0.000
+      dim fakeDim740: (13, 0, 0, 0, 0)
+      dim fakeDim741: (42, 1, 0, 0, 0)
+      dim fakeDim742: (6, 2, 0, 0, 0)
+      dim fakeDim743: (2, 3, 0, 0, 0)
+      dim fakeDim744: (1, 4, 0, 0, 0)
+ 232 BETA1112_TOT_MULTI_LOW_NRAT_DAY_CLD_SNOW_PIX dims=('fakeDim745', 'fakeDim746', 'fakeDim747', 'fakeDim748', 'fakeDim749') shape=(13, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.1234 sum=2 ceros=0.000
+      dim fakeDim745: (13, 0, 0, 0, 0)
+      dim fakeDim746: (42, 1, 0, 0, 0)
+      dim fakeDim747: (6, 2, 0, 0, 0)
+      dim fakeDim748: (2, 3, 0, 0, 0)
+      dim fakeDim749: (1, 4, 0, 0, 0)
+ 233 BETA1112_TOT_MULTI_MID_NRAT_DAY_CLD_SNOW_PIX dims=('fakeDim750', 'fakeDim751', 'fakeDim752', 'fakeDim753', 'fakeDim754') shape=(13, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.08953 sum=2 ceros=0.000
+      dim fakeDim750: (13, 0, 0, 0, 0)
+      dim fakeDim751: (42, 1, 0, 0, 0)
+      dim fakeDim752: (6, 2, 0, 0, 0)
+      dim fakeDim753: (2, 3, 0, 0, 0)
+      dim fakeDim754: (1, 4, 0, 0, 0)
+ 234 BETA1112_TOT_NRAT_LRC_DAY_CLD_SNOW_PIX dims=('fakeDim755', 'fakeDim756', 'fakeDim757', 'fakeDim758', 'fakeDim759') shape=(13, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.2044 sum=2 ceros=0.000
+      dim fakeDim755: (13, 0, 0, 0, 0)
+      dim fakeDim756: (42, 1, 0, 0, 0)
+      dim fakeDim757: (6, 2, 0, 0, 0)
+      dim fakeDim758: (2, 3, 0, 0, 0)
+      dim fakeDim759: (1, 4, 0, 0, 0)
+ 235 BETA1112_OPAQUE_NRAT_LRC_DAY_CLD_SNOW_PIX dims=('fakeDim760', 'fakeDim761', 'fakeDim762', 'fakeDim763', 'fakeDim764') shape=(13, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.05729 sum=2 ceros=0.000
+      dim fakeDim760: (13, 0, 0, 0, 0)
+      dim fakeDim761: (42, 1, 0, 0, 0)
+      dim fakeDim762: (6, 2, 0, 0, 0)
+      dim fakeDim763: (2, 3, 0, 0, 0)
+      dim fakeDim764: (1, 4, 0, 0, 0)
+ 236 BETA1112_TOT_MULTI_LOW_NRAT_LRC_DAY_CLD_SNOW_PIX dims=('fakeDim765', 'fakeDim766', 'fakeDim767', 'fakeDim768', 'fakeDim769') shape=(13, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.1198 sum=2 ceros=0.000
+      dim fakeDim765: (13, 0, 0, 0, 0)
+      dim fakeDim766: (42, 1, 0, 0, 0)
+      dim fakeDim767: (6, 2, 0, 0, 0)
+      dim fakeDim768: (2, 3, 0, 0, 0)
+      dim fakeDim769: (1, 4, 0, 0, 0)
+ 237 BETA1112_TOT_MULTI_MID_NRAT_LRC_DAY_CLD_SNOW_PIX dims=('fakeDim770', 'fakeDim771', 'fakeDim772', 'fakeDim773', 'fakeDim774') shape=(13, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.09019 sum=2 ceros=0.000
+      dim fakeDim770: (13, 0, 0, 0, 0)
+      dim fakeDim771: (42, 1, 0, 0, 0)
+      dim fakeDim772: (6, 2, 0, 0, 0)
+      dim fakeDim773: (2, 3, 0, 0, 0)
+      dim fakeDim774: (1, 4, 0, 0, 0)
+ 238 BTD1112_NRAT_DAY_CLD_SNOW_PIX dims=('fakeDim775', 'fakeDim776', 'fakeDim777', 'fakeDim778', 'fakeDim779', 'fakeDim780') shape=(13, 33, 6, 5, 2, 1) type=6 min=5.83e-09 max=0.07593 sum=2 ceros=0.000
+      dim fakeDim775: (13, 0, 0, 0, 0)
+      dim fakeDim776: (33, 1, 0, 0, 0)
+      dim fakeDim777: (6, 2, 0, 0, 0)
+      dim fakeDim778: (5, 3, 0, 0, 0)
+      dim fakeDim779: (2, 4, 0, 0, 0)
+      dim fakeDim780: (1, 5, 0, 0, 0)
+ 239 BTD1112_NRAT_LRC_DAY_CLD_SNOW_PIX dims=('fakeDim781', 'fakeDim782', 'fakeDim783', 'fakeDim784', 'fakeDim785', 'fakeDim786') shape=(13, 33, 6, 5, 2, 1) type=6 min=5.83e-09 max=0.07489 sum=2 ceros=0.000
+      dim fakeDim781: (13, 0, 0, 0, 0)
+      dim fakeDim782: (33, 1, 0, 0, 0)
+      dim fakeDim783: (6, 2, 0, 0, 0)
+      dim fakeDim784: (5, 3, 0, 0, 0)
+      dim fakeDim785: (2, 4, 0, 0, 0)
+      dim fakeDim786: (1, 5, 0, 0, 0)
+ 240 BETA1113_TOT_NRAT_DAY_CLD_SNOW_PIX dims=('fakeDim787', 'fakeDim788', 'fakeDim789', 'fakeDim790', 'fakeDim791') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim787: (13, 0, 0, 0, 0)
+      dim fakeDim788: (42, 1, 0, 0, 0)
+      dim fakeDim789: (6, 2, 0, 0, 0)
+      dim fakeDim790: (2, 3, 0, 0, 0)
+      dim fakeDim791: (1, 4, 0, 0, 0)
+ 241 BETA1113_OPAQUE_NRAT_DAY_CLD_SNOW_PIX dims=('fakeDim792', 'fakeDim793', 'fakeDim794', 'fakeDim795', 'fakeDim796') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim792: (13, 0, 0, 0, 0)
+      dim fakeDim793: (42, 1, 0, 0, 0)
+      dim fakeDim794: (6, 2, 0, 0, 0)
+      dim fakeDim795: (2, 3, 0, 0, 0)
+      dim fakeDim796: (1, 4, 0, 0, 0)
+ 242 BETA1113_TOT_MULTI_LOW_NRAT_DAY_CLD_SNOW_PIX dims=('fakeDim797', 'fakeDim798', 'fakeDim799', 'fakeDim800', 'fakeDim801') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim797: (13, 0, 0, 0, 0)
+      dim fakeDim798: (42, 1, 0, 0, 0)
+      dim fakeDim799: (6, 2, 0, 0, 0)
+      dim fakeDim800: (2, 3, 0, 0, 0)
+      dim fakeDim801: (1, 4, 0, 0, 0)
+ 243 BETA1113_TOT_MULTI_MID_NRAT_DAY_CLD_SNOW_PIX dims=('fakeDim802', 'fakeDim803', 'fakeDim804', 'fakeDim805', 'fakeDim806') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim802: (13, 0, 0, 0, 0)
+      dim fakeDim803: (42, 1, 0, 0, 0)
+      dim fakeDim804: (6, 2, 0, 0, 0)
+      dim fakeDim805: (2, 3, 0, 0, 0)
+      dim fakeDim806: (1, 4, 0, 0, 0)
+ 244 BETA1113_TOT_NRAT_LRC_DAY_CLD_SNOW_PIX dims=('fakeDim807', 'fakeDim808', 'fakeDim809', 'fakeDim810', 'fakeDim811') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim807: (13, 0, 0, 0, 0)
+      dim fakeDim808: (42, 1, 0, 0, 0)
+      dim fakeDim809: (6, 2, 0, 0, 0)
+      dim fakeDim810: (2, 3, 0, 0, 0)
+      dim fakeDim811: (1, 4, 0, 0, 0)
+ 245 BETA1113_OPAQUE_NRAT_LRC_DAY_CLD_SNOW_PIX dims=('fakeDim812', 'fakeDim813', 'fakeDim814', 'fakeDim815', 'fakeDim816') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim812: (13, 0, 0, 0, 0)
+      dim fakeDim813: (42, 1, 0, 0, 0)
+      dim fakeDim814: (6, 2, 0, 0, 0)
+      dim fakeDim815: (2, 3, 0, 0, 0)
+      dim fakeDim816: (1, 4, 0, 0, 0)
+ 246 BETA1113_TOT_MULTI_LOW_NRAT_LRC_DAY_CLD_SNOW_PIX dims=('fakeDim817', 'fakeDim818', 'fakeDim819', 'fakeDim820', 'fakeDim821') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim817: (13, 0, 0, 0, 0)
+      dim fakeDim818: (42, 1, 0, 0, 0)
+      dim fakeDim819: (6, 2, 0, 0, 0)
+      dim fakeDim820: (2, 3, 0, 0, 0)
+      dim fakeDim821: (1, 4, 0, 0, 0)
+ 247 BETA1113_TOT_MULTI_MID_NRAT_LRC_DAY_CLD_SNOW_PIX dims=('fakeDim822', 'fakeDim823', 'fakeDim824', 'fakeDim825', 'fakeDim826') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim822: (13, 0, 0, 0, 0)
+      dim fakeDim823: (42, 1, 0, 0, 0)
+      dim fakeDim824: (6, 2, 0, 0, 0)
+      dim fakeDim825: (2, 3, 0, 0, 0)
+      dim fakeDim826: (1, 4, 0, 0, 0)
+ 248 EMISS14_TOT_VREF_DAY_CLD_SNOW_PIX dims=('fakeDim827', 'fakeDim828', 'fakeDim829', 'fakeDim830') shape=(11, 6, 2, 1) type=6 min=5.831e-09 max=0.1533 sum=2 ceros=0.000
+      dim fakeDim827: (11, 0, 0, 0, 0)
+      dim fakeDim828: (6, 1, 0, 0, 0)
+      dim fakeDim829: (2, 2, 0, 0, 0)
+      dim fakeDim830: (1, 3, 0, 0, 0)
+ 249 BETA1112_TOT_BETA8511_TOT_DAY_CLD_SNOW_PIX dims=('fakeDim831', 'fakeDim832', 'fakeDim833', 'fakeDim834', 'fakeDim835') shape=(21, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.1809 sum=2 ceros=0.000
+      dim fakeDim831: (21, 0, 0, 0, 0)
+      dim fakeDim832: (42, 1, 0, 0, 0)
+      dim fakeDim833: (6, 2, 0, 0, 0)
+      dim fakeDim834: (2, 3, 0, 0, 0)
+      dim fakeDim835: (1, 4, 0, 0, 0)
+ 250 BETA1112_OPAQUE_BETA8511_OPAQUE_DAY_CLD_SNOW_PIX dims=('fakeDim836', 'fakeDim837', 'fakeDim838', 'fakeDim839', 'fakeDim840') shape=(21, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.02003 sum=2 ceros=0.000
+      dim fakeDim836: (21, 0, 0, 0, 0)
+      dim fakeDim837: (42, 1, 0, 0, 0)
+      dim fakeDim838: (6, 2, 0, 0, 0)
+      dim fakeDim839: (2, 3, 0, 0, 0)
+      dim fakeDim840: (1, 4, 0, 0, 0)
+ 251 BETA1112_TOT_BETA7311_TOT_DAY_CLD_SNOW_PIX dims=('fakeDim841', 'fakeDim842', 'fakeDim843', 'fakeDim844', 'fakeDim845') shape=(21, 42, 6, 2, 1) type=6 min=5.83e-09 max=0.07341 sum=2 ceros=0.000
+      dim fakeDim841: (21, 0, 0, 0, 0)
+      dim fakeDim842: (42, 1, 0, 0, 0)
+      dim fakeDim843: (6, 2, 0, 0, 0)
+      dim fakeDim844: (2, 3, 0, 0, 0)
+      dim fakeDim845: (1, 4, 0, 0, 0)
+ 252 BETA1112_TOT_NRAT_DAY_CLD_WATER_PIX dims=('fakeDim846', 'fakeDim847', 'fakeDim848', 'fakeDim849', 'fakeDim850') shape=(13, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.07145 sum=2 ceros=0.000
+      dim fakeDim846: (13, 0, 0, 0, 0)
+      dim fakeDim847: (42, 1, 0, 0, 0)
+      dim fakeDim848: (6, 2, 0, 0, 0)
+      dim fakeDim849: (2, 3, 0, 0, 0)
+      dim fakeDim850: (1, 4, 0, 0, 0)
+ 253 BETA1112_OPAQUE_NRAT_DAY_CLD_WATER_PIX dims=('fakeDim851', 'fakeDim852', 'fakeDim853', 'fakeDim854', 'fakeDim855') shape=(13, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.03575 sum=2 ceros=0.000
+      dim fakeDim851: (13, 0, 0, 0, 0)
+      dim fakeDim852: (42, 1, 0, 0, 0)
+      dim fakeDim853: (6, 2, 0, 0, 0)
+      dim fakeDim854: (2, 3, 0, 0, 0)
+      dim fakeDim855: (1, 4, 0, 0, 0)
+ 254 BETA1112_TOT_MULTI_LOW_NRAT_DAY_CLD_WATER_PIX dims=('fakeDim856', 'fakeDim857', 'fakeDim858', 'fakeDim859', 'fakeDim860') shape=(13, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.05472 sum=2 ceros=0.000
+      dim fakeDim856: (13, 0, 0, 0, 0)
+      dim fakeDim857: (42, 1, 0, 0, 0)
+      dim fakeDim858: (6, 2, 0, 0, 0)
+      dim fakeDim859: (2, 3, 0, 0, 0)
+      dim fakeDim860: (1, 4, 0, 0, 0)
+ 255 BETA1112_TOT_MULTI_MID_NRAT_DAY_CLD_WATER_PIX dims=('fakeDim861', 'fakeDim862', 'fakeDim863', 'fakeDim864', 'fakeDim865') shape=(13, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.06302 sum=2 ceros=0.000
+      dim fakeDim861: (13, 0, 0, 0, 0)
+      dim fakeDim862: (42, 1, 0, 0, 0)
+      dim fakeDim863: (6, 2, 0, 0, 0)
+      dim fakeDim864: (2, 3, 0, 0, 0)
+      dim fakeDim865: (1, 4, 0, 0, 0)
+ 256 BETA1112_TOT_NRAT_LRC_DAY_CLD_WATER_PIX dims=('fakeDim866', 'fakeDim867', 'fakeDim868', 'fakeDim869', 'fakeDim870') shape=(13, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.07761 sum=2 ceros=0.000
+      dim fakeDim866: (13, 0, 0, 0, 0)
+      dim fakeDim867: (42, 1, 0, 0, 0)
+      dim fakeDim868: (6, 2, 0, 0, 0)
+      dim fakeDim869: (2, 3, 0, 0, 0)
+      dim fakeDim870: (1, 4, 0, 0, 0)
+ 257 BETA1112_OPAQUE_NRAT_LRC_DAY_CLD_WATER_PIX dims=('fakeDim871', 'fakeDim872', 'fakeDim873', 'fakeDim874', 'fakeDim875') shape=(13, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.04344 sum=2 ceros=0.000
+      dim fakeDim871: (13, 0, 0, 0, 0)
+      dim fakeDim872: (42, 1, 0, 0, 0)
+      dim fakeDim873: (6, 2, 0, 0, 0)
+      dim fakeDim874: (2, 3, 0, 0, 0)
+      dim fakeDim875: (1, 4, 0, 0, 0)
+ 258 BETA1112_TOT_MULTI_LOW_NRAT_LRC_DAY_CLD_WATER_PIX dims=('fakeDim876', 'fakeDim877', 'fakeDim878', 'fakeDim879', 'fakeDim880') shape=(13, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.05678 sum=2 ceros=0.000
+      dim fakeDim876: (13, 0, 0, 0, 0)
+      dim fakeDim877: (42, 1, 0, 0, 0)
+      dim fakeDim878: (6, 2, 0, 0, 0)
+      dim fakeDim879: (2, 3, 0, 0, 0)
+      dim fakeDim880: (1, 4, 0, 0, 0)
+ 259 BETA1112_TOT_MULTI_MID_NRAT_LRC_DAY_CLD_WATER_PIX dims=('fakeDim881', 'fakeDim882', 'fakeDim883', 'fakeDim884', 'fakeDim885') shape=(13, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.0767 sum=2 ceros=0.000
+      dim fakeDim881: (13, 0, 0, 0, 0)
+      dim fakeDim882: (42, 1, 0, 0, 0)
+      dim fakeDim883: (6, 2, 0, 0, 0)
+      dim fakeDim884: (2, 3, 0, 0, 0)
+      dim fakeDim885: (1, 4, 0, 0, 0)
+ 260 BTD1112_NRAT_DAY_CLD_WATER_PIX dims=('fakeDim886', 'fakeDim887', 'fakeDim888', 'fakeDim889', 'fakeDim890', 'fakeDim891') shape=(13, 33, 6, 5, 2, 1) type=6 min=1.835e-09 max=0.04371 sum=2 ceros=0.000
+      dim fakeDim886: (13, 0, 0, 0, 0)
+      dim fakeDim887: (33, 1, 0, 0, 0)
+      dim fakeDim888: (6, 2, 0, 0, 0)
+      dim fakeDim889: (5, 3, 0, 0, 0)
+      dim fakeDim890: (2, 4, 0, 0, 0)
+      dim fakeDim891: (1, 5, 0, 0, 0)
+ 261 BTD1112_NRAT_LRC_DAY_CLD_WATER_PIX dims=('fakeDim892', 'fakeDim893', 'fakeDim894', 'fakeDim895', 'fakeDim896', 'fakeDim897') shape=(13, 33, 6, 5, 2, 1) type=6 min=1.835e-09 max=0.04737 sum=2 ceros=0.000
+      dim fakeDim892: (13, 0, 0, 0, 0)
+      dim fakeDim893: (33, 1, 0, 0, 0)
+      dim fakeDim894: (6, 2, 0, 0, 0)
+      dim fakeDim895: (5, 3, 0, 0, 0)
+      dim fakeDim896: (2, 4, 0, 0, 0)
+      dim fakeDim897: (1, 5, 0, 0, 0)
+ 262 BETA1113_TOT_NRAT_DAY_CLD_WATER_PIX dims=('fakeDim898', 'fakeDim899', 'fakeDim900', 'fakeDim901', 'fakeDim902') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim898: (13, 0, 0, 0, 0)
+      dim fakeDim899: (42, 1, 0, 0, 0)
+      dim fakeDim900: (6, 2, 0, 0, 0)
+      dim fakeDim901: (2, 3, 0, 0, 0)
+      dim fakeDim902: (1, 4, 0, 0, 0)
+ 263 BETA1113_OPAQUE_NRAT_DAY_CLD_WATER_PIX dims=('fakeDim903', 'fakeDim904', 'fakeDim905', 'fakeDim906', 'fakeDim907') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim903: (13, 0, 0, 0, 0)
+      dim fakeDim904: (42, 1, 0, 0, 0)
+      dim fakeDim905: (6, 2, 0, 0, 0)
+      dim fakeDim906: (2, 3, 0, 0, 0)
+      dim fakeDim907: (1, 4, 0, 0, 0)
+ 264 BETA1113_TOT_MULTI_LOW_NRAT_DAY_CLD_WATER_PIX dims=('fakeDim908', 'fakeDim909', 'fakeDim910', 'fakeDim911', 'fakeDim912') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim908: (13, 0, 0, 0, 0)
+      dim fakeDim909: (42, 1, 0, 0, 0)
+      dim fakeDim910: (6, 2, 0, 0, 0)
+      dim fakeDim911: (2, 3, 0, 0, 0)
+      dim fakeDim912: (1, 4, 0, 0, 0)
+ 265 BETA1113_TOT_MULTI_MID_NRAT_DAY_CLD_WATER_PIX dims=('fakeDim913', 'fakeDim914', 'fakeDim915', 'fakeDim916', 'fakeDim917') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim913: (13, 0, 0, 0, 0)
+      dim fakeDim914: (42, 1, 0, 0, 0)
+      dim fakeDim915: (6, 2, 0, 0, 0)
+      dim fakeDim916: (2, 3, 0, 0, 0)
+      dim fakeDim917: (1, 4, 0, 0, 0)
+ 266 BETA1113_TOT_NRAT_LRC_DAY_CLD_WATER_PIX dims=('fakeDim918', 'fakeDim919', 'fakeDim920', 'fakeDim921', 'fakeDim922') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim918: (13, 0, 0, 0, 0)
+      dim fakeDim919: (42, 1, 0, 0, 0)
+      dim fakeDim920: (6, 2, 0, 0, 0)
+      dim fakeDim921: (2, 3, 0, 0, 0)
+      dim fakeDim922: (1, 4, 0, 0, 0)
+ 267 BETA1113_OPAQUE_NRAT_LRC_DAY_CLD_WATER_PIX dims=('fakeDim923', 'fakeDim924', 'fakeDim925', 'fakeDim926', 'fakeDim927') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim923: (13, 0, 0, 0, 0)
+      dim fakeDim924: (42, 1, 0, 0, 0)
+      dim fakeDim925: (6, 2, 0, 0, 0)
+      dim fakeDim926: (2, 3, 0, 0, 0)
+      dim fakeDim927: (1, 4, 0, 0, 0)
+ 268 BETA1113_TOT_MULTI_LOW_NRAT_LRC_DAY_CLD_WATER_PIX dims=('fakeDim928', 'fakeDim929', 'fakeDim930', 'fakeDim931', 'fakeDim932') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim928: (13, 0, 0, 0, 0)
+      dim fakeDim929: (42, 1, 0, 0, 0)
+      dim fakeDim930: (6, 2, 0, 0, 0)
+      dim fakeDim931: (2, 3, 0, 0, 0)
+      dim fakeDim932: (1, 4, 0, 0, 0)
+ 269 BETA1113_TOT_MULTI_MID_NRAT_LRC_DAY_CLD_WATER_PIX dims=('fakeDim933', 'fakeDim934', 'fakeDim935', 'fakeDim936', 'fakeDim937') shape=(13, 42, 6, 2, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim933: (13, 0, 0, 0, 0)
+      dim fakeDim934: (42, 1, 0, 0, 0)
+      dim fakeDim935: (6, 2, 0, 0, 0)
+      dim fakeDim936: (2, 3, 0, 0, 0)
+      dim fakeDim937: (1, 4, 0, 0, 0)
+ 270 EMISS14_TOT_VREF_DAY_CLD_WATER_PIX dims=('fakeDim938', 'fakeDim939', 'fakeDim940', 'fakeDim941') shape=(11, 6, 2, 1) type=6 min=1.835e-09 max=0.09193 sum=2 ceros=0.000
+      dim fakeDim938: (11, 0, 0, 0, 0)
+      dim fakeDim939: (6, 1, 0, 0, 0)
+      dim fakeDim940: (2, 2, 0, 0, 0)
+      dim fakeDim941: (1, 3, 0, 0, 0)
+ 271 BETA1112_TOT_BETA8511_TOT_DAY_CLD_WATER_PIX dims=('fakeDim942', 'fakeDim943', 'fakeDim944', 'fakeDim945', 'fakeDim946') shape=(21, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.1254 sum=2 ceros=0.000
+      dim fakeDim942: (21, 0, 0, 0, 0)
+      dim fakeDim943: (42, 1, 0, 0, 0)
+      dim fakeDim944: (6, 2, 0, 0, 0)
+      dim fakeDim945: (2, 3, 0, 0, 0)
+      dim fakeDim946: (1, 4, 0, 0, 0)
+ 272 BETA1112_OPAQUE_BETA8511_OPAQUE_DAY_CLD_WATER_PIX dims=('fakeDim947', 'fakeDim948', 'fakeDim949', 'fakeDim950', 'fakeDim951') shape=(21, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.01965 sum=2 ceros=0.000
+      dim fakeDim947: (21, 0, 0, 0, 0)
+      dim fakeDim948: (42, 1, 0, 0, 0)
+      dim fakeDim949: (6, 2, 0, 0, 0)
+      dim fakeDim950: (2, 3, 0, 0, 0)
+      dim fakeDim951: (1, 4, 0, 0, 0)
+ 273 BETA1112_TOT_BETA7311_TOT_DAY_CLD_WATER_PIX dims=('fakeDim952', 'fakeDim953', 'fakeDim954', 'fakeDim955', 'fakeDim956') shape=(21, 42, 6, 2, 1) type=6 min=1.835e-09 max=0.07874 sum=2 ceros=0.000
+      dim fakeDim952: (21, 0, 0, 0, 0)
+      dim fakeDim953: (42, 1, 0, 0, 0)
+      dim fakeDim954: (6, 2, 0, 0, 0)
+      dim fakeDim955: (2, 3, 0, 0, 0)
+      dim fakeDim956: (1, 4, 0, 0, 0)
+ 274 EMISS14_TOT_BETA1112_TOT_IR_ASH_LAND_PIX dims=('fakeDim957', 'fakeDim958', 'fakeDim959') shape=(42, 6, 1) type=6 min=1.63e-09 max=0.05177 sum=1 ceros=0.000
+      dim fakeDim957: (42, 0, 0, 0, 0)
+      dim fakeDim958: (6, 1, 0, 0, 0)
+      dim fakeDim959: (1, 2, 0, 0, 0)
+ 275 EMISS14_TOT_BETA1112_OPAQUE_IR_ASH_LAND_PIX dims=('fakeDim960', 'fakeDim961', 'fakeDim962') shape=(42, 6, 1) type=6 min=1.63e-09 max=0.342 sum=1 ceros=0.000
+      dim fakeDim960: (42, 0, 0, 0, 0)
+      dim fakeDim961: (6, 1, 0, 0, 0)
+      dim fakeDim962: (1, 2, 0, 0, 0)
+ 276 EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR_ASH_LAND_PIX dims=('fakeDim963', 'fakeDim964', 'fakeDim965') shape=(42, 6, 1) type=6 min=1.63e-09 max=0.2418 sum=1 ceros=0.000
+      dim fakeDim963: (42, 0, 0, 0, 0)
+      dim fakeDim964: (6, 1, 0, 0, 0)
+      dim fakeDim965: (1, 2, 0, 0, 0)
+ 277 EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR_ASH_LAND_PIX dims=('fakeDim966', 'fakeDim967', 'fakeDim968') shape=(42, 6, 1) type=6 min=1.63e-09 max=0.3403 sum=1 ceros=0.000
+      dim fakeDim966: (42, 0, 0, 0, 0)
+      dim fakeDim967: (6, 1, 0, 0, 0)
+      dim fakeDim968: (1, 2, 0, 0, 0)
+ 278 EMISS14_TOT_BTD1112_IR_ASH_LAND_PIX dims=('fakeDim969', 'fakeDim970', 'fakeDim971', 'fakeDim972') shape=(33, 6, 5, 1) type=6 min=1.619e-09 max=0.05466 sum=1 ceros=0.000
+      dim fakeDim969: (33, 0, 0, 0, 0)
+      dim fakeDim970: (6, 1, 0, 0, 0)
+      dim fakeDim971: (5, 2, 0, 0, 0)
+      dim fakeDim972: (1, 3, 0, 0, 0)
+ 279 EMISS14_TOT_BETA1113_TOT_IR_ASH_LAND_PIX dims=('fakeDim973', 'fakeDim974', 'fakeDim975') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim973: (42, 0, 0, 0, 0)
+      dim fakeDim974: (6, 1, 0, 0, 0)
+      dim fakeDim975: (1, 2, 0, 0, 0)
+ 280 EMISS14_TOT_BETA1113_OPAQUE_IR_ASH_LAND_PIX dims=('fakeDim976', 'fakeDim977', 'fakeDim978') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim976: (42, 0, 0, 0, 0)
+      dim fakeDim977: (6, 1, 0, 0, 0)
+      dim fakeDim978: (1, 2, 0, 0, 0)
+ 281 EMISS14_TOT_BETA1113_TOT_MULTI_LOW_IR_ASH_LAND_PIX dims=('fakeDim979', 'fakeDim980', 'fakeDim981') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim979: (42, 0, 0, 0, 0)
+      dim fakeDim980: (6, 1, 0, 0, 0)
+      dim fakeDim981: (1, 2, 0, 0, 0)
+ 282 EMISS14_TOT_BETA1113_TOT_MULTI_MID_IR_ASH_LAND_PIX dims=('fakeDim982', 'fakeDim983', 'fakeDim984') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim982: (42, 0, 0, 0, 0)
+      dim fakeDim983: (6, 1, 0, 0, 0)
+      dim fakeDim984: (1, 2, 0, 0, 0)
+ 283 BETA1112_TOT_BETA8511_TOT_IR_ASH_LAND_PIX dims=('fakeDim985', 'fakeDim986', 'fakeDim987', 'fakeDim988') shape=(21, 42, 6, 1) type=6 min=1.58e-09 max=0.01095 sum=1 ceros=0.000
+      dim fakeDim985: (21, 0, 0, 0, 0)
+      dim fakeDim986: (42, 1, 0, 0, 0)
+      dim fakeDim987: (6, 2, 0, 0, 0)
+      dim fakeDim988: (1, 3, 0, 0, 0)
+ 284 BETA1112_OPAQUE_BETA8511_OPAQUE_IR_ASH_LAND_PIX dims=('fakeDim989', 'fakeDim990', 'fakeDim991', 'fakeDim992') shape=(21, 42, 6, 1) type=6 min=1.601e-09 max=0.1161 sum=1 ceros=0.000
+      dim fakeDim989: (21, 0, 0, 0, 0)
+      dim fakeDim990: (42, 1, 0, 0, 0)
+      dim fakeDim991: (6, 2, 0, 0, 0)
+      dim fakeDim992: (1, 3, 0, 0, 0)
+ 285 BETA1112_TOT_BETA7311_TOT_IR_ASH_LAND_PIX dims=('fakeDim993', 'fakeDim994', 'fakeDim995', 'fakeDim996') shape=(21, 42, 6, 1) type=6 min=1.635e-09 max=0.0208 sum=1 ceros=0.000
+      dim fakeDim993: (21, 0, 0, 0, 0)
+      dim fakeDim994: (42, 1, 0, 0, 0)
+      dim fakeDim995: (6, 2, 0, 0, 0)
+      dim fakeDim996: (1, 3, 0, 0, 0)
+ 286 EMISS14_TOT_BETA1112_TOT_IR_ASH_WATER_PIX dims=('fakeDim997', 'fakeDim998', 'fakeDim999') shape=(42, 6, 1) type=6 min=5.191e-10 max=0.06742 sum=1 ceros=0.000
+      dim fakeDim997: (42, 0, 0, 0, 0)
+      dim fakeDim998: (6, 1, 0, 0, 0)
+      dim fakeDim999: (1, 2, 0, 0, 0)
+ 287 EMISS14_TOT_BETA1112_OPAQUE_IR_ASH_WATER_PIX dims=('fakeDim1000', 'fakeDim1001', 'fakeDim1002') shape=(42, 6, 1) type=6 min=5.191e-10 max=0.4843 sum=1 ceros=0.000
+      dim fakeDim1000: (42, 0, 0, 0, 0)
+      dim fakeDim1001: (6, 1, 0, 0, 0)
+      dim fakeDim1002: (1, 2, 0, 0, 0)
+ 288 EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR_ASH_WATER_PIX dims=('fakeDim1003', 'fakeDim1004', 'fakeDim1005') shape=(42, 6, 1) type=6 min=5.191e-10 max=0.3448 sum=1 ceros=0.000
+      dim fakeDim1003: (42, 0, 0, 0, 0)
+      dim fakeDim1004: (6, 1, 0, 0, 0)
+      dim fakeDim1005: (1, 2, 0, 0, 0)
+ 289 EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR_ASH_WATER_PIX dims=('fakeDim1006', 'fakeDim1007', 'fakeDim1008') shape=(42, 6, 1) type=6 min=5.191e-10 max=0.4978 sum=1 ceros=0.000
+      dim fakeDim1006: (42, 0, 0, 0, 0)
+      dim fakeDim1007: (6, 1, 0, 0, 0)
+      dim fakeDim1008: (1, 2, 0, 0, 0)
+ 290 EMISS14_TOT_BTD1112_IR_ASH_WATER_PIX dims=('fakeDim1009', 'fakeDim1010', 'fakeDim1011', 'fakeDim1012') shape=(33, 6, 5, 1) type=6 min=5.188e-10 max=0.09131 sum=1 ceros=0.000
+      dim fakeDim1009: (33, 0, 0, 0, 0)
+      dim fakeDim1010: (6, 1, 0, 0, 0)
+      dim fakeDim1011: (5, 2, 0, 0, 0)
+      dim fakeDim1012: (1, 3, 0, 0, 0)
+ 291 EMISS14_TOT_BETA1113_TOT_IR_ASH_WATER_PIX dims=('fakeDim1013', 'fakeDim1014', 'fakeDim1015') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1013: (42, 0, 0, 0, 0)
+      dim fakeDim1014: (6, 1, 0, 0, 0)
+      dim fakeDim1015: (1, 2, 0, 0, 0)
+ 292 EMISS14_TOT_BETA1113_OPAQUE_IR_ASH_WATER_PIX dims=('fakeDim1016', 'fakeDim1017', 'fakeDim1018') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1016: (42, 0, 0, 0, 0)
+      dim fakeDim1017: (6, 1, 0, 0, 0)
+      dim fakeDim1018: (1, 2, 0, 0, 0)
+ 293 EMISS14_TOT_BETA1113_TOT_MULTI_LOW_IR_ASH_WATER_PIX dims=('fakeDim1019', 'fakeDim1020', 'fakeDim1021') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1019: (42, 0, 0, 0, 0)
+      dim fakeDim1020: (6, 1, 0, 0, 0)
+      dim fakeDim1021: (1, 2, 0, 0, 0)
+ 294 EMISS14_TOT_BETA1113_TOT_MULTI_MID_IR_ASH_WATER_PIX dims=('fakeDim1022', 'fakeDim1023', 'fakeDim1024') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1022: (42, 0, 0, 0, 0)
+      dim fakeDim1023: (6, 1, 0, 0, 0)
+      dim fakeDim1024: (1, 2, 0, 0, 0)
+ 295 BETA1112_TOT_BETA8511_TOT_IR_ASH_WATER_PIX dims=('fakeDim1025', 'fakeDim1026', 'fakeDim1027', 'fakeDim1028') shape=(21, 42, 6, 1) type=6 min=5.177e-10 max=0.02267 sum=1 ceros=0.000
+      dim fakeDim1025: (21, 0, 0, 0, 0)
+      dim fakeDim1026: (42, 1, 0, 0, 0)
+      dim fakeDim1027: (6, 2, 0, 0, 0)
+      dim fakeDim1028: (1, 3, 0, 0, 0)
+ 296 BETA1112_OPAQUE_BETA8511_OPAQUE_IR_ASH_WATER_PIX dims=('fakeDim1029', 'fakeDim1030', 'fakeDim1031', 'fakeDim1032') shape=(21, 42, 6, 1) type=6 min=5.183e-10 max=0.1195 sum=1 ceros=0.000
+      dim fakeDim1029: (21, 0, 0, 0, 0)
+      dim fakeDim1030: (42, 1, 0, 0, 0)
+      dim fakeDim1031: (6, 2, 0, 0, 0)
+      dim fakeDim1032: (1, 3, 0, 0, 0)
+ 297 BETA1112_TOT_BETA7311_TOT_IR_ASH_WATER_PIX dims=('fakeDim1033', 'fakeDim1034', 'fakeDim1035', 'fakeDim1036') shape=(21, 42, 6, 1) type=6 min=5.192e-10 max=0.04152 sum=1 ceros=0.000
+      dim fakeDim1033: (21, 0, 0, 0, 0)
+      dim fakeDim1034: (42, 1, 0, 0, 0)
+      dim fakeDim1035: (6, 2, 0, 0, 0)
+      dim fakeDim1036: (1, 3, 0, 0, 0)
+ 298 EMISS14_TOT_BETA1112_TOT_IR_CLD_LAND_PIX dims=('fakeDim1037', 'fakeDim1038', 'fakeDim1039') shape=(42, 6, 1) type=6 min=1.635e-09 max=0.2356 sum=1 ceros=0.000
+      dim fakeDim1037: (42, 0, 0, 0, 0)
+      dim fakeDim1038: (6, 1, 0, 0, 0)
+      dim fakeDim1039: (1, 2, 0, 0, 0)
+ 299 EMISS14_TOT_BETA1112_OPAQUE_IR_CLD_LAND_PIX dims=('fakeDim1040', 'fakeDim1041', 'fakeDim1042') shape=(42, 6, 1) type=6 min=1.635e-09 max=0.1587 sum=1 ceros=0.000
+      dim fakeDim1040: (42, 0, 0, 0, 0)
+      dim fakeDim1041: (6, 1, 0, 0, 0)
+      dim fakeDim1042: (1, 2, 0, 0, 0)
+ 300 EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR_CLD_LAND_PIX dims=('fakeDim1043', 'fakeDim1044', 'fakeDim1045') shape=(42, 6, 1) type=6 min=1.635e-09 max=0.2392 sum=1 ceros=0.000
+      dim fakeDim1043: (42, 0, 0, 0, 0)
+      dim fakeDim1044: (6, 1, 0, 0, 0)
+      dim fakeDim1045: (1, 2, 0, 0, 0)
+ 301 EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR_CLD_LAND_PIX dims=('fakeDim1046', 'fakeDim1047', 'fakeDim1048') shape=(42, 6, 1) type=6 min=1.635e-09 max=0.1711 sum=1 ceros=0.000
+      dim fakeDim1046: (42, 0, 0, 0, 0)
+      dim fakeDim1047: (6, 1, 0, 0, 0)
+      dim fakeDim1048: (1, 2, 0, 0, 0)
+ 302 EMISS14_TOT_BTD1112_IR_CLD_LAND_PIX dims=('fakeDim1049', 'fakeDim1050', 'fakeDim1051', 'fakeDim1052') shape=(33, 6, 5, 1) type=6 min=1.635e-09 max=0.1006 sum=1 ceros=0.000
+      dim fakeDim1049: (33, 0, 0, 0, 0)
+      dim fakeDim1050: (6, 1, 0, 0, 0)
+      dim fakeDim1051: (5, 2, 0, 0, 0)
+      dim fakeDim1052: (1, 3, 0, 0, 0)
+ 303 EMISS14_TOT_BETA1113_TOT_IR_CLD_LAND_PIX dims=('fakeDim1053', 'fakeDim1054', 'fakeDim1055') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1053: (42, 0, 0, 0, 0)
+      dim fakeDim1054: (6, 1, 0, 0, 0)
+      dim fakeDim1055: (1, 2, 0, 0, 0)
+ 304 EMISS14_TOT_BETA1113_OPAQUE_IR_CLD_LAND_PIX dims=('fakeDim1056', 'fakeDim1057', 'fakeDim1058') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1056: (42, 0, 0, 0, 0)
+      dim fakeDim1057: (6, 1, 0, 0, 0)
+      dim fakeDim1058: (1, 2, 0, 0, 0)
+ 305 EMISS14_TOT_BETA1113_TOT_MULTI_LOW_IR_CLD_LAND_PIX dims=('fakeDim1059', 'fakeDim1060', 'fakeDim1061') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1059: (42, 0, 0, 0, 0)
+      dim fakeDim1060: (6, 1, 0, 0, 0)
+      dim fakeDim1061: (1, 2, 0, 0, 0)
+ 306 EMISS14_TOT_BETA1113_TOT_MULTI_MID_IR_CLD_LAND_PIX dims=('fakeDim1062', 'fakeDim1063', 'fakeDim1064') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1062: (42, 0, 0, 0, 0)
+      dim fakeDim1063: (6, 1, 0, 0, 0)
+      dim fakeDim1064: (1, 2, 0, 0, 0)
+ 307 BETA1112_TOT_BETA8511_TOT_IR_CLD_LAND_PIX dims=('fakeDim1065', 'fakeDim1066', 'fakeDim1067', 'fakeDim1068') shape=(21, 42, 6, 1) type=6 min=1.635e-09 max=0.08205 sum=1 ceros=0.000
+      dim fakeDim1065: (21, 0, 0, 0, 0)
+      dim fakeDim1066: (42, 1, 0, 0, 0)
+      dim fakeDim1067: (6, 2, 0, 0, 0)
+      dim fakeDim1068: (1, 3, 0, 0, 0)
+ 308 BETA1112_OPAQUE_BETA8511_OPAQUE_IR_CLD_LAND_PIX dims=('fakeDim1069', 'fakeDim1070', 'fakeDim1071', 'fakeDim1072') shape=(21, 42, 6, 1) type=6 min=1.635e-09 max=0.02005 sum=1 ceros=0.000
+      dim fakeDim1069: (21, 0, 0, 0, 0)
+      dim fakeDim1070: (42, 1, 0, 0, 0)
+      dim fakeDim1071: (6, 2, 0, 0, 0)
+      dim fakeDim1072: (1, 3, 0, 0, 0)
+ 309 BETA1112_TOT_BETA7311_TOT_IR_CLD_LAND_PIX dims=('fakeDim1073', 'fakeDim1074', 'fakeDim1075', 'fakeDim1076') shape=(21, 42, 6, 1) type=6 min=1.635e-09 max=0.03145 sum=1 ceros=0.000
+      dim fakeDim1073: (21, 0, 0, 0, 0)
+      dim fakeDim1074: (42, 1, 0, 0, 0)
+      dim fakeDim1075: (6, 2, 0, 0, 0)
+      dim fakeDim1076: (1, 3, 0, 0, 0)
+ 310 EMISS14_TOT_BETA1112_TOT_IR_CLD_WATER_PIX dims=('fakeDim1077', 'fakeDim1078', 'fakeDim1079') shape=(42, 6, 1) type=6 min=5.192e-10 max=0.2428 sum=1 ceros=0.000
+      dim fakeDim1077: (42, 0, 0, 0, 0)
+      dim fakeDim1078: (6, 1, 0, 0, 0)
+      dim fakeDim1079: (1, 2, 0, 0, 0)
+ 311 EMISS14_TOT_BETA1112_OPAQUE_IR_CLD_WATER_PIX dims=('fakeDim1080', 'fakeDim1081', 'fakeDim1082') shape=(42, 6, 1) type=6 min=5.192e-10 max=0.09434 sum=1 ceros=0.000
+      dim fakeDim1080: (42, 0, 0, 0, 0)
+      dim fakeDim1081: (6, 1, 0, 0, 0)
+      dim fakeDim1082: (1, 2, 0, 0, 0)
+ 312 EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR_CLD_WATER_PIX dims=('fakeDim1083', 'fakeDim1084', 'fakeDim1085') shape=(42, 6, 1) type=6 min=5.192e-10 max=0.1697 sum=1 ceros=0.000
+      dim fakeDim1083: (42, 0, 0, 0, 0)
+      dim fakeDim1084: (6, 1, 0, 0, 0)
+      dim fakeDim1085: (1, 2, 0, 0, 0)
+ 313 EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR_CLD_WATER_PIX dims=('fakeDim1086', 'fakeDim1087', 'fakeDim1088') shape=(42, 6, 1) type=6 min=5.192e-10 max=0.1694 sum=1 ceros=0.000
+      dim fakeDim1086: (42, 0, 0, 0, 0)
+      dim fakeDim1087: (6, 1, 0, 0, 0)
+      dim fakeDim1088: (1, 2, 0, 0, 0)
+ 314 EMISS14_TOT_BTD1112_IR_CLD_WATER_PIX dims=('fakeDim1089', 'fakeDim1090', 'fakeDim1091', 'fakeDim1092') shape=(33, 6, 5, 1) type=6 min=5.192e-10 max=0.1435 sum=1 ceros=0.000
+      dim fakeDim1089: (33, 0, 0, 0, 0)
+      dim fakeDim1090: (6, 1, 0, 0, 0)
+      dim fakeDim1091: (5, 2, 0, 0, 0)
+      dim fakeDim1092: (1, 3, 0, 0, 0)
+ 315 EMISS14_TOT_BETA1113_TOT_IR_CLD_WATER_PIX dims=('fakeDim1093', 'fakeDim1094', 'fakeDim1095') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1093: (42, 0, 0, 0, 0)
+      dim fakeDim1094: (6, 1, 0, 0, 0)
+      dim fakeDim1095: (1, 2, 0, 0, 0)
+ 316 EMISS14_TOT_BETA1113_OPAQUE_IR_CLD_WATER_PIX dims=('fakeDim1096', 'fakeDim1097', 'fakeDim1098') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1096: (42, 0, 0, 0, 0)
+      dim fakeDim1097: (6, 1, 0, 0, 0)
+      dim fakeDim1098: (1, 2, 0, 0, 0)
+ 317 EMISS14_TOT_BETA1113_TOT_MULTI_LOW_IR_CLD_WATER_PIX dims=('fakeDim1099', 'fakeDim1100', 'fakeDim1101') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1099: (42, 0, 0, 0, 0)
+      dim fakeDim1100: (6, 1, 0, 0, 0)
+      dim fakeDim1101: (1, 2, 0, 0, 0)
+ 318 EMISS14_TOT_BETA1113_TOT_MULTI_MID_IR_CLD_WATER_PIX dims=('fakeDim1102', 'fakeDim1103', 'fakeDim1104') shape=(42, 6, 1) type=6 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim1102: (42, 0, 0, 0, 0)
+      dim fakeDim1103: (6, 1, 0, 0, 0)
+      dim fakeDim1104: (1, 2, 0, 0, 0)
+ 319 BETA1112_TOT_BETA8511_TOT_IR_CLD_WATER_PIX dims=('fakeDim1105', 'fakeDim1106', 'fakeDim1107', 'fakeDim1108') shape=(21, 42, 6, 1) type=6 min=5.192e-10 max=0.1413 sum=1 ceros=0.000
+      dim fakeDim1105: (21, 0, 0, 0, 0)
+      dim fakeDim1106: (42, 1, 0, 0, 0)
+      dim fakeDim1107: (6, 2, 0, 0, 0)
+      dim fakeDim1108: (1, 3, 0, 0, 0)
+ 320 BETA1112_OPAQUE_BETA8511_OPAQUE_IR_CLD_WATER_PIX dims=('fakeDim1109', 'fakeDim1110', 'fakeDim1111', 'fakeDim1112') shape=(21, 42, 6, 1) type=6 min=5.192e-10 max=0.01891 sum=1 ceros=0.000
+      dim fakeDim1109: (21, 0, 0, 0, 0)
+      dim fakeDim1110: (42, 1, 0, 0, 0)
+      dim fakeDim1111: (6, 2, 0, 0, 0)
+      dim fakeDim1112: (1, 3, 0, 0, 0)
+ 321 BETA1112_TOT_BETA7311_TOT_IR_CLD_WATER_PIX dims=('fakeDim1113', 'fakeDim1114', 'fakeDim1115', 'fakeDim1116') shape=(21, 42, 6, 1) type=6 min=5.192e-10 max=0.05269 sum=1 ceros=0.000
+      dim fakeDim1113: (21, 0, 0, 0, 0)
+      dim fakeDim1114: (42, 1, 0, 0, 0)
+      dim fakeDim1115: (6, 2, 0, 0, 0)
+      dim fakeDim1116: (1, 3, 0, 0, 0)

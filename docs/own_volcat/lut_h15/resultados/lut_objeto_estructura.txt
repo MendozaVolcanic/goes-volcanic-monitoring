@@ -1,0 +1,997 @@
+# D:\goes_notas\busqueda_2026-11-20\volcat_static_anc\volcat-ancillary\luts\GOESR_ASH_object_probability_LUT_Jan11_2017_142742.hdf
+## Atributos globales
+BETA1112_FCT2_FILENAME = 'modis_emiss14_tot_btd1112_bias_relationship_Jul16_2012_194821.idl'
+BETA1112_FCT3_FILENAME = 'modis_emiss14_tot_btd1112_relationship_Jul16_2012_194821.idl'
+BETA1112_FCT4_FILENAME = 'modis_beta1112_opaque_relationship_Jul16_2012_194821.idl'
+BETA1112_FCT5_FILENAME = 'modis_emiss14_tot_ref2_uni_beta1112_relationship_Jul16_2012_194821.idl'
+BETA1112_FROM_BTD_BIAS_BTD_BIAS_DELTA = 0.10000000149011612
+BETA1112_FROM_BTD_BIAS_EMISS14_DELTA = 0.009999999776482582
+BETA1112_FROM_BTD_BIAS_EMISS14_FILL = 0.10999999940395355
+BETA1112_FROM_BTD_BIAS_EMISS14_INTERCEPT = 0.05000000074505806
+BETA1112_FROM_BTD_BIAS_LB_BTD = 0.0
+BETA1112_FROM_BTD_BIAS_LB_EMISS14_LAND = 0.05000000074505806
+BETA1112_FROM_BTD_BIAS_LB_EMISS14_TRAINING = 0.05000000074505806
+BETA1112_FROM_BTD_BIAS_LB_EMISS14_WATER = 0.019999999552965164
+BETA1112_FROM_BTD_BIAS_UB_EMISS14_TRAINING = 0.10000000149011612
+BETA1112_MARINE_STRATUS_MAX = 0.699999988079071
+BETA1112_OBJ_LUT = 'YES'
+BETA1112_OPAQUE_FCT1_FILENAME = 'modis_btd1112_bias_beta1112_opaque_relationship_Jul17_2012_145618.idl'
+BETA1112_TOT_FCT1_FILENAME = 'modis_btd1112_bias_beta1112_tot_relationship_Jul17_2012_145618.idl'
+BETA1112_TOT_H20_CORRECTION_FILENAME = 'modis_beta1112_tot_h20_correction_Jul16_2012_194821.idl'
+BETA1112_TOT_MAX_VALID = 1.0499999523162842
+BETA1112_TOT_MAX_VALID_LOOSE = 1.100000023841858
+BETA1112_TOT_MIN_VALID = 0.0
+BETA1112_TOT_MIN_VALID_LOOSE = 0.0
+BETA1113_FCT2_FILENAME = 'modis_emiss14_tot_btd1113_bias_relationship_Jul16_2012_194821.idl'
+BETA1113_FCT3_FILENAME = 'modis_emiss14_tot_btd1113_relationship_Jul16_2012_194821.idl'
+BETA1113_FCT4_FILENAME = 'modis_beta1113_opaque_relationship_Jul16_2012_194821.idl'
+BETA1113_FCT5_FILENAME = 'modis_emiss14_tot_ref2_uni_beta1113_relationship_Jul16_2012_194821.idl'
+BETA1113_FROM_BTD_BIAS_BTD_BIAS_DELTA = 0.10000000149011612
+BETA1113_FROM_BTD_BIAS_EMISS14_DELTA = 0.009999999776482582
+BETA1113_FROM_BTD_BIAS_EMISS14_FILL = 0.10999999940395355
+BETA1113_FROM_BTD_BIAS_EMISS14_INTERCEPT = 0.05000000074505806
+BETA1113_FROM_BTD_BIAS_LB_BTD = -10000.0
+BETA1113_FROM_BTD_BIAS_LB_EMISS14_LAND = -10000.0
+BETA1113_FROM_BTD_BIAS_LB_EMISS14_TRAINING = 0.05000000074505806
+BETA1113_FROM_BTD_BIAS_LB_EMISS14_WATER = -10000.0
+BETA1113_FROM_BTD_BIAS_UB_EMISS14_TRAINING = 0.10000000149011612
+BETA1113_MARINE_STRATUS_MAX = 0.699999988079071
+BETA1113_OBJ_LUT = 'NO'
+BETA1113_OPAQUE_FCT1_FILENAME = 'modis_btd1113_bias_beta1113_opaque_relationship_Jul17_2012_145618.idl'
+BETA1113_TOT_FCT1_FILENAME = 'modis_btd1113_bias_beta1113_tot_relationship_Jul17_2012_145618.idl'
+BETA1113_TOT_H20_CORRECTION_FILENAME = 'modis_beta1113_tot_h20_correction_Jul16_2012_194821.idl'
+BETA1113_TOT_MAX_VALID = 1.0499999523162842
+BETA1113_TOT_MAX_VALID_LOOSE = 1.0499999523162842
+BETA1113_TOT_MIN_VALID = 0.0
+BETA1113_TOT_MIN_VALID_LOOSE = 0.0
+BETA7311_OBJ_LUT = 'YES'
+BETA8511_FROM_BTD_BIAS_BTD_BIAS_DELTA = 0.10000000149011612
+BETA8511_FROM_BTD_BIAS_EMISS14_DELTA = 0.009999999776482582
+BETA8511_FROM_BTD_BIAS_EMISS14_FILL = 0.10999999940395355
+BETA8511_FROM_BTD_BIAS_EMISS14_INTERCEPT = 0.05000000074505806
+BETA8511_FROM_BTD_BIAS_LB_BTD = -1.0
+BETA8511_FROM_BTD_BIAS_LB_EMISS14_LAND = 0.009999999776482582
+BETA8511_FROM_BTD_BIAS_LB_EMISS14_TRAINING = 0.05000000074505806
+BETA8511_FROM_BTD_BIAS_LB_EMISS14_WATER = 0.009999999776482582
+BETA8511_FROM_BTD_BIAS_UB_EMISS14_TRAINING = 0.10000000149011612
+BETA8511_OBJ_LUT = 'YES'
+BETA8511_OPAQUE_FCT1_FILENAME = 'modis_btd8511_bias_beta8511_opaque_relationship_Jul17_2012_145618.idl'
+BETA8511_OPAQUE_MAX_NON_STRATUS = 1.2000000476837158
+BETA8511_OPAQUE_MIN_NON_STRATUS = 0.0
+BETA8511_TOT_FCT1_FILENAME = 'modis_btd8511_bias_beta8511_tot_relationship_Jul17_2012_145618.idl'
+BETA8511_TOT_H20_CORRECTION_FILENAME = 'modis_beta8511_tot_h20_correction_Jul16_2012_194821.idl'
+BETA8511_TOT_MAX_8511_PREDICTORS = 1.0499999523162842
+BETA8511_TOT_MAX_NON_STRATUS = 1.2000000476837158
+BETA8511_TOT_MIN_8511_PREDICTORS = 2.0
+BETA8511_TOT_MIN_NON_STRATUS = 0.0
+BETA_CONSTRAINT_FILELIST = 'modis_constraint_training_v1.txt'
+BT14_NON_UNI_THRESH = 10.0
+BT14_SDEV_OBJ_LUT = 'YES'
+BT7_BIAS_HOT_SPOT_MAX = 1000.0
+BT7_BIAS_HOT_SPOT_MIN = 10.0
+BTD1112_IFFY_NON_DESERT_SURFACE = -0.25
+BTD1112_LUT_MAX_VALID = 0.0
+BTD1112_LUT_MIN_VALID = -5.0
+BTD1112_MAX_NON_DESERT_SURFACE = -0.5
+BTD1112_MAX_NON_STRATUS = -2.5
+BTD1112_MAX_VALID = 20.0
+BTD1112_MIN_NON_DESERT_SURFACE = -25.0
+BTD1112_MIN_NON_STRATUS = -25.0
+BTD1112_MIN_VALID = -25.0
+BTD1112_OBJ_LUT = 'YES'
+BTD1112_RETRIEVAL_MAX = 0.0
+BTD1112_RETRIEVAL_MIN = -25.0
+BTD1113_MAX_VALID = 80.0
+BTD1113_MIN_VALID = -20.0
+BTD3911_HOT_SPOT_MAX = 500.0
+BTD3911_HOT_SPOT_MIN = 15.0
+BTD3911_MIN_DAY_NON_DESERT_SURFACE = 0.0
+BTD3911_MIN_DAY_NON_STRATUS = 0.0
+BTD3911_REF_RATIO_IFFY_DAY_NON_DESERT_SURFACE = 0.10000000149011612
+BTD3911_REF_RATIO_MIN_DAY_NON_DESERT_SURFACE = 0.5
+BTD3911_REF_RATIO_MIN_DAY_NON_STRATUS = 2.0
+BTD7311_MAX_VALID = 20.0
+BTD7311_MIN_VALID = -90.0
+BTD8511_MAX_VALID = 20.0
+BTD8511_MIN_VALID = -50.0
+CREATION_DATE = 'Wed Jan 11 14:27:42 2017'
+DARK_PIXEL_EMISS14_TOT_MIN = 0.8999999761581421
+DARK_PIXEL_REF2_MAX = 50.0
+DARK_PIXEL_REF2_MIN = 10.0
+DAYTIME_SOLZEN = 85.0
+DAYTIME_SOLZEN_HOT_SPOT = 80.0
+EMISS10_TOT_MIN_8511_PREDICTORS = 0.05000000074505806
+EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_FRAC_IR_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_FRAC_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_IR_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_OPAQUE_EMS7_PDF_FRAC_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_OPAQUE_EMS7_PDF_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_OPAQUE_NRAT_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_OPAQUE_NRAT_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_OPAQUE_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_OPAQUE_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_OPAQUE_PDF_FRAC_IR_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_OPAQUE_PDF_FRAC_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_OPAQUE_PDF_IR_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_OPAQUE_PDF_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_FRAC_IR_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_FRAC_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_IR_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_FRAC_IR_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_FRAC_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_IR_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_EMS7_PDF_FRAC_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_EMS7_PDF_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_NRAT_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_NRAT_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_PDF_FRAC_IR_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_PDF_FRAC_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BETASW1_TOT_PDF_IR_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BETASW1_TOT_PDF_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BT14_SDEV_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BT14_SDEV_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BT14_SDEV_PDF_FRAC_IR_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BT14_SDEV_PDF_FRAC_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BT14_SDEV_PDF_IR_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BT14_SDEV_PDF_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BTDSW1_EMS7_PDF_FRAC_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BTDSW1_EMS7_PDF_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BTDSW1_NRAT_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BTDSW1_NRAT_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BTDSW1_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BTDSW1_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BTDSW1_PDF_FRAC_IR_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BTDSW1_PDF_FRAC_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_BTDSW1_PDF_IR_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_BTDSW1_PDF_NIGHT_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_MIN_BETA8511_NON_STRATUS = 0.019999999552965164
+EMISS14_MIN_IFFY_NON_DESERT_SURFACE = 0.05000000074505806
+EMISS14_REF2_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_REF2_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_REF2_SDEV_PDF_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_area)'
+EMISS14_REF2_SDEV_PDF_FRAC_DAY_OBJ = 'dblarr(n_samples,n_predictors,n_frac_area)'
+EMISS14_ROBUST_NON_DESERT_SURFACE = 0.30000001192092896
+EMISS14_ROBUST_NON_STRATUS = 0.15000000596046448
+EMISS14_TOT_DESERT_MAX = 0.30000001192092896
+EMISS14_TOT_EB_DB_OBJ = 0.05000000074505806
+EMISS14_TOT_EB_MAX_OBJ = 1.0
+EMISS14_TOT_EB_MIN_OBJ = 0.0
+EMISS14_TOT_MEAN_PROB = 0.30000001192092896
+EMISS14_TOT_MIN_8511_PREDICTORS = 0.10000000149011612
+EMISS_DB_OBJ = 0.009999999776482582
+EMISS_MAX_NOISE = 1000.0
+EMISS_MAX_OBJ = 1.0
+EMISS_MIN_OBJ = 0.0
+EMISS_UNCERTAINTY_MEAN_PROB = 0.5
+EMS39_IFFY_NIGHT_NON_DESERT_SURFACE = 0.8500000238418579
+EMS39_MIN_NIGHT_NON_DESERT_SURFACE = 0.8999999761581421
+EMS39_MIN_NIGHT_NON_STRATUS = 1.0
+EMS7_H20_CORRECTION_FILENAME = 'modis_ems7_h20_correction_Jul16_2012_194821.idl'
+EMS7_MAX_VALID = 10.0
+EMS7_MIN_VALID = 0.5
+EMS7_OBJ_LUT = 'YES'
+HEIGHT_DB_OBJ = 1.0
+HEIGHT_MAX_OBJ = 20.0
+HEIGHT_MIN_OBJ = 0.0
+LOOSE_EMISS14_TOT_BIN_F90_OBJ = 1
+MASS_LOADING_MEAN_PROB = 500.0
+MAX_BETA1112_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BETA8511_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BETASW_MULTILAYER_RETV = 1.0
+MAX_BT14_SDEV_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BTD1112_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BTD1112_BIAS_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BTD8511_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_BTD8511_BIAS_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_EMISS14_LRC_ROBUST = 0.20000000298023224
+MAX_EMISS14_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+MAX_EMISS14_TOT_H20_CORRECTION = 0.25
+MAX_VOLCANO_DIST_8511_CONTRAST_EXEMPTION = 200.0
+MIN_73EMISS_TOT = 0.10000000149011612
+MIN_ALLOWED_GLINTZEN = 40.0
+MIN_AREA_OBJ_PDF = 1.0
+MIN_ASH_FRAC_OBJ_TRUTH = 0.25
+MIN_BETA1112_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BETA7311_TOT_SO2_EXEMPTION = 1.0
+MIN_BETA7311_TOT_STRONG_SO2 = 1.5
+MIN_BETA7311_TROPO_RETV = 2.0
+MIN_BETA8511_OPAQUE_SO2_EXEMPTION = 2.5
+MIN_BETA8511_OPAQUE_STRONG_SO2 = 2.0
+MIN_BETA8511_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BETA8511_TOT_SO2_EXEMPTION = 1.5
+MIN_BETA8511_TOT_STRONG_SO2 = 1.2000000476837158
+MIN_BETASW_MULTILAYER_RETV = 0.20000000298023224
+MIN_BT10_BIAS = 1.0
+MIN_BT10_BIAS_SO2_EXEMPTION_LOOSE = 3.0
+MIN_BT11_BIAS_SO2_EXEMPTION_LOOSE = 1.0
+MIN_BT14_CLR_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BTD1112_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BTD1112_BIAS_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BTD1112_LRC_ROBUST = -0.25
+MIN_BTD8511_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_BTD8511_BIAS_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_EMISS14_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+MIN_EMISS14_TOT_SO2_EXEMPTION = 0.05000000074505806
+MIN_EMISS14_TOT_SO2_EXEMPTION_LOOSE = 0.0010000000474974513
+MIN_EMISS14_TOT_STRONG_SO2 = 0.019999999552965164
+MIN_NUM_PIXELS_OBJECT = 10
+MIN_PROB_LRC_ROBUST = 0.009999999776482582
+MIN_PROB_MULTILAYER_RETV = 0.0
+NBINS_AREA_OBJ = 9
+NBINS_BETA1112_OPAQUE_OBJ = 7
+NBINS_BETA1112_TOT_OBJ = 7
+NBINS_BETA1113_OPAQUE_OBJ = 7
+NBINS_BETA1113_TOT_OBJ = 7
+NBINS_BETA7311_ROBUST = 5
+NBINS_BETA7311_TOT_OBJ = 5
+NBINS_BETA8511_OPAQUE_OBJ = 5
+NBINS_BETA8511_ROBUST = 8
+NBINS_BETA8511_TOT_OBJ = 5
+NBINS_BT14_CLR_ROBUST = 4
+NBINS_BT14_SDEV_OBJ = 11
+NBINS_BT14_SDEV_ROBUST = 6
+NBINS_BTD1112_OBJ = 7
+NBINS_BTD1112_ROBUST = 14
+NBINS_BTD8511_ROBUST = 11
+NBINS_COS_SATZEN_ROBUST = 1
+NBINS_EMISS14_TOT_EB_OBJ = 21
+NBINS_EMISS14_TOT_OBJ = 4
+NBINS_EMISS14_TOT_ROBUST = 8
+NBINS_EMISS_ERR_ROBUST = 10
+NBINS_EMISS_OBJ = 101
+NBINS_EMS7_OBJ = 5
+NBINS_FRAC_AREA_OBJ = 9
+NBINS_HEIGHT_OBJ = 21
+NBINS_NRAT_OBJ = 5
+NBINS_PROB_OBJ = 101
+NBINS_PROB_ROBUST = 10
+NBINS_REF2_OBJ = 5
+NBINS_REF2_SDEV_OBJ = 11
+NBINS_REFF_OBJ = 21
+NBINS_SAMPLE_OBJ = 10
+NIGHTTIME_SOLZEN = 91.0
+NIGHTTIME_SOLZEN_HOT_SPOT = 95.0
+NPARAMS_ROBUST_PIX_THRESHOLDS = 21
+NRAT_HOT_SPOT_MAX = 20.0
+NRAT_HOT_SPOT_MIN = 2.0
+NRAT_LRC_OBJ_LUT = 'YES'
+NRAT_MARINE_STRATUS_CHECK = 1.0
+NRAT_MAX_VALID = 20.0
+NRAT_MIN_VALID = 0.0
+NRAT_OBJ_LUT = 'YES'
+NTHRESH_ROBUST_PIX_THRESHOLDS = 25
+NTHRESH_TERTIARY_ASH = 2
+N_LOOP_DIM_DAY_OBJ = 1
+N_LOOP_DIM_IR_OBJ = 1
+N_LOOP_DIM_NIGHT_OBJ = 1
+N_PRIMARY_OBJ_MEM = 5
+N_PRIMARY_OBJ_MEM_DESERT = 1
+N_QUATERNARY_OBJ_MEM = 1
+N_QUINTENARY_OBJ_MEM = 1
+N_SECONDARY_OBJ_MEM = 13
+OBJECT_ASH_PROB_CLIMO = 0.001
+OBJECT_CLD_PROB_CLIMO = 0.999
+OBJECT_DATA_READ_ROUTINE = 'read_object_training_ash'
+PIXEL_ASH_PROB_CLIMO = 0.001
+PIXEL_CLD_PROB_CLIMO = 0.999
+PIXEL_DATA_READ_ROUTINE = 'read_geocat_pixel_training_ash'
+PIXEL_PROBABILITY_MEAN_PROB = 0.009999999776482582
+PIXEL_PROB_RETRIEVAL_THRESH = 9.99999993922529e-09
+PROB_DB_OBJ = 0.009999999776482582
+PROB_MAX_OBJ = 1.0
+PROB_MIN_OBJ = 0.0
+REF2_MAX_VALID = 120.0
+REF2_MIN_VALID = 0.0
+REF2_OBJ_LUT = 'YES'
+REF2_SDEV_OBJ_LUT = 'YES'
+REF39_MIN_DAY_NON_DESERT_SURFACE = 0.0
+REF39_MIN_DAY_NON_STRATUS = 0.0
+REF7_MAX_VALID = 120.0
+REF7_MIN_VALID = 0.0
+REFF_DB_OBJ = 1.0
+REFF_MAX_NOISE = 1000.0
+REFF_MAX_OBJ = 20.0
+REFF_MIN_OBJ = 0.0
+ROBUST_EMISS14_REF2 = 0.75
+SECONDARY_ASH_MEMBERSHIP_BT14_SDEV_MAX = 2.0
+SECONDARY_ASH_MEMBERSHIP_BTD1112_MAX = 2.0
+SECONDARY_ASH_MEMBERSHIP_BTD1112_MIN = -25.0
+SECONDARY_ASH_MEMBERSHIP_EMISS14_TOT_MAX = 0.25
+SECONDARY_ASH_MEMBERSHIP_EMISS14_TOT_MIN = 0.0010000000474974513
+SECONDARY_ASH_MEMBERSHIP_EMISS_MAX = 0.5
+SECONDARY_ASH_MEMBERSHIP_EMISS_MIN = 0.0
+SECONDARY_ASH_MEMBERSHIP_PROB_MIN = 9.999999747378752e-06
+SENARY_ASH_MEMBERSHIP_85_11_12_CORR_MAX = -0.5
+SENARY_ASH_MEMBERSHIP_85_11_12_CORR_MIN = -1.0499999523162842
+SENSOR_SERIES = 'goesr'
+SEPTENARY_ASH_MEMBERSHIP_BETA8511_OPAQUE_MAX = 1.100000023841858
+SEPTENARY_ASH_MEMBERSHIP_BETA8511_OPAQUE_MIN = 0.30000001192092896
+SEPTENARY_ASH_MEMBERSHIP_BETA8511_TOT_MAX = 1.2000000476837158
+SEPTENARY_ASH_MEMBERSHIP_BETA8511_TOT_MIN = 0.30000001192092896
+SEPTENARY_ASH_MEMBERSHIP_BTD1112_MAX = 0.0
+SEPTENARY_ASH_MEMBERSHIP_BTD1112_MIN = -5.0
+SEPTENARY_ASH_MEMBERSHIP_EMISS14_MAX = 0.20000000298023224
+SEPTENARY_ASH_MEMBERSHIP_EMISS14_MIN = 0.019999999552965164
+SEPTENARY_ASH_MEMBERSHIP_EMISS_UNCERT_MAX = 0.9800000190734863
+SEPTENARY_ASH_MEMBERSHIP_EMISS_UNCERT_MIN = 0.0
+SEPTENARY_ASH_MEMBERSHIP_PROB_MIN = 9.999999974752427e-07
+SOLZEN_DAY_NON_DESERT_SURFACE = 80.0
+SOLZEN_DAY_NON_STRATUS = 80.0
+SOLZEN_NIGHT_NON_DESERT_SURFACE = 90.0
+SOLZEN_NIGHT_NON_STRATUS = 90.0
+TERTIARY_ASH_MEMBERSHIP_BTD1112_MAX = -0.5
+TERTIARY_ASH_MEMBERSHIP_BTD1112_MIN = -25.0
+TERTIARY_ASH_MEMBERSHIP_EMISS14_MAX = 1.0
+TERTIARY_ASH_MEMBERSHIP_EMISS14_MIN = 0.05000000074505806
+TERTIARY_ASH_MEMBERSHIP_EMISS14_SWEET_LB = 0.30000001192092896
+TERTIARY_ASH_MEMBERSHIP_EMISS14_SWEET_UB = 0.699999988079071
+TRAINING_ANALYSIS_DIRECTORY = '/data/mpav/bayes_training//GOESR_ASH/analysis/'
+TRAINING_DATA_GENERATION_SCRIPT = './geocat_training_main.sh'
+TRAINING_FILELIST_ASH = '/home/mpav/bayes_training/filelists//GOESR_ASH//modis_pixel_training_ASH_v1.txt.object.ACTUAL'
+TRAINING_FILELIST_NOASH = '/home/mpav/bayes_training/filelists//GOESR_ASH//modis_pixel_training_NOASH_v1.txt.object.ACTUAL'
+TRAINING_HIST_DIRECTORY = '/data/mpav/bayes_training//MODIS_ASH/object_histograms/'
+TRAINING_HIST_FILENAME = 'modis_merged_pixel_histograms_Apr30_2013_005352.idl'
+TRAINING_L2_DIRECTORY = '/data/mpav/bayes_training//GOESR_ASH/hdf_output/'
+VMAX_BETA1112_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BETA8511_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BT14_SDEV_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BTD1112_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BTD1112_BIAS_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BTD8511_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_BTD8511_BIAS_8511_CONTRAST_EXEMPTION = -1000.0
+VMAX_EMISS14_TOT_8511_CONTRAST_EXEMPTION = -1000.0
+VMIN_BETA1112_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BETA8511_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BT14_CLR_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BTD1112_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BTD1112_BIAS_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BTD8511_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_BTD8511_BIAS_8511_CONTRAST_EXEMPTION = 1000.0
+VMIN_EMISS14_TOT_8511_CONTRAST_EXEMPTION = 1000.0
+
+## Conjuntos
+   0 ROBUST_PIX_THRESHOLDS dims=('fakeDim0', 'fakeDim1') shape=(25, 21) type=6 min=-1e+05 max=1e+05 sum=-219442 ceros=0.042
+      dim fakeDim0: (25, 0, 0, 0, 0)
+      dim fakeDim1: (21, 1, 0, 0, 0)
+   1 EMISS_UNCERTAINTY_PRIMARY_OBJ_MEM dims=('fakeDim2',) shape=(5,) type=5 min=0.3 max=0.9 sum=2.8 ceros=0.000
+      dim fakeDim2: (5, 0, 0, 0, 0)
+      valores = [0.30000001192092896, 0.4000000059604645, 0.5, 0.699999988079071, 0.8999999761581421]
+   2 PIXEL_PROBABILITY_PRIMARY_OBJ_MEM dims=('fakeDim3',) shape=(5,) type=6 min=0.01 max=0.95 sum=2.01 ceros=0.000
+      dim fakeDim3: (5, 0, 0, 0, 0)
+      valores = [0.01, 0.05, 0.1, 0.9, 0.95]
+   3 EMISS14_TOT_PRIMARY_OBJ_MEM dims=('fakeDim4',) shape=(5,) type=5 min=0.25 max=0.25 sum=1.25 ceros=0.000
+      dim fakeDim4: (5, 0, 0, 0, 0)
+      valores = [0.25, 0.25, 0.25, 0.25, 0.25]
+   4 BTD1112_PRIMARY_OBJ_MEM dims=('fakeDim5',) shape=(5,) type=5 min=-0.5 max=-0.5 sum=-2.5 ceros=0.000
+      dim fakeDim5: (5, 0, 0, 0, 0)
+      valores = [-0.5, -0.5, -0.5, -0.5, -0.5]
+   5 EMISS_UNCERTAINTY_PRIMARY_OBJ_MEM_DESERT dims=('fakeDim6',) shape=(1,) type=5 min=1.01 max=1.01 sum=1.01 ceros=0.000
+      dim fakeDim6: (1, 0, 0, 0, 0)
+      valores = [1.0099999904632568]
+   6 PIXEL_PROBABILITY_PRIMARY_OBJ_MEM_DESERT dims=('fakeDim7',) shape=(1,) type=6 min=0.01 max=0.01 sum=0.01 ceros=0.000
+      dim fakeDim7: (1, 0, 0, 0, 0)
+      valores = [0.01]
+   7 EMISS14_TOT_PRIMARY_OBJ_MEM_DESERT dims=('fakeDim8',) shape=(1,) type=5 min=0 max=0 sum=0 ceros=1.000
+      dim fakeDim8: (1, 0, 0, 0, 0)
+      valores = [0.0]
+   8 BTD1112_PRIMARY_OBJ_MEM_DESERT dims=('fakeDim9',) shape=(1,) type=5 min=-2 max=-2 sum=-2 ceros=0.000
+      dim fakeDim9: (1, 0, 0, 0, 0)
+      valores = [-2.0]
+   9 BTD1112_ABS_DIFF_SECONDARY_OBJ_MEM dims=('fakeDim10',) shape=(13,) type=5 min=0.25 max=0.25 sum=3.25 ceros=0.000
+      dim fakeDim10: (13, 0, 0, 0, 0)
+      valores = [0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25]
+  10 BTD1112_REL_DIFF_SECONDARY_OBJ_MEM dims=('fakeDim11',) shape=(13,) type=5 min=0.25 max=0.85 sum=7.15 ceros=0.000
+      dim fakeDim11: (13, 0, 0, 0, 0)
+      valores = [0.25, 0.30000001192092896, 0.3499999940395355, 0.4000000059604645, 0.44999998807907104, 0.5, 0.550000011920929, 0.6000000238418579, 0.6499999761581421, 0.699999988079071, 0.75, 0.800000011920929, 0.8500000238418579]
+  11 EMISS_UNCERTAINTY_SECONDARY_OBJ_MEM dims=('fakeDim12',) shape=(13,) type=5 min=0.3 max=0.9 sum=7.8 ceros=0.000
+      dim fakeDim12: (13, 0, 0, 0, 0)
+      valores = [0.30000001192092896, 0.3499999940395355, 0.4000000059604645, 0.44999998807907104, 0.5, 0.550000011920929, 0.6000000238418579, 0.6499999761581421, 0.699999988079071, 0.75, 0.800000011920929, 0.8500000238418579, 0.8999999761581421]
+  12 TERTIARY_ASH_MEMBERSHIP_BTD1112_BIAS_MIN dims=('fakeDim13',) shape=(2,) type=5 min=1 max=1.5 sum=2.5 ceros=0.000
+      dim fakeDim13: (2, 0, 0, 0, 0)
+      valores = [1.0, 1.5]
+  13 TERTIARY_ASH_MEMBERSHIP_PROB_MIN dims=('fakeDim14',) shape=(2,) type=6 min=0 max=0.0001 sum=0.0001 ceros=0.500
+      dim fakeDim14: (2, 0, 0, 0, 0)
+      valores = [0.0001, 0.0]
+  14 EMISS_UNCERTAINTY_QUATERNARY_OBJ_MEM dims=('fakeDim15',) shape=(1,) type=5 min=0.95 max=0.95 sum=0.95 ceros=0.000
+      dim fakeDim15: (1, 0, 0, 0, 0)
+      valores = [0.949999988079071]
+  15 PIXEL_PROBABILITY_QUATERNARY_OBJ_MEM dims=('fakeDim16',) shape=(1,) type=6 min=1e-10 max=1e-10 sum=1e-10 ceros=0.000
+      dim fakeDim16: (1, 0, 0, 0, 0)
+      valores = [0.0]
+  16 MAX_ASH_LOADING_QUINTENARY_OBJ_MEM dims=('fakeDim17',) shape=(1,) type=5 min=1 max=1 sum=1 ceros=0.000
+      dim fakeDim17: (1, 0, 0, 0, 0)
+      valores = [1.0]
+  17 PIXEL_PROBABILITY_QUINTENARY_OBJ_MEM dims=('fakeDim18',) shape=(1,) type=6 min=1e-15 max=1e-15 sum=1e-15 ceros=0.000
+      dim fakeDim18: (1, 0, 0, 0, 0)
+      valores = [0.0]
+  18 ROBUST_BT14CLR160_COS_SAT0P43_ROBUST_LEVEL_10_11_14_15 dims=('fakeDim19', 'fakeDim20', 'fakeDim21', 'fakeDim22', 'fakeDim23', 'fakeDim24', 'fakeDim25') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=25660 ceros=0.997
+      dim fakeDim19: (10, 0, 0, 0, 0)
+      dim fakeDim20: (8, 1, 0, 0, 0)
+      dim fakeDim21: (5, 2, 0, 0, 0)
+      dim fakeDim22: (11, 3, 0, 0, 0)
+      dim fakeDim23: (14, 4, 0, 0, 0)
+      dim fakeDim24: (6, 5, 0, 0, 0)
+      dim fakeDim25: (8, 6, 0, 0, 0)
+  19 ROBUST_BT14CLR250_COS_SAT0P43_ROBUST_LEVEL_10_11_14_15 dims=('fakeDim26', 'fakeDim27', 'fakeDim28', 'fakeDim29', 'fakeDim30', 'fakeDim31', 'fakeDim32') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=135466 ceros=0.983
+      dim fakeDim26: (10, 0, 0, 0, 0)
+      dim fakeDim27: (8, 1, 0, 0, 0)
+      dim fakeDim28: (5, 2, 0, 0, 0)
+      dim fakeDim29: (11, 3, 0, 0, 0)
+      dim fakeDim30: (14, 4, 0, 0, 0)
+      dim fakeDim31: (6, 5, 0, 0, 0)
+      dim fakeDim32: (8, 6, 0, 0, 0)
+  20 ROBUST_BT14CLR270_COS_SAT0P43_ROBUST_LEVEL_10_11_14_15 dims=('fakeDim33', 'fakeDim34', 'fakeDim35', 'fakeDim36', 'fakeDim37', 'fakeDim38', 'fakeDim39') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=181089 ceros=0.977
+      dim fakeDim33: (10, 0, 0, 0, 0)
+      dim fakeDim34: (8, 1, 0, 0, 0)
+      dim fakeDim35: (5, 2, 0, 0, 0)
+      dim fakeDim36: (11, 3, 0, 0, 0)
+      dim fakeDim37: (14, 4, 0, 0, 0)
+      dim fakeDim38: (6, 5, 0, 0, 0)
+      dim fakeDim39: (8, 6, 0, 0, 0)
+  21 ROBUST_BT14CLR290_COS_SAT0P43_ROBUST_LEVEL_10_11_14_15 dims=('fakeDim40', 'fakeDim41', 'fakeDim42', 'fakeDim43', 'fakeDim44', 'fakeDim45', 'fakeDim46') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=203065 ceros=0.975
+      dim fakeDim40: (10, 0, 0, 0, 0)
+      dim fakeDim41: (8, 1, 0, 0, 0)
+      dim fakeDim42: (5, 2, 0, 0, 0)
+      dim fakeDim43: (11, 3, 0, 0, 0)
+      dim fakeDim44: (14, 4, 0, 0, 0)
+      dim fakeDim45: (6, 5, 0, 0, 0)
+      dim fakeDim46: (8, 6, 0, 0, 0)
+  22 ROBUST_BT14CLR160_COS_SAT0P43_ROBUST_LEVEL_DESERT_10_11_14_15 dims=('fakeDim47', 'fakeDim48', 'fakeDim49', 'fakeDim50', 'fakeDim51', 'fakeDim52', 'fakeDim53') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=5275 ceros=0.999
+      dim fakeDim47: (10, 0, 0, 0, 0)
+      dim fakeDim48: (8, 1, 0, 0, 0)
+      dim fakeDim49: (5, 2, 0, 0, 0)
+      dim fakeDim50: (11, 3, 0, 0, 0)
+      dim fakeDim51: (14, 4, 0, 0, 0)
+      dim fakeDim52: (6, 5, 0, 0, 0)
+      dim fakeDim53: (8, 6, 0, 0, 0)
+  23 ROBUST_BT14CLR250_COS_SAT0P43_ROBUST_LEVEL_DESERT_10_11_14_15 dims=('fakeDim54', 'fakeDim55', 'fakeDim56', 'fakeDim57', 'fakeDim58', 'fakeDim59', 'fakeDim60') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=17722 ceros=0.998
+      dim fakeDim54: (10, 0, 0, 0, 0)
+      dim fakeDim55: (8, 1, 0, 0, 0)
+      dim fakeDim56: (5, 2, 0, 0, 0)
+      dim fakeDim57: (11, 3, 0, 0, 0)
+      dim fakeDim58: (14, 4, 0, 0, 0)
+      dim fakeDim59: (6, 5, 0, 0, 0)
+      dim fakeDim60: (8, 6, 0, 0, 0)
+  24 ROBUST_BT14CLR270_COS_SAT0P43_ROBUST_LEVEL_DESERT_10_11_14_15 dims=('fakeDim61', 'fakeDim62', 'fakeDim63', 'fakeDim64', 'fakeDim65', 'fakeDim66', 'fakeDim67') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=18654 ceros=0.998
+      dim fakeDim61: (10, 0, 0, 0, 0)
+      dim fakeDim62: (8, 1, 0, 0, 0)
+      dim fakeDim63: (5, 2, 0, 0, 0)
+      dim fakeDim64: (11, 3, 0, 0, 0)
+      dim fakeDim65: (14, 4, 0, 0, 0)
+      dim fakeDim66: (6, 5, 0, 0, 0)
+      dim fakeDim67: (8, 6, 0, 0, 0)
+  25 ROBUST_BT14CLR290_COS_SAT0P43_ROBUST_LEVEL_DESERT_10_11_14_15 dims=('fakeDim68', 'fakeDim69', 'fakeDim70', 'fakeDim71', 'fakeDim72', 'fakeDim73', 'fakeDim74') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=18670 ceros=0.998
+      dim fakeDim68: (10, 0, 0, 0, 0)
+      dim fakeDim69: (8, 1, 0, 0, 0)
+      dim fakeDim70: (5, 2, 0, 0, 0)
+      dim fakeDim71: (11, 3, 0, 0, 0)
+      dim fakeDim72: (14, 4, 0, 0, 0)
+      dim fakeDim73: (6, 5, 0, 0, 0)
+      dim fakeDim74: (8, 6, 0, 0, 0)
+  26 ROBUST_BT14CLR160_COS_SAT0P43_ROBUST_LEVEL_11_14_15 dims=('fakeDim75', 'fakeDim76', 'fakeDim77', 'fakeDim78', 'fakeDim79', 'fakeDim80', 'fakeDim81') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=73485 ceros=0.990
+      dim fakeDim75: (10, 0, 0, 0, 0)
+      dim fakeDim76: (8, 1, 0, 0, 0)
+      dim fakeDim77: (5, 2, 0, 0, 0)
+      dim fakeDim78: (11, 3, 0, 0, 0)
+      dim fakeDim79: (14, 4, 0, 0, 0)
+      dim fakeDim80: (6, 5, 0, 0, 0)
+      dim fakeDim81: (8, 6, 0, 0, 0)
+  27 ROBUST_BT14CLR250_COS_SAT0P43_ROBUST_LEVEL_11_14_15 dims=('fakeDim82', 'fakeDim83', 'fakeDim84', 'fakeDim85', 'fakeDim86', 'fakeDim87', 'fakeDim88') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=306905 ceros=0.960
+      dim fakeDim82: (10, 0, 0, 0, 0)
+      dim fakeDim83: (8, 1, 0, 0, 0)
+      dim fakeDim84: (5, 2, 0, 0, 0)
+      dim fakeDim85: (11, 3, 0, 0, 0)
+      dim fakeDim86: (14, 4, 0, 0, 0)
+      dim fakeDim87: (6, 5, 0, 0, 0)
+      dim fakeDim88: (8, 6, 0, 0, 0)
+  28 ROBUST_BT14CLR270_COS_SAT0P43_ROBUST_LEVEL_11_14_15 dims=('fakeDim89', 'fakeDim90', 'fakeDim91', 'fakeDim92', 'fakeDim93', 'fakeDim94', 'fakeDim95') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=408755 ceros=0.944
+      dim fakeDim89: (10, 0, 0, 0, 0)
+      dim fakeDim90: (8, 1, 0, 0, 0)
+      dim fakeDim91: (5, 2, 0, 0, 0)
+      dim fakeDim92: (11, 3, 0, 0, 0)
+      dim fakeDim93: (14, 4, 0, 0, 0)
+      dim fakeDim94: (6, 5, 0, 0, 0)
+      dim fakeDim95: (8, 6, 0, 0, 0)
+  29 ROBUST_BT14CLR290_COS_SAT0P43_ROBUST_LEVEL_11_14_15 dims=('fakeDim96', 'fakeDim97', 'fakeDim98', 'fakeDim99', 'fakeDim100', 'fakeDim101', 'fakeDim102') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=507710 ceros=0.937
+      dim fakeDim96: (10, 0, 0, 0, 0)
+      dim fakeDim97: (8, 1, 0, 0, 0)
+      dim fakeDim98: (5, 2, 0, 0, 0)
+      dim fakeDim99: (11, 3, 0, 0, 0)
+      dim fakeDim100: (14, 4, 0, 0, 0)
+      dim fakeDim101: (6, 5, 0, 0, 0)
+      dim fakeDim102: (8, 6, 0, 0, 0)
+  30 ROBUST_BT14CLR160_COS_SAT0P43_ROBUST_LEVEL_DESERT_11_14_15 dims=('fakeDim103', 'fakeDim104', 'fakeDim105', 'fakeDim106', 'fakeDim107', 'fakeDim108', 'fakeDim109') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=12070 ceros=0.998
+      dim fakeDim103: (10, 0, 0, 0, 0)
+      dim fakeDim104: (8, 1, 0, 0, 0)
+      dim fakeDim105: (5, 2, 0, 0, 0)
+      dim fakeDim106: (11, 3, 0, 0, 0)
+      dim fakeDim107: (14, 4, 0, 0, 0)
+      dim fakeDim108: (6, 5, 0, 0, 0)
+      dim fakeDim109: (8, 6, 0, 0, 0)
+  31 ROBUST_BT14CLR250_COS_SAT0P43_ROBUST_LEVEL_DESERT_11_14_15 dims=('fakeDim110', 'fakeDim111', 'fakeDim112', 'fakeDim113', 'fakeDim114', 'fakeDim115', 'fakeDim116') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=50650 ceros=0.993
+      dim fakeDim110: (10, 0, 0, 0, 0)
+      dim fakeDim111: (8, 1, 0, 0, 0)
+      dim fakeDim112: (5, 2, 0, 0, 0)
+      dim fakeDim113: (11, 3, 0, 0, 0)
+      dim fakeDim114: (14, 4, 0, 0, 0)
+      dim fakeDim115: (6, 5, 0, 0, 0)
+      dim fakeDim116: (8, 6, 0, 0, 0)
+  32 ROBUST_BT14CLR270_COS_SAT0P43_ROBUST_LEVEL_DESERT_11_14_15 dims=('fakeDim117', 'fakeDim118', 'fakeDim119', 'fakeDim120', 'fakeDim121', 'fakeDim122', 'fakeDim123') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=55615 ceros=0.992
+      dim fakeDim117: (10, 0, 0, 0, 0)
+      dim fakeDim118: (8, 1, 0, 0, 0)
+      dim fakeDim119: (5, 2, 0, 0, 0)
+      dim fakeDim120: (11, 3, 0, 0, 0)
+      dim fakeDim121: (14, 4, 0, 0, 0)
+      dim fakeDim122: (6, 5, 0, 0, 0)
+      dim fakeDim123: (8, 6, 0, 0, 0)
+  33 ROBUST_BT14CLR290_COS_SAT0P43_ROBUST_LEVEL_DESERT_11_14_15 dims=('fakeDim124', 'fakeDim125', 'fakeDim126', 'fakeDim127', 'fakeDim128', 'fakeDim129', 'fakeDim130') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=56190 ceros=0.993
+      dim fakeDim124: (10, 0, 0, 0, 0)
+      dim fakeDim125: (8, 1, 0, 0, 0)
+      dim fakeDim126: (5, 2, 0, 0, 0)
+      dim fakeDim127: (11, 3, 0, 0, 0)
+      dim fakeDim128: (14, 4, 0, 0, 0)
+      dim fakeDim129: (6, 5, 0, 0, 0)
+      dim fakeDim130: (8, 6, 0, 0, 0)
+  34 ROBUST_BT14CLR160_COS_SAT0P43_ROBUST_LEVEL_14_15 dims=('fakeDim131', 'fakeDim132', 'fakeDim133', 'fakeDim134', 'fakeDim135', 'fakeDim136', 'fakeDim137') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=707520 ceros=0.897
+      dim fakeDim131: (10, 0, 0, 0, 0)
+      dim fakeDim132: (8, 1, 0, 0, 0)
+      dim fakeDim133: (5, 2, 0, 0, 0)
+      dim fakeDim134: (11, 3, 0, 0, 0)
+      dim fakeDim135: (14, 4, 0, 0, 0)
+      dim fakeDim136: (6, 5, 0, 0, 0)
+      dim fakeDim137: (8, 6, 0, 0, 0)
+  35 ROBUST_BT14CLR250_COS_SAT0P43_ROBUST_LEVEL_14_15 dims=('fakeDim138', 'fakeDim139', 'fakeDim140', 'fakeDim141', 'fakeDim142', 'fakeDim143', 'fakeDim144') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=1.34332e+06 ceros=0.790
+      dim fakeDim138: (10, 0, 0, 0, 0)
+      dim fakeDim139: (8, 1, 0, 0, 0)
+      dim fakeDim140: (5, 2, 0, 0, 0)
+      dim fakeDim141: (11, 3, 0, 0, 0)
+      dim fakeDim142: (14, 4, 0, 0, 0)
+      dim fakeDim143: (6, 5, 0, 0, 0)
+      dim fakeDim144: (8, 6, 0, 0, 0)
+  36 ROBUST_BT14CLR270_COS_SAT0P43_ROBUST_LEVEL_14_15 dims=('fakeDim145', 'fakeDim146', 'fakeDim147', 'fakeDim148', 'fakeDim149', 'fakeDim150', 'fakeDim151') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=1.31912e+06 ceros=0.775
+      dim fakeDim145: (10, 0, 0, 0, 0)
+      dim fakeDim146: (8, 1, 0, 0, 0)
+      dim fakeDim147: (5, 2, 0, 0, 0)
+      dim fakeDim148: (11, 3, 0, 0, 0)
+      dim fakeDim149: (14, 4, 0, 0, 0)
+      dim fakeDim150: (6, 5, 0, 0, 0)
+      dim fakeDim151: (8, 6, 0, 0, 0)
+  37 ROBUST_BT14CLR290_COS_SAT0P43_ROBUST_LEVEL_14_15 dims=('fakeDim152', 'fakeDim153', 'fakeDim154', 'fakeDim155', 'fakeDim156', 'fakeDim157', 'fakeDim158') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=1.62756e+06 ceros=0.764
+      dim fakeDim152: (10, 0, 0, 0, 0)
+      dim fakeDim153: (8, 1, 0, 0, 0)
+      dim fakeDim154: (5, 2, 0, 0, 0)
+      dim fakeDim155: (11, 3, 0, 0, 0)
+      dim fakeDim156: (14, 4, 0, 0, 0)
+      dim fakeDim157: (6, 5, 0, 0, 0)
+      dim fakeDim158: (8, 6, 0, 0, 0)
+  38 ROBUST_BT14CLR160_COS_SAT0P43_ROBUST_LEVEL_DESERT_14_15 dims=('fakeDim159', 'fakeDim160', 'fakeDim161', 'fakeDim162', 'fakeDim163', 'fakeDim164', 'fakeDim165') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=105960 ceros=0.982
+      dim fakeDim159: (10, 0, 0, 0, 0)
+      dim fakeDim160: (8, 1, 0, 0, 0)
+      dim fakeDim161: (5, 2, 0, 0, 0)
+      dim fakeDim162: (11, 3, 0, 0, 0)
+      dim fakeDim163: (14, 4, 0, 0, 0)
+      dim fakeDim164: (6, 5, 0, 0, 0)
+      dim fakeDim165: (8, 6, 0, 0, 0)
+  39 ROBUST_BT14CLR250_COS_SAT0P43_ROBUST_LEVEL_DESERT_14_15 dims=('fakeDim166', 'fakeDim167', 'fakeDim168', 'fakeDim169', 'fakeDim170', 'fakeDim171', 'fakeDim172') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=477880 ceros=0.924
+      dim fakeDim166: (10, 0, 0, 0, 0)
+      dim fakeDim167: (8, 1, 0, 0, 0)
+      dim fakeDim168: (5, 2, 0, 0, 0)
+      dim fakeDim169: (11, 3, 0, 0, 0)
+      dim fakeDim170: (14, 4, 0, 0, 0)
+      dim fakeDim171: (6, 5, 0, 0, 0)
+      dim fakeDim172: (8, 6, 0, 0, 0)
+  40 ROBUST_BT14CLR270_COS_SAT0P43_ROBUST_LEVEL_DESERT_14_15 dims=('fakeDim173', 'fakeDim174', 'fakeDim175', 'fakeDim176', 'fakeDim177', 'fakeDim178', 'fakeDim179') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=438440 ceros=0.934
+      dim fakeDim173: (10, 0, 0, 0, 0)
+      dim fakeDim174: (8, 1, 0, 0, 0)
+      dim fakeDim175: (5, 2, 0, 0, 0)
+      dim fakeDim176: (11, 3, 0, 0, 0)
+      dim fakeDim177: (14, 4, 0, 0, 0)
+      dim fakeDim178: (6, 5, 0, 0, 0)
+      dim fakeDim179: (8, 6, 0, 0, 0)
+  41 ROBUST_BT14CLR290_COS_SAT0P43_ROBUST_LEVEL_DESERT_14_15 dims=('fakeDim180', 'fakeDim181', 'fakeDim182', 'fakeDim183', 'fakeDim184', 'fakeDim185', 'fakeDim186') shape=(10, 8, 5, 11, 14, 6, 8) type=21 min=0 max=4 sum=509960 ceros=0.925
+      dim fakeDim180: (10, 0, 0, 0, 0)
+      dim fakeDim181: (8, 1, 0, 0, 0)
+      dim fakeDim182: (5, 2, 0, 0, 0)
+      dim fakeDim183: (11, 3, 0, 0, 0)
+      dim fakeDim184: (14, 4, 0, 0, 0)
+      dim fakeDim185: (6, 5, 0, 0, 0)
+      dim fakeDim186: (8, 6, 0, 0, 0)
+  42 REF2_SDEV_BINS_OBJ dims=('fakeDim187',) shape=(11,) type=5 min=0 max=10 sum=55 ceros=0.091
+      dim fakeDim187: (11, 0, 0, 0, 0)
+      valores = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
+  43 REF2_SDEV_BINS_FULL_OBJ dims=('fakeDim188',) shape=(11,) type=5 min=0 max=50 sum=95 ceros=0.091
+      dim fakeDim188: (11, 0, 0, 0, 0)
+      valores = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 50.0]
+  44 BT14_SDEV_BINS_OBJ dims=('fakeDim189',) shape=(11,) type=5 min=0 max=7 sum=29.5 ceros=0.091
+      dim fakeDim189: (11, 0, 0, 0, 0)
+      valores = [0.0, 0.25, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+  45 BT14_SDEV_BINS_FULL_OBJ dims=('fakeDim190',) shape=(11,) type=5 min=0 max=50 sum=72.5 ceros=0.091
+      dim fakeDim190: (11, 0, 0, 0, 0)
+      valores = [0.0, 0.25, 0.5, 0.75, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 50.0]
+  46 EMISS14_TOT_BINS_OBJ dims=('fakeDim191',) shape=(4,) type=5 min=0 max=0.3 sum=0.43 ceros=0.250
+      dim fakeDim191: (4, 0, 0, 0, 0)
+      valores = [0.0, 0.029999999329447746, 0.10000000149011612, 0.30000001192092896]
+  47 EMISS14_TOT_BINS_FULL_OBJ dims=('fakeDim192',) shape=(5,) type=5 min=0 max=1 sum=1.43 ceros=0.200
+      dim fakeDim192: (5, 0, 0, 0, 0)
+      valores = [0.0, 0.029999999329447746, 0.10000000149011612, 0.30000001192092896, 1.0]
+  48 REF2_BINS_OBJ dims=('fakeDim193',) shape=(5,) type=5 min=0 max=80 sum=200 ceros=0.200
+      dim fakeDim193: (5, 0, 0, 0, 0)
+      valores = [0.0, 20.0, 40.0, 60.0, 80.0]
+  49 REF2_BINS_FULL_OBJ dims=('fakeDim194',) shape=(6,) type=5 min=0 max=120 sum=320 ceros=0.167
+      dim fakeDim194: (6, 0, 0, 0, 0)
+      valores = [0.0, 20.0, 40.0, 60.0, 80.0, 120.0]
+  50 BTD1112_BINS_OBJ dims=('fakeDim195',) shape=(7,) type=5 min=-20 max=0 sum=-24.5 ceros=0.143
+      dim fakeDim195: (7, 0, 0, 0, 0)
+      valores = [-20.0, -2.0, -1.0, -0.75, -0.5, -0.25, 0.0]
+  51 BTD1112_BINS_FULL_OBJ dims=('fakeDim196',) shape=(8,) type=5 min=-20 max=10 sum=-14.5 ceros=0.125
+      dim fakeDim196: (8, 0, 0, 0, 0)
+      valores = [-20.0, -2.0, -1.0, -0.75, -0.5, -0.25, 0.0, 10.0]
+  52 NRAT_BINS_OBJ dims=('fakeDim197',) shape=(5,) type=5 min=0 max=1 sum=2.5 ceros=0.200
+      dim fakeDim197: (5, 0, 0, 0, 0)
+      valores = [0.0, 0.20000000298023224, 0.5, 0.800000011920929, 1.0]
+  53 NRAT_BINS_FULL_OBJ dims=('fakeDim198',) shape=(6,) type=5 min=0 max=10 sum=12.5 ceros=0.167
+      dim fakeDim198: (6, 0, 0, 0, 0)
+      valores = [0.0, 0.20000000298023224, 0.5, 0.800000011920929, 1.0, 10.0]
+  54 EMS7_BINS_OBJ dims=('fakeDim199',) shape=(5,) type=5 min=0 max=1.4 sum=4.5 ceros=0.200
+      dim fakeDim199: (5, 0, 0, 0, 0)
+      valores = [0.0, 0.8999999761581421, 1.0, 1.2000000476837158, 1.399999976158142]
+  55 EMS7_BINS_FULL_OBJ dims=('fakeDim200',) shape=(6,) type=5 min=0 max=5 sum=9.5 ceros=0.167
+      dim fakeDim200: (6, 0, 0, 0, 0)
+      valores = [0.0, 0.8999999761581421, 1.0, 1.2000000476837158, 1.399999976158142, 5.0]
+  56 BETA1112_TOT_BINS_OBJ dims=('fakeDim201',) shape=(7,) type=5 min=0 max=1 sum=5.33 ceros=0.143
+      dim fakeDim201: (7, 0, 0, 0, 0)
+      valores = [0.0, 0.699999988079071, 0.800000011920929, 0.8999999761581421, 0.949999988079071, 0.9800000190734863, 1.0]
+  57 BETA1112_TOT_BINS_FULL_OBJ dims=('fakeDim202',) shape=(8,) type=5 min=0 max=1.05 sum=6.38 ceros=0.125
+      dim fakeDim202: (8, 0, 0, 0, 0)
+      valores = [0.0, 0.699999988079071, 0.800000011920929, 0.8999999761581421, 0.949999988079071, 0.9800000190734863, 1.0, 1.0499999523162842]
+  58 BETA1112_OPAQUE_BINS_OBJ dims=('fakeDim203',) shape=(7,) type=5 min=0 max=1.3 sum=6 ceros=0.143
+      dim fakeDim203: (7, 0, 0, 0, 0)
+      valores = [0.0, 0.5, 0.8999999761581421, 1.0, 1.100000023841858, 1.2000000476837158, 1.2999999523162842]
+  59 BETA1112_OPAQUE_BINS_FULL_OBJ dims=('fakeDim204',) shape=(8,) type=5 min=0 max=2 sum=8 ceros=0.125
+      dim fakeDim204: (8, 0, 0, 0, 0)
+      valores = [0.0, 0.5, 0.8999999761581421, 1.0, 1.100000023841858, 1.2000000476837158, 1.2999999523162842, 2.0]
+  60 BETA1113_TOT_BINS_OBJ dims=('fakeDim205',) shape=(7,) type=5 min=0 max=1 sum=5.33 ceros=0.143
+      dim fakeDim205: (7, 0, 0, 0, 0)
+      valores = [0.0, 0.699999988079071, 0.800000011920929, 0.8999999761581421, 0.949999988079071, 0.9800000190734863, 1.0]
+  61 BETA1113_TOT_BINS_FULL_OBJ dims=('fakeDim206',) shape=(8,) type=5 min=0 max=1.05 sum=6.38 ceros=0.125
+      dim fakeDim206: (8, 0, 0, 0, 0)
+      valores = [0.0, 0.699999988079071, 0.800000011920929, 0.8999999761581421, 0.949999988079071, 0.9800000190734863, 1.0, 1.0499999523162842]
+  62 BETA1113_OPAQUE_BINS_OBJ dims=('fakeDim207',) shape=(7,) type=5 min=0 max=1.3 sum=6 ceros=0.143
+      dim fakeDim207: (7, 0, 0, 0, 0)
+      valores = [0.0, 0.5, 0.8999999761581421, 1.0, 1.100000023841858, 1.2000000476837158, 1.2999999523162842]
+  63 BETA1113_OPAQUE_BINS_FULL_OBJ dims=('fakeDim208',) shape=(8,) type=5 min=0 max=2 sum=8 ceros=0.125
+      dim fakeDim208: (8, 0, 0, 0, 0)
+      valores = [0.0, 0.5, 0.8999999761581421, 1.0, 1.100000023841858, 1.2000000476837158, 1.2999999523162842, 2.0]
+  64 BETA8511_TOT_BINS_OBJ dims=('fakeDim209',) shape=(5,) type=5 min=0 max=1.8 sum=5.1 ceros=0.200
+      dim fakeDim209: (5, 0, 0, 0, 0)
+      valores = [0.0, 0.8999999761581421, 1.100000023841858, 1.2999999523162842, 1.7999999523162842]
+  65 BETA8511_TOT_BINS_FULL_OBJ dims=('fakeDim210',) shape=(6,) type=5 min=0 max=10 sum=15.1 ceros=0.167
+      dim fakeDim210: (6, 0, 0, 0, 0)
+      valores = [0.0, 0.8999999761581421, 1.100000023841858, 1.2999999523162842, 1.7999999523162842, 10.0]
+  66 BETA8511_OPAQUE_BINS_OBJ dims=('fakeDim211',) shape=(5,) type=5 min=0 max=1.8 sum=5.1 ceros=0.200
+      dim fakeDim211: (5, 0, 0, 0, 0)
+      valores = [0.0, 0.8999999761581421, 1.100000023841858, 1.2999999523162842, 1.7999999523162842]
+  67 BETA8511_OPAQUE_BINS_FULL_OBJ dims=('fakeDim212',) shape=(6,) type=5 min=0 max=10 sum=15.1 ceros=0.167
+      dim fakeDim212: (6, 0, 0, 0, 0)
+      valores = [0.0, 0.8999999761581421, 1.100000023841858, 1.2999999523162842, 1.7999999523162842, 10.0]
+  68 BETA7311_TOT_BINS_OBJ dims=('fakeDim213',) shape=(5,) type=5 min=0 max=3 sum=7.5 ceros=0.200
+      dim fakeDim213: (5, 0, 0, 0, 0)
+      valores = [0.0, 1.0, 1.5, 2.0, 3.0]
+  69 BETA7311_TOT_BINS_FULL_OBJ dims=('fakeDim214',) shape=(6,) type=5 min=0 max=10 sum=17.5 ceros=0.167
+      dim fakeDim214: (6, 0, 0, 0, 0)
+      valores = [0.0, 1.0, 1.5, 2.0, 3.0, 10.0]
+  70 AREA_BINS_OBJ dims=('fakeDim215',) shape=(9,) type=5 min=0.01 max=5000 sum=6661.11 ceros=0.000
+      dim fakeDim215: (9, 0, 0, 0, 0)
+      valores = [0.009999999776482582, 0.10000000149011612, 1.0, 10.0, 50.0, 100.0, 500.0, 1000.0, 5000.0]
+  71 AREA_BINS_FULL_OBJ dims=('fakeDim216',) shape=(10,) type=5 min=0.01 max=1e+04 sum=16661.1 ceros=0.000
+      dim fakeDim216: (10, 0, 0, 0, 0)
+      valores = [0.009999999776482582, 0.10000000149011612, 1.0, 10.0, 50.0, 100.0, 500.0, 1000.0, 5000.0, 10000.0]
+  72 FRAC_AREA_BINS_OBJ dims=('fakeDim217',) shape=(9,) type=5 min=0.001 max=0.7 sum=2.261 ceros=0.000
+      dim fakeDim217: (9, 0, 0, 0, 0)
+      valores = [0.0010000000474974513, 0.009999999776482582, 0.05000000074505806, 0.10000000149011612, 0.20000000298023224, 0.30000001192092896, 0.4000000059604645, 0.5, 0.699999988079071]
+  73 FRAC_AREA_BINS_FULL_OBJ dims=('fakeDim218',) shape=(10,) type=5 min=0.001 max=1 sum=3.261 ceros=0.000
+      dim fakeDim218: (10, 0, 0, 0, 0)
+      valores = [0.0010000000474974513, 0.009999999776482582, 0.05000000074505806, 0.10000000149011612, 0.20000000298023224, 0.30000001192092896, 0.4000000059604645, 0.5, 0.699999988079071, 1.0]
+  74 COS_SATZEN_BINS_ROBUST dims=('fakeDim219',) shape=(1,) type=5 min=0.43 max=0.43 sum=0.43 ceros=0.000
+      dim fakeDim219: (1, 0, 0, 0, 0)
+      valores = [0.4300000071525574]
+  75 COS_SATZEN_BINS_FULL_ROBUST dims=('fakeDim220',) shape=(2,) type=5 min=0.43 max=1 sum=1.43 ceros=0.000
+      dim fakeDim220: (2, 0, 0, 0, 0)
+      valores = [0.4300000071525574, 1.0]
+  76 BT14_CLR_BINS_ROBUST dims=('fakeDim221',) shape=(4,) type=5 min=160 max=290 sum=970 ceros=0.000
+      dim fakeDim221: (4, 0, 0, 0, 0)
+      valores = [160.0, 250.0, 270.0, 290.0]
+  77 BT14_CLR_BINS_FULL_ROBUST dims=('fakeDim222',) shape=(5,) type=5 min=160 max=400 sum=1370 ceros=0.000
+      dim fakeDim222: (5, 0, 0, 0, 0)
+      valores = [160.0, 250.0, 270.0, 290.0, 400.0]
+  78 EMISS14_TOT_BINS_ROBUST dims=('fakeDim223',) shape=(8,) type=5 min=0.02 max=0.8 sum=2.25 ceros=0.000
+      dim fakeDim223: (8, 0, 0, 0, 0)
+      valores = [0.019999999552965164, 0.05000000074505806, 0.07999999821186066, 0.10000000149011612, 0.20000000298023224, 0.4000000059604645, 0.6000000238418579, 0.800000011920929]
+  79 EMISS14_TOT_BINS_FULL_ROBUST dims=('fakeDim224',) shape=(9,) type=5 min=0.02 max=1 sum=3.25 ceros=0.000
+      dim fakeDim224: (9, 0, 0, 0, 0)
+      valores = [0.019999999552965164, 0.05000000074505806, 0.07999999821186066, 0.10000000149011612, 0.20000000298023224, 0.4000000059604645, 0.6000000238418579, 0.800000011920929, 1.0]
+  80 BT14_SDEV_BINS_ROBUST dims=('fakeDim225',) shape=(6,) type=5 min=0 max=10 sum=18.5 ceros=0.167
+      dim fakeDim225: (6, 0, 0, 0, 0)
+      valores = [0.0, 0.5, 1.0, 2.0, 5.0, 10.0]
+  81 BT14_SDEV_BINS_FULL_ROBUST dims=('fakeDim226',) shape=(7,) type=5 min=0 max=50 sum=68.5 ceros=0.143
+      dim fakeDim226: (7, 0, 0, 0, 0)
+      valores = [0.0, 0.5, 1.0, 2.0, 5.0, 10.0, 50.0]
+  82 BTD1112_BINS_ROBUST dims=('fakeDim227',) shape=(14,) type=5 min=-1000 max=1 sum=-1031.85 ceros=0.071
+      dim fakeDim227: (14, 0, 0, 0, 0)
+      valores = [-1000.0, -25.0, -2.5, -2.0, -1.5, -1.0, -0.75, -0.5, -0.25, -0.10000000149011612, 0.0, 0.25, 0.5, 1.0]
+  83 BTD1112_BINS_FULL_ROBUST dims=('fakeDim228',) shape=(15,) type=5 min=-1000 max=10 sum=-1021.85 ceros=0.067
+      dim fakeDim228: (15, 0, 0, 0, 0)
+      valores = [-1000.0, -25.0, -2.5, -2.0, -1.5, -1.0, -0.75, -0.5, -0.25, -0.10000000149011612, 0.0, 0.25, 0.5, 1.0, 10.0]
+  84 BTD8511_BINS_ROBUST dims=('fakeDim229',) shape=(11,) type=5 min=-1000 max=0.5 sum=-1029.5 ceros=0.091
+      dim fakeDim229: (11, 0, 0, 0, 0)
+      valores = [-1000.0, -25.0, -1.5, -1.25, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5]
+  85 BTD8511_BINS_FULL_ROBUST dims=('fakeDim230',) shape=(12,) type=5 min=-1000 max=10 sum=-1019.5 ceros=0.083
+      dim fakeDim230: (12, 0, 0, 0, 0)
+      valores = [-1000.0, -25.0, -1.5, -1.25, -1.0, -0.75, -0.5, -0.25, 0.0, 0.25, 0.5, 10.0]
+  86 BETA7311_BINS_ROBUST dims=('fakeDim231',) shape=(5,) type=5 min=-1000 max=2 sum=-994.6 ceros=0.000
+      dim fakeDim231: (5, 0, 0, 0, 0)
+      valores = [-1000.0, 0.10000000149011612, 1.5, 1.7999999523162842, 2.0]
+  87 BETA7311_BINS_FULL_ROBUST dims=('fakeDim232',) shape=(6,) type=5 min=-1000 max=10 sum=-984.6 ceros=0.000
+      dim fakeDim232: (6, 0, 0, 0, 0)
+      valores = [-1000.0, 0.10000000149011612, 1.5, 1.7999999523162842, 2.0, 10.0]
+  88 BETA8511_BINS_ROBUST dims=('fakeDim233',) shape=(8,) type=5 min=-1000 max=2 sum=-991.9 ceros=0.000
+      dim fakeDim233: (8, 0, 0, 0, 0)
+      valores = [-1000.0, 0.10000000149011612, 0.800000011920929, 0.8999999761581421, 1.0, 1.5, 1.7999999523162842, 2.0]
+  89 BETA8511_BINS_FULL_ROBUST dims=('fakeDim234',) shape=(9,) type=5 min=-1000 max=10 sum=-981.9 ceros=0.000
+      dim fakeDim234: (9, 0, 0, 0, 0)
+      valores = [-1000.0, 0.10000000149011612, 0.800000011920929, 0.8999999761581421, 1.0, 1.5, 1.7999999523162842, 2.0, 10.0]
+  90 EMISS_ERR_BINS_ROBUST dims=('fakeDim235',) shape=(10,) type=5 min=-1000 max=0.95 sum=-994.65 ceros=0.000
+      dim fakeDim235: (10, 0, 0, 0, 0)
+      valores = [-1000.0, 0.20000000298023224, 0.30000001192092896, 0.4000000059604645, 0.5, 0.6000000238418579, 0.699999988079071, 0.800000011920929, 0.8999999761581421, 0.949999988079071]
+  91 EMISS_ERR_BINS_FULL_ROBUST dims=('fakeDim236',) shape=(11,) type=5 min=-1000 max=1.05 sum=-993.6 ceros=0.000
+      dim fakeDim236: (11, 0, 0, 0, 0)
+      valores = [-1000.0, 0.20000000298023224, 0.30000001192092896, 0.4000000059604645, 0.5, 0.6000000238418579, 0.699999988079071, 0.800000011920929, 0.8999999761581421, 0.949999988079071, 1.0499999523162842]
+  92 PROB_BINS_ROBUST dims=('fakeDim237',) shape=(10,) type=6 min=0 max=1 sum=7.48889 ceros=0.100
+      dim fakeDim237: (10, 0, 0, 0, 0)
+      valores = [0.0, 0.1, 0.5, 0.9, 0.99, 0.999, 0.9999, 0.99999, 1.0, 1.0]
+  93 PROB_BINS_FULL_ROBUST dims=('fakeDim238',) shape=(11,) type=6 min=0 max=1.01 sum=8.49889 ceros=0.091
+      dim fakeDim238: (11, 0, 0, 0, 0)
+      valores = [0.0, 0.1, 0.5, 0.9, 0.99, 0.999, 0.9999, 0.99999, 1.0, 1.0, 1.01]
+  94 EMISS14_BT14_SDEV_PDF_NIGHT_ASH_OBJ dims=('fakeDim239', 'fakeDim240', 'fakeDim241') shape=(9, 44, 10) type=6 min=2.204e-06 max=0.1737 sum=10 ceros=0.000
+      dim fakeDim239: (9, 0, 0, 0, 0)
+      dim fakeDim240: (44, 1, 0, 0, 0)
+      dim fakeDim241: (10, 2, 0, 0, 0)
+  95 EMISS14_BETASW1_TOT_EMS7_PDF_NIGHT_ASH_OBJ dims=('fakeDim242', 'fakeDim243', 'fakeDim244') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.167 sum=10 ceros=0.000
+      dim fakeDim242: (9, 0, 0, 0, 0)
+      dim fakeDim243: (140, 1, 0, 0, 0)
+      dim fakeDim244: (10, 2, 0, 0, 0)
+  96 EMISS14_BETASW1_OPAQUE_EMS7_PDF_NIGHT_ASH_OBJ dims=('fakeDim245', 'fakeDim246', 'fakeDim247') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.18 sum=10 ceros=0.000
+      dim fakeDim245: (9, 0, 0, 0, 0)
+      dim fakeDim246: (140, 1, 0, 0, 0)
+      dim fakeDim247: (10, 2, 0, 0, 0)
+  97 EMISS14_BTDSW1_EMS7_PDF_NIGHT_ASH_OBJ dims=('fakeDim248', 'fakeDim249', 'fakeDim250') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.1966 sum=10 ceros=0.000
+      dim fakeDim248: (9, 0, 0, 0, 0)
+      dim fakeDim249: (140, 1, 0, 0, 0)
+      dim fakeDim250: (10, 2, 0, 0, 0)
+  98 EMISS14_BETASW1_TOT_PDF_NIGHT_ASH_OBJ dims=('fakeDim251', 'fakeDim252', 'fakeDim253') shape=(9, 28, 10) type=6 min=2.205e-06 max=0.2553 sum=10 ceros=0.000
+      dim fakeDim251: (9, 0, 0, 0, 0)
+      dim fakeDim252: (28, 1, 0, 0, 0)
+      dim fakeDim253: (10, 2, 0, 0, 0)
+  99 EMISS14_BETASW1_OPAQUE_PDF_NIGHT_ASH_OBJ dims=('fakeDim254', 'fakeDim255', 'fakeDim256') shape=(9, 28, 10) type=6 min=2.205e-06 max=0.3392 sum=10 ceros=0.000
+      dim fakeDim254: (9, 0, 0, 0, 0)
+      dim fakeDim255: (28, 1, 0, 0, 0)
+      dim fakeDim256: (10, 2, 0, 0, 0)
+ 100 EMISS14_BTDSW1_PDF_NIGHT_ASH_OBJ dims=('fakeDim257', 'fakeDim258', 'fakeDim259') shape=(9, 28, 10) type=6 min=2.205e-06 max=0.2528 sum=10 ceros=0.000
+      dim fakeDim257: (9, 0, 0, 0, 0)
+      dim fakeDim258: (28, 1, 0, 0, 0)
+      dim fakeDim259: (10, 2, 0, 0, 0)
+ 101 EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_NIGHT_ASH_OBJ dims=('fakeDim260', 'fakeDim261', 'fakeDim262') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.1464 sum=10 ceros=0.000
+      dim fakeDim260: (9, 0, 0, 0, 0)
+      dim fakeDim261: (140, 1, 0, 0, 0)
+      dim fakeDim262: (10, 2, 0, 0, 0)
+ 102 EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_NIGHT_ASH_OBJ dims=('fakeDim263', 'fakeDim264', 'fakeDim265') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.145 sum=10 ceros=0.000
+      dim fakeDim263: (9, 0, 0, 0, 0)
+      dim fakeDim264: (140, 1, 0, 0, 0)
+      dim fakeDim265: (10, 2, 0, 0, 0)
+ 103 EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_NIGHT_ASH_OBJ dims=('fakeDim266', 'fakeDim267', 'fakeDim268') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.2965 sum=10 ceros=0.000
+      dim fakeDim266: (9, 0, 0, 0, 0)
+      dim fakeDim267: (140, 1, 0, 0, 0)
+      dim fakeDim268: (10, 2, 0, 0, 0)
+ 104 EMISS14_BT14_SDEV_PDF_NIGHT_CLD_OBJ dims=('fakeDim269', 'fakeDim270', 'fakeDim271') shape=(9, 44, 10) type=6 min=2.204e-06 max=0.1503 sum=10 ceros=0.000
+      dim fakeDim269: (9, 0, 0, 0, 0)
+      dim fakeDim270: (44, 1, 0, 0, 0)
+      dim fakeDim271: (10, 2, 0, 0, 0)
+ 105 EMISS14_BETASW1_TOT_EMS7_PDF_NIGHT_CLD_OBJ dims=('fakeDim272', 'fakeDim273', 'fakeDim274') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.2159 sum=10 ceros=0.000
+      dim fakeDim272: (9, 0, 0, 0, 0)
+      dim fakeDim273: (140, 1, 0, 0, 0)
+      dim fakeDim274: (10, 2, 0, 0, 0)
+ 106 EMISS14_BETASW1_OPAQUE_EMS7_PDF_NIGHT_CLD_OBJ dims=('fakeDim275', 'fakeDim276', 'fakeDim277') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.1422 sum=10 ceros=0.000
+      dim fakeDim275: (9, 0, 0, 0, 0)
+      dim fakeDim276: (140, 1, 0, 0, 0)
+      dim fakeDim277: (10, 2, 0, 0, 0)
+ 107 EMISS14_BTDSW1_EMS7_PDF_NIGHT_CLD_OBJ dims=('fakeDim278', 'fakeDim279', 'fakeDim280') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.3594 sum=10 ceros=0.000
+      dim fakeDim278: (9, 0, 0, 0, 0)
+      dim fakeDim279: (140, 1, 0, 0, 0)
+      dim fakeDim280: (10, 2, 0, 0, 0)
+ 108 EMISS14_BETASW1_TOT_PDF_NIGHT_CLD_OBJ dims=('fakeDim281', 'fakeDim282', 'fakeDim283') shape=(9, 28, 10) type=6 min=2.205e-06 max=0.2629 sum=10 ceros=0.000
+      dim fakeDim281: (9, 0, 0, 0, 0)
+      dim fakeDim282: (28, 1, 0, 0, 0)
+      dim fakeDim283: (10, 2, 0, 0, 0)
+ 109 EMISS14_BETASW1_OPAQUE_PDF_NIGHT_CLD_OBJ dims=('fakeDim284', 'fakeDim285', 'fakeDim286') shape=(9, 28, 10) type=6 min=2.205e-06 max=0.2265 sum=10 ceros=0.000
+      dim fakeDim284: (9, 0, 0, 0, 0)
+      dim fakeDim285: (28, 1, 0, 0, 0)
+      dim fakeDim286: (10, 2, 0, 0, 0)
+ 110 EMISS14_BTDSW1_PDF_NIGHT_CLD_OBJ dims=('fakeDim287', 'fakeDim288', 'fakeDim289') shape=(9, 28, 10) type=6 min=2.205e-06 max=0.5829 sum=10 ceros=0.000
+      dim fakeDim287: (9, 0, 0, 0, 0)
+      dim fakeDim288: (28, 1, 0, 0, 0)
+      dim fakeDim289: (10, 2, 0, 0, 0)
+ 111 EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_NIGHT_CLD_OBJ dims=('fakeDim290', 'fakeDim291', 'fakeDim292') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.1699 sum=10 ceros=0.000
+      dim fakeDim290: (9, 0, 0, 0, 0)
+      dim fakeDim291: (140, 1, 0, 0, 0)
+      dim fakeDim292: (10, 2, 0, 0, 0)
+ 112 EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_NIGHT_CLD_OBJ dims=('fakeDim293', 'fakeDim294', 'fakeDim295') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.1997 sum=10 ceros=0.000
+      dim fakeDim293: (9, 0, 0, 0, 0)
+      dim fakeDim294: (140, 1, 0, 0, 0)
+      dim fakeDim295: (10, 2, 0, 0, 0)
+ 113 EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_NIGHT_CLD_OBJ dims=('fakeDim296', 'fakeDim297', 'fakeDim298') shape=(9, 140, 10) type=6 min=2.2e-06 max=0.2702 sum=10 ceros=0.000
+      dim fakeDim296: (9, 0, 0, 0, 0)
+      dim fakeDim297: (140, 1, 0, 0, 0)
+      dim fakeDim298: (10, 2, 0, 0, 0)
+ 114 EMISS14_REF2_SDEV_PDF_DAY_ASH_OBJ dims=('fakeDim299', 'fakeDim300', 'fakeDim301') shape=(9, 44, 10) type=6 min=2.609e-06 max=0.1093 sum=10 ceros=0.000
+      dim fakeDim299: (9, 0, 0, 0, 0)
+      dim fakeDim300: (44, 1, 0, 0, 0)
+      dim fakeDim301: (10, 2, 0, 0, 0)
+ 115 EMISS14_BT14_SDEV_PDF_DAY_ASH_OBJ dims=('fakeDim302', 'fakeDim303', 'fakeDim304') shape=(9, 44, 10) type=6 min=2.609e-06 max=0.1414 sum=10 ceros=0.000
+      dim fakeDim302: (9, 0, 0, 0, 0)
+      dim fakeDim303: (44, 1, 0, 0, 0)
+      dim fakeDim304: (10, 2, 0, 0, 0)
+ 116 EMISS14_BETASW1_TOT_NRAT_PDF_DAY_ASH_OBJ dims=('fakeDim305', 'fakeDim306', 'fakeDim307') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.1202 sum=10 ceros=0.000
+      dim fakeDim305: (9, 0, 0, 0, 0)
+      dim fakeDim306: (140, 1, 0, 0, 0)
+      dim fakeDim307: (10, 2, 0, 0, 0)
+ 117 EMISS14_BETASW1_OPAQUE_NRAT_PDF_DAY_ASH_OBJ dims=('fakeDim308', 'fakeDim309', 'fakeDim310') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.1006 sum=10 ceros=0.000
+      dim fakeDim308: (9, 0, 0, 0, 0)
+      dim fakeDim309: (140, 1, 0, 0, 0)
+      dim fakeDim310: (10, 2, 0, 0, 0)
+ 118 EMISS14_BTDSW1_NRAT_PDF_DAY_ASH_OBJ dims=('fakeDim311', 'fakeDim312', 'fakeDim313') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.1666 sum=10 ceros=0.000
+      dim fakeDim311: (9, 0, 0, 0, 0)
+      dim fakeDim312: (140, 1, 0, 0, 0)
+      dim fakeDim313: (10, 2, 0, 0, 0)
+ 119 EMISS14_BETASW1_TOT_PDF_DAY_ASH_OBJ dims=('fakeDim314', 'fakeDim315', 'fakeDim316') shape=(9, 28, 10) type=6 min=2.61e-06 max=0.2265 sum=10 ceros=0.000
+      dim fakeDim314: (9, 0, 0, 0, 0)
+      dim fakeDim315: (28, 1, 0, 0, 0)
+      dim fakeDim316: (10, 2, 0, 0, 0)
+ 120 EMISS14_BETASW1_OPAQUE_PDF_DAY_ASH_OBJ dims=('fakeDim317', 'fakeDim318', 'fakeDim319') shape=(9, 28, 10) type=6 min=2.61e-06 max=0.1865 sum=10 ceros=0.000
+      dim fakeDim317: (9, 0, 0, 0, 0)
+      dim fakeDim318: (28, 1, 0, 0, 0)
+      dim fakeDim319: (10, 2, 0, 0, 0)
+ 121 EMISS14_BTDSW1_PDF_DAY_ASH_OBJ dims=('fakeDim320', 'fakeDim321', 'fakeDim322') shape=(9, 28, 10) type=6 min=2.61e-06 max=0.3249 sum=10 ceros=0.000
+      dim fakeDim320: (9, 0, 0, 0, 0)
+      dim fakeDim321: (28, 1, 0, 0, 0)
+      dim fakeDim322: (10, 2, 0, 0, 0)
+ 122 EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_DAY_ASH_OBJ dims=('fakeDim323', 'fakeDim324', 'fakeDim325') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.09938 sum=10 ceros=0.000
+      dim fakeDim323: (9, 0, 0, 0, 0)
+      dim fakeDim324: (140, 1, 0, 0, 0)
+      dim fakeDim325: (10, 2, 0, 0, 0)
+ 123 EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_DAY_ASH_OBJ dims=('fakeDim326', 'fakeDim327', 'fakeDim328') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.1262 sum=10 ceros=0.000
+      dim fakeDim326: (9, 0, 0, 0, 0)
+      dim fakeDim327: (140, 1, 0, 0, 0)
+      dim fakeDim328: (10, 2, 0, 0, 0)
+ 124 EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_DAY_ASH_OBJ dims=('fakeDim329', 'fakeDim330', 'fakeDim331') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.2038 sum=10 ceros=0.000
+      dim fakeDim329: (9, 0, 0, 0, 0)
+      dim fakeDim330: (140, 1, 0, 0, 0)
+      dim fakeDim331: (10, 2, 0, 0, 0)
+ 125 EMISS14_REF2_PDF_DAY_ASH_OBJ dims=('fakeDim332', 'fakeDim333', 'fakeDim334') shape=(9, 20, 10) type=6 min=2.611e-06 max=0.2635 sum=10 ceros=0.000
+      dim fakeDim332: (9, 0, 0, 0, 0)
+      dim fakeDim333: (20, 1, 0, 0, 0)
+      dim fakeDim334: (10, 2, 0, 0, 0)
+ 126 EMISS14_REF2_SDEV_PDF_DAY_CLD_OBJ dims=('fakeDim335', 'fakeDim336', 'fakeDim337') shape=(9, 44, 10) type=6 min=2.609e-06 max=0.1326 sum=10 ceros=0.000
+      dim fakeDim335: (9, 0, 0, 0, 0)
+      dim fakeDim336: (44, 1, 0, 0, 0)
+      dim fakeDim337: (10, 2, 0, 0, 0)
+ 127 EMISS14_BT14_SDEV_PDF_DAY_CLD_OBJ dims=('fakeDim338', 'fakeDim339', 'fakeDim340') shape=(9, 44, 10) type=6 min=2.609e-06 max=0.1497 sum=10 ceros=0.000
+      dim fakeDim338: (9, 0, 0, 0, 0)
+      dim fakeDim339: (44, 1, 0, 0, 0)
+      dim fakeDim340: (10, 2, 0, 0, 0)
+ 128 EMISS14_BETASW1_TOT_NRAT_PDF_DAY_CLD_OBJ dims=('fakeDim341', 'fakeDim342', 'fakeDim343') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.2094 sum=10 ceros=0.000
+      dim fakeDim341: (9, 0, 0, 0, 0)
+      dim fakeDim342: (140, 1, 0, 0, 0)
+      dim fakeDim343: (10, 2, 0, 0, 0)
+ 129 EMISS14_BETASW1_OPAQUE_NRAT_PDF_DAY_CLD_OBJ dims=('fakeDim344', 'fakeDim345', 'fakeDim346') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.1511 sum=10 ceros=0.000
+      dim fakeDim344: (9, 0, 0, 0, 0)
+      dim fakeDim345: (140, 1, 0, 0, 0)
+      dim fakeDim346: (10, 2, 0, 0, 0)
+ 130 EMISS14_BTDSW1_NRAT_PDF_DAY_CLD_OBJ dims=('fakeDim347', 'fakeDim348', 'fakeDim349') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.4562 sum=10 ceros=0.000
+      dim fakeDim347: (9, 0, 0, 0, 0)
+      dim fakeDim348: (140, 1, 0, 0, 0)
+      dim fakeDim349: (10, 2, 0, 0, 0)
+ 131 EMISS14_BETASW1_TOT_PDF_DAY_CLD_OBJ dims=('fakeDim350', 'fakeDim351', 'fakeDim352') shape=(9, 28, 10) type=6 min=2.61e-06 max=0.2887 sum=10 ceros=0.000
+      dim fakeDim350: (9, 0, 0, 0, 0)
+      dim fakeDim351: (28, 1, 0, 0, 0)
+      dim fakeDim352: (10, 2, 0, 0, 0)
+ 132 EMISS14_BETASW1_OPAQUE_PDF_DAY_CLD_OBJ dims=('fakeDim353', 'fakeDim354', 'fakeDim355') shape=(9, 28, 10) type=6 min=2.61e-06 max=0.2152 sum=10 ceros=0.000
+      dim fakeDim353: (9, 0, 0, 0, 0)
+      dim fakeDim354: (28, 1, 0, 0, 0)
+      dim fakeDim355: (10, 2, 0, 0, 0)
+ 133 EMISS14_BTDSW1_PDF_DAY_CLD_OBJ dims=('fakeDim356', 'fakeDim357', 'fakeDim358') shape=(9, 28, 10) type=6 min=2.61e-06 max=0.7732 sum=10 ceros=0.000
+      dim fakeDim356: (9, 0, 0, 0, 0)
+      dim fakeDim357: (28, 1, 0, 0, 0)
+      dim fakeDim358: (10, 2, 0, 0, 0)
+ 134 EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_DAY_CLD_OBJ dims=('fakeDim359', 'fakeDim360', 'fakeDim361') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.2071 sum=10 ceros=0.000
+      dim fakeDim359: (9, 0, 0, 0, 0)
+      dim fakeDim360: (140, 1, 0, 0, 0)
+      dim fakeDim361: (10, 2, 0, 0, 0)
+ 135 EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_DAY_CLD_OBJ dims=('fakeDim362', 'fakeDim363', 'fakeDim364') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.1967 sum=10 ceros=0.000
+      dim fakeDim362: (9, 0, 0, 0, 0)
+      dim fakeDim363: (140, 1, 0, 0, 0)
+      dim fakeDim364: (10, 2, 0, 0, 0)
+ 136 EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_DAY_CLD_OBJ dims=('fakeDim365', 'fakeDim366', 'fakeDim367') shape=(9, 140, 10) type=6 min=2.603e-06 max=0.3355 sum=10 ceros=0.000
+      dim fakeDim365: (9, 0, 0, 0, 0)
+      dim fakeDim366: (140, 1, 0, 0, 0)
+      dim fakeDim367: (10, 2, 0, 0, 0)
+ 137 EMISS14_REF2_PDF_DAY_CLD_OBJ dims=('fakeDim368', 'fakeDim369', 'fakeDim370') shape=(9, 20, 10) type=6 min=2.611e-06 max=0.3851 sum=10 ceros=0.000
+      dim fakeDim368: (9, 0, 0, 0, 0)
+      dim fakeDim369: (20, 1, 0, 0, 0)
+      dim fakeDim370: (10, 2, 0, 0, 0)
+ 138 EMISS14_BT14_SDEV_PDF_IR_ASH_OBJ dims=('fakeDim371', 'fakeDim372', 'fakeDim373') shape=(9, 44, 10) type=6 min=1.043e-06 max=0.1485 sum=10 ceros=0.000
+      dim fakeDim371: (9, 0, 0, 0, 0)
+      dim fakeDim372: (44, 1, 0, 0, 0)
+      dim fakeDim373: (10, 2, 0, 0, 0)
+ 139 EMISS14_BETASW1_TOT_PDF_IR_ASH_OBJ dims=('fakeDim374', 'fakeDim375', 'fakeDim376') shape=(9, 28, 10) type=6 min=1.043e-06 max=0.2371 sum=10 ceros=0.000
+      dim fakeDim374: (9, 0, 0, 0, 0)
+      dim fakeDim375: (28, 1, 0, 0, 0)
+      dim fakeDim376: (10, 2, 0, 0, 0)
+ 140 EMISS14_BETASW1_OPAQUE_PDF_IR_ASH_OBJ dims=('fakeDim377', 'fakeDim378', 'fakeDim379') shape=(9, 28, 10) type=6 min=1.043e-06 max=0.2804 sum=10 ceros=0.000
+      dim fakeDim377: (9, 0, 0, 0, 0)
+      dim fakeDim378: (28, 1, 0, 0, 0)
+      dim fakeDim379: (10, 2, 0, 0, 0)
+ 141 EMISS14_BTDSW1_PDF_IR_ASH_OBJ dims=('fakeDim380', 'fakeDim381', 'fakeDim382') shape=(9, 28, 10) type=6 min=1.043e-06 max=0.3004 sum=10 ceros=0.000
+      dim fakeDim380: (9, 0, 0, 0, 0)
+      dim fakeDim381: (28, 1, 0, 0, 0)
+      dim fakeDim382: (10, 2, 0, 0, 0)
+ 142 EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_IR_ASH_OBJ dims=('fakeDim383', 'fakeDim384', 'fakeDim385') shape=(9, 140, 10) type=6 min=1.042e-06 max=0.1529 sum=10 ceros=0.000
+      dim fakeDim383: (9, 0, 0, 0, 0)
+      dim fakeDim384: (140, 1, 0, 0, 0)
+      dim fakeDim385: (10, 2, 0, 0, 0)
+ 143 EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_IR_ASH_OBJ dims=('fakeDim386', 'fakeDim387', 'fakeDim388') shape=(9, 140, 10) type=6 min=1.042e-06 max=0.1736 sum=10 ceros=0.000
+      dim fakeDim386: (9, 0, 0, 0, 0)
+      dim fakeDim387: (140, 1, 0, 0, 0)
+      dim fakeDim388: (10, 2, 0, 0, 0)
+ 144 EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_IR_ASH_OBJ dims=('fakeDim389', 'fakeDim390', 'fakeDim391') shape=(9, 140, 10) type=6 min=1.042e-06 max=0.2901 sum=10 ceros=0.000
+      dim fakeDim389: (9, 0, 0, 0, 0)
+      dim fakeDim390: (140, 1, 0, 0, 0)
+      dim fakeDim391: (10, 2, 0, 0, 0)
+ 145 EMISS14_BT14_SDEV_PDF_IR_CLD_OBJ dims=('fakeDim392', 'fakeDim393', 'fakeDim394') shape=(9, 44, 10) type=6 min=1.043e-06 max=0.1491 sum=10 ceros=0.000
+      dim fakeDim392: (9, 0, 0, 0, 0)
+      dim fakeDim393: (44, 1, 0, 0, 0)
+      dim fakeDim394: (10, 2, 0, 0, 0)
+ 146 EMISS14_BETASW1_TOT_PDF_IR_CLD_OBJ dims=('fakeDim395', 'fakeDim396', 'fakeDim397') shape=(9, 28, 10) type=6 min=1.043e-06 max=0.2735 sum=10 ceros=0.000
+      dim fakeDim395: (9, 0, 0, 0, 0)
+      dim fakeDim396: (28, 1, 0, 0, 0)
+      dim fakeDim397: (10, 2, 0, 0, 0)
+ 147 EMISS14_BETASW1_OPAQUE_PDF_IR_CLD_OBJ dims=('fakeDim398', 'fakeDim399', 'fakeDim400') shape=(9, 28, 10) type=6 min=1.043e-06 max=0.2222 sum=10 ceros=0.000
+      dim fakeDim398: (9, 0, 0, 0, 0)
+      dim fakeDim399: (28, 1, 0, 0, 0)
+      dim fakeDim400: (10, 2, 0, 0, 0)
+ 148 EMISS14_BTDSW1_PDF_IR_CLD_OBJ dims=('fakeDim401', 'fakeDim402', 'fakeDim403') shape=(9, 28, 10) type=6 min=1.043e-06 max=0.6818 sum=10 ceros=0.000
+      dim fakeDim401: (9, 0, 0, 0, 0)
+      dim fakeDim402: (28, 1, 0, 0, 0)
+      dim fakeDim403: (10, 2, 0, 0, 0)
+ 149 EMISS14_BETASW1_TOT_BETA8511_TOT_PDF_IR_CLD_OBJ dims=('fakeDim404', 'fakeDim405', 'fakeDim406') shape=(9, 140, 10) type=6 min=1.042e-06 max=0.188 sum=10 ceros=0.000
+      dim fakeDim404: (9, 0, 0, 0, 0)
+      dim fakeDim405: (140, 1, 0, 0, 0)
+      dim fakeDim406: (10, 2, 0, 0, 0)
+ 150 EMISS14_BETASW1_OPAQUE_BETA8511_OPAQUE_PDF_IR_CLD_OBJ dims=('fakeDim407', 'fakeDim408', 'fakeDim409') shape=(9, 140, 10) type=6 min=1.042e-06 max=0.2006 sum=10 ceros=0.000
+      dim fakeDim407: (9, 0, 0, 0, 0)
+      dim fakeDim408: (140, 1, 0, 0, 0)
+      dim fakeDim409: (10, 2, 0, 0, 0)
+ 151 EMISS14_BETASW1_TOT_BETA7311_TOT_PDF_IR_CLD_OBJ dims=('fakeDim410', 'fakeDim411', 'fakeDim412') shape=(9, 140, 10) type=6 min=1.042e-06 max=0.303 sum=10 ceros=0.000
+      dim fakeDim410: (9, 0, 0, 0, 0)
+      dim fakeDim411: (140, 1, 0, 0, 0)
+      dim fakeDim412: (10, 2, 0, 0, 0)

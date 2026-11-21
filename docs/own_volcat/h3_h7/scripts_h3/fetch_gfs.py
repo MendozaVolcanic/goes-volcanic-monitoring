@@ -13,7 +13,10 @@ from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-REPO = r"C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\h3-cielo-modelado-beta-114fd5"
+from pathlib import Path  # noqa: E402
+# Raiz del repo desde la ubicacion del script (docs/own_volcat/<prueba>/<scripts>/). Antes: ruta fija a un
+# worktree ya borrado; aqui solo se usa para importar src/.
+REPO = str(Path(__file__).resolve().parents[4])
 sys.path.insert(0, REPO)
 from src.fetch.gfs_archive import _parse_idx, _read_range  # noqa: E402
 import s3fs  # noqa: E402

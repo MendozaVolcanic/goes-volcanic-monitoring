@@ -14,9 +14,9 @@ import comun_h11 as C  # noqa: E402
 rt = C.rt
 FEAT = os.path.join(C.TRABAJO, "feat_e2")
 RTE2 = os.path.join(C.TRABAJO, "rt_e2")
-# Salida fuera del scratchpad de H11/E2 (se puede borrar): carpeta de notas, datos derivados, no van al repo
-OUT = os.environ.get("H12_OUT", r"C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes"
-                     r"\local_f3a7d295-ddde-4b7c-b258-25e760c44266\h12_datos\h12")
+# Salida fuera del repo (datos derivados). Defecto: copia durable en D: de la carpeta de notas de la sesion de
+# rescate (copiada el 21-11, ver INVENTARIO_REPRODUCIBILIDAD.md); la carpeta de notas se puede borrar sin aviso.
+OUT = os.environ.get("H12_OUT", r"D:\goes_notas\local_f3a7d295\h12_datos\h12")
 os.makedirs(OUT, exist_ok=True)
 RTSIT = os.path.join(OUT, "rt_sitios"); os.makedirs(RTSIT, exist_ok=True)
 LPT = np.log(rt.PTOP)

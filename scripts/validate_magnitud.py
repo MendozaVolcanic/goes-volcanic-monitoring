@@ -35,6 +35,7 @@ import argparse
 import io
 import json
 import math
+import os
 import shutil
 import sys
 import time
@@ -49,7 +50,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 import numpy as np  # noqa: E402
 
-RAW = ROOT / "data" / "raw" / "volcat_validacion"
+# Cuadros VOLCAT de entrada. Defecto: data/raw/volcat_validacion del checkout. En un worktree esa carpeta no
+# existe (gitignored); se apunta a otra copia con --raw o con la variable VOLCAT_VALIDACION_RAW (--raw manda).
+RAW = Path(os.environ.get("VOLCAT_VALIDACION_RAW") or ROOT / "data" / "raw" / "volcat_validacion")
 OUT = ROOT / "docs" / "own_volcat" / "validacion_magnitud"
 F_VOLCAT = OUT / "volcat_lecturas.json"
 F_EXCL = OUT / "exclusiones.json"
@@ -396,7 +399,10 @@ def etapa_comparar(_args):
 
 
 def main():
+    global RAW
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--raw", type=Path, default=None,
+                    help=f"carpeta de cuadros VOLCAT (defecto: {RAW}; también VOLCAT_VALIDACION_RAW)")
     sub = ap.add_subparsers(dest="etapa", required=True)
     sub.add_parser("volcat")
     r = sub.add_parser("recortes")
@@ -411,6 +417,8 @@ def main():
     p.add_argument("--parte", type=int, default=0)
     sub.add_parser("comparar")
     a = ap.parse_args()
+    if a.raw is not None:
+        RAW = a.raw
     {"volcat": etapa_volcat, "recortes": etapa_recortes,
      "propios": etapa_propios, "comparar": etapa_comparar}[a.etapa](a)
 

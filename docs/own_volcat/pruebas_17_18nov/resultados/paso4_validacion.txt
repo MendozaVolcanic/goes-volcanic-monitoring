@@ -1,0 +1,27 @@
+2026-11-01 cuadros 132 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-02 cuadros 135 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-03 cuadros 132 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-04 cuadros 137 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-05 cuadros 138 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-06 cuadros 138 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-07 cuadros 134 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 1 crep 0 noche 0
+    dia 19:50 a 19:50 tam max 4
+2026-11-08 cuadros 142 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 13 crep 0 noche 0
+    dia 17:40 a 21:30 tam max 15
+2026-11-09 cuadros 139 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-10 cuadros 140 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 7 crep 5 noche 0
+    crep [('22:30', 19, False), ('22:40', 4, False), ('22:50', 5, False), ('23:00', 7, False), ('23:20', 4, False)]
+    dia 15:00 a 22:20 tam max 23
+2026-11-11 cuadros 138 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 3 crep 0 noche 0
+    dia 17:50 a 18:10 tam max 8
+2026-11-12 cuadros 139 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-13 cuadros 138 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-14 cuadros 136 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 32 crep 1 noche 0
+    crep [('22:40', 23, False)]
+    dia 16:40 a 22:30 tam max 28
+2026-11-15 cuadros 132 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-16 cuadros 131 sin barra 0 con manto o sistema grande a <50 km 40 | anclados dia 1 crep 2 noche 5
+    noche [('08:30', 7, True), ('08:40', 26, True), ('08:50', 9, True), ('09:10', 5, True), ('09:30', 12, True)]
+    crep [('09:40', 18, True), ('10:00', 23, True)]
+    dia 10:30 a 10:30 tam max 20
+cuadros nocturnos anclados sin manto: 0  pares consecutivos (10 min): 0

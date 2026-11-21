@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-20 (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-21 (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,112 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre 2026-11-20 (PR 60 a 63 en main: H11 no concluyente, SECO propio no cumple; tesis de Pavolonis leída; H12 y H13 corriendo; limpieza de disco)
+## 0. Cierre 2026-11-21 (PR 65 a 73 en main: H12 no concluyente, H13 falsada, fuga GFS arreglada; tablas y eventos de VOLCAT públicos; H14 compatible, H15 sin probar; correo v5 sin enviar)
+
+> Estado fijado sin trabajo en curso: las siete sesiones hijas de esta coordinación terminaron y no quedan PR
+> abiertos (`gh pr list` vacío al cerrar). Sesión coordinadora `local_a7c21f45`; notas de coordinación en
+> `C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_a7c21f45-ef62-4270-9e3a-c053b95c331e\COORDINACION_2026-11-20.md`.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| H12, Test 3 original de Francis 2012 | **No concluyente** (AUC 0,581; cuadros 0,758 / 0,515; cumbres 0,348 < 0,50) | PR 65, merge `237f905`; corrección del conjunto B (655 negativos limpios) en `h12_resultado_correccionB.txt` |
+| H13, cambio entre cuadros de 10 min | **Falsada** (máximo 0,582 < 0,60 de 18 variables) | PR 66, merge `a1563fe` |
+| Fuga de temporales GFS (12,1 GB en C: el 20-11) | **Arreglada de raíz** en 4 scripts: `codes_new_from_message`, 0 temporales, perfiles idénticos byte a byte | PR 67, merge `e2f2edc` |
+| POR_QUE al día (§3.6 H12 y H13; §3.7 H14, C2, C2b, H15) | En main | PR 68 `28c5966`, PR 73 `cd82cb8` |
+| Búsqueda 2023 a 2026 | Tablas de probabilidad y configuración de VOLCAT para ABI **públicas** en SSEC; eventos por volcán; caso de prueba de Mauna Loa; ninguna publicación nueva del grupo sobre detección | `...\local_a7c21f45-...\BUSQUEDA_2026-11-20.md`; copias en `D:\goes_notas\busqueda_2026-11-20\` (SHA-512 verificado) |
+| 60 eventos VOLCAT de Chillán (13, 14 y 18-11) | Bajados con el sí de Nicolás, sólo uso interno, a reserva de autorización | `D:\goes_notas\busqueda_2026-11-20\volcat_eventos_357070\LEEME.md` |
+| Plan del 21-11 | En main | PR 69 `a4e60c5`, `docs/own_volcat/PLAN_2026-11-21_LUT_VOLCAT.md` |
+| H14, anatomía de los eventos | **Compatible, sin fuerza** (4 eventos; pide ≥ 10). Firma de onda larga < 0,05 en 99,35 % de 767 px, también en el arranque | PR 70 `9152c60`, `docs/own_volcat/eventos_h14/` |
+| Huella decodificada del PNG VOLCAT | **Corrida 1 fila al S y 1 columna al E** de `event_idx` (IoU 0,19 → 0,42), medido el 14-11 | `eventos_h14/resultados/georef_resumen.json` |
+| C2, modelo radiativo propio | **Repuesto**: error 0,0 K contra H11 (una mutación de la SRF da 7,24 K). Insumos en `D:\goes_cache\rt\` (`H3_RT_DL`, `H3_RT_LBL`) | PR 71 `70ae49c` |
+| C2b, cielo despejado de VOLCAT en Mauna Loa | No concluyente por nubes; análisis posterior: **sigue la cota fina** (−3,75 K/km dentro de la celda GFS) | PR 71, `docs/own_volcat/mauna_loa_c2b/` |
+| H15, tablas reales sobre Chillán | **Sin probar**: lectura suficiente; validación no aprobada (κ 0,795 con ε y β de VOLCAT, 0,245 con los nuestros); falla en nube tenue (εtot < 0,5), donde está la huella (0,16) | PR 72 `0f729c0`, `docs/own_volcat/lut_h15/` |
+| Correo v5 a Pavolonis | Redactado (inglés y español), **sin enviar**; faltan [cargo], [correo institucional], [teléfono] | `...\local_a7c21f45-...\Correo_VOLCAT_Pavolonis_v5.docx` |
+| main | `cd82cb8` en el remoto (más el bot de FRP) | `git ls-remote` |
+| Disco | C: 23 GB libres, D: 29 GB libres (Mauna Loa y cachés de C2 y C3 en D:) | `df` al cerrar |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | ¿Fusionar este traspaso? | sí / no | Sí: sólo STATUS.md |
+| 2 | ¿Enviar el correo v5? | ya / esperar | Ya. Es lo único que destraba H15 (regla de nube tenue y cielo despejado que entra a ε) y regulariza los eventos bajados. Completar cargo, correo y teléfono |
+| 3 | ¿Archivar a diario los eventos VOLCAT de Chillán mientras Pavolonis no conteste? | esperar autorización / bajar igual | Esperar: el archivo declara acceso restringido y ya se pide permiso. Costo: se pierde lo que ocurra esa semana |
+| 4 | ¿Inventario de reproducibilidad de `docs/own_volcat/` (cada resultado, qué insumos usa, si existen hoy)? | sí, sesión aparte / no | Sí, barato y sin agentes auditores: el 20-11 se perdieron scratchpads y el modelo radiativo dejó de correr sin que nada avisara |
+| 5 | ¿Archivar las sesiones hijas terminadas (fuga-gfs, búsqueda, C1, C2, C3, H12, H13)? | sí / no | Sí: todo está en main o en las notas |
+| 6 | ¿Borrar los scratchpads viejos de Temp y el worktree `pr39`? (del traspaso anterior) | sí / no | Sí |
+| 7 | Capa térmica a 3,9 µm en el dashboard (C6) | ahora / después | Después de la respuesta de Pavolonis, con criterio y ficha SDA |
+
+### c. Lo aprendido
+
+- **Antes de concluir "no es público", recorrer el servidor del autor** (regla general del workspace, propuesta para
+  `C:\Users\nmend\OneDrive\Escritorio\claude\GUIA_MAESTRA_INVESTIGACION.md`): durante cuatro días se dijo que las
+  tablas de VOLCAT no eran públicas y estaban en un directorio HTTP abierto de SSEC (`bin.ssec.wisc.edu/pub/volcat/`).
+  Mirar directorios `pub/`, `test_cases/`, `static_ancillary/` y los `EVENT_URL` de los propios archivos.
+- **Validar la huella contra la fuente exacta antes de medir** (propio del proyecto): la huella decodificada del PNG
+  estaba corrida un píxel y diluyó quince pruebas. Desde ahora, `event_idx` donde exista; el PNG corregido para octubre.
+- **Validar la lectura de una tabla ajena contra la salida del propio sistema antes de aplicarla** (método general):
+  C3 eligió la variante en los cuadros 1 a 5, validó en los 6 a 10 y se detuvo al no aprobar. Así un "no" en
+  Chillán no se confunde con un error de lectura.
+- **Fusionar con `gh pr merge --match-head-commit <sha revisado>`** (regla general): garantiza que lo fusionado es lo
+  revisado. Dos PR que agregan una fila al final del mismo archivo chocan: se resuelve conservando ambas.
+- **eccodes vía cffi retiene el archivo en Windows** aunque Python lo cierre (memoria `reference_eccodes_cffi_file_leak.md`).
+- **Coordinar en paralelo funcionó**: cada sesión hija con criterio propio y PR sin fusionar; la coordinadora revisa
+  el criterio contra el registro de actividad de GitHub (`gh api repos/.../activity`) y los números contra la salida cruda.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** VOLCAT informa firma de onda larga ~0 en los 60 cuadros de Chillán (H14), bajo el supuesto de que
+  1 = firma fuerte.
+- **SOSPECHA:** el sentido de la escala de `ash_spectral_signature_strength` (1 = firma fuerte); no documentado,
+  pregunta (a) del correo v5.
+- **CONFIRMADO:** el corrimiento de 1 px de la huella PNG el 14-11. **SOSPECHA:** que valga igual en octubre y en
+  otros días.
+- **CONFIRMADO (sólo en Mauna Loa, GOES-17, v3.9.16):** el cielo despejado de VOLCAT sigue la cota fina.
+  **SOSPECHA:** que haga lo mismo con GOES-19 sobre los Andes.
+- **CONFIRMADO:** con las tablas reales, la probabilidad de VOLCAT se reproduce exacta con εtot ≥ 0,5 y no bajo 0,5
+  (posterior de C3). **SOSPECHA:** que la diferencia sea la relación `BETA1112_FROM_BTD_BIAS` / `FCT1` de los atributos.
+- **SOSPECHA:** los eventos del 13-11 ya vencieron en SSEC (retención ~7 días, inferida de los listados).
+- **SOSPECHA:** la causa de la baja de C: entre el 20-11 (33,5 GB) y el inicio de esta sesión (18 GB); no
+  identificada (Temp pesaba 1 GB y no tenía GRIB).
+
+### e. Cerrado, no rehacer (con el número que lo cerró)
+
+Todo lo de "## 0-prev7 e." más: H12 Test 3 original (AUC 0,581; cumbres 0,348), H13 cambio entre cuadros (máximo
+0,582), la fuga GFS (PR 67), digitalizar las Fig. 4.13 y 4.14 de la tesis (innecesario: están las tablas reales),
+buscar publicaciones del grupo VOLCAT 2023 a 2026 sobre detección (no hay), un núcleo con firma junto al cráter
+(H14: mediana 0,0008 a ≤ 10 km), aplicar las tablas a Chillán sin validar la lectura en nube tenue (C3 lo prohíbe).
+
+### f. Prompt para la próxima sesión
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Usa /retomar.
+
+1. Verifica antes de creer: git fetch; git ls-remote origin -h refs/heads/main (cd82cb8 o posterior
+   con commits del bot de FRP); gh pr list (vacío salvo, quizás, este traspaso).
+2. Lee CLAUDE.md, este STATUS.md "## 0.", docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md (§1 y §3.7)
+   y docs/own_volcat/PLAN_2026-11-21_LUT_VOLCAT.md.
+3. Pregunta a Nicolás si envió el correo v5 a Pavolonis y si hubo respuesta
+   (C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_a7c21f45-ef62-4270-9e3a-c053b95c331e\Correo_VOLCAT_Pavolonis_v5.docx).
+   - Si respondió con la regla de nube tenue y el cielo despejado: retomar C3 en la etapa 2 (validación
+     contra Mauna Loa, D:\goes_cache\volcat_test_mauna_loa) y sólo si aprueba, la etapa 3 en Chillán con
+     event_idx y las dos correcciones del cielo despejado.
+   - Si autorizó los eventos: C5, archivo diario de events/Buenos Aires/357070 a D:, para llegar a >= 10
+     eventos y volver a medir H14.
+   - Si no hay respuesta: decisiones b.4 a b.7 de este bloque.
+4. Reglas: español de Chile sin voseo ni guiones largos; rutas absolutas; no VIIRS; la carpeta principal
+   (rama audit/2026-11-previa-local) no se toca y su data/raw/volcat_validacion sólo se lee;
+   docs/auditoria_2026-11 no se sube; eventos y tablas de SSEC no van al repo ni al Space; token HF sin
+   imprimir; cambio de lógica = ficha SDA en el mismo commit; fusionar sólo con el sí de Nicolás para ESE
+   PR y con --match-head-commit; criterio antes de medir y control pareado por BT11; huella = event_idx
+   o PNG corregido 1 px; todo lo grande a D:.
+5. Si la sesión no alcanza: /cierre al llegar a base + 250 mil tokens de contexto.
+```
+
+## 0-prev7. Cierre 2026-11-20 (PR 60 a 63 en main: H11 no concluyente, SECO propio no cumple; tesis de Pavolonis leída; H12 y H13 corriendo; limpieza de disco)
 
 > **Estado fijado con trabajo en curso.** Al cerrar seguían vivas dos sesiones hijas, sin rama subida:
 > H12 "Goes: H12, Test 3 original de Francis 2012 en Chillán" (`local_45e706c6-ebec-46c0-a547-4c7136a2428a`,

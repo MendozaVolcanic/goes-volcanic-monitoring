@@ -28,7 +28,8 @@ N_ESC, N_PX, SEMILLA = 5, 300, 0
 def main(out):
     os.makedirs(out, exist_ok=True)
     print("rt desde", C.rt.__file__, "| lbl.DL", C.rt.lbl.DL, "| LUT", C.rt.LBL, flush=True)
-    h3 = sorted({p["pos"] for p in C.pares() if p["origen"] == "H3"})
+    par = {p["pos"]: p for p in C.pares() if p["origen"] == "H3"}
+    h3 = sorted(par)
     archivos = sorted(f for f in os.listdir(C.RTDIR) if f.endswith(".npz") and f.split("_")[0] + "_" + f.split("_")[1] in h3)
     sel = [archivos[i] for i in np.linspace(0, len(archivos) - 1, N_ESC).round().astype(int)]
     print("archivos H3 en rt_h11:", len(archivos), "| elegidos:", sel, flush=True)
@@ -36,19 +37,24 @@ def main(out):
     filas, todos = [], []
     for f in sel:
         z = np.load(os.path.join(C.RTDIR, f))
-        rol = f[:-4].split("_")[2]; dt = C.dtk("_".join(f.split("_")[:2]))
+        # el archivo se llama <pos>_<rol>; la escena del rol ctrl es la hora del control, no la del positivo
+        rol = f[:-4].split("_")[2]; dt = C.dtk(par["_".join(f.split("_")[:2])][rol])
         esc = C.load(dt); gpath = C.path_gfs(dt)
         assert os.path.basename(gpath) == str(z["gfs"]), (gpath, z["gfs"])
         n = len(z["ys"]); idx = np.sort(rng.choice(n, min(N_PX, n), replace=False))
         ys, xs = z["ys"][idx], z["xs"][idx]
         g = dict(np.load(gpath)); la, lo = C.LAT[ys, xs], C.LON[ys, xs]
-        T = np.stack([R._i2(g, g["T"][i], la, lo) for i in range(len(g["p"]))], 1)
-        q = np.stack([R._i2(g, g["q"][i], la, lo) for i in range(len(g["p"]))], 1)
-        o3 = np.stack([R._i2(g, g["o3"][i], la, lo) for i in range(len(g["p"]))], 1)
         ps, ts = R._i2(g, g["psfc"], la, lo), R._i2(g, g["tskin"], la, lo)
         t0 = time.time()
-        rc = np.array([R.radiancias_pixel(g["p"], T[i], q[i], o3[i], ps[i], ts[i], C.SEC[ys[i], xs[i]], False)[0]
-                       for i in range(len(idx))])
+        previo = os.path.join(out, f"c2_{f}")
+        if os.path.exists(previo):   # reanudable: la escena ya se calculo en una corrida anterior
+            rc = np.load(previo)["rclr_nuevo"]
+        else:
+            T = np.stack([R._i2(g, g["T"][i], la, lo) for i in range(len(g["p"]))], 1)
+            q = np.stack([R._i2(g, g["q"][i], la, lo) for i in range(len(g["p"]))], 1)
+            o3 = np.stack([R._i2(g, g["o3"][i], la, lo) for i in range(len(g["p"]))], 1)
+            rc = np.array([R.radiancias_pixel(g["p"], T[i], q[i], o3[i], ps[i], ts[i], C.SEC[ys[i], xs[i]], False)[0]
+                           for i in range(len(idx))])
         d = {}
         for j, b in enumerate(C.BANDS):
             bt_new = C.rt.bt_de_rad(rc[:, j], esc["co"][b]); bt_old = C.rt.bt_de_rad(z["rclr"][idx, j], esc["co"][b])

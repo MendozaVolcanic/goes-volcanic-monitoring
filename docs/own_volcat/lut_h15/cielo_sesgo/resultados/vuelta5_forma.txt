@@ -1,0 +1,28 @@
+pixeles tenues (cuadros 1 a 5): 151349
+desfase C14 p5/50/95: [-2.45 -0.98  0.27]  C15: [-0.01  0.01  0.09]
+SST CMC - T superficie GFS (en pixeles tenues) p5/50/95: [0.23 0.42 0.66]
+Correlacion de rangos con el desfase C14 (pixel):
+  sst              -0.187
+  tsfc             -0.108
+  sst_menos_tsfc   -0.140
+  clr              -0.008
+  lat              +0.125
+  lon              +0.191
+  dist             +0.200
+  tex              -0.194
+Desfase por distancia a nube espesa (eps >= 0,5), mediana:
+  [0,2) px  n=483 d14 -1.60
+  [2,5) px  n=13428 d14 -1.50
+  [5,10) px  n=26836 d14 -1.27
+  [10,20) px  n=31060 d14 -1.04
+  [20,1000000000.0) px  n=79542 d14 -0.86
+Desfase por textura de BT14 (sd 3x3), mediana:
+  [0,0.2) K  n=621 d14 -0.80
+  [0.2,0.5) K  n=10719 d14 -0.92
+  [0.5,1) K  n=32286 d14 -0.90
+  [1,2) K  n=49579 d14 -0.86
+  [2,99) K  n=58144 d14 -1.21
+Estabilidad del mapa de 0,25° entre cuadros consecutivos (celdas >= 20 px): [('0916', '0921', 339, np.float64(0.967)), ('0921', '0926', 331, np.float64(0.97)), ('0926', '0931', 329, np.float64(0.968)), ('0931', '0936', 336, np.float64(0.972))]
+Autocorrelacion espacial (vecina 0,25°), cuadro 1: n=558 rho=+0.633
+Autocorrelacion espacial (a 1°), cuadro 1: n=428 rho=-0.046
+Vecinos horizontales, cuadro 1: misma celda GFS n=24978 |dd14| med 0.263; cruzan borde n=1083 |dd14| med 0.276

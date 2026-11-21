@@ -1,0 +1,128 @@
+cargando cuadros...
+{
+ "M1_1a5": {
+  "pixeles_0.05_0.9": 625527,
+  "con_correccion_local": 45431,
+  "fraccion": 0.07262835976704443
+ },
+ "M1_6a10": {
+  "pixeles_0.05_0.9": 622291,
+  "con_correccion_local": 37563,
+  "fraccion": 0.060362434937995244
+ },
+ "M1_sesgo_desp_menos_obs_p25_50_75_cuadros_1a5": {
+  "10": [
+   -2.6204833984375,
+   -2.0511474609375,
+   -1.537353515625
+  ],
+  "14": [
+   -0.27191162109375,
+   0.02349853515625,
+   0.302154541015625
+  ],
+  "15": [
+   -0.748626708984375,
+   -0.4095458984375,
+   -0.0604248046875
+  ]
+ },
+ "M1_fraccion_despejada_1a5": 0.04452358803986711,
+ "M2_1a5": {
+  "pixeles_0.05_0.9": 625527,
+  "con_correccion_local": 63874,
+  "fraccion": 0.10211229890955946
+ },
+ "M2_6a10": {
+  "pixeles_0.05_0.9": 622291,
+  "con_correccion_local": 63769,
+  "fraccion": 0.1024745657578207
+ },
+ "M2_sesgo_desp_menos_obs_p25_50_75_cuadros_1a5": {
+  "10": [
+   -2.378448486328125,
+   -1.8011932373046875,
+   -1.188232421875
+  ],
+  "14": [
+   -0.09063720703125,
+   0.399505615234375,
+   0.909759521484375
+  ],
+  "15": [
+   -0.486785888671875,
+   0.03021240234375,
+   0.5908203125
+  ]
+ },
+ "M2_fraccion_despejada_1a5": 0.06104318936877077
+}
+paso1 V0 N0 0.0
+paso1 V0 N1 0.0
+paso1 V1 N0 0.8012
+paso1 V1 N1 0.9135
+paso2 S0 0.3922 0.1626
+paso2 G_M1_p25_B1 0.3383 0.1724
+paso2 G_M1_p25_B2 0.3383 0.1447
+paso2 G_M1_p25_B3 0.3383 0.1447
+paso2 G_M1_p50_B1 0.3972 0.1618
+paso2 G_M1_p50_B2 0.3972 0.1472
+paso2 G_M1_p50_B3 0.3972 0.1472
+paso2 G_M1_p75_B1 0.4652 0.153
+paso2 G_M1_p75_B2 0.4652 0.1514
+paso2 G_M1_p75_B3 0.4652 0.1514
+paso2 G_M2_p25_B1 0.372 0.1658
+paso2 G_M2_p25_B2 0.372 0.1473
+paso2 G_M2_p25_B3 0.372 0.1473
+paso2 G_M2_p50_B1 0.4857 0.1508
+paso2 G_M2_p50_B2 0.4857 0.152
+paso2 G_M2_p50_B3 0.4857 0.152
+paso2 G_M2_p75_B1 0.538 0.1456
+paso2 G_M2_p75_B2 0.538 0.1578
+paso2 G_M2_p75_B3 0.538 0.1578
+paso2 L_M1_p25_B1 0.3956 0.1627
+paso2 L_M1_p25_B2 0.3956 0.1655
+paso2 L_M1_p25_B3 0.3956 0.1655
+paso2 L_M1_p50_B1 0.412 0.163
+paso2 L_M1_p50_B2 0.412 0.1651
+paso2 L_M1_p50_B3 0.412 0.1651
+paso2 L_M1_p75_B1 0.4257 0.1634
+paso2 L_M1_p75_B2 0.4257 0.1645
+paso2 L_M1_p75_B3 0.4257 0.1645
+paso2 L_M2_p25_B1 0.4291 0.1663
+paso2 L_M2_p25_B2 0.4291 0.1643
+paso2 L_M2_p25_B3 0.4291 0.1643
+paso2 L_M2_p50_B1 0.4297 0.1714
+paso2 L_M2_p50_B2 0.4297 0.1639
+paso2 L_M2_p50_B3 0.4297 0.1639
+paso2 L_M2_p75_B1 0.4117 0.1788
+paso2 L_M2_p75_B2 0.4117 0.1637
+paso2 L_M2_p75_B3 0.4117 0.1637
+elegido: V1 N1 G_M2_p75_B2
+validacion: {
+ "n": 622291,
+ "frac_eps_le_001": 0.48104664859366436,
+ "deps_p05_p50_p95": [
+  -0.024889458588529978,
+  -0.007533035161016999,
+  0.015396818178991634
+ ],
+ "n_beta1211": 622291,
+ "frac_b1211_le_002": 0.34346149952353483,
+ "db1211_p05_p50_p95": [
+  -0.36188123340137457,
+  0.00018589816253822278,
+  0.04391152277191285
+ ],
+ "n_beta7311": 560282,
+ "frac_b7311_le_002": 0.6924691494640199,
+ "db7311_p05_p50_p95": [
+  -0.05237100681719781,
+  0.006298108941923508,
+  0.02509870802055616
+ ],
+ "cumple": false
+}
+paso4_nivelB_S2sinBTD_cuadros_6a10 {'todo': {'n': 502234, 'n_volcat_ge05': 27075, 'frac_dif_le_005': 0.894, 'kappa_05': 0.213, 'frac_ge05_recuperada': 0.157}, 'eps_0.0_0.2': {'n': 29674, 'n_volcat_ge05': 494, 'frac_dif_le_005': 0.755, 'kappa_05': 0.085, 'frac_ge05_recuperada': 0.573}, 'eps_0.2_0.5': {'n': 147709, 'n_volcat_ge05': 5150, 'frac_dif_le_005': 0.918, 'kappa_05': 0.092, 'frac_ge05_recuperada': 0.056}, 'eps_0.5_1.01': {'n': 324851, 'n_volcat_ge05': 21431, 'frac_dif_le_005': 0.895, 'kappa_05': 0.275, 'frac_ge05_recuperada': 0.171}}
+paso4_nivelB_S2sinBTD_V0_N0_S0_referencia_H15 {'todo': {'n': 502234, 'n_volcat_ge05': 27075, 'frac_dif_le_005': 0.869, 'kappa_05': 0.266, 'frac_ge05_recuperada': 0.276}, 'eps_0.0_0.2': {'n': 29674, 'n_volcat_ge05': 494, 'frac_dif_le_005': 0.509, 'kappa_05': 0.06, 'frac_ge05_recuperada': 1.0}, 'eps_0.2_0.5': {'n': 147709, 'n_volcat_ge05': 5150, 'frac_dif_le_005': 0.843, 'kappa_05': 0.157, 'frac_ge05_recuperada': 0.2}, 'eps_0.5_1.01': {'n': 324851, 'n_volcat_ge05': 21431, 'frac_dif_le_005': 0.914, 'kappa_05': 0.413, 'frac_ge05_recuperada': 0.278}}
+ok C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\h15-cielo-sesgo-7174e7\docs\own_volcat\lut_h15\cielo_sesgo\resultados\cielo_sesgo.json

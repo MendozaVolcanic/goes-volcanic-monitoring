@@ -24,10 +24,23 @@ búsqueda del 20-11 encontró en el servidor abierto de SSEC (`https://bin.ssec.
    nativa: BT de 3,9 a 12 µm, huella exacta (`event_idx`), indicador de firma espectral por píxel, edad del píxel
    en el objeto, calor y rayos. Los 60 que había (13, 14 y 18-11) se bajaron con el sí de Nicolás a
    `D:\goes_notas\busqueda_2026-11-20\volcat_eventos_357070\` (LEEME con la condición de uso).
-4. En el único cuadro medido (14-11 23:00 UTC, objeto ya desprendido del cráter) VOLCAT mismo da **firma espectral
-   ~0** en los 67 píxeles publicados, y en la muestra VIIRS de NCCF los píxeles "rellenados" del objeto también
-   tienen firma ~0. Indicio de que parte de lo publicado entra por pertenencia al objeto y seguimiento, no por
-   firma.
+4. En 11 de los 60 cuadros leídos por la búsqueda, VOLCAT mismo da **firma espectral de onda larga entre 0,000 y
+   0,002** en todos los píxeles publicados de Chillán, **también en el primer cuadro de cada evento** (13-11 19:00,
+   14-11 12:40 y 16:30). El evento del 13-11 se abrió como `VCB` (por la INFERENCIA de la búsqueda, el detector de
+   crecimiento de nube convectiva volcánica de Pavolonis 2018), los otros como `ASHPLUMEPUFF`. En la muestra VIIRS de
+   NCCF los píxeles "rellenados" del objeto también tienen firma ~0. Supuesto a confirmar: 1 = firma fuerte (la
+   escala no está documentada).
+5. No hay archivo de evento para el 15, 16 ni 17-11, aunque los PNG por sector sí muestran detecciones de Chillán
+   el 16-11: la capa PNG y el sistema de eventos parecen salidas distintas.
+6. **Caso de prueba de VOLCAT en una cumbre de 4 km:** `test_cases/mauna-loa_g17-conus_nov2022_r20260709-volcat-code-ancil.tar.gz`
+   (1,3 GB) trae L1b de ABI de GOES-17, GFS y las salidas intermedias de VOLCAT, entre ellas `geocatRTM` (cielo
+   despejado modelado) y `geocatL2`. Índice leído en flujo; no bajado.
+7. **CLAVR-x** (la familia de nubes de Heidinger y Pavolonis) lleva la temperatura de superficie del NWP a la cota
+   del modelo de elevación con la tasa del propio perfil, según una copia no oficial de 2017 de su código. Ningún
+   ATBD lo dice.
+
+Informe completo de la búsqueda:
+`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_a7c21f45-ef62-4270-9e3a-c053b95c331e\BUSQUEDA_2026-11-20.md`.
 
 **Lo que no está:** la base de volcanes de alertas (`Volcat_Alert_Volcano_Database_Oct8_2021_145852.txt`), los
 bordes de los bins de las dos primeras dimensiones de cada tabla (por buscar en atributos de cada SDS) y la
@@ -40,11 +53,16 @@ ABI) se borró con el scratchpad de H3 el 20-11. Hoy el modelo radiativo propio 
 
 ## Caminos, en el orden propuesto
 
-### C1. Anatomía de los 60 eventos VOLCAT de Chillán (barato, datos ya en D:)
+### C1. H14, objeto y seguimiento: anatomía de los 60 eventos VOLCAT de Chillán (barato, datos ya en D:)
 
-- **Pregunta:** ¿con qué firma arranca VOLCAT un objeto en Chillán? En cada evento, los píxeles con
-  `feature_age` = 0 (primera detección) y los del cráter (≤ 10 km): ¿tienen `ash_spectral_signature_strength` alto
-  o ~0? ¿Cuántos píxeles publicados tienen firma ~0 y dónde están (borde, interior, lejos del cráter)?
+- **Hipótesis (H14):** VOLCAT publica estas plumas sin firma IR; entran por reglas de objeto (pertenencia, cercanía
+  al cráter, seguimiento) o por el detector de crecimiento (`VCB`), y su propio campo de firma lo declara.
+- **Pregunta:** en los 60 cuadros, los píxeles con `feature_age` = 0 (primera detección) y los del cráter
+  (≤ 10 km): ¿tienen `ash_spectral_signature_strength` alto o ~0? ¿Cuántos píxeles publicados tienen firma ~0 y
+  dónde están (borde, interior, lejos del cráter)? ¿Qué tipo de evento abre cada serie?
+- **Qué la falsa:** en la mayoría de los primeros cuadros de evento, la firma total es ≥ 0,5 en la mayoría de los
+  píxeles. Con sólo 3 o 4 eventos no se puede sostener con fuerza: se informa como descripción, y se sostiene sólo
+  con ≥ 10 eventos (C5).
 - **Además:** georreferencia de nuestras huellas decodificadas del PNG contra `event_idx` en los cuadros que
   coinciden (13, 14 y 18-11): desplazamiento en filas y columnas, coincidencia de píxeles.
 - **Costo:** medio día, sin descarga.
@@ -65,15 +83,30 @@ ABI) se borró con el scratchpad de H3 el 20-11. Hoy el modelo radiativo propio 
   `docs/own_volcat/README.md` qué insumo vive dónde.
 - **Costo:** 2 a 3 h.
 
-### C3. H14 con las tablas reales: probabilidad de píxel y de objeto de VOLCAT sobre la huella de Chillán
+### C2b. El cielo despejado de VOLCAT en una cumbre de 4 km (caso de prueba de Mauna Loa)
+
+- Bajar `mauna-loa_g17-conus_nov2022_r20260709-volcat-code-ancil.tar.gz` (1,3 GB, de
+  `https://bin.ssec.wisc.edu/pub/volcat/test_cases/`) a `D:\goes_cache\volcat_test_mauna_loa\`. Antes, mirar si el
+  paquete trae licencia o condición de uso.
+- **Pregunta:** en píxeles despejados de Mauna Loa y Mauna Kea (4,2 km), ¿cuánto se aleja el BT11 despejado de
+  `geocatRTM` del observado? Si queda a ≤ 2 K, VOLCAT corrige la cota; si queda a ≥ 5 K, depende del sesgo local de
+  12 px. Además: si `geocatL2` trae la probabilidad de píxel, sirve como verdad para validar nuestra lectura de las
+  LUT en C3 (paso b), mejor que un evento sin entradas intermedias.
+- **Costo:** medio día más la bajada.
+
+### C3. H15 con las tablas reales: probabilidad de píxel y de objeto de VOLCAT sobre la huella de Chillán
 
 - **Pregunta:** con las LUT y la configuración reales de VOLCAT para ABI, y nuestro cielo despejado corregido por
   el sesgo local de 12 píxeles, ¿la huella de Chillán llega a la probabilidad que exige SECO y el mismo lugar sin
   pluma no? Es la etapa 2 con lo único que le faltaba: las tablas.
 - **Pasos:** (a) leer la estructura de la LUT (bordes de bins, orden de ejes, cómo se combinan los clasificadores
-  activados en la config) y documentarla; (b) validar la lectura con un caso que no sea Chillán: un evento con
-  ceniza clara (de los 7 VAAC hay carpetas activas) donde la probabilidad debe salir alta; (c) recién entonces el
-  criterio de Chillán.
+  activados en la config) y documentarla; (b) validar la lectura con un caso que no sea Chillán: las salidas
+  intermedias de Mauna Loa (C2b) si traen probabilidad, o si no un evento con ceniza clara; (c) recién entonces el
+  criterio de Chillán. El cielo despejado entra con la corrección que diga C2b: sesgo local de 12 px, cota del modelo
+  de elevación al estilo CLAVR-x, o ambas.
+- **Relación con H14:** si H14 es cierta, C3 no puede dar probabilidad alta en la huella, porque la firma la calcula
+  el mismo módulo; C3 es entonces la prueba cara de H14. Si C3 da probabilidad alta y AUC ≥ 0,70, H14 se falsa y
+  nuestro SECO propio estaba mal reconstruido.
 - **Datos:** los 66 pares de H11 (decide) y las 795 escenas de la etapa 2 (réplica), más los 60 eventos de C1
   como verdad exacta de la huella.
 - **Éxito (a fijar en el criterio, propuesta):** mediana de probabilidad de píxel en la huella ≥ 0,5 con AUC
@@ -113,24 +146,23 @@ ABI) se borró con el scratchpad de H3 el 20-11. Hoy el modelo radiativo propio 
 ### Lo que queda fuera o se cierra
 
 - **Digitalizar las Fig. 4.13 y 4.14 de la tesis:** innecesario, están las tablas reales.
-- **Corrección de terreno del cielo despejado por cota (GFS a la altura real):** VOLCAT no la hace; usa el sesgo
-  local. Se retoma sólo si C3 muestra que el sesgo local no basta, o si la búsqueda (tema 3, aún en curso) trae un
-  método probado.
+- **Corrección de terreno del cielo despejado por cota como prueba aparte:** no se hace sola. Entra dentro de C3
+  como una de las dos correcciones posibles, según lo que muestre C2b.
 - **Auditoría multiagente de `docs/own_volcat/`:** no se justifica completa. Sí conviene un inventario de
   reproducibilidad acotado (cada resultado, qué insumos usa y si existen hoy), porque el 20-11 se perdieron
   scratchpads y el modelo radiativo dejó de correr. Propuesta: tarea de una sesión, sin agentes auditores,
   alcance a acordar con Nicolás.
 
-### Pendiente de la búsqueda
-
-Tres agentes de la sesión de búsqueda (publicaciones VOLCAT 2023 a 2026, corrección de terreno, plumas débiles en
-GEO) no habían terminado al escribir esto. Su informe final queda en
-`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_a7c21f45-ef62-4270-9e3a-c053b95c331e\BUSQUEDA_2026-11-20.md`
-y este plan se actualiza si cambia el orden.
+- **Residuo multibanda C10 contra C09 con promedio de 7 cuadros** (idea de Watine-Guiu y Varon 2023 para metano
+  con ABI): prioridad baja, porque VOLCAT mismo dice que en esos píxeles no hay firma IR y β73 mostró que C10 mide
+  la humedad del día en Chillán.
+- **Lo que no dio la búsqueda:** ninguna publicación nueva del grupo VOLCAT sobre detección de ceniza entre 2023 y
+  2026; ninguna red entrenada con etiquetas VOLCAT o VAAC en ABI. El VAAC de Buenos Aires trabaja con VOLCAT
+  (Osores et al. 2026): canal regional para preguntar, mencionable en el correo.
 
 ## Orden y paralelismo
 
-1. C1 y C2 a la vez (sesiones separadas: C1 lee los eventos, C2 repone el modelo radiativo). C4 en paralelo, lo
-   redacta la sesión coordinadora.
-2. C3 cuando C2 pase su validación, con lo que C1 diga sobre núcleo contra huella entera.
+1. C1 y C2 a la vez, en sesiones separadas (C1 lee los eventos; C2 repone el modelo radiativo y, con tu sí a la
+   bajada de 1,3 GB, hace C2b). C4 en paralelo, lo redacta la sesión coordinadora.
+2. C3 cuando C2 pase su validación, con lo que digan C1 (núcleo o huella entera) y C2b (qué corrección del cielo).
 3. C5 y C6 según la respuesta de Pavolonis y el resultado de C3.

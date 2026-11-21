@@ -11,7 +11,7 @@ radiativos locales, LRC) quedó sin hacer**: la sesión llegó a su límite de c
 
 ### Detalle
 
-- Fuente: Heidinger, A. K., y M. J. Pavolonis (2009), JAMC, p. 1107, Fig. 6 ("Clear-sky biases in T11 and T11–T12
+- Fuente: Heidinger, A. K., y M. J. Pavolonis (2009), JAMC, p. 1107, Fig. 6 ("Clear-sky biases in T11 and T11 − T12
   as function of local time for ocean and land surfaces using data from 1 Aug 2006 from NOAA-18 and NOAA-15"). El
   texto de la p. 7 dice que las radiancias despejadas se ajustan con esas curvas. Copia local:
   `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\c2-rt-mauna-loa-332d64\docs\own_volcat\HeidingerPavolonis_2009_SplitWindowCirrus.pdf`

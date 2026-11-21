@@ -1,0 +1,42 @@
+Exactos (|Δlogit|<1e-3) entre no saturados, y métricas del criterio (|ΔP|<=0,05, κ, recuperados) por tramo
+base (7 tablas)                        | <0,2: exact 0.0001 dP 0.9661 κ 0.842 rec 0.954 | 0,2-0,5: exact 0.7285 dP 0.9451 κ 0.688 rec 1.000 | >=0,5: exact 0.9904 dP 0.9996 κ 0.999 rec 1.000
+R1                                     | <0,2: exact 0.0004 dP 0.9661 κ 0.842 rec 0.954 | 0,2-0,5: exact 0.9878 dP 0.9980 κ 0.990 rec 1.000 | >=0,5: exact 0.9904 dP 0.9996 κ 0.999 rec 1.000
+R2                                     | <0,2: exact 0.1536 dP 0.9628 κ 0.599 rec 1.000 | 0,2-0,5: exact 0.7285 dP 0.9451 κ 0.688 rec 1.000 | >=0,5: exact 0.9904 dP 0.9996 κ 0.999 rec 1.000
+R1+R2                                  | <0,2: exact 0.1602 dP 0.9628 κ 0.599 rec 1.000 | 0,2-0,5: exact 0.9878 dP 0.9980 κ 0.990 rec 1.000 | >=0,5: exact 0.9904 dP 0.9996 κ 0.999 rec 1.000
+R1+R2+R3[e73>=0,05 (falta→no)]         | <0,2: exact 0.8417 dP 0.9958 κ 0.927 rec 0.866 | 0,2-0,5: exact 0.9519 dP 0.9919 κ 0.961 rec 0.928 | >=0,5: exact 0.9904 dP 0.9996 κ 0.999 rec 1.000
+R1+R2+R3[e73>=0,05 (falta→sí)]         | <0,2: exact 0.1617 dP 0.9628 κ 0.599 rec 1.000 | 0,2-0,5: exact 0.9750 dP 0.9962 κ 0.979 rec 0.973 | >=0,5: exact 0.9904 dP 0.9996 κ 0.999 rec 1.000
+R1+R2+R3[eps>=0,1]                     | <0,2: exact 0.8690 dP 0.9962 κ 0.937 rec 0.893 | 0,2-0,5: exact 0.9878 dP 0.9980 κ 0.990 rec 1.000 | >=0,5: exact 0.9904 dP 0.9996 κ 0.999 rec 1.000
+R1+R2+R3[e73>=0,05 & eps>=0,1 (falta→no)] | <0,2: exact 0.8411 dP 0.9958 κ 0.927 rec 0.866 | 0,2-0,5: exact 0.9519 dP 0.9919 κ 0.961 rec 0.928 | >=0,5: exact 0.9904 dP 0.9996 κ 0.999 rec 1.000
+R1+R2+R3[(e73>=0,05 o falta) & eps>=0,1] | <0,2: exact 0.8675 dP 0.9962 κ 0.937 rec 0.893 | 0,2-0,5: exact 0.9750 dP 0.9962 κ 0.979 rec 0.973 | >=0,5: exact 0.9904 dP 0.9996 κ 0.999 rec 1.000
+
+Con R1+R2: no exactos 22542 de 186195 no saturados; de ellos se arreglan quitando las dos de 8,5: 0.9518
+  <0,2: no exactos 20873, arreglables sin 8,5 20872
+  0,2-0,5: no exactos 588, arreglables sin 8,5 584
+  >=0,5: no exactos 1081, arreglables sin 8,5 0
+   eps    piden sin 8,5: p0/5/50/95/100 [0.009  0.0116 0.0438 0.1097 0.3946] falta 0.000 | exactos con 8,5: [0.009  0.3419 0.5495 0.7541 0.9   ] falta 0.000
+   e73    piden sin 8,5: p0/5/50/95/100 [0.0303 0.031  0.0392 0.0489 0.0499] falta 0.983 | exactos con 8,5: [0.0296 0.0858 0.2917 0.6112 0.8823] falta 0.032
+   b85    piden sin 8,5: p0/5/50/95/100 [0.3324 1.053  1.1692 1.5817 2.5254] falta 0.000 | exactos con 8,5: [0.4851 1.0611 1.0871 1.1202 3.2537] falta 0.000
+   b85op  piden sin 8,5: p0/5/50/95/100 [0.1314 0.8665 1.6382 4.     4.0001] falta 0.000 | exactos con 8,5: [0.195  0.9823 1.0399 1.1273 4.    ] falta 0.000
+   b_tot  piden sin 8,5: p0/5/50/95/100 [0.2023 0.516  0.8911 1.0369 1.05  ] falta 0.000 | exactos con 8,5: [0.2018 0.7915 0.8564 0.9042 1.0499] falta 0.000
+   b_op   piden sin 8,5: p0/5/50/95/100 [0.4213 0.4247 2.6455 4.2649 5.4249] falta 0.000 | exactos con 8,5: [0.4235 1.065  1.2747 1.6483 5.5696] falta 0.000
+   btd    piden sin 8,5: p0/5/50/95/100 [-0.3894  1.7658  2.6789  3.2026  3.9915] falta 0.000 | exactos con 8,5: [-2.3164 -0.3793  0.5405  1.6382  3.874 ] falta 0.000
+   piden sin 8,5    eps<0,1 : e73>=0,05      0  e73<0,05     95  e73 falta  20055
+   piden sin 8,5    eps>=0,1: e73>=0,05      0  e73<0,05    264  e73 falta   1042
+   exactos con 8,5  eps<0,1 : e73>=0,05     15  e73<0,05     21  e73 falta   2501
+   exactos con 8,5  eps>=0,1: e73>=0,05 157379  e73<0,05    923  e73 falta   2814
+
+Sólo píxeles donde 8,5 aporta (|contrib| > 1e-3):
+   piden sin 8,5    eps<0,1 : e73>=0,05      0  e73<0,05     95  e73 falta  20055
+   piden sin 8,5    eps>=0,1: e73>=0,05      0  e73<0,05    264  e73 falta   1042
+   exactos con 8,5  eps<0,1 : e73>=0,05     15  e73<0,05     21  e73 falta   2498
+   exactos con 8,5  eps>=0,1: e73>=0,05 157379  e73<0,05    923  e73 falta   2814
+   eps        e73 falta, eps>=0,1 | piden sin 8,5 [0.1   0.102 0.141 0.334 0.368] | exactos con 8,5 [0.1   0.104 0.261 0.333 0.377]
+   b73        e73 falta, eps>=0,1 | piden sin 8,5 [nan nan nan nan nan] | exactos con 8,5 [nan nan nan nan nan]
+   b85        e73 falta, eps>=0,1 | piden sin 8,5 [0.869 1.04  1.101 1.153 1.237] | exactos con 8,5 [0.832 1.055 1.11  1.157 1.308]
+   b85op      e73 falta, eps>=0,1 | piden sin 8,5 [0.609 0.963 1.197 1.689 4.   ] | exactos con 8,5 [0.552 1.001 1.212 1.7   4.   ]
+   b_tot      e73 falta, eps>=0,1 | piden sin 8,5 [0.713 0.753 0.877 1.022 1.05 ] | exactos con 8,5 [0.71  0.752 0.82  0.929 0.988]
+   b_op       e73 falta, eps>=0,1 | piden sin 8,5 [0.425 1.282 1.759 2.748 3.186] | exactos con 8,5 [0.425 1.249 1.693 2.048 2.573]
+   btd        e73 falta, eps>=0,1 | piden sin 8,5 [-0.389  0.537  1.705  2.665  3.166] | exactos con 8,5 [-0.322  0.544  1.531  2.289  2.867]
+   bt10-clr10 e73 falta, eps>=0,1 | piden sin 8,5 [-0.992 -0.904 -0.096  2.351  3.055] | exactos con 8,5 [-0.994 -0.885 -0.142  2.086  3.636]
+   bt14-clr14 e73 falta, eps>=0,1 | piden sin 8,5 [-24.923 -22.37   -8.993  -6.667  -6.059] | exactos con 8,5 [-26.061 -22.295 -17.094  -6.566  -5.71 ]
+   clr10      e73 falta, eps>=0,1 | piden sin 8,5 [251.625 252.117 253.131 256.364 259.659] | exactos con 8,5 [251.532 252.111 252.925 255.43  259.691]

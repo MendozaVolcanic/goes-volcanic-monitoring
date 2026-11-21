@@ -1,0 +1,66 @@
+cuadros 1-5: píxeles 752500, no saturados 186195, no exactos con 7 tablas 39060
+  eps [0,0.2): no saturados 24854, no exactos 1.000
+  eps [0.2,0.5): no saturados 48356, no exactos 0.271
+  eps [0.5,1.01): no saturados 112985, no exactos 0.010
+
+(1) Subconjuntos de tablas (8 = 7 + BTD). Para cada píxel no exacto, ¿existe un subconjunto exacto?
+  explicados por algún subconjunto: 0.341
+   12546 (0.321)  omite ['BETA1112_TOT_BETA7311_TOT_IR']
+     599 (0.015)  omite ['BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_TOT_BETA8511_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+     390 (0.010)  omite ['BETA1112_TOT_BETA8511_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+     152 (0.004)  omite ['EMISS14_TOT_BETA1112_TOT_IR', 'EMISS14_TOT_BETA1112_OPAQUE_IR', 'EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR'] + BTD
+     134 (0.003)  omite ['BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+     101 (0.003)  omite ['EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR', 'EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+     101 (0.003)  omite ['EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+     101 (0.003)  omite ['EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR', 'BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+     101 (0.003)  omite ['EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR', 'EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR', 'BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+     101 (0.003)  omite ['EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+     101 (0.003)  omite ['EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR', 'BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+     101 (0.003)  omite ['BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+  eps [0,0.2): n=24851 explicados por algún subconjunto 0.005
+        101 (0.004) omite ['EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR', 'EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR', 'BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+        101 (0.004) omite ['EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR', 'EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+        101 (0.004) omite ['EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+        101 (0.004) omite ['EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR', 'BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+        101 (0.004) omite ['BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+        101 (0.004) omite ['BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+  eps [0.2,0.5): n=13128 explicados por algún subconjunto 1.000
+      12540 (0.955) omite ['BETA1112_TOT_BETA7311_TOT_IR']
+        584 (0.044) omite ['BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_TOT_BETA8511_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+        383 (0.029) omite ['BETA1112_TOT_BETA8511_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR']
+        152 (0.012) omite ['EMISS14_TOT_BETA1112_TOT_IR', 'EMISS14_TOT_BETA1112_OPAQUE_IR', 'EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR'] + BTD
+         74 (0.006) omite ['EMISS14_TOT_BETA1112_OPAQUE_IR', 'EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR', 'BETA1112_TOT_BETA8511_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR'] + BTD
+         12 (0.001) omite ['EMISS14_TOT_BETA1112_TOT_IR', 'EMISS14_TOT_BETA1112_OPAQUE_IR', 'EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR', 'BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_TOT_BETA8511_TOT_IR']
+
+(2) Casillero de εtot corrido en las 7 tablas
+  corrimiento -2: exactos entre no exactos 0.000; eps<0,2 0.000; 0,2-0,5 0.000
+  corrimiento -1: exactos entre no exactos 0.000; eps<0,2 0.000; 0,2-0,5 0.000
+  corrimiento +1: exactos entre no exactos 0.000; eps<0,2 0.000; 0,2-0,5 0.000
+  corrimiento +2: exactos entre no exactos 0.000; eps<0,2 0.000; 0,2-0,5 0.000
+
+(3) Casillero de β corrido en UNA tabla (las demás igual)
+  EMISS14_TOT_BETA1112_TOT_IR              b_tot  mejor corrimiento -2: explica 0.000 de los no exactos
+  EMISS14_TOT_BETA1112_OPAQUE_IR           b_op   mejor corrimiento -1: explica 0.000 de los no exactos
+  EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR    b_low  mejor corrimiento +3: explica 0.000 de los no exactos
+  EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR    b_mid  mejor corrimiento +3: explica 0.000 de los no exactos
+  BETA1112_TOT_BETA7311_TOT_IR             b73    mejor corrimiento +3: explica 0.000 de los no exactos
+  BETA1112_TOT_BETA7311_TOT_IR             b_tot  mejor corrimiento +3: explica 0.000 de los no exactos
+  BETA1112_TOT_BETA8511_TOT_IR             b85    mejor corrimiento -2: explica 0.000 de los no exactos
+  BETA1112_TOT_BETA8511_TOT_IR             b_tot  mejor corrimiento +3: explica 0.000 de los no exactos
+  BETA1112_OPAQUE_BETA8511_OPAQUE_IR       b85op  mejor corrimiento +2: explica 0.000 de los no exactos
+  BETA1112_OPAQUE_BETA8511_OPAQUE_IR       b_op   mejor corrimiento -2: explica 0.001 de los no exactos
+
+Residuo dL (7 tablas menos VOLCAT) más frecuentes, con la contribución media de cada tabla en esos píxeles
+  dL=+6.72 n= 5509  eps med 0.395  b73 NaN 0.00  contrib [+6.05 -3.60 -0.13 -1.78 +6.72 +6.91 -4.24 -3.66]
+  dL=+2.98 n= 4705  eps med 0.387  b73 NaN 0.00  contrib [+2.77 -2.71 -1.92 -3.30 +2.98 +4.49 -0.00 -3.86]
+  dL=-2.41 n= 1639  eps med 0.055  b73 NaN 1.00  contrib [-1.25 -1.79 +0.00 +0.00 +0.00 -1.53 -0.00 -3.22]
+  dL=+3.65 n= 1307  eps med 0.354  b73 NaN 0.00  contrib [+2.77 -2.71 -1.92 -3.67 +3.65 +4.49 -0.00 -4.00]
+  dL=-4.72 n= 1267  eps med 0.066  b73 NaN 1.00  contrib [-4.81 -1.79 +0.00 +0.00 +0.00 -2.31 -0.00 -0.00]
+  dL=-4.37 n= 1194  eps med 0.068  b73 NaN 1.00  contrib [-1.77 -1.79 +0.00 +0.00 +0.00 -1.96 -0.00 -3.22]
+  dL=+0.09 n= 1048  eps med 0.020  b73 NaN 1.00  contrib [-0.00 -3.09 +0.00 +0.00 +0.00 -0.00 -0.00 -4.65]
+  dL=-3.97 n=  957  eps med 0.070  b73 NaN 1.00  contrib [-1.25 -1.79 +0.00 +0.00 +0.00 -1.56 -0.00 -3.22]
+  dL=+0.10 n=  956  eps med 0.017  b73 NaN 1.00  contrib [-0.32 -3.09 +0.00 +0.00 +0.00 -0.00 -0.00 -4.65]
+  dL=-3.11 n=  905  eps med 0.066  b73 NaN 1.00  contrib [-0.57 -1.79 +0.00 +0.00 +0.00 -0.70 -0.00 -4.25]
+  dL=-0.39 n=  894  eps med 0.135  b73 NaN 1.00  contrib [-0.05 -0.00 -2.58 +0.00 +0.00 -0.59 -0.00 -2.64]
+  dL=-0.00 n=  793  eps med 0.547  b73 NaN 0.07  contrib [+6.51 -3.40 +2.07 +1.87 +6.73 +7.47 -3.08 -1.59]
+  orden de contrib: ['EMISS14_TOT_BETA1112_TOT_IR', 'EMISS14_TOT_BETA1112_OPAQUE_IR', 'EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR', 'EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR', 'BETA1112_TOT_BETA7311_TOT_IR', 'BETA1112_TOT_BETA8511_TOT_IR', 'BETA1112_OPAQUE_BETA8511_OPAQUE_IR', 'BTD']

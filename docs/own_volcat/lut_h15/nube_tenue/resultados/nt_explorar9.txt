@@ -1,0 +1,108 @@
+píxeles informativos: con 8,5 163650, sólo sin 8,5 21456
+
+Árbol profundidad 1: exactitud 0.9793
+|--- eps <= 0.1003
+|   |--- class: 1
+|--- eps >  0.1003
+|   |--- class: 0
+
+
+Árbol profundidad 2: exactitud 0.9877
+|--- eps <= 0.1003
+|   |--- b85 <= 1.0500
+|   |   |--- class: 0
+|   |--- b85 >  1.0500
+|   |   |--- class: 1
+|--- eps >  0.1003
+|   |--- e73(falta=-1) <= 0.0496
+|   |   |--- class: 0
+|   |--- e73(falta=-1) >  0.0496
+|   |   |--- class: 0
+
+
+Árbol profundidad 3: exactitud 0.9894
+|--- eps <= 0.1003
+|   |--- b85 <= 1.0500
+|   |   |--- b85op <= 0.7250
+|   |   |   |--- class: 0
+|   |   |--- b85op >  0.7250
+|   |   |   |--- class: 0
+|   |--- b85 >  1.0500
+|   |   |--- b85 <= 2.0006
+|   |   |   |--- class: 1
+|   |   |--- b85 >  2.0006
+|   |   |   |--- class: 0
+|--- eps >  0.1003
+|   |--- e73(falta=-1) <= 0.0496
+|   |   |--- b_tot <= 0.9500
+|   |   |   |--- class: 0
+|   |   |--- b_tot >  0.9500
+|   |   |   |--- class: 1
+|   |--- e73(falta=-1) >  0.0496
+|   |   |--- e73(falta=-1) <= 0.0499
+|   |   |   |--- class: 0
+|   |   |--- e73(falta=-1) >  0.0499
+|   |   |   |--- class: 0
+
+
+Árbol profundidad 4: exactitud 0.9895
+|--- eps <= 0.1003
+|   |--- b85 <= 1.0500
+|   |   |--- b85op <= 0.7250
+|   |   |   |--- bt10-clr10 <= 2.8704
+|   |   |   |   |--- class: 0
+|   |   |   |--- bt10-clr10 >  2.8704
+|   |   |   |   |--- class: 1
+|   |   |--- b85op >  0.7250
+|   |   |   |--- sesgo_btd <= -1.0054
+|   |   |   |   |--- class: 0
+|   |   |   |--- sesgo_btd >  -1.0054
+|   |   |   |   |--- class: 0
+|   |--- b85 >  1.0500
+|   |   |--- b85 <= 2.0006
+|   |   |   |--- bt10-clr10 <= -1.6326
+|   |   |   |   |--- class: 0
+|   |   |   |--- bt10-clr10 >  -1.6326
+|   |   |   |   |--- class: 1
+|   |   |--- b85 >  2.0006
+|   |   |   |--- bt10-clr10 <= 0.1855
+|   |   |   |   |--- class: 1
+|   |   |   |--- bt10-clr10 >  0.1855
+|   |   |   |   |--- class: 0
+|--- eps >  0.1003
+|   |--- e73(falta=-1) <= 0.0496
+|   |   |--- b_tot <= 0.9500
+|   |   |   |--- btclr <= 291.1756
+|   |   |   |   |--- class: 0
+|   |   |   |--- btclr >  291.1756
+|   |   |   |   |--- class: 0
+|   |   |--- b_tot >  0.9500
+|   |   |   |--- b85-b_tot <= 0.2159
+|   |   |   |   |--- class: 1
+|   |   |   |--- b85-b_tot >  0.2159
+|   |   |   |   |--- class: 0
+|   |--- e73(falta=-1) >  0.0496
+|   |   |--- e73(falta=-1) <= 0.0499
+|   |   |   |--- e73(falta=-1) <= 0.0499
+|   |   |   |   |--- class: 0
+|   |   |   |--- e73(falta=-1) >  0.0499
+|   |   |   |   |--- class: 1
+|   |   |--- e73(falta=-1) >  0.0499
+|   |   |   |--- class: 0
+
+Mejor corte de una sola variable:
+   eps              sin 8,5 si eps < 0.1055: exactitud 0.9788
+   e73(falta=-1)    sin 8,5 si e73(falta=-1) < 0.0354: exactitud 0.9690
+   b85              sin 8,5 si b85 >= 1.1429: exactitud 0.9481
+   b85op            sin 8,5 si b85op >= 1.2074: exactitud 0.9546
+   b_tot            sin 8,5 si b_tot >= 0.9338: exactitud 0.9181
+   b_op             sin 8,5 si b_op >= 1.9410: exactitud 0.9518
+   btd              sin 8,5 si btd >= 2.0209: exactitud 0.9698
+   b_low(falta=-1)  sin 8,5 si b_low(falta=-1) < 0.8282: exactitud 0.9766
+   b_mid(falta=-1)  sin 8,5 si b_mid(falta=-1) < 0.8366: exactitud 0.9751
+   bt10-clr10       sin 8,5 si bt10-clr10 >= -0.4900: exactitud 0.9700
+   bt14-clr14       sin 8,5 si bt14-clr14 >= -6.8786: exactitud 0.9780
+   btclr            sin 8,5 si btclr >= 291.3199: exactitud 0.9481
+   sesgo_btd        sin 8,5 si sesgo_btd >= -1.9337: exactitud 0.9684
+   bt14             sin 8,5 si bt14 >= 282.5245: exactitud 0.9779
+   b85-b_tot        sin 8,5 si b85-b_tot >= 0.3414: exactitud 0.9283

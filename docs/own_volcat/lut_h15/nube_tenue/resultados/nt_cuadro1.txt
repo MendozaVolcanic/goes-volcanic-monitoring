@@ -1,0 +1,11 @@
+09:16, informativos: con 8,5 32058, sin 8,5 5764
+  eps<0,1  e73>=0,05 : con      3  sin      0
+  eps<0,1  e73<0,05  : con      0  sin     29
+  eps<0,1  e73 falta : con      0  sin   4429
+  eps>=0,1 e73>=0,05 : con  32055  sin      0
+  eps>=0,1 e73<0,05  : con      0  sin    264
+  eps>=0,1 e73 falta : con      0  sin   1042
+  omite si eps<0,1 & franja (R3)       : acierta con 1.0000  sin 0.6235
+  omite si eps<0,1                     : acierta con 0.9999  sin 0.7734
+  omite si eps<0,1 o e73<0,05 o falta  : acierta con 0.9999  sin 1.0000
+  omite si e73<0,05 o falta            : acierta con 1.0000  sin 1.0000

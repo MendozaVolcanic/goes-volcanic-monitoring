@@ -62,7 +62,7 @@ esos parámetros, `floor((MAX − MIN)/DB) + 1`, en los seis ejes (42, 33, 21, 2
 | εtot(11) | `EMISS14_TOT_BINS_FULL_PIX` | 6 | 0,01 · 0,03 · 0,10 · 0,20 · 0,50 · 0,90 · 1,00 |
 | BT11 cielo despejado | `BT14_CLR_BINS_FULL_PIX` | 5 | 160 · 255 · 260 · 265 · 270 · 400 K |
 | β(12/11) total, multi bajo, multi medio | `BETA1112_MIN/MAX/DB_PIX` | 42 | −0,10 a 1,95 cada 0,05 |
-| β(12/11) opaco | `BETA1112_OPAQUE_MIN/MAX/DB_PIX` | 33 | −0,10 a 1,50 cada 0,05 |
+| β(12/11) opaco | las tablas lo declaran con `h.nbins_beta1112` y miden 42: mismo eje que el total (corregido al escribir el motor; `BETA1112_OPAQUE_*_PIX`, 33 bins de −0,10 a 1,50, no lo usa ninguna tabla de píxel) | 42 | −0,10 a 1,95 cada 0,05 |
 | β(8,5/11) | `BETA8511_..._PIX` | 21 | −0,10 a 1,90 cada 0,10 |
 | β(7,3/11) | `BETA7311_..._PIX` | 21 | −0,10 a 1,90 cada 0,10 |
 | εp(3,9) (`EMS7`) | `EMS7_..._PIX` | 25 | 0,80 a 2,00 cada 0,05 |
@@ -76,7 +76,9 @@ esos parámetros, `floor((MAX − MIN)/DB) + 1`, en los seis ejes (42, 33, 21, 2
 33. Treinta y tres es el conteo de `BTD1112_EB_MIN/MAX/DB_PIX` (−3 a 5 cada 0,25). Con ese eje las densidades tienen
 la forma esperada: la ceniza concentra su masa entre −1,25 y −0,25 K (más un 11 % acumulado en el primer bin, BTD
 < −2,75 K) y la nube tiene su máximo entre 0 y +0,25 K, sin masa sobre +2 K. INFERIDO por conteo y por forma; el
-eje de 6 bins no se usa en ninguna tabla de píxel.
+eje de 6 bins no se usa en ninguna tabla de píxel. **Lo que agregó la etapa 2:** la tabla trae además
+`BTD1112_LUT_MIN_VALID = −5` y `BTD1112_LUT_MAX_VALID = 0` (LEÍDO), y en el caso de Mauna Loa VOLCAT no usa la tabla
+de BTD en su probabilidad IR (ver `INFORME_H15.md` §3); el eje queda sin validar.
 
 **Normalización (LEÍDO por cálculo).** Cada densidad suma 1 sobre el arreglo entero, εtot incluido: son
 distribuciones conjuntas `P(x, y, εtot | clase)`, no condicionales por bin de εtot. No hay ceros: cada tabla tiene un
@@ -175,3 +177,8 @@ no al revés. En el bin inmediatamente inferior (1,00 a 1,05) la razón es de 0,
 INFERIDO con comprobación de conteo y forma. Densidades de ceniza y nube identificadas. Quedan como SUPUESTO la regla
 de combinación y el manejo de β inválido; la etapa 2 los prueba como variantes en una mitad de los cuadros y los
 valida en la otra.
+
+**Lo que dijo después la etapa 2 sobre esta lectura** (`INFORME_H15.md`): con las entradas de VOLCAT, el producto de
+las tablas conjuntas con el prior de 0,001 reproduce al decimal la probabilidad IR de VOLCAT en los píxeles de εtot
+≥ 0,5, siempre que **no** se use la tabla de BTD y **sí** las dos de β(8,5/11) (el caso es VOLCAT v3.9.16; el
+`.config` de 2025 las apaga). Bajo εtot 0,5 aparece una regla que las tablas no traen, y la etapa no se aprobó.

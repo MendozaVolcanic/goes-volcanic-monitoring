@@ -1,0 +1,73 @@
+{
+ "variante_elegida": [
+  "S2",
+  "b",
+  "J"
+ ],
+ "eleccion_cuadros_1_5_nivelA": {
+  "conjunto": "S2",
+  "fuera_de_eje": "b",
+  "combinacion": "J",
+  "n": 511278,
+  "n_volcat_ge05": 30628,
+  "n_nuestra_ge05": 27189,
+  "frac_dif_le_005": 0.9347771662383283,
+  "kappa_05": 0.7988801123363716,
+  "frac_ge05_recuperada": 0.7647250881546297,
+  "frac_lt05_recuperada": 0.9921626963486945,
+  "dif_abs_mediana": 1.1308466718192679e-09,
+  "dif_abs_p95": 0.11300227817967112,
+  "spearman": 0.9581461789983396
+ },
+ "validacion_cuadros_6_10_nivelA": {
+  "n": 502234,
+  "n_volcat_ge05": 27075,
+  "n_nuestra_ge05": 23590,
+  "frac_dif_le_005": 0.9389149281012437,
+  "kappa_05": 0.7949983634566318,
+  "frac_ge05_recuperada": 0.7534626038781164,
+  "frac_lt05_recuperada": 0.9932864577962324,
+  "dif_abs_mediana": 6.235321227110216e-10,
+  "dif_abs_p95": 0.09021921872630735,
+  "spearman": 0.956501119378237
+ },
+ "cumple_nivelA": false,
+ "validacion_cuadros_6_10_nivelB": {
+  "n": 502234,
+  "n_volcat_ge05": 27075,
+  "n_nuestra_ge05": 15252,
+  "frac_dif_le_005": 0.8718426072308924,
+  "kappa_05": 0.24525390763384028,
+  "frac_ge05_recuperada": 0.21462603878116343,
+  "frac_lt05_recuperada": 0.9801308614590064,
+  "dif_abs_mediana": 1.1577695908193069e-08,
+  "dif_abs_p95": 0.6017875502787059,
+  "spearman": 0.7879675741307631
+ },
+ "cumple_nivelB": false,
+ "nivelB_menos_volcat_cuadros_6_10": {
+  "eps": {
+   "n": 721873,
+   "mediana": 0.04768465958740098,
+   "p05": 0.01220367613193498,
+   "p95": 0.07758516770500376,
+   "frac_abs_le_001": 0.028631074995186134
+  },
+  "b_tot": {
+   "n": 716411,
+   "mediana": -0.011779829475424664,
+   "p05": -0.6341525227781648,
+   "p95": 0.03819278172372709,
+   "frac_abs_le_001": 0.1680069122333409
+  },
+  "b73": {
+   "n": 573392,
+   "mediana": -0.004650643393258602,
+   "p05": -0.10109287655759432,
+   "p95": 0.015508414351468602,
+   "frac_abs_le_001": 0.4241583419371041
+  }
+ },
+ "fraccion_agua": 0.986531561461794,
+ "etapa2_aprobada": false
+}

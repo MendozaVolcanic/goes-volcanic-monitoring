@@ -1,0 +1,39 @@
+{
+ "n_cuadros": 60,
+ "n_objetos_cuadro": 60,
+ "n_eventos": 4,
+ "n_primeros_cuadros_disponibles": 4,
+ "primeros_con_firma_mayoritaria": [],
+ "condicion_falsacion_cumplida": false,
+ "veredicto": "compatible con H14, sin fuerza para sostenerla",
+ "nucleo_con_firma_en": [],
+ "lectura_nucleo": "sin nucleo con firma",
+ "global_todos_px": {
+  "sig_n": 769,
+  "sig_med": 0.00134,
+  "sig_p90": 0.74884,
+  "sig_max": 1.0,
+  "sig_fge05": 0.1222,
+  "sig_flt005": 0.7828,
+  "sigL_n": 767,
+  "sigL_med": 0.00045,
+  "sigL_p90": 0.00333,
+  "sigL_max": 0.41672,
+  "sigL_fge05": 0.0,
+  "sigL_flt005": 0.9935
+ },
+ "global_cerca10": {
+  "sig_cerca10_n": 388,
+  "sig_cerca10_med": 0.00079,
+  "sig_cerca10_p90": 0.12147,
+  "sig_cerca10_max": 1.0,
+  "sig_cerca10_fge05": 0.0515,
+  "sig_cerca10_flt005": 0.866
+ },
+ "tipos_evento": {
+  "ID-2026-11-13T19:00:30Z_0001": "VCB",
+  "ID-2026-11-14T12:40:30Z_0001": "ASHPLUMEPUFF",
+  "ID-2026-11-14T16:30:30Z_0001": "ASHPLUMEPUFF",
+  "ID-2026-11-18T10:10:30Z_0001": "ASHPLUMEPUFF"
+ }
+}

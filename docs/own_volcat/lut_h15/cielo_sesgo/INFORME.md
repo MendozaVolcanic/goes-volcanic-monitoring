@@ -1,5 +1,75 @@
 # Cielo despejado y nube negra de VOLCAT en εtot y β (H15, nivel B). Informe, 21-11-2026
 
+## Vuelta 4 (21-11, noche): ¿el desfase de 11 µm es el sesgo de BT14 por objeto? No
+
+**Veredicto.** Descartado con la salida del propio VOLCAT, y se paró antes de las pruebas 2 y 3, como pedía el
+encargo. En los 10 cuadros, **ningún objeto de VOLCAT tiene sesgo de BT14 calculado**: los 108 a 588 objetos por
+cuadro traen todos los resúmenes de sesgo de BT14 en relleno (−999) y 0 píxeles válidos o elegibles para el sesgo.
+Además, sólo el 0,4 % de los píxeles de nube tenue cae dentro de un objeto, y el desfase de −1,05 K está **fuera**
+de los objetos. Dentro de ellos, el desfase mediano es incluso positivo (+0,54 K).
+
+Criterio subido antes de medir: `criterio_vuelta4_sesgo_objeto_2026-11-21.md` (commit b0b519e). Salidas crudas:
+`resultados/vuelta4_ashobj.json` (conteos de `geocatASHOBJ`, leídos en venv_hdf4) y
+`resultados/vuelta4_sesgo_objeto.json`.
+
+### Para geólogo
+
+La idea era buena por la firma: sólo en 11 µm, dispersa, sin relación con el vapor ni el ángulo, como una cantidad
+medida en la vecindad. Pero para que el ε publicado llevara un sesgo calculado por objeto harían falta dos cosas:
+que VOLCAT hubiera calculado ese sesgo, y que los píxeles con desfase estuvieran dentro de los objetos. No pasa
+ninguna de las dos. VOLCAT sí calculó, para todos sus objetos, el sesgo de la diferencia 11 − 12 µm
+(`Btd1112_Bias_Per50`), pero no el de BT14. Y los objetos son chicos: suman de 207 a 1.530 píxeles por cuadro,
+contra unos 30 mil píxeles de nube tenue. El desfase de 1 K de 11 µm vive en toda la nube tenue, sin objeto.
+
+### Números (10 cuadros)
+
+| Cuadro | Objetos | Píxeles en objetos | Objetos con sesgo BT14 válido | Objetos con `Btd1112_Bias_Per50` | Píxeles tenues | Tenues en objeto | Desfase C14 fuera (mediana) | Desfase C14 dentro |
+|---|---|---|---|---|---|---|---|---|
+| 09:16 | 588 | 1.530 | 0 | 588 | 29.865 | 62 | −0,96 K | +0,54 K |
+| 09:21 | 137 | 222 | 0 | 137 | 30.017 | 125 | −0,94 | +0,72 |
+| 09:26 | 193 | 302 | 0 | 193 | 30.199 | 170 | −0,99 | +0,56 |
+| 09:31 | 122 | 213 | 0 | 122 | 30.503 | 146 | −1,00 | +0,65 |
+| 09:36 | 198 | 305 | 0 | 198 | 30.765 | 191 | −1,02 | +0,49 |
+| 09:41 | 139 | 207 | 0 | 139 | 30.562 | 122 | −1,04 | +0,61 |
+| 09:46 | 159 | 254 | 0 | 159 | 30.517 | 138 | −1,13 | +0,45 |
+| 09:51 | 108 | 215 | 0 | 108 | 30.517 | 90 | −1,12 | +0,54 |
+| 09:56 | 133 | 263 | 0 | 133 | 30.866 | 95 | −1,19 | +0,40 |
+| 10:01 | 171 | 359 | 0 | 171 | 30.631 | 115 | −1,10 | +0,42 |
+| **Total** | | | **0** | | **304.442** | **1.254 (0,4 %)** | **−1,05 K** | **+0,54 K** |
+
+"Píxeles tenues": 0,05 ≤ εtot < 0,3, con desfase implícito calculable. "En objeto": `Ash_Object_Mask` > 0 de
+`geocatDIAGS1`. `Ash_Group_Id_2d` sólo tiene píxeles válidos desde 09:46 (30 a 118). Condición (a) del criterio,
+ningún objeto con sesgo de BT14: cumplida. Condición (b), menos de 10 % de los tenues en objeto con desfase fuera
+≤ −0,5 K: cumplida. Cualquiera de las dos descarta.
+
+### Requisito para Chillán (anotado, no resuelto)
+
+En este caso el ε no depende de los objetos. Si en otra versión de VOLCAT o en otro caso sí dependiera, aplicarlo a
+Chillán exigiría formar los objetos nosotros o usar `event_idx`.
+
+### Qué queda para el correo
+
+La pregunta de la vuelta 3 sigue igual, con un candidato menos: el cielo despejado de 11 µm que entra a εtot es ~1 K
+más frío que el de `geocatRTM` en toda la nube tenue, también fuera de los objetos, y en 12 µm no hay desfase.
+**No es el sesgo de BT14 por objeto**, que en esta corrida no se calculó para ningún objeto. Quedan sin probar una
+corrección de calibración o de cielo despejado sólo de la banda 14 en GEOCAT, o un `geocatRTM` publicado distinto
+del que usó VOLCAT.
+
+### Archivos de la vuelta 4
+
+`scripts/vuelta4_ashobj_hdf.py` (venv_hdf4), `scripts/vuelta4_sesgo_objeto.py`; `resultados/vuelta4_ashobj.json`,
+`resultados/vuelta4_sesgo_objeto.json`.
+
+```powershell
+D:\goes_notas\busqueda_2026-11-20\venv_hdf4\Scripts\python.exe -I docs/own_volcat/lut_h15/cielo_sesgo/scripts/vuelta4_ashobj_hdf.py
+```
+
+```powershell
+python -I docs/own_volcat/lut_h15/cielo_sesgo/scripts/vuelta4_sesgo_objeto.py
+```
+
+---
+
 ## Vuelta 3 (21-11, noche): el exceso de nuestro ε(11 µm) en nube tenue
 
 **Veredicto.** Las tres candidatas físicas quedan descartadas en los cuadros 6 a 10, como pedía el criterio: el

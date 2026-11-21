@@ -1,5 +1,107 @@
 # Cielo despejado y nube negra de VOLCAT en εtot y β (H15, nivel B). Informe, 21-11-2026
 
+## Vuelta 3 (21-11, noche): el exceso de nuestro ε(11 µm) en nube tenue
+
+**Veredicto.** Las tres candidatas físicas quedan descartadas en los cuadros 6 a 10, como pedía el criterio: el
+ángulo de la normalización, la nube negra con atmósfera encima y el cielo despejado del mar por emisividad o vapor.
+Por eso se para. Lo que queda: VOLCAT calcula ε(11) como si el cielo despejado de **sólo** 11 µm fuera ~1,1 K más
+frío que `geocatRTM`. Ese desfase no sigue al vapor, ni al ángulo, ni a la celda del GFS, y en 12 µm no existe. **Y
+el residuo importa:** con ε(11) 0,015 más alto, como el nuestro, 219 píxeles de nube tenue pasan a probabilidad
+≥ 0,5 donde VOLCAT tiene 50; con 0,015 más bajo, se pierden 46 de esos 50.
+
+Criterio subido antes de medir: `criterio_vuelta3_eps11_2026-11-21.md` (commit 1bd1d85). Salidas crudas:
+`resultados/explorar_c14_1a5.txt` (cuadros 1 a 5) y `resultados/vuelta3_eps11.json` (cuadros 6 a 10).
+
+### Para geólogo
+
+Con una nube muy tenue (ε ~ 0,1), el satélite ve casi todo el calor del mar a través de ella. La emisividad que
+se calcula depende entonces casi entera de cuánto calor se espera del mar sin nube (el cielo despejado), y casi nada
+de la nube de referencia. Un exceso de 0,013 en ε equivale a esperar el mar 1 K más tibio que VOLCAT.
+
+Se probaron las tres causas físicas sensatas, cada una con una predicción escrita antes de mirar los cuadros de
+validación:
+
+1. **Que VOLCAT lleve ε al nadir con otro ángulo** (el de la nube a su altura, o por camino óptico). No: si fuera
+   así, el β que reconstruimos con su ε(11) saldría desplazado en la misma proporción, y sale exacto (diferencia
+   mediana de 0,16 a 0,39 % en todos los tramos). Además, a 16 km de altura el ángulo cambia cos θ en 0,0012 como
+   máximo. La forma de la normalización también es la misma: por camino óptico da la misma fórmula.
+2. **Que la nube negra lleve la atmósfera de encima.** No: para explicar la nube tenue, la nube negra tendría que
+   ser 18 K más fría que la que calza en nube espesa (180 contra 198 K, mediana), y en 36 % de los píxeles tenues no
+   hay ninguna nube negra que sirva.
+3. **Que el cielo despejado del mar sea otro** (emisividad del mar que cambia con el ángulo, u otra columna de
+   vapor). No: las dos cosas moverían más la banda de 12 µm que la de 11, y en 12 µm el desfase es +0,02 K. El de
+   11 µm no se ordena con el agua precipitable (ρ −0,05) ni casi con el ángulo (ρ −0,19).
+
+La dependencia con el ángulo que se veía en la vuelta 1 (k/cos θ de 0,88 a 1,02) es compatible con una mezcla: la
+nube tenue está casi toda bajo 31° de cenital, y la medida juntaba todos los tramos de ε. Separado por ángulo y sólo
+en nube tenue, el exceso de ε es +0,013 a +0,016 entre 20 y 34°.
+
+**Qué significa para Chillán.** Este residuo no es un detalle: en el tramo de ε de 0,1 a 0,2, un ε(11) 0,015 más
+alto (lo que nos pasa) cambia de clase a 2,5 % de los píxeles y multiplica por cinco los de probabilidad alta. Antes
+de aplicar las tablas a Chillán hay que resolver el cielo despejado de 11 µm. La pregunta para el correo queda
+concreta: qué ajuste lleva el cielo despejado de 11 µm que entra a εtot y que no lleva el de 12 µm.
+
+### Números (cuadros 6 a 10)
+
+| Candidata | Prueba (criterio) | Medido | ¿Descartada? |
+|---|---|---|---|
+| C1 ángulo | mediana de (β reconstruido / β VOLCAT − 1) dentro de ±0,005 en todos los tramos, y Δcos θ a 16 km < 0,005 | −0,0016 (0,05 a 0,1), −0,0020 (0,1 a 0,2), −0,0030 (0,2 a 0,3), −0,0030 (0,3 a 0,5), −0,0039 (0,5 a 0,9); Δcos máx. 0,0012 | sí |
+| C2 nube negra | nube negra implícita en tenue (0,05 a 0,3) y en espesa (0,85 a 0,98) difieren > 10 K | tenue p5/p50/p95 = 138 / 180 / 205 K (97.372 píxeles con solución, 55.721 sin solución); espesa 196 / 198 / 200 K; diferencia −18,0 K | sí |
+| C3 cielo del mar | \|desfase C15\| < 0,2 K con desfase C14 ≤ −0,5 K; \|ρ con TPW\| < 0,2; \|ρ con θ\| < 0,3 | C14 p5/p50/p95 = −2,65 / −1,11 / +0,14 K; C15 −0,01 / +0,02 / +0,10 K; ρ TPW −0,045; ρ θ −0,186 | sí |
+
+Base (V1, N1, S0, H1), por tramo de εtot de VOLCAT:
+
+| Tramo | Píxeles | ε(11) dentro de 0,01 | Δε mediana | β(12/11) con H1 dentro de 0,02 | Δβ mediana |
+|---|---|---|---|---|---|
+| 0,05 a 0,1 | 59.214 | 30,7 % | +0,013 | 5,4 % | −0,18 |
+| 0,1 a 0,2 | 53.699 | 31,3 % | +0,016 | 10,6 % | −0,11 |
+| 0,2 a 0,3 | 40.180 | 22,0 % | +0,018 | 9,4 % | −0,09 |
+| 0,3 a 0,5 | 153.181 | 45,4 % | +0,001 | 32,3 % | −0,006 |
+| 0,5 a 0,9 | 316.017 | 62,6 % | −0,006 | 56,1 % | +0,011 |
+
+Por ángulo (ε 0,05 a 0,3): 20 a 28° (58.992 píxeles) Δε +0,013; 28 a 31° (92.702) +0,016; 31 a 34° (810) +0,014;
+34 a 37° (589) +0,009.
+
+Nivel B con las reglas del frente 1 (sin cambios respecto de la vuelta 2, misma configuración): κ 0,326, |ΔP| ≤ 0,05
+en 91,6 %, recuperados 20,9 %; con εtot < 0,2: κ 0,641, 96,1 %, 82,2 %; 0,2 a 0,5: κ 0,054, 92,8 %, 2,9 %; ≥ 0,5:
+κ 0,364, 90,7 %, 23,8 %.
+
+### Sensibilidad a ±0,015 en ε(11), tramo 0,1 a 0,2
+
+Nivel A (ε y β de VOLCAT) con las reglas del frente 1. Son 8.697 píxeles con probabilidad publicada; 50 tienen
+P_VOLCAT ≥ 0,5. Sin perturbar, la reproducción es exacta (|ΔP| p95 = 5·10⁻¹²). (a) sólo ε cambia; (b) ε(12),
+ε(7,3) y ε(8,5) oblicuos fijos, con los β recalculados (lo físico, que es lo que nos pasa).
+
+| Perturbación | \|ΔP\| > 0,05 | Cruzan 0,5 | P ≥ 0,5 que se pierden | P < 0,5 que pasan a ≥ 0,5 | \|ΔP\| p95 |
+|---|---|---|---|---|---|
+| (a) +0,015 | 0,0 % | 0,0 % | 0 | 0 | 2·10⁻¹⁰ |
+| (a) −0,015 | 0,3 % | 0,2 % | 20 | 0 | 0,0005 |
+| **(b) +0,015** | 8,1 % | 2,5 % | 0 | **219** | 0,11 |
+| **(b) −0,015** | 0,7 % | 0,5 % | **46** | 0 | 0,002 |
+
+Lectura: la tabla casi no reacciona al eje εtot en sí (a). Reacciona a través de β (b): un ε(11) más alto baja β y
+lo vuelve más "de ceniza". El nuestro sale 0,013 a 0,016 más alto, o sea, el caso (b) +0,015. En Mauna Loa eso
+explica por qué en nivel B, con εtot < 0,2, damos 759 píxeles ≥ 0,5 contra 494 de VOLCAT (`nivelB` de
+`vuelta3_eps11.json`).
+
+### Pregunta para el correo (precisa la 3)
+
+En nube tenue sobre mar, el ε(11) de VOLCAT se reproduce con un cielo despejado de 11 µm ~1,1 K más frío que el
+que publica `geocatRTM` (mediana; p5 −2,7, p95 +0,1 K). El de 12 µm se reproduce sin cambio (+0,02 K). ¿El cielo
+despejado del canal 14 que entra a εtot lleva un ajuste propio, por ejemplo el sesgo de BT14 (`Bt14_Bias_*`), una
+corrección de calibración de GOES-17 o un promedio espacial, que el de 12 µm no lleva?
+
+### Archivos de la vuelta 3
+
+`scripts/explorar_c14_1a5.py` (exploración, cuadros 1 a 5), `scripts/vuelta3_eps11.py` (decide y sensibilidad);
+`resultados/explorar_c14_1a5.txt`, `resultados/vuelta3_eps11.json`, `resultados/vuelta3_eps11_log.txt`.
+
+```powershell
+python -I docs/own_volcat/lut_h15/cielo_sesgo/scripts/vuelta3_eps11.py
+```
+
+---
+
 ## Vuelta 2 (21-11, tarde): por qué nuestro β(12/11) salía 0,30 bajo el de VOLCAT en nube tenue
 
 **Veredicto.** Explicado en dos partes y reproducido, pero la regla principal del criterio no se cumple con

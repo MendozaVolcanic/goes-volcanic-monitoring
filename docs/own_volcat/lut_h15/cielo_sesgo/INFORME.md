@@ -1,5 +1,36 @@
 # Cielo despejado y nube negra de VOLCAT en εtot y β (H15, nivel B). Informe, 21-11-2026
 
+## Vuelta 6 (21-11, noche, parcial): curvas de sesgo de Heidinger y Pavolonis 2009
+
+**Veredicto.** La pista 1 se descarta al leer la figura, antes de tocar datos. Las curvas de sesgo de cielo
+despejado de Heidinger y Pavolonis (2009, Fig. 6) dan, sobre mar a la hora local de Mauna Loa (~23 h), observado
+menos modelado ≈ +0,3 K en T11 y ≈ −0,35 K en T11 − T12. Ajustar el cielo despejado con ellas lo **entibiaría** en
+11 µm (buscamos −0,9 K) y lo movería unos +0,65 K en 12 µm (donde no hay desfase). Signo y banda equivocados. Al no
+haber predicción numérica que calce, no se escribió criterio ni se usaron los cuadros 6 a 10. **La pista 2 (centros
+radiativos locales, LRC) quedó sin hacer**: la sesión llegó a su límite de contexto y se deja para la próxima.
+
+### Detalle
+
+- Fuente: Heidinger, A. K., y M. J. Pavolonis (2009), JAMC, p. 1107, Fig. 6 ("Clear-sky biases in T11 and T11–T12
+  as function of local time for ocean and land surfaces using data from 1 Aug 2006 from NOAA-18 and NOAA-15"). El
+  texto de la p. 7 dice que las radiancias despejadas se ajustan con esas curvas. Copia local:
+  `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\c2-rt-mauna-loa-332d64\docs\own_volcat\HeidingerPavolonis_2009_SplitWindowCirrus.pdf`
+  (no se bajó nada); la página renderizada quedó en `D:\goes_cache\cielo_sesgo\hp2009\pag8.png`.
+- Lectura a ojo, con precisión de ±0,2 K: la curva de mar en T11 va de ~0 a ~+0,5 K en el día, ~+0,3 K a las 23 h;
+  la de T11 − T12 sobre mar es casi plana, ~−0,35 K. Las curvas de tierra oscilan mucho más (T11 de −2 a +9 K).
+- Reparos: son curvas de AVHRR (NOAA-18, agosto de 2006) para el retrieval de cirros de ese trabajo, no de ABI ni
+  de VOLCAT. Un dato al margen: el −0,35 K de BTD sobre mar se parece al de los píxeles despejados de este caso
+  (observado − `geocatRTM` en BTD = −0,43 K, vuelta 1, máscara M1), pero en nube tenue el ε(12) de VOLCAT no lleva
+  ese ajuste (vuelta 3: +0,02 K).
+
+### Contexto para Chillán (anotado, sin conclusión)
+
+`volcat_cld_retrieval_GOESR.config`, líneas 16 y 19: incertidumbre del cielo despejado de BT14 de 0,50 K sobre agua
+y 5,00 K sobre tierra (líneas 17 y 20: 0,25 y 1,00 K para la BTD 14−15). En la cordillera, la incertidumbre que
+VOLCAT se asigna a su propio cielo despejado de 11 µm es diez veces el desfase que perseguimos en Mauna Loa.
+
+---
+
 ## Vuelta 5 (21-11, noche): la forma del desfase de 11 µm
 
 **Veredicto.** El desfase tiene forma de **efecto de vecindad de la nube**, no de ancilar ni de calibración. Es de

@@ -1,0 +1,49 @@
+no saturados 186195 no exactos 39060
+EMISS14_TOT_BETA1112_TOT_IR              dL==+contrib: 0.000
+EMISS14_TOT_BETA1112_OPAQUE_IR           dL==+contrib: 0.000
+EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR    dL==+contrib: 0.000
+EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR    dL==+contrib: 0.000
+BETA1112_TOT_BETA7311_TOT_IR             dL==+contrib: 0.321
+BETA1112_TOT_BETA8511_TOT_IR             dL==+contrib: 0.000
+BETA1112_OPAQUE_BETA8511_OPAQUE_IR       dL==+contrib: 0.003
+eps    exactos p5/50/95 [0.414 0.567 0.759]  no exactos [0.013 0.079 0.419]  NaN no exactos 0.000
+b_tot  exactos p5/50/95 [0.806 0.861 0.902]  no exactos [0.591 0.828 1.029]  NaN no exactos 0.000
+b_op   exactos p5/50/95 [1.062 1.246 1.547]  no exactos [0.425 1.78  4.057]  NaN no exactos 0.000
+b_low  exactos p5/50/95 [0.871 0.912 0.961]  no exactos [0.839 0.887 1.061]  NaN no exactos 0.601
+b_mid  exactos p5/50/95 [0.897 0.935 0.996]  no exactos [0.872 0.931 1.083]  NaN no exactos 0.636
+b73    exactos p5/50/95 [0.234 0.447 0.678]  no exactos [0.111 0.176 0.377]  NaN no exactos 0.638
+b85    exactos p5/50/95 [1.065 1.088 1.12 ]  no exactos [1.011 1.101 1.475]  NaN no exactos 0.000
+b85op  exactos p5/50/95 [0.988 1.04  1.118]  no exactos [0.785 1.123 4.   ]  NaN no exactos 0.000
+btd    exactos p5/50/95 [-0.406  0.493  1.491]  no exactos [0.148 2.31  3.149]  NaN no exactos 0.000
+bin eps -1: n=479 frac no exacta 1.000
+bin eps 0: n=7835 frac no exacta 1.000
+bin eps 1: n=14374 frac no exacta 1.000
+bin eps 2: n=2166 frac no exacta 0.999
+bin eps 3: n=48356 frac no exacta 0.271
+bin eps 4: n=112985 frac no exacta 0.010
+b_tot  fuera de eje: entre exactos 0.000  entre no exactos 0.000
+b_op   fuera de eje: entre exactos 0.001  entre no exactos 0.432
+b_low  fuera de eje: entre exactos 0.000  entre no exactos 0.606
+b_mid  fuera de eje: entre exactos 0.000  entre no exactos 0.636
+b73    fuera de eje: entre exactos 0.010  entre no exactos 0.638
+b85    fuera de eje: entre exactos 0.000  entre no exactos 0.004
+b85op  fuera de eje: entre exactos 0.000  entre no exactos 0.246
+dL frecuentes: [(6.72, 5509), (2.98, 4705), (-2.41, 1639), (3.65, 1307), (-4.72, 1267), (-4.37, 1194), (0.09, 1048), (-3.97, 957), (0.1, 956), (-3.11, 905)]
+bin eps 3: no exactos con algún beta NaN/fuera 0.031; exactos con algún beta NaN/fuera 0.045; no exacto entre los que tienen todo válido 0.274 (n=46371)
+bin eps 4: no exactos con algún beta NaN/fuera 0.000; exactos con algún beta NaN/fuera 0.000; no exacto entre los que tienen todo válido 0.010 (n=112985)
+eps < 0,2: con todo válido n=3, no exacto 1.000
+eps [0.20,0.22): n=     4 no exacto 1.000
+eps [0.22,0.24): n=     3 no exacto 1.000
+eps [0.24,0.26): n=    97 no exacto 0.928
+eps [0.26,0.28): n=   269 no exacto 0.773
+eps [0.28,0.30): n=   427 no exacto 0.785
+eps [0.30,0.32): n=   669 no exacto 0.725
+eps [0.32,0.34): n=  1168 no exacto 0.780
+eps [0.34,0.36): n=  1871 no exacto 0.772
+eps [0.36,0.38): n=  2844 no exacto 0.728
+eps [0.38,0.40): n=  5021 no exacto 0.656
+eps [0.40,0.42): n=  6795 no exacto 0.453
+eps [0.42,0.44): n=  6990 no exacto 0.109
+eps [0.44,0.46): n=  6729 no exacto 0.006
+eps [0.46,0.48): n=  6351 no exacto 0.001
+eps [0.48,0.50): n=  7133 no exacto 0.000

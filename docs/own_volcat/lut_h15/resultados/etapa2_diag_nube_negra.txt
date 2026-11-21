@@ -1,0 +1,4 @@
+pixeles 474178  con R_cld despejada <= 0 (BT indefinida): 39243
+BT de la nube negra de VOLCAT: p5/50/95 [146.69 174.85 187.11]
+T tropopausa GFS:               p5/50/95 [197.59 198.88 201.21]
+diferencia (VOLCAT - tropopausa): p5/50/95 [-52.36 -24.53 -11.71]

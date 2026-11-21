@@ -1,0 +1,16 @@
+rol h: n 758  prior log-odds -6.91  suma mediana -0.06  logit final mediano -6.97  usa 7,3 0.037  usa 8,5 0.954
+   EMISS14_TOT_BETA1112_TOT_IR              p10   -1.29  p50   -0.28  p90   +1.08
+   EMISS14_TOT_BETA1112_OPAQUE_IR           p10   -1.41  p50   -0.61  p90   +0.00
+   EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR    p10   +0.77  p50   +1.00  p90   +1.00
+   EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR    p10   +0.64  p50   +0.64  p90   +0.72
+   BETA1112_TOT_BETA7311_TOT_IR             p10   +0.00  p50   +0.00  p90   +0.00
+   BETA1112_TOT_BETA8511_TOT_IR             p10   -1.81  p50   -0.60  p90   +1.45
+   BETA1112_OPAQUE_BETA8511_OPAQUE_IR       p10   +0.00  p50   +0.00  p90   +0.00
+rol c: n 3833  prior log-odds -6.91  suma mediana -1.07  logit final mediano -7.98  usa 7,3 0.353  usa 8,5 0.978
+   EMISS14_TOT_BETA1112_TOT_IR              p10   -5.62  p50   -0.98  p90   +0.75
+   EMISS14_TOT_BETA1112_OPAQUE_IR           p10   -1.68  p50   -0.00  p90   -0.00
+   EMISS14_TOT_BETA1112_TOT_MULTI_LOW_IR    p10   +0.02  p50   +1.00  p90   +1.00
+   EMISS14_TOT_BETA1112_TOT_MULTI_MID_IR    p10   +0.03  p50   +0.64  p90   +0.72
+   BETA1112_TOT_BETA7311_TOT_IR             p10   -3.12  p50   +0.00  p90   +0.00
+   BETA1112_TOT_BETA8511_TOT_IR             p10   -5.93  p50   -0.79  p90   +0.10
+   BETA1112_OPAQUE_BETA8511_OPAQUE_IR       p10   +0.00  p50   +0.00  p90   +0.00

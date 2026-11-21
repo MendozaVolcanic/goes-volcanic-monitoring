@@ -1,0 +1,10 @@
+{
+ "n": 769,
+ "dif_bt11_mediana_K": 0.05,
+ "dif_abs_mediana_K": 0.05,
+ "dif_p5_p95_K": [
+  0.045,
+  0.055
+ ],
+ "nota": "BT11 de nuestra L1b (coef. NOAA) menos BT11 del archivo de evento VOLCAT, en los pixeles de huella"
+}

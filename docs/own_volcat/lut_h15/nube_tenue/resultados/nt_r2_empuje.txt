@@ -1,0 +1,8 @@
+Aporte en log-odds de MULTI_LOW + MULTI_MID con β en el primer casillero, por casillero de εtot
+casillero εtot: [0.01,0.03) | [0.03,0.10) | [0.10,0.20) | [0.20,0.50) | [0.50,0.90) | [0.90,1.00)
+  WATER MULTI_LOW_IR: -0.071 | +1.205 | -0.056 | -2.151 | -2.934 | -4.701
+  WATER MULTI_MID_IR: -0.028 | +1.204 | +0.390 | -1.251 | -3.290 | -5.808
+  WATER suma        : -0.098 | +2.409 | +0.334 | -3.402 | -6.224 | -10.509   (factor sobre la razón de odds: 0.91, 11.12, 1.40, 0.03, 0.00, 0.00)
+  LAND  MULTI_LOW_IR: +0.235 | +0.768 | +0.996 | +0.025 | -2.680 | -8.609
+  LAND  MULTI_MID_IR: +0.228 | +0.721 | +0.642 | +0.033 | -0.953 | -10.442
+  LAND  suma        : +0.463 | +1.489 | +1.639 | +0.057 | -3.633 | -19.052   (factor sobre la razón de odds: 1.59, 4.43, 5.15, 1.06, 0.03, 0.00)

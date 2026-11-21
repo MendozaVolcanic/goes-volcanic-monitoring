@@ -1,5 +1,133 @@
 # Cielo despejado y nube negra de VOLCAT en εtot y β (H15, nivel B). Informe, 21-11-2026
 
+## Vuelta 2 (21-11, tarde): por qué nuestro β(12/11) salía 0,30 bajo el de VOLCAT en nube tenue
+
+**Veredicto.** Explicado en dos partes y reproducido, pero la regla principal del criterio no se cumple con
+nuestro ε. (1) **La tabla de VOLCAT trae una corrección por vapor de agua:** con εtot < 0,25 y agua precipitable
+> 2,5 cm, a β(12/11) se le suma 0,2. Explica 0,2 de los 0,30. (2) **El resto viene de nuestro ε de 11 µm, no del
+cielo despejado de 12 µm:** si se toma el ε(11) de VOLCAT y se calcula el ε(12) nuestro (cielo `geocatRTM`, nube
+negra en el punto frío del GFS) más la corrección, β coincide dentro de 0,02 en el 98,8 al 100 % de los píxeles de
+todos los tramos (posterior). Con nuestro ε(11), en cambio, β queda dentro de 0,02 sólo en el 7,9 % de los píxeles
+con εtot 0,05 a 0,2 (pide 80 %): **no cumple**. La pregunta pendiente se achica a una sola banda: cómo arma VOLCAT
+el cielo despejado o la radiancia de 11 µm en nube tenue.
+
+Criterio subido antes de medir: `criterio_vuelta2_beta_2026-11-21.md` (commit 2db5d46). Salidas crudas:
+`resultados/vuelta2_beta.json`, `vuelta2_beta_log.txt`, `explorar_beta_1a5.txt`, `posterior_beta_residuo.txt`,
+`lut_atributos_beta.txt`, `lut_datasets_fct.txt`.
+
+### Para geólogo
+
+β(12/11) compara cuánto tapa la nube a 12 µm contra cuánto tapa a 11 µm, y es lo que separa ceniza (β bajo 1)
+de hielo o gotas (β sobre 1). En una nube tenue, el vapor de agua de la atmósfera entre la nube y el satélite
+absorbe más a 12 µm que a 11 µm y deforma esa razón. Hawái esa noche tenía 4 a 6 cm de agua precipitable, una
+atmósfera tropical muy húmeda. VOLCAT lo sabe: su tabla dice que, si la nube es tenue (εtot < 0,25) y el aire es
+muy húmedo (más de 2,5 cm de agua precipitable), se suma 0,2 a β, y 0,05 si está entre 1,5 y 2,5 cm. El salto se ve
+en los datos justo donde la tabla lo pone: la diferencia de β entre VOLCAT y nosotros cae de +0,28 a +0,07 al
+cruzar εtot = 0,25.
+
+Lo que queda después de esa corrección no es un problema de 12 µm. Nuestra emisividad de 11 µm en nube tenue sale
+algo más alta que la de VOLCAT (+0,012 a +0,016, ver la vuelta 1), y como β es casi el cociente entre las dos
+emisividades, un ε de 11 µm algo alto con una nube que tapa 5 % se convierte en un β 0,1 a 0,2 más bajo. Con el ε de
+11 µm de VOLCAT, nuestro cálculo de 12 µm da su β casi exacto.
+
+**Para Chillán:** la corrección por vapor sí se puede aplicar, pero en Chillán el aire es mucho más seco que en
+Hawái. Con 1,5 a 2,5 cm de agua precipitable la tabla suma sólo 0,05, y bajo 1,5 cm no suma nada; ese escalón no se
+pudo probar aquí, porque en todo el dominio de Mauna Loa el agua precipitable supera 4 cm (`vuelta2_beta.json`,
+`tpw_cm_p1_p50_p99`). El ε de 11 µm sigue sin estar listo.
+
+### Números
+
+Qué se miró antes de escribir el criterio (cuadros 1 a 5, `explorar_beta_1a5.txt`): con εtot de 0,05 a 0,2 el β de
+VOLCAT va de 0,91 a 1,53 (p5 y p95), con mediana 1,27, y el nuestro de 0,71 a 1,05, con mediana 0,93. El valor más
+repetido del β de VOLCAT está en sólo el 0,32 % de los píxeles: **no es un β reemplazado por una constante**. Se
+correlaciona con el sesgo de BTD igual que el nuestro (Spearman −0,88 contra −0,96).
+
+Atributos de la tabla de píxel (leídos, `lut_datasets_fct.txt` y `lut_atributos_beta.txt`):
+
+| Atributo | Valor | Lectura |
+|---|---|---|
+| `X_COND_BETA1112_TOT_H20_CORRECTION_FCT` | −999; 1,5; 2,5 | cortes de X; X = agua precipitable en cm (candidata; VOLCAT la guarda por píxel) |
+| `INTERCEPT_BETA1112_TOT_H20_CORRECTION_FCT` | 0; 0,05; 0,2 | lo que se suma a β(12/11) |
+| `MAX_EMISS14_TOT_H20_CORRECTION` | 0,25 | sólo con εtot menor |
+| `COEFF_BETA1112_TOT_FCT1`, `ACTUAL_BETA_RANGE` | 0,8896; −0,2046 · 0,48 a 0,79 | β desde el sesgo de BTD; da β < 1, no explica este tramo |
+| `BETA1112_FROM_BTD_BIAS_LB_EMISS14_WATER` | 0,02 | esa relación, bajo εtot 0,02 en agua |
+| `SLOPE/INTERCEPT_BETA1112_FCT2`, `FCT3` | −0,70; 0,031 · −1,19; 1,14 | ecuaciones 8 y 7 de SECO Parte 1 (prefiltros) |
+
+Ángulo a la altura de la nube (punto 3 del encargo): descartado por geometría. A 16 km de altura y θ = 31°, cos θ
+cambia de 0,8572 a 0,8577, unas 200 veces menos que el residuo de la vuelta 1.
+
+Elección del cielo despejado (cuadros 1 a 5, εtot 0,25 a 0,5, β dentro de 0,02): S0 28,9 %; la mejor local (L M1
+p50) 29,1 %, empatada dentro de 0,002, así que gana S0 por ser la más simple; las de cuadro entero, 25,5 a 27,8 %.
+
+Validación (cuadros 6 a 10, H1 = con corrección por vapor, S0):
+
+| Tramo de εtot VOLCAT | Píxeles | β dentro de 0,02, H1 | Δβ p5 / p50 / p95, H1 | β dentro de 0,02, H0 | Δβ mediana, H0 | ε dentro de 0,01 |
+|---|---|---|---|---|---|---|
+| **0,05 a 0,2 (regla principal, pide 80 %)** | 112.913 | **7,9 %** | −0,34 / −0,145 / +0,009 | 0,0 % | −0,345 | 31,0 % |
+| 0,2 a 0,25 | 19.582 | 8,1 % | −0,39 / −0,122 / +0,005 | 0,0 % | −0,292 | 20,6 % |
+| 0,25 a 0,5 | 173.779 | 29,7 % | −0,12 / −0,013 / +0,043 | igual | igual | 42,8 % |
+| 0,5 a 0,9 | 316.017 | 56,1 % | −0,035 / +0,011 / +0,039 | igual | igual | 62,6 % |
+| 0,05 a 0,9 (regla de la vuelta 1) | 622.291 | 38,5 % | −0,23 / −0,003 / +0,039 | 36,8 % | | 50,0 % |
+
+**No cumple** (`cumple_principal_beta_0.05_0.2` = false). Δβ es nuestro menos VOLCAT.
+
+Posterior (no decide, `posterior_beta_residuo.txt`): β con el ε(11) de VOLCAT y nuestro ε(12), más H1:
+
+| Tramo | Cuadros 1 a 5: dentro de 0,02 | Cuadros 6 a 10: dentro de 0,02 | Mediana 6 a 10 |
+|---|---|---|---|
+| 0,05 a 0,1 | 99,1 % | 98,9 % | −0,0016 |
+| 0,1 a 0,2 | 99,9 % | 99,9 % | −0,0020 |
+| 0,2 a 0,25 | 99,8 % | 98,8 % | −0,0029 |
+| 0,25 a 0,5 | 100,0 % | 100,0 % | −0,0028 |
+| 0,5 a 0,9 | 99,4 % | 98,8 % | −0,0035 |
+
+En el mismo archivo, el desfase del cielo despejado de 12 µm que haría calzar el β de VOLCAT, dado su ε(11), es de
+0,00 a 0,08 K en la mediana. El cielo despejado de 12 µm de `geocatRTM` es el que usa VOLCAT. Este resultado
+también confirma la normalización al nadir de la vuelta 1: el ε(11) de VOLCAT, llevado de vuelta al oblicuo con
+cos θ, da su β exacto.
+
+Nivel B con las reglas del frente 1 (R1 + R2 + R3, `nt_regla.py` del PR 75, commit af0e8ca), cuadros 6 a 10:
+
+| | Tramo | Píxeles | P_VOLCAT ≥ 0,5 | \|ΔP\| ≤ 0,05 | κ | Recuperados |
+|---|---|---|---|---|---|---|
+| H1, S0 | todo | 502.234 | 27.075 | 91,6 % | 0,326 | 20,9 % |
+| | εtot < 0,2 | 29.674 | 494 | 96,1 % | 0,641 | 82,2 % |
+| | 0,2 a 0,5 | 147.709 | 5.150 | 92,8 % | 0,054 | 2,9 % |
+| | ≥ 0,5 | 324.851 | 21.431 | 90,7 % | 0,364 | 23,8 % |
+| H0, S0 | todo | 502.234 | 27.075 | 90,1 % | 0,298 | 21,2 % |
+| | εtot < 0,2 | 29.674 | 494 | 70,8 % | 0,217 | 98,6 % |
+| Regla etapa 2 | | | | ≥ 90 % | ≥ 0,90 | ≥ 90 % |
+
+La corrección por vapor ordena la nube tenue (κ de 0,22 a 0,64 bajo 0,2), pero el nivel B sigue lejos en conjunto.
+Con εtot sobre 0,2, el error de ε(11) mueve el casillero de las tablas y la probabilidad.
+
+### Pregunta para el correo (reemplaza la 4 de la vuelta 1 y precisa la 3)
+
+- (4, contestada con la tabla) β(12/11) en nube tenue: ¿se aplica `BETA1112_TOT_H20_CORRECTION` (+0,05 / +0,2 con
+  agua precipitable > 1,5 / 2,5 cm y εtot < 0,25)? ¿X es el agua precipitable del GFS en cm? En Mauna Loa el salto
+  de +0,21 en εtot = 0,25 lo confirma.
+- (3, nueva forma) Con nube tenue, nuestro ε(11) sale +0,012 a +0,016 sobre el suyo, mientras que ε(12) y la nube
+  negra calzan. ¿El cielo despejado de 11 µm (canal 14) que entra a εtot tiene algún ajuste que no tenga el de
+  12 µm, por ejemplo el sesgo de BT14 (`Bt14_Bias_*`), o una radiancia observada filtrada o promediada?
+
+### Archivos de la vuelta 2
+
+Scripts: `explorar_beta_1a5.py`, `extraer_tpw.py` (venv_hdf4; agua precipitable a `D:\goes_cache\cielo_sesgo\tpw.npz`),
+`vuelta2_beta.py` (decide), `posterior_beta_residuo.py`. Reglas del frente 1: copia de lectura del commit af0e8ca
+en `D:\goes_cache\cielo_sesgo\nt\` (no se sube a esta rama).
+
+```powershell
+D:\goes_notas\busqueda_2026-11-20\venv_hdf4\Scripts\python.exe -I docs/own_volcat/lut_h15/cielo_sesgo/scripts/extraer_tpw.py
+```
+
+```powershell
+python -I docs/own_volcat/lut_h15/cielo_sesgo/scripts/vuelta2_beta.py
+```
+
+---
+
+## Vuelta 1
+
 **Veredicto.** La hipótesis del encargo (VOLCAT corrige el cielo despejado con el sesgo local de 12 px antes de
 calcular ε y β) **no reproduce** y el material local no la apoya: el sesgo local vive en el paso de objeto, no en
 el de píxel. Lo que sí apareció, mirando sólo los cuadros 1 a 5: **VOLCAT publica εtot llevado al nadir**, y con

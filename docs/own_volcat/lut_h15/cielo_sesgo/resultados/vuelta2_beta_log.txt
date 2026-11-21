@@ -1,0 +1,23 @@
+eleccion S S0 0.2893
+eleccion S G_M1_p25_B2 0.255
+eleccion S G_M1_p50_B2 0.2611
+eleccion S G_M1_p75_B2 0.2691
+eleccion S G_M2_p25_B2 0.2613
+eleccion S G_M2_p50_B2 0.2701
+eleccion S G_M2_p75_B2 0.2781
+eleccion S L_M1_p50_B2 0.2906
+eleccion S L_M2_p50_B2 0.2898
+S elegida: S0
+H1_0.05_0.2 112913 0.31 0.079 [-0.34, -0.145, 0.009]
+H1_0.2_0.25 19582 0.206 0.081 [-0.388, -0.122, 0.005]
+H1_0.25_0.5 173779 0.428 0.297 [-0.122, -0.013, 0.043]
+H1_0.5_0.9 316017 0.626 0.561 [-0.035, 0.011, 0.039]
+H1_0.05_0.9 622291 0.5 0.385 [-0.232, -0.003, 0.039]
+H0_0.05_0.2 112913 0.31 0.0 [-0.54, -0.345, -0.19]
+H0_0.2_0.25 19582 0.206 0.0 [-0.402, -0.292, -0.189]
+H0_0.25_0.5 173779 0.428 0.297 [-0.122, -0.013, 0.043]
+H0_0.5_0.9 316017 0.626 0.561 [-0.035, 0.011, 0.039]
+H0_0.05_0.9 622291 0.5 0.368 [-0.41, -0.004, 0.039]
+nivelB_NT_H1_S {'todo': {'n': 502234, 'n_volcat_ge05': 27075, 'frac_dif_le_005': 0.916, 'kappa_05': 0.326, 'frac_ge05_recuperada': 0.209}, 'eps_0.0_0.2': {'n': 29674, 'n_volcat_ge05': 494, 'frac_dif_le_005': 0.961, 'kappa_05': 0.641, 'frac_ge05_recuperada': 0.822}, 'eps_0.2_0.5': {'n': 147709, 'n_volcat_ge05': 5150, 'frac_dif_le_005': 0.928, 'kappa_05': 0.054, 'frac_ge05_recuperada': 0.029}, 'eps_0.5_1.01': {'n': 324851, 'n_volcat_ge05': 21431, 'frac_dif_le_005': 0.907, 'kappa_05': 0.364, 'frac_ge05_recuperada': 0.238}}
+nivelB_NT_H0_S0 {'todo': {'n': 502234, 'n_volcat_ge05': 27075, 'frac_dif_le_005': 0.901, 'kappa_05': 0.298, 'frac_ge05_recuperada': 0.212}, 'eps_0.0_0.2': {'n': 29674, 'n_volcat_ge05': 494, 'frac_dif_le_005': 0.708, 'kappa_05': 0.217, 'frac_ge05_recuperada': 0.986}, 'eps_0.2_0.5': {'n': 147709, 'n_volcat_ge05': 5150, 'frac_dif_le_005': 0.927, 'kappa_05': 0.054, 'frac_ge05_recuperada': 0.029}, 'eps_0.5_1.01': {'n': 324851, 'n_volcat_ge05': 21431, 'frac_dif_le_005': 0.907, 'kappa_05': 0.364, 'frac_ge05_recuperada': 0.238}}
+ok C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\h15-cielo-sesgo-7174e7\docs\own_volcat\lut_h15\cielo_sesgo\resultados\vuelta2_beta.json

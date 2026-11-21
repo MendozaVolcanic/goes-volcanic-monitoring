@@ -18,7 +18,10 @@ from PIL import Image
 from scipy import ndimage
 from scipy.spatial import cKDTree
 
-REPO = r"C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\h3-cielo-modelado-beta-114fd5"
+from pathlib import Path  # noqa: E402
+# Raiz del repo desde la ubicacion del script (docs/own_volcat/<prueba>/<scripts>/). Antes: ruta fija a un
+# worktree ya borrado; aqui solo se usa para importar src/.
+REPO = str(Path(__file__).resolve().parents[4])
 sys.path.insert(0, REPO)
 from src.process import volcat_colorbar as vc  # noqa: E402
 

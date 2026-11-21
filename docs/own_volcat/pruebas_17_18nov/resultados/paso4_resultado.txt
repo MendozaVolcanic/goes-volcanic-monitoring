@@ -1,0 +1,16 @@
+2026-10-25 cuadros 137 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 4 crep 0 noche 0
+    dia 14:40 a 18:00 tam max 9
+2026-10-26 cuadros 141 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-10-27 cuadros 142 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-10-28 cuadros 141 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 19 crep 5 noche 2
+    noche [('23:10', 24, False), ('23:20', 18, False)]
+    crep [('22:20', 11, False), ('22:30', 27, False), ('22:40', 10, False), ('22:50', 8, False), ('23:00', 13, False)]
+    dia 18:30 a 22:10 tam max 31
+2026-10-29 cuadros 139 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 1 crep 0 noche 5
+    noche [('00:10', 4, False), ('00:30', 5, False), ('01:00', 9, False), ('01:10', 5, False), ('01:20', 10, False)]
+    dia 19:50 a 19:50 tam max 6
+2026-10-30 cuadros 136 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-10-31 cuadros 135 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-17 cuadros 138 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+2026-11-18 cuadros 68 sin barra 0 con manto o sistema grande a <50 km 0 | anclados dia 0 crep 0 noche 0
+cuadros nocturnos anclados sin manto: 7  pares consecutivos (10 min): 3

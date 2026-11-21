@@ -23,6 +23,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -35,7 +36,9 @@ sys.path.insert(0, str(ROOT))
 
 from src.fetch.volcat_api import _frame_meta, _query_frames_estado  # noqa: E402
 
-OUT = ROOT / "data" / "raw" / "volcat_validacion"
+# Destino de la cosecha. Defecto: data/raw/volcat_validacion del checkout; --raw o VOLCAT_VALIDACION_RAW lo
+# cambian (--raw manda), por ejemplo para completar una copia fuera del repo.
+OUT = Path(os.environ.get("VOLCAT_VALIDACION_RAW") or ROOT / "data" / "raw" / "volcat_validacion")
 FMT = "%Y-%m-%d_%H-%M-%S"
 
 # (etiqueta, sector, desde UTC, hasta UTC, rol)
@@ -97,9 +100,14 @@ def _bajar(url: str, destino: Path, manifiesto: dict) -> dict:
 
 
 def main() -> int:
+    global OUT
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--raw", type=Path, default=None,
+                    help=f"carpeta destino (defecto: {OUT}; también VOLCAT_VALIDACION_RAW)")
     args = ap.parse_args()
+    if args.raw is not None:
+        OUT = args.raw
 
     OUT.mkdir(parents=True, exist_ok=True)
     man_path = OUT / "manifiesto.json"

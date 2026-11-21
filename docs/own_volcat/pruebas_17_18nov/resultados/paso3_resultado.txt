@@ -1,0 +1,18 @@
+volcanes GVP sin Chillan: 57
+area km2 {'A': 17438, 'B': 177747, 'C': 2349386}
+
+== 16 dias: 2181 cuadros
+ objetos chicos (4-36 px): {'A': 139, 'B': 1315, 'C': 5482}  todos (>3 px, sin manto): {'A': 153, 'B': 1534, 'C': 6649}
+ densidad por 1e4 km2 por 1000 cuadros: {'A': 36.548, 'B': 33.921, 'C': 10.699} A+B 34.156
+ R = D(A+B)/D(C) = 3.19  D(A)>=D(B): True
+ fraccion diurna (cenit < 80) chicos: {'A': '42/139', 'B': '249/1315', 'C': '1479/5482'}
+ mediana tamano todos: {'A': 8.0, 'B': 9.0, 'C': 9.0}
+ volcanes con objetos chicos en A+B: [('Tromen Volcanic Plateau', 292), ('Resago, Volcan', 144), ('Maule, Laguna del', 128), ('Infiernillo', 112), ('Payun Matru', 108), ('Antuco', 106), ('Tupungatito', 77), ('Maipo', 70), ('Atuel, Caldera del', 63), ('Copahue', 61), ('Calabozos', 54), ('San Pedro-Pellado', 43)]
+
+== sin 16-11: 2050 cuadros
+ objetos chicos (4-36 px): {'A': 11, 'B': 67, 'C': 1804}  todos (>3 px, sin manto): {'A': 11, 'B': 75, 'C': 2481}
+ densidad por 1e4 km2 por 1000 cuadros: {'A': 3.077, 'B': 1.839, 'C': 3.746} A+B 1.949
+ R = D(A+B)/D(C) = 0.52  D(A)>=D(B): True
+ fraccion diurna (cenit < 80) chicos: {'A': '9/11', 'B': '36/67', 'C': '454/1804'}
+ mediana tamano todos: {'A': 5.0, 'B': 10.0, 'C': 12.0}
+ volcanes con objetos chicos en A+B: [('Villarrica', 34), ('Copahue', 12), ('Infiernillo', 12), ('Antuco', 10), ('San Jose', 3), ('Tupungatito', 2), ('Quetrupillan', 1), ('Resago, Volcan', 1), ('Tinguiririca', 1), ('Planchon-Peteroa', 1), ('Atuel, Caldera del', 1)]

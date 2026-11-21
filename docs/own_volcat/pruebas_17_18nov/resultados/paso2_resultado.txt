@@ -1,0 +1,67 @@
+pares 46 de 46 positivos con sol alto
+  11-08 17:40 control dia 13  BT11 huella 302.5 K  |dif| 0.4 K  px 9  cenit 25.7
+  11-08 18:10 control dia 12  BT11 huella 277.4 K  |dif| 0.6 K  px 1  cenit 30.2
+  11-08 19:10 control dia 12  BT11 huella 289.3 K  |dif| 2.5 K  px 8  cenit 40.8
+  11-08 19:20 control dia 12  BT11 huella 286.1 K  |dif| 1.7 K  px 7  cenit 42.7
+  11-08 19:30 control dia 13  BT11 huella 276.7 K  |dif| 0.7 K  px 1  cenit 44.7
+  11-08 20:30 control dia 13  BT11 huella 279.6 K  |dif| 2.1 K  px 6  cenit 56.5
+  11-08 20:40 control dia 13  BT11 huella 280.8 K  |dif| 2.9 K  px 6  cenit 58.5
+  11-08 21:00 control dia 13  BT11 huella 280.9 K  |dif| 3.9 K  px 5  cenit 62.5
+  11-08 21:10 control dia 13  BT11 huella 277.2 K  |dif| 2.7 K  px 2  cenit 64.5
+  11-08 21:20 control dia 13  BT11 huella 281.2 K  |dif| 3.3 K  px 5  cenit 66.5
+  11-10 15:00 control dia 12  BT11 huella 279.1 K  |dif| 3.2 K  px 4  cenit 28.0
+  11-10 15:10 control dia 13  BT11 huella 280.1 K  |dif| 1.0 K  px 8  cenit 26.5
+  11-10 21:30 control dia 13  BT11 huella 280.0 K  |dif| 4.0 K  px 16  cenit 68.1
+  11-10 21:40 control dia 13  BT11 huella 279.2 K  |dif| 5.3 K  px 15  cenit 70.1
+  11-10 21:50 control dia 09  BT11 huella 274.6 K  |dif| 1.3 K  px 12  cenit 72.1
+  11-11 17:50 control dia 12  BT11 huella 285.2 K  |dif| 1.1 K  px 2  cenit 26.4
+  11-11 18:00 control dia 12  BT11 huella 281.0 K  |dif| 1.0 K  px 5  cenit 27.9
+  11-11 18:10 control dia 12  BT11 huella 282.5 K  |dif| 0.6 K  px 4  cenit 29.5
+  11-14 16:40 control dia 12  BT11 huella 286.0 K  |dif| 2.4 K  px 6  cenit 18.9
+  11-14 16:50 control dia 12  BT11 huella 286.1 K  |dif| 2.4 K  px 4  cenit 19.3
+  11-14 17:00 control dia 12  BT11 huella 286.5 K  |dif| 1.1 K  px 4  cenit 19.9
+  11-14 17:20 control dia 12  BT11 huella 286.5 K  |dif| 2.2 K  px 8  cenit 21.7
+  11-14 17:30 control dia 12  BT11 huella 283.6 K  |dif| 2.0 K  px 7  cenit 22.9
+  11-14 17:40 control dia 12  BT11 huella 285.9 K  |dif| 2.4 K  px 8  cenit 24.2
+  11-14 17:50 control dia 13  BT11 huella 288.3 K  |dif| 1.6 K  px 12  cenit 25.7
+  11-14 18:00 control dia 13  BT11 huella 285.7 K  |dif| 1.5 K  px 10  cenit 27.2
+  11-14 18:10 control dia 13  BT11 huella 283.0 K  |dif| 0.0 K  px 10  cenit 28.8
+  11-14 18:20 control dia 13  BT11 huella 283.7 K  |dif| 0.6 K  px 12  cenit 30.5
+  11-14 18:40 control dia 12  BT11 huella 282.1 K  |dif| 0.9 K  px 9  cenit 34.1
+  11-14 18:50 control dia 13  BT11 huella 283.1 K  |dif| 0.8 K  px 6  cenit 35.9
+  11-14 19:00 control dia 13  BT11 huella 281.8 K  |dif| 0.4 K  px 8  cenit 37.8
+  11-14 19:10 control dia 13  BT11 huella 284.9 K  |dif| 0.9 K  px 7  cenit 39.7
+  11-14 19:20 control dia 13  BT11 huella 289.5 K  |dif| 0.2 K  px 6  cenit 41.6
+  11-14 19:30 control dia 12  BT11 huella 287.2 K  |dif| 2.3 K  px 8  cenit 43.5
+  11-14 19:40 control dia 12  BT11 huella 282.2 K  |dif| 0.0 K  px 4  cenit 45.5
+  11-14 19:50 control dia 13  BT11 huella 281.4 K  |dif| 1.7 K  px 8  cenit 47.5
+  11-14 20:00 control dia 13  BT11 huella 280.8 K  |dif| 1.7 K  px 8  cenit 49.4
+  11-14 20:10 control dia 13  BT11 huella 282.1 K  |dif| 0.3 K  px 9  cenit 51.4
+  11-14 20:30 control dia 13  BT11 huella 280.7 K  |dif| 2.1 K  px 9  cenit 55.4
+  11-14 20:40 control dia 13  BT11 huella 283.9 K  |dif| 1.6 K  px 13  cenit 57.4
+  11-14 20:50 control dia 13  BT11 huella 279.7 K  |dif| 0.8 K  px 10  cenit 59.4
+  11-14 21:10 control dia 13  BT11 huella 282.3 K  |dif| 0.6 K  px 8  cenit 63.4
+  11-14 21:20 control dia 13  BT11 huella 284.3 K  |dif| 0.2 K  px 9  cenit 65.4
+  11-14 21:40 control dia 13  BT11 huella 283.4 K  |dif| 0.6 K  px 8  cenit 69.4
+  11-14 21:50 control dia 13  BT11 huella 285.2 K  |dif| 1.7 K  px 6  cenit 71.4
+  11-14 22:00 control dia 13  BT11 huella 278.7 K  |dif| 0.1 K  px 5  cenit 73.3
+
+== Control pareado (decide)
+ ratio  AUC=0.498  |AUC-0,5|=0.002  mediana pos 0.444  control 0.405  n=338/337
+ r065   AUC=0.509  |AUC-0,5|=0.009  mediana pos 0.155  control 0.155  n=338/338
+ sd065  AUC=0.499  |AUC-0,5|=0.001  mediana pos 0.038  control 0.041  n=338/338
+ veredicto segun criterio: FALSA
+
+== Sensibilidad: los 10 dias negativos juntos
+ ratio  AUC=0.701  mediana pos 0.444  control 0.203
+ r065   AUC=0.291  mediana pos 0.155  control 0.279
+ sd065  AUC=0.431  mediana pos 0.038  control 0.049
+
+== Por dia (control pareado)
+ dia 08: ratio 0.34  r065 0.58  sd065 0.59  (px 50)
+ dia 10: ratio 0.47  r065 0.60  sd065 0.58  (px 55)
+ dia 11: ratio 0.40  r065 0.60  sd065 0.60  (px 11)
+ dia 14: ratio 0.54  r065 0.48  sd065 0.46  (px 222)
+
+fraccion ratio > 0,5: positivos 0.44  control pareado 0.41  todos los controles 0.16
+(r39 se informa, no decide) mediana pos 0.063  control pareado 0.060  AUC 0.529

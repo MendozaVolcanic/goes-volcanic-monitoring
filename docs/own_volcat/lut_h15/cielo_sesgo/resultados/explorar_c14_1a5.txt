@@ -1,0 +1,26 @@
+0,05 <= eps < 0,3, n = 151349
+desfase implicito C14 (despejado VOLCAT - geocatRTM), K, p5/25/50/75/95: [-2.45 -1.48 -0.98 -0.52  0.27]
+desfase implicito C15, K, p5/25/50/75/95: [-0.01  0.    0.01  0.04  0.09]
+  spearman(d14, sz) = -0.155
+  spearman(d14, tpw) = +0.006
+  spearman(d14, ev) = -0.255
+  spearman(d14, row) = -0.129
+  spearman(d14, col) = +0.192
+  spearman(d14, clr) = -0.008
+  spearman(d14, obs) = +0.335
+celdas GFS con pixeles: 172  sd entre medianas de celda (celdas >= 50 px): 0.606  sd del residuo dentro de celda: 0.625  sd total: 0.821
+d14 por franja de angulo (mediana):
+  theta [20,28) n=59280 d14 med -0.84  tpw med 4.50  BTclr med 292.2
+  theta [28,31) n=91161 d14 med -1.10  tpw med 4.86  BTclr med 290.8
+  theta [31,34) n=561 d14 med -1.27  tpw med 5.14  BTclr med 288.3
+  theta [34,37) n=347 d14 med -1.07  tpw med 5.09  BTclr med 289.0
+d14 por franja de tpw (mediana):
+  tpw [4,4.6) n=40610 d14 med -0.97  theta med 26.8
+  tpw [4.6,4.9) n=72372 d14 med -1.00  theta med 28.4
+  tpw [4.9,5.2) n=30987 d14 med -0.94  theta med 29.3
+  tpw [5.2,5.5) n=6389 d14 med -0.70  theta med 30.0
+  tpw [5.5,6.5) n=768 d14 med -1.54  theta med 30.9
+d14 por cuadro: [-0.96, -0.94, -0.99, -1.0, -1.01]
+
+cuadro 1: |d14 vecino - d14| mediana 0.264  sd d14 0.821  -> razon 0.32 (~1,1 si ruido blanco, ~0 si campo suave)
+  spearman(diferencia de d14 entre vecinos, diferencia de BT14 obs entre vecinos): 0.191

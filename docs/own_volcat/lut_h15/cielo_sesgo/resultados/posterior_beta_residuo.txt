@@ -1,0 +1,24 @@
+H1, S0: Delta beta (nuestro - VOLCAT) y Delta beta * eps, por franja de eps_VOLCAT
+  [0.03,0.05) n= 29978 dbeta med -0.232  dbeta*eps med -0.0092  desfase C15 que calza p25/50/75 [0.   0.   0.01] K
+  [0.05,0.07) n= 28545 dbeta med -0.184  dbeta*eps med -0.0110  desfase C15 que calza p25/50/75 [0.   0.01 0.01] K
+  [0.07,0.10) n= 30451 dbeta med -0.146  dbeta*eps med -0.0121  desfase C15 que calza p25/50/75 [0.   0.01 0.02] K
+  [0.10,0.13) n= 20470 dbeta med -0.118  dbeta*eps med -0.0135  desfase C15 que calza p25/50/75 [0.   0.01 0.02] K
+  [0.13,0.16) n= 15903 dbeta med -0.103  dbeta*eps med -0.0148  desfase C15 que calza p25/50/75 [0.01 0.02 0.04] K
+  [0.16,0.20) n= 16432 dbeta med -0.094  dbeta*eps med -0.0169  desfase C15 que calza p25/50/75 [0.01 0.03 0.05] K
+  [0.20,0.25) n= 19624 dbeta med -0.102  dbeta*eps med -0.0220  desfase C15 que calza p25/50/75 [0.02 0.05 0.07] K
+  [0.25,0.30) n= 19924 dbeta med -0.066  dbeta*eps med -0.0182  desfase C15 que calza p25/50/75 [0.03 0.07 0.09] K
+  [0.30,0.40) n= 54262 dbeta med -0.030  dbeta*eps med -0.0105  desfase C15 que calza p25/50/75 [0.02 0.08 0.12] K
+
+beta con eps14 de VOLCAT y eps15 nuestro (+H1): Delta beta (nuestro - VOLCAT)
+  cuadros 1 a 5:
+  [0.05,0.10) n= 58996 med -0.0015 p5 -0.0055 p95 +0.0016  |d|<=0,02: 0.991
+  [0.10,0.20) n= 52805 med -0.0018 p5 -0.0057 p95 +0.0011  |d|<=0,02: 0.999
+  [0.20,0.25) n= 19624 med -0.0029 p5 -0.0063 p95 +0.0014  |d|<=0,02: 0.998
+  [0.25,0.50) n=168001 med -0.0026 p5 -0.0075 p95 +0.0007  |d|<=0,02: 1.000
+  [0.50,0.90) n=326101 med -0.0034 p5 -0.0118 p95 +0.0020  |d|<=0,02: 0.994
+  cuadros 6 a 10, posterior:
+  [0.05,0.10) n= 59214 med -0.0016 p5 -0.0059 p95 +0.0013  |d|<=0,02: 0.989
+  [0.10,0.20) n= 53699 med -0.0020 p5 -0.0061 p95 +0.0009  |d|<=0,02: 0.999
+  [0.20,0.25) n= 19582 med -0.0029 p5 -0.0069 p95 +0.0012  |d|<=0,02: 0.988
+  [0.25,0.50) n=173779 med -0.0028 p5 -0.0078 p95 +0.0011  |d|<=0,02: 1.000
+  [0.50,0.90) n=316017 med -0.0035 p5 -0.0126 p95 +0.0020  |d|<=0,02: 0.988

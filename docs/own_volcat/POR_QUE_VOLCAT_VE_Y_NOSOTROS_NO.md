@@ -1,6 +1,6 @@
 # Por qué VOLCAT ve ceniza en Nevados de Chillán (nov-2026) y nuestro detector no
 
-Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1), el 19-11 (H3 y H7, §3.2; H6 cerrada) el 19-11 en la tarde (β(7,3/11) fuera de muestra y prueba tolerante del VAAC de Londres, §3.3), el 19-11 en la noche (calor a 3,9 µm, rayos GLM y dirección de la pluma, §3.4) el 20-11 (H11 y SECO propio entrenado con VOLCAT, §3.5; corrección del alcance de H8) y el 20-11 en la noche (Test 3 original de Francis 2012 y cambio entre cuadros consecutivos, §3.6). Estado: **informe con quince pruebas medidas y un plan; no cambia código de detección.** Desde el 19-11 el dashboard muestra la detección VOLCAT por volcán como capa externa (ficha SDA v2.8, §A.7).
+Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1), el 19-11 (H3 y H7, §3.2; H6 cerrada) el 19-11 en la tarde (β(7,3/11) fuera de muestra y prueba tolerante del VAAC de Londres, §3.3), el 19-11 en la noche (calor a 3,9 µm, rayos GLM y dirección de la pluma, §3.4) el 20-11 (H11 y SECO propio entrenado con VOLCAT, §3.5; corrección del alcance de H8) y el 20-11 en la noche (Test 3 original de Francis 2012 y cambio entre cuadros consecutivos, §3.6) y el 21-11 (tablas, configuración y eventos públicos de VOLCAT: H14, C2, C2b y H15, §3.7). Estado: **informe con diecinueve pruebas y lecturas medidas y un plan; no cambia código de detección.** Desde el 19-11 el dashboard muestra la detección VOLCAT por volcán como capa externa (ficha SDA v2.8, §A.7).
 Antecedentes: plan de validación §3.4 a §3.6 (`docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`) y el informe
 del detector (`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\INFORME_variantes.md`).
 
@@ -83,9 +83,23 @@ cielo despejado modelado, y no alcanza:
   cambios con pluma son del mismo tamaño que los del cráter sin pluma a esa hora (mejor AUC 0,58 de 18
   variables). Lo que no deja marca en un cuadro tampoco la deja en la diferencia entre dos.
 
-Lo que hace que VOLCAT publique estas plumas está en lo que no es público: sus tablas de probabilidad
-(entrenadas con MODIS, no con Chillán), su configuración por volcán, o un uso del tiempo distinto del que
-medimos (la tesis de Pavolonis 2014 lo deja como trabajo futuro).
+**Lo hallado y medido el 21-11 (§3.7).** Las tablas de probabilidad y la configuración de VOLCAT para ABI
+resultaron estar en el servidor público de SSEC, junto con archivos de evento de Chillán en la grilla ABI:
+- **VOLCAT mismo dice que estas plumas no tienen firma IR (H14).** En sus 60 archivos de evento de Chillán, su
+  indicador de firma de onda larga queda bajo 0,05 en el 99,35 % de los píxeles, también en el primer cuadro de
+  cada evento y junto al cráter. Lo que publica entra por el objeto, el seguimiento o el detector de crecimiento,
+  no por la firma del píxel. Compatible con H14, sin fuerza todavía (4 eventos).
+- **Nuestras huellas estaban corridas un píxel.** Las decodificadas del PNG caen 1 fila al S y 1 columna al E de
+  los píxeles que VOLCAT publica; con objetos de 1 a 2 píxeles de ancho, eso diluyó cada comparación desde el 17-11.
+- **El cielo despejado de VOLCAT sigue la cota fina del terreno** (caso de prueba de Mauna Loa, análisis
+  posterior); el nuestro no, y por eso queda 7 a 9 K más tibio en la cumbre de Chillán.
+- **Las tablas reales se leen y reproducen a VOLCAT en nube espesa, no en nube tenue** (H15), justo donde viven
+  estas plumas. Faltan dos piezas que no están en lo público: la regla para nube tenue y el cielo despejado
+  corregido que entra a la emisividad. Son las preguntas del correo v5 a Pavolonis.
+
+Lo que hace que VOLCAT publique estas plumas ya no es "lo que no es público" en general: es su lógica de objeto y
+seguimiento sobre píxeles sin firma IR, más dos reglas concretas de nube tenue y cielo despejado que sólo el autor
+puede confirmar.
 
 **Qué no es.** No es un problema de umbral (cuatro variantes lo descartaron) ni un corrimiento de la
 huella por paralaje (prueba A, abajo), ni una señal escondida en la banda de 8,5 µm (prueba B), ni la luz solar (pasos 2 y 4, §3.1).
@@ -578,6 +592,40 @@ sin pluma pareado por BT11, 9 jornadas, 865 píxeles.
 - El bosque aleatorio informativo (etapa 2 más las variables temporales) quedó sin correr: se detuvo tras 2
   pliegues por memoria y disco. No cambia el veredicto.
 
+### 3.7 Octava tanda (21-11): lo público de VOLCAT (H14, C2, C2b y H15)
+
+Plan: `docs/own_volcat/PLAN_2026-11-21_LUT_VOLCAT.md`. Búsqueda del 20-11 que lo originó: en
+`https://bin.ssec.wisc.edu/pub/volcat/` hay archivos de evento por volcán (retención ~7 días, con cláusula de acceso
+restringido; los 60 de Chillán se bajaron con el sí de Nicolás, sólo para uso interno y a reserva de autorización) y
+el paquete auxiliar con las tablas y la configuración de VOLCAT para ABI. Informes:
+`docs/own_volcat/eventos_h14/INFORME_H14.md`, `docs/own_volcat/mauna_loa_c2b/INFORME_C2_C2b.md` y
+`docs/own_volcat/lut_h15/INFORME_H15.md`.
+
+**H14, anatomía de los eventos.** 4 eventos (13-11 tipo `VCB`, 14-11 dos, 18-11 uno), 60 cuadros, 767 píxeles
+publicados, mediana de 11 píxeles por cuadro. Firma de onda larga bajo 0,05 en el 99,35 % de los píxeles (máximo
+0,42); 0 de 4 primeros cuadros con firma total ≥ 0,5 en la mayoría; sin núcleo con firma junto al cráter. La firma
+total llega a 0,5 en el 12 % de los píxeles, sólo con sol y nunca de noche. **Veredicto: compatible con H14, sin
+fuerza** (la regla pide ≥ 10 eventos). Georreferencia del 14-11: nuestra huella del PNG cae 1 fila al S y 1 columna
+al E (IoU 0,19 sin corregir, 0,42 corregida).
+
+**C2, modelo radiativo repuesto.** Los insumos perdidos (MT_CKD 4.3 y SRF de ABI) se bajaron de nuevo a
+`D:\goes_cache\rt\`; el cielo despejado de H11 se reproduce con error 0,0 K (una mutación de la SRF da 7,24 K).
+
+**C2b, cielo despejado de VOLCAT en Mauna Loa.** Según el criterio, **no concluyente**: esa noche Hawái estaba
+nublado. Análisis posterior, sin usar la observación: dentro de una misma celda GFS de 0,5° el cielo despejado de
+VOLCAT baja con la cota de cada píxel (−3,75 K/km agrupado); sobre el mar es constante. VOLCAT lleva la superficie a
+la cota fina del terreno.
+
+**H15, las tablas reales.** Etapa 1 (lectura): suficiente. Etapa 2 (validación contra la probabilidad por píxel de
+VOLCAT en Mauna Loa): **no aprobada**; con los ε y β de VOLCAT κ 0,795 (pide 0,90), con los nuestros κ 0,245.
+Diagnóstico posterior: sin la tabla εtot × BTD la probabilidad sale exacta con εtot ≥ 0,5 y falla bajo 0,5, y bajo
+0,2 ningún píxel calza exacto; la huella de Chillán tiene εtot mediana 0,16. Nuestro εtot sale 0,05 más alto que el
+de VOLCAT aun con su cielo despejado. Etapa 3 (Chillán): **no se ejecutó**, como manda la regla.
+
+**Lectura.** Lo espectral de VOLCAT está identificado y es reproducible en nube espesa; lo que decide en Chillán no
+es la firma del píxel, que VOLCAT mismo informa casi nula, sino el objeto y el seguimiento, más una regla de nube
+tenue y un cielo despejado corregido que sólo el autor puede confirmar.
+
 ## 4. Hipótesis ordenadas por evidencia
 
 | # | Hipótesis | A favor | En contra o abierto | Qué la falsaría con datos que ya hay o casi |
@@ -597,6 +645,7 @@ sin pluma pareado por BT11, 9 jornadas, 865 píxeles.
 | H12 | El **Test 3 original** del VAAC de Londres (BTD < +0,7 K y BTD < BTD_clr − 1 K, Francis et al. 2012) admite las BTD positivas de Chillán y separa la pluma | Es la única compuerta publicada que admite BTD positivas; marca 76 % de los cuadros con pluma | 20-11 noche (§3.6): 52 % del mismo lugar sin pluma; AUC 0,58; sin pluma la brecha BTD_clr − BTD ya es 0,6 K y la pluma agrega ~0,25 K; las cumbres de control dieron 35 % pero con un error de BT11 de 2 a 3 K, no de 8 a 9 K | **No concluyente el 20-11**: no separa; el control de terreno no tuvo el error de Chillán |
 | H13 | El **cambio entre cuadros** de 10 min resta la firma estable del cráter y deja la pluma | CDR 2022 (diapositiva 80); la tesis de Pavolonis 2014 lo propone como trabajo futuro | 20-11 noche (§3.6): mejor AUC 0,582 de 18 variables, anillo 0,54 a 0,55; con pareo 30 min antes, 0,52 | **Falsada el 20-11** |
 | H14 | VOLCAT publica estas plumas **sin firma IR**: entran por reglas de objeto o por el detector de crecimiento (`VCB`), y su propio campo de firma lo declara | Archivos de evento VOLCAT de Chillán hallados el 20-11 en SSEC | 21-11 (`docs/own_volcat/eventos_h14/INFORME_H14.md`): 0 de 4 primeros cuadros con firma total ≥ 0,5 en la mayoría; firma de onda larga bajo 0,05 en el 99,35 % de 767 píxeles, también en el cráter; nuestra huella del PNG corrida 1 fila al S y 1 columna al E | **Compatible, sin fuerza para sostenerla** (4 eventos, hacen falta ≥ 10) |
+| H15 | Con las **tablas reales** de VOLCAT para ABI, la huella de Chillán llega a la probabilidad que exige SECO y el control no | Tablas y configuración públicas en SSEC desde el 20-11 | 21-11 (§3.7): la lectura reproduce a VOLCAT en nube espesa pero no en nube tenue (εtot < 0,5), donde está la huella (εtot mediana 0,16); nuestro εtot difiere 0,05 del de VOLCAT | **Sin probar**: la validación no se aprobó y Chillán no se midió. Pendiente de la regla de nube tenue y del cielo despejado corregido (correo v5) |
 
 ## 5. Perspectivas
 
@@ -618,7 +667,7 @@ sin pluma pareado por BT11, 9 jornadas, 865 píxeles.
   gas, el detector propio hace bien en no llamarlas ceniza. Lo que falta es saber cuántas de las 58
   detecciones VOLCAT confirma el OVDAS. Si fueran pocas, el problema sería de VOLCAT, no nuestro.
 
-## 6. Plan con costo (cada paso con criterio escrito antes de medir; estado al 20-11)
+## 6. Plan con costo (cada paso con criterio escrito antes de medir; estado al 21-11)
 
 | Paso | Qué | Costo | Falsa o apoya |
 |---|---|---|---|
@@ -641,8 +690,13 @@ sin pluma pareado por BT11, 9 jornadas, 865 píxeles.
 | 17 | Leer la tesis de Pavolonis 2014 buscando las tablas de probabilidad de SECO | Hecho el 20-11: capítulos 1 a 6, 8 y apéndices C y E; las razones sobre tierra están como figuras (Fig. 4.12 a 4.14), sin tabla numérica | Fig. 4.12 digitalizada aproximada; insumo de un SECO con esas razones |
 | 18 | H13, cambio entre cuadros consecutivos de 10 min | Hecho el 20-11: 1.527 escenas, 72 pares; bosque aleatorio informativo sin completar | H13: falsada |
 
-El plan siguiente (SECO con las razones de la tesis, correo a Pavolonis, VOLCAT en grilla, capa térmica a
-3,9 µm y lo que traiga la búsqueda bibliográfica del 20-11) se decide con Nicolás y se escribe aparte.
+| 19 | Búsqueda 2023 a 2026 y acceso a VOLCAT en grilla | Hecho el 20-11: tablas, configuración, eventos y caso de Mauna Loa en el servidor público de SSEC | Abrió H14 y H15 |
+| 20 | H14: anatomía de los 60 eventos VOLCAT de Chillán | Hecho el 21-11, sin descarga | Compatible, sin fuerza |
+| 21 | C2 y C2b: reponer el modelo radiativo; cielo despejado de VOLCAT en Mauna Loa | Hecho el 21-11: ~170 KB de insumos y 1,3 GB a D: | C2 cumple; C2b no concluyente, el posterior muestra corrección por cota |
+| 22 | H15: tablas reales, validación contra Mauna Loa | Hecho el 21-11 | Validación no aprobada; Chillán sin medir |
+| 23 | **Siguiente:** correo v5 a Pavolonis (permiso de uso, regla de nube tenue, cielo despejado que entra a ε, escala de la firma) | Lo envía Nicolás | Destraba H15 y el archivo diario de eventos (que daría los ≥ 10 eventos que pide H14) |
+
+Plan vigente: `docs/own_volcat/PLAN_2026-11-21_LUT_VOLCAT.md`.
 
 Pasos que **no** conviene repetir: bajar el umbral BTD, anomalía de fondo, β(12/11) con temperatura de
 referencia fija, la banda de 8,5 µm sola, β(7,3/11), la prueba tolerante del VAAC de Londres en la versión de

@@ -1,5 +1,80 @@
 # Cielo despejado y nube negra de VOLCAT en εtot y β (H15, nivel B). Informe, 21-11-2026
 
+## Vuelta 5 (21-11, noche): la forma del desfase de 11 µm
+
+**Veredicto.** El desfase tiene forma de **efecto de vecindad de la nube**, no de ancilar ni de calibración. Es de
+mesoescala (se parece entre celdas vecinas de 0,25° y nada a 1°), es estable entre cuadros, no salta en los bordes
+de celda del GFS, no sigue a la SST y **crece cerca de la nube espesa**: −1,60 K a menos de 2 px, −0,86 K a más de
+20 px. Lo que usamos como observación es idéntico a la L1b de NOAA (100 % de los píxeles dentro de 0,01 K), y GOES-17
+no marca problema de plano focal esa noche. No apareció ninguna variante que decida, así que no hubo criterio ni
+cuadros 6 a 10 en esta vuelta: se para con el mapa, como pedía el encargo.
+
+Salidas crudas: `resultados/vuelta5_l1b.json` (prueba 1, 10 cuadros), `resultados/vuelta5_forma.txt` y
+`resultados/vuelta5_mapa_desfase_c14.png` (pruebas 2 y 3, cuadros 1 a 5), `resultados/vuelta5_fpt.json` (prueba 4,
+10 cuadros).
+
+### Para geólogo
+
+Sólo podemos ver el desfase donde la nube es tenue. Lo que importa es cómo se reparte. Si viniera de un dato de
+entrada distinto (la temperatura del mar, el modelo atmosférico), sería un campo amplio y suave, con saltos en la
+grilla del modelo. Si viniera del sensor, aparecería también en 12 µm o como ruido sin estructura. No es ninguna de
+esas cosas: aparece en manchas del tamaño de los sistemas nubosos (decenas de km), se mueve poco entre cuadros de 5
+minutos y es más fuerte junto a la nube espesa y donde la escena es más rugosa. Es como si VOLCAT, cerca de una nube,
+esperara un mar más frío que el del modelo, sólo en 11 µm. Eso encaja con un cielo despejado estimado de los
+alrededores, un poco contaminado por la nube, más que con el cielo despejado del modelo. Pero no encontramos en el
+paquete ese campo ni su receta.
+
+**Para Chillán:** si VOLCAT estima el cielo despejado de 11 µm desde la vecindad de la nube, nuestro ε(11) de
+cualquier pluma junto a nubes saldrá más alto que el suyo, y por la sensibilidad de la vuelta 3, más "de ceniza".
+Medirlo exige saber la receta.
+
+### Números
+
+**Prueba 1, ¿la BT que usamos es la de VOLCAT?** (`vuelta5_l1b.json`, 10 cuadros). Cada píxel de `geocatL1` se
+ubicó en la grilla fija de la L1b de NOAA (lat/lon a ángulos de barrido):
+
+| | BT(L1b con coeficientes de NOAA) − BT `geocatL1`, mediana | BT(L1b con coeficientes de `geocatL1`) − BT `geocatL1` | Píxeles dentro de 0,01 K (coef. `geocatL1`) |
+|---|---|---|---|
+| C14 | +0,081 K | 0,000 K | 100 % |
+| C15 | +0,090 K | 0,000 K | 100 % |
+
+GEOCAT convierte con sus propios coeficientes de Planck (C14: fk1 8496,11, bc1 0,3376, bc2 0,99908; NOAA: 8495,35,
+0,2178, 0,99922). Corre la BT casi lo mismo en las dos bandas y no toca ε, que se calcula en radiancia: la radiancia
+que recuperamos es la de NOAA.
+
+**Pruebas 2 y 3, forma** (`vuelta5_forma.txt`, cuadros 1 a 5, 151.349 píxeles con 0,05 ≤ ε < 0,3):
+
+| Forma que se buscó | Lo que dice | Medido |
+|---|---|---|
+| Campo suave de escala grande | ancilar distinto | autocorrelación entre celdas de 0,25° vecinas +0,63, a 1° −0,05: no es de escala grande |
+| Saltos en bordes de celda GFS | resolución del ancilar | \|Δ\| entre vecinos 0,263 K dentro de la celda, 0,276 K cruzando el borde: no hay salto |
+| SST / superficie | otro ancilar de superficie | ρ con SST CMC −0,19, con superficie GFS −0,11, con SST − GFS −0,14; la SST de CMC es +0,42 K más tibia que el GFS (mediana), o sea, enfriaría al revés |
+| Ruido píxel a píxel | otra BT observada | descartado por la prueba 1; la vuelta 3 ya vio que es en parte suave |
+| Vecindad | efecto de la nube cercana | por distancia a nube espesa (ε ≥ 0,5): −1,60 K (0 a 2 px), −1,50 (2 a 5), −1,27 (5 a 10), −1,04 (10 a 20), −0,86 (> 20); por textura de BT14: −0,80 a −0,92 K con sd 3 × 3 < 2 K, −1,21 K con > 2 K |
+
+Estabilidad del mapa de 0,25° entre cuadros consecutivos: ρ 0,967 a 0,972 (329 a 339 celdas). Desfase de C15 en los
+mismos píxeles: p5/p50/p95 = −0,01 / +0,01 / +0,09 K. Mapa: `resultados/vuelta5_mapa_desfase_c14.png` (cuadros 09:16
+y 09:36).
+
+**Prueba 4, calibración GOES-17** (`vuelta5_fpt.json`, C13, C14 y C15, 10 cuadros): `focal_plane_temperature_threshold_exceeded_count`
+= 0 en todos, temperatura máxima del plano focal 84,0 a 84,9 K con umbral de 93 K (C14, C15) y 100 K (C13), DQF = 0
+en todo el dominio. Además C14 y C15 comparten umbral, así que un efecto del loop heat pipe tocaría las dos bandas.
+No hay evidencia en los archivos de una corrección de calibración que no tengamos.
+
+### Pregunta para el correo (precisa la 3)
+
+En nube tenue sobre mar, el ε(11) de VOLCAT se reproduce con un cielo despejado de 11 µm más frío que el de
+`geocatRTM`: −0,86 K lejos de la nube espesa y −1,6 K junto a ella, en manchas de decenas de km. En 12 µm no hay
+desfase, y la radiancia observada es la de la L1b. ¿El cielo despejado del canal 14 que entra a εtot se ajusta
+empíricamente con los píxeles vecinos (por ejemplo, desde los más tibios alrededor), y por qué sólo en 11 µm?
+
+### Archivos de la vuelta 5
+
+`scripts/vuelta5_l1b.py`, `scripts/vuelta5_gfs_sfc.py` (venv_hdf4; superficie y TPW del GFS a
+`D:\goes_cache\cielo_sesgo\gfs_sfc.npz`), `scripts/vuelta5_forma.py`, `scripts/vuelta5_fpt.py`.
+
+---
+
 ## Vuelta 4 (21-11, noche): ¿el desfase de 11 µm es el sesgo de BT14 por objeto? No
 
 **Veredicto.** Descartado con la salida del propio VOLCAT, y se paró antes de las pruebas 2 y 3, como pedía el

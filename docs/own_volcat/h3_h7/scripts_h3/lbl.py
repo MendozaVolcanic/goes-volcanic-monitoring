@@ -19,7 +19,11 @@ import numpy as np
 from numba import njit, prange
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-C2 = 1.4387769          # cm K (segunda constante de radiacion, CODATA)
+# Insumos bajados (continuo MT_CKD y SRF del ABI). Por defecto en ./dl, como los dejo H3; H3_RT_DL apunta a otra
+# carpeta con la misma estructura (mtckd/absco-ref_wv-mt-ckd.nc, srf/CHxx.SRF). Se agrego el 21-11-2026 (C2)
+# porque la carpeta dl de H3 se borro con su scratchpad; la copia vigente vive en D:\goes_cache\rt.
+DL = os.environ.get("H3_RT_DL", os.path.join(HERE, "dl"))
+C2 = 1.4387769         # cm K (segunda constante de radiacion, CODATA)
 C1 = 1.191042722e-5     # mW m-2 sr-1 cm4 (= RADCN1 de MT_CKD/LBLRTM x 1e7)
 KB = 1.380649e-23; CLUZ = 2.99792458e8; AMU = 1.66053906660e-27
 TREF = 296.0
@@ -117,6 +121,9 @@ def planck(nu, T):
 
 def srf(band, nu):
     """SRF del ABI FM4 (archivo CIMSS/STAR, en cm-1) interpolada a la rejilla; 0 fuera del archivo."""
-    a = np.loadtxt(os.path.join(HERE, "dl", "srf", f"CH{band:02d}.SRF"))
+    p = os.path.join(DL, "srf", f"CH{band:02d}.SRF")
+    if not os.path.exists(p):   # mismo archivo con el nombre que trae en CIMSS
+        p = os.path.join(DL, "srf", f"ABI_FM4_10Mar2016_CH{band:02d}.SRF")
+    a = np.loadtxt(p)
     a = a[np.argsort(a[:, 0])]
     return np.interp(nu, a[:, 0], a[:, 1], left=0.0, right=0.0)

@@ -1,0 +1,178 @@
+{
+ "gfs": "gfs.22112800_F012.hdf",
+ "notas": [],
+ "base_indices_nwp": {
+  "base": 1,
+  "max_dif_lat_mas_lon_grados": 0.5
+ },
+ "cumbres": {
+  "Mauna Loa": {
+   "cota_GVP_m": 4169,
+   "pixel": [
+    56,
+    311
+   ],
+   "cota_vista_pixel_m": 4018.0,
+   "celda_gfs": [
+    219,
+    409
+   ],
+   "cota_gfs_celda_m": 2667.0,
+   "mascara_tierra_gfs": 1.0,
+   "t_superficie_gfs_K": 283.9,
+   "t_aire_gfs_a_cota_pixel_K": 274.05,
+   "clr14_pixel_K": 272.59,
+   "emisividad14_pixel": 0.958
+  },
+  "Mauna Kea": {
+   "cota_GVP_m": 4207,
+   "pixel": [
+    39,
+    320
+   ],
+   "cota_vista_pixel_m": 3992.0,
+   "celda_gfs": [
+    220,
+    409
+   ],
+   "cota_gfs_celda_m": 1234.0,
+   "mascara_tierra_gfs": 1.0,
+   "t_superficie_gfs_K": 288.4,
+   "t_aire_gfs_a_cota_pixel_K": 274.16,
+   "clr14_pixel_K": 273.55,
+   "emisividad14_pixel": 0.965
+  }
+ },
+ "celdas_tierra": [
+  {
+   "celda": [
+    218,
+    408
+   ],
+   "n": 77,
+   "cota_min_m": 40.0,
+   "cota_max_m": 2034.0,
+   "cota_gfs_m": 1.0,
+   "pendiente_K_km_con_plano": -6.49,
+   "pendiente_K_km_sola": -4.44,
+   "resid_sd_K": 1.12,
+   "clr14_rango_K": [
+    274.53,
+    288.71
+   ]
+  },
+  {
+   "celda": [
+    218,
+    409
+   ],
+   "n": 163,
+   "cota_min_m": 41.0,
+   "cota_max_m": 2098.0,
+   "cota_gfs_m": 77.0,
+   "pendiente_K_km_con_plano": -4.04,
+   "pendiente_K_km_sola": -5.3,
+   "resid_sd_K": 1.38,
+   "clr14_rango_K": [
+    274.2,
+    288.98
+   ]
+  },
+  {
+   "celda": [
+    219,
+    408
+   ],
+   "n": 226,
+   "cota_min_m": 19.0,
+   "cota_max_m": 2376.0,
+   "cota_gfs_m": 143.0,
+   "pendiente_K_km_con_plano": -4.76,
+   "pendiente_K_km_sola": -3.95,
+   "resid_sd_K": 0.95,
+   "clr14_rango_K": [
+    272.83,
+    288.43
+   ]
+  },
+  {
+   "celda": [
+    219,
+    409
+   ],
+   "n": 590,
+   "cota_min_m": 132.0,
+   "cota_max_m": 4018.0,
+   "cota_gfs_m": 2667.0,
+   "pendiente_K_km_con_plano": -3.36,
+   "pendiente_K_km_sola": -4.35,
+   "resid_sd_K": 1.32,
+   "clr14_rango_K": [
+    269.2,
+    286.12
+   ]
+  },
+  {
+   "celda": [
+    219,
+    410
+   ],
+   "n": 330,
+   "cota_min_m": 14.0,
+   "cota_max_m": 1168.0,
+   "cota_gfs_m": 288.0,
+   "pendiente_K_km_con_plano": -2.65,
+   "pendiente_K_km_sola": -2.36,
+   "resid_sd_K": 0.5,
+   "clr14_rango_K": [
+    283.24,
+    289.0
+   ]
+  },
+  {
+   "celda": [
+    220,
+    408
+   ],
+   "n": 167,
+   "cota_min_m": 31.0,
+   "cota_max_m": 1276.0,
+   "cota_gfs_m": 6.0,
+   "pendiente_K_km_con_plano": -3.52,
+   "pendiente_K_km_sola": -3.3,
+   "resid_sd_K": 1.4,
+   "clr14_rango_K": [
+    280.71,
+    289.61
+   ]
+  },
+  {
+   "celda": [
+    220,
+    409
+   ],
+   "n": 405,
+   "cota_min_m": 160.0,
+   "cota_max_m": 3992.0,
+   "cota_gfs_m": 1234.0,
+   "pendiente_K_km_con_plano": -3.62,
+   "pendiente_K_km_sola": -3.5,
+   "resid_sd_K": 0.81,
+   "clr14_rango_K": [
+    272.69,
+    289.24
+   ]
+  }
+ ],
+ "pendiente_agrupada_K_km": -3.75,
+ "pendientes_por_celda_mediana_K_km": -3.62,
+ "oceano_sd_dentro_de_celda_K": {
+  "celdas": 33,
+  "mediana": 0.02,
+  "max": 0.21
+ },
+ "dominio_celdas_mar_gfs_sd_dentro_K": {
+  "celdas": 269,
+  "mediana": 0.02
+ }
+}

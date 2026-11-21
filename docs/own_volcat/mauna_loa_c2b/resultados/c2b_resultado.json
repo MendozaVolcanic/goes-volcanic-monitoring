@@ -1,0 +1,530 @@
+{
+ "proyeccion": {
+  "a": 6378137.0,
+  "b": 6356752.31414,
+  "h": 35786023.0,
+  "lon0": -137.0,
+  "x_sc": 5.6000000768108293e-05,
+  "x_of": -0.06997200101613998,
+  "y_sc": -5.6000000768108293e-05,
+  "y_of": 0.12821200489997864,
+  "nx": 2500,
+  "ny": 1500
+ },
+ "meta_nav": {
+  "X_Offset_Nav": -0.06997200101613998,
+  "Y_Offset_Nav": 0.12821200489997864,
+  "X_Scale_Nav": 5.6000000768108293e-05,
+  "Y_Scale_Nav": -5.6000000768108293e-05,
+  "First_Line_Processed": 1200.0,
+  "Last_Line_Processed": 1500.0,
+  "First_Element_Processed": 1.0,
+  "Last_Element_Processed": 500.0,
+  "Projection_Longitude": -137.0,
+  "Subsatellite_Longitude": -137.3300018310547,
+  "Satellite_Height": 42165620.0,
+  "Original_NumberOfLines": 1500.0,
+  "Original_NumberOfElements": 2500.0,
+  "Percentage_Night": 100.0
+ },
+ "horas": [
+  "091600",
+  "092100",
+  "092600",
+  "093100",
+  "093600",
+  "094100",
+  "094600",
+  "095100",
+  "095600",
+  "100130"
+ ],
+ "deciden": [
+  "091600",
+  "092100",
+  "092600"
+ ],
+ "chequeo_proyeccion": {
+  "dfila_mediana": -7.662720236112364e-09,
+  "dfila_maxabs": 5.643108920594386e-05,
+  "dcol_mediana": 1.0685169229418534e-06,
+  "dcol_maxabs": 0.00038731440923811533
+ },
+ "dem": {
+  "celdas": 1048576,
+  "pixeles_cubiertos": 13263,
+  "pixeles_tierra_pura": 2051,
+  "celdas_por_pixel_mediana": 61.0,
+  "elev_max_vista_m": 4018.3809523809523
+ },
+ "sitios": {
+  "Mauna Loa": {
+   "pixeles": 12,
+   "elev_media_m": 3944.0,
+   "elev_max_m": 4018.0,
+   "despejados_por_cuadro": {
+    "091600": 0,
+    "092100": 0,
+    "092600": 0,
+    "093100": 0,
+    "093600": 1,
+    "094100": 1,
+    "094600": 3,
+    "095100": 0,
+    "095600": 0,
+    "100130": 0
+   },
+   "pruebas_pasadas_deciden": {
+    "t1_btd1112": 36,
+    "t2_btd3911": 1,
+    "t3_estable": 6,
+    "t4_bt250": 9
+   },
+   "pixeles_cuadro_posibles_deciden": 36,
+   "D_deciden": {
+    "n": 0
+   },
+   "D_todos_cuadros": {
+    "n": 5,
+    "mediana": 12.9,
+    "p10": 10.81,
+    "p90": 13.89,
+    "min": 10.72,
+    "max": 14.34
+   },
+   "bt11_obs_deciden": {
+    "n": 0
+   },
+   "bt11_clr_deciden": {
+    "n": 0
+   },
+   "eps14_volcat_deciden": {
+    "n": 0
+   },
+   "bt_clr_efectivo_volcat_195K_menos_obs": {
+    "n": 0
+   },
+   "bt_clr_efectivo_volcat_210K_menos_obs": {
+    "n": 0
+   },
+   "prob_ceniza_IR_deciden": {
+    "n": 0
+   },
+   "sesgo_bt14_env_p75_deciden": {
+    "n": 0
+   }
+  },
+  "Mauna Kea": {
+   "pixeles": 4,
+   "elev_media_m": 3910.0,
+   "elev_max_m": 3992.0,
+   "despejados_por_cuadro": {
+    "091600": 2,
+    "092100": 1,
+    "092600": 0,
+    "093100": 0,
+    "093600": 0,
+    "094100": 0,
+    "094600": 0,
+    "095100": 0,
+    "095600": 1,
+    "100130": 1
+   },
+   "pruebas_pasadas_deciden": {
+    "t1_btd1112": 12,
+    "t2_btd3911": 9,
+    "t3_estable": 3,
+    "t4_bt250": 12
+   },
+   "pixeles_cuadro_posibles_deciden": 12,
+   "D_deciden": {
+    "n": 3,
+    "mediana": 17.88,
+    "p10": 17.2,
+    "p90": 19.0,
+    "min": 17.04,
+    "max": 19.28
+   },
+   "D_todos_cuadros": {
+    "n": 5,
+    "mediana": 17.04,
+    "p10": 14.66,
+    "p90": 18.72,
+    "min": 13.25,
+    "max": 19.28
+   },
+   "bt11_obs_deciden": {
+    "n": 3,
+    "mediana": 255.67,
+    "p10": 255.03,
+    "p90": 256.35,
+    "min": 254.87,
+    "max": 256.51
+   },
+   "bt11_clr_deciden": {
+    "n": 3,
+    "mediana": 273.55,
+    "p10": 273.55,
+    "p90": 274.03,
+    "min": 273.55,
+    "max": 274.15
+   },
+   "eps14_volcat_deciden": {
+    "n": 3,
+    "mediana": 0.29,
+    "p10": 0.28,
+    "p90": 0.3,
+    "min": 0.28,
+    "max": 0.3
+   },
+   "bt_clr_efectivo_volcat_195K_menos_obs": {
+    "n": 3,
+    "mediana": 14.93,
+    "p10": 14.31,
+    "p90": 15.49,
+    "min": 14.16,
+    "max": 15.63
+   },
+   "bt_clr_efectivo_volcat_210K_menos_obs": {
+    "n": 3,
+    "mediana": 12.72,
+    "p10": 12.22,
+    "p90": 13.16,
+    "min": 12.1,
+    "max": 13.27
+   },
+   "prob_ceniza_IR_deciden": {
+    "n": 3,
+    "mediana": 0.0,
+    "p10": 0.0,
+    "p90": 0.0,
+    "min": 0.0,
+    "max": 0.0
+   },
+   "sesgo_bt14_env_p75_deciden": {
+    "n": 0
+   }
+  },
+  "Control bajo": {
+   "pixeles": 306,
+   "elev_media_m": 160.0,
+   "elev_max_m": 299.0,
+   "despejados_por_cuadro": {
+    "091600": 9,
+    "092100": 10,
+    "092600": 3,
+    "093100": 3,
+    "093600": 4,
+    "094100": 12,
+    "094600": 4,
+    "095100": 3,
+    "095600": 3,
+    "100130": 4
+   },
+   "pruebas_pasadas_deciden": {
+    "t1_btd1112": 899,
+    "t2_btd3911": 255,
+    "t3_estable": 204,
+    "t4_bt250": 406
+   },
+   "pixeles_cuadro_posibles_deciden": 918,
+   "D_deciden": {
+    "n": 22,
+    "mediana": 35.02,
+    "p10": 29.97,
+    "p90": 35.94,
+    "min": 28.19,
+    "max": 37.15
+   },
+   "D_todos_cuadros": {
+    "n": 55,
+    "mediana": 32.54,
+    "p10": 28.1,
+    "p90": 35.93,
+    "min": 24.89,
+    "max": 37.51
+   },
+   "bt11_obs_deciden": {
+    "n": 22,
+    "mediana": 251.11,
+    "p10": 250.23,
+    "p90": 253.12,
+    "min": 250.09,
+    "max": 254.0
+   },
+   "bt11_clr_deciden": {
+    "n": 22,
+    "mediana": 285.99,
+    "p10": 282.03,
+    "p90": 288.55,
+    "min": 281.79,
+    "max": 288.71
+   },
+   "eps14_volcat_deciden": {
+    "n": 22,
+    "mediana": 0.51,
+    "p10": 0.44,
+    "p90": 0.52,
+    "min": 0.41,
+    "max": 0.52
+   },
+   "bt_clr_efectivo_volcat_195K_menos_obs": {
+    "n": 22,
+    "mediana": 32.27,
+    "p10": 25.63,
+    "p90": 33.21,
+    "min": 24.01,
+    "max": 33.57
+   },
+   "bt_clr_efectivo_volcat_210K_menos_obs": {
+    "n": 22,
+    "mediana": 27.29,
+    "p10": 21.65,
+    "p90": 27.99,
+    "min": 20.4,
+    "max": 28.43
+   },
+   "prob_ceniza_IR_deciden": {
+    "n": 22,
+    "mediana": 0.0,
+    "p10": 0.0,
+    "p90": 1.0,
+    "min": 0.0,
+    "max": 1.0
+   },
+   "sesgo_bt14_env_p75_deciden": {
+    "n": 0
+   }
+  },
+  "Haleakala (desc.)": {
+   "pixeles": 0,
+   "elev_media_m": null,
+   "elev_max_m": null,
+   "despejados_por_cuadro": {
+    "091600": 0,
+    "092100": 0,
+    "092600": 0,
+    "093100": 0,
+    "093600": 0,
+    "094100": 0,
+    "094600": 0,
+    "095100": 0,
+    "095600": 0,
+    "100130": 0
+   },
+   "pruebas_pasadas_deciden": {
+    "t1_btd1112": 0,
+    "t2_btd3911": 0,
+    "t3_estable": 0,
+    "t4_bt250": 0
+   },
+   "pixeles_cuadro_posibles_deciden": 0,
+   "D_deciden": {
+    "n": 0
+   },
+   "D_todos_cuadros": {
+    "n": 0
+   },
+   "bt11_obs_deciden": {
+    "n": 0
+   },
+   "bt11_clr_deciden": {
+    "n": 0
+   },
+   "eps14_volcat_deciden": {
+    "n": 0
+   },
+   "bt_clr_efectivo_volcat_195K_menos_obs": {
+    "n": 0
+   },
+   "bt_clr_efectivo_volcat_210K_menos_obs": {
+    "n": 0
+   },
+   "prob_ceniza_IR_deciden": {
+    "n": 0
+   },
+   "sesgo_bt14_env_p75_deciden": {
+    "n": 0
+   }
+  },
+  "Oceano (desc.)": {
+   "pixeles": 9157,
+   "elev_media_m": 0.0,
+   "elev_max_m": 0.0,
+   "despejados_por_cuadro": {
+    "091600": 856,
+    "092100": 611,
+    "092600": 661,
+    "093100": 672,
+    "093600": 751,
+    "094100": 717,
+    "094600": 744,
+    "095100": 775,
+    "095600": 794,
+    "100130": 1056
+   },
+   "pruebas_pasadas_deciden": {
+    "t1_btd1112": 27056,
+    "t2_btd3911": 11109,
+    "t3_estable": 6611,
+    "t4_bt250": 12885
+   },
+   "pixeles_cuadro_posibles_deciden": 27471,
+   "D_deciden": {
+    "n": 2128,
+    "mediana": 30.78,
+    "p10": 26.55,
+    "p90": 36.33,
+    "min": 10.16,
+    "max": 39.23
+   },
+   "D_todos_cuadros": {
+    "n": 7637,
+    "mediana": 30.93,
+    "p10": 24.58,
+    "p90": 36.85,
+    "min": 8.75,
+    "max": 39.51
+   },
+   "bt11_obs_deciden": {
+    "n": 2128,
+    "mediana": 257.68,
+    "p10": 252.3,
+    "p90": 261.66,
+    "min": 250.04,
+    "max": 279.12
+   },
+   "bt11_clr_deciden": {
+    "n": 2128,
+    "mediana": 288.53,
+    "p10": 288.06,
+    "p90": 288.99,
+    "min": 287.89,
+    "max": 289.58
+   },
+   "eps14_volcat_deciden": {
+    "n": 2128,
+    "mediana": 0.44,
+    "p10": 0.39,
+    "p90": 0.51,
+    "min": 0.15,
+    "max": 0.55
+   },
+   "bt_clr_efectivo_volcat_195K_menos_obs": {
+    "n": 2128,
+    "mediana": 27.92,
+    "p10": 24.06,
+    "p90": 32.92,
+    "min": 8.94,
+    "max": 36.44
+   },
+   "bt_clr_efectivo_volcat_210K_menos_obs": {
+    "n": 2128,
+    "mediana": 24.18,
+    "p10": 21.07,
+    "p90": 27.95,
+    "min": 8.12,
+    "max": 30.7
+   },
+   "prob_ceniza_IR_deciden": {
+    "n": 2128,
+    "mediana": 0.03,
+    "p10": 0.0,
+    "p90": 0.99,
+    "min": 0.0,
+    "max": 1.0
+   },
+   "sesgo_bt14_env_p75_deciden": {
+    "n": 0
+   }
+  }
+ },
+ "D_por_tramo_de_cota": [
+  {
+   "tramo_m": "0-500",
+   "pixeles": 490,
+   "n": 34,
+   "mediana": 32.99,
+   "p10": 28.17,
+   "p90": 35.87,
+   "min": 26.08,
+   "max": 37.15
+  },
+  {
+   "tramo_m": "500-1000",
+   "pixeles": 421,
+   "n": 24,
+   "mediana": 31.05,
+   "p10": 28.62,
+   "p90": 32.68,
+   "min": 27.54,
+   "max": 33.37
+  },
+  {
+   "tramo_m": "1000-1500",
+   "pixeles": 301,
+   "n": 36,
+   "mediana": 27.21,
+   "p10": 21.28,
+   "p90": 30.46,
+   "min": 20.1,
+   "max": 32.09
+  },
+  {
+   "tramo_m": "1500-2000",
+   "pixeles": 285,
+   "n": 32,
+   "mediana": 25.52,
+   "p10": 21.48,
+   "p90": 27.24,
+   "min": 20.78,
+   "max": 31.1
+  },
+  {
+   "tramo_m": "2000-2500",
+   "pixeles": 195,
+   "n": 50,
+   "mediana": 22.69,
+   "p10": 20.38,
+   "p90": 29.34,
+   "min": 18.69,
+   "max": 31.21
+  },
+  {
+   "tramo_m": "2500-3000",
+   "pixeles": 103,
+   "n": 25,
+   "mediana": 19.25,
+   "p10": 17.17,
+   "p90": 22.94,
+   "min": 15.89,
+   "max": 25.42
+  },
+  {
+   "tramo_m": "3000-3500",
+   "pixeles": 62,
+   "n": 9,
+   "mediana": 17.42,
+   "p10": 16.57,
+   "p90": 22.2,
+   "min": 16.39,
+   "max": 24.14
+  },
+  {
+   "tramo_m": "3500-4000",
+   "pixeles": 41,
+   "n": 8,
+   "mediana": 16.81,
+   "p10": 15.37,
+   "p90": 18.3,
+   "min": 15.25,
+   "max": 19.28
+  },
+  {
+   "tramo_m": "4000-4500",
+   "pixeles": 4,
+   "n": 0
+  }
+ ],
+ "veredicto": "no concluyente (menos de 5 pixeles-cuadro despejados en alguna cumbre; control bajo sin datos o con |mediana D| > 2 K)"
+}

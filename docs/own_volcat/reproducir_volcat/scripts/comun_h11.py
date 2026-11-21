@@ -14,7 +14,13 @@ H3 = os.environ.get("H11_H3", r"C:\Users\nmend\AppData\Local\Temp\claude\caac884
 B73 = os.environ.get("H11_B73", r"C:\Users\nmend\AppData\Local\Temp\claude\f4710304fa6a9a5b\6cc950d4-5fd7-4e45-a0af-882008093b90\scratchpad\b73")
 TRABAJO = os.environ.get("H11_TRABAJO", r"C:\Users\nmend\AppData\Local\Temp\claude\a2570b18d9d77a03\d3ce10df-b230-48d8-900a-293980f29716\scratchpad\rv")
 RTDIR = os.path.join(TRABAJO, "rt_h11"); os.makedirs(RTDIR, exist_ok=True)
+# Modelo radiativo (C2, 21-11-2026): el codigo sale del repo (h3_h7/scripts_h3, identico a la copia que habia en H3)
+# y sus insumos de H3_RT_LBL (tabla de coeficientes) y H3_RT_DL (MT_CKD y SRF). Sin esas variables se buscan dentro
+# de H3, igual que antes. Con la copia rescatada, que no trae dl: H3_RT_DL=D:\goes_cache\rt (ver README de own_volcat).
+os.environ.setdefault("H3_RT_LBL", os.path.join(H3, "lbl"))
+os.environ.setdefault("H3_RT_DL", os.path.join(H3, "dl"))
 sys.path.insert(0, H3)
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "h3_h7", "scripts_h3"))
 import rt  # noqa: E402  (modelo de H3: capas, tau, Planck, cenit satelital)
 
 _ll = np.load(os.path.join(TRABAJO, "latlon.npz")); LAT, LON = _ll["lat"], _ll["lon"]

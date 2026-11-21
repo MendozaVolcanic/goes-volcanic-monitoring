@@ -1,0 +1,15 @@
+Insumos del modelo radiativo repuestos el 21-11-2026 (C2), en D:\goes_cache\rt
+
+MT_CKD 4.3: https://raw.githubusercontent.com/AER-RC/MT_CKD_H2O/4.3/data/absco-ref_wv-mt-ckd.nc (tag 4.3 = commit 3e043b491a996a9679c65a45a57a3ec4317e9e79)
+SRF: https://cimss.ssec.wisc.edu/goes/calibration/SRF/abiFM4/ABI_FM4_10Mar2016_CHxx.SRF
+
+blob git absco-ref_wv-mt-ckd.nc: ff75b0ed2b7409ab6f5cbaa90b0762e3a03b1903
+
+SHA-256:
+0034503387080d78f3034e8d409ca9b2428e90aa6aff092b9b925defa216a162 *mtckd/LICENSE.md
+64a1ea0685c255b20fba7941035fc57c148336444f1d8535f7a945d436599e7d *mtckd/README.md
+69944eb8b045c268e2daeb2cddf536b99f9e9efe7e91c425067b46a5b287ddb3 *mtckd/absco-ref_wv-mt-ckd.nc
+edab400d7ee04764ab037052701a5fdf1e95c451c92c40edbd2edde402fe51ea *srf/ABI_FM4_10Mar2016_CH10.SRF
+9b2310ee37e0cffc7808bc316ff57032180368f494f965114e47136ee6a54f6c *srf/ABI_FM4_10Mar2016_CH11.SRF
+5b2ec001c40c5c3f0fa0d88ef76466a6b601e85fc07e747bf38f056ca6dd72d5 *srf/ABI_FM4_10Mar2016_CH14.SRF
+873ce3c9a6f36c6fd3d6acd69b954fdc25b3cd5624bb97ad2a9f815f46e2406c *srf/ABI_FM4_10Mar2016_CH15.SRF

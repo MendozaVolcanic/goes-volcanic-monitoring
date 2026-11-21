@@ -1,0 +1,17 @@
+pareo: {'huella_total': 769, 'con_control': 769, 'tol_05': 768, 'tol_10': 1, 'controles': 3836}
+S0 p_v0: F_h 0.021 F_c 0.006 AUC 0.662 IC_AUC [0.6268, 0.8732] IC_dF [0.0, 0.0281] Pmed_h 4.48e-04 -> no separa
+S0 p_v1: F_h 0.016 F_c 0.004 AUC 0.715 IC_AUC [0.6885, 0.9286] IC_dF [0.0, 0.0243] Pmed_h 2.13e-04 -> no separa
+S0 p_v2: F_h 0.000 F_c 0.000 AUC 0.675 IC_AUC [0.6416, 0.908] IC_dF [0.0, 0.0] Pmed_h 1.92e-03 -> no separa
+S1 p_v0: F_h 0.000 F_c 0.001 AUC 0.419 IC_AUC [0.3864, 0.5211] IC_dF [-0.0012, 0.0] Pmed_h 1.82e-04 -> no separa
+S1 p_v1: F_h 0.001 F_c 0.000 AUC 0.550 IC_AUC [0.5195, 0.7022] IC_dF [-0.0006, 0.0036] Pmed_h 4.00e-05 -> no separa
+S1 p_v2: F_h 0.000 F_c 0.000 AUC 0.398 IC_AUC [0.3674, 0.5905] IC_dF [0.0, 0.0] Pmed_h 5.72e-04 -> no separa
+S2 p_v0: F_h 0.016 F_c 0.003 AUC 0.489 IC_AUC [0.3481, 0.547] IC_dF [0.0, 0.0241] Pmed_h 2.58e-04 -> no separa
+S2 p_v1: F_h 0.013 F_c 0.002 AUC 0.594 IC_AUC [0.48, 0.6699] IC_dF [0.0, 0.0222] Pmed_h 8.60e-05 -> no separa
+S2 p_v2: F_h 0.000 F_c 0.000 AUC 0.485 IC_AUC [0.3879, 0.5659] IC_dF [0.0, 0.0] Pmed_h 9.02e-04 -> no separa
+Tm5 p_v0: F_h 0.000 F_c 0.000 AUC 0.312 IC_AUC [0.2509, 0.4237] IC_dF [0.0, 0.0] Pmed_h 1.53e-03 -> no separa
+Tm5 p_v1: F_h 0.000 F_c 0.000 AUC 0.506 IC_AUC [0.3926, 0.5557] IC_dF [0.0, 0.0] Pmed_h 6.66e-04 -> no separa
+Tm5 p_v2: F_h 0.000 F_c 0.000 AUC 0.333 IC_AUC [0.2777, 0.4508] IC_dF [0.0, 0.0] Pmed_h 1.63e-03 -> no separa
+Tp5 p_v0: F_h 0.694 F_c 0.576 AUC 0.601 IC_AUC [0.3013, 0.6366] IC_dF [-0.3308, 0.1636] Pmed_h 8.26e-01 -> no concluyente
+Tp5 p_v1: F_h 0.497 F_c 0.149 AUC 0.743 IC_AUC [0.5809, 0.7709] IC_dF [0.0554, 0.388] Pmed_h 4.93e-01 -> no concluyente
+Tp5 p_v2: F_h 0.034 F_c 0.207 AUC 0.446 IC_AUC [0.3013, 0.482] IC_dF [-0.2057, 0.1163] Pmed_h 1.04e-01 -> no separa
+VEREDICTO: {'categorias_S0_S1_S2': ['no separa', 'no separa', 'no separa'], 'robusto': True, 'texto': 'no separa', 'tierra_Tm5_Tp5': ['no separa', 'no concluyente']}

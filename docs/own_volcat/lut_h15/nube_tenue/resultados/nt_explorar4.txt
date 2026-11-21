@@ -1,0 +1,40 @@
+eps<0,2 no saturados: 24854, valores distintos de P: 957
+Por grupo (30 más grandes): casilleros distintos que ocupa cada entrada (1 = constante en el grupo)
+           eps eps_fino(0,0        b_tot         b_op        b_low        b_mid          b85        b85op    btd(0,25)        btclr   sesgo(0,1)  sesgo(0,25)        b_nwp
+P=0.0000151 n= 2720            1            7            1            1            1            1            8           15            9            1           22            9           23
+P=0.0003173 n= 2371            1            7            1            1            1            1            8           15           10            1           23           10           24
+P=0.0005319 n= 1950            1            7            1            1            1            1            9           16            9            1           23            9           25
+P=0.0010428 n= 1593            1            7            1            2            1            1           10           16            9            1           23           10           27
+P=0.0000412 n= 1037            2            3            1            1            1            1           14           17            7            1           14            7            1
+P=0.0000088 n=  860            3            4            2            2            2            1           14           18            8            1           16            7            2
+P=0.0023464 n=  855            1            7            1            2            1            1            8           15            8            1           21            9           27
+P=0.0000299 n=  849            2            3            2            1            1            1           15           19            7            1           14            7            1
+P=0.0000215 n=  822            2            3            1            1            1            1           13           17            7            1           14            6            1
+P=0.0000150 n=  742            3            4            2            2            2            1           14           17            9            1           17            8            2
+P=0.0000184 n=  672            2            3            1            1            1            1           15           18            6            1           15            7            1
+P=0.4730143 n=  331            1            5            1            1            1            1            7           14            9            1           18            9           11
+P=0.0000011 n=  318            3           16            3            9            7            1            4           12           11            1           26           12           26
+P=0.2483571 n=  312            1            6            1            1            1            1            7           14            9            1           19            9           11
+P=0.0037525 n=  308            1            6            1            2            1            1            9           16            7            1           18            8           26
+P=0.0020312 n=  296            2            3            1            1            1            1           13           18            7            1           16            7            1
+P=0.0016944 n=  284            2            3            1            1            1            1           15           18            7            1           16            7            1
+P=0.0017516 n=  221            2            3            1            1            1            1           13           16            7            1           13            6            1
+P=0.0017890 n=  207            1            2            1            1            1            1           13           17            7            1           14            7            1
+P=0.0000390 n=  199            1            7            1            1            1            1            1            4            6            1           14            7           20
+P=0.0016089 n=  196            2            3            1            1            1            1           14           17            7            1           16            7            1
+P=0.6803810 n=  188            1            5            1            1            1            1            7           13            7            1           17            8            9
+P=0.0000021 n=  178            3           13            4            6            3            1            3            9           10            1           26           12           21
+P=0.0000014 n=  161            3           11            4            6            6            1            4           13           11            1           27           12           13
+P=0.0019565 n=  148            2            3            1            1            1            1           13           16            8            1           14            6            1
+P=0.0000410 n=  146            2            3            1            1            1            1            5            6            6            1           14            6            1
+P=0.0000768 n=  139            1            7            1            1            1            1            1            3            7            1           18            9           20
+P=0.0010262 n=  111            1            7            1            2            1            1            6           13            6            1           18            9           11
+P=0.0000058 n=  110            3            7            4            6            5            1            5           16            9            1           15            8            9
+P=0.8359951 n=  109            1            5            1            1            1            1            7           13            7            1           14            7            6
+grupos (de 30) con la entrada constante: eps=14, eps_fino(0,01)=0, b_tot=23, b_op=20, b_low=24, b_mid=30, b85=2, b85op=0, btd(0,25)=0, btclr=30, sesgo(0,1)=0, sesgo(0,25)=0, b_nwp=11
+tupla ('eps', 'b_tot'): grupos 57, píxeles en grupo con P única 0.005
+tupla ('eps', 'b_tot', 'b_op'): grupos 325, píxeles en grupo con P única 0.023
+tupla ('eps', 'b_tot', 'b_op', 'b85', 'b85op'): grupos 3055, píxeles en grupo con P única 0.730
+tupla ('eps', 'b_tot', 'b_op', 'b85', 'b85op', 'b_low', 'b_mid'): grupos 3758, píxeles en grupo con P única 0.773
+tupla ('eps', 'b_tot', 'b_op', 'b85', 'b85op', 'b_low', 'b_mid', 'btd(0,25)', 'btclr'): grupos 7133, píxeles en grupo con P única 0.847
+tupla ('eps_fino(0,01)', 'b_tot', 'b_op', 'b85', 'b85op', 'b_low', 'b_mid'): grupos 5637, píxeles en grupo con P única 0.837

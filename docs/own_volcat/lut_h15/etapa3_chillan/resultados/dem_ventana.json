@@ -1,0 +1,9 @@
+{
+ "error_geometria_px": 0.0006,
+ "celdas_por_pixel_min": 66,
+ "celdas_por_pixel_med": 99.0,
+ "pixeles_sin_dem": 0,
+ "zdem_pixel_crater_m": 2475.0,
+ "zdem_max_10km_m": 2874.0,
+ "zdem_p50_ventana_m": 1212.0
+}

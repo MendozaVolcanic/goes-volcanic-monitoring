@@ -1,6 +1,6 @@
 # Ficha de Transparencia Algorítmica — Monitoreo Volcánico GOES-19 (dashboard + retrieval de altura de pluma)
 
-**Identificador interno:** SDA-GOES-01   **Versión:** v2.8, 2026-11-19
+**Identificador interno:** SDA-GOES-01   **Versión:** v2.9, 2026-11-22
 *(Resolución CPLT N°372; ver `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` del workspace)*
 
 > **Qué cambió respecto de la v1.0 (2026-07-01):** ver §"Historial de versiones" al final.
@@ -432,10 +432,61 @@ conectarlos exige actualizar esta ficha.
 | `src/fetch/goes_lvtp.py` | Perfil T(z) del propio GOES-19 (LVTPF) como cross-check del GFS | `scripts/compare_lvtp_vs_gfs.py`. Ver §B.8.1: cablearlo obliga a revisar el guard de tropopausa. |
 | `src/fetch/volcat_api.py` (`volcat_height_at`) | Leer la altura VOLCAT del PNG de SSEC (barra por bloques discretos, objeto que toca el volcán, rechazo de mantos del tamaño del sector) como **referencia de validación** de la altura propia | `scripts/validate_fase3b.py` y el plan `docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`. *(Desde v2.8 la lectura por objeto de `volcat_colorbar.py` SÍ está en producción, como señal de detección por volcán, §A.7; lo que sigue fuera del dashboard es el uso de esa lectura como altura de validación. La validación lee sin unión de pedazos, la señal con unión de 6 km.)* |
 | `src/fetch/viirs_firms.py`, `src/fetch/viirs_gibs.py` | Hot spots térmicos VIIRS 375 m e imagen VIIRS para volcanes australes | `scripts/viirs_patagonia_snapshots.py` (uso manual) |
+| `src/process/vrp_nocturno.py` + `dashboard/map_helpers.estado_calor_nocturno` | Indicador nocturno de calor en el cráter (VRP a 3,9 µm desde la L1b), §C.1 | sólo sus tests (`tests/test_vrp_nocturno.py`). Validado fuera de muestra; cablearlo exige pasar esta fila a la sección A. |
+
+### C.1 Indicador nocturno de calor en el cráter (VRP a 3,9 µm), validado y no cableado (nov-2026)
+
+**Qué decide.** Por volcán y por noche, uno de cuatro estados: `encendido`
+(material incandescente con más de ~10 MW), `bajo_limite` (cráter visible sin
+calor sobre ~10 MW), `sin_dato` (nube sobre el cráter, sin referencia o con
+menos de 4 cuadros visibles) y `de_dia` (no se evalúa). Es contexto térmico para
+el turno; no es una alerta del OVDAS ni detecta explosiones o ceniza.
+
+**Cómo.** A 3,9 µm un material incandescente que ocupa una fracción mínima del
+píxel de 2 km sube mucho la temperatura de brillo y casi nada a 11 µm. En la zona
+del cráter (6 km alrededor de la cumbre aparente, corregida por paralaje con la
+altura del catálogo) se buscan píxeles cuya BT7 − BT14 supera la del anillo de 8 a
+14 km en máx(2 K, 3 desviaciones robustas); su exceso de radiancia contra un fondo
+coherente (Planck7 de la BT14 del propio píxel más la diferencia típica del
+anillo) se convierte en MW con el método del infrarrojo medio (Wooster y otros
+2003, coeficientes Planck del propio NetCDF). La noche se enciende si al menos 2
+cuadros con el cráter visible, y al menos el 25 % de ellos, pasan 10 MW. Un cuadro
+es visible si la BT14 del cráter está a menos de 4 K del cielo despejado de las 7
+noches previas.
+
+**Validación (PR 87, `docs/own_volcat/vrp_nocturno/INFORME.md`).** Criterio
+subido antes de medir; verdad independiente: MIROVA (MODIS/VIIRS) publicado por
+VRP Chile. Detección 5 de 6 noches con MIROVA ≥ 10 MW en Nevados de Chillán (IC 95
+% de 44 a 97 %); falsa alarma 0 de 144 noches en siete cumbres sin actividad de
+−18° a −46°; 0 de 19 noches antes del encendido de Chillán; retardo de una noche.
+Por pasada, la VRP de ABI es 0,86 veces la de MIROVA (mediana) y se ordena igual
+(Spearman 0,70). El FDCF de NOAA no marcó fuego en ninguna de esas noches.
+
+**Límites.**
+- **No ve bajo ~5 a 10 MW.** Láscar, Villarrica, Isluga y los otros siete volcanes
+  con actividad térmica débil quedan siempre en `bajo_limite`. Por eso
+  `bajo_limite` **no es verde** y su texto dice que no descarta actividad débil.
+- **Sólo de noche** (cenit solar ≥ 90°): de día el 3,9 µm suma sol reflejado.
+- **La nube deja la noche sin dato** (Chillán: 17 de 52 noches de la validación).
+  `sin_dato` es gris y nunca se lee como calma.
+- Validado en un solo volcán chileno sobre el límite y con 6 noches positivas: la
+  sensibilidad tiene intervalo ancho. Sin corrección atmosférica.
+- Tras una nevada que enfríe la cumbre más de 4 K, la referencia de cielo
+  despejado tarda hasta 7 noches en ajustarse y el cráter puede quedar `sin_dato`
+  aunque esté despejado (error conservador).
+
+**Datos personales:** no.
 
 ---
 
 ## Historial de versiones
+
+### v2.9: 2026-11-22 (indicador nocturno de calor en el cráter, validado y no cableado)
+**Nada cambia para el operador.** Se agrega a §C (y §C.1) el indicador nocturno de
+VRP a 3,9 µm (`src/process/vrp_nocturno.py`) y su criterio de presentación
+(`dashboard/map_helpers.estado_calor_nocturno`), con la validación fuera de
+muestra del PR 87. Ningún camino del dashboard lo ejecuta todavía; la propuesta
+de dónde mostrarlo está en `docs/own_volcat/vrp_nocturno/PROPUESTA_DASHBOARD.md`.
 
 ### v2.8: 2026-11-19 (señal por volcán "VOLCAT detecta un objeto anclado al cráter")
 **Componente nuevo en producción (§A.7).** El dashboard dice por volcán si

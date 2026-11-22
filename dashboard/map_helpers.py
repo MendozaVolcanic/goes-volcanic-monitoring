@@ -876,3 +876,62 @@ def estado_volcat(senal: dict) -> dict:
     return {"color": color, "titulo": titulo,
             "detalle": f"{detalle} · sector {sector}",
             "verificado": estado != "no_disponible"}
+
+
+# ── Calor nocturno en el cráter (VRP a 3,9 µm, ficha SDA §C.1) ──────────────
+# Mismo principio que FDCF y VOLCAT: el color lo decide un criterio único. Acá hay
+# una regla más: "bajo el límite" tampoco es verde. El indicador no ve bajo ~10 MW,
+# así que Villarrica o Láscar con su actividad débil de siempre quedan "bajo el
+# límite" aunque tengan calor; pintarlo verde diría "volcán frío", que es falso.
+
+COLOR_CALOR_ENCENDIDO = "#ff5533"
+COLOR_BAJO_LIMITE = "#6fa8dc"
+AVISO_CALOR_NOCTURNO = ("Indicador propio a 3,9 µm, sólo de noche, ve sobre ~10 MW. "
+                        "No es una alerta del OVDAS.")
+
+_ESTADO_CALOR_TXT = {
+    "encendido": "Calor en el cráter sobre ~10 MW",
+    "bajo_limite": "Sin calor sobre ~10 MW",
+    "sin_dato": "Calor nocturno sin dato",
+    "de_dia": "Calor nocturno: sólo de noche",
+}
+
+
+def _mw(x) -> str:
+    return "s/d" if x is None else f"{x:.0f} MW".replace(".", ",")
+
+
+def estado_calor_nocturno(res: dict, noche_txt: str = "") -> dict:
+    """Color y texto del indicador nocturno de un volcán, sin mentir.
+
+    ``res`` es la salida de ``src.process.vrp_nocturno.estado_noche``. Devuelve
+    ``{color, titulo, detalle, verificado}``:
+
+    - ``encendido`` -> rojo anaranjado, con cuántos cuadros visibles pasaron 10 MW
+      y la potencia máxima.
+    - ``bajo_limite`` -> azul, NUNCA verde: el cráter se vio y no hubo calor sobre
+      ~10 MW, lo que no descarta actividad débil.
+    - ``sin_dato`` -> gris "s/d": nube sobre el cráter o sin cuadros. No es calma.
+    - ``de_dia`` -> gris: de día el 3,9 µm suma sol reflejado y no se evalúa.
+    """
+    estado = res.get("estado", "sin_dato")
+    titulo = _ESTADO_CALOR_TXT.get(estado, _ESTADO_CALOR_TXT["sin_dato"])
+    pre = f"{noche_txt} · " if noche_txt else ""
+    nv, k = res.get("n_visibles", 0), res.get("n_sobre_umbral", 0)
+    if estado == "encendido":
+        color = COLOR_CALOR_ENCENDIDO
+        detalle = (f"{pre}{k} de {nv} cuadros con el cráter visible sobre 10 MW, "
+                   f"máximo {_mw(res.get('vrp_max_mw'))}")
+    elif estado == "bajo_limite":
+        color = COLOR_BAJO_LIMITE
+        detalle = (f"{pre}cráter visible en {nv} cuadros, {k} sobre 10 MW. "
+                   "No descarta actividad térmica débil (bajo ~10 MW)")
+    elif estado == "de_dia":
+        color = COLOR_SIN_DATO
+        detalle = f"{pre}de día no se evalúa (sol reflejado a 3,9 µm)"
+    else:
+        color = COLOR_SIN_DATO
+        motivo = res.get("motivo") or "sin cuadros"
+        detalle = f"{pre}{motivo}. No descarta calor"
+    return {"color": color, "titulo": titulo, "detalle": detalle,
+            "verificado": estado in ("encendido", "bajo_limite")}

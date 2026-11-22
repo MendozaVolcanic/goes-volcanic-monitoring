@@ -150,7 +150,9 @@ def main(bloque):
                  "dist_trav": arr(ds, "distance_traveled")[hue], "res_time": arr(ds, "residence_time")[hue],
                  "d_nominal": hav(vlat, vlon, la, lo)[hue], "d_pc": hav(vlat, vlon, pla, plo)[hue],
                  "h_ev": arr(ds, "ash_cloud_height")[hue], "carga_ev": arr(ds, "ash_mass_loading")[hue],
-                 "feature_age": np.full(int(hue.sum()), float(np.ma.filled(ds["feature_age"][:], np.nan).ravel()[0])),
+                 # edad del rasgo POR EVENTO (un archivo puede traer varios eventos): correccion post hoc,
+                 # la primera version usaba la edad del evento 0 para todos los pixeles
+                 "feature_age": np.ma.filled(ds["feature_age"][:], np.nan).astype("f8").ravel()[idx[hue]],
                  "idA": rc(L["idA"])[hue]}
             for nc_, k in PROB.items():
                 t[nc_] = rc(L[k])[hue]

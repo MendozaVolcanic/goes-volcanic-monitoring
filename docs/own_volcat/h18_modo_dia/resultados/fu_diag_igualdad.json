@@ -1,0 +1,47 @@
+{
+ "dia": {
+  "n": 36594,
+  "P_lt_05": {
+   "n": 29978,
+   "frac_P_igual_PIR": 0.1957435452665288,
+   "frac_en_objeto": 0.6920741877376743,
+   "frac_P_igual_Psub": 0.23250383614650744
+  },
+  "P_ge_05": {
+   "n": 6616,
+   "frac_P_igual_PIR": 0.0,
+   "frac_en_objeto": 0.9984885126964933,
+   "frac_P_igual_Psub": 0.7679866989117291
+  }
+ },
+ "terminador_85_91": {
+  "n": 0,
+  "P_lt_05": {
+   "n": 0,
+   "frac_P_igual_PIR": null,
+   "frac_en_objeto": null,
+   "frac_P_igual_Psub": null
+  },
+  "P_ge_05": {
+   "n": 0,
+   "frac_P_igual_PIR": null,
+   "frac_en_objeto": null,
+   "frac_P_igual_Psub": null
+  }
+ },
+ "noche": {
+  "n": 0,
+  "P_lt_05": {
+   "n": 0,
+   "frac_P_igual_PIR": null,
+   "frac_en_objeto": null,
+   "frac_P_igual_Psub": null
+  },
+  "P_ge_05": {
+   "n": 0,
+   "frac_P_igual_PIR": null,
+   "frac_en_objeto": null,
+   "frac_P_igual_Psub": null
+  }
+ }
+}

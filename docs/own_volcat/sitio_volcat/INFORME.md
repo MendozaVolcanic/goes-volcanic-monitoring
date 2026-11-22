@@ -82,7 +82,15 @@ probabilidad baja. De día pleno no publica en ningún cuadro una probabilidad d
     14-11 12:48:36 ceniza con salto de VRP = 0. Dos de tres marcas de ceniza coinciden con un salto de VRP.
   - **Salto de VRP ("VRP Jump Event")** aparece casi a diario en el periodo, así que no basta como gatillo por
     sí solo.
-  Lo que no se pudo leer en pantalla (todas las horas, valores exactos) necesita bajar el CSV del panel.
+  - **CSV del VRP de GOES-Este** (bajado del inspector del panel con el sí de Nicolás, copia en
+    `D:\goes_notas\s16\sitio\grafana\chillan_vrp_goeseste_2026-10-20_11-22.csv`, no va al repo): 4.320 valores
+    cada 10 min del 19-10 23:58 al 22-11 06:28 UTC, de día y de noche. Mediana 8,3 MW, p10 1,0, p90 25,4,
+    máximo 187 MW; **43 % de los cuadros con 10 MW o más**. Es del mismo orden que el 48 % de cuadros
+    nocturnos con 10 MW o más que dio nuestra potencia propia en H17, lo que no calza con que H17 recuperara 0
+    de 3 cuadros de 10 MW de VOLCAT: esas tres marcas venían de `volcano_thermal_activity` del NetCDF de
+    evento, que puede no ser la misma serie. Queda por revisar con el CSV de eventos.
+  - Los CSV de eventos y de temperaturas de brillo no llegaron: Chrome dejó de responder después de la
+    primera descarga (probable aviso de "descargar varios archivos"). Pendiente.
 - **Altura, carga y radio:** las imágenes `Ash_Height`, `Ash_Loading` y `Ash_Reff` existen para los mismos
   cuadros (lista del sitio, desde el 22-10). Los NetCDF de evento ya traen sus percentiles, así que no se
   bajaron.

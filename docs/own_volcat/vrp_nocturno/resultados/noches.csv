@@ -1,0 +1,745 @@
+sitio,noche,n_noct,n_vis,evaluable,n10,n5,vrp_max,vrp_med,con_dato,enc,enc5,mirova,mirova_max,fuera
+Antuco,2026-08-26,24,0,False,0,0,,,False,False,False,,,False
+Antuco,2026-08-27,24,24,True,0,0,0.0,0.0,True,False,False,,,False
+Antuco,2026-08-28,24,0,True,0,0,,,False,False,False,,,False
+Antuco,2026-08-29,24,0,True,0,0,,,False,False,False,,,False
+Antuco,2026-08-30,24,11,True,0,0,0.0,0.0,True,False,False,,,False
+Antuco,2026-08-31,24,5,True,0,0,0.0,0.0,True,False,False,,,False
+Antuco,2026-09-01,24,13,True,1,2,10.683,0.0,True,False,False,,,True
+Antuco,2026-09-02,24,5,True,0,1,8.238,1.55,True,False,False,,,True
+Antuco,2026-09-03,24,11,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-05,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-06,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-07,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-08,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-09,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-10,24,10,True,0,1,7.848,0.0,True,False,False,,,True
+Antuco,2026-09-11,24,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-09-12,24,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-09-13,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-14,24,12,True,0,0,1.821,0.0,True,False,False,,,True
+Antuco,2026-09-15,24,2,True,0,0,0.0,0.0,False,False,False,,,True
+Antuco,2026-09-16,24,21,True,0,3,5.252,0.0,True,False,False,,,True
+Antuco,2026-09-17,24,22,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-18,24,11,True,0,0,2.429,0.0,True,False,False,,,True
+Antuco,2026-09-19,24,23,True,0,1,5.745,0.0,True,False,False,,,True
+Antuco,2026-09-20,24,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-09-21,24,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-09-22,22,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-09-23,24,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-09-24,24,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-09-25,24,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-09-26,24,21,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-27,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-28,24,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-09-29,23,17,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-09-30,22,1,True,0,0,0.0,0.0,False,False,False,,,True
+Antuco,2026-10-01,23,16,True,0,0,3.375,0.0,True,False,False,,,True
+Antuco,2026-10-02,23,3,True,0,0,0.0,0.0,False,False,False,,,True
+Antuco,2026-10-03,23,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-10-04,23,10,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-10-05,23,18,True,1,1,18.568,0.0,True,False,False,,,True
+Antuco,2026-10-06,22,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-10-07,23,14,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-10-08,23,14,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-10-09,23,10,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-10-10,23,19,True,0,1,6.292,0.0,True,False,False,,,True
+Antuco,2026-10-11,23,1,True,0,0,0.0,0.0,False,False,False,,,True
+Antuco,2026-10-12,23,15,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-10-13,23,0,True,0,0,,,False,False,False,,,True
+Antuco,2026-10-14,23,1,True,0,0,0.0,0.0,False,False,False,,,True
+Antuco,2026-10-15,23,21,True,1,1,15.759,0.0,True,False,False,,,True
+Antuco,2026-10-16,23,19,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-10-17,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-10-18,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-10-19,23,5,True,0,0,0.0,0.0,True,False,False,,,True
+Antuco,2026-10-22,21,6,True,0,1,5.755,0.0,True,False,False,,,False
+Antuco,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,,,False
+Antuco,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,,,False
+Antuco,2026-10-31,21,14,True,0,0,4.779,0.0,True,False,False,,,False
+Antuco,2026-11-03,20,2,True,0,0,0.0,0.0,False,False,False,,,False
+Antuco,2026-11-06,21,0,True,0,0,,,False,False,False,,,False
+Antuco,2026-11-09,21,21,True,0,0,0.0,0.0,True,False,False,,,False
+Antuco,2026-11-12,21,4,True,0,0,2.778,0.0,True,False,False,,,False
+Antuco,2026-11-15,21,1,True,0,0,0.0,0.0,False,False,False,,,False
+Antuco,2026-11-18,19,0,True,0,0,,,False,False,False,,,False
+Antuco,2026-11-20,19,2,True,0,0,0.0,0.0,False,False,False,,,True
+Antuco,2026-11-21,19,1,True,0,0,0.0,0.0,False,False,False,,,True
+Antuco,2026-11-22,12,10,True,0,1,8.967,0.0,True,False,False,,,True
+Chaiten,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.0,False
+Chaiten,2026-08-29,24,12,True,0,0,0.0,0.0,True,False,False,Q,0.0,False
+Chaiten,2026-09-01,24,1,True,0,0,1.779,1.779,False,False,False,Q,0.0,True
+Chaiten,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Chaiten,2026-09-07,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.11,True
+Chaiten,2026-09-10,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Chaiten,2026-09-13,24,21,True,0,0,0.0,0.0,True,False,False,Q,0.07,True
+Chaiten,2026-09-16,24,4,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Chaiten,2026-09-19,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Chaiten,2026-09-22,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Chaiten,2026-09-25,24,22,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Chaiten,2026-09-28,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Chaiten,2026-10-01,23,14,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Chaiten,2026-10-04,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Chaiten,2026-10-07,23,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Chaiten,2026-10-10,22,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Chaiten,2026-10-13,22,11,True,0,1,5.281,0.0,True,False,False,Q,0.0,True
+Chaiten,2026-10-16,22,21,True,0,0,0.0,0.0,True,False,False,Q,0.14,True
+Chaiten,2026-10-19,21,4,True,0,0,3.262,0.0,True,False,False,Q,0.14,True
+Chaiten,2026-10-22,21,0,True,0,0,,,False,False,False,Q,0.0,True
+Chaiten,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.15,True
+Chaiten,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.09,True
+Chaiten,2026-10-31,21,7,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Chaiten,2026-11-03,20,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Chaiten,2026-11-06,20,19,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Chaiten,2026-11-09,20,20,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Chaiten,2026-11-12,19,19,True,0,0,0.0,0.0,True,False,False,Q,0.26,True
+Chaiten,2026-11-15,19,14,True,0,0,0.0,0.0,True,False,False,Q,0.08,True
+Chaiten,2026-11-18,19,0,True,0,0,,,False,False,False,Q,0.0,True
+Chaiten,2026-11-21,19,0,True,0,0,,,False,False,False,Q,0.0,True
+Copahue,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.0,False
+Copahue,2026-08-29,24,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,False
+Copahue,2026-09-01,24,23,True,0,0,1.738,0.0,True,False,False,Q,0.0,True
+Copahue,2026-09-04,24,8,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-09-07,24,6,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-09-10,24,11,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-09-13,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-09-16,24,21,True,0,0,2.721,0.0,True,False,False,Q,0.0,True
+Copahue,2026-09-19,24,21,True,1,1,13.471,0.0,True,False,False,Q,0.0,True
+Copahue,2026-09-22,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Copahue,2026-09-25,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Copahue,2026-09-28,24,19,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-10-01,23,22,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-10-04,23,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-10-07,23,19,True,0,1,6.704,0.0,True,False,False,Q,0.0,True
+Copahue,2026-10-10,23,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-10-13,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Copahue,2026-10-16,23,22,True,0,0,3.116,0.0,True,False,False,debil,1.34,True
+Copahue,2026-10-19,22,3,True,0,0,0.0,0.0,False,False,False,debil,1.0,True
+Copahue,2026-10-22,21,11,True,0,0,3.253,0.0,True,False,False,Q,0.0,True
+Copahue,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-10-31,21,14,True,0,1,5.167,0.0,True,False,False,Q,0.0,True
+Copahue,2026-11-03,20,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Copahue,2026-11-06,21,0,True,0,0,,,False,False,False,Q,0.0,True
+Copahue,2026-11-09,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-11-12,21,4,True,1,1,10.497,1.662,True,False,False,Q,0.0,True
+Copahue,2026-11-15,21,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Copahue,2026-11-18,19,6,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Copahue,2026-11-21,19,0,True,0,0,,,False,False,False,Q,0.0,True
+Descabezado Grande,2026-08-26,24,0,False,0,0,,,False,False,False,,,False
+Descabezado Grande,2026-08-29,24,24,True,0,0,0.818,0.0,True,False,False,,,False
+Descabezado Grande,2026-09-01,24,17,True,0,0,2.224,0.0,True,False,False,,,True
+Descabezado Grande,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-09-07,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-09-10,24,15,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-09-13,24,0,True,0,0,,,False,False,False,,,True
+Descabezado Grande,2026-09-16,24,23,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-09-19,24,22,True,1,1,26.887,0.0,True,False,False,,,True
+Descabezado Grande,2026-09-22,22,0,True,0,0,,,False,False,False,,,True
+Descabezado Grande,2026-09-25,24,0,True,0,0,,,False,False,False,,,True
+Descabezado Grande,2026-09-28,23,10,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-10-01,23,20,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-10-04,23,14,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-10-07,23,11,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-10-10,23,17,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-10-13,23,5,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-10-16,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-10-19,22,0,True,0,0,,,False,False,False,,,True
+Descabezado Grande,2026-10-22,22,11,True,0,0,3.102,0.0,True,False,False,,,True
+Descabezado Grande,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-10-31,21,5,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-11-03,20,12,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-11-06,21,17,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-11-09,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-11-12,21,19,True,0,0,2.287,0.0,True,False,False,,,True
+Descabezado Grande,2026-11-15,21,8,True,0,0,0.0,0.0,True,False,False,,,True
+Descabezado Grande,2026-11-18,21,0,True,0,0,,,False,False,False,,,True
+Descabezado Grande,2026-11-21,20,0,True,0,0,,,False,False,False,,,True
+Hudson,2026-08-26,24,0,False,0,0,,,False,False,False,,,False
+Hudson,2026-08-29,24,24,True,0,0,0.0,0.0,True,False,False,,,False
+Hudson,2026-09-01,24,13,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-09-04,24,19,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-09-07,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-09-10,24,0,True,0,0,,,False,False,False,,,True
+Hudson,2026-09-13,24,7,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-09-16,24,0,True,0,0,,,False,False,False,,,True
+Hudson,2026-09-19,24,0,True,0,0,,,False,False,False,,,True
+Hudson,2026-09-22,22,7,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-09-25,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-09-28,24,19,True,0,1,7.986,0.0,True,False,False,,,True
+Hudson,2026-10-01,23,10,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-10-04,23,2,True,0,0,0.0,0.0,False,False,False,,,True
+Hudson,2026-10-07,22,19,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-10-10,22,19,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-10-13,22,14,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-10-16,22,21,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-10-19,21,5,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-10-22,21,0,True,0,0,,,False,False,False,,,True
+Hudson,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-10-28,21,11,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-10-31,20,0,True,0,0,,,False,False,False,,,True
+Hudson,2026-11-03,20,0,True,0,0,,,False,False,False,,,True
+Hudson,2026-11-06,19,19,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-11-09,19,19,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-11-12,19,18,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-11-15,19,19,True,0,0,0.0,0.0,True,False,False,,,True
+Hudson,2026-11-18,18,0,True,0,0,,,False,False,False,,,True
+Hudson,2026-11-21,18,0,True,0,0,,,False,False,False,,,True
+Isluga,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.47,False
+Isluga,2026-08-29,24,23,True,0,0,0.0,0.0,True,False,False,Q,0.35,False
+Isluga,2026-09-01,24,13,True,0,0,0.0,0.0,True,False,False,Q,0.3,True
+Isluga,2026-09-04,24,21,True,0,0,0.0,0.0,True,False,False,Q,0.26,True
+Isluga,2026-09-07,24,8,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Isluga,2026-09-10,24,3,True,0,0,0.0,0.0,False,False,False,Q,0.34,True
+Isluga,2026-09-13,24,24,True,0,1,6.381,0.0,True,False,False,Q,0.12,True
+Isluga,2026-09-16,24,23,True,0,0,0.0,0.0,True,False,False,Q,0.34,True
+Isluga,2026-09-19,24,10,True,1,3,18.419,0.0,True,False,True,Q,0.06,True
+Isluga,2026-09-22,22,15,True,0,0,0.0,0.0,True,False,False,Q,0.41,True
+Isluga,2026-09-25,23,19,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Isluga,2026-09-28,23,16,True,0,1,8.296,0.0,True,False,False,debil,1.63,True
+Isluga,2026-10-01,23,1,True,0,0,0.0,0.0,False,False,False,Q,0.14,True
+Isluga,2026-10-04,23,5,True,0,0,0.0,0.0,True,False,False,Q,0.24,True
+Isluga,2026-10-07,23,19,True,0,0,0.0,0.0,True,False,False,Q,0.09,True
+Isluga,2026-10-10,23,18,True,0,0,0.0,0.0,True,False,False,Q,0.17,True
+Isluga,2026-10-13,23,12,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Isluga,2026-10-16,23,23,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Isluga,2026-10-19,23,23,True,0,0,0.0,0.0,True,False,False,Q,0.3,True
+Isluga,2026-10-22,23,19,True,0,0,0.0,0.0,True,False,False,Q,0.21,True
+Isluga,2026-10-25,23,3,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Isluga,2026-10-28,23,5,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Isluga,2026-10-31,22,18,True,0,0,0.0,0.0,True,False,False,Q,0.27,True
+Isluga,2026-11-03,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.27,True
+Isluga,2026-11-06,22,10,True,0,0,2.545,0.0,True,False,False,Q,0.3,True
+Isluga,2026-11-09,22,12,True,0,1,5.21,0.0,True,False,False,Q,0.2,True
+Isluga,2026-11-12,22,12,True,0,0,4.298,0.0,True,False,False,Q,0.15,True
+Isluga,2026-11-15,22,8,True,0,0,0.0,0.0,True,False,False,Q,0.02,True
+Isluga,2026-11-18,22,15,True,0,0,0.0,0.0,True,False,False,Q,0.22,True
+Isluga,2026-11-21,22,19,True,0,0,0.0,0.0,True,False,False,Q,0.17,True
+Lanin,2026-08-26,24,0,False,0,0,,,False,False,False,,,False
+Lanin,2026-08-29,24,8,True,0,0,0.0,0.0,True,False,False,,,False
+Lanin,2026-09-01,24,9,True,0,0,1.369,0.0,True,False,False,,,True
+Lanin,2026-09-04,24,24,True,0,0,4.499,0.0,True,False,False,,,True
+Lanin,2026-09-07,24,24,True,0,0,1.445,0.0,True,False,False,,,True
+Lanin,2026-09-10,24,10,True,0,0,2.646,0.0,True,False,False,,,True
+Lanin,2026-09-13,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Lanin,2026-09-16,24,20,True,0,0,0.0,0.0,True,False,False,,,True
+Lanin,2026-09-19,24,15,True,1,2,29.691,0.0,True,False,False,,,True
+Lanin,2026-09-22,22,0,True,0,0,,,False,False,False,,,True
+Lanin,2026-09-25,24,0,True,0,0,,,False,False,False,,,True
+Lanin,2026-09-28,24,24,True,0,0,1.893,0.0,True,False,False,,,True
+Lanin,2026-10-01,23,19,True,0,0,3.417,0.0,True,False,False,,,True
+Lanin,2026-10-04,23,0,True,0,0,,,False,False,False,,,True
+Lanin,2026-10-07,23,12,True,1,1,11.676,0.0,True,False,False,,,True
+Lanin,2026-10-10,23,21,True,0,0,3.828,0.0,True,False,False,,,True
+Lanin,2026-10-13,23,2,True,0,0,0.0,0.0,False,False,False,,,True
+Lanin,2026-10-16,23,23,True,0,0,2.53,0.0,True,False,False,,,True
+Lanin,2026-10-19,21,1,True,0,0,0.0,0.0,False,False,False,,,True
+Lanin,2026-10-22,21,8,True,0,0,0.0,0.0,True,False,False,,,True
+Lanin,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Lanin,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Lanin,2026-10-31,21,7,True,0,0,2.904,0.0,True,False,False,,,True
+Lanin,2026-11-03,20,2,True,0,0,0.0,0.0,False,False,False,,,True
+Lanin,2026-11-06,21,0,True,0,0,,,False,False,False,,,True
+Lanin,2026-11-09,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Lanin,2026-11-12,19,5,True,0,0,0.0,0.0,True,False,False,,,True
+Lanin,2026-11-15,19,0,True,0,0,,,False,False,False,,,True
+Lanin,2026-11-18,19,0,True,0,0,,,False,False,False,,,True
+Lanin,2026-11-21,19,0,True,0,0,,,False,False,False,,,True
+Lascar,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.37,False
+Lascar,2026-08-29,24,14,True,0,0,0.0,0.0,True,False,False,Q,0.31,False
+Lascar,2026-09-01,24,15,True,0,0,0.0,0.0,True,False,False,Q,0.28,True
+Lascar,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.36,True
+Lascar,2026-09-07,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.16,True
+Lascar,2026-09-10,24,4,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lascar,2026-09-13,24,13,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lascar,2026-09-16,24,24,True,0,0,1.199,0.0,True,False,False,Q,0.07,True
+Lascar,2026-09-19,23,7,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lascar,2026-09-22,22,22,True,0,0,0.0,0.0,True,False,False,Q,0.33,True
+Lascar,2026-09-25,23,23,True,0,0,0.0,0.0,True,False,False,Q,0.56,True
+Lascar,2026-09-28,23,23,True,0,0,0.0,0.0,True,False,False,Q,0.37,True
+Lascar,2026-10-01,23,3,True,0,0,0.0,0.0,False,False,False,debil,1.2,True
+Lascar,2026-10-04,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Lascar,2026-10-07,23,14,True,0,0,0.0,0.0,True,False,False,Q,0.18,True
+Lascar,2026-10-10,23,23,True,0,0,0.0,0.0,True,False,False,Q,0.48,True
+Lascar,2026-10-13,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Lascar,2026-10-16,23,17,True,0,1,9.482,0.0,True,False,False,Q,0.0,True
+Lascar,2026-10-19,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Lascar,2026-10-22,22,17,True,0,0,2.531,0.0,True,False,False,Q,0.16,True
+Lascar,2026-10-25,22,22,True,0,0,0.0,0.0,True,False,False,Q,0.08,True
+Lascar,2026-10-28,22,16,True,0,0,0.0,0.0,True,False,False,Q,0.06,True
+Lascar,2026-10-31,22,13,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lascar,2026-11-03,21,19,True,0,0,0.0,0.0,True,False,False,Q,0.22,True
+Lascar,2026-11-06,22,22,True,0,0,0.0,0.0,True,False,False,Q,0.59,True
+Lascar,2026-11-09,22,22,True,0,0,0.0,0.0,True,False,False,Q,0.33,True
+Lascar,2026-11-12,22,11,True,0,0,0.0,0.0,True,False,False,Q,0.24,True
+Lascar,2026-11-15,22,3,True,3,3,30.468,23.543,False,False,False,Q,0.0,True
+Lascar,2026-11-18,22,6,True,0,0,0.0,0.0,True,False,False,Q,0.07,True
+Lascar,2026-11-21,22,13,True,0,0,0.0,0.0,True,False,False,Q,0.19,True
+Lastarria,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.0,False
+Lastarria,2026-08-29,24,13,True,0,0,0.0,0.0,True,False,False,Q,0.0,False
+Lastarria,2026-09-01,24,2,True,0,0,0.0,0.0,False,False,False,Q,0.04,True
+Lastarria,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.14,True
+Lastarria,2026-09-07,24,8,True,0,0,0.0,0.0,True,False,False,Q,0.06,True
+Lastarria,2026-09-10,24,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Lastarria,2026-09-13,24,8,True,0,0,0.0,0.0,True,False,False,Q,0.04,True
+Lastarria,2026-09-16,24,19,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lastarria,2026-09-19,24,8,True,1,1,17.081,0.0,True,False,False,Q,0.0,True
+Lastarria,2026-09-22,22,22,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lastarria,2026-09-25,23,23,True,0,0,0.0,0.0,True,False,False,Q,0.1,True
+Lastarria,2026-09-28,23,18,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lastarria,2026-10-01,23,3,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Lastarria,2026-10-04,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Lastarria,2026-10-07,23,8,True,0,0,3.625,0.0,True,False,False,Q,0.0,True
+Lastarria,2026-10-10,23,20,True,0,0,0.0,0.0,True,False,False,Q,0.07,True
+Lastarria,2026-10-13,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Lastarria,2026-10-16,23,9,True,0,0,0.0,0.0,True,False,False,Q,0.02,True
+Lastarria,2026-10-19,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Lastarria,2026-10-22,22,17,True,0,0,0.0,0.0,True,False,False,Q,0.16,True
+Lastarria,2026-10-25,22,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lastarria,2026-10-28,22,4,True,0,0,0.0,0.0,True,False,False,Q,0.03,True
+Lastarria,2026-10-31,22,13,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lastarria,2026-11-03,21,11,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lastarria,2026-11-06,22,22,True,2,3,18.669,0.0,True,False,False,Q,0.03,True
+Lastarria,2026-11-09,22,22,True,0,0,0.0,0.0,True,False,False,Q,0.11,True
+Lastarria,2026-11-12,22,13,True,0,0,0.0,0.0,True,False,False,Q,0.04,True
+Lastarria,2026-11-15,22,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Lastarria,2026-11-18,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Lastarria,2026-11-21,22,17,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.0,False
+Llaima,2026-08-29,24,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,False
+Llaima,2026-09-01,24,11,True,0,1,8.318,0.0,True,False,False,Q,0.0,True
+Llaima,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-09-07,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-09-10,24,10,True,0,0,2.62,0.0,True,False,False,Q,0.0,True
+Llaima,2026-09-13,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-09-16,24,22,True,0,1,5.753,0.0,True,False,False,Q,0.0,True
+Llaima,2026-09-19,24,16,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-09-22,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Llaima,2026-09-25,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Llaima,2026-09-28,24,22,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-10-01,23,20,True,0,0,2.117,0.0,True,False,False,Q,0.0,True
+Llaima,2026-10-04,23,14,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-10-07,23,14,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-10-10,23,19,True,1,1,12.643,0.0,True,False,False,Q,0.0,True
+Llaima,2026-10-13,23,1,True,0,0,4.33,4.33,False,False,False,Q,0.0,True
+Llaima,2026-10-16,23,23,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-10-19,22,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Llaima,2026-10-22,21,10,True,0,0,4.067,0.0,True,False,False,Q,0.0,True
+Llaima,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-10-31,21,21,True,0,4,9.227,0.0,True,False,False,Q,0.0,True
+Llaima,2026-11-03,20,4,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-11-06,21,0,True,0,0,,,False,False,False,Q,0.0,True
+Llaima,2026-11-09,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-11-12,21,0,True,0,0,,,False,False,False,Q,0.0,True
+Llaima,2026-11-15,20,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Llaima,2026-11-18,19,8,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Llaima,2026-11-21,19,5,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Lonquimay,2026-08-26,24,0,False,0,0,,,False,False,False,,,False
+Lonquimay,2026-08-29,24,0,True,0,0,,,False,False,False,,,False
+Lonquimay,2026-09-01,24,10,True,0,0,1.607,0.0,True,False,False,,,True
+Lonquimay,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-09-07,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-09-10,24,8,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-09-13,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-09-16,24,23,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-09-19,24,21,True,0,0,3.869,0.0,True,False,False,,,True
+Lonquimay,2026-09-22,22,0,True,0,0,,,False,False,False,,,True
+Lonquimay,2026-09-25,24,0,True,0,0,,,False,False,False,,,True
+Lonquimay,2026-09-28,24,19,True,0,0,1.461,0.0,True,False,False,,,True
+Lonquimay,2026-10-01,23,18,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-10-04,23,11,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-10-07,23,13,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-10-10,23,22,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-10-13,23,0,True,0,0,,,False,False,False,,,True
+Lonquimay,2026-10-16,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-10-19,22,1,True,0,0,0.0,0.0,False,False,False,,,True
+Lonquimay,2026-10-22,21,4,True,0,0,2.487,1.099,True,False,False,,,True
+Lonquimay,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-10-31,21,20,True,1,2,21.588,0.0,True,False,False,,,True
+Lonquimay,2026-11-03,20,0,True,0,0,,,False,False,False,,,True
+Lonquimay,2026-11-06,21,0,True,0,0,,,False,False,False,,,True
+Lonquimay,2026-11-09,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Lonquimay,2026-11-12,21,2,True,0,0,0.0,0.0,False,False,False,,,True
+Lonquimay,2026-11-15,20,0,True,0,0,,,False,False,False,,,True
+Lonquimay,2026-11-18,19,0,True,0,0,,,False,False,False,,,True
+Lonquimay,2026-11-21,19,5,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-08-26,24,0,False,0,0,,,False,False,False,,,False
+Nevado de Longavi,2026-08-27,24,24,True,0,0,0.0,0.0,True,False,False,,,False
+Nevado de Longavi,2026-08-28,24,0,True,0,0,,,False,False,False,,,False
+Nevado de Longavi,2026-08-29,24,1,True,0,0,0.0,0.0,False,False,False,,,False
+Nevado de Longavi,2026-08-30,24,15,True,0,0,0.0,0.0,True,False,False,,,False
+Nevado de Longavi,2026-08-31,24,0,True,0,0,,,False,False,False,,,False
+Nevado de Longavi,2026-09-01,24,6,True,0,1,9.899,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-02,24,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-09-03,24,18,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-04,24,24,True,0,0,1.676,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-05,24,24,True,0,0,1.999,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-06,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-07,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-08,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-09,24,21,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-10,24,8,True,0,1,6.914,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-11,24,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-09-12,24,23,True,0,0,1.698,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-13,24,24,True,0,0,1.739,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-14,24,19,True,0,1,5.734,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-15,24,15,True,0,1,7.44,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-16,24,21,True,1,2,11.943,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-17,24,22,True,0,0,2.674,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-18,24,9,True,0,1,7.83,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-19,24,19,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-20,24,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-09-21,24,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-09-22,22,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-09-23,24,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-09-24,24,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-09-25,24,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-09-26,24,10,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-27,24,23,True,0,0,2.276,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-28,24,10,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-29,23,12,True,0,1,5.517,0.0,True,False,False,,,True
+Nevado de Longavi,2026-09-30,22,1,True,0,0,0.0,0.0,False,False,False,,,True
+Nevado de Longavi,2026-10-01,23,17,True,0,1,5.539,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-02,23,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-10-03,23,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-10-04,23,11,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-05,23,17,True,1,1,19.163,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-06,22,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-10-07,23,11,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-08,23,15,True,0,0,2.376,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-09,23,12,True,0,1,7.196,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-10,23,16,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-11,23,2,True,0,0,0.0,0.0,False,False,False,,,True
+Nevado de Longavi,2026-10-12,23,19,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-13,23,7,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-14,23,4,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-15,23,22,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-16,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-17,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-18,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Nevado de Longavi,2026-10-19,23,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-10-22,21,1,True,0,0,0.0,0.0,False,False,False,,,False
+Nevado de Longavi,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,,,False
+Nevado de Longavi,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,,,False
+Nevado de Longavi,2026-10-31,21,8,True,0,0,0.0,0.0,True,False,False,,,False
+Nevado de Longavi,2026-11-03,20,0,True,0,0,,,False,False,False,,,False
+Nevado de Longavi,2026-11-06,21,0,True,0,0,,,False,False,False,,,False
+Nevado de Longavi,2026-11-09,21,21,True,0,0,0.0,0.0,True,False,False,,,False
+Nevado de Longavi,2026-11-12,21,12,True,0,0,4.583,0.0,True,False,False,,,False
+Nevado de Longavi,2026-11-15,21,2,True,0,0,0.0,0.0,False,False,False,,,False
+Nevado de Longavi,2026-11-18,21,0,True,0,0,,,False,False,False,,,False
+Nevado de Longavi,2026-11-20,20,2,True,0,0,0.0,0.0,False,False,False,,,True
+Nevado de Longavi,2026-11-21,19,0,True,0,0,,,False,False,False,,,True
+Nevado de Longavi,2026-11-22,12,12,True,0,0,0.0,0.0,True,False,False,,,True
+Nevados de Chillan,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.02,False
+Nevados de Chillan,2026-08-27,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,False
+Nevados de Chillan,2026-08-28,24,0,True,0,0,,,False,False,False,Q,0.0,False
+Nevados de Chillan,2026-08-29,24,0,True,0,0,,,False,False,False,Q,0.0,False
+Nevados de Chillan,2026-08-30,24,14,True,0,0,0.0,0.0,True,False,False,Q,0.0,False
+Nevados de Chillan,2026-08-31,24,5,True,0,0,0.0,0.0,True,False,False,Q,0.0,False
+Nevados de Chillan,2026-09-01,24,9,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-02,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-03,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-05,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.14,True
+Nevados de Chillan,2026-09-06,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-07,24,24,True,3,3,35.969,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-08,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-09,24,23,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-10,24,11,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-11,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-12,24,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-13,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-14,24,17,True,0,0,1.609,0.0,True,False,False,Q,0.09,True
+Nevados de Chillan,2026-09-15,24,7,True,0,0,0.0,0.0,True,False,False,Q,0.05,True
+Nevados de Chillan,2026-09-16,24,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-17,24,23,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-18,24,13,True,1,1,14.284,0.0,True,False,False,Q,0.05,True
+Nevados de Chillan,2026-09-19,24,23,True,0,1,9.207,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-20,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-21,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-22,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-23,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-24,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-25,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-26,24,16,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-27,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-09-28,24,3,True,0,0,2.745,0.0,False,False,False,debil,2.58,True
+Nevados de Chillan,2026-09-29,23,13,True,0,1,5.284,0.0,True,False,False,debil,5.73,True
+Nevados de Chillan,2026-09-30,22,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-10-01,23,7,True,0,1,5.458,0.0,True,False,False,debil,10.0,True
+Nevados de Chillan,2026-10-02,23,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-10-03,23,0,True,0,0,,,False,False,False,Q,0.54,True
+Nevados de Chillan,2026-10-04,23,2,True,0,0,0.0,0.0,False,False,False,debil,2.54,True
+Nevados de Chillan,2026-10-05,23,19,True,0,2,6.085,2.248,True,False,False,debil,8.24,True
+Nevados de Chillan,2026-10-06,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-10-07,23,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-10-08,23,18,True,0,0,0.0,0.0,True,False,False,Q,0.82,True
+Nevados de Chillan,2026-10-09,23,7,True,0,0,0.0,0.0,True,False,False,debil,1.22,True
+Nevados de Chillan,2026-10-10,23,14,True,1,6,18.241,0.0,True,False,True,P,15.26,True
+Nevados de Chillan,2026-10-11,23,1,True,0,0,0.0,0.0,False,False,False,debil,1.38,True
+Nevados de Chillan,2026-10-12,23,20,True,5,8,21.8,3.714,True,True,True,debil,8.44,True
+Nevados de Chillan,2026-10-13,23,4,True,0,1,5.264,1.671,True,False,False,Q,0.0,True
+Nevados de Chillan,2026-10-14,23,4,True,0,0,4.619,1.822,True,False,False,debil,2.54,True
+Nevados de Chillan,2026-10-15,23,20,True,11,17,32.652,11.264,True,True,True,P,30.1,True
+Nevados de Chillan,2026-10-16,23,21,True,8,18,16.183,8.35,True,True,True,P,15.63,True
+Nevados de Chillan,2026-10-17,23,23,True,16,20,25.361,13.423,True,True,True,P,21.94,True
+Nevados de Chillan,2026-10-18,23,23,True,22,23,38.53,15.949,True,True,True,P,25.79,True
+Nevados de Chillan,2026-10-19,23,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Nevados de Chillan,2026-10-22,21,9,True,0,0,1.109,0.0,True,False,False,Q,0.15,False
+Nevados de Chillan,2026-10-25,21,21,True,17,20,37.764,15.087,True,True,True,P,40.29,False
+Nevados de Chillan,2026-10-28,21,21,True,20,21,36.814,20.123,True,True,True,P,37.35,False
+Nevados de Chillan,2026-10-31,21,13,True,7,10,20.347,11.226,True,True,True,P,18.58,False
+Nevados de Chillan,2026-11-03,20,1,True,0,0,0.0,0.0,False,False,False,debil,2.81,False
+Nevados de Chillan,2026-11-06,21,0,True,0,0,,,False,False,False,P,29.56,False
+Nevados de Chillan,2026-11-09,21,21,True,21,21,79.13,18.442,True,True,True,P,36.56,False
+Nevados de Chillan,2026-11-12,21,7,True,7,7,36.207,20.669,True,True,True,P,40.87,False
+Nevados de Chillan,2026-11-15,21,3,True,1,2,14.076,5.851,False,False,False,debil,8.16,False
+Nevados de Chillan,2026-11-18,20,0,True,0,0,,,False,False,False,Q,0.06,False
+Nevados de Chillan,2026-11-20,19,6,True,0,0,4.71,2.662,True,False,False,debil,7.89,True
+Nevados de Chillan,2026-11-21,19,0,True,0,0,,,False,False,False,debil,1.22,True
+Nevados de Chillan,2026-11-22,12,12,True,11,12,32.006,26.003,True,True,True,P,12.14,True
+Osorno,2026-08-26,24,0,False,0,0,,,False,False,False,,,False
+Osorno,2026-08-29,24,0,True,0,0,,,False,False,False,,,False
+Osorno,2026-09-01,24,1,True,0,0,0.0,0.0,False,False,False,,,True
+Osorno,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Osorno,2026-09-07,24,24,True,0,0,4.595,0.0,True,False,False,,,True
+Osorno,2026-09-10,24,0,True,0,0,,,False,False,False,,,True
+Osorno,2026-09-13,24,24,True,0,0,4.828,0.0,True,False,False,,,True
+Osorno,2026-09-16,24,13,True,0,0,0.0,0.0,True,False,False,,,True
+Osorno,2026-09-19,24,14,True,0,0,4.767,0.0,True,False,False,,,True
+Osorno,2026-09-22,22,0,True,0,0,,,False,False,False,,,True
+Osorno,2026-09-25,24,0,True,0,0,,,False,False,False,,,True
+Osorno,2026-09-28,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Osorno,2026-10-01,23,8,True,0,0,0.0,0.0,True,False,False,,,True
+Osorno,2026-10-04,23,2,True,0,0,0.0,0.0,False,False,False,,,True
+Osorno,2026-10-07,23,4,True,0,0,0.0,0.0,True,False,False,,,True
+Osorno,2026-10-10,23,19,True,0,0,0.0,0.0,True,False,False,,,True
+Osorno,2026-10-13,22,16,True,0,5,9.201,0.0,True,False,True,,,True
+Osorno,2026-10-16,22,22,True,0,0,3.364,0.0,True,False,False,,,True
+Osorno,2026-10-19,22,5,True,1,1,20.275,0.0,True,False,False,,,True
+Osorno,2026-10-22,21,0,True,0,0,,,False,False,False,,,True
+Osorno,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Osorno,2026-10-28,21,19,True,0,0,0.0,0.0,True,False,False,,,True
+Osorno,2026-10-31,21,0,True,0,0,,,False,False,False,,,True
+Osorno,2026-11-03,20,0,True,0,0,,,False,False,False,,,True
+Osorno,2026-11-06,20,12,True,0,0,0.0,0.0,True,False,False,,,True
+Osorno,2026-11-09,20,20,True,0,1,5.953,0.0,True,False,False,,,True
+Osorno,2026-11-12,20,10,True,0,1,5.064,0.0,True,False,False,,,True
+Osorno,2026-11-15,19,7,True,0,1,8.334,0.0,True,False,False,,,True
+Osorno,2026-11-18,19,0,True,0,0,,,False,False,False,,,True
+Osorno,2026-11-21,19,0,True,0,0,,,False,False,False,,,True
+Parinacota,2026-08-26,24,0,False,0,0,,,False,False,False,,,False
+Parinacota,2026-08-29,24,22,True,0,0,1.094,0.0,True,False,False,,,False
+Parinacota,2026-09-01,24,22,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-09-07,24,15,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-09-10,24,24,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-09-13,24,24,True,0,0,1.797,0.0,True,False,False,,,True
+Parinacota,2026-09-16,24,13,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-09-19,24,11,True,0,0,1.223,0.0,True,False,False,,,True
+Parinacota,2026-09-22,22,22,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-09-25,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-09-28,23,21,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-10-01,23,6,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-10-04,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-10-07,23,21,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-10-10,23,18,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-10-13,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-10-16,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-10-19,23,19,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-10-22,23,18,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-10-25,23,1,True,0,0,0.0,0.0,False,False,False,,,True
+Parinacota,2026-10-28,23,11,True,1,1,10.559,0.0,True,False,False,,,True
+Parinacota,2026-10-31,23,23,True,0,0,3.088,0.0,True,False,False,,,True
+Parinacota,2026-11-03,22,21,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-11-06,22,6,True,0,0,2.697,0.0,True,False,False,,,True
+Parinacota,2026-11-09,22,5,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-11-12,22,11,True,0,1,7.148,0.0,True,False,False,,,True
+Parinacota,2026-11-15,22,15,True,0,0,0.0,0.0,True,False,False,,,True
+Parinacota,2026-11-18,22,22,True,1,1,10.992,0.0,True,False,False,,,True
+Parinacota,2026-11-21,22,22,True,0,0,1.972,0.0,True,False,False,,,True
+Planchon-Peteroa,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.0,False
+Planchon-Peteroa,2026-08-29,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,False
+Planchon-Peteroa,2026-09-01,24,14,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-09-04,24,15,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-09-07,24,23,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-09-10,24,7,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-09-13,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.09,True
+Planchon-Peteroa,2026-09-16,24,23,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-09-19,24,21,True,0,0,2.116,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-09-22,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Planchon-Peteroa,2026-09-25,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Planchon-Peteroa,2026-09-28,23,7,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-10-01,23,17,True,0,0,0.0,0.0,True,False,False,Q,0.08,True
+Planchon-Peteroa,2026-10-04,23,11,True,0,0,0.0,0.0,True,False,False,Q,0.13,True
+Planchon-Peteroa,2026-10-07,23,11,True,0,0,3.329,0.0,True,False,False,Q,0.15,True
+Planchon-Peteroa,2026-10-10,23,18,True,0,0,0.0,0.0,True,False,False,Q,0.22,True
+Planchon-Peteroa,2026-10-13,23,14,True,0,0,3.132,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-10-16,23,23,True,0,0,0.0,0.0,True,False,False,Q,0.27,True
+Planchon-Peteroa,2026-10-19,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Planchon-Peteroa,2026-10-22,22,14,True,0,0,3.324,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-10-25,22,19,True,0,0,0.0,0.0,True,False,False,Q,0.2,True
+Planchon-Peteroa,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.18,True
+Planchon-Peteroa,2026-10-31,21,6,True,0,0,0.0,0.0,True,False,False,Q,0.04,True
+Planchon-Peteroa,2026-11-03,20,9,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-11-06,21,7,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Planchon-Peteroa,2026-11-09,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.14,True
+Planchon-Peteroa,2026-11-12,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.27,True
+Planchon-Peteroa,2026-11-15,21,14,True,1,2,17.844,0.0,True,False,False,Q,0.27,True
+Planchon-Peteroa,2026-11-18,21,0,True,0,0,,,False,False,False,Q,0.0,True
+Planchon-Peteroa,2026-11-21,20,0,True,0,0,,,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.0,False
+Puyehue-Cordon Caulle,2026-08-29,24,0,True,0,0,,,False,False,False,Q,0.0,False
+Puyehue-Cordon Caulle,2026-09-01,24,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-09-04,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-09-07,24,24,True,0,0,4.044,0.0,True,False,False,Q,0.73,True
+Puyehue-Cordon Caulle,2026-09-10,24,3,True,0,0,4.816,0.0,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-09-13,24,24,True,0,0,4.107,0.0,True,False,False,Q,0.63,True
+Puyehue-Cordon Caulle,2026-09-16,24,16,True,0,0,0.0,0.0,True,False,False,Q,0.8,True
+Puyehue-Cordon Caulle,2026-09-19,24,18,True,2,4,66.272,0.0,True,False,False,Q,0.79,True
+Puyehue-Cordon Caulle,2026-09-22,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-09-25,24,0,True,0,0,,,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-09-28,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.38,True
+Puyehue-Cordon Caulle,2026-10-01,23,8,True,0,0,0.0,0.0,True,False,False,Q,0.05,True
+Puyehue-Cordon Caulle,2026-10-04,23,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-10-07,23,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-10-10,23,22,True,0,0,0.0,0.0,True,False,False,debil,1.19,True
+Puyehue-Cordon Caulle,2026-10-13,23,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-10-16,22,22,True,0,0,0.0,0.0,True,False,False,Q,0.61,True
+Puyehue-Cordon Caulle,2026-10-19,21,4,True,0,0,0.0,0.0,True,False,False,Q,0.44,True
+Puyehue-Cordon Caulle,2026-10-22,21,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-10-25,21,16,True,0,0,0.0,0.0,True,False,False,debil,1.48,True
+Puyehue-Cordon Caulle,2026-10-28,21,21,True,0,0,2.642,0.0,True,False,False,debil,1.22,True
+Puyehue-Cordon Caulle,2026-10-31,21,0,True,0,0,,,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-11-03,20,5,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-11-06,21,3,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-11-09,20,20,True,0,0,0.0,0.0,True,False,False,debil,1.67,True
+Puyehue-Cordon Caulle,2026-11-12,20,3,True,1,1,37.06,0.0,False,False,False,debil,1.72,True
+Puyehue-Cordon Caulle,2026-11-15,19,5,True,0,0,0.0,0.0,True,False,False,Q,0.93,True
+Puyehue-Cordon Caulle,2026-11-18,19,0,True,0,0,,,False,False,False,Q,0.0,True
+Puyehue-Cordon Caulle,2026-11-21,19,0,True,0,0,,,False,False,False,Q,0.37,True
+Sangay (Ecuador),2026-08-26,23,0,False,0,0,,,False,False,False,,,False
+Sangay (Ecuador),2026-08-29,23,5,True,0,0,0.0,0.0,True,False,False,,,False
+Sangay (Ecuador),2026-09-01,23,22,True,0,0,0.0,0.0,True,False,False,,,True
+Sangay (Ecuador),2026-09-04,23,10,True,0,0,0.0,0.0,True,False,False,,,True
+Sangay (Ecuador),2026-09-07,23,6,True,1,1,17.075,0.0,True,False,False,,,True
+Sangay (Ecuador),2026-09-10,23,9,True,0,0,0.0,0.0,True,False,False,,,True
+Sangay (Ecuador),2026-09-13,23,22,True,0,0,0.0,0.0,True,False,False,,,True
+Sangay (Ecuador),2026-09-16,23,4,True,0,0,0.0,0.0,True,False,False,,,True
+Sangay (Ecuador),2026-09-19,23,0,True,0,0,,,False,False,False,,,True
+Sangay (Ecuador),2026-09-22,21,19,True,19,19,742.248,635.099,True,True,True,,,True
+Sangay (Ecuador),2026-09-25,23,18,True,18,18,90.757,79.385,True,True,True,,,True
+Sangay (Ecuador),2026-09-28,23,0,True,0,0,,,False,False,False,,,True
+Sangay (Ecuador),2026-10-01,23,0,True,0,0,,,False,False,False,,,True
+Sangay (Ecuador),2026-10-04,23,23,True,23,23,361.41,251.806,True,True,True,,,True
+Sangay (Ecuador),2026-10-07,23,18,True,17,18,233.684,152.199,True,True,True,,,True
+Sangay (Ecuador),2026-10-10,23,21,True,21,21,77.319,70.918,True,True,True,,,True
+Sangay (Ecuador),2026-10-13,23,5,True,5,5,454.511,435.399,True,True,True,,,True
+Sangay (Ecuador),2026-10-16,23,11,True,7,7,88.194,22.806,True,True,True,,,True
+Sangay (Ecuador),2026-10-19,24,3,True,3,3,39.078,34.861,False,False,False,,,True
+Sangay (Ecuador),2026-10-22,24,4,True,4,4,59.634,31.63,True,True,True,,,True
+Sangay (Ecuador),2026-10-25,24,0,True,0,0,,,False,False,False,,,True
+Sangay (Ecuador),2026-10-28,24,0,True,0,0,,,False,False,False,,,True
+Sangay (Ecuador),2026-10-31,24,14,True,3,7,28.455,5.231,True,False,True,,,True
+Sangay (Ecuador),2026-11-03,23,7,True,6,6,250.364,62.513,True,True,True,,,True
+Sangay (Ecuador),2026-11-06,24,11,True,10,10,223.671,201.54,True,True,True,,,True
+Sangay (Ecuador),2026-11-09,24,8,True,8,8,88.288,71.714,True,True,True,,,True
+Sangay (Ecuador),2026-11-12,23,5,True,3,3,126.831,39.371,True,True,True,,,True
+Sangay (Ecuador),2026-11-15,23,9,True,8,8,306.664,269.11,True,True,True,,,True
+Sangay (Ecuador),2026-11-18,23,12,True,12,12,118.58,87.646,True,True,True,,,True
+Sangay (Ecuador),2026-11-21,23,10,True,10,10,81.893,24.236,True,True,True,,,True
+Tinguiririca,2026-08-26,24,0,False,0,0,,,False,False,False,,,False
+Tinguiririca,2026-08-29,24,24,True,0,0,0.0,0.0,True,False,False,,,False
+Tinguiririca,2026-09-01,24,9,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-09-04,24,12,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-09-07,24,17,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-09-10,24,9,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-09-13,24,10,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-09-16,24,21,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-09-19,24,16,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-09-22,22,0,True,0,0,,,False,False,False,,,True
+Tinguiririca,2026-09-25,24,0,True,0,0,,,False,False,False,,,True
+Tinguiririca,2026-09-28,23,20,True,1,1,24.105,0.0,True,False,False,,,True
+Tinguiririca,2026-10-01,23,5,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-10-04,23,2,True,0,0,0.0,0.0,False,False,False,,,True
+Tinguiririca,2026-10-07,23,2,True,0,0,0.0,0.0,False,False,False,,,True
+Tinguiririca,2026-10-10,23,18,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-10-13,23,13,True,0,0,1.808,0.0,True,False,False,,,True
+Tinguiririca,2026-10-16,23,23,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-10-19,22,0,True,0,0,,,False,False,False,,,True
+Tinguiririca,2026-10-22,22,15,True,0,0,1.728,0.0,True,False,False,,,True
+Tinguiririca,2026-10-25,22,10,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-10-31,21,9,True,0,0,1.556,0.0,True,False,False,,,True
+Tinguiririca,2026-11-03,20,10,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-11-06,21,20,True,0,0,0.0,0.0,True,False,False,,,True
+Tinguiririca,2026-11-09,21,21,True,0,1,7.98,0.0,True,False,False,,,True
+Tinguiririca,2026-11-12,21,20,True,0,0,2.423,0.0,True,False,False,,,True
+Tinguiririca,2026-11-15,21,15,True,0,1,5.543,0.0,True,False,False,,,True
+Tinguiririca,2026-11-18,21,0,True,0,0,,,False,False,False,,,True
+Tinguiririca,2026-11-21,20,0,True,0,0,,,False,False,False,,,True
+Tupungatito,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.0,False
+Tupungatito,2026-08-29,24,24,True,0,0,0.297,0.0,True,False,False,Q,0.0,False
+Tupungatito,2026-09-01,24,23,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Tupungatito,2026-09-04,24,5,True,0,0,4.134,0.743,True,False,False,Q,0.0,True
+Tupungatito,2026-09-07,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.12,True
+Tupungatito,2026-09-10,24,4,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Tupungatito,2026-09-13,24,0,True,0,0,,,False,False,False,Q,0.14,True
+Tupungatito,2026-09-16,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.16,True
+Tupungatito,2026-09-19,24,19,True,0,0,0.0,0.0,True,False,False,Q,0.14,True
+Tupungatito,2026-09-22,22,22,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Tupungatito,2026-09-25,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Tupungatito,2026-09-28,23,18,True,0,0,0.0,0.0,True,False,False,debil,2.51,True
+Tupungatito,2026-10-01,23,4,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Tupungatito,2026-10-04,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Tupungatito,2026-10-07,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Tupungatito,2026-10-10,23,23,True,0,0,0.0,0.0,True,False,False,Q,0.13,True
+Tupungatito,2026-10-13,23,10,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Tupungatito,2026-10-16,23,21,True,1,1,27.201,0.0,True,False,False,Q,0.13,True
+Tupungatito,2026-10-19,22,19,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Tupungatito,2026-10-22,22,20,True,0,0,0.0,0.0,True,False,False,Q,0.08,True
+Tupungatito,2026-10-25,22,2,True,0,0,0.0,0.0,False,False,False,Q,0.12,True
+Tupungatito,2026-10-28,22,22,True,0,0,1.607,0.23,True,False,False,Q,0.17,True
+Tupungatito,2026-10-31,22,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Tupungatito,2026-11-03,20,4,True,0,0,0.0,0.0,True,False,False,Q,0.1,True
+Tupungatito,2026-11-06,21,4,True,0,0,1.466,0.0,True,False,False,Q,0.0,True
+Tupungatito,2026-11-09,21,18,True,0,0,0.0,0.0,True,False,False,Q,0.35,True
+Tupungatito,2026-11-12,21,20,True,1,1,10.406,0.0,True,False,False,Q,0.12,True
+Tupungatito,2026-11-15,21,16,True,0,0,2.561,0.0,True,False,False,Q,0.0,True
+Tupungatito,2026-11-18,21,0,True,0,0,,,False,False,False,Q,0.11,True
+Tupungatito,2026-11-21,21,0,True,0,0,,,False,False,False,Q,0.0,True
+Villarrica,2026-08-26,24,0,False,0,0,,,False,False,False,Q,0.0,False
+Villarrica,2026-08-29,24,13,True,0,0,0.0,0.0,True,False,False,Q,0.0,False
+Villarrica,2026-09-01,24,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Villarrica,2026-09-04,24,24,True,0,1,6.218,0.0,True,False,False,debil,4.75,True
+Villarrica,2026-09-07,24,24,True,0,0,1.887,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-09-10,24,5,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-09-13,24,24,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-09-16,24,18,True,0,0,0.0,0.0,True,False,False,Q,0.19,True
+Villarrica,2026-09-19,24,16,True,0,0,0.0,0.0,True,False,False,Q,0.89,True
+Villarrica,2026-09-22,22,0,True,0,0,,,False,False,False,Q,0.04,True
+Villarrica,2026-09-25,24,0,True,0,0,,,False,False,False,Q,0.9,True
+Villarrica,2026-09-28,24,23,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-10-01,23,18,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-10-04,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Villarrica,2026-10-07,23,6,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-10-10,23,19,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-10-13,23,0,True,0,0,,,False,False,False,Q,0.0,True
+Villarrica,2026-10-16,22,22,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-10-19,22,0,True,0,0,,,False,False,False,Q,0.0,True
+Villarrica,2026-10-22,21,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Villarrica,2026-10-25,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-10-28,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-10-31,21,6,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-11-03,20,0,True,0,0,,,False,False,False,Q,0.0,True
+Villarrica,2026-11-06,21,0,True,0,0,,,False,False,False,Q,0.0,True
+Villarrica,2026-11-09,21,21,True,0,0,0.0,0.0,True,False,False,Q,0.0,True
+Villarrica,2026-11-12,20,2,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Villarrica,2026-11-15,19,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Villarrica,2026-11-18,19,1,True,0,0,0.0,0.0,False,False,False,Q,0.0,True
+Villarrica,2026-11-21,19,0,True,0,0,,,False,False,False,Q,0.0,True

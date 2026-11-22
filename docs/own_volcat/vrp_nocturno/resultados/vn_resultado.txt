@@ -1,0 +1,242 @@
+VRP nocturno 3,9 µm, validación fuera de muestra. Generado 2026-11-22 03:41
+cuadros leídos: 1617 | filas sitio-cuadro: 17757 | nocturnas: 16808 | visibles: 8505
+  Nevados de Chillan       noches fuera de muestra  52, evaluables  52, con dato  35, encendidas   6
+  Antuco                   noches fuera de muestra  52, evaluables  52, con dato  33, encendidas   0
+  Nevado de Longavi        noches fuera de muestra  52, evaluables  52, con dato  36, encendidas   0
+  Parinacota               noches fuera de muestra  28, evaluables  28, con dato  27, encendidas   0
+  Tinguiririca             noches fuera de muestra  28, evaluables  28, con dato  21, encendidas   0
+  Descabezado Grande       noches fuera de muestra  28, evaluables  28, con dato  22, encendidas   0
+  Lonquimay                noches fuera de muestra  28, evaluables  28, con dato  19, encendidas   0
+  Lanin                    noches fuera de muestra  28, evaluables  28, con dato  18, encendidas   0
+  Osorno                   noches fuera de muestra  28, evaluables  28, con dato  18, encendidas   0
+  Hudson                   noches fuera de muestra  28, evaluables  28, con dato  19, encendidas   0
+  Isluga                   noches fuera de muestra  28, evaluables  28, con dato  25, encendidas   0
+  Lascar                   noches fuera de muestra  28, evaluables  28, con dato  23, encendidas   0
+  Lastarria                noches fuera de muestra  28, evaluables  28, con dato  20, encendidas   0
+  Tupungatito              noches fuera de muestra  28, evaluables  28, con dato  21, encendidas   0
+  Planchon-Peteroa         noches fuera de muestra  28, evaluables  28, con dato  23, encendidas   0
+  Copahue                  noches fuera de muestra  28, evaluables  28, con dato  20, encendidas   0
+  Llaima                   noches fuera de muestra  28, evaluables  28, con dato  21, encendidas   0
+  Villarrica               noches fuera de muestra  28, evaluables  28, con dato  15, encendidas   0
+  Puyehue-Cordon Caulle    noches fuera de muestra  28, evaluables  28, con dato  15, encendidas   0
+  Chaiten                  noches fuera de muestra  28, evaluables  28, con dato  18, encendidas   0
+  Sangay (Ecuador)         noches fuera de muestra  28, evaluables  28, con dato  22, encendidas  15
+
+Inicio informado (MIROVA consolidado nocturno): primera noche >= 10 MW 2026-10-10 | primera noche >= 5 MW (consolidado) 2026-09-29
+
+== V1, detección: Chillán, noches P con dato ==
+  2026-10-10 MIROVA 15.3 MW | visibles 14/23 | >=10 MW 1 | VRP máx 18.2 | apagada
+  2026-10-15 MIROVA 30.1 MW | visibles 20/23 | >=10 MW 11 | VRP máx 32.7 | ENCENDIDA
+  2026-10-16 MIROVA 15.6 MW | visibles 21/23 | >=10 MW 8 | VRP máx 16.2 | ENCENDIDA
+  2026-10-17 MIROVA 21.9 MW | visibles 23/23 | >=10 MW 16 | VRP máx 25.4 | ENCENDIDA
+  2026-10-18 MIROVA 25.8 MW | visibles 23/23 | >=10 MW 22 | VRP máx 38.5 | ENCENDIDA
+  2026-11-22 MIROVA 12.1 MW | visibles 12/12 | >=10 MW 11 | VRP máx 32.0 | ENCENDIDA
+V1: 5/6 = 83.3% [IC95 43.6% a 97.0%] -> CUMPLE
+
+== V2, falsa alarma: 7 controles nuevos, noches con dato ==
+  Parinacota           0/27 = 0.0% [IC95 0.0% a 12.5%] | corte 5 MW 0
+  Tinguiririca         0/21 = 0.0% [IC95 0.0% a 15.5%] | corte 5 MW 0
+  Descabezado Grande   0/22 = 0.0% [IC95 0.0% a 14.9%] | corte 5 MW 0
+  Lonquimay            0/19 = 0.0% [IC95 0.0% a 16.8%] | corte 5 MW 0
+  Lanin                0/18 = 0.0% [IC95 0.0% a 17.6%] | corte 5 MW 0
+  Osorno               0/18 = 0.0% [IC95 0.0% a 17.6%] | corte 5 MW 1
+  Hudson               0/19 = 0.0% [IC95 0.0% a 16.8%] | corte 5 MW 0
+V2: 0/144 = 0.0% [IC95 0.0% a 2.6%] | peor control 0 noches -> CUMPLE
+
+== V3, Chillán antes del encendido (01-09 a la noche previa al inicio, MIROVA < 1 MW) ==
+V3: 0/19 = 0.0% [IC95 0.0% a 16.8%] -> CUMPLE
+
+== V4, retardo ==
+V4: primera encendida 2026-10-12, primera P MIROVA 2026-10-10, primera >= 5 MW 2026-09-29, retardo 1 noches con dato después de la primera P -> CUMPLE
+
+VEREDICTO FASE A: VALIDA (V1 True, V2 True, V3 True, V4 True)
+
+== Informativo (no decide) ==
+Chillán fuera de muestra, por clase MIROVA (encendidas / con dato):
+  P: 5/6 = 83.3% [IC95 43.6% a 97.0%] | corte 5 MW 6
+  debil: 1/7 = 14.3% [IC95 2.6% a 51.3%] | corte 5 MW 1
+  Q: 0/22 = 0.0% [IC95 0.0% a 14.9%] | corte 5 MW 0
+  sin verdad: 0/0 (sin noches) | corte 5 MW 0
+Chillán, serie por noche (fuera de muestra): noche, MIROVA, visibles, >=10 MW, VRP máx, estado
+  2026-09-01 Q       0.0 |  9/24 |  0 |    0.0 | off
+  2026-09-02 Q       0.0 |  0/24 |  0 |    nan | --
+  2026-09-03 Q       0.0 | 24/24 |  0 |    0.0 | off
+  2026-09-04 Q       0.0 | 24/24 |  0 |    0.0 | off
+  2026-09-05 Q       0.1 | 24/24 |  0 |    0.0 | off
+  2026-09-06 Q       0.0 | 24/24 |  0 |    0.0 | off
+  2026-09-07 Q       0.0 | 24/24 |  3 |   36.0 | off
+  2026-09-08 Q       0.0 | 24/24 |  0 |    0.0 | off
+  2026-09-09 Q       0.0 | 23/24 |  0 |    0.0 | off
+  2026-09-10 Q       0.0 | 11/24 |  0 |    0.0 | off
+  2026-09-11 Q       0.0 |  0/24 |  0 |    nan | --
+  2026-09-12 Q       0.0 | 21/24 |  0 |    0.0 | off
+  2026-09-13 Q       0.0 | 24/24 |  0 |    0.0 | off
+  2026-09-14 Q       0.1 | 17/24 |  0 |    1.6 | off
+  2026-09-15 Q       0.1 |  7/24 |  0 |    0.0 | off
+  2026-09-16 Q       0.0 | 21/24 |  0 |    0.0 | off
+  2026-09-17 Q       0.0 | 23/24 |  0 |    0.0 | off
+  2026-09-18 Q       0.1 | 13/24 |  1 |   14.3 | off
+  2026-09-19 Q       0.0 | 23/24 |  0 |    9.2 | off
+  2026-09-20 Q       0.0 |  0/24 |  0 |    nan | --
+  2026-09-21 Q       0.0 |  0/24 |  0 |    nan | --
+  2026-09-22 Q       0.0 |  0/22 |  0 |    nan | --
+  2026-09-23 Q       0.0 |  0/24 |  0 |    nan | --
+  2026-09-24 Q       0.0 |  0/24 |  0 |    nan | --
+  2026-09-25 Q       0.0 |  0/24 |  0 |    nan | --
+  2026-09-26 Q       0.0 | 16/24 |  0 |    0.0 | off
+  2026-09-27 Q       0.0 | 24/24 |  0 |    0.0 | off
+  2026-09-28 debil   2.6 |  3/24 |  0 |    2.7 | --
+  2026-09-29 debil   5.7 | 13/23 |  0 |    5.3 | off
+  2026-09-30 Q       0.0 |  1/22 |  0 |    0.0 | --
+  2026-10-01 debil  10.0 |  7/23 |  0 |    5.5 | off
+  2026-10-02 Q       0.0 |  1/23 |  0 |    0.0 | --
+  2026-10-03 Q       0.5 |  0/23 |  0 |    nan | --
+  2026-10-04 debil   2.5 |  2/23 |  0 |    0.0 | --
+  2026-10-05 debil   8.2 | 19/23 |  0 |    6.1 | off
+  2026-10-06 Q       0.0 |  0/22 |  0 |    nan | --
+  2026-10-07 Q       0.0 | 21/23 |  0 |    0.0 | off
+  2026-10-08 Q       0.8 | 18/23 |  0 |    0.0 | off
+  2026-10-09 debil   1.2 |  7/23 |  0 |    0.0 | off
+  2026-10-10 P      15.3 | 14/23 |  1 |   18.2 | off
+  2026-10-11 debil   1.4 |  1/23 |  0 |    0.0 | --
+  2026-10-12 debil   8.4 | 20/23 |  5 |   21.8 | ENC
+  2026-10-13 Q       0.0 |  4/23 |  0 |    5.3 | off
+  2026-10-14 debil   2.5 |  4/23 |  0 |    4.6 | off
+  2026-10-15 P      30.1 | 20/23 | 11 |   32.7 | ENC
+  2026-10-16 P      15.6 | 21/23 |  8 |   16.2 | ENC
+  2026-10-17 P      21.9 | 23/23 | 16 |   25.4 | ENC
+  2026-10-18 P      25.8 | 23/23 | 22 |   38.5 | ENC
+  2026-10-19 Q       0.0 |  1/23 |  0 |    0.0 | --
+  2026-11-20 debil   7.9 |  6/19 |  0 |    4.7 | off
+  2026-11-21 debil   1.2 |  0/19 |  0 |    nan | --
+  2026-11-22 P      12.1 | 12/12 | 11 |   32.0 | ENC
+Chillán dentro de muestra (20-10 a 19-11, serie B):
+   5/6 = 83.3% [IC95 43.6% a 97.0%]
+Controles de H17 fuera de su periodo:
+  Antuco: 0/33 = 0.0% [IC95 0.0% a 10.4%]
+  Nevado de Longavi: 0/36 = 0.0% [IC95 0.0% a 9.6%]
+Controles nuevos con corte 5 MW: 1/144 = 0.7% [IC95 0.1% a 3.8%]
+Activos débiles (límite de detección), encendidas / con dato por clase MIROVA:
+  Isluga                 total 0/25 | P 0/0 | debil 0/1 | Q 0/24 | sin 0/0 | MIROVA máx en esas noches 1.6 MW | VRP ABI p90 de cuadros visibles 0.0
+  Lascar                 total 0/23 | P 0/0 | debil 0/0 | Q 0/23 | sin 0/0 | MIROVA máx en esas noches 0.6 MW | VRP ABI p90 de cuadros visibles 0.0
+  Lastarria              total 0/20 | P 0/0 | debil 0/0 | Q 0/20 | sin 0/0 | MIROVA máx en esas noches 0.2 MW | VRP ABI p90 de cuadros visibles 0.0
+  Tupungatito            total 0/21 | P 0/0 | debil 0/1 | Q 0/20 | sin 0/0 | MIROVA máx en esas noches 2.5 MW | VRP ABI p90 de cuadros visibles 0.0
+  Planchon-Peteroa       total 0/23 | P 0/0 | debil 0/0 | Q 0/23 | sin 0/0 | MIROVA máx en esas noches 0.3 MW | VRP ABI p90 de cuadros visibles 0.0
+  Copahue                total 0/20 | P 0/0 | debil 0/1 | Q 0/19 | sin 0/0 | MIROVA máx en esas noches 1.3 MW | VRP ABI p90 de cuadros visibles 0.0
+  Llaima                 total 0/21 | P 0/0 | debil 0/0 | Q 0/21 | sin 0/0 | MIROVA máx en esas noches 0.0 MW | VRP ABI p90 de cuadros visibles 0.0
+  Villarrica             total 0/15 | P 0/0 | debil 0/1 | Q 0/14 | sin 0/0 | MIROVA máx en esas noches 4.8 MW | VRP ABI p90 de cuadros visibles 0.0
+  Puyehue-Cordon Caulle  total 0/15 | P 0/0 | debil 0/4 | Q 0/11 | sin 0/0 | MIROVA máx en esas noches 1.7 MW | VRP ABI p90 de cuadros visibles 0.0
+  Chaiten                total 0/18 | P 0/0 | debil 0/0 | Q 0/18 | sin 0/0 | MIROVA máx en esas noches 0.3 MW | VRP ABI p90 de cuadros visibles 0.0
+Sangay: 15/22 = 68.2% [IC95 47.3% a 83.6%] | corte 5 MW 16 | VRP mediana de cuadros visibles 63.6
+
+Cuadro contra pasada (Chillán, pasadas consolidadas nocturnas fuera de muestra, cuadro ABI a <= 15 min):
+  2026-09-05 05:48 VIIRS375  MIROVA   0.14 | ABI   0.00 | visible True
+  2026-09-14 05:42 VIIRS375  MIROVA   0.09 | ABI   0.00 | visible True
+  2026-09-15 06:18 VIIRS375  MIROVA   0.05 | ABI   0.00 | visible False
+  2026-09-18 05:24 VIIRS375  MIROVA   0.05 | ABI   0.00 | visible False
+  2026-09-28 04:42 VIIRS     MIROVA   0.23 | ABI   0.00 | visible False
+  2026-09-28 04:42 VIIRS375  MIROVA   2.58 | ABI   0.00 | visible False
+  2026-09-28 06:18 VIIRS375  MIROVA   0.60 | ABI   0.00 | visible False
+  2026-09-29 05:18 VIIRS     MIROVA   5.48 | ABI   1.56 | visible True
+  2026-09-29 05:18 VIIRS375  MIROVA   5.73 | ABI   1.56 | visible True
+  2026-09-29 06:00 VIIRS     MIROVA   2.52 | ABI   4.14 | visible True
+  2026-09-29 06:00 VIIRS375  MIROVA   3.92 | ABI   4.14 | visible True
+  2026-09-29 06:36 VIIRS     MIROVA   2.03 | ABI   0.00 | visible True
+  2026-09-29 06:36 VIIRS375  MIROVA   2.11 | ABI   0.00 | visible True
+  2026-09-29 07:20 MODIS     MIROVA   0.13 | ABI   5.28 | visible True
+  2026-10-01 01:45 MODIS     MIROVA   6.17 | ABI   3.51 | visible True
+  2026-10-01 04:42 VIIRS     MIROVA   0.09 | ABI   0.00 | visible False
+  2026-10-01 04:42 VIIRS375  MIROVA   0.88 | ABI   0.00 | visible False
+  2026-10-01 06:18 VIIRS     MIROVA   7.06 | ABI   7.01 | visible False
+  2026-10-01 06:18 VIIRS375  MIROVA   7.28 | ABI   7.01 | visible False
+  2026-10-01 08:35 MODIS     MIROVA   5.18 | ABI   0.00 | visible False
+  2026-10-03 06:24 VIIRS375  MIROVA   0.54 | ABI   0.00 | visible False
+  2026-10-04 06:06 VIIRS     MIROVA   2.30 | ABI   0.00 | visible True
+  2026-10-04 06:06 VIIRS375  MIROVA   2.54 | ABI   0.00 | visible True
+  2026-10-04 06:42 VIIRS375  MIROVA   0.86 | ABI   0.00 | visible False
+  2026-10-05 05:06 VIIRS     MIROVA   3.43 | ABI   3.63 | visible True
+  2026-10-05 05:06 VIIRS375  MIROVA   5.77 | ABI   3.63 | visible True
+  2026-10-05 05:48 VIIRS     MIROVA   7.86 | ABI   6.08 | visible True
+  2026-10-05 05:48 VIIRS375  MIROVA   4.35 | ABI   6.08 | visible True
+  2026-10-05 06:48 VIIRS     MIROVA   2.66 | ABI   2.96 | visible True
+  2026-10-05 06:48 VIIRS375  MIROVA   4.71 | ABI   2.96 | visible True
+  2026-10-05 07:50 MODIS     MIROVA   3.50 | ABI   0.00 | visible True
+  2026-10-08 05:48 VIIRS375  MIROVA   0.82 | ABI   0.00 | visible True
+  2026-10-09 05:30 VIIRS     MIROVA   0.35 | ABI   0.00 | visible False
+  2026-10-09 05:30 VIIRS375  MIROVA   0.50 | ABI   0.00 | visible False
+  2026-10-09 06:12 VIIRS     MIROVA   0.82 | ABI   0.00 | visible False
+  2026-10-09 06:12 VIIRS375  MIROVA   1.22 | ABI   0.00 | visible False
+  2026-10-10 04:54 VIIRS     MIROVA   2.48 | ABI   5.57 | visible True
+  2026-10-10 04:54 VIIRS375  MIROVA   5.72 | ABI   5.57 | visible True
+  2026-10-10 05:12 VIIRS     MIROVA   6.42 | ABI   5.57 | visible True
+  2026-10-10 05:12 VIIRS375  MIROVA   8.75 | ABI   5.57 | visible True
+  2026-10-10 05:54 VIIRS     MIROVA  13.13 | ABI   7.29 | visible True
+  2026-10-10 05:54 VIIRS375  MIROVA   7.55 | ABI   7.29 | visible True
+  2026-10-10 06:54 VIIRS     MIROVA  15.26 | ABI   5.67 | visible True
+  2026-10-10 06:54 VIIRS375  MIROVA  13.78 | ABI   5.67 | visible True
+  2026-10-10 07:40 MODIS     MIROVA   3.95 | ABI   2.98 | visible False
+  2026-10-11 04:54 VIIRS375  MIROVA   0.30 | ABI   2.35 | visible False
+  2026-10-11 05:36 VIIRS     MIROVA   1.03 | ABI   0.00 | visible False
+  2026-10-11 05:36 VIIRS375  MIROVA   1.38 | ABI   0.00 | visible False
+  2026-10-12 05:18 VIIRS     MIROVA   8.44 | ABI   0.00 | visible True
+  2026-10-12 05:18 VIIRS375  MIROVA   7.31 | ABI   0.00 | visible True
+  2026-10-12 05:54 VIIRS     MIROVA   0.40 | ABI   5.60 | visible False
+  2026-10-12 05:54 VIIRS375  MIROVA   0.85 | ABI   5.60 | visible False
+  2026-10-12 07:20 MODIS     MIROVA   2.18 | ABI   2.18 | visible True
+  2026-10-14 05:36 VIIRS375  MIROVA   0.12 | ABI   0.00 | visible False
+  2026-10-14 06:18 VIIRS     MIROVA   2.00 | ABI   0.00 | visible False
+  2026-10-14 06:18 VIIRS375  MIROVA   2.54 | ABI   0.00 | visible False
+  2026-10-15 01:05 MODIS     MIROVA   1.72 | ABI   4.81 | visible True
+  2026-10-15 05:18 VIIRS     MIROVA  14.02 | ABI   3.28 | visible True
+  2026-10-15 05:18 VIIRS375  MIROVA  13.74 | ABI   3.28 | visible True
+  2026-10-15 06:00 VIIRS     MIROVA  30.10 | ABI  18.55 | visible True
+  2026-10-15 06:00 VIIRS375  MIROVA  14.67 | ABI  18.55 | visible True
+  2026-10-15 06:36 VIIRS     MIROVA  15.15 | ABI   9.34 | visible True
+  2026-10-15 06:36 VIIRS375  MIROVA  19.07 | ABI   9.34 | visible True
+  2026-10-15 07:35 MODIS     MIROVA  15.27 | ABI  15.91 | visible True
+  2026-10-16 01:40 MODIS     MIROVA  12.39 | ABI  10.75 | visible True
+  2026-10-16 05:00 VIIRS     MIROVA   8.36 | ABI  11.44 | visible True
+  2026-10-16 05:42 VIIRS     MIROVA  15.63 | ABI  13.22 | visible True
+  2026-10-16 05:42 VIIRS375  MIROVA   5.33 | ABI  13.22 | visible True
+  2026-10-16 06:42 VIIRS     MIROVA  14.02 | ABI   9.18 | visible True
+  2026-10-16 06:42 VIIRS375  MIROVA  14.63 | ABI   9.18 | visible True
+  2026-10-16 08:15 MODIS     MIROVA  13.70 | ABI  12.47 | visible True
+  2026-10-17 02:20 MODIS     MIROVA  12.97 | ABI  16.65 | visible True
+  2026-10-17 04:42 VIIRS     MIROVA   2.47 | ABI  23.22 | visible True
+  2026-10-17 04:42 VIIRS375  MIROVA   7.39 | ABI  23.22 | visible True
+  2026-10-17 05:24 VIIRS375  MIROVA  11.03 | ABI  18.28 | visible True
+  2026-10-17 06:18 VIIRS     MIROVA  21.94 | ABI  17.77 | visible True
+  2026-10-17 06:18 VIIRS375  MIROVA  11.36 | ABI  17.77 | visible True
+  2026-10-17 08:50 MODIS     MIROVA   7.09 | ABI  11.89 | visible True
+  2026-10-18 01:20 MODIS     MIROVA  14.39 | ABI  29.31 | visible True
+  2026-10-18 05:06 VIIRS     MIROVA  19.63 | ABI  18.65 | visible True
+  2026-10-18 05:06 VIIRS375  MIROVA  21.25 | ABI  18.65 | visible True
+  2026-10-18 05:42 VIIRS     MIROVA  20.87 | ABI  30.26 | visible True
+  2026-10-18 06:00 VIIRS     MIROVA  18.98 | ABI  15.11 | visible True
+  2026-10-18 06:00 VIIRS375  MIROVA   9.94 | ABI  15.11 | visible True
+  2026-10-18 06:48 VIIRS     MIROVA  22.85 | ABI  26.32 | visible True
+  2026-10-18 06:48 VIIRS375  MIROVA  25.79 | ABI  26.32 | visible True
+  2026-10-18 07:50 MODIS     MIROVA  18.36 | ABI   7.77 | visible True
+  2026-11-20 05:42 VIIRS     MIROVA   7.89 | ABI   0.00 | visible False
+  2026-11-20 05:42 VIIRS375  MIROVA   7.69 | ABI   0.00 | visible False
+  2026-11-21 05:24 VIIRS     MIROVA   0.76 | ABI   0.00 | visible False
+  2026-11-21 05:24 VIIRS375  MIROVA   1.22 | ABI   0.00 | visible False
+  2026-11-21 06:06 VIIRS375  MIROVA   0.22 | ABI   0.00 | visible False
+  2026-11-22 01:10 MODIS     MIROVA  12.14 | ABI  20.61 | visible True
+  visibles: 63, Spearman 0.70 (p 0.000); con MIROVA >= 5 MW: 44, mediana ABI/MIROVA 0.86
+
+FDCF en los mismos cuadros visibles de Chillán, noches P y débiles con dato (fuera de muestra):
+  2026-09-29 debil   5.7 MW | indicador off | FDCF cuadros con fuego 0 de 13
+  2026-10-01 debil  10.0 MW | indicador off | FDCF cuadros con fuego 0 de 7
+  2026-10-05 debil   8.2 MW | indicador off | FDCF cuadros con fuego 0 de 19
+  2026-10-09 debil   1.2 MW | indicador off | FDCF cuadros con fuego 0 de 7
+  2026-10-10 P      15.3 MW | indicador off | FDCF cuadros con fuego 0 de 14
+  2026-10-12 debil   8.4 MW | indicador ENC | FDCF cuadros con fuego 0 de 20
+  2026-10-14 debil   2.5 MW | indicador off | FDCF cuadros con fuego 0 de 4
+  2026-10-15 P      30.1 MW | indicador ENC | FDCF cuadros con fuego 0 de 20
+  2026-10-16 P      15.6 MW | indicador ENC | FDCF cuadros con fuego 0 de 21
+  2026-10-17 P      21.9 MW | indicador ENC | FDCF cuadros con fuego 0 de 23
+  2026-10-18 P      25.8 MW | indicador ENC | FDCF cuadros con fuego 0 de 23
+  2026-11-20 debil   7.9 MW | indicador off | FDCF cuadros con fuego 0 de 6
+  2026-11-22 P      12.1 MW | indicador ENC | FDCF cuadros con fuego 0 de 12
+  noches con FDCF >= 1 cuadro: 0 de 13 | noches encendidas (indicador): 6 de 13

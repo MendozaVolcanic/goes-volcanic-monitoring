@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-21 (cierre de sesión, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-22 (cierre de la sesión S15, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,120 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre 2026-11-21 (PR 65 a 73 en main: H12 no concluyente, H13 falsada, fuga GFS arreglada; tablas y eventos de VOLCAT públicos; H14 compatible, H15 sin probar; correo v5 sin enviar)
+## 0. S15, cierre 2026-11-22 (PR 74 a 83 en main: la parte pública de VOLCAT, por píxel y por objeto, reproducida y validada en Mauna Loa; ninguna ve Chillán en modo IR; el modo día quedó SIN probar)
+
+> **Convención nueva (desde S15):** cada traspaso lleva el número de sesión en su encabezado y la sesión de
+> Claude se titula igual ("Goes S16: ..."). Este bloque es S15 (los 14 bloques anteriores no tenían número;
+> S15 es el 15.º). La próxima es **S16**.
+>
+> **Estado fijado con trabajo en curso:** la sesión hija "Goes: indicador nocturno de calor en cráter 3,9 µm"
+> (`local_cb5a3f1e-d91d-4da3-bce2-d48401acf249`, worktree `.claude\worktrees\vrp-nocturno-59a4a2`, rama
+> `claude/vrp-nocturno-59a4a2`) seguía trabajando al cerrar. Abre PR sin fusionar. Revisa `gh pr list` antes de
+> creerle a esta tabla.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Traspaso del 21-11 | En main | PR 74 |
+| H15 frente 1, reglas de nube tenue (R1 β7,3 sólo si ε(7,3) ≥ 0,1; R2 relleno multicapa; R3 sin 8,5 µm en nube muy tenue) | **Valida nivel A** en Mauna Loa (κ 1,000 en εtot < 0,2 y 0,2 a 0,5) | PR 75, `docs/own_volcat/lut_h15/nube_tenue/` |
+| H15 frente 2, nuestro ε y β (nivel B) | ε al nadir 1 − (1 − ε)^cos θ, nube negra en el punto frío del GFS, β12/11 + 0,2 con εtot < 0,25 y TPW > 2,5 cm. **No cumple**: falta un cielo despejado de 11 µm ~1 K más frío (−0,86 K lejos de nube espesa, −1,6 K junto a ella), sólo en 11 µm, receta no pública | PR 76 (6 vueltas), `lut_h15/cielo_sesgo/INFORME.md` |
+| LRC y vecindad | Descartados (techo 73,5 % dentro de 0,01, pide 80 %) | PR 77, `lut_h15/cielo_lrc/` |
+| Inventario de reproducibilidad de `docs/own_volcat/` | **13 reproducibles, 1 frágil (H14), 6 rotos**; H11, C2, H15 etapa 2, nube tenue y H9 rehechos con cifras idénticas; ~1,2 GB rescatados a `D:\goes_notas\` | PR 78, 80, 81; `docs/own_volcat/INVENTARIO_REPRODUCIBILIDAD.md` |
+| H15 etapa 3, tablas IR sobre Chillán (769 px de `event_idx`, 4 eventos) | **No separa**, robusto en S0/S1/S2 del cielo despejado (P ≥ 0,5 en 2,1 / 0,0 / 1,6 % de la huella) | PR 79, `lut_h15/etapa3_chillan/resultados/e3_metricas.txt` |
+| H16, tabla de OBJETO de VOLCAT | Reproducida y validada en Mauna Loa (126 objetos, mediana 0,026 décadas). Chillán: P_obj máx 0,002 (pide 0,8). Los 60 cuadros son `ASHPLUMEPUFF` (49) y `VCB` (11) | PR 82, `docs/own_volcat/h16_objeto/` |
+| H17, regla propia (calor 3,9 µm + pluma anclada) | **Falla**: calor 0 de 3 cuadros VOLCAT ≥ 10 MW; pluma POD 0,13 / FAR 0,07. La huella está 1,3 K MÁS TIBIA que su base despejada de 6 días. Informativo: VRP nocturno separa Chillán (48 % ≥ 10 MW desde 24-10) de Antuco y Longaví (~1 %) | PR 83, `docs/own_volcat/h17_regla_propia/` |
+| **Modo día de VOLCAT** | **SIN PROBAR.** De los 60 cuadros de eventos, 56 son de día y 4 de crepúsculo, 0 de noche (`mean_feature_solar_zenith_angle`, leído el 22-11). Etapa 3 y H16 usaron sólo tablas IR | Hallazgo de Nicolás, verificado en los NetCDF de `D:\goes_notas\busqueda_2026-11-20\volcat_eventos_357070\` |
+| Sitio de VOLCAT (`volcano.ssec.wisc.edu`) | **No revisado en S15.** Publica imagen de probabilidad de ceniza, altura, carga, radio (memoria `reference_volcat_source.md`); alertas por evento | pendiente S16 |
+| Indicador nocturno de calor 3,9 µm | Corriendo (fase A validación fuera de muestra; fase B sólo si pasa) | sesión `local_cb5a3f1e` |
+| Worktrees integrados de S14 | Borrados 10 de 11; `volcat-capa-deteccion-0bda14` dio "permiso denegado" (git ya no lo registra, la carpeta sigue) | `git worktree list` |
+| main | `b0b174c` en el remoto | `git ls-remote` al cerrar |
+| Carpeta principal (rama local `audit/2026-11-previa-local`, 340d73a) | Sin cambios de S15. Sin commitear, de antes: `data/borders/V4_limite_Internacional_Recuadro_CHS.zip`, `docs/Correo_VOLCAT_Pavolonis.docx`, `docs/Correo_VOLCAT_Pavolonis_v2.docx` y 23 archivos de `docs/auditoria_2026-11/instrumentos/salida_B/` (no se suben) | `git status --porcelain` |
+| Disco | C: 13 GB libres, D: 23 GB | `df` al cerrar |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | ¿Fusionar este traspaso? | sí / no | Sí: sólo STATUS.md |
+| 2 | ¿Enviar el correo a Pavolonis el lunes 23-11 (plazo que fijaste)? | enviar / esperar S16 | Esperar a que S16 pruebe el modo día y revise el sitio; si eso no lo explica, enviar con la pregunta reducida a: cómo decide la vía `ASHPLUMEPUFF` y cómo entra el calor del cráter |
+| 3 | ¿Auditoría corta de la cadena PR 75 a 83 con verificador de contexto limpio? | sí / no | Sí: el supuesto "tablas IR sobre eventos de día" pasó por nueve PR sin que nadie lo viera; es el patrón 7 de `GUIA_MAESTRA_AUDITORIAS.md` |
+| 4 | ¿Indicador nocturno de calor al dashboard? | según la fase A | Sólo si la validación fuera de muestra pasa, con ficha SDA en el mismo PR |
+| 5 | Archivo diario de eventos VOLCAT de Chillán (vencen a ~7 días en SSEC) | esperar autorización / bajar igual | Esperar: licencia restringida |
+
+### c. Lo aprendido
+
+- **Antes de cada prueba, la pregunta del crítico despiadado** (regla general del workspace, propuesta para
+  `C:\Users\nmend\OneDrive\Escritorio\claude\GUIA_MAESTRA_AUDITORIAS.md` §3): "¿el régimen de los datos
+  (día/noche, mar/tierra, versión) es el mismo en que se validó el instrumento?". S15 validó en Mauna Loa (noche,
+  mar) y aplicó a Chillán (día, cordillera) con las tablas IR: nueve PR verdes sobre un supuesto que Nicolás vio en
+  una frase. Los prompts "crítico despiadado" e "ingeniería inversa" sirven como disciplina antes de cada prueba.
+- **Validar la lectura de una tabla ajena contra la salida del propio sistema funciona** (propio del proyecto):
+  píxel y objeto de VOLCAT se reprodujeron al decimal en Mauna Loa. Lo que no se reproduce queda acotado a una
+  pieza nombrable (el cielo despejado de 11 µm), que es lo que se le pregunta al autor.
+- **"Proceso no aparece" no es "proceso muerto"** (regla general): buscar por nombre de script falló porque los
+  workers de `multiprocessing` se lanzan como `python -c from multiprocessing.spawn`; mirar escritura reciente en
+  disco o el log antes de dar una alarma.
+- **Fusionar con `gh pr merge --match-head-commit <sha revisado>`** se aplicó a los PR 75 a 83 sin incidentes.
+- **No se puede abrir una sesión desde un aviso automático**: en ese turno, subagente en worktree propio
+  (así se hizo el PR 77).
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** los 60 cuadros de eventos de Chillán son de día o crepúsculo; ninguna prueba de S15 usó las
+  tablas de día de VOLCAT.
+- **CONFIRMADO:** con tablas IR, ni la probabilidad de píxel ni la de objeto de VOLCAT separan la huella de Chillán.
+- **CONFIRMADO:** los archivos de evento declaran `ASHPLUMEPUFF` (49) y `VCB` (11).
+- **SOSPECHA:** que VOLCAT publique Chillán por la vía pluma/puff (aprendizaje automático y tiempo, umbrales
+  relajados por calor). Leído en la presentación CDR 2022, sin detalle; podría ser también el modo día.
+- **SOSPECHA:** que la imagen de probabilidad de ceniza de `volcano.ssec.wisc.edu` muestre la probabilidad por
+  píxel de VOLCAT en esos cuadros y decida entre las dos explicaciones anteriores.
+- **SOSPECHA:** que el cielo despejado de 11 µm ~1 K más frío venga de código GEOCAT no publicado.
+- **SOSPECHA:** que la huella 1,3 K más tibia que su base despejada sea calor o gas caliente en el píxel o base
+  fría por nieve (H17, no separado).
+
+### e. Cerrado, no rehacer (con el número que lo cerró)
+
+Todo lo de "## 0-prev8 e." más: sesgo local de 12 px como corrección de ε (vive en el paso de objeto), sesgo BT14
+por objeto (VOLCAT no lo calculó en ningún objeto), ángulo de normalización (β reconstruido exacto), nube negra con
+atmósfera encima (exigiría 18 K más fría), SST y calibración GOES-17 (BT = L1b NOAA, 100 % dentro de 0,01 K),
+curvas de Heidinger y Pavolonis 2009 (signo al revés), LRC y vecindad (techo 73,5 %), probabilidad IR de píxel en
+Chillán (P ≥ 0,5 en ≤ 2,1 %), probabilidad IR de objeto en Chillán (máx 0,002), regla propia calor + pluma
+anclada (POD 0,13 / FAR 0,07). **No cerrado:** todo lo anterior en modo día.
+
+### f. Prompt para la próxima sesión (S16)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Esta es la sesión S16; titúlala
+"Goes S16: ..." y numera su traspaso como S16. Usa /retomar.
+
+1. Verifica antes de creer: git fetch; git ls-remote origin -h refs/heads/main (b0b174c o posterior);
+   gh pr list (puede estar el PR del indicador nocturno de calor y este traspaso).
+2. Lee CLAUDE.md, STATUS.md "## 0." (S15), docs/own_volcat/h16_objeto/INFORME.md,
+   docs/own_volcat/h17_regla_propia/INFORME.md y docs/own_volcat/INVENTARIO_REPRODUCIBILIDAD.md.
+3. Antes de cada prueba, responde por escrito: "¿el régimen (día/noche, mar/tierra, versión) es el
+   mismo en que se validó el instrumento?" y las dos preguntas del instrumento de
+   C:\Users\nmend\OneDrive\Escritorio\claude\GUIA_MAESTRA_AUDITORIAS.md §3.
+4. Trabajo, en orden:
+   a. Recorrer volcano.ssec.wisc.edu para Nevados de Chillán (vid 357070) del 13 al 18-11-2026: imagen de
+      probabilidad de ceniza de VOLCAT, opciones de visualización (altura, carga, radio), detalle de cada
+      alerta. Agotar lo local primero (src/fetch/volcat_api.py, memoria reference_volcat_*).
+   b. Modo día de VOLCAT: leer las tablas DAY de la LUT de píxel y de objeto, buscar un caso de DÍA para
+      validar la lectura (Mauna Loa es de noche) y sólo si valida, aplicarlas a la huella event_idx con
+      control pareado por BT11.
+   c. Auditoría corta de la cadena PR 75 a 83 con verificador de contexto limpio (guía §3 y patrón 7).
+   d. Revisar el PR del indicador nocturno de calor contra sus salidas crudas.
+5. Preguntar a Nicolás por el correo a Pavolonis (plazo lunes 23-11) con lo que salga de 4a y 4b.
+6. Reglas: español de Chile sin voseo ni guiones largos; rutas absolutas; no VIIRS; la carpeta principal
+   (rama audit/2026-11-previa-local) no se toca; docs/auditoria_2026-11 no se sube; eventos y tablas de
+   SSEC no van al repo ni al Space; criterio commiteado antes de medir; control pareado por BT11; huella =
+   event_idx; todo lo grande y los temporales a D:; fusionar sólo con el sí de Nicolás para ESE PR y con
+   --match-head-commit; cambio de lógica = ficha SDA en el mismo commit.
+7. Si la sesión no alcanza: /cierre al llegar a base + 250 mil tokens de contexto.
+```
+
+## 0-prev8. Cierre 2026-11-21 (PR 65 a 73 en main: H12 no concluyente, H13 falsada, fuga GFS arreglada; tablas y eventos de VOLCAT públicos; H14 compatible, H15 sin probar; correo v5 sin enviar)
 
 > Estado fijado sin trabajo en curso: las siete sesiones hijas de esta coordinación terminaron y no quedan PR
 > abiertos (`gh pr list` vacío al cerrar). Sesión coordinadora `local_a7c21f45`; notas de coordinación en

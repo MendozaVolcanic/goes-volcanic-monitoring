@@ -45,7 +45,7 @@ def main():
 
     p("== 0. Celdas SIN DATO ==")
     sd = d[d.estado == "SIN DATO"]
-    p("celdas SIN DATO:", len(sd), "de", len(sd) + len(ok) // 5)
+    p("celdas SIN DATO (cada una es una combinacion de terreno, poblacion, tramo, altura, e y beta):", len(sd))
     if len(sd):
         p(sd.groupby(["bloque", "volcan", "terreno", "pob", "tramo"]).agg(n=("n", "max"), ndias=("ndias", "max")).to_string())
 
@@ -173,6 +173,29 @@ def main():
     for e in json.load(open(os.path.join(RES, "h23_eventos.json"))):
         p(json.dumps(e, ensure_ascii=False))
 
+    p("\n== 11. S5: cuanto exagera la BTD la forma analitica (cumbre, poblacion B, e 0,15, beta 0,70, detector D2) ==")
+    p("   la capa real se ve mas fria que T_tope por el aire de encima (h23_forma_rt.json): la BTD real baja menos.")
+    p("   exageracion = correccion / senal inyectada; AUC* corregido = AUC* de D2 interpolado a la emisividad equivalente")
+    rt = json.load(open(os.path.join(RES, "h23_forma_rt.json")))["resumen"]
+    e11 = 0.15
+    e12 = 1 - (1 - e11) ** 0.70
+    s5 = []
+    cur = ch[(ch.terreno == "cumbre") & (ch["pob"] == "B") & (ch.det == "D2")]
+    for _, r in cur[cur.eps == 0.15].sort_values(["tramo", "z_km"]).iterrows():
+        if r.z_km >= 10:
+            continue
+        m = rt[f"{r.z_km:.0f}km"]
+        corr = e11 * m["d11"]["mediana"] - e12 * m["d12"]["mediana"]       # K que la BTD real baja de menos
+        exag = corr / abs(r.dbtd) if r.dbtd < 0 else float("nan")
+        g = cur[(cur.tramo == r.tramo) & (cur.z_km == r.z_km)].sort_values("eps")
+        eq = e11 * (1 - exag) if exag == exag else float("nan")
+        auc_eq = float(pd.Series(g.auc.values, index=g.eps.values).reindex(sorted(set(g.eps) | {eq})).interpolate("index")[eq]) if eq == eq else float("nan")
+        s5.append(dict(tramo=int(r.tramo), z_km=r.z_km, dbtd_inyectada=round(r.dbtd, 3), correccion_K=round(corr, 3),
+                       exageracion=round(exag, 3), e_equivalente=round(eq, 3), auc_inyectado=round(r.auc, 3),
+                       auc_corregido=round(auc_eq, 3)))
+    p(pd.DataFrame(s5).to_string(index=False))
+    ver["s5_forma_analitica"] = s5
+
     open(os.path.join(RES, "h23_resumen.txt"), "w", encoding="utf-8").write("\n".join(out) + "\n")
     json.dump(ver, open(os.path.join(RES, "h23_veredicto.json"), "w"), indent=1, ensure_ascii=False)
     figuras(ch)
@@ -183,6 +206,9 @@ def figuras(ch):
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     col = {"D1": "#1f77b4", "D2": "#d62728", "D3": "#2ca02c", "D4": "#9467bd", "D5": "#444444"}
+    nom = {"D1": "D1: BT11 contra su línea base", "D2": "D2: BTD (11 − 12 µm) contra su línea base",
+           "D3": "D3: β(12/11)", "D4": "D4: BT11, doble diferencia con el entorno",
+           "D5": "D5: combinación lineal que conoce la firma (cota)"}
     for z in (3.0, 4.0, 5.0):
         fig, ax = plt.subplots(2, 4, figsize=(15, 6.5), sharex=True, sharey=True)
         for i, terr in enumerate(("cumbre", "bajo")):
@@ -193,11 +219,11 @@ def figuras(ch):
                     h = g[g.det == det].sort_values("eps")
                     if not len(h):
                         continue
-                    a.plot(h.eps, h.auc, "-o", ms=3, color=col[det], label=det, lw=1.8 if det != "D5" else 1.2,
+                    a.plot(h.eps, h.auc, marker="o", ms=3, color=col[det], label=nom[det], lw=1.8 if det != "D5" else 1.2,
                            ls="--" if det == "D5" else "-")
                     a.fill_between(h.eps, h.lo, h.hi, color=col[det], alpha=0.10)
                 if not len(g):
-                    a.text(0.5, 0.5, "SIN DATO", transform=a.transAxes, ha="center")
+                    a.text(0.5, 0.75, "SIN DATO\n(menos de 8 días con\nla escena despejada)", transform=a.transAxes, ha="center")
                 a.axhline(0.8, color="k", lw=0.8, ls=":"); a.axvline(0.15, color="gray", lw=0.8, ls=":")
                 a.set_xscale("log"); a.set_xticks([0.05, 0.1, 0.15, 0.3, 0.5, 0.9]); a.set_xticklabels(["0,05", "0,1", "0,15", "0,3", "0,5", "0,9"])
                 a.set_ylim(0.45, 1.01)
@@ -206,9 +232,10 @@ def figuras(ch):
                     a.set_ylabel("AUC* (0,5 = azar)")
                 if i == 1:
                     a.set_xlabel("emisividad inyectada a 11 µm")
-        ax[0, 0].legend(fontsize=8, ncol=2)
+        ax[0, 3].legend(*ax[0, 0].get_legend_handles_labels(), fontsize=8, loc="lower center")
         fig.suptitle(f"H23: recuperación de una capa de ceniza inyectada a {z:.0f} km. Chillán, entorno despejado (población B), "
-                     f"fondo 01-10 al 23-10-2026. Banda: IC 95 % por días", fontsize=10)
+                     f"fondo 21-09 al 23-10-2026.\nLínea punteada horizontal: AUC 0,80 (umbral del criterio). Vertical: emisividad 0,15. "
+                     f"Banda: IC 95 % remuestreando días", fontsize=10)
         fig.tight_layout()
         fig.savefig(os.path.join(RES, f"h23_curva_{z:.0f}km.png"), dpi=110)
         plt.close(fig)

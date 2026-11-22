@@ -1,5 +1,5 @@
 == 0. Celdas SIN DATO ==
-celdas SIN DATO: 380 de 2011
+celdas SIN DATO (cada una es una combinacion de terreno, poblacion, tramo, altura, e y beta): 380
                                          n  ndias
 bloque volcan  terreno pob     tramo             
 oct    antuco  bajo    B       3         0      0
@@ -733,3 +733,17 @@ cumbre  0     3.0  D1   0.565  0.565  0.565
 {"evento": "2026-11-14 12:40 a 13:40 UTC", "cuadros": 7, "D1": {"n": 42, "mediana": -0.23793638923805815, "fondo_p5": -41.23948570198269, "fondo_p50": -10.105783884660212, "fondo_p95": 0.48173701123100776, "frac_bajo_p5": 0.0, "frac_sobre_p95": 0.40476190476190477}, "D2": {"n": 42, "mediana": -0.02801831155042578, "fondo_p5": -0.7594331340123773, "fondo_p50": -0.21937267244427971, "fondo_p95": 0.4954869933699246, "frac_bajo_p5": 0.0, "frac_sobre_p95": 0.0}, "D3": {"n": 42, "frac_valido": 0.42857142857142855, "frac_valido_fondo": 0.8812865497076023, "frac_beta_bajo_fondo_p5": 0.023809523809523808}, "D4": {"n": 42, "mediana": 2.5062214283677804, "fondo_p5": -1.4557680458238893, "fondo_p50": 7.06166729831034, "fondo_p95": 14.268537034051612, "frac_bajo_p5": 0.023809523809523808, "frac_sobre_p95": 0.0}}
 {"evento": "2026-11-14 16:30 a 23:40 UTC", "cuadros": 44, "D1": {"n": 264, "mediana": 2.7596984181568587, "fondo_p5": -38.94202597692773, "fondo_p50": -9.524802678409344, "fondo_p95": 0.7188961984387127, "frac_bajo_p5": 0.0, "frac_sobre_p95": 0.7575757575757576}, "D2": {"n": 264, "mediana": -0.11947652094596606, "fondo_p5": -0.7260933481352637, "fondo_p50": -0.17532355053194237, "fondo_p95": 0.5633080363594698, "frac_bajo_p5": 0.026515151515151516, "frac_sobre_p95": 0.07954545454545454}, "D3": {"n": 264, "frac_valido": 0.16287878787878787, "frac_valido_fondo": 0.8744414655942806, "frac_beta_bajo_fondo_p5": 0.01893939393939394}, "D4": {"n": 264, "mediana": 1.9593034674951184, "fondo_p5": -1.6653842428600536, "fondo_p50": 6.537447808213301, "fondo_p95": 13.848016455226423, "frac_bajo_p5": 0.045454545454545456, "frac_sobre_p95": 0.0}}
 {"evento": "2026-11-18 10:10 a 10:10 UTC", "cuadros": 1, "D1": {"n": 6, "mediana": -0.3683847055195031, "fondo_p5": -36.65454879963368, "fondo_p50": -5.798866609190071, "fondo_p95": 2.4886420284042816, "frac_bajo_p5": 0.0, "frac_sobre_p95": 0.0}, "D2": {"n": 6, "mediana": -0.04497745911436368, "fondo_p5": -0.4383524017438248, "fondo_p50": -0.06800894869752483, "fondo_p95": 0.5375950714186785, "frac_bajo_p5": 0.0, "frac_sobre_p95": 0.0}, "D3": {"n": 6, "frac_valido": 0.3333333333333333, "frac_valido_fondo": 0.7571763327475103, "frac_beta_bajo_fondo_p5": 0.0}, "D4": {"n": 6, "mediana": 3.244309705118951, "fondo_p5": -2.035625772990424, "fondo_p50": 4.8551149224391565, "fondo_p95": 10.32030456198369, "frac_bajo_p5": 0.0, "frac_sobre_p95": 0.0}}
+
+== 11. S5: cuanto exagera la BTD la forma analitica (cumbre, poblacion B, e 0,15, beta 0,70, detector D2) ==
+   la capa real se ve mas fria que T_tope por el aire de encima (h23_forma_rt.json): la BTD real baja menos.
+   exageracion = correccion / senal inyectada; AUC* corregido = AUC* de D2 interpolado a la emisividad equivalente
+ tramo  z_km  dbtd_inyectada  correccion_K  exageracion  e_equivalente  auc_inyectado  auc_corregido
+     0   3.0           0.052         0.076          NaN            NaN          0.607            NaN
+     0   4.0          -0.213         0.049        0.230          0.115          0.773          0.720
+     0   5.0          -0.422         0.033        0.077          0.138          0.926          0.909
+     1   3.0           0.101         0.076          NaN            NaN          0.660            NaN
+     1   4.0          -0.198         0.049        0.248          0.113          0.727          0.679
+     1   5.0          -0.467         0.033        0.070          0.140          0.910          0.894
+     2   3.0          -0.148         0.076        0.511          0.073          0.675          0.593
+     2   4.0          -0.410         0.049        0.120          0.132          0.884          0.856
+     2   5.0          -0.640         0.033        0.051          0.142          0.954          0.944

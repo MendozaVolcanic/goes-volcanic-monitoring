@@ -1,0 +1,21 @@
+Avisos leidos: 37 archivos, 35 numeros de aviso distintos
+Lector regex vs manual: 32/35 iguales
+  distinto: 2026/038 manual=POSIBLE regex=SI :: WEAK AND CONTINUOUS EMISSIONS OF STEAM AND LIG VA ... ON STLT DATA (WEAK)
+  distinto: 2026/039 manual=POSIBLE regex=SI :: WEAK AND CONTINUOUS EMISSIONS OF STEAM AND LIG VA ... ON STLT DATA (WEAK)
+  distinto: 2026/055 manual=NO regex=SI :: poligono de WEBCAMS; SATELLITE IMAGERY DOES NOT REVEAL THE PRESENCE OF ASH
+Control positivo del lector (10 al azar, semilla 20261122): 8/10 iguales -> NO PASA: manda la clasificacion manual
+  muestra: 2026/055, 2026/039, 2026/047, 2026/026, 2026/025, 2026/044, 2026/036, 2026/048, 2026/024, 2026/029
+Clases (todos los avisos): {'NO': 17, 'POSIBLE': 5, 'SI': 13}
+Completitud Chillan: avisos 2026/024 a 2026/057, huecos: []
+Marcas VOLCAT: 30 (CSV 2026-10-19 23:58 a 2026-11-22 06:38 UTC)
+Marcas por clase a +-1 h: {'SIN AVISO': 23, 'SI': 3, 'POSIBLE': 3, 'NO': 1}
+  SI=3  SI+POSIBLE=6  SI con fuente independiente en RMK=0  (en INFO SOURCE o RMK=1)
+  Descriptivo +-3 h: {'SIN AVISO': 14, 'SI': 9, 'POSIBLE': 3, 'NO': 4}; episodio vigente (aviso en las 6 h previas): 13/30
+Dias de control: 19 (2026-10-20 a 2026-11-21)
+Horas de control: 570; por clase {'NO': 9, 'POSIBLE': 1, 'SIN AVISO': 560}
+tasa_control SI = 0.0000; SI+POSIBLE = 0.0018
+tasa_marcas  SI = 0.1000; SI+POSIBLE = 0.2000
+Sorteo pareado (10000): media SI control = 0.00/30, p(SI >= 3) = 0.0000; poder: hacen falta 1 SI para p < 0,05
+  SI+POSIBLE: media 0.05/30, p(>= 6) = 0.0000; hacen falta 2
+Fisher unilateral (referencia, supone horas independientes): p = 0.0001
+VEREDICTO: NO COINCIDE

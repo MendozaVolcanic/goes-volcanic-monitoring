@@ -89,8 +89,18 @@ probabilidad baja. De día pleno no publica en ningún cuadro una probabilidad d
     nocturnos con 10 MW o más que dio nuestra potencia propia en H17, lo que no calza con que H17 recuperara 0
     de 3 cuadros de 10 MW de VOLCAT: esas tres marcas venían de `volcano_thermal_activity` del NetCDF de
     evento, que puede no ser la misma serie. Queda por revisar con el CSV de eventos.
-  - Los CSV de eventos y de temperaturas de brillo no llegaron: Chrome dejó de responder después de la
-    primera descarga (probable aviso de "descargar varios archivos"). Pendiente.
+  - **CSV de eventos** (`D:\goes_notas\s16\sitio\grafana\chillan_eventos_2026-10-20_11-22.csv`, 4.560 filas):
+    **30 marcas de ceniza** del 24-10 17:38 al 18-11 10:18 UTC, 2 de VCB (22-10 y 13-11), 0 de SO₂ y 220
+    saltos de VRP (4,8 % de los cuadros). Por fecha: 24-10 (2), 25-10 (4), 27-10 (3), 28-10 (3), 29-10 (2), 30-10, 06-11, 07-11 (2), 08-11 (2),
+    10-11 (4), 12-11 (2), 13-11 (2), 14-11 12:48 y 18-11 10:18. Los 60 NetCDF de evento cubren sólo 4 de estas
+    30 marcas (13-11 19:21, 14-11 12:48, 18-11 10:18 y el VCB): el resto ya salió de la ventana de ~7 días.
+  - **Ceniza y calor:** 20 de 30 marcas de ceniza (67 %) tienen un salto de VRP a 1 h o menos. Los saltos se
+    juntan al amanecer y al atardecer (picos a las 05 y 18 UTC), igual que las marcas de ceniza (13 de 30 entre
+    las 17 y las 19 UTC), así que el azar se midió sorteando horas con la misma hora del día: 51 % en promedio,
+    p = 0,03 (2.000 sorteos). Asociación moderada, no un gatillo: un tercio de las marcas no tiene salto, y
+    el pico de saltos al terminador solar puede ser en parte un efecto del cambio día-noche en el algoritmo
+    térmico, no del volcán.
+  - El CSV de temperaturas de brillo no se bajó (secundario).
 - **Altura, carga y radio:** las imágenes `Ash_Height`, `Ash_Loading` y `Ash_Reff` existen para los mismos
   cuadros (lista del sitio, desde el 22-10). Los NetCDF de evento ya traen sus percentiles, así que no se
   bajaron.

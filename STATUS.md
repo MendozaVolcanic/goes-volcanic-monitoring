@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-22 (cierre de la sesión S16, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-22 (cierre de la sesión S17, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,115 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S16, cierre 2026-11-22 (PR 84 y 87 en main; PR 85, 86, 88 y 89 abiertos: VOLCAT publica P baja en Chillán, las tablas de día no validan, la pieza que falta es el paso de objeto o pluma)
+## 0. S17, cierre 2026-11-22 (PR 85 a 97 en main: VOLCAT sostiene Chillán por seguimiento del objeto, no por firma; la pluma queda bajo lo que el IR de GOES-19 ve; ningún paquete de SSEC trae código)
+
+> **Estado fijado con trabajo ajeno en curso:** al cerrar corría un proceso Python lanzado a las 14:29 que S17 no
+> lanzó (probablemente de la sesión coordinadora S16 o de otro proyecto). S17 no tiene subagentes ni descargas
+> vivas. Revisa `gh pr list` antes de creerle a esta tabla.
+>
+> Sesiones: S17 fue sesión hija de "Goes S16: modo día VOLCAT y sitio SSEC" (`local_298f6e00`), que hizo las
+> fusiones con el sí explícito de Nicolás y lanzó H21 (VAAC). S17 lanzó 4 subagentes Fable (H19, H20a, H22, H23) e
+> hizo H20b y H20c directo. Notas de estado en la carpeta de notas compartida de `local_298f6e00`, `s17_estado.md`.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| PR 85, 86, 89, 90 (S16) | En main (fusionados por S16 con el sí de Nicolás) | main `9cb0121` |
+| PR 89 (H18 modo día), revisión S17 contra HDF4 crudos | Reproducida: 25.432 / 2.260 px; la P con tablas de día de VOLCAT (`ash_probability_SW_IR`) llega a 0,5 en 0 de 2.260, así que NO VALIDA se sostiene sin depender de nuestro motor. Observación: horas de las mitades del texto ≠ JSON (13/13) | comentario en PR 89; `D:\goes_notas\s17\revision_pr89.md` |
+| PR 88 (indicador nocturno fase B), revisión S17 | 744 de 744 noches con la misma decisión y referencia que la fase A; 677 tests pasan; no cableado. Fusionado por S16; **no desplegado a HF** (no cambia nada al operador: ninguna vista lo llama) | main `c9ee470`; `D:\goes_notas\s17\revision_pr88.md` |
+| Paquetes de prueba de SSEC: ¿traen código? | **No.** Fuego (listado completo, 1.425 entradas), Etna, Mauna Loa, Fukutoku y Kirishima (r20260709): sólo `ancillary/`, `input/`, `reference_data/` | `D:\goes_notas\s17\fuego_tar_lista.txt`, `etna10_tar_lista.txt`, `paquetes\kirsh\lista_completa.txt` |
+| H19, paso de objeto en Fuego (Fable) | Reproduce EN PARTE: `ash_probability_subset` ≈ 1 en píxel opaco y oscuro del grupo (εtot ≥ 0,90, ρ0,65 10 a 50 %) 99,97 % (S17 recontó 99,96 % de 18.132 px); con pertenencia a objeto recupera 2.187 de 2.260 px altos; la pertenencia misma NO se reproduce (59,5 %); no llega a εtot bajo | PR 91, `docs/own_volcat/h19_objeto_fuego/` |
+| H20a, campos de los archivos de evento (Fable) | `ash_spectral_signature_strength` = P publicada, `..._lwir_only` = P infrarroja de píxel (diferencia 0; S17 recontó en 4.728 px). Chillán: P_IR < 0,05 en 762 de 767 px; publicada ≥ 0,5 en 94, sube en 5 de 60 cuadros | PR 92, `docs/own_volcat/h20a_campos_evento/` |
+| H20b, pluma de Kirishima | Descriptivo: nace con P publicada baja y VOLCAT la sube a 0,60 a 0,97 con P_IR 0,02 a 0,08 | PR 93, `docs/own_volcat/h20b_kirishima/` |
+| H20c, luz o seguimiento en Kirishima | **SEGUIMIENTO 4 de 4 cuadros**: P con tablas de día 0,05 a 0,08 = IR; la subida empieza con "Temporal selection criteria met for ash"; P publicada = `subset` 75 a 100 % | PR 94, `docs/own_volcat/h20c_kirishima_luz/` |
+| H21, VAAC Buenos Aires (lanzado por S16) | NO COINCIDE: 3 de 30 marcas VOLCAT con aviso VAAC de ceniza visible a ≤ 1 h (6 con "WEAK") | PR 95, `docs/own_volcat/h21_vaac/` |
+| H22, pluma desprendida del 14-11 (Fable) | **Sin señal IR medible a > 30 km**: ΔBT11 +1,44 K (más tibio, AUC 0,33), ΔBTD +0,08 K en 70 px; control positivo pasa (ε 0,10 a 0,15); ruido dominado por nubes (28 % despejado) | PR 96, `docs/own_volcat/h22_pluma_desprendida/` |
+| H23, inyección y recuperación (Fable), COTA | Con cielo despejado, ε 0,15 a 5 km sobre la cumbre AUC 0,91 a 0,95; a 3 km no (máx. 0,68). ε mínimo con BTD contra línea base: 0,07 a 0,09 (5 km), 0,10 a 0,25 (4 km), ≥ 0,34 (3 km). Chillán: BTD de cumbre −0,12 a +0,12 K, bajo el límite (SOSPECHA). Integrar 1 a 3 h no mejora | PR 97, `docs/own_volcat/h23_inyeccion/` |
+| main | `3fbbc64`, sin PR abiertos | `git ls-remote` al cerrar |
+| Disco | C: 31 GB libres, D: 19 GB. D: llegó a 0 bytes a media mañana (extracción de Kirishima); resuelto, sin archivos truncados encontrados | `df` al cerrar |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | Actualizar `docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md` con H19 a H23 | sí / no | Sí: es el documento que se le mostraría a OVDAS o a Pavolonis, y hoy no tiene la respuesta del día (seguimiento, no firma; pluma bajo el límite IR) |
+| 2 | Correo a Pavolonis | enviar / esperar | Enviar ahora con preguntas más chicas: qué regla sube `ash_probability_subset` en objetos seguidos ("Temporal selection criteria"), por qué en Chillán casi no sube, y la carga de 7,2 g/m² que VOLCAT publica donde H22 no mide nada. Esta sesión no lo redactó (instrucción) |
+| 3 | Desplegar a HF el PR 88 | ahora / al cablearlo | Al cablearlo: hoy no cambia nada visible |
+| 4 | Cablear el indicador nocturno al dashboard (propuesta en `docs/own_volcat/vrp_nocturno/PROPUESTA_DASHBOARD.md`) | sí / esperar | Sí, en la grilla de volcán y no en el Modo Sala, con ficha SDA §C.1 pasada a §A en el mismo PR |
+| 5 | Borrar el paquete de Fuego (16 GB en `D:\goes_notas\s16\modo_dia\`) | sí / no | Esperar a la respuesta de Pavolonis: es el único caso con L2 completa y objeto convectivo |
+
+### c. Lo aprendido
+
+- **VOLCAT publica Chillán sin firma espectral, por seguimiento del objeto** (propio del proyecto, CONFIRMADO en
+  Kirishima, H20c): la probabilidad publicada se separa de la de píxel en el cuadro en que el log dice "Temporal
+  selection criteria met", y el valor publicado es `ash_probability_subset`, la probabilidad del objeto.
+- **Medir el tamaño de un paquete antes de extraerlo** (regla general del workspace, en memoria
+  `feedback_paquetes_ssec_tamano.md`): un `.tar.gz` de HDF se infla 2 a 3 veces; Kirishima (6,6 GB) llenó D: con
+  13 GB y dejó a otras sesiones escribiendo en un disco lleno. Listar en flujo con `tar -tzvf -`, extraer sólo las
+  carpetas que se usan, dejar ≥ 5 GB de margen.
+- **Una identidad no es un nulo** (regla de método, para `GUIA_MAESTRA_AUDITORIAS.md` §3): en H23 la inyección de
+  ε = 0 da AUC 0,5 exacto porque las dos clases son la misma escena; el nulo medido es el placebo (24 de 24).
+- **Revisar un PR ajeno con una prueba que no dependa de su motor** (regla de método, ya aplicada en PR 87 y ahora
+  en 89): la salida intermedia del propio sistema (`ash_probability_SW_IR`) acotó el veredicto sin rehacer la
+  lectura de tablas.
+- **En una sesión hija, el clasificador de permisos bloquea `gh pr merge` y `gh pr comment`** aunque el encargo
+  diga que hay autorización: las fusiones las hace la sesión que tiene el sí textual de Nicolás (propio del
+  entorno; S16 tuvo el mismo bloqueo hasta pedir el sí explícito).
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** ningún paquete de prueba de SSEC del release r20260709 revisado trae código de VOLCAT.
+- **CONFIRMADO (Kirishima, un evento):** la subida de la P publicada la hace el seguimiento, no las tablas de día.
+- **CONFIRMADO:** en Chillán la P infrarroja de píxel publicada por VOLCAT es < 0,05 en 762 de 767 píxeles.
+- **CONFIRMADO (H22):** la pluma desprendida del 14-11 no tiene señal IR medible a > 30 km con el control usado.
+- **SOSPECHA (H23, cota circular):** la pluma de Chillán está bajo la emisividad mínima detectable por GOES-19.
+- **SOSPECHA:** que en Chillán la vía de seguimiento casi no suba la P (5 de 60 cuadros) por otro peso o regla;
+  sin la L2 de VOLCAT de Chillán no se puede ver.
+- **SOSPECHA (H22):** la carga de 7,2 g/m² que VOLCAT publica en la pluma lejana es incompatible con lo medido.
+- **SOSPECHA (H23, seguimiento):** la máscara de nubes de NOAA marca nublada la cumbre nevada casi siempre; las
+  líneas base de H13 y H17 pudieron caer en nube.
+- **SOSPECHA débil (H22, post hoc):** BTD(8,4 − 11,2) 0,20 K más baja en la pluma; casi desaparece con control
+  igual de tibio.
+
+### e. Cerrado, no rehacer
+
+Todo lo de "## 0-prev10 e." (S16) más: buscar código de VOLCAT en los paquetes de SSEC (5 paquetes, ninguno lo
+trae); "la subida de la P publicada la hace la luz rasante" (H20c, 4 de 4 SEGUIMIENTO); "fuera de la cumbre la
+pluma sí tiene firma IR" (H22, +1,44 K a > 30 km); "integrar en el tiempo hará aparecer la pluma" (H23, 1 a 3 h no
+mejora el AUC); qué son `ash_spectral_signature_strength` y `..._lwir_only` (H20a, diferencia 0); VAAC Buenos Aires
+como verdad independiente de las marcas de VOLCAT (H21, 3 de 30); "el 77 % de P = subset" del PR 89 (es 96,5 % con
+tolerancia 0,01, H19).
+
+### f. Prompt para la próxima sesión (S18)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Esta es la sesión S18; titúlala
+"Goes S18: ..." y numera su traspaso como S18. Usa /retomar.
+
+1. Verifica antes de creer: git fetch; git ls-remote origin -h refs/heads/main (3fbbc64 o posterior);
+   gh pr list (al cerrar S17 no había PR abiertos).
+2. Lee CLAUDE.md, STATUS.md "## 0." (S17), y los INFORME de docs/own_volcat/ h20c_kirishima_luz,
+   h22_pluma_desprendida, h23_inyeccion y h19_objeto_fuego, en ese orden.
+3. Antes de cada prueba, por escrito: ¿el régimen (día/noche, mar/tierra, sensor, versión) es el del
+   instrumento? y las dos preguntas de C:\Users\nmend\OneDrive\Escritorio\claude\GUIA_MAESTRA_AUDITORIAS.md §3.
+4. Trabajo, en orden:
+   a. Preguntar a Nicolás las decisiones de STATUS.md "## 0. b." (POR_QUE, correo a Pavolonis, cableado del
+      indicador nocturno).
+   b. Si dice sí: actualizar docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md con H19 a H23.
+   c. Revisar si las líneas base de H13 y H17 cayeron en nube (seguimiento de H23).
+   d. Correo a Pavolonis: sólo si Nicolás lo pide.
+5. Reglas: español de Chile sin voseo ni guiones largos; rutas absolutas; no VIIRS; la carpeta principal
+   (rama audit/2026-11-previa-local) no se toca; docs/auditoria_2026-11 no se sube; eventos, tablas,
+   paquetes y código de SSEC no van al repo ni al Space; criterio commiteado antes de medir; control pareado
+   por BT11; huella = event_idx; lo grande a D: midiendo antes con tar -tzvf - y dejando 5 GB de margen;
+   fusionar sólo con el sí de Nicolás para ESE PR y con --match-head-commit; cambio de lógica = ficha SDA en
+   el mismo commit.
+6. Si la sesión no alcanza: /cierre al llegar a base + 250 mil tokens de contexto.
+```
+
+## 0-prev10. S16, cierre 2026-11-22 (PR 84 y 87 en main; PR 85, 86, 88 y 89 abiertos: VOLCAT publica P baja en Chillán, las tablas de día no validan, la pieza que falta es el paso de objeto o pluma)
 
 > **Estado fijado con trabajo ajeno en curso:** al cerrar seguían vivos dos `pytest` lanzados a las 03:43 y 03:49
 > (probablemente de la sesión del indicador nocturno, `local_cb5a3f1e`, que abrió el PR 88) y procesos de otros

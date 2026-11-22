@@ -1,0 +1,42 @@
+H17 etapa 2, objeto chico anclado con compuerta de calor. Generado 2026-11-21 22:54
+cuadros con C14+C15: 1916 | con base: 1833 | positivos (P o evento): 127 con base 127 | negativos N: 1456 con base 1380
+eventos VOLCAT con base: 60 de 60
+compuerta 24 h encendida: positivos 0.984 negativos 0.716 | compuerta en el scan: positivos 0.016 negativos 0.029
+
+== Variante decide (-1.0, -0.5, '24h') ==
+total       POD 0.134 (17/127)  FAR 0.066 (91/1380)  POD-FAR IC95 [-0.079; 0.195]  objeto anclado sin compuerta: P 0.134 N 0.091
+dia         POD 0.136 (14/103)  FAR 0.072 (73/1010)  POD-FAR IC95 [-0.086; 0.179]  objeto anclado sin compuerta: P 0.136 N 0.099
+crepusculo  POD 0.143 (2/14)  FAR 0.088 (12/136)  POD-FAR IC95 [-0.134; 0.414]  objeto anclado sin compuerta: P 0.143 N 0.110
+noche       POD 0.100 (1/10)  FAR 0.026 (6/234)  POD-FAR IC95 [-0.051; 0.411]  objeto anclado sin compuerta: P 0.100 N 0.043
+por día: días con positivo VOLCAT 12, con detección nuestra 6; días sin positivo VOLCAT y con negativos evaluados 17, con detección nuestra (falsa alarma) 13
+
+== Variante sin_compuerta (-1.0, -0.5, None) ==
+total       POD 0.134 (17/127)  FAR 0.091 (125/1380)  POD-FAR IC95 [-0.107; 0.163]  objeto anclado sin compuerta: P 0.134 N 0.091
+dia         POD 0.136 (14/103)  FAR 0.099 (100/1010)  POD-FAR IC95 [-0.118; 0.158]  objeto anclado sin compuerta: P 0.136 N 0.099
+crepusculo  POD 0.143 (2/14)  FAR 0.110 (15/136)  POD-FAR IC95 [-0.154; 0.356]  objeto anclado sin compuerta: P 0.143 N 0.110
+noche       POD 0.100 (1/10)  FAR 0.043 (10/234)  POD-FAR IC95 [-0.069; 0.440]  objeto anclado sin compuerta: P 0.100 N 0.043
+por día: días con positivo VOLCAT 12, con detección nuestra 7; días sin positivo VOLCAT y con negativos evaluados 17, con detección nuestra (falsa alarma) 15
+
+== Variante estricta (-2.0, -1.0, '24h') ==
+total       POD 0.000 (0/127)  FAR 0.022 (31/1380)  POD-FAR IC95 [-0.038; -0.009]  objeto anclado sin compuerta: P 0.000 N 0.036
+dia         POD 0.000 (0/103)  FAR 0.029 (29/1010)  POD-FAR IC95 [-0.050; -0.011]  objeto anclado sin compuerta: P 0.000 N 0.046
+crepusculo  POD 0.000 (0/14)  FAR 0.007 (1/136)  POD-FAR IC95 [-0.024; 0.000]  objeto anclado sin compuerta: P 0.000 N 0.015
+noche       POD 0.000 (0/10)  FAR 0.004 (1/234)  POD-FAR IC95 [-0.012; 0.000]  objeto anclado sin compuerta: P 0.000 N 0.004
+por día: días con positivo VOLCAT 12, con detección nuestra 1; días sin positivo VOLCAT y con negativos evaluados 17, con detección nuestra (falsa alarma) 9
+
+== Variante compuerta_scan (-1.0, -0.5, 'scan') ==
+total       POD 0.000 (0/127)  FAR 0.004 (5/1380)  POD-FAR IC95 [-0.007; -0.001]  objeto anclado sin compuerta: P 0.134 N 0.091
+dia         POD 0.000 (0/103)  FAR 0.005 (5/1010)  POD-FAR IC95 [-0.010; -0.002]  objeto anclado sin compuerta: P 0.136 N 0.099
+crepusculo  POD 0.000 (0/14)  FAR 0.000 (0/136)  POD-FAR IC95 [0.000; 0.000]  objeto anclado sin compuerta: P 0.143 N 0.110
+noche       POD 0.000 (0/10)  FAR 0.000 (0/234)  POD-FAR IC95 [0.000; 0.000]  objeto anclado sin compuerta: P 0.100 N 0.043
+por día: días con positivo VOLCAT 12, con detección nuestra 2; días sin positivo VOLCAT y con negativos evaluados 17, con detección nuestra (falsa alarma) 3
+
+VEREDICTO ETAPA 2 (variante decide, total): no separa del fondo
+
+== Eventos VOLCAT: solapamiento con la huella event_idx (variante decide) ==
+cuadros de evento con base: 60 | con objeto anclado 1-70 px: 17 | con objeto que toca la huella dilatada 1 px: 9 | fracción media de la huella que es candidata: 0.051
+por píxel (pareo BT11 ±0,5 K): candidatos en huella 0.017 (n 768) contra controles 0.317 (n 3835); razón 0.05
+   mediana ΔBT11 huella 1.28 K controles -12.52 K | mediana ΔBTD huella -0.19 K controles -0.11 K
+   20261113: huella 0.067 (n 15) controles 0.067 | ΔBTD med 0.01 vs 0.32
+   20261114: huella 0.016 (n 749) controles 0.323 | ΔBTD med -0.19 vs -0.13
+   20261118: huella 0.000 (n 4) controles 0.000 | ΔBTD med 0.25 vs 0.23

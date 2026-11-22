@@ -1,0 +1,120 @@
+{
+ "geo": {
+  "crater_calculado_rc": [
+   286,
+   480
+  ],
+  "triangulo_cian_centroide_rc": [
+   288.6,
+   481.6
+  ],
+  "triangulo_px": 27,
+  "distancia_px": 3.07
+ },
+ "barra_rgb": [
+  [
+   242.0,
+   249.0,
+   0.0
+  ],
+  [
+   244.0,
+   191.0,
+   0.0
+  ],
+  [
+   244.0,
+   156.0,
+   0.0
+  ],
+  [
+   248.0,
+   118.0,
+   0.0
+  ],
+  [
+   253.0,
+   95.0,
+   0.0
+  ],
+  [
+   247.0,
+   70.0,
+   0.0
+  ],
+  [
+   245.0,
+   13.0,
+   0.0
+  ],
+  [
+   250.0,
+   0.0,
+   0.0
+  ],
+  [
+   225.0,
+   0.0,
+   0.0
+  ],
+  [
+   200.0,
+   0.0,
+   0.0
+  ],
+  [
+   175.0,
+   0.0,
+   0.0
+  ],
+  [
+   150.0,
+   0.0,
+   0.0
+  ],
+  [
+   125.0,
+   0.0,
+   0.0
+  ],
+  [
+   100.0,
+   0.0,
+   0.0
+  ],
+  [
+   50.0,
+   0.0,
+   0.0
+  ]
+ ],
+ "barra_dif_max_entre_png": 0.0,
+ "cuadros": 60,
+ "con_png": 60,
+ "sin_color_en_imagen": 12,
+ "nom": {
+  "cuadros_ge5": 41,
+  "cumplen_alta": 0,
+  "cumplen_baja": 40,
+  "veredicto": "BAJA",
+  "mediana_huella_frac_color": 0.2188,
+  "mediana_ctrl_frac_color": 0.0,
+  "mediana_huella_frac_ge20": 0.0,
+  "mediana_ctrl_frac_ge20": 0.0,
+  "max_huella_frac_ge20": 0.125,
+  "max_huella_frac_ge50": 0.1094
+ },
+ "desf": {
+  "cuadros_ge5": 41,
+  "cumplen_alta": 0,
+  "cumplen_baja": 36,
+  "veredicto": "BAJA",
+  "mediana_huella_frac_color": 0.4737,
+  "mediana_ctrl_frac_color": 0.0,
+  "mediana_huella_frac_ge20": 0.0,
+  "mediana_ctrl_frac_ge20": 0.0,
+  "max_huella_frac_ge20": 0.2292,
+  "max_huella_frac_ge50": 0.2292
+ },
+ "veredicto": "BAJA"
+}

@@ -92,8 +92,8 @@ probabilidad baja. De día pleno no publica en ningún cuadro una probabilidad d
   - **CSV de eventos** (`D:\goes_notas\s16\sitio\grafana\chillan_eventos_2026-10-20_11-22.csv`, 4.560 filas):
     **30 marcas de ceniza** del 24-10 17:38 al 18-11 10:18 UTC, 2 de VCB (22-10 y 13-11), 0 de SO₂ y 220
     saltos de VRP (4,8 % de los cuadros). Por fecha: 24-10 (2), 25-10 (4), 27-10 (3), 28-10 (3), 29-10 (2), 30-10, 06-11, 07-11 (2), 08-11 (2),
-    10-11 (4), 12-11 (2), 13-11 (2), 14-11 12:48 y 18-11 10:18. Los 60 NetCDF de evento cubren sólo 4 de estas
-    30 marcas (13-11 19:21, 14-11 12:48, 18-11 10:18 y el VCB): el resto ya salió de la ventana de ~7 días.
+    10-11 (4), 12-11 (2), 13-11 (2), 14-11 12:48 y 18-11 10:18. Los 60 NetCDF de evento cubren sólo 3 de estas
+    30 marcas (13-11 19:21, junto con el VCB, 14-11 12:48 y 18-11 10:18): el resto ya salió de la ventana de ~7 días.
   - **Ceniza y calor:** 20 de 30 marcas de ceniza (67 %) tienen un salto de VRP a 1 h o menos. Los saltos se
     juntan al amanecer y al atardecer (picos a las 05 y 18 UTC), igual que las marcas de ceniza (13 de 30 entre
     las 17 y las 19 UTC), así que el azar se midió sorteando horas con la misma hora del día: 51 % en promedio,

@@ -1,0 +1,271 @@
+unidades VOLCAT (masa, altura): ('gm-2', 'km') ; T de tropopausa del objeto (mediana de cuadros): 214.0 K
+== 1. Instrumento ==
+pixeles publicados 728; valores L1b finitos 1456 de 1456; BT11 L1b menos BT11 del archivo de evento en la huella: mediana +0.050 K, max |dif| 0.056 K
+
+== 2. Pluma 14-11: 728 pixeles-cuadro en 41 cuadros; a > 30 km: 192 ==
+cuadros con pixeles lejanos y entorno >= 50 % despejado (deciden): ['1930', '2220', '2230', '2240', '2250'] ; pixeles: 70
+
+[DECIDE: lejos, entorno despejado, cuadros del evento] n 70 en 5 cuadros; cenit 43.5 a 83.0; distancia mediana 36.3 km; cota mediana 2259 m; BT11 mediana 281.56 K; entorno despejado 0.70 a 0.91
+   VOLCAT: P publicada >= 0,5 en 31.4%; P IR maxima 0.118; masa mediana 7.180 (n 70); altura mediana 3.75 (n 70)
+  control D (dias placebo con >= 20 px: 3); fraccion fria 0.00, placebo [0.01, 0.03, 0.07]
+   d11    n   70 mediana +3.255 | D +1.435 AUC 0.327 zona nula | placebo por dia: D [-1.19, 0.08, 0.19] AUC [0.48, 0.5, 0.69]
+   dbtd   n   70 mediana +0.032 | D +0.081 AUC 0.411 zona nula | placebo por dia: D [-0.09, 0.06, 0.16] AUC [0.31, 0.42, 0.62]
+   beta   n    3 mediana +1.021 | D +0.041 AUC 0.571 | placebo por dia: D [] AUC []
+   dbtd8  n   70 mediana +0.159 | D -0.204 AUC 0.630 | placebo por dia: D [0.05, 0.1, 0.2] AUC [0.31, 0.38, 0.44]
+  control A (dias placebo con >= 20 px: 3)
+   d11    n   70 mediana +3.255 | D +1.745 AUC 0.274 | placebo por dia: D [-0.87, 0.15, 0.19] AUC [0.47, 0.5, 0.61]
+   dbtd   n   70 mediana +0.032 | D +0.058 AUC 0.455 | placebo por dia: D [-0.09, 0.05, 0.13] AUC [0.36, 0.43, 0.62]
+   beta   n    4 mediana +0.867 | D -0.146 AUC 0.686 | placebo por dia: D [] AUC []
+   dbtd8  n   70 mediana +0.159 | D -0.302 AUC 0.683 | placebo por dia: D [0.05, 0.08, 0.2] AUC [0.32, 0.41, 0.44]
+  control B (dias placebo con >= 20 px: 3)
+   d11    n   70 mediana +3.255 | D +2.030 AUC 0.174 | placebo por dia: D [-0.69, 0.57, 0.76] AUC [0.3, 0.38, 0.6]
+   dbtd   n   70 mediana +0.032 | D -0.026 AUC 0.555 | placebo por dia: D [-0.12, 0.07, 0.08] AUC [0.4, 0.41, 0.66]
+   beta   n    4 mediana +0.867 | D -0.205 AUC 0.787 | placebo por dia: D [] AUC []
+   dbtd8  n   70 mediana +0.159 | D -0.469 AUC 0.752 | placebo por dia: D [0.04, 0.07, 0.16] AUC [0.33, 0.44, 0.45]
+
+[lejos, entorno despejado] n 70 en 5 cuadros; cenit 43.5 a 83.0; distancia mediana 36.3 km; cota mediana 2259 m; BT11 mediana 281.56 K; entorno despejado 0.70 a 0.91
+   VOLCAT: P publicada >= 0,5 en 31.4%; P IR maxima 0.118; masa mediana 7.180 (n 70); altura mediana 3.75 (n 70)
+  control D (dias placebo con >= 20 px: 4); fraccion fria 0.00, placebo [0.01, 0.02, 0.05, 0.93]
+   d11    n   70 mediana +3.255 | D +1.435 AUC 0.327 zona nula | placebo por dia: D [-11.35, -1.07, 0.11, 0.2] AUC [0.44, 0.49, 0.68, 0.97]
+   dbtd   n   70 mediana +0.032 | D +0.081 AUC 0.411 zona nula | placebo por dia: D [-0.04, 0.02, 0.16, 0.25] AUC [0.28, 0.28, 0.47, 0.55]
+   beta   n    3 mediana +1.021 | D +0.041 AUC 0.571 | placebo por dia: D [-0.13, 0.14] AUC [0.32, 0.81]
+   dbtd8  n   70 mediana +0.159 | D -0.204 AUC 0.630 | placebo por dia: D [0.06, 0.09, 0.22, 1.72] AUC [0.04, 0.28, 0.41, 0.43]
+  control A (dias placebo con >= 20 px: 4)
+   d11    n   70 mediana +3.255 | D +1.745 AUC 0.274 | placebo por dia: D [-10.8, -0.7, 0.11, 0.3] AUC [0.42, 0.49, 0.62, 0.87]
+   dbtd   n   70 mediana +0.032 | D +0.058 AUC 0.455 | placebo por dia: D [-0.04, 0.01, 0.14, 0.19] AUC [0.33, 0.36, 0.49, 0.55]
+   beta   n    4 mediana +0.867 | D -0.146 AUC 0.686 | placebo por dia: D [-0.08, 0.09] AUC [0.38, 0.73]
+   dbtd8  n   70 mediana +0.159 | D -0.302 AUC 0.683 | placebo por dia: D [0.06, 0.08, 0.21, 1.54] AUC [0.17, 0.3, 0.42, 0.43]
+  control B (dias placebo con >= 20 px: 4)
+   d11    n   70 mediana +3.255 | D +2.030 AUC 0.174 | placebo por dia: D [-0.84, -0.8, 0.64, 0.75] AUC [0.36, 0.37, 0.58, 0.64]
+   dbtd   n   70 mediana +0.032 | D -0.026 AUC 0.555 | placebo por dia: D [-0.13, -0.05, 0.03, 0.1] AUC [0.37, 0.45, 0.59, 0.61]
+   beta   n    4 mediana +0.867 | D -0.205 AUC 0.787 | placebo por dia: D [-0.04, 0.08] AUC [0.38, 0.68]
+   dbtd8  n   70 mediana +0.159 | D -0.469 AUC 0.752 | placebo por dia: D [-0.1, 0.03, 0.06, 0.19] AUC [0.31, 0.43, 0.47, 0.54]
+
+[lejos, entorno nublado] n 122 en 4 cuadros; cenit 84.9 a 92.3; distancia mediana 50.9 km; cota mediana 2186 m; BT11 mediana 278.76 K; entorno despejado 0.03 a 0.38
+   VOLCAT: P publicada >= 0,5 en 0.0%; P IR maxima 0.005; masa mediana 7.334 (n 122); altura mediana 4.49 (n 122)
+  control D (dias placebo con >= 20 px: 12); fraccion fria 0.07, placebo [0.2, 0.37, 0.56, 0.68, 0.73, 0.8, 0.94, 1.0, 1.0]
+   d11    n  122 mediana -0.301 | D -0.851 AUC 0.618 zona gris | placebo por dia: D [-12.31, -7.79, -5.51, -4.51, -3.42, -1.76, 0.37] AUC [0.53, 0.89, 0.92, 0.95, 0.99, 0.99, 1.0]
+   dbtd   n  122 mediana +0.186 | D +0.090 AUC 0.391 zona nula | placebo por dia: D [-0.13, -0.03, 0.03, 0.07, 0.18, 0.38, 0.43] AUC [0.11, 0.28, 0.33, 0.4, 0.46, 0.49, 0.64]
+   beta   n   50 mediana +1.056 | D +0.026 AUC 0.426 | placebo por dia: D [-0.28, -0.14, -0.1, -0.04, -0.02, -0.0, 0.03] AUC [0.37, 0.52, 0.58, 0.64, 0.72, 0.77, 0.82]
+   dbtd8  n  122 mediana +0.774 | D +0.062 AUC 0.468 | placebo por dia: D [-0.21, -0.13, 0.09, 0.36, 0.68, 0.7, 2.39] AUC [0.0, 0.13, 0.19, 0.24, 0.4, 0.56, 0.69]
+  control A (dias placebo con >= 20 px: 12)
+   d11    n  122 mediana -0.301 | D +2.848 AUC 0.295 | placebo por dia: D [-11.49, -3.03, -2.79, -1.25, -1.24, 1.35, 1.49, 2.65, 2.7, 3.18, 13.7, 15.39] AUC [0.23, 0.24, 0.25, 0.36, 0.36, 0.4, 0.42, 0.51, 0.53, 0.6, 0.78, 0.87]
+   dbtd   n  122 mediana +0.186 | D -0.105 AUC 0.598 | placebo por dia: D [-0.12, -0.01, 0.05, 0.08, 0.13, 0.14, 0.15, 0.18, 0.21, 0.26, 0.31, 0.34] AUC [0.25, 0.3, 0.3, 0.35, 0.36, 0.37, 0.38, 0.4, 0.43, 0.45, 0.5, 0.59]
+   beta   n   50 mediana +1.056 | D +0.013 AUC 0.450 | placebo por dia: D [-0.07, -0.02, -0.01, -0.01, 0.0, 0.01, 0.01, 0.01, 0.02, 0.02, 0.03, 0.08] AUC [0.24, 0.24, 0.28, 0.31, 0.35, 0.4, 0.43, 0.46, 0.56, 0.57, 0.61, 0.67]
+   dbtd8  n  122 mediana +0.774 | D -0.753 AUC 0.727 | placebo por dia: D [-0.86, -0.32, -0.2, -0.2, -0.16, -0.12, -0.08, 0.09, 0.1, 0.35, 0.43, 2.16] AUC [0.13, 0.27, 0.3, 0.45, 0.51, 0.55, 0.57, 0.57, 0.58, 0.6, 0.6, 0.7]
+  control B (dias placebo con >= 20 px: 12)
+   d11    n  122 mediana -0.301 | D +1.327 AUC 0.318 | placebo por dia: D [-0.09, 0.72, 0.91, 1.12, 1.19, 1.24, 1.29, 1.34, 2.05, 2.05, 2.24, 2.31] AUC [0.17, 0.25, 0.26, 0.27, 0.29, 0.32, 0.33, 0.33, 0.35, 0.37, 0.37, 0.47]
+   dbtd   n  122 mediana +0.186 | D -0.080 AUC 0.552 | placebo por dia: D [-0.2, -0.08, -0.06, -0.02, -0.0, 0.01, 0.03, 0.06, 0.19, 0.24, 0.26, 0.42] AUC [0.23, 0.24, 0.3, 0.39, 0.43, 0.48, 0.48, 0.48, 0.53, 0.55, 0.58, 0.63]
+   beta   n   49 mediana +1.055 | D +0.009 AUC 0.454 | placebo por dia: D [-0.03, -0.01, -0.0, 0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02] AUC [0.22, 0.23, 0.28, 0.4, 0.41, 0.41, 0.45, 0.47, 0.48, 0.56, 0.6, 0.65]
+   dbtd8  n  122 mediana +0.774 | D -0.374 AUC 0.695 | placebo por dia: D [-0.36, -0.35, -0.31, -0.19, -0.15, -0.11, -0.06, -0.06, -0.01, 0.24, 0.33, 0.39] AUC [0.29, 0.29, 0.45, 0.52, 0.56, 0.56, 0.59, 0.61, 0.62, 0.68, 0.69, 0.72]
+
+[lejos, todo] n 192 en 9 cuadros; cenit 43.5 a 92.3; distancia mediana 45.7 km; cota mediana 2217 m; BT11 mediana 279.73 K; entorno despejado 0.03 a 0.91
+   VOLCAT: P publicada >= 0,5 en 11.5%; P IR maxima 0.118; masa mediana 7.297 (n 192); altura mediana 4.36 (n 192)
+  control D (dias placebo con >= 20 px: 15); fraccion fria 0.05, placebo [0.01, 0.02, 0.05, 0.2, 0.36, 0.56, 0.68, 0.73, 0.8, 0.94, 1.0, 1.0]
+   d11    n  192 mediana +0.441 | D -0.411 AUC 0.512 zona nula | placebo por dia: D [-11.71, -7.79, -5.51, -4.51, -3.42, -1.76, -1.07, 0.11, 0.2, 0.37] AUC [0.44, 0.49, 0.53, 0.68, 0.89, 0.92, 0.95, 0.98, 0.99, 0.99]
+   dbtd   n  192 mediana +0.102 | D +0.084 AUC 0.398 zona nula | placebo por dia: D [-0.13, -0.04, -0.03, 0.02, 0.03, 0.07, 0.16, 0.18, 0.3, 0.43] AUC [0.11, 0.28, 0.28, 0.33, 0.4, 0.46, 0.47, 0.49, 0.55, 0.64]
+   beta   n   53 mediana +1.055 | D +0.027 AUC 0.434 | placebo por dia: D [-0.28, -0.13, -0.1, -0.04, -0.02, -0.0, 0.03, 0.14] AUC [0.32, 0.37, 0.52, 0.58, 0.64, 0.72, 0.79, 0.82]
+   dbtd8  n  192 mediana +0.602 | D -0.002 AUC 0.527 | placebo por dia: D [-0.21, -0.13, 0.06, 0.09, 0.09, 0.22, 0.36, 0.68, 0.7, 1.9] AUC [0.02, 0.13, 0.19, 0.24, 0.28, 0.41, 0.41, 0.43, 0.56, 0.69]
+  control A (dias placebo con >= 20 px: 15)
+   d11    n  192 mediana +0.441 | D +2.309 AUC 0.287 | placebo por dia: D [-10.97, -3.03, -2.79, -1.25, -1.24, -0.7, 0.11, 0.3, 1.35, 1.5, 2.65, 2.7, 3.18, 13.7, 15.39] AUC [0.23, 0.24, 0.25, 0.36, 0.36, 0.4, 0.42, 0.42, 0.49, 0.51, 0.53, 0.6, 0.62, 0.78, 0.87]
+   dbtd   n  192 mediana +0.102 | D -0.040 AUC 0.546 | placebo por dia: D [-0.12, -0.04, -0.01, 0.01, 0.05, 0.08, 0.13, 0.14, 0.14, 0.15, 0.18, 0.21, 0.25, 0.26, 0.31] AUC [0.25, 0.3, 0.3, 0.33, 0.36, 0.36, 0.37, 0.38, 0.4, 0.43, 0.45, 0.49, 0.5, 0.55, 0.59]
+   beta   n   54 mediana +1.051 | D +0.006 AUC 0.467 | placebo por dia: D [-0.07, -0.02, -0.01, -0.01, 0.0, 0.01, 0.01, 0.01, 0.02, 0.02, 0.03, 0.08, 0.09] AUC [0.24, 0.24, 0.28, 0.31, 0.35, 0.38, 0.4, 0.43, 0.46, 0.56, 0.57, 0.61, 0.7]
+   dbtd8  n  192 mediana +0.602 | D -0.610 AUC 0.711 | placebo por dia: D [-0.86, -0.32, -0.2, -0.2, -0.16, -0.12, -0.08, 0.06, 0.08, 0.09, 0.1, 0.21, 0.35, 0.43, 1.68] AUC [0.15, 0.27, 0.3, 0.3, 0.42, 0.43, 0.45, 0.51, 0.55, 0.57, 0.57, 0.58, 0.6, 0.6, 0.7]
+  control B (dias placebo con >= 20 px: 15)
+   d11    n  192 mediana +0.441 | D +1.608 AUC 0.266 | placebo por dia: D [-0.84, -0.31, 0.64, 0.72, 0.75, 0.91, 1.12, 1.19, 1.24, 1.29, 1.34, 2.05, 2.09, 2.24, 2.31] AUC [0.17, 0.25, 0.26, 0.27, 0.29, 0.32, 0.33, 0.33, 0.35, 0.36, 0.37, 0.37, 0.37, 0.53, 0.64]
+   dbtd   n  192 mediana +0.102 | D -0.063 AUC 0.553 | placebo por dia: D [-0.13, -0.08, -0.06, -0.05, -0.02, -0.0, 0.01, 0.03, 0.03, 0.06, 0.1, 0.19, 0.24, 0.26, 0.42] AUC [0.23, 0.24, 0.3, 0.37, 0.39, 0.43, 0.45, 0.48, 0.48, 0.48, 0.53, 0.55, 0.58, 0.59, 0.62]
+   beta   n   53 mediana +1.048 | D +0.007 AUC 0.479 | placebo por dia: D [-0.04, -0.01, -0.0, 0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02, 0.08] AUC [0.22, 0.23, 0.28, 0.38, 0.4, 0.41, 0.41, 0.45, 0.47, 0.48, 0.56, 0.6, 0.66]
+   dbtd8  n  192 mediana +0.602 | D -0.408 AUC 0.716 | placebo por dia: D [-0.36, -0.35, -0.31, -0.19, -0.15, -0.11, -0.06, -0.06, -0.01, 0.03, 0.06, 0.16, 0.19, 0.33, 0.39] AUC [0.29, 0.29, 0.31, 0.43, 0.47, 0.5, 0.52, 0.56, 0.56, 0.59, 0.61, 0.62, 0.68, 0.69, 0.72]
+
+[cerca, entorno despejado] n 488 en 33 cuadros; cenit 18.8 a 83.0; distancia mediana 6.1 km; cota mediana 2382 m; BT11 mediana 280.98 K; entorno despejado 0.50 a 0.99
+   VOLCAT: P publicada >= 0,5 en 13.9%; P IR maxima 0.417; masa mediana 3.986 (n 488); altura mediana 3.79 (n 486)
+  control D (dias placebo con >= 20 px: 6); fraccion fria 0.06, placebo [0.05, 0.22, 0.31, 0.34, 0.39, 0.81]
+   d11    n  482 mediana +1.638 | D -0.577 AUC 0.625 zona gris | placebo por dia: D [-6.16, -2.53, -1.83, -1.72, -1.53, 0.44] AUC [0.43, 0.69, 0.72, 0.73, 0.8, 0.96]
+   dbtd   n  482 mediana -0.186 | D -0.109 AUC 0.590 zona nula | placebo por dia: D [-0.3, -0.2, -0.1, -0.04, 0.09, 0.12] AUC [0.38, 0.43, 0.52, 0.53, 0.69, 0.72]
+   beta   n    9 mediana +0.911 | D -0.160 AUC 0.657 | placebo por dia: D [0.02] AUC [0.45]
+   dbtd8  n  482 mediana +0.385 | D +0.110 AUC 0.424 | placebo por dia: D [-0.46, -0.21, 0.01, 0.02, 0.07, 0.17] AUC [0.38, 0.45, 0.49, 0.5, 0.57, 0.69]
+  control A (dias placebo con >= 20 px: 6)
+   d11    n  483 mediana +1.638 | D -0.452 AUC 0.588 | placebo por dia: D [-5.88, -2.51, -1.68, -0.81, 1.34, 20.17] AUC [0.08, 0.33, 0.58, 0.72, 0.79, 0.82]
+   dbtd   n  483 mediana -0.185 | D -0.137 AUC 0.608 | placebo por dia: D [-0.26, -0.2, -0.01, 0.07, 0.12, 0.58] AUC [0.21, 0.38, 0.45, 0.5, 0.68, 0.69]
+   beta   n   11 mediana +0.997 | D -0.051 AUC 0.543 | placebo por dia: D [-0.0, 0.01] AUC [0.48, 0.51]
+   dbtd8  n  483 mediana +0.383 | D +0.065 AUC 0.462 | placebo por dia: D [-0.89, -0.5, -0.07, -0.04, 0.07, 0.17] AUC [0.38, 0.45, 0.54, 0.55, 0.66, 0.86]
+  control B (dias placebo con >= 20 px: 6)
+   d11    n  423 mediana +1.799 | D +0.189 AUC 0.456 | placebo por dia: D [0.21, 1.12, 2.02, 2.97, 3.79] AUC [0.19, 0.25, 0.26, 0.36, 0.49]
+   dbtd   n  423 mediana -0.181 | D -0.160 AUC 0.645 | placebo por dia: D [-0.22, -0.17, -0.06, 0.03, 0.09] AUC [0.45, 0.46, 0.53, 0.6, 0.68]
+   beta   n   11 mediana +0.997 | D -0.144 AUC 0.610 | placebo por dia: D [-0.01, 0.03] AUC [0.45, 0.55]
+   dbtd8  n  423 mediana +0.330 | D -0.144 AUC 0.560 | placebo por dia: D [-0.8, -0.41, -0.1, 0.02, 0.04] AUC [0.47, 0.48, 0.57, 0.67, 0.79]
+
+[cerca, entorno despejado, cenit <50] n 206 en 18 cuadros; cenit 18.8 a 43.5; distancia mediana 4.8 km; cota mediana 2427 m; BT11 mediana 282.55 K; entorno despejado 0.52 a 0.99
+   VOLCAT: P publicada >= 0,5 en 4.4%; P IR maxima 0.161; masa mediana 3.955 (n 206); altura mediana 3.34 (n 204)
+  control D (dias placebo con >= 20 px: 6); fraccion fria 0.14, placebo [0.05, 0.05, 0.34, 0.44, 0.46, 0.81]
+   d11    n  200 mediana +1.524 | D -1.144 AUC 0.748 zona gris | placebo por dia: D [-6.16, -2.75, -2.7, -1.83, -0.19, 0.44] AUC [0.43, 0.53, 0.73, 0.76, 0.85, 0.96]
+   dbtd   n  200 mediana -0.200 | D -0.166 AUC 0.603 zona gris | placebo por dia: D [-0.3, -0.18, -0.14, -0.1, 0.09, 0.09] AUC [0.43, 0.45, 0.53, 0.58, 0.64, 0.72]
+   beta   SIN DATO (ningun pixel con valor y control)
+   dbtd8  n  200 mediana +0.663 | D +0.465 AUC 0.272 | placebo por dia: D [-0.46, -0.21, -0.21, 0.02, 0.16, 0.18] AUC [0.37, 0.41, 0.5, 0.57, 0.63, 0.69]
+  control A (dias placebo con >= 20 px: 6)
+   d11    n  201 mediana +1.530 | D -1.122 AUC 0.730 | placebo por dia: D [-5.88, -2.71, -2.65, 1.34, 3.57, 20.17] AUC [0.08, 0.31, 0.33, 0.75, 0.82, 0.84]
+   dbtd   n  201 mediana -0.198 | D -0.176 AUC 0.609 | placebo por dia: D [-0.26, -0.18, 0.06, 0.07, 0.1, 0.58] AUC [0.21, 0.45, 0.45, 0.45, 0.64, 0.68]
+   beta   SIN DATO (ningun pixel con valor y control)
+   dbtd8  n  201 mediana +0.651 | D +0.442 AUC 0.302 | placebo por dia: D [-0.89, -0.55, -0.5, -0.07, 0.16, 0.18] AUC [0.37, 0.41, 0.55, 0.66, 0.74, 0.86]
+  control B (dias placebo con >= 20 px: 6)
+   d11    n  155 mediana +1.718 | D -0.634 AUC 0.642 | placebo por dia: D [-2.37, 1.12, 2.97, 3.18, 5.52] AUC [0.09, 0.19, 0.25, 0.26, 0.78]
+   dbtd   n  155 mediana -0.236 | D -0.141 AUC 0.614 | placebo por dia: D [-0.22, -0.14, -0.0, 0.02, 0.09] AUC [0.45, 0.47, 0.49, 0.6, 0.63]
+   beta   SIN DATO (ningun pixel con valor y control)
+   dbtd8  n  155 mediana +0.580 | D +0.301 AUC 0.361 | placebo por dia: D [-0.8, -0.41, -0.33, -0.03, 0.17] AUC [0.36, 0.53, 0.67, 0.71, 0.79]
+
+[cerca, entorno despejado, cenit 50-70] n 108 en 8 cuadros; cenit 55.4 a 69.4; distancia mediana 4.8 km; cota mediana 2427 m; BT11 mediana 279.53 K; entorno despejado 0.59 a 0.82
+   VOLCAT: P publicada >= 0,5 en 9.3%; P IR maxima 0.114; masa mediana 3.441 (n 108); altura mediana 4.13 (n 108)
+  control D (dias placebo con >= 20 px: 3); fraccion fria 0.01, placebo [0.31, 0.75, 0.83]
+   d11    n  108 mediana +1.935 | D -0.496 AUC 0.626 zona gris | placebo por dia: D [-4.61, -3.76, -1.59] AUC [0.69, 0.92, 0.93]
+   dbtd   n  108 mediana -0.247 | D -0.102 AUC 0.588 zona nula | placebo por dia: D [-0.25, -0.02, 0.1] AUC [0.4, 0.55, 0.72]
+   beta   SIN DATO (ningun pixel con valor y control)
+   dbtd8  n  108 mediana +0.191 | D -0.006 AUC 0.488 | placebo por dia: D [0.04, 0.07, 0.32] AUC [0.31, 0.46, 0.47]
+  control A (dias placebo con >= 20 px: 3)
+   d11    n  108 mediana +1.935 | D -0.441 AUC 0.591 | placebo por dia: D [-4.61, -3.76, -1.59] AUC [0.69, 0.89, 0.91]
+   dbtd   n  108 mediana -0.247 | D -0.113 AUC 0.607 | placebo por dia: D [-0.25, -0.01, 0.1] AUC [0.4, 0.55, 0.72]
+   beta   SIN DATO (ningun pixel con valor y control)
+   dbtd8  n  108 mediana +0.191 | D -0.043 AUC 0.521 | placebo por dia: D [0.04, 0.08, 0.32] AUC [0.31, 0.47, 0.47]
+  control B (dias placebo con >= 20 px: 3)
+   d11    n   95 mediana +2.211 | D +0.014 AUC 0.450 | placebo por dia: D [0.9, 4.99, 7.97] AUC [0.02, 0.26, 0.43]
+   dbtd   n   95 mediana -0.229 | D -0.138 AUC 0.624 | placebo por dia: D [-0.23, -0.07, 0.02] AUC [0.49, 0.56, 0.7]
+   beta   SIN DATO (ningun pixel con valor y control)
+   dbtd8  n   95 mediana +0.201 | D -0.172 AUC 0.603 | placebo por dia: D [-0.16, 0.03, 0.04] AUC [0.45, 0.52, 0.59]
+
+[cerca, entorno despejado, cenit 70-85] n 174 en 7 cuadros; cenit 71.4 a 83.0; distancia mediana 12.8 km; cota mediana 2192 m; BT11 mediana 280.57 K; entorno despejado 0.50 a 0.75
+   VOLCAT: P publicada >= 0,5 en 28.2%; P IR maxima 0.417; masa mediana 4.732 (n 174); altura mediana 3.89 (n 174)
+  control D (dias placebo con >= 20 px: 3); fraccion fria 0.02, placebo [0.12, 0.12, 0.19]
+   d11    n  174 mediana +1.702 | D -0.045 AUC 0.484 zona nula | placebo por dia: D [-1.5, -1.49, -0.95] AUC [0.62, 0.69, 0.79]
+   dbtd   n  174 mediana -0.100 | D -0.052 AUC 0.576 zona nula | placebo por dia: D [-0.21, -0.02, 0.16] AUC [0.3, 0.5, 0.75]
+   beta   n    9 mediana +0.911 | D -0.160 AUC 0.657 | placebo por dia: D [0.02] AUC [0.44]
+   dbtd8  n  174 mediana +0.255 | D -0.120 AUC 0.559 | placebo por dia: D [0.0, 0.03, 0.1] AUC [0.4, 0.45, 0.48]
+  control A (dias placebo con >= 20 px: 3)
+   d11    n  174 mediana +1.702 | D +0.346 AUC 0.422 | placebo por dia: D [-1.46, -1.1, -0.95] AUC [0.62, 0.63, 0.77]
+   dbtd   n  174 mediana -0.100 | D -0.092 AUC 0.606 | placebo por dia: D [-0.21, -0.05, 0.16] AUC [0.31, 0.53, 0.75]
+   beta   n   11 mediana +0.997 | D -0.051 AUC 0.543 | placebo por dia: D [0.0] AUC [0.48]
+   dbtd8  n  174 mediana +0.255 | D -0.212 AUC 0.610 | placebo por dia: D [0.0, 0.01, 0.09] AUC [0.4, 0.47, 0.48]
+  control B (dias placebo con >= 20 px: 3)
+   d11    n  173 mediana +1.711 | D +1.426 AUC 0.293 | placebo por dia: D [-1.02, 1.15, 1.47] AUC [0.25, 0.34, 0.63]
+   dbtd   n  173 mediana -0.099 | D -0.209 AUC 0.684 | placebo por dia: D [-0.18, -0.09, 0.06] AUC [0.41, 0.59, 0.73]
+   beta   n   11 mediana +0.997 | D -0.144 AUC 0.610 | placebo por dia: D [0.03] AUC [0.46]
+   dbtd8  n  173 mediana +0.253 | D -0.426 AUC 0.714 | placebo por dia: D [-0.03, -0.01, 0.07] AUC [0.45, 0.5, 0.52]
+
+[cerca, entorno despejado, 22:20-22:50] n 113 en 4 cuadros; cenit 77.2 a 83.0; distancia mediana 20.6 km; cota mediana 2134 m; BT11 mediana 280.66 K; entorno despejado 0.50 a 0.63
+   VOLCAT: P publicada >= 0,5 en 31.9%; P IR maxima 0.048; masa mediana 8.260 (n 113); altura mediana 3.87 (n 113)
+  control D (dias placebo con >= 20 px: 3); fraccion fria 0.03, placebo [0.01, 0.07, 0.11]
+   d11    n  113 mediana +1.167 | D -0.155 AUC 0.504 zona nula | placebo por dia: D [-1.24, -0.87, -0.58] AUC [0.57, 0.67, 0.68]
+   dbtd   n  113 mediana -0.052 | D -0.033 AUC 0.552 zona nula | placebo por dia: D [-0.14, 0.05, 0.12] AUC [0.32, 0.44, 0.7]
+   beta   n    9 mediana +0.911 | D -0.160 AUC 0.657 | placebo por dia: D [] AUC []
+   dbtd8  n  113 mediana +0.307 | D -0.140 AUC 0.550 | placebo por dia: D [-0.06, 0.07, 0.13] AUC [0.36, 0.43, 0.57]
+  control A (dias placebo con >= 20 px: 3)
+   d11    n  113 mediana +1.167 | D +0.534 AUC 0.425 | placebo por dia: D [-0.92, -0.86, -0.58] AUC [0.57, 0.62, 0.66]
+   dbtd   n  113 mediana -0.052 | D -0.087 AUC 0.590 | placebo por dia: D [-0.14, 0.03, 0.12] AUC [0.33, 0.46, 0.7]
+   beta   n   11 mediana +0.997 | D -0.051 AUC 0.543 | placebo por dia: D [] AUC []
+   dbtd8  n  113 mediana +0.307 | D -0.279 AUC 0.615 | placebo por dia: D [-0.06, 0.07, 0.11] AUC [0.37, 0.43, 0.57]
+  control B (dias placebo con >= 20 px: 3)
+   d11    n  112 mediana +1.171 | D +2.078 AUC 0.270 | placebo por dia: D [0.04, 0.7, 1.73] AUC [0.16, 0.39, 0.48]
+   dbtd   n  112 mediana -0.052 | D -0.226 AUC 0.698 | placebo por dia: D [-0.16, -0.05, 0.1] AUC [0.37, 0.54, 0.71]
+   beta   n   11 mediana +0.997 | D -0.144 AUC 0.610 | placebo por dia: D [] AUC []
+   dbtd8  n  112 mediana +0.305 | D -0.501 AUC 0.744 | placebo por dia: D [-0.04, 0.05, 0.08] AUC [0.4, 0.47, 0.58]
+
+[lejos, entorno despejado, 22:20-22:50] n 69 en 4 cuadros; cenit 77.2 a 83.0; distancia mediana 36.2 km; cota mediana 2259 m; BT11 mediana 281.51 K; entorno despejado 0.70 a 0.91
+   VOLCAT: P publicada >= 0,5 en 31.9%; P IR maxima 0.118; masa mediana 7.057 (n 69); altura mediana 3.75 (n 69)
+  control D (dias placebo con >= 20 px: 3); fraccion fria 0.00, placebo [0.0, 0.01, 0.07]
+   d11    n   69 mediana +3.279 | D +1.527 AUC 0.320 zona nula | placebo por dia: D [-1.2, 0.08, 0.21] AUC [0.48, 0.5, 0.69]
+   dbtd   n   69 mediana +0.046 | D +0.085 AUC 0.409 zona nula | placebo por dia: D [-0.09, 0.06, 0.16] AUC [0.3, 0.42, 0.61]
+   beta   n    3 mediana +1.021 | D +0.041 AUC 0.571 | placebo por dia: D [] AUC []
+   dbtd8  n   69 mediana +0.149 | D -0.211 AUC 0.636 | placebo por dia: D [0.05, 0.1, 0.2] AUC [0.31, 0.37, 0.44]
+  control A (dias placebo con >= 20 px: 3)
+   d11    n   69 mediana +3.279 | D +1.747 AUC 0.266 | placebo por dia: D [-0.87, 0.16, 0.21] AUC [0.46, 0.5, 0.61]
+   dbtd   n   69 mediana +0.046 | D +0.060 AUC 0.454 | placebo por dia: D [-0.09, 0.05, 0.13] AUC [0.36, 0.43, 0.61]
+   beta   n    4 mediana +0.867 | D -0.146 AUC 0.686 | placebo por dia: D [] AUC []
+   dbtd8  n   69 mediana +0.149 | D -0.307 AUC 0.690 | placebo por dia: D [0.05, 0.09, 0.18] AUC [0.32, 0.4, 0.44]
+  control B (dias placebo con >= 20 px: 3)
+   d11    n   69 mediana +3.279 | D +2.069 AUC 0.167 | placebo por dia: D [-0.7, 0.55, 0.76] AUC [0.3, 0.38, 0.61]
+   dbtd   n   69 mediana +0.046 | D -0.021 AUC 0.554 | placebo por dia: D [-0.11, 0.07, 0.08] AUC [0.4, 0.41, 0.66]
+   beta   n    4 mediana +0.867 | D -0.205 AUC 0.787 | placebo por dia: D [] AUC []
+   dbtd8  n   69 mediana +0.149 | D -0.474 AUC 0.757 | placebo por dia: D [0.04, 0.07, 0.14] AUC [0.33, 0.44, 0.45]
+
+[cerca, entorno nublado] n 48 en 5 cuadros; cenit 45.5 a 84.9; distancia mediana 4.7 km; cota mediana 2471 m; BT11 mediana 280.18 K; entorno despejado 0.19 a 0.50
+   VOLCAT: P publicada >= 0,5 en 6.2%; P IR maxima 0.006; masa mediana 7.261 (n 48); altura mediana 3.90 (n 48)
+  control D (dias placebo con >= 20 px: 13); fraccion fria 0.24, placebo [0.5, 0.63, 0.63, 0.65, 0.77, 0.87, 0.88, 0.94, 0.95, 1.0, 1.0]
+   d11    n   46 mediana +0.957 | D -1.337 AUC 0.737 zona gris | placebo por dia: D [-15.59, -13.54, -11.16, -10.8, -9.57, -9.11, -4.6, -4.24, -3.76, -3.08] AUC [0.78, 0.84, 0.91, 0.93, 0.94, 0.97, 1.0, 1.0, 1.0, 1.0]
+   dbtd   n   46 mediana -0.174 | D -0.039 AUC 0.555 zona nula | placebo por dia: D [-0.65, -0.41, -0.31, -0.29, -0.28, -0.07, -0.07, 0.13, 0.25, 0.25] AUC [0.23, 0.31, 0.36, 0.54, 0.6, 0.67, 0.71, 0.73, 0.81, 0.92]
+   beta   n    2 mediana +0.960 | D -0.158 AUC 0.758 | placebo por dia: D [-0.37, -0.09, -0.07, -0.06, -0.05, -0.03, -0.03, -0.03] AUC [0.54, 0.58, 0.59, 0.64, 0.68, 0.71, 0.79, 0.9]
+   dbtd8  n   46 mediana +0.589 | D +0.341 AUC 0.341 | placebo por dia: D [-0.5, -0.12, 0.01, 0.11, 0.23, 0.41, 0.44, 0.53, 0.7, 1.28] AUC [0.1, 0.19, 0.27, 0.27, 0.3, 0.39, 0.42, 0.49, 0.49, 0.85]
+  control A (dias placebo con >= 20 px: 13)
+   d11    n   46 mediana +0.957 | D -1.281 AUC 0.688 | placebo por dia: D [-10.92, -7.77, -7.6, -6.48, -6.27, -5.4, -1.5, -0.8, -0.57, -0.57, -0.55, 1.7, 12.08] AUC [0.31, 0.47, 0.51, 0.51, 0.53, 0.55, 0.58, 0.67, 0.71, 0.73, 0.74, 0.77, 0.87]
+   dbtd   n   46 mediana -0.174 | D -0.067 AUC 0.584 | placebo por dia: D [-0.3, -0.28, -0.18, -0.17, -0.04, -0.01, 0.02, 0.05, 0.06, 0.09, 0.09, 0.16, 0.23] AUC [0.38, 0.4, 0.42, 0.43, 0.46, 0.46, 0.46, 0.5, 0.51, 0.6, 0.63, 0.64, 0.71]
+   beta   n    2 mediana +0.960 | D -0.124 AUC 0.759 | placebo por dia: D [-0.05, -0.03, -0.02, -0.01, -0.01, -0.01, -0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.03] AUC [0.3, 0.36, 0.44, 0.44, 0.44, 0.48, 0.51, 0.55, 0.55, 0.59, 0.62, 0.66, 0.7]
+   dbtd8  n   46 mediana +0.589 | D +0.237 AUC 0.389 | placebo por dia: D [-0.54, -0.4, -0.32, -0.27, -0.19, -0.1, 0.02, 0.07, 0.35, 0.4, 0.42, 0.43, 0.57] AUC [0.28, 0.36, 0.37, 0.37, 0.4, 0.45, 0.49, 0.55, 0.59, 0.62, 0.63, 0.63, 0.66]
+  control B (dias placebo con >= 20 px: 13)
+   d11    n   32 mediana +1.618 | D -0.119 AUC 0.507 | placebo por dia: D [2.35, 2.8, 3.15, 3.34, 3.58, 3.91, 4.21, 5.06, 5.16, 5.31, 5.59, 6.66, 7.66] AUC [0.1, 0.11, 0.11, 0.12, 0.14, 0.15, 0.18, 0.18, 0.19, 0.19, 0.22, 0.24, 0.24]
+   dbtd   n   32 mediana -0.186 | D -0.240 AUC 0.630 | placebo por dia: D [-0.3, -0.13, -0.06, -0.05, -0.02, 0.01, 0.02, 0.07, 0.24, 0.26, 0.32, 0.33, 0.49] AUC [0.26, 0.26, 0.31, 0.31, 0.33, 0.45, 0.46, 0.48, 0.5, 0.55, 0.55, 0.61, 0.64]
+   beta   n    1 mediana +1.041 | D -0.030 AUC 0.657 | placebo por dia: D [-0.06, -0.02, -0.01, 0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02] AUC [0.32, 0.33, 0.35, 0.38, 0.38, 0.39, 0.43, 0.44, 0.44, 0.46, 0.59, 0.67, 0.76]
+   dbtd8  n   32 mediana +0.412 | D -0.231 AUC 0.564 | placebo por dia: D [-0.8, -0.79, -0.73, -0.66, -0.59, -0.49, -0.42, -0.34, -0.24, -0.24, -0.21, -0.01, 0.21] AUC [0.42, 0.49, 0.6, 0.62, 0.63, 0.64, 0.66, 0.67, 0.7, 0.74, 0.78, 0.79, 0.79]
+
+[cerca, todo] n 536 en 38 cuadros; cenit 18.8 a 84.9; distancia mediana 6.1 km; cota mediana 2382 m; BT11 mediana 280.86 K; entorno despejado 0.19 a 0.99
+   VOLCAT: P publicada >= 0,5 en 13.2%; P IR maxima 0.417; masa mediana 4.128 (n 536); altura mediana 3.81 (n 534)
+  control D (dias placebo con >= 20 px: 15); fraccion fria 0.08, placebo [0.3, 0.31, 0.39, 0.51, 0.54, 0.57, 0.63, 0.65, 0.87, 0.94, 0.94, 1.0, 1.0]
+   d11    n  528 mediana +1.584 | D -0.597 AUC 0.635 zona gris | placebo por dia: D [-13.54, -10.8, -9.57, -8.98, -5.36, -4.24, -3.76, -3.58, -3.44, -2.53, -1.72, -1.72] AUC [0.72, 0.72, 0.73, 0.79, 0.8, 0.84, 0.91, 0.97, 1.0, 1.0, 1.0, 1.0]
+   dbtd   n  528 mediana -0.184 | D -0.107 AUC 0.587 zona nula | placebo por dia: D [-0.65, -0.4, -0.28, -0.21, -0.2, -0.07, -0.07, -0.05, 0.12, 0.13, 0.18, 0.25] AUC [0.23, 0.35, 0.36, 0.38, 0.54, 0.55, 0.6, 0.63, 0.69, 0.73, 0.8, 0.92]
+   beta   n   11 mediana +0.911 | D -0.160 AUC 0.675 | placebo por dia: D [-0.37, -0.09, -0.07, -0.06, -0.05, -0.03, -0.03, -0.03, 0.02] AUC [0.45, 0.54, 0.58, 0.59, 0.64, 0.67, 0.71, 0.79, 0.9]
+   dbtd8  n  528 mediana +0.393 | D +0.128 AUC 0.417 | placebo por dia: D [-0.5, -0.25, 0.01, 0.02, 0.07, 0.1, 0.17, 0.41, 0.44, 0.53, 0.7, 0.75] AUC [0.19, 0.26, 0.27, 0.3, 0.3, 0.38, 0.43, 0.45, 0.47, 0.49, 0.58, 0.85]
+  control A (dias placebo con >= 20 px: 15)
+   d11    n  529 mediana +1.584 | D -0.480 AUC 0.597 | placebo por dia: D [-7.77, -7.6, -6.48, -6.27, -5.51, -2.51, -1.68, -1.0, -0.8, -0.79, -0.66, -0.57, 0.66, 1.7, 12.08] AUC [0.31, 0.43, 0.47, 0.51, 0.55, 0.57, 0.58, 0.58, 0.67, 0.71, 0.72, 0.75, 0.77, 0.79, 0.87]
+   dbtd   n  529 mediana -0.183 | D -0.133 AUC 0.606 | placebo por dia: D [-0.3, -0.27, -0.2, -0.18, -0.03, -0.01, 0.02, 0.05, 0.06, 0.06, 0.09, 0.1, 0.12, 0.13, 0.23] AUC [0.38, 0.38, 0.41, 0.42, 0.43, 0.45, 0.46, 0.46, 0.46, 0.51, 0.52, 0.63, 0.64, 0.69, 0.71]
+   beta   n   13 mediana +0.997 | D -0.051 AUC 0.576 | placebo por dia: D [-0.05, -0.03, -0.02, -0.01, -0.01, -0.01, -0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.03] AUC [0.3, 0.36, 0.44, 0.44, 0.44, 0.48, 0.48, 0.51, 0.54, 0.55, 0.59, 0.62, 0.66, 0.69]
+   dbtd8  n  529 mediana +0.392 | D +0.077 AUC 0.456 | placebo por dia: D [-0.54, -0.4, -0.39, -0.32, -0.19, -0.1, -0.03, 0.01, 0.07, 0.11, 0.17, 0.38, 0.4, 0.42, 0.43] AUC [0.28, 0.36, 0.37, 0.38, 0.39, 0.45, 0.48, 0.5, 0.52, 0.55, 0.59, 0.62, 0.63, 0.63, 0.69]
+  control B (dias placebo con >= 20 px: 15)
+   d11    n  455 mediana +1.797 | D +0.185 AUC 0.459 | placebo por dia: D [0.21, 2.02, 2.25, 2.86, 2.98, 3.14, 3.34, 3.58, 3.91, 4.14, 4.21, 5.31, 5.59, 6.66, 7.66] AUC [0.11, 0.11, 0.14, 0.15, 0.18, 0.18, 0.18, 0.19, 0.19, 0.19, 0.22, 0.24, 0.24, 0.36, 0.49]
+   dbtd   n  455 mediana -0.181 | D -0.160 AUC 0.644 | placebo por dia: D [-0.17, -0.14, -0.08, -0.06, -0.02, -0.0, 0.0, 0.01, 0.03, 0.07, 0.24, 0.26, 0.32, 0.33, 0.49] AUC [0.26, 0.26, 0.31, 0.31, 0.33, 0.44, 0.46, 0.48, 0.48, 0.5, 0.5, 0.55, 0.55, 0.61, 0.68]
+   beta   n   12 mediana +1.019 | D -0.087 AUC 0.614 | placebo por dia: D [-0.06, -0.02, -0.01, 0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02, 0.03] AUC [0.32, 0.33, 0.35, 0.38, 0.38, 0.39, 0.43, 0.44, 0.45, 0.45, 0.45, 0.59, 0.67, 0.71]
+   dbtd8  n  455 mediana +0.330 | D -0.153 AUC 0.560 | placebo por dia: D [-0.79, -0.73, -0.69, -0.66, -0.59, -0.49, -0.42, -0.28, -0.24, -0.2, -0.13, 0.0, 0.02, 0.04, 0.21] AUC [0.42, 0.47, 0.48, 0.49, 0.58, 0.62, 0.63, 0.64, 0.67, 0.67, 0.7, 0.73, 0.74, 0.79, 0.79]
+
+Por cuadro, pixeles a > 30 km:
+       cuadro  sza  n  entorno_despejado  dist_mediana   bt11  d11_mediana  dbtd_mediana  btd_mediana  n_ctrl_D  D_d11  auc_d11  frio  D_dbtd  auc_dbtd  n_beta  D_beta  B_D_dbtd  B_auc_dbtd
+20261114_1930 43.5  1              0.894          36.5 284.18        2.059        -0.122        0.992         1 -1.080    0.795 0.000  -0.042     0.513       0     NaN    -0.097       0.577
+20261114_2220 77.2 11              0.895          34.3 282.35        3.660        -0.029        0.755        11  1.704    0.097 0.000   0.060     0.471       0     NaN    -0.094       0.605
+20261114_2230 79.2 15              0.816          33.7 282.42        3.846        -0.162        0.621        15  2.358    0.060 0.000  -0.106     0.568       0     NaN    -0.308       0.698
+20261114_2240 81.1 11              0.914          47.6 282.82        3.895        -0.043        0.625        11  2.222    0.077 0.000   0.007     0.519       0     NaN    -0.033       0.560
+20261114_2250 83.0 32              0.700          35.4 278.19        0.248         0.161        0.848        32 -0.557    0.602 0.000   0.215     0.276       3   0.041     0.058       0.468
+20261114_2300 84.9 60              0.384          42.7 279.63        0.521         0.113        0.857        60 -0.355    0.516 0.067   0.063     0.434      12   0.160    -0.087       0.572
+20261114_2310 86.8 32              0.368          52.7 279.63       -0.201         0.175        0.912        32 -0.890    0.558 0.094   0.123     0.361       8  -0.001    -0.001       0.484
+20261114_2330 90.5 20              0.145          57.0 276.09       -3.516         0.236        1.039        20 -2.234    0.895 0.100   0.104     0.368      20  -0.002    -0.107       0.577
+20261114_2340 92.3 10              0.032          73.5 275.71       -2.732         0.237        0.915        10 -1.684    0.873 0.000   0.164     0.283      10   0.026    -0.124       0.606
+
+== 4. Placebo espacial: huella lejana de los cuadros que deciden, corrida dentro del 14-11 ==
+corrimientos validos: 323
+dias placebo con entorno despejado en los cuadros que deciden y huella no cubierta por nube: ['20261027', '20261104', '20261106']
+   d11: 323 corrimientos; D sin corregir p05 -14.34 p50 -7.40 p95 +1.70; fraccion en zona de senal sin ser pluma 0.641; fraccion con D <= evento 0.935
+      corregido por el sesgo del lugar (DiD): p05 -13.92 p50 -7.08 p95 +1.65; evento DiD +1.358; fraccion de corrimientos con DiD <= evento: 0.932
+      placebo temporal en la huella real (dias despejados): D [-1.19, 0.08, 0.19] AUC [0.48, 0.5, 0.69]; el evento queda fuera de ese rango hacia el lado de ceniza: False
+   dbtd: 323 corrimientos; D sin corregir p05 -1.42 p50 -0.02 p95 +0.38; fraccion en zona de senal sin ser pluma 0.272; fraccion con D <= evento 0.721
+      corregido por el sesgo del lugar (DiD): p05 -1.57 p50 -0.06 p95 +0.40; evento DiD +0.024; fraccion de corrimientos con DiD <= evento: 0.622
+      placebo temporal en la huella real (dias despejados): D [-0.09, 0.06, 0.16] AUC [0.31, 0.42, 0.62]; el evento queda fuera de ese rango hacia el lado de ceniza: False
+
+== 5. Control positivo: capa sintetica (beta 0,7) en los pixeles lejanos de los cuadros que deciden ==
+T nube 255 K, e11 0.005: enfriamiento mediano -0.083 K; detecta por dBT11 en 0 de 3 dias placebo, por dBTD en 0; sobre el 14-11: enfria -0.116 K, D_d11 1.315 AUC 0.341 zona nula; D_dbtd 0.046 AUC 0.453 zona nula; beta n 4 D 0.067
+T nube 255 K, e11 0.01 : enfriamiento mediano -0.165 K; detecta por dBT11 en 0 de 3 dias placebo, por dBTD en 0; sobre el 14-11: enfria -0.233 K, D_d11 1.194 AUC 0.357 zona nula; D_dbtd 0.013 AUC 0.493 zona nula; beta n 4 D 0.046
+T nube 255 K, e11 0.02 : enfriamiento mediano -0.33 K; detecta por dBT11 en 1 de 3 dias placebo, por dBTD en 0; sobre el 14-11: enfria -0.466 K, D_d11 0.951 AUC 0.393 zona nula; D_dbtd -0.062 AUC 0.574 zona nula; beta n 6 D 0.07
+T nube 255 K, e11 0.03 : enfriamiento mediano -0.496 K; detecta por dBT11 en 1 de 3 dias placebo, por dBTD en 0; sobre el 14-11: enfria -0.7 K, D_d11 0.709 AUC 0.427 zona nula; D_dbtd -0.138 AUC 0.655 zona gris; beta n 7 D 0.027
+T nube 255 K, e11 0.05 : enfriamiento mediano -0.828 K; detecta por dBT11 en 1 de 3 dias placebo, por dBTD en 1; sobre el 14-11: enfria -1.169 K, D_d11 0.222 AUC 0.501 zona nula; D_dbtd -0.282 AUC 0.796 zona gris; beta n 10 D -0.072
+T nube 255 K, e11 0.1  : enfriamiento mediano -1.664 K; detecta por dBT11 en 3 de 3 dias placebo, por dBTD en 3; sobre el 14-11: enfria -2.351 K, D_d11 -1.006 AUC 0.709 zona gris; D_dbtd -0.631 AUC 0.955 zona senal; beta n 21 D -0.187
+T nube 255 K, e11 0.15 : enfriamiento mediano -2.506 K; detecta por dBT11 en 3 de 3 dias placebo, por dBTD en 3; sobre el 14-11: enfria -3.547 K, D_d11 -2.274 AUC 0.863 zona senal; D_dbtd -0.954 AUC 0.991 zona senal; beta n 26 D -0.237
+T nube 255 K, e11 0.2  : enfriamiento mediano -3.357 K; detecta por dBT11 en 3 de 3 dias placebo, por dBTD en 3; sobre el 14-11: enfria -4.756 K, D_d11 -3.589 AUC 0.949 zona senal; D_dbtd -1.289 AUC 0.998 zona senal; beta n 33 D -0.347
+T nube 255 K, e11 0.5  : enfriamiento mediano -8.627 K; detecta por dBT11 en 3 de 3 dias placebo, por dBTD en 3; sobre el 14-11: enfria -12.342 K, D_d11 -11.115 AUC 1.0 zona senal; D_dbtd -3.088 AUC 1.0 zona senal; beta n 46 D -0.336
+T nube 255 K, e11 1.0  : enfriamiento mediano -18.171 K; detecta por dBT11 en 3 de 3 dias placebo, por dBTD en 3; sobre el 14-11: enfria -26.56 K, D_d11 -25.124 AUC 1.0 zona senal; D_dbtd -0.621 AUC 0.977 zona senal; beta n 46 D -0.05
+T nube 270 K, e11 0.005: enfriamiento mediano -0.016 K; detecta por dBT11 en 0 de 3 dias placebo, por dBTD en 0; sobre el 14-11: enfria -0.055 K, D_d11 1.376 AUC 0.334 zona nula; D_dbtd 0.064 AUC 0.432 zona nula; beta n 3 D 0.029
+T nube 270 K, e11 0.01 : enfriamiento mediano -0.031 K; detecta por dBT11 en 0 de 3 dias placebo, por dBTD en 0; sobre el 14-11: enfria -0.109 K, D_d11 1.316 AUC 0.34 zona nula; D_dbtd 0.047 AUC 0.454 zona nula; beta n 4 D 0.071
+T nube 270 K, e11 0.02 : enfriamiento mediano -0.062 K; detecta por dBT11 en 0 de 3 dias placebo, por dBTD en 0; sobre el 14-11: enfria -0.219 K, D_d11 1.196 AUC 0.353 zona nula; D_dbtd 0.004 AUC 0.496 zona nula; beta n 4 D 0.053
+T nube 270 K, e11 0.03 : enfriamiento mediano -0.094 K; detecta por dBT11 en 0 de 3 dias placebo, por dBTD en 0; sobre el 14-11: enfria -0.328 K, D_d11 1.076 AUC 0.369 zona nula; D_dbtd -0.039 AUC 0.536 zona nula; beta n 4 D 0.037
+T nube 270 K, e11 0.05 : enfriamiento mediano -0.156 K; detecta por dBT11 en 0 de 3 dias placebo, por dBTD en 0; sobre el 14-11: enfria -0.548 K, D_d11 0.836 AUC 0.404 zona nula; D_dbtd -0.113 AUC 0.617 zona gris; beta n 6 D 0.065
+T nube 270 K, e11 0.1  : enfriamiento mediano -0.312 K; detecta por dBT11 en 0 de 3 dias placebo, por dBTD en 0; sobre el 14-11: enfria -1.099 K, D_d11 0.233 AUC 0.488 zona nula; D_dbtd -0.285 AUC 0.789 zona gris; beta n 7 D -0.024
+T nube 270 K, e11 0.15 : enfriamiento mediano -0.469 K; detecta por dBT11 en 0 de 3 dias placebo, por dBTD en 1; sobre el 14-11: enfria -1.652 K, D_d11 -0.421 AUC 0.585 zona nula; D_dbtd -0.443 AUC 0.884 zona senal; beta n 14 D -0.14
+T nube 270 K, e11 0.2  : enfriamiento mediano -0.626 K; detecta por dBT11 en 1 de 3 dias placebo, por dBTD en 1; sobre el 14-11: enfria -2.209 K, D_d11 -1.051 AUC 0.688 zona gris; D_dbtd -0.633 AUC 0.936 zona senal; beta n 21 D -0.237
+T nube 270 K, e11 0.5  : enfriamiento mediano -1.572 K; detecta por dBT11 en 2 de 3 dias placebo, por dBTD en 3; sobre el 14-11: enfria -5.613 K, D_d11 -4.374 AUC 0.981 zona senal; D_dbtd -1.535 AUC 0.997 zona senal; beta n 45 D -0.475
+T nube 270 K, e11 1.0  : enfriamiento mediano -3.171 K; detecta por dBT11 en 3 de 3 dias placebo, por dBTD en 3; sobre el 14-11: enfria -11.56 K, D_d11 -10.124 AUC 1.0 zona senal; D_dbtd -0.621 AUC 0.977 zona senal; beta n 46 D -0.101
+inyecciones obligatorias (enfriamiento mediano <= -2 K): [{'tnube': 255.0, 'e11': 0.15, 'enfria_mediana': -2.506, 'detecta_d11': 3, 'detecta_dbtd': 3, 'dias': 3, '20261114_zona_d11': 'senal', '20261114_zona_dbtd': 'senal'}, {'tnube': 255.0, 'e11': 0.2, 'enfria_mediana': -3.357, 'detecta_d11': 3, 'detecta_dbtd': 3, 'dias': 3, '20261114_zona_d11': 'senal', '20261114_zona_dbtd': 'senal'}, {'tnube': 255.0, 'e11': 0.5, 'enfria_mediana': -8.627, 'detecta_d11': 3, 'detecta_dbtd': 3, 'dias': 3, '20261114_zona_d11': 'senal', '20261114_zona_dbtd': 'senal'}, {'tnube': 255.0, 'e11': 1.0, 'enfria_mediana': -18.171, 'detecta_d11': 3, 'detecta_dbtd': 3, 'dias': 3, '20261114_zona_d11': 'senal', '20261114_zona_dbtd': 'senal'}, {'tnube': 270.0, 'e11': 1.0, 'enfria_mediana': -3.171, 'detecta_d11': 3, 'detecta_dbtd': 3, 'dias': 3, '20261114_zona_d11': 'senal', '20261114_zona_dbtd': 'senal'}]
+menor inyeccion detectada en todos los dias placebo despejados y en el dia de la prueba: {'d11': {255.0: [{'e11': 0.15, 'enfria_mediana': -2.506, '20261114_dbtd': -1.032}], 270.0: [{'e11': 1.0, 'enfria_mediana': -3.171, '20261114_dbtd': -0.726}]}, 'dbtd': {255.0: [{'e11': 0.1, 'enfria_mediana': -1.664, '20261114_dbtd': -0.694}], 270.0: [{'e11': 0.5, 'enfria_mediana': -1.572, '20261114_dbtd': -1.52}]}}
+CONTROL POSITIVO: pasa
+
+VEREDICTO: sin senal IR medible a mas de 30 km (dBT11 y dBTD en zona nula; control positivo aprobado)

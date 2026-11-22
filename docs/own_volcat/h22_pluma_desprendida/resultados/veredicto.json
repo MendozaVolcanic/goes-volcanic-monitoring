@@ -1,0 +1,239 @@
+{
+ "dia": "20261114",
+ "dias_placebo": [
+  "20261026",
+  "20261027",
+  "20261030",
+  "20261031",
+  "20261101",
+  "20261102",
+  "20261103",
+  "20261104",
+  "20261105",
+  "20261106",
+  "20261109",
+  "20261112",
+  "20261115",
+  "20261116",
+  "20261117"
+ ],
+ "regla": {
+  "senal": {
+   "d11": [
+    -1.5,
+    0.7
+   ],
+   "dbtd": [
+    -0.3,
+    0.7
+   ]
+  },
+  "nula": {
+   "d11": [
+    -0.5,
+    0.6
+   ],
+   "dbtd": [
+    -0.15,
+    0.6
+   ]
+  },
+  "espacial_max": 0.05
+ },
+ "instrumento": {
+  "n_huella": 728,
+  "l1b_finitos": 1456,
+  "bt11_dif_mediana": 0.05,
+  "bt11_dif_max": 0.056
+ },
+ "horas_deciden": [
+  "1930",
+  "2220",
+  "2230",
+  "2240",
+  "2250"
+ ],
+ "placebo_espacial": {
+  "corrimientos": 323,
+  "dias_sesgo": [
+   "20261027",
+   "20261104",
+   "20261106"
+  ],
+  "d11": {
+   "n": 323,
+   "D_p05_p50_p95": [
+    -14.341,
+    -7.403,
+    1.698
+   ],
+   "DiD_p05_p50_p95": [
+    -13.915,
+    -7.076,
+    1.651
+   ],
+   "DiD_evento": 1.358,
+   "frac_DiD_menor_igual": 0.932,
+   "frac_D_menor_igual": 0.935,
+   "frac_en_zona_senal": 0.641,
+   "placebo_temporal_D": [
+    -1.187,
+    0.077,
+    0.193
+   ],
+   "placebo_temporal_auc": [
+    0.481,
+    0.503,
+    0.685
+   ],
+   "supera_temporal": false
+  },
+  "dbtd": {
+   "n": 323,
+   "D_p05_p50_p95": [
+    -1.424,
+    -0.023,
+    0.381
+   ],
+   "DiD_p05_p50_p95": [
+    -1.57,
+    -0.063,
+    0.395
+   ],
+   "DiD_evento": 0.024,
+   "frac_DiD_menor_igual": 0.622,
+   "frac_D_menor_igual": 0.721,
+   "frac_en_zona_senal": 0.272,
+   "placebo_temporal_D": [
+    -0.092,
+    0.057,
+    0.163
+   ],
+   "placebo_temporal_auc": [
+    0.306,
+    0.424,
+    0.618
+   ],
+   "supera_temporal": false
+  }
+ },
+ "control_positivo": {
+  "pasa": true,
+  "obligatorias": [
+   {
+    "tnube": 255.0,
+    "e11": 0.15,
+    "enfria_mediana": -2.506,
+    "detecta_d11": 3,
+    "detecta_dbtd": 3,
+    "dias": 3,
+    "20261114_zona_d11": "senal",
+    "20261114_zona_dbtd": "senal"
+   },
+   {
+    "tnube": 255.0,
+    "e11": 0.2,
+    "enfria_mediana": -3.357,
+    "detecta_d11": 3,
+    "detecta_dbtd": 3,
+    "dias": 3,
+    "20261114_zona_d11": "senal",
+    "20261114_zona_dbtd": "senal"
+   },
+   {
+    "tnube": 255.0,
+    "e11": 0.5,
+    "enfria_mediana": -8.627,
+    "detecta_d11": 3,
+    "detecta_dbtd": 3,
+    "dias": 3,
+    "20261114_zona_d11": "senal",
+    "20261114_zona_dbtd": "senal"
+   },
+   {
+    "tnube": 255.0,
+    "e11": 1.0,
+    "enfria_mediana": -18.171,
+    "detecta_d11": 3,
+    "detecta_dbtd": 3,
+    "dias": 3,
+    "20261114_zona_d11": "senal",
+    "20261114_zona_dbtd": "senal"
+   },
+   {
+    "tnube": 270.0,
+    "e11": 1.0,
+    "enfria_mediana": -3.171,
+    "detecta_d11": 3,
+    "detecta_dbtd": 3,
+    "dias": 3,
+    "20261114_zona_d11": "senal",
+    "20261114_zona_dbtd": "senal"
+   }
+  ],
+  "minimo_detectado": {
+   "d11": {
+    "255.0": [
+     {
+      "e11": 0.15,
+      "enfria_mediana": -2.506,
+      "20261114_dbtd": -1.032
+     }
+    ],
+    "270.0": [
+     {
+      "e11": 1.0,
+      "enfria_mediana": -3.171,
+      "20261114_dbtd": -0.726
+     }
+    ]
+   },
+   "dbtd": {
+    "255.0": [
+     {
+      "e11": 0.1,
+      "enfria_mediana": -1.664,
+      "20261114_dbtd": -0.694
+     }
+    ],
+    "270.0": [
+     {
+      "e11": 0.5,
+      "enfria_mediana": -1.572,
+      "20261114_dbtd": -1.52
+     }
+    ]
+   }
+  },
+  "dias": [
+   "20261027",
+   "20261104",
+   "20261106"
+  ]
+ },
+ "veredicto": "sin senal IR medible a mas de 30 km (dBT11 y dBTD en zona nula; control positivo aprobado)",
+ "decide": {
+  "n": 70,
+  "n_d11": 70,
+  "med_d11": 3.255,
+  "D_d11": 1.435,
+  "auc_d11": 0.327,
+  "frio": 0.0,
+  "n_dbtd": 70,
+  "med_dbtd": 0.032,
+  "D_dbtd": 0.081,
+  "auc_dbtd": 0.411,
+  "n_beta": 3,
+  "med_beta": 1.021,
+  "D_beta": 0.041,
+  "auc_beta": 0.571,
+  "n_dbtd8": 70,
+  "med_dbtd8": 0.159,
+  "D_dbtd8": -0.204,
+  "auc_dbtd8": 0.63
+ },
+ "zonas": {
+  "d11": "nula",
+  "dbtd": "nula"
+ }
+}

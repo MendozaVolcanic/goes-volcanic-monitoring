@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-22 (cierre de la sesión S15, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-22 (cierre de la sesión S16, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,128 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S15, cierre 2026-11-22 (PR 74 a 83 en main: la parte pública de VOLCAT, por píxel y por objeto, reproducida y validada en Mauna Loa; ninguna ve Chillán en modo IR; el modo día quedó SIN probar)
+## 0. S16, cierre 2026-11-22 (PR 84 y 87 en main; PR 85, 86, 88 y 89 abiertos: VOLCAT publica P baja en Chillán, las tablas de día no validan, la pieza que falta es el paso de objeto o pluma)
+
+> **Estado fijado con trabajo ajeno en curso:** al cerrar seguían vivos dos `pytest` lanzados a las 03:43 y 03:49
+> (probablemente de la sesión del indicador nocturno, `local_cb5a3f1e`, que abrió el PR 88) y procesos de otros
+> proyectos. S16 no los lanzó ni los tocó. Revisa `gh pr list` y el PR 88 antes de creerle a esta tabla.
+>
+> Sesiones de S16: coordinadora "Goes S16: modo día VOLCAT y sitio SSEC" (sacada de "Goes v12" a pedido de
+> Nicolás); hijas S16b `local_29b52d40` (modo día, PR 89) y S16c `local_0b11c3d0` (auditoría, PR 86).
+> Notas y traspasos de las hijas en `D:\goes_notas\s16\`.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Traspaso S15 | En main | PR 84, `2699b20` |
+| 4a, sitio de VOLCAT: imagen `Ash_Probability` en la huella `event_idx` de los 60 cuadros | **BAJA** (pre-registrado, nominal y desfasado): VOLCAT colorea su huella (0,91 contra 0,00 del control BT11) pero de día pleno 0 de 30 cuadros con P ≥ 20 %; P de 90 a 100 % sólo al atardecer del 14-11. Georreferencia a 3,07 px del triángulo del volcán (umbral pre-registrado 2 px, no cumple, declarado) | **PR 85 abierto**, `docs/own_volcat/sitio_volcat/` (criterio `8f9190e` antes de medir) |
+| Panel térmico público de VOLCAT (Grafana, "Chillan, Nevados de") | CSV bajados con el sí de Nicolás: VRP GOES-Este mediana 8,3 MW, **43 % de cuadros ≥ 10 MW**; **30 marcas de ceniza** del 24-10 al 18-11 (los NetCDF sólo cubren 3); 67 % con salto de VRP a ≤ 1 h contra 51 % por azar a igual hora (p 0,03) | PR 85, `D:\goes_notas\s16\sitio\grafana\` |
+| 4b, modo día (S16b, H18) | Tablas de día **NO VALIDAN** contra Fuego 2018 (κ 0,002; 2 de 2.260 píxeles altos); no se aplicaron a Chillán. Tablas IR **validadas de día sobre tierra** (κ 1,000). La P alta de Fuego viene del objeto (99,8 %) y de `ash_probability_subset` (77 %) | **PR 89 abierto**, `docs/own_volcat/h18_modo_dia/`; paquete de Fuego 16 GB en `D:\goes_notas\s16\modo_dia\` |
+| 4c, auditoría PR 75 a 83 (S16c) | Ningún veredicto cambia; los "no separa" valen sólo en IR, de día, en tierra y con nuestro ε y β; "robusto" de la etapa 3 no podía fallar (cielos todos hacia el frío); ningún control positivo en régimen Chillán; nivel B nunca aprobado (κ 0,31) | **PR 86 abierto**, `docs/own_volcat/AUDITORIA_S15_CADENA.md`, `D:\goes_notas\s16\auditoria_s15_traspaso.md` |
+| 4d, indicador nocturno de calor 3,9 µm, fase A | **VALIDA** (V1 5/6, V2 0/144, V3 0/19, V4 retardo 1; Sangay 15/22). Revisado contra crudos por S16: `noches.csv` sale exacto de `cuadros.csv`; V3 da 0/21 recontado (no cambia) | **PR 87 fusionado** con `--match-head-commit 1f29e86`, merge `7972a82` |
+| Indicador nocturno, fase B (función, ficha SDA, tests, sin cablear) | **Abierto, sin revisar por S16**. Toca `src/process/vrp_nocturno.py`, `dashboard/map_helpers.py`, `docs/FICHA_SDA_GOES.md`, tests | PR 88, cabeza `98cb3c0` |
+| Worktrees de S15 | Quitados 7 (todos en main y limpios) y sus ramas locales; ~1 GB. Quedan 8 carpetas vacías bloqueadas por sesiones viejas | `git worktree list` |
+| main | `7972a82` en el remoto | `git ls-remote` al cerrar |
+| Disco | C: 15 GB libres, D: 20 GB | `df` al cerrar |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | Fusionar PR 85 (sitio VOLCAT) | sí / no | Sí: sólo docs y un script de análisis |
+| 2 | Fusionar PR 86 (auditoría) | sí / no | Sí: sólo un informe |
+| 3 | Fusionar PR 89 (modo día) | sí / no | Sí, después de que una sesión lo revise contra sus crudos como se hizo con el 87 |
+| 4 | PR 88 (indicador nocturno al código, con ficha SDA) | revisar y fusionar / esperar | Revisarlo en S17 antes de fusionar: es el único de la tanda que toca `src/` y `dashboard/` |
+| 5 | Correo a Pavolonis (plazo que fijaste: lunes 23-11) | enviar / esperar | Decidiste **esperar** el 22-11. Cuando se envíe, con las preguntas de §d |
+| 6 | ¿Probar con Fable el paso de objeto en Fuego? (pregunta tuya, §c) | sesión S17 con Fable / no | Sí, pero acotado: con el paquete de Fuego, que trae entradas y salidas intermedias, no con Chillán |
+| 7 | Archivar las sesiones terminadas de S15 y S16 (libera las 8 carpetas vacías) | sí / no | Sí |
+| 8 | Borrar el paquete de Fuego (16 GB en D:) | sí / no | No mientras siga la línea del paso de objeto (decisión 6) |
+
+### c. Lo aprendido
+
+- **Respuesta a tu pregunta "¿cómo es posible que no podamos lograr lo mismo que VOLCAT?"** (registrada aquí
+  para que no se pierda). Porque lo que decide en Chillán no es la física de píxel, que sí reprodujimos (tablas IR
+  exactas de noche sobre mar y de día sobre tierra), sino un paso que no está publicado: el objeto y la vía pluma.
+  Tres evidencias de S16: VOLCAT mismo publica P de píxel baja en la huella de Chillán (PR 85); en Fuego la P alta
+  viene del objeto y de `ash_probability_subset`, no de las tablas (PR 89); y el calor del cráter se asocia sólo de
+  forma moderada a las marcas de ceniza (p 0,03). Ese paso usa **estado entre cuadros** (seguimiento kd-tree,
+  `feature_age`, historial `volcat_history.hdf`), umbrales relajados por calor y posiblemente un clasificador
+  entrenado. Con entradas y salidas de un solo cuadro no se puede invertir: faltan observables, no inteligencia.
+- **¿Fable encontraría la pieza?** No por ser más capaz: si los datos no restringen la regla, ningún modelo la
+  deduce. Sí puede servir en un problema bien planteado: el paquete de Fuego trae, para 40 cuadros, entradas,
+  `diag_data`, `events`, `l2_data` con `Ash_Group_Id_2d` y `ash_probability_subset`, `history/volcat_history.hdf`
+  y `logs`. Ahí sí se puede intentar inferir cuándo un objeto pasa a P ≈ 1 y qué es `ash_probability_subset`,
+  con criterio pre-registrado y validación cruzada entre cuadros. Además el paquete se llama `...-volcat-code-ancil`:
+  **S16b sólo extrajo `reference_data/`; no se miró si el tar trae código** (SOSPECHA, ver §d). Si lo trae, se
+  lee, no se ejecuta, y eso vale más que cualquier inferencia.
+- **Antes de inferir la regla de un sistema ajeno, mirar si el autor publica su propia salida intermedia**
+  (regla general del workspace): la imagen `Ash_Probability` del sitio y el CSV del Grafana público respondieron
+  en horas lo que nueve PR intentaron reconstruir.
+- **Grafana público:** la API (`/api/ds/query`) la bloquea el clasificador de permisos; la vía que funciona es el
+  inspector del panel en Chrome ("Series joined by time", datos sin formato, Download CSV). Los archivos bajan como
+  `<panel>-data-as-joinbyfield-<fecha>.csv` (propio del proyecto).
+- **Un control "≤ 2 px de la georreferencia" contra un glifo con texto** se contamina con las letras: usar sólo la
+  componente conexa del triángulo (propio del proyecto).
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** VOLCAT publica P de píxel baja en la huella de Chillán de día (PR 85).
+- **CONFIRMADO:** las tablas de día, leídas por nosotros, no reproducen Fuego 2018 (PR 89); las IR sí, de día y en tierra.
+- **CONFIRMADO:** 30 marcas de ceniza de VOLCAT en Chillán del 24-10 al 18-11; 67 % con salto de VRP a ≤ 1 h
+  (51 % por azar a igual hora, p 0,03).
+- **CONFIRMADO:** el VRP de VOLCAT en Chillán tiene 43 % de cuadros ≥ 10 MW, del orden del 48 % nocturno propio de
+  H17. **SOSPECHA:** que el "0 de 3 cuadros de 10 MW" de H17 venga de leer `volcano_thermal_activity` del NetCDF,
+  que no sería la misma serie.
+- **SOSPECHA:** que el tar de Fuego (`...-volcat-code-ancil.tar.gz`, 40 GB) traiga código de VOLCAT además de
+  `reference_data/`. No verificado: el tar ya no está en disco.
+- **SOSPECHA:** que el pico de saltos de VRP a las 05 y 18 UTC sea en parte efecto del cambio día-noche del
+  algoritmo térmico.
+- **SOSPECHA (auditoría H-3):** que la "nube" de la etapa 3 en la huella (εtot 0,109, β 0,88) sea residuo de un cielo
+  de cumbre ~9 K más tibio.
+- Preguntas para Pavolonis cuando se envíe: (1) cómo decide `ASHPLUMEPUFF` y qué peso tiene el calor; (2) qué
+  asigna P ≈ 1 a una columna sin firma y qué es `ash_probability_subset`; (3) qué regla suma log-odds de día con
+  εtot ≥ 0,5; (4) permiso para archivar los eventos de Chillán.
+
+### e. Cerrado, no rehacer
+
+Todo lo de "## 0-prev9 e." más: "el hueco está en las tablas de día" (VOLCAT publica P baja, PR 85; tablas de día no
+validan en Fuego, κ 0,002, PR 89); la API de Grafana por script (bloqueada; usar el inspector en Chrome);
+el resultado provisorio "NO VALIDA" del indicador nocturno de las 03:14 (era caché a medias; el definitivo VALIDA).
+
+### f. Prompt para la próxima sesión (S17)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Esta es la sesión S17; titúlala
+"Goes S17: ..." y numera su traspaso como S17. Usa /retomar.
+
+1. Verifica antes de creer: git fetch; git ls-remote origin -h refs/heads/main (7972a82 o posterior);
+   gh pr list (al cerrar S16: 85, 86, 88, 89 abiertos y este traspaso).
+2. Lee CLAUDE.md, STATUS.md "## 0." (S16), docs/own_volcat/sitio_volcat/INFORME.md (PR 85),
+   docs/own_volcat/h18_modo_dia/INFORME.md (PR 89) y docs/own_volcat/AUDITORIA_S15_CADENA.md (PR 86).
+3. Antes de cada prueba, por escrito: ¿el régimen (día/noche, mar/tierra, versión) es el del instrumento?
+   y las dos preguntas de C:\Users\nmend\OneDrive\Escritorio\claude\GUIA_MAESTRA_AUDITORIAS.md §3.
+4. Trabajo, en orden:
+   a. Preguntar a Nicolás por las fusiones pendientes (85, 86, 89) y revisar el PR 88 contra sus crudos y
+      su ficha SDA antes de proponer fusionarlo (toca src/ y dashboard/).
+   b. Listar el contenido del tar de Fuego en SSEC
+      (bin.ssec.wisc.edu/pub/volcat/test_cases/fuego_goes16-fulldisk_june2018_r20260709-volcat-code-ancil.tar.gz)
+      sin bajarlo entero (tar -tz en flujo): ¿trae código? Si lo trae, leerlo (no ejecutarlo) buscando el
+      paso de objeto, ASHPLUMEPUFF y ash_probability_subset.
+   c. Si no hay código y Nicolás aprueba (decisión 6): sesión con Fable para inferir el paso de objeto en
+      Fuego con criterio pre-registrado y validación cruzada entre cuadros. Leer antes
+      C:\Users\nmend\OneDrive\Escritorio\claude\GUIA_PROMPTING_prompting-claude-fable-5-1.md.
+   d. Correo a Pavolonis: sólo si Nicolás lo pide (decidió esperar el 22-11).
+5. Reglas: español de Chile sin voseo ni guiones largos; rutas absolutas; no VIIRS; la carpeta principal
+   (rama audit/2026-11-previa-local) no se toca; docs/auditoria_2026-11 no se sube; eventos, tablas y
+   paquetes de SSEC no van al repo ni al Space; criterio commiteado antes de medir; control pareado por
+   BT11; huella = event_idx; todo lo grande y los temporales a D: (quedan 20 GB); fusionar sólo con el sí
+   de Nicolás para ESE PR y con --match-head-commit; cambio de lógica = ficha SDA en el mismo commit.
+6. Si la sesión no alcanza: /cierre al llegar a base + 250 mil tokens de contexto.
+```
+
+## 0-prev9. S15, cierre 2026-11-22 (PR 74 a 83 en main: la parte pública de VOLCAT, por píxel y por objeto, reproducida y validada en Mauna Loa; ninguna ve Chillán en modo IR; el modo día quedó SIN probar)
 
 > **Convención nueva (desde S15):** cada traspaso lleva el número de sesión en su encabezado y la sesión de
 > Claude se titula igual ("Goes S16: ..."). Este bloque es S15 (los 14 bloques anteriores no tenían número;

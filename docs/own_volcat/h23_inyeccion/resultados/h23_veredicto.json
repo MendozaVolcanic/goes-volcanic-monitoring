@@ -1,0 +1,4889 @@
+{
+ "control_positivo": {
+  "D1": true,
+  "D2": true,
+  "D3": true,
+  "D4": true,
+  "D5": true
+ },
+ "control_nulo_a": true,
+ "control_nulo_b_contiene_0_5": "24 de 24",
+ "celdas_e015_cumbre_B": [
+  {
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "auc": 0.565,
+   "lo": 0.544,
+   "hi": 0.618,
+   "sentido": "tibio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "auc": 0.607,
+   "lo": 0.52,
+   "hi": 0.695,
+   "sentido": "tibio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D3",
+   "auc": 0.44,
+   "lo": 0.373,
+   "hi": 0.487,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "auc": 0.585,
+   "lo": 0.569,
+   "hi": 0.63,
+   "sentido": "tibio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D5",
+   "auc": 0.667,
+   "lo": 0.59,
+   "hi": 0.764,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "auc": 0.559,
+   "lo": 0.524,
+   "hi": 0.621,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "auc": 0.773,
+   "lo": 0.657,
+   "hi": 0.887,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D3",
+   "auc": 0.58,
+   "lo": 0.521,
+   "hi": 0.648,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "auc": 0.578,
+   "lo": 0.519,
+   "hi": 0.68,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D5",
+   "auc": 0.79,
+   "lo": 0.683,
+   "hi": 0.906,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "auc": 0.661,
+   "lo": 0.584,
+   "hi": 0.767,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "auc": 0.926,
+   "lo": 0.814,
+   "hi": 0.983,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "FALSADA"
+  },
+  {
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D3",
+   "auc": 0.688,
+   "lo": 0.568,
+   "hi": 0.812,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "auc": 0.692,
+   "lo": 0.611,
+   "hi": 0.843,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D5",
+   "auc": 0.925,
+   "lo": 0.818,
+   "hi": 0.99,
+   "sentido": "frio",
+   "n": 1236,
+   "ndias": 11,
+   "categoria": "FALSADA"
+  },
+  {
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "auc": 0.573,
+   "lo": 0.542,
+   "hi": 0.656,
+   "sentido": "tibio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "auc": 0.66,
+   "lo": 0.558,
+   "hi": 0.763,
+   "sentido": "tibio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D3",
+   "auc": 0.408,
+   "lo": 0.308,
+   "hi": 0.469,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "auc": 0.599,
+   "lo": 0.552,
+   "hi": 0.692,
+   "sentido": "tibio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D5",
+   "auc": 0.684,
+   "lo": 0.577,
+   "hi": 0.796,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "auc": 0.545,
+   "lo": 0.504,
+   "hi": 0.602,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "auc": 0.727,
+   "lo": 0.618,
+   "hi": 0.845,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D3",
+   "auc": 0.564,
+   "lo": 0.516,
+   "hi": 0.634,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "auc": 0.541,
+   "lo": 0.491,
+   "hi": 0.61,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D5",
+   "auc": 0.74,
+   "lo": 0.61,
+   "hi": 0.864,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "auc": 0.648,
+   "lo": 0.582,
+   "hi": 0.748,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "auc": 0.91,
+   "lo": 0.847,
+   "hi": 0.965,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "FALSADA"
+  },
+  {
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D3",
+   "auc": 0.721,
+   "lo": 0.625,
+   "hi": 0.837,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "auc": 0.668,
+   "lo": 0.618,
+   "hi": 0.776,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D5",
+   "auc": 0.935,
+   "lo": 0.881,
+   "hi": 0.978,
+   "sentido": "frio",
+   "n": 1440,
+   "ndias": 11,
+   "categoria": "FALSADA"
+  },
+  {
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "auc": 0.527,
+   "lo": 0.476,
+   "hi": 0.563,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "auc": 0.675,
+   "lo": 0.597,
+   "hi": 0.761,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D3",
+   "auc": 0.522,
+   "lo": 0.477,
+   "hi": 0.577,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "auc": 0.523,
+   "lo": 0.479,
+   "hi": 0.557,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D5",
+   "auc": 0.644,
+   "lo": 0.559,
+   "hi": 0.753,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "auc": 0.744,
+   "lo": 0.603,
+   "hi": 0.845,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "auc": 0.884,
+   "lo": 0.793,
+   "hi": 0.953,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "FALSADA"
+  },
+  {
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D3",
+   "auc": 0.747,
+   "lo": 0.668,
+   "hi": 0.811,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "auc": 0.669,
+   "lo": 0.593,
+   "hi": 0.8,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D5",
+   "auc": 0.848,
+   "lo": 0.711,
+   "hi": 0.964,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "FALSADA"
+  },
+  {
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "auc": 0.826,
+   "lo": 0.621,
+   "hi": 0.938,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "NO CONCLUYENTE"
+  },
+  {
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "auc": 0.954,
+   "lo": 0.874,
+   "hi": 0.986,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "FALSADA"
+  },
+  {
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D3",
+   "auc": 0.945,
+   "lo": 0.881,
+   "hi": 0.977,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "FALSADA"
+  },
+  {
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "auc": 0.747,
+   "lo": 0.631,
+   "hi": 0.91,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "se sostiene"
+  },
+  {
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D5",
+   "auc": 0.902,
+   "lo": 0.749,
+   "hi": 0.991,
+   "sentido": "frio",
+   "n": 672,
+   "ndias": 9,
+   "categoria": "FALSADA"
+  }
+ ],
+ "n_falsadas": 9,
+ "n_no_concluyentes": 1,
+ "auc_max": 0.954,
+ "hi_max": 0.991,
+ "tramos_sin_dato": [
+  3
+ ],
+ "veredicto": "FALSADA en al menos un regimen con un detector operable",
+ "poblacion_C_falsadas": 12,
+ "poblacion_C_auc_max": 0.9783,
+ "e_min": [
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.69",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.55"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.74"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.74",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.29"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.86",
+   "e_pod1": "0.34"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.68",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.65",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.71"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.71"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.74",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.30"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.31"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.72",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.72",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.75",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.59"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.68",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.54",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.76",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.66"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.76",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.48",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.11",
+   "e_pod1": "0.22"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "0.37",
+   "e_pod1": "0.27"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.10",
+   "e_pod1": "0.71"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.27",
+   "e_pod1": "0.61"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.07",
+   "e_pod1": "0.14"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.20",
+   "e_pod1": "0.17"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.06",
+   "e_pod1": "0.40"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.07"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.20",
+   "e_pod1": "0.44"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.06",
+   "e_pod1": "0.11"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.15",
+   "e_pod1": "0.13"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.27"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.06"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.40",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.12",
+   "e_pod1": "0.19"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "0.23",
+   "e_pod1": "0.20"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.11",
+   "e_pod1": "0.77"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.25"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.21",
+   "e_pod1": "0.69"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.07",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.12",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.06",
+   "e_pod1": "0.42"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.13"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.15",
+   "e_pod1": "0.46"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.05",
+   "e_pod1": "0.09"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.09",
+   "e_pod1": "0.08"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.29"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.09"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.29",
+   "e_pod1": "0.85"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.08",
+   "e_pod1": "0.17"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "0.18",
+   "e_pod1": "0.20"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.10",
+   "e_pod1": "0.62"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.14"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.21",
+   "e_pod1": "0.64"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.06",
+   "e_pod1": "0.13"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.12",
+   "e_pod1": "0.14"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.08",
+   "e_pod1": "0.41"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.10"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.16",
+   "e_pod1": "0.47"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.11"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.10",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.06",
+   "e_pod1": "0.35"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.08"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.73",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.16",
+   "e_pod1": "0.23"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.18",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.39",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.09",
+   "e_pod1": "0.14"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.09",
+   "e_pod1": "0.61"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.27",
+   "e_pod1": "0.83"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.07",
+   "e_pod1": "0.11"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.07",
+   "e_pod1": "0.41"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.55",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.14",
+   "e_pod1": "0.17"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.13",
+   "e_pod1": "0.71"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.28",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.08",
+   "e_pod1": "0.10"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.07",
+   "e_pod1": "0.37"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.20",
+   "e_pod1": "0.68"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.06",
+   "e_pod1": "0.08"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.24"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.29",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.06",
+   "e_pod1": "0.13"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.09",
+   "e_pod1": "0.61"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.18",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.09"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.06",
+   "e_pod1": "0.38"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.14",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.08"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.27"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.51",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.12",
+   "e_pod1": "0.21"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.11",
+   "e_pod1": "0.72"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.29",
+   "e_pod1": "0.79"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.08",
+   "e_pod1": "0.13"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.07",
+   "e_pod1": "0.40"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.21",
+   "e_pod1": "0.63"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.06",
+   "e_pod1": "0.10"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.28"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.42",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.12",
+   "e_pod1": "0.18"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.11",
+   "e_pod1": "0.73"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.23",
+   "e_pod1": "0.69"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.07",
+   "e_pod1": "0.11"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.06",
+   "e_pod1": "0.39"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.16",
+   "e_pod1": "0.46"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.05",
+   "e_pod1": "0.08"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.26"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.32",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.07",
+   "e_pod1": "0.14"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.09",
+   "e_pod1": "0.60"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.22",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.10"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.07",
+   "e_pod1": "0.39"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.17",
+   "e_pod1": "0.72"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.08"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.05",
+   "e_pod1": "0.29"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.42",
+   "e_pod1": "0.62"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.10",
+   "e_pod1": "0.22"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "0.37",
+   "e_pod1": "0.27"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.09",
+   "e_pod1": "0.30"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.08"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.24",
+   "e_pod1": "0.35"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.07",
+   "e_pod1": "0.14"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.21",
+   "e_pod1": "0.17"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.06",
+   "e_pod1": "0.18"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.06"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.17",
+   "e_pod1": "0.26"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.05",
+   "e_pod1": "0.11"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.15",
+   "e_pod1": "0.13"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.13"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "<= 0.05"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.34",
+   "e_pod1": "0.65"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.11",
+   "e_pod1": "0.19"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "0.23",
+   "e_pod1": "0.19"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.09",
+   "e_pod1": "0.29"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.09"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.18",
+   "e_pod1": "0.35"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.07",
+   "e_pod1": "0.11"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.12",
+   "e_pod1": "0.11"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.17"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.06"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.13",
+   "e_pod1": "0.24"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.05",
+   "e_pod1": "0.08"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.09",
+   "e_pod1": "0.08"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "<= 0.05"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.19",
+   "e_pod1": "0.36"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.06",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "0.18",
+   "e_pod1": "0.18"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.09",
+   "e_pod1": "0.26"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.09"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.13",
+   "e_pod1": "0.25"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.09"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.13",
+   "e_pod1": "0.13"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.07",
+   "e_pod1": "0.18"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.07"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.11",
+   "e_pod1": "0.20"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.08"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.10",
+   "e_pod1": "0.10"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.14"
+  },
+  {
+   "terreno": "bajo",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.06"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.81",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.12",
+   "e_pod1": "0.80"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.76",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.40"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.83",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.79",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.09",
+   "e_pod1": "0.47"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.75",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.47"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.86",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.27",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.76",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.46"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.82",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.66",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.21",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.48",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.10",
+   "e_pod1": "0.43"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.69",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "0.73"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "A",
+   "tramo": 3,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.85",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.84",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.87",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.53",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.34",
+   "e_pod1": "0.86"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.17",
+   "e_pod1": "0.38"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.71",
+   "e_pod1": "0.67"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.82",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.16",
+   "e_pod1": "0.58"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.31",
+   "e_pod1": "0.84"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.08",
+   "e_pod1": "0.17"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.25",
+   "e_pod1": "0.27"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.27",
+   "e_pod1": "0.52"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.07",
+   "e_pod1": "0.17"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.68",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.51",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.58",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.25",
+   "e_pod1": "0.35"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.80",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.22",
+   "e_pod1": "0.74"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.34",
+   "e_pod1": "0.84"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.09",
+   "e_pod1": "0.14"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.25",
+   "e_pod1": "0.48"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.28",
+   "e_pod1": "0.43"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.08",
+   "e_pod1": "0.15"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.34",
+   "e_pod1": "0.73"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.43",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.22",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.10",
+   "e_pod1": "0.27"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.17",
+   "e_pod1": "0.21"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.40",
+   "e_pod1": "0.70"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.11",
+   "e_pod1": "0.60"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.13",
+   "e_pod1": "0.78"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.07",
+   "e_pod1": "0.17"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.09",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.23",
+   "e_pod1": "0.36"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.07",
+   "e_pod1": "0.48"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.77",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.60",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.20",
+   "e_pod1": "0.25"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.37",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.08",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.33",
+   "e_pod1": "0.47"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.64",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.56",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.24",
+   "e_pod1": "0.31"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.36",
+   "e_pod1": "0.85"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.08",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.32",
+   "e_pod1": "0.42"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.74",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.29",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.11",
+   "e_pod1": "0.31"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.55",
+   "e_pod1": "0.46"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.14",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.06",
+   "e_pod1": "0.15"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int18",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.27",
+   "e_pod1": "0.18"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.84",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.83",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.54",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.15",
+   "e_pod1": "0.31"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.76",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.30",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.07",
+   "e_pod1": "0.14"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.28",
+   "e_pod1": "0.48"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.67",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.50",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.23",
+   "e_pod1": "0.29"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.35",
+   "e_pod1": "0.86"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.08",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.28",
+   "e_pod1": "0.44"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.48",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.23",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.10",
+   "e_pod1": "0.34"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.43",
+   "e_pod1": "0.40"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.12",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.06",
+   "e_pod1": "0.19"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "B_int6",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.24",
+   "e_pod1": "0.19"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.78",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.84",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.57",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.34",
+   "e_pod1": "0.80"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.84",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.16",
+   "e_pod1": "0.32"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.70",
+   "e_pod1": "0.65"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.71",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.14",
+   "e_pod1": "0.43"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.27",
+   "e_pod1": "0.59"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.07",
+   "e_pod1": "0.15"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.24",
+   "e_pod1": "0.26"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.26",
+   "e_pod1": "0.50"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.06",
+   "e_pod1": "0.13"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "0.61",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "0.54",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.54",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.19",
+   "e_pod1": "0.32"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.78",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.86",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.19",
+   "e_pod1": "0.60"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.28",
+   "e_pod1": "0.53"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.08",
+   "e_pod1": "0.14"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.24",
+   "e_pod1": "0.46"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.26",
+   "e_pod1": "0.37"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "0.08",
+   "e_pod1": "0.12"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "e_auc": "0.30",
+   "e_pod1": "0.76"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D3",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "e_auc": "> 0.90",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D5",
+   "e_auc": "0.32",
+   "e_pod1": "> 0.90"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "e_auc": "0.15",
+   "e_pod1": "0.58"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "e_auc": "0.09",
+   "e_pod1": "0.27"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D3",
+   "e_auc": "0.17",
+   "e_pod1": "0.19"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "e_auc": "0.28",
+   "e_pod1": "0.49"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D5",
+   "e_auc": "0.08",
+   "e_pod1": "0.39"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "e_auc": "0.08",
+   "e_pod1": "0.32"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "e_auc": "0.06",
+   "e_pod1": "0.16"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D3",
+   "e_auc": "0.09",
+   "e_pod1": "0.11"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "e_auc": "0.15",
+   "e_pod1": "0.27"
+  },
+  {
+   "terreno": "cumbre",
+   "pob": "C",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D5",
+   "e_auc": "<= 0.05",
+   "e_pod1": "0.24"
+  }
+ ],
+ "senal_e015": [
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 3.0,
+   "contraste": -3.0127,
+   "dbt11": 0.4583,
+   "dbtd": 0.0525,
+   "etot_eq": -0.0136
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 3.0,
+   "contraste": -3.9283,
+   "dbt11": 0.5999,
+   "dbtd": 0.1006,
+   "etot_eq": -0.0178
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 3.0,
+   "contraste": 0.8499,
+   "dbt11": -0.127,
+   "dbtd": -0.148,
+   "etot_eq": 0.0034
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 3.0,
+   "contraste": 8.3207,
+   "dbt11": -1.2048,
+   "dbtd": -0.4259,
+   "etot_eq": 0.0289
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 3.0,
+   "contraste": 7.4355,
+   "dbt11": -1.0806,
+   "dbtd": -0.3769,
+   "etot_eq": 0.0261
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 3.0,
+   "contraste": 14.0832,
+   "dbt11": -1.9944,
+   "dbtd": -0.7018,
+   "etot_eq": 0.044
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 4.0,
+   "contraste": 3.2395,
+   "dbt11": -0.4787,
+   "dbtd": -0.2129,
+   "etot_eq": 0.014
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 4.0,
+   "contraste": 3.2094,
+   "dbt11": -0.4741,
+   "dbtd": -0.1982,
+   "etot_eq": 0.014
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 4.0,
+   "contraste": 7.4069,
+   "dbt11": -1.0742,
+   "dbtd": -0.4101,
+   "etot_eq": 0.0288
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 4.0,
+   "contraste": 14.6551,
+   "dbt11": -2.0624,
+   "dbtd": -0.6571,
+   "etot_eq": 0.0494
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 4.0,
+   "contraste": 13.7826,
+   "dbt11": -1.9471,
+   "dbtd": -0.6151,
+   "etot_eq": 0.0465
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 4.0,
+   "contraste": 20.4643,
+   "dbt11": -2.8184,
+   "dbtd": -0.9215,
+   "etot_eq": 0.0615
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 5.0,
+   "contraste": 8.5824,
+   "dbt11": -1.2355,
+   "dbtd": -0.4216,
+   "etot_eq": 0.0353
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 5.0,
+   "contraste": 10.0541,
+   "dbt11": -1.4379,
+   "dbtd": -0.4667,
+   "etot_eq": 0.0403
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 5.0,
+   "contraste": 13.8192,
+   "dbt11": -1.9443,
+   "dbtd": -0.6405,
+   "etot_eq": 0.0516
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 5.0,
+   "contraste": 20.7047,
+   "dbt11": -2.8343,
+   "dbtd": -0.8564,
+   "etot_eq": 0.0669
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 5.0,
+   "contraste": 19.7738,
+   "dbt11": -2.7175,
+   "dbtd": -0.8221,
+   "etot_eq": 0.0637
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 5.0,
+   "contraste": 27.0289,
+   "dbt11": -3.6157,
+   "dbtd": -1.1248,
+   "etot_eq": 0.0783
+  }
+ ],
+ "integracion_auc_e015": [
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "B": 0.6114,
+   "B_int18": 0.586,
+   "B_int6": 0.6105
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "B": 0.8716,
+   "B_int18": 0.7894,
+   "B_int6": 0.8559
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "B": 0.8758,
+   "B_int18": 0.7733,
+   "B_int6": 0.8591
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "B": 0.6835,
+   "B_int18": 0.6398,
+   "B_int6": 0.6785
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "B": 0.9517,
+   "B_int18": 0.8861,
+   "B_int6": 0.9385
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "B": 0.9472,
+   "B_int18": 0.8758,
+   "B_int6": 0.9319
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "B": 0.7416,
+   "B_int18": 0.6823,
+   "B_int6": 0.7312
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "B": 0.9759,
+   "B_int18": 0.9332,
+   "B_int6": 0.9658
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "B": 0.9656,
+   "B_int18": 0.9214,
+   "B_int6": 0.9553
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "B": 0.6559,
+   "B_int18": 0.6075,
+   "B_int6": 0.6405
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "B": 0.8572,
+   "B_int18": 0.8146,
+   "B_int6": 0.8554
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "B": 0.8617,
+   "B_int18": 0.8292,
+   "B_int6": 0.8614
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "B": 0.7421,
+   "B_int18": 0.685,
+   "B_int6": 0.7264
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "B": 0.9547,
+   "B_int18": 0.9064,
+   "B_int6": 0.9519
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "B": 0.9367,
+   "B_int18": 0.9328,
+   "B_int6": 0.9427
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "B": 0.8003,
+   "B_int18": 0.7462,
+   "B_int6": 0.79
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "B": 0.9818,
+   "B_int18": 0.9446,
+   "B_int6": 0.9791
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "B": 0.959,
+   "B_int18": 0.9656,
+   "B_int6": 0.9663
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "B": 0.6859,
+   "B_int18": 0.7196,
+   "B_int6": 0.6871
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "B": 0.9404,
+   "B_int18": 0.9401,
+   "B_int6": 0.9542
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "B": 0.875,
+   "B_int18": 0.8886,
+   "B_int6": 0.888
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "B": 0.743,
+   "B_int18": 0.7746,
+   "B_int6": 0.7435
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "B": 0.9777,
+   "B_int18": 0.9695,
+   "B_int6": 0.9866
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "B": 0.9237,
+   "B_int18": 0.9333,
+   "B_int6": 0.9331
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "B": 0.7848,
+   "B_int18": 0.811,
+   "B_int6": 0.7836
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "B": 0.9899,
+   "B_int18": 0.9796,
+   "B_int6": 0.9942
+  },
+  {
+   "terreno": "bajo",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "B": 0.9414,
+   "B_int18": 0.9484,
+   "B_int6": 0.9486
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D1",
+   "B": 0.5647,
+   "B_int18": 0.5593,
+   "B_int6": 0.5629
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D2",
+   "B": 0.6066,
+   "B_int18": 0.5965,
+   "B_int6": 0.6117
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 3.0,
+   "det": "D4",
+   "B": 0.585,
+   "B_int18": 0.5984,
+   "B_int6": 0.5901
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D1",
+   "B": 0.5587,
+   "B_int18": 0.5512,
+   "B_int6": 0.5602
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D2",
+   "B": 0.7726,
+   "B_int18": 0.7639,
+   "B_int6": 0.7974
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 4.0,
+   "det": "D4",
+   "B": 0.5777,
+   "B_int18": 0.5645,
+   "B_int6": 0.586
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D1",
+   "B": 0.661,
+   "B_int18": 0.6373,
+   "B_int6": 0.6609
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D2",
+   "B": 0.9258,
+   "B_int18": 0.9012,
+   "B_int6": 0.9378
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 0,
+   "z_km": 5.0,
+   "det": "D4",
+   "B": 0.6922,
+   "B_int18": 0.6782,
+   "B_int6": 0.6988
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D1",
+   "B": 0.5732,
+   "B_int18": 0.5761,
+   "B_int6": 0.576
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D2",
+   "B": 0.6603,
+   "B_int18": 0.6939,
+   "B_int6": 0.6897
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 3.0,
+   "det": "D4",
+   "B": 0.599,
+   "B_int18": 0.5982,
+   "B_int6": 0.603
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D1",
+   "B": 0.5448,
+   "B_int18": 0.5342,
+   "B_int6": 0.5402
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D2",
+   "B": 0.7273,
+   "B_int18": 0.7388,
+   "B_int6": 0.7437
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 4.0,
+   "det": "D4",
+   "B": 0.5407,
+   "B_int18": 0.5339,
+   "B_int6": 0.5373
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D1",
+   "B": 0.6485,
+   "B_int18": 0.6331,
+   "B_int6": 0.6436
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D2",
+   "B": 0.9096,
+   "B_int18": 0.9193,
+   "B_int6": 0.927
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 1,
+   "z_km": 5.0,
+   "det": "D4",
+   "B": 0.6685,
+   "B_int18": 0.6546,
+   "B_int6": 0.667
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D1",
+   "B": 0.5272,
+   "B_int18": 0.5473,
+   "B_int6": 0.5017
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D2",
+   "B": 0.6751,
+   "B_int18": 0.5445,
+   "B_int6": 0.6394
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 3.0,
+   "det": "D4",
+   "B": 0.5227,
+   "B_int18": 0.552,
+   "B_int6": 0.5004
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D1",
+   "B": 0.744,
+   "B_int18": 0.7033,
+   "B_int6": 0.7366
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D2",
+   "B": 0.884,
+   "B_int18": 0.8606,
+   "B_int6": 0.8728
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 4.0,
+   "det": "D4",
+   "B": 0.6693,
+   "B_int18": 0.6533,
+   "B_int6": 0.6646
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D1",
+   "B": 0.8262,
+   "B_int18": 0.8165,
+   "B_int6": 0.8303
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D2",
+   "B": 0.954,
+   "B_int18": 0.9374,
+   "B_int6": 0.9409
+  },
+  {
+   "terreno": "cumbre",
+   "tramo": 2,
+   "z_km": 5.0,
+   "det": "D4",
+   "B": 0.7473,
+   "B_int18": 0.7502,
+   "B_int6": 0.7506
+  }
+ ]
+}

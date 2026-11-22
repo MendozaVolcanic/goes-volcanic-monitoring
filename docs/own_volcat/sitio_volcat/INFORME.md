@@ -69,10 +69,20 @@ probabilidad baja. De día pleno no publica en ningún cuadro una probabilidad d
 ## Otras partes del sitio (tarea 4a, resto)
 
 - **Alertas (`/alert/`):** piden usuario registrado (redirige a `/auth/login`). No se creó cuenta.
-- **Panel térmico (`/thermal/`):** es un Grafana público por volcán. Guarda VRP total, z-score, marcas de
-  evento de ceniza, SO₂ y VCB, máximo de BT a 3,9 µm y ángulos. Es la serie de calor del cráter que H9 y H17
-  intentaron reconstruir. La consulta programática a su API fue bloqueada por permisos en esta sesión y no se
-  intentó por otra vía: decisión pendiente de Nicolás (mirarlo en el navegador o pedirlo en el correo).
+- **Panel térmico (`/thermal/`):** es un Grafana público por volcán (Chillán figura como
+  "Chillan, Nevados de"). Guarda VRP total, z-score, marcas de evento (salto de VRP, SO₂, ceniza, VCB), máximo
+  de BT a 3,9 µm, fondo a 11 µm y ángulos. La consulta programática a su API fue bloqueada por permisos; con
+  el sí de Nicolás se miró en el navegador el 22-11, sin bajar archivos. Leído en pantalla:
+  - **VRP de GOES-Este, 20-10 a 22-11:** entre ~1 y ~30 MW casi sin cortes, de día y de noche; los puntos LEO
+    van de ~10 a ~200 MW. VOLCAT tiene calor en el cráter de forma continua en todo el periodo.
+  - **Marcas de ceniza ("Ash Event"):** en muchos días, no sólo en los tres de los NetCDF bajados: 25, 26, 28,
+    29 y 30-10; 6, 7, 8, 10, 12, 13, 14, 15 y 18-11 (lectura del gráfico, días aproximados).
+  - **13 y 14-11, horas leídas en la ayuda emergente:** 13-11 06:17:31 ceniza con salto de VRP = 1 (no está en
+    los 60 NetCDF, que en el 13-11 empiezan a las 19:00); 13-11 19:21:17 ceniza y VCB con salto de VRP = 1;
+    14-11 12:48:36 ceniza con salto de VRP = 0. Dos de tres marcas de ceniza coinciden con un salto de VRP.
+  - **Salto de VRP ("VRP Jump Event")** aparece casi a diario en el periodo, así que no basta como gatillo por
+    sí solo.
+  Lo que no se pudo leer en pantalla (todas las horas, valores exactos) necesita bajar el CSV del panel.
 - **Altura, carga y radio:** las imágenes `Ash_Height`, `Ash_Loading` y `Ash_Reff` existen para los mismos
   cuadros (lista del sitio, desde el 22-10). Los NetCDF de evento ya traen sus percentiles, así que no se
   bajaron.

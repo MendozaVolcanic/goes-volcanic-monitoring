@@ -1,6 +1,8 @@
-r"""H23: inyeccion y recuperacion. Implementa el criterio_2026-11-22.md tal cual:
-linea base del mismo pixel (§4), detectores D1 a D5 (§5), poblaciones A, B y C y metricas por celda (§6),
-comprobaciones de instrumento I4 a I6 y controles (§7), y las secundarias S1 a S4 (§8).
+r"""H23: inyeccion y recuperacion. Implementa el criterio_2026-11-22.md con la enmienda post hoc 1
+(enmienda_posthoc_1_2026-11-22.md): escena despejada segun la mascara de nubes de NOAA en el terreno bajo del
+volcan (E1), linea base del mismo pixel con los otros dias despejados del bloque (E2), poblaciones A, B y C (E3),
+todos los dias del bloque como dias de prueba (E4); detectores D1 a D5 (§5), metricas por celda (§6),
+comprobaciones de instrumento I4 a I6 y controles (§7), y las secundarias S1 a S4 (§8) como en el criterio.
 
 Por que asi: la pregunta es cuanta ceniza hace falta para ganarle al fondo real de la cumbre. El fondo real se
 toma de los mismos pixeles en escenas sin inyectar; la capa se pinta con I' = (1 - e) I + e B(T_tope) sobre la
@@ -14,6 +16,7 @@ import glob
 import json
 import os
 import sys
+import warnings
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -31,13 +34,13 @@ EPS = [0.0, 0.05, 0.10, 0.15, 0.20, 0.30, 0.50, 0.90]
 ALTURAS = [3000.0, 4000.0, 5000.0]
 Z_CONTROL = 10000.0
 BETA, BETAS_SENS = 0.70, [0.55, 0.95]
-MIN_BASE, MIN_BTD = 15, 3
-UMBRAL_DESPEJADO, FRAC_DESPEJADO = -5.0, 0.80
+MIN_DIAS_REF = 3                                # dias despejados distintos que pide la linea base (E2)
+UMBRAL_DESPEJADO, FRAC_DESPEJADO = -5.0, 0.80   # D1 del oraculo (poblacion C); fraccion de terreno bajo despejado (E1)
 MIN_N, MIN_DIAS, NBOOT = 500, 8, 2000
 DET = ["D1", "D2", "D3", "D4", "D5"]
 ESPEJO = {"D1", "D2", "D4"}        # se evalua en los dos sentidos (criterio §5, "Signo")
 # Dias de prueba (indice de dia dentro del bloque) y dia excluido en Chillan (marca VCB del 22-10)
-PRUEBA = {"oct": (10, 32), "nov": (10, 20)}
+PRUEBA = {"oct": (0, 32), "nov": (0, 20)}        # E4: todos los dias del bloque
 EXCLUIDO = {("oct", "chillan"): [31]}
 FUERA_DE_BASE = {"oct": (31,), "nov": ()}     # dias del bloque que no entran a la linea base (22-10, marca VCB)
 EVENTOS = [("2026-11-13 19:00", "2026-11-13 21:00"), ("2026-11-14 12:40", "2026-11-14 13:40"),
@@ -49,9 +52,28 @@ rng = np.random.default_rng(23)
 def cargar(bloque):
     z = np.load(os.path.join(K.H23, f"cubo_{bloque}.npz"))
     co = {14: z["co14"], 15: z["co15"]}
-    r14 = z["rad14"].reshape(-1, NP_).astype("float64")
-    r15 = z["rad15"].reshape(-1, NP_).astype("float64")
-    return r14, r15, co, datetime.strptime(str(z["t0"]), "%Y-%m-%d")
+    return z["rad14"].reshape(-1, NP_), z["rad15"].reshape(-1, NP_), co, datetime.strptime(str(z["t0"]), "%Y-%m-%d")
+
+
+def cargar_acm(bloque, nt, t0):
+    """Mascara de nubes de NOAA (ACM de 4 niveles) por cuadro y pixel; 255 donde no hay archivo."""
+    f = os.path.join(K.H23, f"acm_{bloque}.npz")
+    if os.path.exists(f):
+        return np.load(f)["acm"]
+    acm = np.full((nt, NP_), 255, "uint8")
+    for i in range(nt):
+        g = os.path.join(K.H23, "acm", K.clave(t0 + timedelta(minutes=10 * i)) + ".npz")
+        if os.path.exists(g):
+            with np.load(g) as z:
+                acm[i] = z["acm"].ravel()
+    np.savez_compressed(f, acm=acm)
+    return acm
+
+
+def escena_despejada(volcan, acm):
+    """E1: por cuadro, True si al menos 80 % del terreno bajo del volcan esta despejado (ACM 0 o 1) segun NOAA."""
+    a = acm[:, grupos(volcan)["bajo"]]
+    return (a <= 1).mean(1) >= FRAC_DESPEJADO
 
 
 def cuantil_ordenado(S, q):
@@ -65,33 +87,32 @@ def cuantil_ordenado(S, q):
     return a + (b - a) * (pos - lo), n
 
 
-def linea_base(bt11, btd, t_ini, t_fin, dias_fuera=()):
-    """BT11_ref (percentil 90) y BTD_ref (mediana de las muestras despejadas) para los cuadros t_ini..t_fin-1.
-
-    Enmienda post hoc 1 (E1): la referencia de cada cuadro sale de TODOS los otros dias del bloque a la misma hora
-    (cuadro anterior, mismo y siguiente), no solo de los 10 dias anteriores. Con 10 dias, en un periodo muy
-    nublado, el percentil 90 caia en nube (comprobacion I5 de la primera corrida). No se usa el mismo dia ni los
-    dias de dias_fuera. Devuelve tambien el apoyo: cuantas muestras quedan a 2 K o menos de la referencia.
-    """
-    nt = t_fin - t_ini
-    ntot = bt11.shape[0]
-    ref = np.full((nt, NP_), np.nan, "float32")
-    refd = np.full((nt, NP_), np.nan, "float32")
-    apoyo = np.zeros((nt, NP_), "uint8")
+def linea_base(bt11, btd, despejada, dias_fuera=()):
+    """E2: BT11_ref y BTD_ref de cada pixel y cuadro = mediana a la misma hora (cuadro anterior, mismo y
+    siguiente) en los OTROS dias del bloque con la escena despejada. Pide al menos MIN_DIAS_REF dias distintos.
+    bt11, btd: (cuadros del bloque, pixeles). Devuelve tambien cuantos dias sostienen cada referencia."""
+    nt, npx = bt11.shape
+    ref = np.full((nt, npx), np.nan, "float32")
+    refd = np.full((nt, npx), np.nan, "float32")
+    ndias = np.zeros((nt, npx), "uint8")
+    nd = nt // 144
     with np.errstate(invalid="ignore"):
-        for i in range(nt):
-            t = t_ini + i
-            idx = [t + 144 * k + j for k in range(-ntot // 144, ntot // 144 + 1) if k != 0 for j in (-1, 0, 1)]
-            idx = [x for x in idx if 0 <= x < ntot and x // 144 not in dias_fuera]
-            S = bt11[idx]
-            r, n = cuantil_ordenado(np.sort(S, 0), 0.9)
-            r[n < MIN_BASE] = np.nan
-            cerca = S >= r - 2.0
-            Sd = np.where(cerca, btd[idx], np.nan)
-            rd, n2 = cuantil_ordenado(np.sort(Sd, 0), 0.5)
-            rd[n2 < MIN_BTD] = np.nan
-            ref[i], refd[i], apoyo[i] = r, rd, np.minimum(cerca.sum(0), 255)
-    return ref, refd, apoyo
+        for t in range(nt):
+            idx = np.array([t + 144 * k + j for k in range(-nd, nd + 1) if k != 0 for j in (-1, 0, 1)])
+            idx = idx[(idx >= 0) & (idx < nt)]
+            idx = idx[despejada[idx] & ~np.isin(idx // 144, dias_fuera)]
+            if len(np.unique(idx // 144)) < MIN_DIAS_REF:
+                continue
+            S, Sd = bt11[idx], btd[idx]
+            n = np.zeros(npx, int)
+            for d in np.unique(idx // 144):
+                n += np.isfinite(S[idx // 144 == d]).any(0)
+            r, _ = cuantil_ordenado(np.sort(S, 0), 0.5)
+            rd, _ = cuantil_ordenado(np.sort(Sd, 0), 0.5)
+            r[n < MIN_DIAS_REF] = np.nan
+            rd[n < MIN_DIAS_REF] = np.nan
+            ref[t], refd[t], ndias[t] = r, rd, n
+    return ref, refd, ndias
 
 
 def grupos(volcan):
@@ -228,24 +249,30 @@ def contexto(bloque, volcan, B):
     g = grupos(volcan)
     P = np.concatenate([g["cumbre"], g["bajo"]])
     terreno = np.array(["cumbre"] * len(g["cumbre"]) + ["bajo"] * len(g["bajo"]))
-    t_ini, t_fin = B["t_ini"], B["t_fin"]
-    sl = slice(t_ini, t_fin)
-    c = {"co": B["co"], "P": P, "terreno": terreno, "I14": B["r14"][sl][:, P], "I15": B["r15"][sl][:, P],
-         "ref11": B["ref"][:, P].astype("float64"), "refd": B["refd"][:, P].astype("float64")}
-    med1 = np.full(c["I14"].shape, np.nan); med2 = med1.copy(); desp = np.zeros(c["I14"].shape, bool)
-    with np.errstate(invalid="ignore"):
-        import warnings
+    anillos = [entorno(p) for p in P]
+    U = np.unique(np.concatenate([P] + anillos))        # objetivos y sus entornos: solo ahi se calcula la referencia
+    pos = {int(u): i for i, u in enumerate(U)}
+    iP = np.array([pos[int(p)] for p in P])
+    bt11, btd = B["bt11"][:, U], B["btd"][:, U]
+    F = escena_despejada(volcan, B["acm"])
+    ref, refd, ndias = linea_base(bt11, btd, F, FUERA_DE_BASE[bloque])
+    D1u, D2u = bt11 - ref, btd - refd
+    nt = bt11.shape[0]
+    c = {"co": B["co"], "P": P, "terreno": terreno, "U": U, "iP": iP, "F": F, "ref_U": ref, "refd_U": refd,
+         "I14": B["r14"][:, P].astype("float64"), "I15": B["r15"][:, P].astype("float64"),
+         "ref11": ref[:, iP].astype("float64"), "refd": refd[:, iP].astype("float64"), "ndias_ref": ndias[:, iP]}
+    med1 = np.full((nt, len(P)), np.nan); med2 = med1.copy()
+    with np.errstate(invalid="ignore"), warnings.catch_warnings():
         warnings.simplefilter("ignore", RuntimeWarning)
-        for j, p in enumerate(P):
-            e = entorno(p)
-            d1, d2 = B["D1"][:, e], B["D2"][:, e]
+        for j, e in enumerate(anillos):
+            ie = np.array([pos[int(x)] for x in e])
+            d1, d2 = D1u[:, ie], D2u[:, ie]
             nv = np.isfinite(d1).sum(1)
             m1 = np.nanmedian(d1, 1); m2 = np.nanmedian(d2, 1)
             m1[nv < 10] = np.nan; m2[nv < 10] = np.nan
             med1[:, j], med2[:, j] = m1, m2
-            desp[:, j] = (nv >= 10) & ((d1 >= UMBRAL_DESPEJADO).sum(1) >= FRAC_DESPEJADO * nv)
-    c["med1"], c["med2"], c["desp"] = med1, med2, desp
-    tiempos = [B["t0"] + timedelta(minutes=10 * (t_ini + i)) for i in range(t_fin - t_ini)]
+    c["med1"], c["med2"] = med1, med2
+    tiempos = [B["t0"] + timedelta(minutes=10 * i) for i in range(nt)]
     top, trop = gfs_tope(volcan, tiempos, ALTURAS + [Z_CONTROL])
     c["Ttop"], c["Ttrop"], c["tiempos"] = top, trop, tiempos
     for b in (14, 15):
@@ -253,14 +280,14 @@ def contexto(bloque, volcan, B):
         c[f"Btrop{b}"] = K.rad_de_bt(trop, B["co"][b])[:, None]
     c["Iref14"] = K.rad_de_bt(c["ref11"], B["co"][14])
     c["Iref15"] = K.rad_de_bt(c["ref11"] - c["refd"], B["co"][15])
-    nt = t_fin - t_ini
     c["dia"] = np.repeat(np.arange(nt) // 144, len(P)).reshape(nt, len(P))
     c["tramo"] = np.repeat((np.arange(nt) % 144) // 36, len(P)).reshape(nt, len(P))
     c["d0"] = detectores(c["I14"], c["I15"], c)
     val = np.isfinite(c["d0"]["D1"]) & np.isfinite(c["d0"]["D2"]) & np.isfinite(med1) & np.isfinite(med2)
     val &= np.isfinite(trop)[:, None] & np.isfinite(top).all(1)[:, None]
     for d in EXCLUIDO.get((bloque, volcan), []):
-        val &= c["dia"] != d - PRUEBA[bloque][0]
+        val &= c["dia"] != d
+    desp = F[:, None]
     c["pob"] = {"A": val, "B": val & desp, "C": val & desp & (c["d0"]["D1"] >= UMBRAL_DESPEJADO)}
     return c
 
@@ -362,37 +389,49 @@ def placebo(c, terr="cumbre"):
 
 def bloque_datos(bloque):
     r14, r15, co, t0 = cargar(bloque)
-    bt11 = K.bt_de_rad(r14, co[14]).astype("float32")
-    btd = (bt11 - K.bt_de_rad(r15, co[15])).astype("float32")
-    d0, d1 = PRUEBA[bloque]
-    t_ini, t_fin = d0 * 144, (d1 + 1) * 144
-    ref, refd, apoyo = linea_base(bt11, btd, t_ini, t_fin, FUERA_DE_BASE[bloque])
-    B = dict(r14=r14, r15=r15, co=co, t0=t0, t_ini=t_ini, t_fin=t_fin, ref=ref, refd=refd, apoyo=apoyo,
-             D1=bt11[t_ini:t_fin] - ref, D2=btd[t_ini:t_fin] - refd)
-    return B
+    bt11 = K.bt_de_rad(r14.astype("float64"), co[14]).astype("float32")
+    btd = (bt11 - K.bt_de_rad(r15.astype("float64"), co[15])).astype("float32")
+    return dict(r14=r14, r15=r15, co=co, t0=t0, bt11=bt11, btd=btd, acm=cargar_acm(bloque, r14.shape[0], t0))
 
 
-def instrumento(B, c):
-    """I4 a I6 del criterio, con el bloque de octubre y los grupos de Chillan."""
-    nd = (B["t_fin"] - B["t_ini"]) // 144
-    ref = B["ref"].reshape(nd, 144, NP_)
-    with np.errstate(invalid="ignore"):
-        import warnings
+def instrumento(c):
+    """I4 a I6 del criterio sobre la referencia nueva (enmienda E5), con los pixeles de Chillan que la tienen."""
+    nd = c["ref_U"].shape[0] // 144
+    ref = c["ref_U"].reshape(nd, 144, -1)
+    with np.errstate(invalid="ignore"), warnings.catch_warnings():
         warnings.simplefilter("ignore", RuntimeWarning)
-        r06 = np.nanmedian(ref[:, 36], 0); r09 = np.nanmedian(ref[:, 54], 0); r18 = np.nanmedian(ref[:, 108], 0)
-        refd = np.nanmedian(B["refd"])
+        r06, r09 = (np.nanmedian(ref[:, i], 0) for i in (36, 54))
+        refd = float(np.nanmedian(c["refd_U"]))
+        cum, baj = c["iP"][c["terreno"] == "cumbre"], c["iP"][c["terreno"] == "bajo"]
+        i4b = float(np.nanmedian(r06[cum]) - np.nanmedian(r06[baj]))
+        # Enmienda 2: I5 en la ultima hora (12 a 18 UTC) en que al menos la mitad del terreno bajo tiene referencia
+        h_tarde, r18 = None, np.full(ref.shape[2], np.nan)
+        for h in range(18, 11, -1):
+            r = np.nanmedian(ref[:, h * 6], 0)
+            if np.isfinite(r[baj]).mean() >= 0.5:
+                h_tarde, r18 = h, r
+                break
+        i5 = float(np.nanmedian(r18[baj] - r09[baj]))
+        i5c = float(np.nanmedian(r18[cum] - r09[cum]))
     ok = np.isfinite(r06)
-    g = grupos("chillan")
-    out = {"I4_corr_ref06_cota": float(np.corrcoef(r06[ok], ZDEM[ok])[0, 1]),
-           "I4_cumbre_menos_bajo_K": float(np.median(r06[g["cumbre"]]) - np.median(r06[g["bajo"]])),
-           "I5_bajo_18_menos_09_K": float(np.median(r18[g["bajo"]] - r09[g["bajo"]])),
-           "I5_cumbre_18_menos_09_K": float(np.median(r18[g["cumbre"]] - r09[g["cumbre"]])),
-           "I6_btd_ref_mediana_K": float(refd),
-           "frac_linea_base_valida": float(np.isfinite(B["ref"]).mean())}
+    F = c["F"].reshape(nd, 144)
+    out = {"I4_corr_ref06_cota": float(np.corrcoef(r06[ok], ZDEM[c["U"]][ok])[0, 1]) if ok.sum() > 10 else float("nan"),
+           "I4_pixeles_con_referencia": int(ok.sum()), "I4_pixeles": int(len(ok)),
+           "I4_cumbre_menos_bajo_K": i4b, "I5_hora_tarde_utc": h_tarde, "I5_bajo_tarde_menos_09_K": i5,
+           "I5_cumbre_tarde_menos_09_K": i5c,
+           "I6_btd_ref_mediana_K": refd,
+           "frac_cuadros_con_escena_despejada": float(c["F"].mean()),
+           "escena_despejada_por_tramo": {str(tr): dict(frac_cuadros=float(F[:, tr * 36:(tr + 1) * 36].mean()),
+                                                         dias_con_alguno=int(F[:, tr * 36:(tr + 1) * 36].any(1).sum()))
+                                          for tr in range(4)},
+           "frac_muestras_con_referencia": {t: float(np.isfinite(c["ref11"][:, c["terreno"] == t]).mean())
+                                            for t in ("cumbre", "bajo")},
+           "dias_que_sostienen_la_referencia_mediana": {t: float(np.median(c["ndias_ref"][:, c["terreno"] == t]))
+                                                        for t in ("cumbre", "bajo")}}
     falla = []
     if not out["I4_corr_ref06_cota"] <= -0.6 or not out["I4_cumbre_menos_bajo_K"] <= -5:
         falla.append("I4")
-    if not out["I5_bajo_18_menos_09_K"] >= 8:
+    if not out["I5_bajo_tarde_menos_09_K"] >= 8:
         falla.append("I5")
     if not -1 <= out["I6_btd_ref_mediana_K"] <= 4:
         falla.append("I6")
@@ -438,7 +477,7 @@ def main():
     filas = []
     B = bloque_datos("oct")
     c = contexto("oct", "chillan", B)
-    ins = instrumento(B, c)
+    ins = instrumento(c)
     ins["muestras_chillan"] = {f"{t}_{p}": int((c["pob"][p] & (c["terreno"] == t)[None, :]).sum())
                                for t in ("cumbre", "bajo") for p in "ABC"}
     ins["gfs_Ttop_mediana_K"] = dict(zip(["3km", "4km", "5km", "10km"], np.nanmedian(c["Ttop"], 0).round(2).tolist()))
@@ -448,13 +487,16 @@ def main():
     if ins["fallas"]:
         print("FALLA DE INSTRUMENTO: se corta sin veredicto")
         sys.exit(1)
+    if "--solo-instrumento" in sys.argv:
+        return
     celdas("oct", "chillan", c, [BETA], filas)
     print("celdas chillan oct", len(filas), flush=True)
     celdas("oct", "chillan", c, BETAS_SENS, filas, pobs=("B",), alturas=list(range(len(ALTURAS))))
     integrar("oct", "chillan", c, filas)
     ctl = {"placebo_cumbre": placebo(c, "cumbre"), "placebo_bajo": placebo(c, "bajo")}
     json.dump(ctl, open(os.path.join(RES, "h23_controles.json"), "w"), indent=1)
-    c_oct = c
+    c_oct = {k: c[k] for k in ("pob", "terreno", "tramo", "d0")}
+    del c
     for v in ("longavi", "antuco"):
         celdas("oct", v, contexto("oct", v, B), [BETA], filas, pobs=("B",), alturas=list(range(len(ALTURAS))))
         print("celdas", v, "oct", len(filas), flush=True)

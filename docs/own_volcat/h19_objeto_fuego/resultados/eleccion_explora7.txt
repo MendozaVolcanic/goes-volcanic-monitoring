@@ -1,0 +1,66 @@
+n=4773  con P<subset: 569
+valores de P mas repetidos entre los rebajados: [(0.0, 98), (0.0001, 81), (0.0061, 60), (0.0003, 40), (0.0018, 37), (0.986, 32), (0.8167, 25), (0.0002, 23), (0.9798, 19), (0.8228, 18), (0.0756, 17), (0.0879, 13), (0.0017, 13), (0.0008, 9), (0.001, 8)]  distintos: 40
+  AUC 0.060 ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_opaque           med rebajado 1.025  med igual 1.105
+  AUC 0.078 ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_tot_multi_nwp    med rebajado 1.106  med igual 1.257
+  AUC 0.105 ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_tot_multi_mid    med rebajado 1.022  med igual 1.105
+  AUC 0.109 ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_tot_multi_low    med rebajado 1.014  med igual 1.094
+  AUC 0.118 ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_tot              med rebajado 0.9964  med igual 1.073
+  AUC 0.154 ashprop_13_14_15_16_reff_tot                                   med rebajado 13.55  med igual 16.5
+  AUC 0.173 ashdet_pix_2_7_10_11_13_14_15_ash_probability_subset           med rebajado 1  med igual 1
+  AUC 0.190 ashdet_pix_2_7_10_11_13_14_15_cloud_beta_7311_tot              med rebajado 0.9674  med igual 1.028
+  AUC 0.761 ashprop_13_14_15_16_ash_top_temperature                        med rebajado 198.1  med igual 196.5
+  AUC 0.249 vcbdet_9_13_ashprop_cld_temp_diff                              med rebajado 1.662  med igual 1.74
+  AUC 0.261 ashdet_pix_2_7_10_11_13_14_15_lower_cloud_max_rh               med rebajado 122.4  med igual 122.6
+  AUC 0.731 ashprop_13_14_15_16_ash_top_pressure                           med rebajado 116.6  med igual 110.2
+  AUC 0.293 ashprop_13_14_15_16_ash_top_height                             med rebajado 15.72  med igual 16.08
+  AUC 0.310 ashprop_13_14_15_16_cloud_beta_8511_opaque                     med rebajado 1.09  med igual 1.1
+  AUC 0.310 ashdet_pix_2_7_10_11_13_14_15_cloud_beta_8511_tot              med rebajado 1.09  med igual 1.1
+  AUC 0.310 ashdet_pix_2_7_10_11_13_14_15_cloud_beta_8511_opaque           med rebajado 1.09  med igual 1.1
+  AUC 0.334 thermal_2_5_6_7_11_13_14_15_Thermal_Background_Trans_Mean      med rebajado 0.01  med igual 0.01
+  AUC 0.662 tracking_2_5_7_10_11_13_14_15_Btd8511_Time_Diff                med rebajado 0.1156  med igual -0.05608
+  AUC 0.346 p__pixel_relative_azimuth_angle                                med rebajado 15.47  med igual 20.27
+  AUC 0.346 vcbdet_9_13_ashprop_pixel_time                                 med rebajado 1.528e+09  med igual 1.528e+09
+  AUC 0.347 vcbdet_9_13_ashprop_object_area                                med rebajado 5024  med igual 6710
+  AUC 0.349 tracking_2_5_7_10_11_13_14_15_Btd1112_Time_Diff                med rebajado -0.1068  med igual 0.1804
+  AUC 0.349 tracking_2_5_7_10_11_13_14_15_ash_probability_IR_prev          med rebajado 1.081e-14  med igual 2.346e-11
+  AUC 0.350 p__channel_7_reflectance                                       med rebajado 3.13  med igual 3.373
+  AUC 0.633 p__channel_10_brightness_temperature_clear                     med rebajado 252.9  med igual 252.9
+profundidad 1: acierto 0.9105 (base 0.8748) sens 0.296 prec 0.965
+|--- ashdet_pix_2_7_10_11_13_14_15_ash_probability_subset <= 1.00
+|   |--- class: 1
+|--- ashdet_pix_2_7_10_11_13_14_15_ash_probability_subset >  1.00
+|   |--- class: 0
+
+profundidad 2: acierto 0.9105 (base 0.8748) sens 0.296 prec 0.965
+|--- ashdet_pix_2_7_10_11_13_14_15_ash_probability_subset <= 1.00
+|   |--- vcbdet_9_13_ashprop_cld_temp_diff <= 3.31
+|   |   |--- class: 1
+|   |--- vcbdet_9_13_ashprop_cld_temp_diff >  3.31
+|   |   |--- class: 1
+|--- ashdet_pix_2_7_10_11_13_14_15_ash_probability_subset >  1.00
+|   |--- ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_opaque <= 1.05
+|   |   |--- class: 0
+|   |--- ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_opaque >  1.05
+|   |   |--- class: 0
+
+profundidad 3: acierto 0.9480 (base 0.8748) sens 0.895 prec 0.743
+|--- ashdet_pix_2_7_10_11_13_14_15_ash_probability_subset <= 1.00
+|   |--- vcbdet_9_13_ashprop_cld_temp_diff <= 3.31
+|   |   |--- ashprop_13_14_15_16_ash_top_temperature <= 196.73
+|   |   |   |--- class: 1
+|   |   |--- ashprop_13_14_15_16_ash_top_temperature >  196.73
+|   |   |   |--- class: 1
+|   |--- vcbdet_9_13_ashprop_cld_temp_diff >  3.31
+|   |   |--- class: 1
+|--- ashdet_pix_2_7_10_11_13_14_15_ash_probability_subset >  1.00
+|   |--- ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_opaque <= 1.05
+|   |   |--- ashprop_13_14_15_16_cloud_beta_8511_opaque <= 1.10
+|   |   |   |--- class: 1
+|   |   |--- ashprop_13_14_15_16_cloud_beta_8511_opaque >  1.10
+|   |   |   |--- class: 0
+|   |--- ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_opaque >  1.05
+|   |   |--- tracking_2_5_7_10_11_13_14_15_displacement_distance_in_ash <= 15.57
+|   |   |   |--- class: 0
+|   |   |--- tracking_2_5_7_10_11_13_14_15_displacement_distance_in_ash >  15.57
+|   |   |   |--- class: 0
+

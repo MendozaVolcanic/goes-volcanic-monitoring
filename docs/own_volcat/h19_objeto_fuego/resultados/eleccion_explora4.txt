@@ -1,0 +1,62 @@
+171600 angulo de dispersion en V: min 154.2 max 154.2 ; frac >=90: 1.000
+173100 angulo de dispersion en V: min 153.0 max 153.0 ; frac >=90: 1.000
+174600 angulo de dispersion en V: min 151.4 max 151.4 ; frac >=90: 1.000
+180100 angulo de dispersion en V: min 149.4 max 149.5 ; frac >=90: 1.000
+181600 angulo de dispersion en V: min 147.1 max 147.2 ; frac >=90: 1.000
+183100 angulo de dispersion en V: min 144.6 max 144.7 ; frac >=90: 1.000
+184600 angulo de dispersion en V: min 141.9 max 142.0 ; frac >=90: 1.000
+190100 angulo de dispersion en V: min 139.1 max 139.2 ; frac >=90: 1.000
+191600 angulo de dispersion en V: min 136.1 max 136.2 ; frac >=90: 1.000
+193100 angulo de dispersion en V: min 133.0 max 133.2 ; frac >=90: 1.000
+194600 angulo de dispersion en V: min 129.9 max 130.1 ; frac >=90: 1.000
+200100 angulo de dispersion en V: min 126.7 max 126.9 ; frac >=90: 1.000
+201600 angulo de dispersion en V: min 123.5 max 123.6 ; frac >=90: 1.000
+
+conv candidata zona n  frac|dif|<=0.01  ambos_altos  discrepan_en_alto
++ IR                     V          11194  0.5641      0   4794
++ IR                     V sin ag    1928  0.9575      0     19
++ IR                     ag          9266  0.4823      0   4775
++ SW                     V          11194  0.5699      0   4788
++ SW                     V sin ag    1928  0.9782      0     15
++ SW                     ag          9266  0.4849      0   4773
++ sig(L0+vref)           V          11194  0.5723      0   4788
++ sig(L0+vref)           V sin ag    1928  0.9922      0     15
++ sig(L0+vref)           ag          9266  0.4849      0   4773
++ sig(logit(IR)+vref)    V          11194  0.5648      0   4788
++ sig(logit(IR)+vref)    V sin ag    1928  0.9601      0     15
++ sig(logit(IR)+vref)    ag          9266  0.4825      0   4773
++ sig(logit(SW)+vref)    V          11194  0.5699      0   4788
++ sig(logit(SW)+vref)    V sin ag    1928  0.9782      0     15
++ sig(logit(SW)+vref)    ag          9266  0.4849      0   4773
+- IR                     V          11194  0.5641      0   4794
+- IR                     V sin ag    1928  0.9575      0     19
+- IR                     ag          9266  0.4823      0   4775
+- SW                     V          11194  0.5699      0   4788
+- SW                     V sin ag    1928  0.9782      0     15
+- SW                     ag          9266  0.4849      0   4773
+- sig(L0+vref)           V          11194  0.5723      0   4788
+- sig(L0+vref)           V sin ag    1928  0.9922      0     15
+- sig(L0+vref)           ag          9266  0.4849      0   4773
+- sig(logit(IR)+vref)    V          11194  0.5648      0   4788
+- sig(logit(IR)+vref)    V sin ag    1928  0.9601      0     15
+- sig(logit(IR)+vref)    ag          9266  0.4825      0   4773
+- sig(logit(SW)+vref)    V          11194  0.5699      0   4788
+- sig(logit(SW)+vref)    V sin ag    1928  0.9782      0     15
+- sig(logit(SW)+vref)    ag          9266  0.4849      0   4773
+
+Dentro del grupo de ceniza, por casilla (bin eps, bin ref2): n, mediana subset, frac subset>=.5, vref (log-odds)
+  eps_bin 4 ref2_bin  1  n=    2  med subset 0.000247  frac alto 0.000  vref min 1.94 max 1.94  sig(L0+vref) 0.00694
+  eps_bin 4 ref2_bin  2  n=  157  med subset 2.39e-06  frac alto 0.000  vref min 0.32 max 0.32  sig(L0+vref) 0.00137
+  eps_bin 4 ref2_bin  3  n=  506  med subset 4.76e-06  frac alto 0.000  vref min -0.57 max -0.57  sig(L0+vref) 0.000567
+  eps_bin 4 ref2_bin  4  n=  786  med subset 1.93e-08  frac alto 0.000  vref min -1.67 max 0.04  sig(L0+vref) 0.000188
+  eps_bin 4 ref2_bin  5  n= 1101  med subset 4.56e-14  frac alto 0.000  vref min -2.02 max -0.13  sig(L0+vref) 0.000132
+  eps_bin 4 ref2_bin  6  n=  935  med subset 7.51e-15  frac alto 0.000  vref min -2.84 max -0.99  sig(L0+vref) 5.87e-05
+  eps_bin 4 ref2_bin  7  n=   84  med subset 3.1e-15  frac alto 0.000  vref min -3.73 max -3.73  sig(L0+vref) 2.41e-05
+  eps_bin 4 ref2_bin  8  n=    6  med subset 9.1e-16  frac alto 0.000  vref min -4.93 max -4.93  sig(L0+vref) 7.26e-06
+  eps_bin 5 ref2_bin  1  n=    3  med subset 1  frac alto 1.000  vref min 0.09 max 0.09  sig(L0+vref) 0.0011
+  eps_bin 5 ref2_bin  2  n=   79  med subset 1  frac alto 1.000  vref min -1.99 max -1.99  sig(L0+vref) 0.000137
+  eps_bin 5 ref2_bin  3  n= 1867  med subset 1  frac alto 1.000  vref min -4.80 max -2.95  sig(L0+vref) 5.23e-05
+  eps_bin 5 ref2_bin  4  n= 2824  med subset 1  frac alto 1.000  vref min -1.55 max 1.09  sig(L0+vref) 0.00296
+  eps_bin 5 ref2_bin  5  n=  749  med subset 3.66e-08  frac alto 0.000  vref min 0.46 max 0.46  sig(L0+vref) 0.00158
+  eps_bin 5 ref2_bin  6  n=  166  med subset 1.09e-18  frac alto 0.000  vref min -0.18 max -0.18  sig(L0+vref) 0.000835
+  eps_bin 5 ref2_bin  7  n=    1  med subset 9.28e-19  frac alto 0.000  vref min -2.08 max -2.08  sig(L0+vref) 0.000125

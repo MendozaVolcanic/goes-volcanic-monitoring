@@ -1,0 +1,100 @@
+[
+ {
+  "ep": "E1",
+  "H": 1320,
+  "con_cuadro": 8,
+  "anclado": 0,
+  "frac": 0.0
+ },
+ {
+  "ep": "E2",
+  "H": 920,
+  "con_cuadro": 9,
+  "anclado": 0,
+  "frac": 0.0
+ },
+ {
+  "ep": "E3",
+  "H": 1540,
+  "con_cuadro": 8,
+  "anclado": 0,
+  "frac": 0.0
+ },
+ {
+  "ep": "E4",
+  "H": 1740,
+  "con_cuadro": 18,
+  "anclado": 4,
+  "frac": 0.22
+ },
+ {
+  "ep": "E5",
+  "H": 2300,
+  "con_cuadro": 32,
+  "anclado": 4,
+  "frac": 0.12
+ },
+ {
+  "ep": "E6",
+  "H": 2000,
+  "con_cuadro": 8,
+  "anclado": 0,
+  "frac": 0.0
+ },
+ {
+  "ep": "E7",
+  "H": 960,
+  "con_cuadro": 8,
+  "anclado": 0,
+  "frac": 0.0
+ },
+ {
+  "ep": "E8",
+  "H": 1640,
+  "con_cuadro": 32,
+  "anclado": 0,
+  "frac": 0.0
+ },
+ {
+  "ep": "E9",
+  "H": 1320,
+  "con_cuadro": 8,
+  "anclado": 0,
+  "frac": 0.0
+ },
+ {
+  "ep": "E10",
+  "H": 2200,
+  "con_cuadro": 8,
+  "anclado": 1,
+  "frac": 0.12
+ },
+ {
+  "ep": "E11",
+  "H": 2440,
+  "con_cuadro": 8,
+  "anclado": 8,
+  "frac": 1.0
+ },
+ {
+  "ep": "E12",
+  "H": 2020,
+  "con_cuadro": 7,
+  "anclado": 7,
+  "frac": 1.0
+ },
+ {
+  "ep": "E13",
+  "H": 2400,
+  "con_cuadro": 11,
+  "anclado": 10,
+  "frac": 0.91
+ },
+ {
+  "ep": "E14",
+  "H": 400,
+  "con_cuadro": 8,
+  "anclado": 0,
+  "frac": 0.0
+ }
+]

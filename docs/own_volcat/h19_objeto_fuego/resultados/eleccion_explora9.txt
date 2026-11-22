@@ -1,0 +1,47 @@
+171600 (a) en ig: codigo5 0 | count_in_ash>0 0 | ambos 0 | prev_ig 0, codigo5 y prev_ig 0 ; fuera de ig: codigo5 0, count_in_ash>0 0 ; eps mediana c5 nan, c0 0.72
+   (b) objeto convectivo verdadero: [424] ; predicho por historia: -1 ; solapes>0: 0
+   (c) objetos de ceniza: sel 0, tocan 0, TP 0 FP 0 FN 0 ; pixeles FP 0 FN 0
+173100 (a) en ig: codigo5 0 | count_in_ash>0 7 | ambos 0 | prev_ig 2, codigo5 y prev_ig 0 ; fuera de ig: codigo5 0, count_in_ash>0 39 ; eps mediana c5 nan, c0 0.79
+   (b) objeto convectivo verdadero: [486] ; predicho por historia: 486 ; solapes>0: 1
+   (c) objetos de ceniza: sel 0, tocan 0, TP 0 FP 0 FN 0 ; pixeles FP 0 FN 0
+174600 (a) en ig: codigo5 21 | count_in_ash>0 84 | ambos 21 | prev_ig 24, codigo5 y prev_ig 4 ; fuera de ig: codigo5 0, count_in_ash>0 12 ; eps mediana c5 0.80, c0 0.81
+   (b) objeto convectivo verdadero: [538] ; predicho por historia: 538 ; solapes>0: 1
+   (c) objetos de ceniza: sel 7, tocan 7, TP 7 FP 0 FN 0 ; pixeles FP 0 FN 0
+180100 (a) en ig: codigo5 143 | count_in_ash>0 239 | ambos 143 | prev_ig 102, codigo5 y prev_ig 76 ; fuera de ig: codigo5 0, count_in_ash>0 22 ; eps mediana c5 0.84, c0 0.76
+   (b) objeto convectivo verdadero: [541] ; predicho por historia: 541 ; solapes>0: 1
+   (c) objetos de ceniza: sel 4, tocan 4, TP 4 FP 0 FN 0 ; pixeles FP 0 FN 0
+181600 (a) en ig: codigo5 267 | count_in_ash>0 381 | ambos 267 | prev_ig 207, codigo5 y prev_ig 160 ; fuera de ig: codigo5 0, count_in_ash>0 109 ; eps mediana c5 0.85, c0 0.81
+   (b) objeto convectivo verdadero: [547] ; predicho por historia: 547 ; solapes>0: 1
+   (c) objetos de ceniza: sel 4, tocan 3, TP 3 FP 0 FN 1 ; pixeles FP 0 FN 1
+183100 (a) en ig: codigo5 459 | count_in_ash>0 634 | ambos 459 | prev_ig 339, codigo5 y prev_ig 262 ; fuera de ig: codigo5 0, count_in_ash>0 33 ; eps mediana c5 0.87, c0 0.79
+   (b) objeto convectivo verdadero: [588] ; predicho por historia: 588 ; solapes>0: 1
+   (c) objetos de ceniza: sel 6, tocan 6, TP 6 FP 0 FN 0 ; pixeles FP 0 FN 0
+184600 (a) en ig: codigo5 643 | count_in_ash>0 1022 | ambos 643 | prev_ig 602, codigo5 y prev_ig 435 ; fuera de ig: codigo5 0, count_in_ash>0 34 ; eps mediana c5 0.91, c0 0.78
+   (b) objeto convectivo verdadero: [591] ; predicho por historia: 591 ; solapes>0: 1
+   (c) objetos de ceniza: sel 4, tocan 4, TP 4 FP 0 FN 0 ; pixeles FP 0 FN 0
+190100 (a) en ig: codigo5 1019 | count_in_ash>0 1153 | ambos 1019 | prev_ig 949, codigo5 y prev_ig 834 ; fuera de ig: codigo5 18, count_in_ash>0 320 ; eps mediana c5 0.93, c0 0.87
+   (b) objeto convectivo verdadero: [596] ; predicho por historia: 596 ; solapes>0: 6
+   (c) objetos de ceniza: sel 2, tocan 1, TP 1 FP 0 FN 1 ; pixeles FP 0 FN 1
+191600 (a) en ig: codigo5 1004 | count_in_ash>0 1189 | ambos 1004 | prev_ig 1041, codigo5 y prev_ig 906 ; fuera de ig: codigo5 5, count_in_ash>0 281 ; eps mediana c5 0.94, c0 0.87
+   (b) objeto convectivo verdadero: [527] ; predicho por historia: 527 ; solapes>0: 1
+   (c) objetos de ceniza: sel 6, tocan 3, TP 3 FP 0 FN 3 ; pixeles FP 0 FN 7
+193100 (a) en ig: codigo5 1162 | count_in_ash>0 1329 | ambos 1162 | prev_ig 1107, codigo5 y prev_ig 1003 ; fuera de ig: codigo5 2, count_in_ash>0 150 ; eps mediana c5 0.94, c0 0.85
+   (b) objeto convectivo verdadero: [569] ; predicho por historia: 569 ; solapes>0: 1
+   (c) objetos de ceniza: sel 2, tocan 1, TP 1 FP 0 FN 1 ; pixeles FP 0 FN 1
+194600 (a) en ig: codigo5 1222 | count_in_ash>0 1469 | ambos 1222 | prev_ig 1170, codigo5 y prev_ig 1071 ; fuera de ig: codigo5 0, count_in_ash>0 91 ; eps mediana c5 0.94, c0 0.83
+   (b) objeto convectivo verdadero: [541] ; predicho por historia: 541 ; solapes>0: 1
+   (c) objetos de ceniza: sel 7, tocan 6, TP 6 FP 0 FN 1 ; pixeles FP 0 FN 1
+200100 (a) en ig: codigo5 1375 | count_in_ash>0 1638 | ambos 1375 | prev_ig 1295, codigo5 y prev_ig 1180 ; fuera de ig: codigo5 2, count_in_ash>0 48 ; eps mediana c5 0.93, c0 0.82
+   (b) objeto convectivo verdadero: [540] ; predicho por historia: 540 ; solapes>0: 1
+   (c) objetos de ceniza: sel 3, tocan 3, TP 3 FP 0 FN 0 ; pixeles FP 0 FN 0
+201600 (a) en ig: codigo5 1496 | count_in_ash>0 1827 | ambos 1496 | prev_ig 1483, codigo5 y prev_ig 1299 ; fuera de ig: codigo5 0, count_in_ash>0 87 ; eps mediana c5 0.91, c0 0.82
+   (b) objeto convectivo verdadero: [500] ; predicho por historia: 500 ; solapes>0: 2
+   (c) objetos de ceniza: sel 3, tocan 3, TP 3 FP 0 FN 0 ; pixeles FP 0 FN 0
+
+(d) regla de pixel en eleccion: altos, sensibilidad, precision, cuadros con ambas >= 0.8
+  nula SW_IR                         altos 4334  sens 0.0000  prec 0.0000  cuadros ok 0 de 8
+  oscuro-opaco en V                  altos 4334  sens 1.0000  prec 0.9086  cuadros ok 7 de 8
+  oscuro-opaco en ag                 altos 4334  sens 0.9965  prec 0.9083  cuadros ok 7 de 8
+  oscuro-opaco y b1112op>1.05 en V   altos 4334  sens 0.8355  prec 1.0000  cuadros ok 4 de 8
+  oscuro-opaco y b1112op>1.00 en V   altos 4334  sens 0.9802  prec 0.9245  cuadros ok 8 de 8
+  identidad subset                   altos 4334  sens 1.0000  prec 0.9086  cuadros ok 7 de 8

@@ -1,0 +1,86 @@
+=== 171600  V=7 Vs=7 ag=0 ig=7 ag&ig=0 ag|ig=7  objA sel=0/452 pix=0  objI sel=1/986 pix=7
+  Jaccard: V~ag|ig 1.0000  V~ig 1.0000  V~ag 0.0000  Vs~V 1.0000  ag~listaA nan  ig~listaI 1.0000  ag~(listaA|listaI) 0.0000
+  ag dentro de: listaA 0.000, todosA 0.000, listaI 0.000, todosI 0.000 ; Ash_Object_Mask valores en ag: {} ; Ice_Object_Mask en ig: {1: 7}
+  [V n=7] P=subset 1.000  P=IR 1.000  P=SWIR 1.000  P=max(IR,SWIR) 1.000  P=Pvcb 0.000 | subset=IR 1.000 subset=SWIR 1.000 subset=max 1.000 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 1.000
+  [V&~ag n=7] P=subset 1.000  P=IR 1.000  P=SWIR 1.000  P=max(IR,SWIR) 1.000  P=Pvcb 0.000 | subset=IR 1.000 subset=SWIR 1.000 subset=max 1.000 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 1.000
+=== 173100  V=27 Vs=27 ag=0 ig=27 ag&ig=0 ag|ig=27  objA sel=0/545 pix=0  objI sel=1/1076 pix=27
+  Jaccard: V~ag|ig 1.0000  V~ig 1.0000  V~ag 0.0000  Vs~V 1.0000  ag~listaA nan  ig~listaI 1.0000  ag~(listaA|listaI) 0.0000
+  ag dentro de: listaA 0.000, todosA 0.000, listaI 0.000, todosI 0.000 ; Ash_Object_Mask valores en ag: {} ; Ice_Object_Mask en ig: {1: 27}
+  [V n=27] P=subset 1.000  P=IR 1.000  P=SWIR 1.000  P=max(IR,SWIR) 1.000  P=Pvcb 0.000 | subset=IR 1.000 subset=SWIR 1.000 subset=max 1.000 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 1.000
+  [V&~ag n=27] P=subset 1.000  P=IR 1.000  P=SWIR 1.000  P=max(IR,SWIR) 1.000  P=Pvcb 0.000 | subset=IR 1.000 subset=SWIR 1.000 subset=max 1.000 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 1.000
+=== 174600  V=125 Vs=125 ag=21 ig=125 ag&ig=21 ag|ig=125  objA sel=7/601 pix=21  objI sel=1/1128 pix=125
+  Jaccard: V~ag|ig 1.0000  V~ig 1.0000  V~ag 0.1680  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 1.0000  ag~(listaA|listaI) 0.1680
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 1.000, todosI 1.000 ; Ash_Object_Mask valores en ag: {5: 21} ; Ice_Object_Mask en ig: {1: 125}
+  [V n=125] P=subset 1.000  P=IR 0.952  P=SWIR 1.000  P=max(IR,SWIR) 0.952  P=Pvcb 0.000 | subset=IR 0.952 subset=SWIR 1.000 subset=max 0.952 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 1.000
+  [V&ag n=21] P=subset 1.000  P=IR 0.905  P=SWIR 1.000  P=max(IR,SWIR) 0.905  P=Pvcb 0.000 | subset=IR 0.905 subset=SWIR 1.000 subset=max 0.905 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 1.000
+  [V&~ag n=104] P=subset 1.000  P=IR 0.962  P=SWIR 1.000  P=max(IR,SWIR) 0.962  P=Pvcb 0.000 | subset=IR 0.962 subset=SWIR 1.000 subset=max 0.962 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 1.000
+=== 180100  V=265 Vs=265 ag=143 ig=266 ag&ig=143 ag|ig=266  objA sel=4/621 pix=143  objI sel=1/1101 pix=264
+  Jaccard: V~ag|ig 0.9962  V~ig 0.9962  V~ag 0.5396  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 0.9925  ag~(listaA|listaI) 0.5417
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 1.000, todosI 1.000 ; Ash_Object_Mask valores en ag: {5: 143} ; Ice_Object_Mask en ig: {0: 2, 1: 264}
+  [V n=265] P=subset 1.000  P=IR 0.883  P=SWIR 0.985  P=max(IR,SWIR) 0.883  P=Pvcb 0.000 | subset=IR 0.883 subset=SWIR 0.985 subset=max 0.883 subset=Pvcb 0.000 | alto: P 0.004 sub 0.004 IR 0.008 SW 0.000 vcb 0.992
+  [V&ag n=143] P=subset 1.000  P=IR 0.944  P=SWIR 1.000  P=max(IR,SWIR) 0.944  P=Pvcb 0.000 | subset=IR 0.944 subset=SWIR 1.000 subset=max 0.944 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.007 SW 0.000 vcb 1.000
+  [V&~ag n=122] P=subset 1.000  P=IR 0.811  P=SWIR 0.967  P=max(IR,SWIR) 0.811  P=Pvcb 0.000 | subset=IR 0.811 subset=SWIR 0.967 subset=max 0.811 subset=Pvcb 0.000 | alto: P 0.008 sub 0.008 IR 0.008 SW 0.000 vcb 0.984
+  [V&P>=.5 n=1] P=subset 1.000  P=IR 0.000  P=SWIR 0.000  P=max(IR,SWIR) 0.000  P=Pvcb 0.000 | subset=IR 0.000 subset=SWIR 0.000 subset=max 0.000 subset=Pvcb 0.000 | alto: P 1.000 sub 1.000 IR 0.000 SW 0.000 vcb 1.000
+=== 181600  V=385 Vs=385 ag=267 ig=385 ag&ig=267 ag|ig=385  objA sel=4/530 pix=267  objI sel=1/1079 pix=372
+  Jaccard: V~ag|ig 1.0000  V~ig 1.0000  V~ag 0.6935  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 0.9662  ag~(listaA|listaI) 0.6935
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 0.951, todosI 0.951 ; Ash_Object_Mask valores en ag: {5: 267} ; Ice_Object_Mask en ig: {0: 13, 1: 372}
+  [V n=385] P=subset 1.000  P=IR 0.930  P=SWIR 0.956  P=max(IR,SWIR) 0.930  P=Pvcb 0.000 | subset=IR 0.930 subset=SWIR 0.956 subset=max 0.930 subset=Pvcb 0.000 | alto: P 0.044 sub 0.044 IR 0.003 SW 0.000 vcb 0.966
+  [V&ag n=267] P=subset 1.000  P=IR 0.963  P=SWIR 0.989  P=max(IR,SWIR) 0.963  P=Pvcb 0.000 | subset=IR 0.963 subset=SWIR 0.989 subset=max 0.963 subset=Pvcb 0.000 | alto: P 0.011 sub 0.011 IR 0.004 SW 0.000 vcb 0.951
+  [V&~ag n=118] P=subset 1.000  P=IR 0.856  P=SWIR 0.881  P=max(IR,SWIR) 0.856  P=Pvcb 0.000 | subset=IR 0.856 subset=SWIR 0.881 subset=max 0.856 subset=Pvcb 0.000 | alto: P 0.119 sub 0.119 IR 0.000 SW 0.000 vcb 1.000
+  [V&P>=.5 n=17] P=subset 1.000  P=IR 0.000  P=SWIR 0.000  P=max(IR,SWIR) 0.000  P=Pvcb 0.000 | subset=IR 0.000 subset=SWIR 0.000 subset=max 0.000 subset=Pvcb 0.000 | alto: P 1.000 sub 1.000 IR 0.000 SW 0.000 vcb 1.000
+=== 183100  V=653 Vs=653 ag=482 ig=659 ag&ig=482 ag|ig=659  objA sel=6/528 pix=482  objI sel=1/1123 pix=656
+  Jaccard: V~ag|ig 0.9909  V~ig 0.9909  V~ag 0.7381  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 0.9954  ag~(listaA|listaI) 0.7348
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 1.000, todosI 1.000 ; Ash_Object_Mask valores en ag: {2: 23, 5: 459} ; Ice_Object_Mask en ig: {0: 3, 1: 656}
+  [V n=653] P=subset 0.986  P=IR 0.735  P=SWIR 0.750  P=max(IR,SWIR) 0.735  P=Pvcb 0.000 | subset=IR 0.726 subset=SWIR 0.741 subset=max 0.726 subset=Pvcb 0.000 | alto: P 0.250 sub 0.259 IR 0.003 SW 0.000 vcb 0.000
+  [V&ag n=482] P=subset 0.981  P=IR 0.654  P=SWIR 0.662  P=max(IR,SWIR) 0.654  P=Pvcb 0.000 | subset=IR 0.641 subset=SWIR 0.649 subset=max 0.641 subset=Pvcb 0.000 | alto: P 0.338 sub 0.351 IR 0.000 SW 0.000 vcb 0.000
+  [V&~ag n=171] P=subset 1.000  P=IR 0.965  P=SWIR 1.000  P=max(IR,SWIR) 0.965  P=Pvcb 0.000 | subset=IR 0.965 subset=SWIR 1.000 subset=max 0.965 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.012 SW 0.000 vcb 0.000
+  [V&P>=.5 n=163] P=subset 0.982  P=IR 0.000  P=SWIR 0.000  P=max(IR,SWIR) 0.000  P=Pvcb 0.000 | subset=IR 0.000 subset=SWIR 0.000 subset=max 0.000 subset=Pvcb 0.000 | alto: P 1.000 sub 1.000 IR 0.000 SW 0.000 vcb 0.000
+=== 184600  V=1039 Vs=1039 ag=747 ig=1058 ag&ig=747 ag|ig=1058  objA sel=4/435 pix=747  objI sel=1/1067 pix=1053
+  Jaccard: V~ag|ig 0.9820  V~ig 0.9820  V~ag 0.7190  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 0.9953  ag~(listaA|listaI) 0.7094
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 1.000, todosI 1.000 ; Ash_Object_Mask valores en ag: {2: 104, 5: 643} ; Ice_Object_Mask en ig: {0: 5, 1: 1053}
+  [V n=1039] P=subset 0.882  P=IR 0.663  P=SWIR 0.670  P=max(IR,SWIR) 0.663  P=Pvcb 0.000 | subset=IR 0.599 subset=SWIR 0.605 subset=max 0.599 subset=Pvcb 0.000 | alto: P 0.309 sub 0.395 IR 0.001 SW 0.000 vcb 0.000
+  [V&ag n=747] P=subset 0.835  P=IR 0.541  P=SWIR 0.541  P=max(IR,SWIR) 0.541  P=Pvcb 0.000 | subset=IR 0.451 subset=SWIR 0.451 subset=max 0.451 subset=Pvcb 0.000 | alto: P 0.430 sub 0.549 IR 0.000 SW 0.000 vcb 0.000
+  [V&~ag n=292] P=subset 1.000  P=IR 0.976  P=SWIR 1.000  P=max(IR,SWIR) 0.976  P=Pvcb 0.000 | subset=IR 0.976 subset=SWIR 1.000 subset=max 0.976 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.003 SW 0.000 vcb 0.000
+  [V&P>=.5 n=321] P=subset 0.894  P=IR 0.000  P=SWIR 0.000  P=max(IR,SWIR) 0.000  P=Pvcb 0.000 | subset=IR 0.000 subset=SWIR 0.000 subset=max 0.000 subset=Pvcb 0.000 | alto: P 1.000 sub 1.000 IR 0.000 SW 0.000 vcb 0.000
+=== 190100  V=1155 Vs=1155 ag=1064 ig=1155 ag&ig=1064 ag|ig=1155  objA sel=2/391 pix=1064  objI sel=1/1061 pix=931
+  Jaccard: V~ag|ig 1.0000  V~ig 1.0000  V~ag 0.9212  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 0.8061  ag~(listaA|listaI) 0.9391
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 0.810, todosI 0.833 ; Ash_Object_Mask valores en ag: {2: 45, 5: 1019} ; Ice_Object_Mask en ig: {0: 200, 1: 955}
+  [V n=1155] P=subset 0.881  P=IR 0.595  P=SWIR 0.596  P=max(IR,SWIR) 0.595  P=Pvcb 0.000 | subset=IR 0.519 subset=SWIR 0.520 subset=max 0.519 subset=Pvcb 0.000 | alto: P 0.400 sub 0.480 IR 0.000 SW 0.000 vcb 0.000
+  [V&ag n=1064] P=subset 0.870  P=IR 0.560  P=SWIR 0.561  P=max(IR,SWIR) 0.560  P=Pvcb 0.000 | subset=IR 0.478 subset=SWIR 0.479 subset=max 0.478 subset=Pvcb 0.000 | alto: P 0.434 sub 0.521 IR 0.000 SW 0.000 vcb 0.000
+  [V&~ag n=91] P=subset 1.000  P=IR 1.000  P=SWIR 1.000  P=max(IR,SWIR) 1.000  P=Pvcb 0.000 | subset=IR 1.000 subset=SWIR 1.000 subset=max 1.000 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 0.000
+  [V&P>=.5 n=462] P=subset 0.900  P=IR 0.000  P=SWIR 0.000  P=max(IR,SWIR) 0.000  P=Pvcb 0.000 | subset=IR 0.000 subset=SWIR 0.000 subset=max 0.000 subset=Pvcb 0.000 | alto: P 1.000 sub 1.000 IR 0.000 SW 0.000 vcb 0.000
+=== 191600  V=1189 Vs=1189 ag=1067 ig=1189 ag&ig=1067 ag|ig=1189  objA sel=6/398 pix=1067  objI sel=1/998 pix=1094
+  Jaccard: V~ag|ig 1.0000  V~ig 1.0000  V~ag 0.8974  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 0.9201  ag~(listaA|listaI) 0.8997
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 0.914, todosI 0.914 ; Ash_Object_Mask valores en ag: {2: 63, 5: 1004} ; Ice_Object_Mask en ig: {0: 95, 1: 1094}
+  [V n=1189] P=subset 0.941  P=IR 0.501  P=SWIR 0.502  P=max(IR,SWIR) 0.501  P=Pvcb 0.000 | subset=IR 0.460 subset=SWIR 0.461 subset=max 0.460 subset=Pvcb 0.000 | alto: P 0.489 sub 0.537 IR 0.000 SW 0.000 vcb 0.000
+  [V&ag n=1067] P=subset 0.934  P=IR 0.447  P=SWIR 0.448  P=max(IR,SWIR) 0.447  P=Pvcb 0.000 | subset=IR 0.401 subset=SWIR 0.402 subset=max 0.401 subset=Pvcb 0.000 | alto: P 0.545 sub 0.598 IR 0.000 SW 0.000 vcb 0.000
+  [V&~ag n=122] P=subset 1.000  P=IR 0.975  P=SWIR 0.975  P=max(IR,SWIR) 0.975  P=Pvcb 0.000 | subset=IR 0.975 subset=SWIR 0.975 subset=max 0.975 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 0.000
+  [V&P>=.5 n=581] P=subset 0.978  P=IR 0.000  P=SWIR 0.000  P=max(IR,SWIR) 0.000  P=Pvcb 0.000 | subset=IR 0.000 subset=SWIR 0.000 subset=max 0.000 subset=Pvcb 0.000 | alto: P 1.000 sub 1.000 IR 0.000 SW 0.000 vcb 0.000
+=== 193100  V=1331 Vs=1331 ag=1218 ig=1331 ag&ig=1218 ag|ig=1331  objA sel=2/360 pix=1218  objI sel=1/1011 pix=1243
+  Jaccard: V~ag|ig 1.0000  V~ig 1.0000  V~ag 0.9151  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 0.9339  ag~(listaA|listaI) 0.9179
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 0.931, todosI 0.931 ; Ash_Object_Mask valores en ag: {2: 56, 5: 1162} ; Ice_Object_Mask en ig: {0: 88, 1: 1243}
+  [V n=1331] P=subset 0.952  P=IR 0.495  P=SWIR 0.496  P=max(IR,SWIR) 0.495  P=Pvcb 0.000 | subset=IR 0.461 subset=SWIR 0.462 subset=max 0.461 subset=Pvcb 0.000 | alto: P 0.501 sub 0.538 IR 0.000 SW 0.000 vcb 0.000
+  [V&ag n=1218] P=subset 0.947  P=IR 0.448  P=SWIR 0.449  P=max(IR,SWIR) 0.448  P=Pvcb 0.000 | subset=IR 0.411 subset=SWIR 0.412 subset=max 0.411 subset=Pvcb 0.000 | alto: P 0.548 sub 0.588 IR 0.000 SW 0.000 vcb 0.000
+  [V&~ag n=113] P=subset 1.000  P=IR 1.000  P=SWIR 1.000  P=max(IR,SWIR) 1.000  P=Pvcb 0.000 | subset=IR 1.000 subset=SWIR 1.000 subset=max 1.000 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 0.000
+  [V&P>=.5 n=667] P=subset 0.978  P=IR 0.000  P=SWIR 0.000  P=max(IR,SWIR) 0.000  P=Pvcb 0.000 | subset=IR 0.000 subset=SWIR 0.000 subset=max 0.000 subset=Pvcb 0.000 | alto: P 1.000 sub 1.000 IR 0.000 SW 0.000 vcb 0.000
+=== 194600  V=1488 Vs=1488 ag=1269 ig=1488 ag&ig=1269 ag|ig=1488  objA sel=7/333 pix=1269  objI sel=1/1008 pix=1463
+  Jaccard: V~ag|ig 1.0000  V~ig 1.0000  V~ag 0.8528  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 0.9832  ag~(listaA|listaI) 0.8528
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 0.980, todosI 0.980 ; Ash_Object_Mask valores en ag: {2: 47, 5: 1222} ; Ice_Object_Mask en ig: {0: 25, 1: 1463}
+  [V n=1488] P=subset 0.956  P=IR 0.525  P=SWIR 0.525  P=max(IR,SWIR) 0.525  P=Pvcb 0.000 | subset=IR 0.487 subset=SWIR 0.487 subset=max 0.487 subset=Pvcb 0.000 | alto: P 0.473 sub 0.513 IR 0.000 SW 0.000 vcb 0.000
+  [V&ag n=1269] P=subset 0.949  P=IR 0.444  P=SWIR 0.444  P=max(IR,SWIR) 0.444  P=Pvcb 0.000 | subset=IR 0.399 subset=SWIR 0.399 subset=max 0.399 subset=Pvcb 0.000 | alto: P 0.555 sub 0.601 IR 0.000 SW 0.000 vcb 0.000
+  [V&~ag n=219] P=subset 1.000  P=IR 0.995  P=SWIR 0.995  P=max(IR,SWIR) 0.995  P=Pvcb 0.000 | subset=IR 0.995 subset=SWIR 0.995 subset=max 0.995 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 0.000
+  [V&P>=.5 n=704] P=subset 0.991  P=IR 0.000  P=SWIR 0.000  P=max(IR,SWIR) 0.000  P=Pvcb 0.000 | subset=IR 0.000 subset=SWIR 0.000 subset=max 0.000 subset=Pvcb 0.000 | alto: P 1.000 sub 1.000 IR 0.000 SW 0.000 vcb 0.000
+=== 200100  V=1675 Vs=1675 ag=1408 ig=1675 ag&ig=1408 ag|ig=1675  objA sel=3/290 pix=1408  objI sel=1/966 pix=1675
+  Jaccard: V~ag|ig 1.0000  V~ig 1.0000  V~ag 0.8406  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 1.0000  ag~(listaA|listaI) 0.8406
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 1.000, todosI 1.000 ; Ash_Object_Mask valores en ag: {2: 33, 5: 1375} ; Ice_Object_Mask en ig: {1: 1675}
+  [V n=1675] P=subset 0.961  P=IR 0.562  P=SWIR 0.562  P=max(IR,SWIR) 0.562  P=Pvcb 0.000 | subset=IR 0.534 subset=SWIR 0.535 subset=max 0.534 subset=Pvcb 0.000 | alto: P 0.430 sub 0.462 IR 0.000 SW 0.000 vcb 0.000
+  [V&ag n=1408] P=subset 0.953  P=IR 0.483  P=SWIR 0.483  P=max(IR,SWIR) 0.483  P=Pvcb 0.000 | subset=IR 0.450 subset=SWIR 0.450 subset=max 0.450 subset=Pvcb 0.000 | alto: P 0.512 sub 0.550 IR 0.000 SW 0.000 vcb 0.000
+  [V&~ag n=267] P=subset 1.000  P=IR 0.978  P=SWIR 0.981  P=max(IR,SWIR) 0.978  P=Pvcb 0.000 | subset=IR 0.978 subset=SWIR 0.981 subset=max 0.978 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 0.000
+  [V&P>=.5 n=721] P=subset 0.982  P=IR 0.000  P=SWIR 0.000  P=max(IR,SWIR) 0.000  P=Pvcb 0.000 | subset=IR 0.000 subset=SWIR 0.000 subset=max 0.000 subset=Pvcb 0.000 | alto: P 1.000 sub 1.000 IR 0.000 SW 0.000 vcb 0.000
+=== 201600  V=1855 Vs=1855 ag=1580 ig=1855 ag&ig=1580 ag|ig=1855  objA sel=3/286 pix=1580  objI sel=1/931 pix=1847
+  Jaccard: V~ag|ig 1.0000  V~ig 1.0000  V~ag 0.8518  Vs~V 1.0000  ag~listaA 1.0000  ig~listaI 0.9957  ag~(listaA|listaI) 0.8550
+  ag dentro de: listaA 1.000, todosA 1.000, listaI 0.999, todosI 0.999 ; Ash_Object_Mask valores en ag: {2: 84, 5: 1496} ; Ice_Object_Mask en ig: {0: 8, 1: 1847}
+  [V n=1855] P=subset 0.982  P=IR 0.604  P=SWIR 0.604  P=max(IR,SWIR) 0.604  P=Pvcb 0.000 | subset=IR 0.590 subset=SWIR 0.590 subset=max 0.590 subset=Pvcb 0.000 | alto: P 0.385 sub 0.402 IR 0.000 SW 0.000 vcb 0.000
+  [V&ag n=1580] P=subset 0.978  P=IR 0.544  P=SWIR 0.544  P=max(IR,SWIR) 0.544  P=Pvcb 0.000 | subset=IR 0.528 subset=SWIR 0.528 subset=max 0.528 subset=Pvcb 0.000 | alto: P 0.453 sub 0.472 IR 0.000 SW 0.000 vcb 0.000
+  [V&~ag n=275] P=subset 1.000  P=IR 0.945  P=SWIR 0.945  P=max(IR,SWIR) 0.945  P=Pvcb 0.000 | subset=IR 0.945 subset=SWIR 0.945 subset=max 0.945 subset=Pvcb 0.000 | alto: P 0.000 sub 0.000 IR 0.000 SW 0.000 vcb 0.000
+  [V&P>=.5 n=715] P=subset 0.996  P=IR 0.000  P=SWIR 0.000  P=max(IR,SWIR) 0.000  P=Pvcb 0.000 | subset=IR 0.000 subset=SWIR 0.000 subset=max 0.000 subset=Pvcb 0.000 | alto: P 1.000 sub 1.000 IR 0.000 SW 0.000 vcb 0.000

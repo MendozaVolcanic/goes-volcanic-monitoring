@@ -1,0 +1,9 @@
+candidata  n  frac|dif|<=0.01  sensibilidad(P>=.5)  precision
+subset                            11160  0.9490  1.0000  0.9089
+media3x3 (fuera=0)                11160  0.7327  0.9825  0.8927
+media3x3 (solo validos)           11160  0.7332  0.9841  0.8827
+media5x5 (solo validos)           11160  0.5706  0.9678  0.8453
+mediana3x3 (fuera=0)              11160  0.9352  0.9825  0.8927
+min3x3 (fuera=0)                  11160  0.8496  0.7270  0.8991
+min cruz (fuera=0)                11160  0.8758  0.8010  0.9012
+min(subset, media3x3 validos)     11160  0.8436  0.9841  0.9080

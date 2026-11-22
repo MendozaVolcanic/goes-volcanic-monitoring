@@ -1,0 +1,130 @@
+171600  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 186, 2: 646} | en ig {0: 7} | pixeles de ig que no estan en ningun objeto ASHOBJ: 7 de 7
+173100  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 148, 2: 902} | en ig {0: 27} | pixeles de ig que no estan en ningun objeto ASHOBJ: 27 de 27
+174600  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 129, 2: 946, 5: 21} | en ig {0: 104, 5: 21} | pixeles de ig que no estan en ningun objeto ASHOBJ: 104 de 125
+180100  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 123, 2: 1066, 5: 143} | en ig {0: 123, 5: 143} | pixeles de ig que no estan en ningun objeto ASHOBJ: 123 de 266
+181600  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 109, 2: 943, 5: 267} | en ig {0: 118, 5: 267} | pixeles de ig que no estan en ningun objeto ASHOBJ: 118 de 385
+183100  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 156, 2: 801, 5: 459} | en ig {0: 177, 2: 23, 5: 459} | pixeles de ig que no estan en ningun objeto ASHOBJ: 177 de 659
+184600  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 141, 2: 703, 5: 643} | en ig {0: 311, 2: 104, 5: 643} | pixeles de ig que no estan en ningun objeto ASHOBJ: 311 de 1058
+190100  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 98, 2: 581, 5: 1037} | en ig {0: 91, 2: 45, 5: 1019} | pixeles de ig que no estan en ningun objeto ASHOBJ: 91 de 1155
+191600  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 96, 2: 576, 5: 1009} | en ig {0: 122, 2: 63, 5: 1004} | pixeles de ig que no estan en ningun objeto ASHOBJ: 122 de 1189
+193100  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 98, 2: 529, 5: 1164} | en ig {0: 113, 2: 56, 5: 1162} | pixeles de ig que no estan en ningun objeto ASHOBJ: 113 de 1331
+194600  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 78, 2: 500, 5: 1222} | en ig {0: 219, 2: 47, 5: 1222} | pixeles de ig que no estan en ningun objeto ASHOBJ: 219 de 1488
+200100  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 73, 2: 416, 5: 1377} | en ig {0: 267, 2: 33, 5: 1375} | pixeles de ig que no estan en ningun objeto ASHOBJ: 267 de 1675
+201600  codigos Ash_Object_Mask: en objetos ASHOBJ {1: 80, 2: 473, 5: 1496} | en ig {0: 275, 2: 84, 5: 1496} | pixeles de ig que no estan en ningun objeto ASHOBJ: 275 de 1855
+
+== ASHOBJ: objetos 5770, seleccionados 48 (pixeles sel 9266 de 19435)
+  Bt14_Min                     sel: min 195 med 223 max 243 (nan 0) | no sel: p50 287 p99 298 max 305  | no sel >= min(sel): 5722
+  Btd_Bullseye_Count           sel: min 0 med 0 max 184 (nan 0) | no sel: p50 0 p99 4 max 25  | no sel >= min(sel): 5722
+  Cmask                        sel: min 3 med 3 max 3 (nan 0) | no sel: p50 3 p99 3 max 3  | no sel >= min(sel): 3896
+  Coherent_Btd_Time_Trend      sel: min 0 med 1 max 565 (nan 0) | no sel: p50 0 p99 0 max 12  | no sel >= min(sel): 5722
+  Dark_Pixel_Count             sel: min 0 med 0 max 764 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 5722
+  Emiss14_Tot_Median           sel: min 0.64 med 0.81 max 0.96 (nan 0) | no sel: p50 0.13 p99 0.29 max 0.92  | no sel >= min(sel): 50
+  Feature_Prob                 sel: min 9.67e-32 med 4.48e-15 max 0.000134 (nan 0) | no sel: p50 6.88e-05 p99 0.853 max 1  | no sel >= min(sel): 5716
+  Feature_Prob_IR              sel: min 3.06e-24 med 9.55e-10 max 1 (nan 0) | no sel: p50 9.01e-05 p99 0.146 max 0.988  | no sel >= min(sel): 5709
+  Feature_Prob_Loose           sel: min 9.67e-32 med 4.48e-15 max 0.000134 (nan 0) | no sel: p50 3.34e-05 p99 0.853 max 1  | no sel >= min(sel): 5716
+  Group_Id_Prev_Match          sel: min 1 med 1 max 1 (nan 25) | no sel: p50 1 p99 1 max 1  | no sel >= min(sel): 11
+  Growth_Rate_Anom_Bt14        sel: min nan med nan max nan (nan 48) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  Growth_Rate_Anom_Emiss14_Tot sel: min nan med nan max nan (nan 48) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  High_Cloud_Count             sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 5722
+  Latitude_Radiative_Center    sel: min 14.2 med 14.6 max 14.9 (nan 0) | no sel: p50 12.9 p99 21 max 21.1  | no sel >= min(sel): 2682
+  Local_Prob_Max_Pixel_Count   sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 5722
+  Longitude_Radiative_Center   sel: min -90.9 med -90.6 max -89.8 (nan 0) | no sel: p50 -90.2 p99 -84.5 max -84.5  | no sel >= min(sel): 2937
+  Max_Height                   sel: min 11.2 med 12.6 max 17.8 (nan 3) | no sel: p50 2.91 p99 5.53 max 16.1  | no sel >= min(sel): 29
+  New_Emission_Count           sel: min 0 med 0 max 1 (nan 0) | no sel: p50 0 p99 2 max 13  | no sel >= min(sel): 5722
+  Object_Id_Match              sel: min nan med nan max nan (nan 48) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  Probability_Mean             sel: min 0.0001 med 0.0001 max 1 (nan 0) | no sel: p50 0.141 p99 0.997 max 1  | no sel >= min(sel): 5722
+  Probability_Median           sel: min 0 med 0 max 1 (nan 0) | no sel: p50 0.08 p99 0.99 max 0.99  | no sel >= min(sel): 5722
+  Probability_Subset_Median    sel: min 0 med 0 max 1 (nan 0) | no sel: p50 0.045 p99 0.99 max 0.99  | no sel >= min(sel): 5722
+  Robust_Count_L1              sel: min 1 med 2 max 1.48e+03 (nan 0) | no sel: p50 0 p99 0 max 12  | no sel >= min(sel): 27
+  Robust_Count_L4              sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 5722
+  Robust_Neighbor_Count        sel: min 0 med 0 max 1.28e+03 (nan 0) | no sel: p50 0 p99 0 max 4  | no sel >= min(sel): 5722
+  Spectral_Time_Trend_Count    sel: min 0 med 1 max 562 (nan 0) | no sel: p50 1 p99 7 max 33  | no sel >= min(sel): 5722
+  Status                       sel: min nan med nan max nan (nan 48) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  Time_Trend_Count             sel: min 1 med 2 max 1.56e+03 (nan 0) | no sel: p50 1 p99 10.8 max 53  | no sel >= min(sel): 5722
+  Total_Area                   sel: min 4.56 med 9.19 max 7.15e+03 (nan 0) | no sel: p50 5 p99 47.3 max 229  | no sel >= min(sel): 3858
+  frac_Pir_alta                sel: min 0 med 0 max 0.00725 (nan 0) | no sel: p50 0 p99 1 max 1  | no sel >= min(sel): 5722
+  frac_ag                      sel: min 1 med 1 max 1 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 0
+  frac_aom1                    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 1 max 1  | no sel >= min(sel): 5722
+  frac_aom2                    sel: min 0 med 0 max 0.142 (nan 0) | no sel: p50 1 p99 1 max 1  | no sel >= min(sel): 5722
+  frac_aom3                    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 5722
+  frac_aom4                    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 5722
+  frac_aom5                    sel: min 0.858 med 1 max 1 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 13
+  frac_aom6                    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 5722
+  frac_aom7                    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 5722
+  frac_count_in_ash            sel: min 1 med 1 max 1 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 15
+  frac_eps90                   sel: min 0 med 0 max 1 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 5722
+  frac_ig                      sel: min 1 med 1 max 1 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 0
+  frac_iom                     sel: min 0 med 1 max 1 (nan 0) | no sel: p50 0 p99 1 max 1  | no sel >= min(sel): 5722
+  frac_prev_ag                 sel: min 0 med 0 max 1 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 5722
+  frac_prev_ig                 sel: min 0 med 0 max 1 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 5722
+  n                            sel: min 1 med 2 max 1.56e+03 (nan 0) | no sel: p50 1 p99 10.8 max 53  | no sel >= min(sel): 5722
+  regla frac_ig>=0.5       TP 48 FP 0 FN 0  prec 1.000 sens 1.000 | por pixeles: prec 1.000 sens 1.000
+  regla frac_ig>0          TP 48 FP 0 FN 0  prec 1.000 sens 1.000 | por pixeles: prec 1.000 sens 1.000
+  regla frac_prev_ig>=0.5  TP 18 FP 3 FN 30  prec 0.857 sens 0.375 | por pixeles: prec 1.000 sens 0.990
+  regla frac_prev_ag>0     TP 12 FP 2 FN 36  prec 0.857 sens 0.250 | por pixeles: prec 1.000 sens 0.990
+  regla frac_iom>=0.5      TP 39 FP 753 FN 9  prec 0.049 sens 0.812 | por pixeles: prec 0.882 sens 0.998
+
+== ICEOBJ: objetos 13535, seleccionados 13 (pixeles sel 10757 de 111305)
+  Bt14_Min                     sel: min 195 med 197 max 228 (nan 0) | no sel: p50 273 p99 295 max 297  | no sel >= min(sel): 13522
+  Btd_Bullseye_Count           sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  Cmask                        sel: min nan med nan max nan (nan 13) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  Coherent_Btd_Time_Trend      sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  Dark_Pixel_Count             sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  Emiss14_Tot_Median           sel: min 0.717 med 0.882 max 0.941 (nan 0) | no sel: p50 0.309 p99 0.814 max 0.917  | no sel >= min(sel): 925
+  Feature_Prob                 sel: min nan med nan max nan (nan 13) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  Feature_Prob_IR              sel: min nan med nan max nan (nan 13) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  Feature_Prob_Loose           sel: min nan med nan max nan (nan 13) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  Group_Id_Prev_Match          sel: min 1 med 1 max 1 (nan 2) | no sel: p50 1 p99 1 max 1  | no sel >= min(sel): 10
+  Growth_Rate_Anom_Bt14        sel: min -1.87 med -1.42 max 0.586 (nan 6) | no sel: p50 0.0511 p99 0.944 max 1.07  | no sel >= min(sel): 3632
+  Growth_Rate_Anom_Emiss14_Tot sel: min -0.634 med 1.14 max 2.09 (nan 6) | no sel: p50 -0.0628 p99 5.34 max 11.1  | no sel >= min(sel): 3246
+  High_Cloud_Count             sel: min 7 med 931 max 1.85e+03 (nan 0) | no sel: p50 0 p99 59 max 1.04e+03  | no sel >= min(sel): 1719
+  Latitude_Radiative_Center    sel: min 14.3 med 14.5 max 14.5 (nan 0) | no sel: p50 14.5 p99 20.1 max 20.5  | no sel >= min(sel): 6954
+  Local_Prob_Max_Pixel_Count   sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  Longitude_Radiative_Center   sel: min -90.9 med -90.7 max -90.4 (nan 0) | no sel: p50 -88.5 p99 -84.6 max -84.4  | no sel >= min(sel): 8730
+  Max_Height                   sel: min 11.8 med 16.1 max 16.5 (nan 0) | no sel: p50 5.07 p99 12.4 max 15  | no sel >= min(sel): 388
+  New_Emission_Count           sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  Object_Id_Match              sel: min 425 med 496 max 589 (nan 6) | no sel: p50 727 p99 1.08e+03 max 1.12e+03  | no sel >= min(sel): 1973
+  Probability_Mean             sel: min nan med nan max nan (nan 13) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  Probability_Median           sel: min nan med nan max nan (nan 13) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  Probability_Subset_Median    sel: min nan med nan max nan (nan 13) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): -1
+  Robust_Count_L1              sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  Robust_Count_L4              sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  Robust_Neighbor_Count        sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  Spectral_Time_Trend_Count    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  Status                       sel: min 1 med 1 max 1 (nan 12) | no sel: p50 nan p99 nan max nan  | no sel >= min(sel): 0
+  Time_Trend_Count             sel: min 7 med 931 max 1.85e+03 (nan 0) | no sel: p50 2 p99 84 max 1.04e+03  | no sel >= min(sel): 3087
+  Total_Area                   sel: min 32.3 med 4.28e+03 max 8.46e+03 (nan 0) | no sel: p50 9.22 p99 393 max 4.85e+03  | no sel >= min(sel): 2854
+  frac_Pir_alta                sel: min 0 med 0 max 0.00758 (nan 0) | no sel: p50 0 p99 1 max 1  | no sel >= min(sel): 13522
+  frac_ag                      sel: min 0 med 0.735 max 0.926 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 13522
+  frac_aom1                    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 13522
+  frac_aom2                    sel: min 0 med 0.0321 max 0.0988 (nan 0) | no sel: p50 0 p99 0.667 max 1  | no sel >= min(sel): 13522
+  frac_aom3                    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  frac_aom4                    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  frac_aom5                    sel: min 0 med 0.7 max 0.878 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 13522
+  frac_aom6                    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  frac_aom7                    sel: min 0 med 0 max 0 (nan 0) | no sel: p50 0 p99 0 max 0  | no sel >= min(sel): 13522
+  frac_count_in_ash            sel: min 0 med 0.978 max 1 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 13522
+  frac_eps90                   sel: min 0 med 0.471 max 0.724 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 13522
+  frac_ig                      sel: min 1 med 1 max 1 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 3
+  frac_iom                     sel: min 1 med 1 max 1 (nan 0) | no sel: p50 1 p99 1 max 1  | no sel >= min(sel): 13522
+  frac_prev_ag                 sel: min 0 med 0.432 max 0.835 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 13522
+  frac_prev_ig                 sel: min 0 med 0.571 max 0.917 (nan 0) | no sel: p50 0 p99 0 max 1  | no sel >= min(sel): 13522
+  n                            sel: min 7 med 931 max 1.85e+03 (nan 0) | no sel: p50 2 p99 84 max 1.04e+03  | no sel >= min(sel): 3087
+  regla frac_ig>=0.5       TP 13 FP 3 FN 0  prec 0.812 sens 1.000 | por pixeles: prec 0.998 sens 1.000
+  regla frac_ig>0          TP 13 FP 4 FN 0  prec 0.765 sens 1.000 | por pixeles: prec 0.996 sens 1.000
+  regla frac_prev_ig>=0.5  TP 9 FP 6 FN 4  prec 0.600 sens 0.692 | por pixeles: prec 0.998 sens 0.961
+  regla frac_prev_ag>0     TP 10 FP 4 FN 3  prec 0.714 sens 0.769 | por pixeles: prec 0.998 sens 0.985
+  regla frac_iom>=0.5      TP 13 FP 13522 FN 0  prec 0.001 sens 1.000 | por pixeles: prec 0.097 sens 1.000
+   cuadro 171600: sel n=[7.] frac_prev_ig=[0.] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 173100: sel n=[27.] frac_prev_ig=[0.074] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 174600: sel n=[125.] frac_prev_ig=[0.192] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 180100: sel n=[264.] frac_prev_ig=[0.379] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 181600: sel n=[372.] frac_prev_ig=[0.527] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 183100: sel n=[656.] frac_prev_ig=[0.514] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 184600: sel n=[1053.] frac_prev_ig=[0.571] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 190100: sel n=[931.] frac_prev_ig=[0.917] ; no sel con frac_prev_ig>0: 5 (max n 12.0)
+   cuadro 191600: sel n=[1094.] frac_prev_ig=[0.9] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 193100: sel n=[1243.] frac_prev_ig=[0.845] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 194600: sel n=[1463.] frac_prev_ig=[0.787] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 200100: sel n=[1675.] frac_prev_ig=[0.773] ; no sel con frac_prev_ig>0: 0 (max n 0)
+   cuadro 201600: sel n=[1847.] frac_prev_ig=[0.802] ; no sel con frac_prev_ig>0: 1 (max n 1.0)

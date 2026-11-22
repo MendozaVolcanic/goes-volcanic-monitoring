@@ -1,0 +1,21 @@
+221600 V=2904 altos=2  P!=subset 0 (P>subset 0)  P==IR 2132  P==SW 2116  P==max(IR,SW,subset) 2768
+   altos: logit(P)-logit(IR) [43.996 45.597 47.198 48.799 50.4  ]  logit(P)-logit(subset) [-21.893 -21.445 -20.997 -20.549 -20.101]
+   valores de P distintos 1 ; objetos 1 ; History_Flag_Det_Out altos {0: 2} bajos {0: 2902} ; Robust_Pixel_Flag altos {1: 2} bajos {0: 646, 1: 2256}
+   History_Flag_Det_In altos {1: 2} bajos {0: 646, 1: 1921, 3: 57, 4: 204, 8: 46, 9: 28} ; tendencia BTD(11-12) altos med 0.65 bajos med 0.04 ; IR previa altos med 1.15e-12 bajos med 3.9e-15
+223100 V=1773 altos=0  P!=subset 0 (P>subset 0)  P==IR 1311  P==SW 1301  P==max(IR,SW,subset) 1704
+224600 V=618 altos=25  P!=subset 44 (P>subset 44)  P==IR 446  P==SW 441  P==max(IR,SW,subset) 483
+   altos: logit(P)-logit(IR) [19.27  23.068 24.281 24.653 27.581]  logit(P)-logit(subset) [15.229 16.373 17.066 18.27  18.963]
+   valores de P distintos 13 ; objetos 1 ; History_Flag_Det_Out altos {0: 25} bajos {0: 593} ; Robust_Pixel_Flag altos {0: 5, 1: 20} bajos {0: 63, 1: 530}
+   History_Flag_Det_In altos {0: 5, 1: 11, 4: 8, 9: 1} bajos {0: 63, 1: 520, 3: 4, 4: 5, 9: 1} ; tendencia BTD(11-12) altos med -2.33 bajos med -0.45 ; IR previa altos med 1.35e-08 bajos med 1.23e-14
+230100 V=117 altos=25  P!=subset 45 (P>subset 45)  P==IR 58  P==SW 58  P==max(IR,SW,subset) 62
+   altos: logit(P)-logit(IR) [-2.963 19.161 23.402 24.615 27.852]  logit(P)-logit(subset) [16.373 16.414 17.066 18.27  18.963]
+   valores de P distintos 13 ; objetos 1 ; History_Flag_Det_Out altos {0: 25} bajos {0: 92} ; Robust_Pixel_Flag altos {0: 4, 1: 21} bajos {0: 12, 1: 80}
+   History_Flag_Det_In altos {0: 4, 1: 15, 3: 1, 4: 3, 7: 2} bajos {0: 12, 1: 77, 3: 3} ; tendencia BTD(11-12) altos med -3.47 bajos med -2.88 ; IR previa altos med 1.89e-08 bajos med 2.68e-15
+231600 V=12 altos=11  P!=subset 12 (P>subset 12)  P==IR 0  P==SW 0  P==max(IR,SW,subset) 0
+   altos: logit(P)-logit(IR) [-2.521 22.959 22.959 22.959 27.138]  logit(P)-logit(subset) [17.066 17.066 17.066 17.066 18.27 ]
+   valores de P distintos 4 ; objetos 1 ; History_Flag_Det_Out altos {0: 11} bajos {0: 1} ; Robust_Pixel_Flag altos {0: 7, 1: 4} bajos {1: 1}
+   History_Flag_Det_In altos {0: 7, 1: 4} bajos {1: 1} ; tendencia BTD(11-12) altos med -2.73 bajos med -2.58 ; IR previa altos med 1.79e-08 bajos med 2.26e-06
+233100 V=18 altos=12  P!=subset 17 (P>subset 17)  P==IR 0  P==SW 0  P==max(IR,SW,subset) 0
+   altos: logit(P)-logit(IR) [-2.911  4.761  6.602  7.972 23.201]  logit(P)-logit(subset) [ 4.562  7.589  8.598 10.083 17.066]
+   valores de P distintos 11 ; objetos 3 ; History_Flag_Det_Out altos {0: 12} bajos {0: 6} ; Robust_Pixel_Flag altos {0: 9, 1: 3} bajos {0: 5, 1: 1}
+   History_Flag_Det_In altos {0: 9, 4: 3} bajos {0: 5, 4: 1} ; tendencia BTD(11-12) altos med -3.14 bajos med -2.59 ; IR previa altos med 4.81e-07 bajos med 2.4e-07

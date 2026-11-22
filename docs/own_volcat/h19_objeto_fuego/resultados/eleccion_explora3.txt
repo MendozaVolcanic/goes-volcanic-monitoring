@@ -1,0 +1,76 @@
+=== 171600 V=7 ag=0  P!=subset 0 (P<subset 0, P>subset 0); en esos: P=SW 0, P=IR 0, P<0.5 0, subset>=0.5 0 ; codigos Ash_Object_Mask en diferencias {} ; en ag {} ; en V fuera de ag {0: 7}
+    [V sin ag] subset=SW 0.429 subset=IR 0.857 subset=max 0.429 subset>=.5 0.000 ; subset alto y SW<.5: 0
+=== 173100 V=27 ag=0  P!=subset 0 (P<subset 0, P>subset 0); en esos: P=SW 0, P=IR 0, P<0.5 0, subset>=0.5 0 ; codigos Ash_Object_Mask en diferencias {} ; en ag {} ; en V fuera de ag {0: 27}
+    [V sin ag] subset=SW 0.333 subset=IR 0.963 subset=max 0.333 subset>=.5 0.000 ; subset alto y SW<.5: 0
+=== 174600 V=125 ag=21  P!=subset 0 (P<subset 0, P>subset 0); en esos: P=SW 0, P=IR 0, P<0.5 0, subset>=0.5 0 ; codigos Ash_Object_Mask en diferencias {} ; en ag {5: 21} ; en V fuera de ag {0: 104}
+    [ag] subset=SW 0.238 subset=IR 0.762 subset=max 0.238 subset>=.5 0.000 ; subset alto y SW<.5: 0
+    [V sin ag] subset=SW 0.567 subset=IR 0.875 subset=max 0.567 subset>=.5 0.000 ; subset alto y SW<.5: 0
+=== 180100 V=265 ag=143  P!=subset 0 (P<subset 0, P>subset 0); en esos: P=SW 0, P=IR 0, P<0.5 0, subset>=0.5 0 ; codigos Ash_Object_Mask en diferencias {} ; en ag {5: 143} ; en V fuera de ag {0: 122}
+    [ag] subset=SW 0.734 subset=IR 0.909 subset=max 0.734 subset>=.5 0.000 ; subset alto y SW<.5: 0
+    [V sin ag] subset=SW 0.533 subset=IR 0.590 subset=max 0.533 subset>=.5 0.008 ; subset alto y SW<.5: 0
+=== 181600 V=385 ag=267  P!=subset 0 (P<subset 0, P>subset 0); en esos: P=SW 0, P=IR 0, P<0.5 0, subset>=0.5 0 ; codigos Ash_Object_Mask en diferencias {} ; en ag {5: 267} ; en V fuera de ag {0: 118}
+    [ag] subset=SW 0.783 subset=IR 0.895 subset=max 0.783 subset>=.5 0.011 ; subset alto y SW<.5: 3
+    [V sin ag] subset=SW 0.356 subset=IR 0.492 subset=max 0.356 subset>=.5 0.119 ; subset alto y SW<.5: 10
+=== 183100 V=653 ag=482  P!=subset 9 (P<subset 9, P>subset 0); en esos: P=SW 0, P=IR 1, P<0.5 6, subset>=0.5 9 ; codigos Ash_Object_Mask en diferencias {2: 2, 5: 7} ; en ag {2: 23, 5: 459} ; en V fuera de ag {0: 171}
+    [ag] subset=SW 0.537 subset=IR 0.616 subset=max 0.537 subset>=.5 0.351 ; subset alto y SW<.5: 169
+    [V sin ag] subset=SW 0.550 subset=IR 0.596 subset=max 0.550 subset>=.5 0.000 ; subset alto y SW<.5: 0
+=== 184600 V=1039 ag=747  P!=subset 123 (P<subset 123, P>subset 0); en esos: P=SW 0, P=IR 6, P<0.5 89, subset>=0.5 123 ; codigos Ash_Object_Mask en diferencias {2: 13, 5: 110} ; en ag {2: 104, 5: 643} ; en V fuera de ag {0: 292}
+    [ag] subset=SW 0.375 subset=IR 0.410 subset=max 0.375 subset>=.5 0.549 ; subset alto y SW<.5: 410
+    [V sin ag] subset=SW 0.606 subset=IR 0.634 subset=max 0.606 subset>=.5 0.000 ; subset alto y SW<.5: 0
+=== 190100 V=1155 ag=1064  P!=subset 138 (P<subset 138, P>subset 0); en esos: P=SW 0, P=IR 3, P<0.5 92, subset>=0.5 138 ; codigos Ash_Object_Mask en diferencias {2: 5, 5: 133} ; en ag {2: 45, 5: 1019} ; en V fuera de ag {0: 91}
+    [ag] subset=SW 0.339 subset=IR 0.352 subset=max 0.339 subset>=.5 0.521 ; subset alto y SW<.5: 554
+    [V sin ag] subset=SW 0.187 subset=IR 0.187 subset=max 0.187 subset>=.5 0.000 ; subset alto y SW<.5: 0
+=== 191600 V=1189 ag=1067  P!=subset 70 (P<subset 70, P>subset 0); en esos: P=SW 0, P=IR 0, P<0.5 57, subset>=0.5 70 ; codigos Ash_Object_Mask en diferencias {2: 5, 5: 65} ; en ag {2: 63, 5: 1004} ; en V fuera de ag {0: 122}
+    [ag] subset=SW 0.251 subset=IR 0.266 subset=max 0.251 subset>=.5 0.598 ; subset alto y SW<.5: 638
+    [V sin ag] subset=SW 0.566 subset=IR 0.566 subset=max 0.566 subset>=.5 0.000 ; subset alto y SW<.5: 0
+=== 193100 V=1331 ag=1218  P!=subset 64 (P<subset 64, P>subset 0); en esos: P=SW 0, P=IR 0, P<0.5 49, subset>=0.5 64 ; codigos Ash_Object_Mask en diferencias {2: 7, 5: 57} ; en ag {2: 56, 5: 1162} ; en V fuera de ag {0: 113}
+    [ag] subset=SW 0.250 subset=IR 0.250 subset=max 0.250 subset>=.5 0.588 ; subset alto y SW<.5: 716
+    [V sin ag] subset=SW 0.602 subset=IR 0.602 subset=max 0.602 subset>=.5 0.000 ; subset alto y SW<.5: 0
+=== 194600 V=1488 ag=1269  P!=subset 65 (P<subset 65, P>subset 0); en esos: P=SW 0, P=IR 0, P<0.5 59, subset>=0.5 65 ; codigos Ash_Object_Mask en diferencias {2: 6, 5: 59} ; en ag {2: 47, 5: 1222} ; en V fuera de ag {0: 219}
+    [ag] subset=SW 0.270 subset=IR 0.269 subset=max 0.268 subset>=.5 0.601 ; subset alto y SW<.5: 763
+    [V sin ag] subset=SW 0.790 subset=IR 0.790 subset=max 0.790 subset>=.5 0.000 ; subset alto y SW<.5: 0
+=== 200100 V=1675 ag=1408  P!=subset 66 (P<subset 66, P>subset 0); en esos: P=SW 0, P=IR 1, P<0.5 53, subset>=0.5 66 ; codigos Ash_Object_Mask en diferencias {2: 6, 5: 60} ; en ag {2: 33, 5: 1375} ; en V fuera de ag {0: 267}
+    [ag] subset=SW 0.332 subset=IR 0.332 subset=max 0.332 subset>=.5 0.550 ; subset alto y SW<.5: 774
+    [V sin ag] subset=SW 0.790 subset=IR 0.790 subset=max 0.790 subset>=.5 0.000 ; subset alto y SW<.5: 0
+=== 201600 V=1855 ag=1580  P!=subset 34 (P<subset 34, P>subset 0); en esos: P=SW 0, P=IR 0, P<0.5 31, subset>=0.5 34 ; codigos Ash_Object_Mask en diferencias {2: 1, 5: 33} ; en ag {2: 84, 5: 1496} ; en V fuera de ag {0: 275}
+    [ag] subset=SW 0.403 subset=IR 0.397 subset=max 0.397 subset>=.5 0.472 ; subset alto y SW<.5: 746
+    [V sin ag] subset=SW 0.629 subset=IR 0.633 subset=max 0.629 subset>=.5 0.000 ; subset alto y SW<.5: 0
+
+Arbol para subset>=0.5 dentro del grupo de ceniza. n=9266, positivos=4773, variables=122
+profundidad 1: acierto en cuadros impares de eleccion 0.9168 (base 0.5129)
+|--- p__channel_14_brightness_temperature <= 207.64
+|   |--- class: 1
+|--- p__channel_14_brightness_temperature >  207.64
+|   |--- class: 0
+
+profundidad 2: acierto en cuadros impares de eleccion 0.9803 (base 0.5129)
+|--- p__channel_14_brightness_temperature <= 207.64
+|   |--- p__channel_2_reflectance <= 50.01
+|   |   |--- class: 1
+|   |--- p__channel_2_reflectance >  50.01
+|   |   |--- class: 0
+|--- p__channel_14_brightness_temperature >  207.64
+|   |--- ashdet_pix_2_7_10_11_13_14_15_cloud_emissivity_ch14_tot <= 0.90
+|   |   |--- class: 0
+|   |--- ashdet_pix_2_7_10_11_13_14_15_cloud_emissivity_ch14_tot >  0.90
+|   |   |--- class: 0
+
+profundidad 3: acierto en cuadros impares de eleccion 0.9993 (base 0.5129)
+|--- p__channel_14_brightness_temperature <= 207.64
+|   |--- p__channel_2_reflectance <= 50.01
+|   |   |--- ashdet_pix_2_7_10_11_13_14_15_cloud_emissivity_ch14_tot <= 0.90
+|   |   |   |--- class: 0
+|   |   |--- ashdet_pix_2_7_10_11_13_14_15_cloud_emissivity_ch14_tot >  0.90
+|   |   |   |--- class: 1
+|   |--- p__channel_2_reflectance >  50.01
+|   |   |--- class: 0
+|--- p__channel_14_brightness_temperature >  207.64
+|   |--- vcbdet_9_13_ashprop_cloud_emissivity_ch14_tot <= 0.90
+|   |   |--- class: 0
+|   |--- vcbdet_9_13_ashprop_cloud_emissivity_ch14_tot >  0.90
+|   |   |--- p__channel_2_reflectance <= 49.98
+|   |   |   |--- class: 1
+|   |   |--- p__channel_2_reflectance >  49.98
+|   |   |   |--- class: 0
+
+importancias: [(np.float64(0.675), 'p__channel_14_brightness_temperature'), (np.float64(0.287), 'p__channel_2_reflectance'), (np.float64(0.023), 'vcbdet_9_13_ashprop_cloud_emissivity_ch14_tot'), (np.float64(0.014), 'ashdet_pix_2_7_10_11_13_14_15_cloud_emissivity_ch14_tot'), (np.float64(0.0), 'vcbdet_9_13_ashprop_pixel_time'), (np.float64(0.0), 'vcbdet_9_13_ashprop_object_median_emiss14_tot'), (np.float64(0.0), 'vcbdet_9_13_ashprop_object_area'), (np.float64(0.0), 'vcbdet_9_13_ashprop_ishighlevel')]

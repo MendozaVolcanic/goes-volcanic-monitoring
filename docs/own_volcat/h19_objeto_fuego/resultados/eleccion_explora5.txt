@@ -1,0 +1,20 @@
+Tabla 2x2 (grupo de ceniza x oscuro-opaco): n, frac subset>=.5, frac P>=.5
+  ag=True oscuro_opaco=True n=4773  subset alto 1.0000  P alta 0.9087  subset==IR 0.000 subset==SW 0.000
+  ag=True oscuro_opaco=False n=4493  subset alto 0.0000  P alta 0.0000  subset==IR 0.754 subset==SW 0.721
+  ag=False oscuro_opaco=True n=15  subset alto 1.0000  P alta 1.0000  subset==IR 0.000 subset==SW 0.000
+  ag=False oscuro_opaco=False n=1913  subset alto 0.0000  P alta 0.0000  subset==IR 0.654 subset==SW 0.606
+
+ag y oscuro-opaco: subset==1 exacto 4342 de 4773; subset<1: 431
+  cuantiles subset(<1): [1. 1. 1. 1. 1. 1. 1.]
+  logit(subset)-logit(IR): [25.253 25.253 39.543 47.358 51.365 62.483 62.483]
+  logit(subset)-logit(SW): [25.946 25.946 25.946 30.477 34.399 36.435 36.435]
+  IR en esos: [0. 0. 0. 0. 0. 0. 0.]  SW: [0. 0. 0. 0. 0. 0. 0.]
+  donde subset==1: IR cuantiles [0.         0.00000001 0.00093513]  SW [0.         0.00000041 0.00098775]
+
+ag y NO oscuro-opaco n=4493: logit(subset)-logit(IR): [-38.092 -16.817 -10.728   2.123   7.74   31.12   52.263]  -logit(SW): [-37.398 -23.794 -16.591  -5.064   6.149  16.231  22.567]
+  subset==SW 0.217 subset==IR 0.457 ; subset<min(IR,SW) 0.361 ; subset>max 0.409
+
+P != subset dentro de ag y oscuro-opaco: n=569 ; P cuantiles [0.    0.    0.    0.002 0.318 0.986 0.986]  subset [1. 1. 1. 1. 1. 1. 1.]
+  logit(P)-logit(IR) [-3.214  1.783  5.823 22.82  31.967 38.585 66.696]  logit(P)-logit(SW) [-5.397  2.476  4.882  8.496 16.207 21.235 30.59 ]
+  eps [0.919 0.931 0.953 0.964 0.972 0.978 1.   ]  ref2 [29.258 34.224 37.178 39.378 43.065 48.042 49.937]
+  P==IR 0.019  P==SW 0.000  P==0.5*(algo)? ; por cuadro: [  0   0   0   0   0   9 123 138  70  64  65  66  34]

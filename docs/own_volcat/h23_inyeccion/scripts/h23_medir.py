@@ -31,7 +31,7 @@ EPS = [0.0, 0.05, 0.10, 0.15, 0.20, 0.30, 0.50, 0.90]
 ALTURAS = [3000.0, 4000.0, 5000.0]
 Z_CONTROL = 10000.0
 BETA, BETAS_SENS = 0.70, [0.55, 0.95]
-N_BASE, MIN_BASE, MIN_BTD = 10, 15, 3
+MIN_BASE, MIN_BTD = 15, 3
 UMBRAL_DESPEJADO, FRAC_DESPEJADO = -5.0, 0.80
 MIN_N, MIN_DIAS, NBOOT = 500, 8, 2000
 DET = ["D1", "D2", "D3", "D4", "D5"]
@@ -39,6 +39,7 @@ ESPEJO = {"D1", "D2", "D4"}        # se evalua en los dos sentidos (criterio §5
 # Dias de prueba (indice de dia dentro del bloque) y dia excluido en Chillan (marca VCB del 22-10)
 PRUEBA = {"oct": (10, 32), "nov": (10, 20)}
 EXCLUIDO = {("oct", "chillan"): [31]}
+FUERA_DE_BASE = {"oct": (31,), "nov": ()}     # dias del bloque que no entran a la linea base (22-10, marca VCB)
 EVENTOS = [("2026-11-13 19:00", "2026-11-13 21:00"), ("2026-11-14 12:40", "2026-11-14 13:40"),
            ("2026-11-14 16:30", "2026-11-14 23:40"), ("2026-11-18 10:10", "2026-11-18 10:10")]
 rng = np.random.default_rng(23)
@@ -64,23 +65,33 @@ def cuantil_ordenado(S, q):
     return a + (b - a) * (pos - lo), n
 
 
-def linea_base(bt11, btd, t_ini, t_fin):
-    """BT11_ref (percentil 90) y BTD_ref (mediana de las muestras despejadas) para los cuadros t_ini..t_fin-1."""
+def linea_base(bt11, btd, t_ini, t_fin, dias_fuera=()):
+    """BT11_ref (percentil 90) y BTD_ref (mediana de las muestras despejadas) para los cuadros t_ini..t_fin-1.
+
+    Enmienda post hoc 1 (E1): la referencia de cada cuadro sale de TODOS los otros dias del bloque a la misma hora
+    (cuadro anterior, mismo y siguiente), no solo de los 10 dias anteriores. Con 10 dias, en un periodo muy
+    nublado, el percentil 90 caia en nube (comprobacion I5 de la primera corrida). No se usa el mismo dia ni los
+    dias de dias_fuera. Devuelve tambien el apoyo: cuantas muestras quedan a 2 K o menos de la referencia.
+    """
     nt = t_fin - t_ini
+    ntot = bt11.shape[0]
     ref = np.full((nt, NP_), np.nan, "float32")
     refd = np.full((nt, NP_), np.nan, "float32")
+    apoyo = np.zeros((nt, NP_), "uint8")
     with np.errstate(invalid="ignore"):
         for i in range(nt):
             t = t_ini + i
-            idx = [t - 144 * k + j for k in range(1, N_BASE + 1) for j in (-1, 0, 1)]
+            idx = [t + 144 * k + j for k in range(-ntot // 144, ntot // 144 + 1) if k != 0 for j in (-1, 0, 1)]
+            idx = [x for x in idx if 0 <= x < ntot and x // 144 not in dias_fuera]
             S = bt11[idx]
             r, n = cuantil_ordenado(np.sort(S, 0), 0.9)
             r[n < MIN_BASE] = np.nan
-            Sd = np.where(S >= r - 2.0, btd[idx], np.nan)
+            cerca = S >= r - 2.0
+            Sd = np.where(cerca, btd[idx], np.nan)
             rd, n2 = cuantil_ordenado(np.sort(Sd, 0), 0.5)
             rd[n2 < MIN_BTD] = np.nan
-            ref[i], refd[i] = r, rd
-    return ref, refd
+            ref[i], refd[i], apoyo[i] = r, rd, np.minimum(cerca.sum(0), 255)
+    return ref, refd, apoyo
 
 
 def grupos(volcan):
@@ -355,8 +366,8 @@ def bloque_datos(bloque):
     btd = (bt11 - K.bt_de_rad(r15, co[15])).astype("float32")
     d0, d1 = PRUEBA[bloque]
     t_ini, t_fin = d0 * 144, (d1 + 1) * 144
-    ref, refd = linea_base(bt11, btd, t_ini, t_fin)
-    B = dict(r14=r14, r15=r15, co=co, t0=t0, t_ini=t_ini, t_fin=t_fin, ref=ref, refd=refd,
+    ref, refd, apoyo = linea_base(bt11, btd, t_ini, t_fin, FUERA_DE_BASE[bloque])
+    B = dict(r14=r14, r15=r15, co=co, t0=t0, t_ini=t_ini, t_fin=t_fin, ref=ref, refd=refd, apoyo=apoyo,
              D1=bt11[t_ini:t_fin] - ref, D2=btd[t_ini:t_fin] - refd)
     return B
 

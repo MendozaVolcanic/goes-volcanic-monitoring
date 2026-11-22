@@ -22,8 +22,8 @@ LEVELS = [850, 750, 700, 650, 600, 550, 500, 400, 300, 250, 200]
 LATS = np.arange(-35.75, -38.0 - 1e-6, -0.25)       # 10 nodos
 LONS = np.arange(287.5, 289.75 + 1e-6, 0.25)        # 10 nodos (-72,5 a -70,25)
 SUELTOS = [("TMP", "tropopause"), ("HGT", "surface")]
-# Dias con inyeccion o con evento: 01-10 a 23-10 y 11-11 a 21-11 (mas el 00 UTC del dia siguiente)
-TRAMOS = [(datetime(2026, 10, 1), datetime(2026, 10, 24)), (datetime(2026, 11, 11), datetime(2026, 11, 22))]
+# Todos los dias de los dos bloques (enmienda 1, E3), mas el 00 UTC del dia siguiente
+TRAMOS = [(datetime(2026, 9, 21), datetime(2026, 10, 24)), (datetime(2026, 11, 1), datetime(2026, 11, 22))]
 
 
 def parse_idx(txt):

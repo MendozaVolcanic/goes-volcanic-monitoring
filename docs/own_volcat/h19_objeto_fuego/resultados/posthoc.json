@@ -1,0 +1,293 @@
+{
+ "fase_con_nube_convectiva": {
+  "cuadros": [
+   "203100",
+   "204600",
+   "210100",
+   "211600",
+   "213100",
+   "214600",
+   "220100"
+  ],
+  "C_principal": {
+   "TP": 2185,
+   "predichos": 2227,
+   "positivos": 2185,
+   "sens": 1.0,
+   "prec": 0.9811
+  },
+  "identidad_subset": {
+   "TP": 2185,
+   "predichos": 2227,
+   "positivos": 2185,
+   "sens": 1.0,
+   "prec": 0.9811
+  },
+  "altos": {
+   "n": 2185,
+   "P_igual_subset": 2178,
+   "P_igual_IR": 0,
+   "oscuro_opaco": 2185,
+   "IR_alta": 0,
+   "eps": [],
+   "ref2": [],
+   "btd": [],
+   "aom": {}
+  },
+  "objetos_ceniza_sel": {
+   "n": 152,
+   "eps_mediana_cuantiles": [
+    0.5655,
+    0.7252,
+    0.7764,
+    0.8215,
+    0.9047
+   ],
+   "tam_cuantiles": [
+    1.0,
+    1.0,
+    1.0,
+    3.25,
+    2034.0
+   ],
+   "Feature_Prob_cuantiles": [
+    8.05e-56,
+    2.77e-19,
+    1.21e-12,
+    1.0
+   ],
+   "codigo_Ash_Object_Mask_dominante": {
+    "5": 152
+   }
+  },
+  "historia_solape_grupo_anterior": {
+   "TP": 74,
+   "predichos": 81,
+   "positivos": 152,
+   "sens": 0.4868,
+   "prec": 0.9136
+  },
+  "historia_por_pixeles": {
+   "TP": 12451,
+   "predichos": 12468,
+   "positivos": 12594,
+   "sens": 0.9886,
+   "prec": 0.9986
+  },
+  "placebo_4_cuadros": {
+   "TP": 19,
+   "predichos": 25,
+   "positivos": 152,
+   "sens": 0.125,
+   "prec": 0.76
+  },
+  "seguimiento_kd_count_in_ash": {
+   "TP": 152,
+   "predichos": 172,
+   "positivos": 152,
+   "sens": 1.0,
+   "prec": 0.8837
+  }
+ },
+ "fase_sin_nube_convectiva": {
+  "cuadros": [
+   "221600",
+   "223100",
+   "224600",
+   "230100",
+   "231600",
+   "233100"
+  ],
+  "C_principal": {
+   "TP": 2,
+   "predichos": 2,
+   "positivos": 75,
+   "sens": 0.0267,
+   "prec": 1.0
+  },
+  "identidad_subset": {
+   "TP": 4,
+   "predichos": 4,
+   "positivos": 75,
+   "sens": 0.0533,
+   "prec": 1.0
+  },
+  "altos": {
+   "n": 75,
+   "P_igual_subset": 2,
+   "P_igual_IR": 0,
+   "oscuro_opaco": 2,
+   "IR_alta": 13,
+   "eps": [
+    0.2595,
+    0.5293,
+    0.5476,
+    0.5708,
+    0.6043
+   ],
+   "ref2": [
+    17.7419,
+    54.6458,
+    62.7748,
+    70.3474,
+    92.2546
+   ],
+   "btd": [
+    0.9534,
+    1.1414,
+    1.2119,
+    1.3395,
+    2.1586
+   ],
+   "aom": {
+    "2": 25,
+    "5": 48
+   }
+  },
+  "objetos_ceniza_sel": {
+   "n": 100,
+   "eps_mediana_cuantiles": [
+    0.2659,
+    0.7165,
+    0.7685,
+    0.837,
+    0.9009
+   ],
+   "tam_cuantiles": [
+    1.0,
+    1.0,
+    3.0,
+    8.0,
+    2215.0
+   ],
+   "Feature_Prob_cuantiles": [
+    1.96e-48,
+    2.28e-17,
+    2.42e-12,
+    1.0
+   ],
+   "codigo_Ash_Object_Mask_dominante": {
+    "5": 98,
+    "2": 2
+   }
+  },
+  "historia_solape_grupo_anterior": {
+   "TP": 76,
+   "predichos": 135,
+   "positivos": 100,
+   "sens": 0.76,
+   "prec": 0.563
+  },
+  "historia_por_pixeles": {
+   "TP": 4324,
+   "predichos": 4608,
+   "positivos": 4403,
+   "sens": 0.9821,
+   "prec": 0.9384
+  },
+  "placebo_4_cuadros": {
+   "TP": 63,
+   "predichos": 127,
+   "positivos": 100,
+   "sens": 0.63,
+   "prec": 0.4961
+  },
+  "seguimiento_kd_count_in_ash": {
+   "TP": 99,
+   "predichos": 297,
+   "positivos": 100,
+   "sens": 0.99,
+   "prec": 0.3333
+  }
+ },
+ "san_cristobal_233100": {
+  "pixeles_con_P": 13,
+  "P": [
+   0.0259,
+   0.2589,
+   0.9706,
+   0.9985,
+   1.0
+  ],
+  "subset": [
+   0.0003,
+   0.0036,
+   0.0447,
+   0.2566,
+   0.9208
+  ],
+  "IR": [
+   0.007,
+   0.011,
+   0.0428,
+   0.6615,
+   0.934
+  ],
+  "SW_IR": [
+   0.0004,
+   0.0007,
+   0.0028,
+   0.0141,
+   0.0939
+  ],
+  "eps_tot": [
+   0.2528,
+   0.2608,
+   0.2659,
+   0.2728,
+   0.2811
+  ],
+  "ref2": [
+   17.7419,
+   19.9188,
+   25.0449,
+   27.0431,
+   37.0507
+  ],
+  "btd_11_12": [
+   1.6584,
+   1.8363,
+   2.0109,
+   2.1586,
+   2.4573
+  ],
+  "solzen": [
+   81.8864,
+   81.9138,
+   81.9221,
+   81.9385,
+   81.9605
+  ],
+  "P_alta": 9,
+  "IR_alta": 6,
+  "P_igual_IR": 0,
+  "P_igual_subset": 0,
+  "codigos_Ash_Object_Mask": {
+   "2": 13
+  },
+  "hot_cerca": 0,
+  "objetos": [
+   {
+    "obj": 207,
+    "n": 13,
+    "Feature_Prob": 0.03833654071570412,
+    "Feature_Prob_IR": 0.0013781471851729262,
+    "Probability_Median": 0.9681249856948853,
+    "Probability_Subset_Median": 0.039615385234355927,
+    "Emiss14_Tot_Median": 0.2635294198989868,
+    "Time_Trend_Count": 13.0,
+    "New_Emission_Count": 3.0,
+    "Btd_Bullseye_Count": 13.0,
+    "Robust_Count_L1": 0.0,
+    "Robust_Count_L4": 0.0,
+    "Group_Id": 1.0,
+    "Mask": 1.0,
+    "Cmask": 3.0,
+    "Max_Height": 5.308557510375977,
+    "Total_Area": 57.13338851928711,
+    "Btd1112_Mean": 3.176844596862793,
+    "Dark_Pixel_Count": 0.0
+   }
+  ]
+ }
+}

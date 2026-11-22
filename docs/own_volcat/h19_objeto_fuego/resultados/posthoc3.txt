@@ -1,0 +1,19 @@
+C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\agent-ab302c7369d560d82\docs\own_volcat\h19_objeto_fuego\scripts\h19_posthoc3.py:47: RuntimeWarning: All-NaN slice encountered
+  print("  AUC %.3f  %-60s mediana sube %.4g  no sube %.4g" % (auc(x, y), k.replace("p__vcat_", ""), np.nanmedian(x[y]), np.nanmedian(x[~y])))
+pixeles con P valida 765 ; con P > subset 118
+saltos de log-odds (valor redondeado: veces): {3.06: 1, 3.24: 1, 4.56: 7, 8.6: 6, 12.74: 18, 13.84: 2, 14.03: 2, 14.53: 2, 14.63: 3, 15.23: 1, 15.92: 2, 16.37: 23, 16.41: 2, 17.07: 30, 18.25: 1, 18.27: 8, 18.96: 9}
+  AUC 0.233  tracking_2_5_7_10_11_13_14_15_Btd1112_Time_Diff              mediana sube -2.955  no sube -0.6141
+  AUC 0.637  tracking_2_5_7_10_11_13_14_15_Btd8511_Time_Diff              mediana sube -0.00164  no sube -0.1568
+  AUC 0.304  tracking_2_5_7_10_11_13_14_15_Bt11_Time_Diff                 mediana sube -10.73  no sube -2.665
+  AUC 0.484  tracking_2_5_7_10_11_13_14_15_Bt73_Time_Diff                 mediana sube -2.156  no sube -1.836
+  AUC 0.866  tracking_2_5_7_10_11_13_14_15_ash_probability_IR_prev        mediana sube 1.99e-08  no sube 3.901e-15
+  AUC 0.459  tracking_2_5_7_10_11_13_14_15_displacement_distance          mediana sube 4.123  no sube 4.472
+  AUC 0.269  tracking_2_5_7_10_11_13_14_15_count_in_ash                   mediana sube 4  no sube 5
+  AUC 0.609  tracking_2_5_7_10_11_13_14_15_Btd_Trend_Obj_Size_Ash         mediana sube 1649  no sube 1649
+  AUC 0.500  tracking_2_5_7_10_11_13_14_15_NN_Obj_Size_Ash                mediana sube 0  no sube 0
+  AUC 0.500  tracking_2_5_7_10_11_13_14_15_NN_Robust_Count_Ash            mediana sube 0  no sube 0
+  AUC nan  ashdet_obj_2_7_10_11_13_14_15_Contrast_Rgb1112_8511_11       mediana sube 14.99  no sube nan
+  AUC 0.500  ashdet_obj_2_7_10_11_13_14_15_Btd8511_Btd1112_Corr           mediana sube 3.403e+38  no sube 3.403e+38
+  AUC 0.006  ashdet_pix_2_7_10_11_13_14_15_cloud_emissivity_ch14_tot      mediana sube 0.559  no sube 0.8019
+  AUC 0.852  ashdet_pix_2_7_10_11_13_14_15_ash_probability_IR             mediana sube 1.699e-09  no sube 7.211e-14
+  AUC 0.005  ashdet_pix_2_7_10_11_13_14_15_cloud_beta_1112_tot            mediana sube 0.8674  no sube 0.9971

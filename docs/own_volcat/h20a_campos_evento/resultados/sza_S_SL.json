@@ -1,0 +1,188 @@
+{
+ "chillan": {
+  "sza_0_50": {
+   "cuadros": 32,
+   "pares": 260,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 22,
+   "S_menor_005": 0,
+   "S_ge05": 9,
+   "SL_ge05": 0,
+   "salto_mediana": 1.58,
+   "salto_p10_p90": [
+    -3.46,
+    6.24
+   ],
+   "salto_abs_lt_0p01": 0
+  },
+  "sza_50_70": {
+   "cuadros": 16,
+   "pares": 133,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 33,
+   "S_menor_005": 0,
+   "S_ge05": 13,
+   "SL_ge05": 0,
+   "salto_mediana": 1.97,
+   "salto_p10_p90": [
+    -2.44,
+    7.3
+   ],
+   "salto_abs_lt_0p01": 0
+  },
+  "sza_70_85": {
+   "cuadros": 8,
+   "pares": 247,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 112,
+   "S_menor_005": 0,
+   "S_ge05": 72,
+   "SL_ge05": 0,
+   "salto_mediana": 4.51,
+   "salto_p10_p90": [
+    -3.93,
+    14.55
+   ],
+   "salto_abs_lt_0p01": 0
+  },
+  "sza_85_180": {
+   "cuadros": 4,
+   "pares": 127,
+   "iguales_exactos": 112,
+   "iguales_rel_1e-3": 112,
+   "S_mayor_005": 0,
+   "S_menor_005": 0,
+   "S_ge05": 0,
+   "SL_ge05": 0,
+   "salto_mediana": 0.0,
+   "salto_p10_p90": [
+    0.0,
+    0.0
+   ],
+   "salto_abs_lt_0p01": 112
+  }
+ },
+ "fuego": {
+  "sza_0_50": {
+   "cuadros": 17,
+   "pares": 20755,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 6215,
+   "S_menor_005": 63,
+   "S_ge05": 6156,
+   "SL_ge05": 6,
+   "salto_mediana": 4.56,
+   "salto_p10_p90": [
+    -28.16,
+    36.01
+   ],
+   "salto_abs_lt_0p01": 0
+  },
+  "sza_50_70": {
+   "cuadros": 13,
+   "pares": 15692,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 417,
+   "S_menor_005": 54,
+   "S_ge05": 412,
+   "SL_ge05": 2,
+   "salto_mediana": 2.81,
+   "salto_p10_p90": [
+    -17.56,
+    31.83
+   ],
+   "salto_abs_lt_0p01": 3
+  },
+  "sza_70_85": {
+   "cuadros": 3,
+   "pares": 134,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 47,
+   "S_menor_005": 5,
+   "S_ge05": 39,
+   "SL_ge05": 8,
+   "salto_mediana": 3.78,
+   "salto_p10_p90": [
+    -19.56,
+    24.25
+   ],
+   "salto_abs_lt_0p01": 0
+  },
+  "sza_85_180": {
+   "cuadros": 0,
+   "pares": 0,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 0,
+   "S_menor_005": 0,
+   "S_ge05": 0,
+   "SL_ge05": 0,
+   "salto_mediana": null,
+   "salto_p10_p90": null,
+   "salto_abs_lt_0p01": 0
+  }
+ },
+ "san_cristobal": {
+  "sza_0_50": {
+   "cuadros": 0,
+   "pares": 0,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 0,
+   "S_menor_005": 0,
+   "S_ge05": 0,
+   "SL_ge05": 0,
+   "salto_mediana": null,
+   "salto_p10_p90": null,
+   "salto_abs_lt_0p01": 0
+  },
+  "sza_50_70": {
+   "cuadros": 0,
+   "pares": 0,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 0,
+   "S_menor_005": 0,
+   "S_ge05": 0,
+   "SL_ge05": 0,
+   "salto_mediana": null,
+   "salto_p10_p90": null,
+   "salto_abs_lt_0p01": 0
+  },
+  "sza_70_85": {
+   "cuadros": 1,
+   "pares": 13,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 11,
+   "S_menor_005": 0,
+   "S_ge05": 9,
+   "SL_ge05": 6,
+   "salto_mediana": 4.8,
+   "salto_p10_p90": [
+    1.02,
+    7.74
+   ],
+   "salto_abs_lt_0p01": 0
+  },
+  "sza_85_180": {
+   "cuadros": 0,
+   "pares": 0,
+   "iguales_exactos": 0,
+   "iguales_rel_1e-3": 0,
+   "S_mayor_005": 0,
+   "S_menor_005": 0,
+   "S_ge05": 0,
+   "SL_ge05": 0,
+   "salto_mediana": null,
+   "salto_p10_p90": null,
+   "salto_abs_lt_0p01": 0
+  }
+ }
+}

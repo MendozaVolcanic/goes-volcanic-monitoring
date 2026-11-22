@@ -1,0 +1,65 @@
+#### eleccion fuego_vcb: 11220 pixeles de huella, 13 cuadros
+S : n=11194 p0=8.974e-34 p5=4.758e-23 p25=3.86e-19 p50=4.29e-05 p75=1 p95=1 p100=1
+SL: n=11162 p0=1.12e-31 p5=4.534e-22 p25=2.138e-15 p50=1.629e-10 p75=6.878e-08 p95=0.0009351 p100=0.7018
+fraccion S>=0.5: 0.3879 ; SL>=0.5: 0.0005 ; S<0.05: 0.6053 ; SL<0.05: 0.9948
+
+-- 1. huella sin valor
+  sin S: 26 ; de ellos P con valor 0, P_IR con valor 0, P_SWIR con valor 0, grupo ceniza>0 0
+  sin SL: 58 ; de ellos P con valor 32, P_IR con valor 0, P_SWIR con valor 0, grupo ceniza>0 0
+
+-- 2. S: P contra P_sub en los pixeles donde difieren en mas de 0,05
+  discordantes: 513 ; S~P: (513, 1.0) ; S~P_sub: (513, 0.0)
+  nulo informativo (P cambia >0,05 respecto del cuadro previo): 2333 ; S~P: (2333, 1.0) ; S~P_previo: (2333, 0.0)
+  max|S-P| = 0
+
+-- 3. SL: P_IR contra los demas donde difieren en mas de 0,05
+  vs P_SWIR                   discordantes     58 ; SL~P_IR: (58, 1.0) ; SL~P_SWIR: (58, 0.0)
+  vs P                        discordantes   4455 ; SL~P_IR: (4455, 1.0) ; SL~P: (4455, 0.0)
+  vs P_sub                    discordantes   4841 ; SL~P_IR: (4841, 1.0) ; SL~P_sub: (4841, 0.0)
+  vs P_IR_previo              discordantes    119 ; SL~P_IR: (119, 1.0) ; SL~P_IR_previo: (119, 0.0)
+  vs obj_Feature_Prob         discordantes     23 ; SL~P_IR: (23, 1.0) ; SL~obj_Feature_Prob: (23, 0.0)
+  vs obj_Probability_Mean_IR  discordantes     27 ; SL~P_IR: (27, 1.0) ; SL~obj_Probability_Mean_IR: (27, 0.0)
+  max|SL-P_IR| = 0 ; pixeles con P_IR>0,01: 64 ; con P_IR>=0,5: 6
+  P_IR (TRK ash_probability_IR_prev) contra SL: (10688, 0.9873690119760479)
+
+-- 4. salto de log-odds
+  pixeles con P > P_sub: 805
+  P_sub ~ P_IR en esos pixeles: (805, 1.0) ; P_sub ~ P_SWIR: (805, 1.0)
+  logit(S)-logit(SL) contra logit(P)-logit(P_sub), |dif|<0,05: n=805 frac=0.0000
+  en P>P_sub, |logit(P_sub)-logit(P_IR)|<0,05: n=805 frac=0.0000 ; |logit(P_sub)-logit(P_SWIR)|<0,05: frac=0.0000
+  pixeles con salto a menos de 0,01 de los valores de H19 (12.74, 16.37, 17.07, 18.27, 18.96): salto L2 [0, 0, 0, 0, 0] ; salto evento [0, 0, 0, 0, 0]
+  pixeles con salto L2 > 5: 0 ; de ellos salto evento a menos de 0,05 del salto L2: 0 ; S>=0,5: 0 ; SL<0,5: 0
+  salto logit(S)-logit(SL), todos: n=7634 p0=-61.58 p5=-32.18 p25=-21.74 p50=3.436 p75=18.63 p95=43.26 p100=70.62
+  valores mas repetidos del salto evento (redondeo 0,01) en P>P_sub: [(6.66, 65), (7.21, 65), (6.11, 65), (6.63, 64), (7.73, 61), (9.42, 59), (7.85, 33), (5.56, 30), (11.56, 25), (3.68, 23), (0.59, 22), (4.52, 17)]
+  valores mas repetidos del salto L2 logit(P)-logit(P_sub): [(0.11, 805)]
+  pixeles con S > SL + 0,05: 4397 ; con S < SL - 0,05: 58 ; |S-SL|<=0,05: 6707
+
+-- 5. distance_traveled y residence_time
+  dist_trav: n=11220 p0=5.929 p5=47.69 p25=79.82 p50=114.4 p75=153.8 p95=220.7 p100=365.2
+  res_time : n=11220 p0=0 p5=1 p25=1.75 p50=2.25 p75=2.75 p95=3 p100=3
+  huella sin dist: 0 ; sin tiempo: 0
+  dist vs d_nominal    n=11220 dentro de max(1 km, 2%): 0.0029 ; mediana(D-C)=59.190 ; p5..p95 (D-C)= 15.83..166.69 ; r=0.4225
+  dist vs d_pc         n=11220 dentro de max(1 km, 2%): 0.0079 ; mediana(D-C)=54.931 ; p5..p95 (D-C)= 13.54..164.14 ; r=0.4138
+  dist vs desplaz      n=11220 dentro de max(1 km, 2%): 0.0001 ; mediana(D-C)=110.635 ; p5..p95 (D-C)= 43.76..215.95 ; r=0.0296
+  dist vs desplaz_ash  n=10972 dentro de max(1 km, 2%): 0.0000 ; mediana(D-C)=108.409 ; p5..p95 (D-C)= 44.60..211.29 ; r=0.3766
+  rapidez dist/tiempo (m/s): n=11181 p0=7.359 p5=10.05 p25=12.34 p50=14.58 p75=17.76 p95=24.68 p100=176.7
+   cuadro 171600 n=   7 edad=0 min ; tiempo min/med/max h: 0.00/0.00/0.00 ; dist min/med/max km: 5.9/9.7/13.2 ; rapidez p5/p50/p95: - ; d_pc max 13.2
+   cuadro 180100 n= 266 edad=45 min ; tiempo min/med/max h: 0.00/0.75/0.75 ; dist min/med/max km: 21.3/43.3/71.8 ; rapidez p5/p50/p95: 12.1/16.3/45.7 ; d_pc max 45.3
+   cuadro 184600 n=1058 edad=90 min ; tiempo min/med/max h: 0.00/1.50/1.50 ; dist min/med/max km: 20.5/75.6/163.9 ; rapidez p5/p50/p95: 9.7/14.1/24.8 ; d_pc max 80.8
+   cuadro 193100 n=1331 edad=135 min ; tiempo min/med/max h: 1.75/2.25/2.25 ; dist min/med/max km: 63.1/112.3/303.6 ; rapidez p5/p50/p95: 9.9/13.9/24.6 ; d_pc max 96.4
+   cuadro 201600 n=1855 edad=180 min ; tiempo min/med/max h: 0.25/3.00/3.00 ; dist min/med/max km: 104.6/171.5/365.2 ; rapidez p5/p50/p95: 11.4/16.0/25.7 ; d_pc max 128.6
+
+-- 5b. reglas de trayectoria
+  valores distintos de res_time: 13 ; paso minimo entre valores: 0.2500 h
+  res_time <= edad del rasgo (+0,01 h): 1.0000 ; res_time == edad: 0.9761 ; res_time == 0: 0.0035
+  cuadros con max(res_time) == edad: 13 de 13
+  res_time == 0  dist vs d_nominal n=   39 dentro de max(1 km, 2%): 0.0256 ; D>=C-1: 0.6667 ; mediana(D-C)=2.22
+  res_time == 0  dist vs d_pc      n=   39 dentro de max(1 km, 2%): 1.0000 ; D>=C-1: 1.0000 ; mediana(D-C)=0.05
+  res_time > 0   dist vs d_nominal n=11181 dentro de max(1 km, 2%): 0.0028 ; D>=C-1: 0.9984 ; mediana(D-C)=59.42
+  res_time > 0   dist vs d_pc      n=11181 dentro de max(1 km, 2%): 0.0045 ; D>=C-1: 1.0000 ; mediana(D-C)=55.14
+  h_ev - h_l2 dentro de (-0,0101, 0]: 1.0000
+
+-- 6. altura y radio efectivo del evento contra el L2
+  h_ev - h_l2: n=11220 p0=-0.009998 p5=-0.009475 p25=-0.00746 p50=-0.005255 p75=-0.002746 p95=-0.0002965 p100=0 ; iguales (<=0,0051): 0.4834
+  h_ev sin valor: 0 ; h_l2 sin valor: 0
+  carga evento - carga L2: n=11220 p0=0 p5=0 p25=0 p50=0 p75=0 p95=0 p100=0

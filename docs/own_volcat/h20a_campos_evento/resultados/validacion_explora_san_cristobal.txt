@@ -1,0 +1,61 @@
+#### validacion san_cristobal: 13 pixeles de huella, 1 cuadros
+S : n=13 p0=0.02591 p5=0.07341 p25=0.2589 p50=0.9706 p75=0.9985 p95=1 p100=1
+SL: n=13 p0=0.007016 p5=0.007299 p25=0.01102 p50=0.0428 p75=0.6615 p95=0.934 p100=0.934
+fraccion S>=0.5: 0.6923 ; SL>=0.5: 0.4615 ; S<0.05: 0.0769 ; SL<0.05: 0.5385
+
+-- 1. huella sin valor
+  sin S: 0 ; de ellos P con valor 0, P_IR con valor 0, P_SWIR con valor 0, grupo ceniza>0 0
+  sin SL: 0 ; de ellos P con valor 0, P_IR con valor 0, P_SWIR con valor 0, grupo ceniza>0 0
+
+-- 2. S: P contra P_sub en los pixeles donde difieren en mas de 0,05
+  discordantes: 12 ; S~P: (12, 1.0) ; S~P_sub: (12, 0.0)
+  nulo informativo (P cambia >0,05 respecto del cuadro previo): 0 ; S~P: (0, nan) ; S~P_previo: (0, nan)
+  max|S-P| = 0
+
+-- 3. SL: P_IR contra los demas donde difieren en mas de 0,05
+  vs P_SWIR                   discordantes      6 ; SL~P_IR: (6, 1.0) ; SL~P_SWIR: (6, 0.0)
+  vs P                        discordantes     11 ; SL~P_IR: (11, 1.0) ; SL~P: (11, 0.0)
+  vs P_sub                    discordantes      6 ; SL~P_IR: (6, 1.0) ; SL~P_sub: (6, 0.0)
+  vs P_IR_previo              discordantes      0 ; SL~P_IR: (0, nan) ; SL~P_IR_previo: (0, nan)
+  vs obj_Feature_Prob         discordantes      6 ; SL~P_IR: (6, 1.0) ; SL~obj_Feature_Prob: (6, 0.0)
+  vs obj_Probability_Mean_IR  discordantes     13 ; SL~P_IR: (13, 1.0) ; SL~obj_Probability_Mean_IR: (13, 0.0)
+  max|SL-P_IR| = 0 ; pixeles con P_IR>0,01: 10 ; con P_IR>=0,5: 6
+  P_IR (TRK ash_probability_IR_prev) contra SL: (0, nan)
+
+-- 4. salto de log-odds
+  pixeles con P > P_sub: 13
+  P_sub ~ P_IR en esos pixeles: (13, 0.3076923076923077) ; P_sub ~ P_SWIR: (13, 0.3076923076923077)
+  logit(S)-logit(SL) contra logit(P)-logit(P_sub), |dif|<0,05: n=13 frac=0.0000
+  en P>P_sub, |logit(P_sub)-logit(P_IR)|<0,05: n=13 frac=0.0000 ; |logit(P_sub)-logit(P_SWIR)|<0,05: frac=0.0000
+  pixeles con salto a menos de 0,01 de los valores de H19 (12.74, 16.37, 17.07, 18.27, 18.96): salto L2 [0, 0, 0, 0, 0] ; salto evento [0, 0, 0, 0, 0]
+  pixeles con salto L2 > 5: 6 ; de ellos salto evento a menos de 0,05 del salto L2: 0 ; S>=0,5: 6 ; SL<0,5: 0
+  salto logit(S)-logit(SL), todos: n=13 p0=0.8655 p5=0.9254 p25=3.441 p50=4.795 p75=6.656 p95=8.058 p100=8.402
+  valores mas repetidos del salto evento (redondeo 0,01) en P>P_sub: [(0.87, 1), (0.97, 1), (1.26, 1), (3.44, 1), (3.45, 1), (4.66, 1), (4.8, 1), (5.82, 1), (6.55, 1), (6.66, 1), (7.41, 1), (7.83, 1)]
+  valores mas repetidos del salto L2 logit(P)-logit(P_sub): [(4.56, 7), (8.6, 6)]
+  pixeles con S > SL + 0,05: 11 ; con S < SL - 0,05: 0 ; |S-SL|<=0,05: 2
+
+-- 5. distance_traveled y residence_time
+  dist_trav: n=13 p0=17.7 p5=18.96 p25=20.47 p50=22.13 p75=24.13 p95=27.14 p100=28.54
+  res_time : n=13 p0=0 p5=0 p25=0 p50=0 p75=0 p95=0 p100=0
+  huella sin dist: 0 ; sin tiempo: 0
+  dist vs d_nominal    n=13 dentro de max(1 km, 2%): 0.0769 ; mediana(D-C)=1.342 ; p5..p95 (D-C)= 1.03..1.52 ; r=0.9992
+  dist vs d_pc         n=13 dentro de max(1 km, 2%): 1.0000 ; mediana(D-C)=0.025 ; p5..p95 (D-C)= 0.02..0.03 ; r=1.0000
+  dist vs desplaz      n=13 dentro de max(1 km, 2%): 0.1538 ; mediana(D-C)=5.128 ; p5..p95 (D-C)= 0.40..11.55 ; r=-0.1987
+  dist vs desplaz_ash: n=0
+  rapidez dist/tiempo (m/s): n=0
+   cuadro 233100 n=  13 edad=0 min ; tiempo min/med/max h: 0.00/0.00/0.00 ; dist min/med/max km: 17.7/22.1/28.5 ; rapidez p5/p50/p95: - ; d_pc max 28.5
+
+-- 5b. reglas de trayectoria
+  valores distintos de res_time: 1 ; paso minimo entre valores: - h
+  res_time <= edad del rasgo (+0,01 h): 1.0000 ; res_time == edad: 1.0000 ; res_time == 0: 1.0000
+  cuadros con max(res_time) == edad: 1 de 1
+  res_time == 0  dist vs d_nominal n=   13 dentro de max(1 km, 2%): 0.0769 ; D>=C-1: 1.0000 ; mediana(D-C)=1.34
+  res_time == 0  dist vs d_pc      n=   13 dentro de max(1 km, 2%): 1.0000 ; D>=C-1: 1.0000 ; mediana(D-C)=0.03
+  res_time > 0: dist vs d_nominal n=0
+  res_time > 0: dist vs d_pc n=0
+  h_ev - h_l2 dentro de (-0,0101, 0]: 1.0000
+
+-- 6. altura y radio efectivo del evento contra el L2
+  h_ev - h_l2: n=13 p0=-0.009342 p5=-0.009275 p25=-0.008558 p50=-0.005908 p75=-0.001112 p95=-0.0002438 p100=-3.719e-05 ; iguales (<=0,0051): 0.4615
+  h_ev sin valor: 0 ; h_l2 sin valor: 0
+  carga evento - carga L2: n=13 p0=0 p5=0 p25=0 p50=0 p75=0 p95=0 p100=0

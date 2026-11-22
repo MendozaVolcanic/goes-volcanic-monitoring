@@ -1,0 +1,59 @@
+{
+ "globales_fuego": {
+  "history": "VOLCAT v3.9.16",
+  "production_site": "NCCF",
+  "production_environment": "dev",
+  "platform": "GOES-16"
+ },
+ "globales_chillan": {
+  "production_site": "UW-SSEC",
+  "production_environment": "Experimental"
+ },
+ "variables_usadas": [
+  "ash_spectral_signature_strength",
+  "ash_spectral_signature_strength_lwir_only",
+  "residence_time",
+  "distance_traveled",
+  "event_idx",
+  "feature_age",
+  "minimum_volcano_distance",
+  "maximum_volcano_distance",
+  "brightness_temperature_4micron",
+  "brightness_temperature_8micron",
+  "brightness_temperature_11micron",
+  "brightness_temperature_12micron",
+  "latitude",
+  "longitude",
+  "pc_latitude",
+  "pc_longitude",
+  "ash_cloud_height",
+  "mean_feature_solar_zenith_angle",
+  "volcano_thermal_activity",
+  "event_type",
+  "feature_area"
+ ],
+ "iguales": [
+  "ash_spectral_signature_strength",
+  "ash_spectral_signature_strength_lwir_only",
+  "residence_time",
+  "distance_traveled",
+  "event_idx",
+  "feature_age",
+  "minimum_volcano_distance",
+  "maximum_volcano_distance",
+  "brightness_temperature_4micron",
+  "brightness_temperature_8micron",
+  "brightness_temperature_11micron",
+  "brightness_temperature_12micron",
+  "latitude",
+  "longitude",
+  "pc_latitude",
+  "pc_longitude",
+  "ash_cloud_height",
+  "mean_feature_solar_zenith_angle",
+  "volcano_thermal_activity",
+  "event_type",
+  "feature_area"
+ ],
+ "distintas": {}
+}

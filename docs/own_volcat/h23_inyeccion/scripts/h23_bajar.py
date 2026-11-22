@@ -4,7 +4,7 @@ coeficientes de Planck del NetCDF en H23_DIR\l1b\<cuadro>.npz. Reanudable. Mismo
 h17_bajar.py (h5py sobre s3fs, solo los bloques de la ventana).
 
 Corta solo si D: baja de 6 GB libres (limite de la tarea).
-Uso: python -I h23_bajar.py [nproc] [oct|nov|todo]
+Uso: python -I h23_bajar.py [nproc] [oct|nov|todo] [rev]
 """
 import os
 import shutil
@@ -93,8 +93,9 @@ def hora(h):
         if falta:
             faltas.append((K.clave(dt), falta))     # no se guarda un cuadro incompleto: se reintenta en otra corrida
             continue
-        np.savez_compressed(out + ".tmp.npz", **d)
-        os.replace(out + ".tmp.npz", out)
+        tmp = out + f".{os.getpid()}.tmp.npz"       # nombre propio por proceso: dos corridas pueden cruzarse
+        np.savez_compressed(tmp, **d)
+        os.replace(tmp, out)
         hechos += 1
     return h, hechos, faltas
 
@@ -105,6 +106,8 @@ if __name__ == "__main__":
     os.makedirs(K.L1B, exist_ok=True)
     bl = {"oct": [K.BLOQUE_OCT], "nov": [K.BLOQUE_NOV], "todo": [K.BLOQUE_OCT, K.BLOQUE_NOV]}[cual]
     horas = [d + timedelta(hours=i) for b in bl for d in K.dias(b) for i in range(24)]
+    if len(sys.argv) > 3 and sys.argv[3] == "rev":      # del final hacia atras, para sumar una segunda corrida
+        horas = horas[::-1]
     print("horas", len(horas), "cuadros", 6 * len(horas), flush=True)
     t0 = time.time()
     tot, sin = 0, []

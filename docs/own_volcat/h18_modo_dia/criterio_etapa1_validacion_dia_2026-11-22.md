@@ -119,3 +119,24 @@ de 11 µm (PR 76); en la etapa 2 se tratan como la etapa 3 del 21-11: bandas S0,
 
 No se ejecuta código del paquete de SSEC. Nada de VIIRS. Al repo van scripts, números derivados y figuras; ni tablas,
 ni HDF, ni archivos de evento.
+
+## Adenda, antes de calcular ninguna probabilidad nuestra (22-11-2026)
+
+Hecho después del commit f966a08 y antes de este: extracción del caso a npz (`scripts/fu_extraer.py`) y las
+comprobaciones previas (`scripts/fu_comprobaciones.py`, `resultados/fu_comprobaciones.json`), que sólo miran lo
+publicado por VOLCAT. Resultado: comprobación 1 cumple (36.787 píxeles de día con P publicada, 6.621 con P ≥ 0,5),
+comprobación 2 cumple (18,5 % de los píxeles de día con |P − P_IR| > 0,05), comprobación 3 cumple (los logs del paquete
+dicen `Reading ash LUT's from: .../GOESR_ASH_pixel_probability_LUT_Jan11_2017_142740.hdf`, GEOCAT 3.4.5). Superficie
+de día: 192 píxeles de agua (`pixel_surface_type` = 0) y el resto tierra.
+
+Precisiones que no cambian la regla:
+
+1. **Mitades.** Hay 26 cuadros con píxeles de día. Elección de variante: los 13 primeros (17:16 a 19:46 UTC);
+   validación: los 13 siguientes (20:01 a 23:31 UTC).
+2. **Ángulo de dispersión.** VOLCAT no lo publica; publica el azimut relativo φ. Dos convenciones posibles:
+   (c+) cos Θ = −cos θs cos θv + sin θs sin θv cos φ; (c−) cos Θ = −cos θs cos θv − sin θs sin θv cos φ. Se agrega
+   como un eje más de variantes (96 en total), elegido en la primera mitad como los demás.
+3. **Reglas R1 a R3 en las tablas de día.** Se aplican igual que en las IR a sus equivalentes de día: R1 a
+   β(12/11) × β(7,3/11), R2 a las de β multicapa (con `NRAT`), R3 a las de β(8,5/11).
+4. **`NRAT` sin LRC** = `channel_7_reflectance` / `channel_2_reflectance` (ambas en %).
+5. **Tierra** = `pixel_surface_type` ≠ 0; las tablas `_SNOW_` no se usan (Fuego en junio, sin nieve).

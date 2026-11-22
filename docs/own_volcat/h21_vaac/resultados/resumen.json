@@ -1,0 +1,36 @@
+{
+ "marcas_por_clase_1h": {
+  "SIN AVISO": 23,
+  "SI": 3,
+  "POSIBLE": 3,
+  "NO": 1
+ },
+ "marcas_por_clase_3h": {
+  "SIN AVISO": 14,
+  "SI": 9,
+  "POSIBLE": 3,
+  "NO": 4
+ },
+ "n_si": 3,
+ "n_si_posible": 6,
+ "n_si_indep_rmk": 0,
+ "n_si_indep_lista": 1,
+ "horas_control": 570,
+ "control_por_clase": {
+  "NO": 9,
+  "POSIBLE": 1,
+  "SIN AVISO": 560
+ },
+ "tasa_control_si": 0.0,
+ "tasa_control_si_posible": 0.0017543859649122807,
+ "p_sorteo_si": 0.0,
+ "p_sorteo_si_posible": 0.0,
+ "k_min_si": 1,
+ "k_min_si_posible": 2,
+ "huecos_numeracion": [],
+ "lector_regex_acuerdo": [
+  32,
+  35
+ ],
+ "veredicto": "NO COINCIDE"
+}

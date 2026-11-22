@@ -1,0 +1,145 @@
+{
+ "n": 10615,
+ "exactos_base": 5962,
+ "no_exactos": 4653,
+ "cambios": {
+  "quitar_beta0": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5962
+  },
+  "quitar_beta1": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5962
+  },
+  "quitar_beta2": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5962
+  },
+  "quitar_beta3": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5962
+  },
+  "quitar_d73": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5958
+  },
+  "quitar_d85": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5962
+  },
+  "quitar_vref": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5962
+  },
+  "beta0_a_LRC": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5962
+  },
+  "beta0_sinR2": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 0
+  },
+  "beta1_a_LRC": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5962
+  },
+  "beta1_sinR2": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 0
+  },
+  "beta2_a_LRC": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 4580
+  },
+  "beta2_sinR2": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 0
+  },
+  "beta3_a_LRC": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5555
+  },
+  "beta3_sinR2": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 0
+  },
+  "sin_R1": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 0
+  },
+  "sin_R3": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 0
+  },
+  "mas_btd": {
+   "arregla_de_los_malos": 0,
+   "rompe_de_los_buenos": 5962
+  }
+ },
+ "delta_logit_mas_frecuentes": [
+  [
+   66.77,
+   478
+  ],
+  [
+   9.88,
+   80
+  ],
+  [
+   4.88,
+   77
+  ],
+  [
+   25.04,
+   60
+  ],
+  [
+   23.87,
+   58
+  ],
+  [
+   22.4,
+   46
+  ],
+  [
+   24.73,
+   45
+  ],
+  [
+   25.9,
+   41
+  ],
+  [
+   8.44,
+   39
+  ],
+  [
+   26.61,
+   35
+  ]
+ ],
+ "malos_por_tramo_eps": {
+  "0-0.1": [
+   0,
+   0
+  ],
+  "0.1-0.2": [
+   0,
+   0
+  ],
+  "0.2-0.5": [
+   0,
+   13
+  ],
+  "0.5-1.01": [
+   4653,
+   10602
+  ]
+ },
+ "objeto_vs_exactitud": {
+  "objeto_y_no_exacto": 1659,
+  "objeto_y_exacto": 5075,
+  "fuera_y_no_exacto": 2994,
+  "fuera_y_exacto": 887
+ }
+}

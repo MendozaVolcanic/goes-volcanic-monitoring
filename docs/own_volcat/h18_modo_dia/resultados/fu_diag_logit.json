@@ -1,0 +1,83 @@
+{
+ "eleccion_top10": {
+  "c+ n1 d0 k1 v1 i0": {
+   "n": 2614,
+   "frac_exacta": 0.6484315225707727,
+   "frac_dentro_01": 0.6484315225707727,
+   "mediana_abs": 2.834445567145849e-08
+  },
+  "c- n1 d0 k1 v1 i0": {
+   "n": 2614,
+   "frac_exacta": 0.6484315225707727,
+   "frac_dentro_01": 0.6484315225707727,
+   "mediana_abs": 2.834445567145849e-08
+  },
+  "c+ n2 d0 k0 v0 i1": {
+   "n": 2614,
+   "frac_exacta": 0.004208110175975516,
+   "frac_dentro_01": 0.004208110175975516,
+   "mediana_abs": 22.104839227790475
+  },
+  "c+ n2 d1 k1 v1 i0": {
+   "n": 2614,
+   "frac_exacta": 0.004208110175975516,
+   "frac_dentro_01": 0.07957153787299158,
+   "mediana_abs": 1.1467285206051212
+  },
+  "c- n2 d0 k0 v0 i1": {
+   "n": 2614,
+   "frac_exacta": 0.004208110175975516,
+   "frac_dentro_01": 0.004208110175975516,
+   "mediana_abs": 22.104839227790475
+  },
+  "c- n2 d1 k1 v1 i0": {
+   "n": 2614,
+   "frac_exacta": 0.004208110175975516,
+   "frac_dentro_01": 0.07957153787299158,
+   "mediana_abs": 1.1467285206051212
+  },
+  "c+ n1 d0 k0 v0 i0": {
+   "n": 2614,
+   "frac_exacta": 0.0,
+   "frac_dentro_01": 0.0007651109410864575,
+   "mediana_abs": 2.0043757226657952
+  },
+  "c+ n1 d0 k0 v0 i1": {
+   "n": 2614,
+   "frac_exacta": 0.0,
+   "frac_dentro_01": 0.0,
+   "mediana_abs": 22.52550718766149
+  },
+  "c+ n1 d0 k0 v1 i0": {
+   "n": 2614,
+   "frac_exacta": 0.0,
+   "frac_dentro_01": 0.4881407804131599,
+   "mediana_abs": 0.6749212643014637
+  },
+  "c+ n1 d0 k0 v1 i1": {
+   "n": 2614,
+   "frac_exacta": 0.0,
+   "frac_dentro_01": 0.008416220351951033,
+   "mediana_abs": 24.159776176163327
+  }
+ },
+ "referencia_IR_1a": {
+  "n": 2614,
+  "frac_exacta": 0.0,
+  "frac_dentro_01": 0.0,
+  "mediana_abs": 10.08527063089242
+ },
+ "mejor": "c+ n1 d0 k1 v1 i0",
+ "validacion_mejor": {
+  "n": 8001,
+  "frac_exacta": 0.5333083364579427,
+  "frac_dentro_01": 0.5333083364579427,
+  "mediana_abs": 4.2771343800040995e-08
+ },
+ "referencia_IR_2a": {
+  "n": 8001,
+  "frac_exacta": 0.0,
+  "frac_dentro_01": 0.0013748281464816899,
+  "mediana_abs": 13.400336313605361
+ }
+}

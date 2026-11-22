@@ -1,0 +1,255 @@
+cuadros en la pila 1915 ; descartados por relleno en la ventana: ['20261116_1910']
+cuadros del evento 41 horas 1630 a 2340
+dias placebo 15 ['20261026', '20261027', '20261030', '20261031', '20261101', '20261102', '20261103', '20261104', '20261105', '20261106', '20261109', '20261112', '20261115', '20261116', '20261117']
+corredor (union de huellas): 195 px; a <= 30 km: 84 ; a > 30 km: 111 ; dominio <= 100 km: 5271
+cota m: cerca mediana 2127 (1279 a 2874); lejos mediana 2161 (1494 a 2611)
+cuadros placebo en la pila: 581 de 615
+
+== 1. Variantes de linea base (corredor, dias placebo, todas las horas del evento) ==
+{'variante': 'H17: P75, +-90 min, 6 d', 'n': 113295, 'frac_despejado': 0.281, 'd11_mediana': -13.02, 'd11_sd_rob': 18.41, 'd11_claro_mediana': 2.9, 'd11_claro_sd': 3.72, 'dbtd_claro_mediana': 0.084, 'dbtd_claro_sd': 0.413, 'dbtd_sd_rob': 0.601}
+{'variante': 'P75, +-20 min, 6 d', 'n': 113295, 'frac_despejado': 0.283, 'd11_mediana': -12.97, 'd11_sd_rob': 18.43, 'd11_claro_mediana': 2.87, 'd11_claro_sd': 4.46, 'dbtd_claro_mediana': 0.09, 'dbtd_claro_sd': 0.443, 'dbtd_sd_rob': 0.62}
+{'variante': 'P50, +-20 min, 6 d', 'n': 113295, 'frac_despejado': 0.376, 'd11_mediana': -8.11, 'd11_sd_rob': 17.16, 'd11_claro_mediana': 6.13, 'd11_claro_sd': 7.31, 'dbtd_claro_mediana': 0.124, 'dbtd_claro_sd': 0.485, 'dbtd_sd_rob': 0.609}
+{'variante': 'P90, +-20 min, 6 d', 'n': 113295, 'frac_despejado': 0.229, 'd11_mediana': -14.7, 'd11_sd_rob': 17.73, 'd11_claro_mediana': 0.33, 'd11_claro_sd': 3.09, 'dbtd_claro_mediana': 0.089, 'dbtd_claro_sd': 0.427, 'dbtd_sd_rob': 0.628}
+{'variante': 'P75, +-20 min, 3 d', 'n': 111540, 'frac_despejado': 0.311, 'd11_mediana': -9.96, 'd11_sd_rob': 14.98, 'd11_claro_mediana': 1.59, 'd11_claro_sd': 10.7, 'dbtd_claro_mediana': 0.074, 'dbtd_claro_sd': 0.475, 'dbtd_sd_rob': 0.615}
+{'variante': 'P75, +-10 min, 6 d', 'n': 113295, 'frac_despejado': 0.286, 'd11_mediana': -12.85, 'd11_sd_rob': 18.39, 'd11_claro_mediana': 3.03, 'd11_claro_sd': 4.83, 'dbtd_claro_mediana': 0.095, 'dbtd_claro_sd': 0.463, 'dbtd_sd_rob': 0.63}
+
+cuadros placebo con linea base: 581
+
+== 2. Residuo por pixel-cuadro (dias placebo) ==
+C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\agent-ac1cbe11e0b1e665c\docs\own_volcat\h22_pluma_desprendida\scripts\h22_ruido.py:140: RuntimeWarning: Mean of empty slice
+  mc = np.nanmean(xc, axis=1)
+         zona       horas medida                  cielo     n   media  mediana     sd  sd_robusta     p05    p95  sd_modo_comun_cuadro  sd_sesgo_pixel  sd_resto  frac  frac_con_dato
+cerca <=30 km 22:00-23:40    d11                   todo 10668 -10.989   -9.926 12.213      12.144 -34.577  7.192                11.213           1.172     4.696   NaN            NaN
+cerca <=30 km 22:00-23:40    d11 despejado (dBT11>=-3K)  3183   2.290    0.681  4.269       3.321  -2.468 10.443                 3.586           0.843     1.732 0.298            NaN
+cerca <=30 km 22:00-23:40   dbtd                   todo 10668   0.096    0.008  0.604       0.441  -0.636  1.044                 0.410           0.118     0.427   NaN            NaN
+cerca <=30 km 22:00-23:40   dbtd despejado (dBT11>=-3K)  3183   0.083    0.042  0.340       0.314  -0.394  0.674                 0.304           0.074     0.227 0.298            NaN
+cerca <=30 km 22:00-23:40  dbtd8                   todo 10668   0.453    0.270  0.916       0.751  -0.703  2.078                 0.688           0.134     0.590   NaN            NaN
+cerca <=30 km 22:00-23:40  dbtd8 despejado (dBT11>=-3K)  3183  -0.069   -0.074  0.423       0.381  -0.767  0.642                 0.288           0.106     0.314 0.298            NaN
+cerca <=30 km 22:00-23:40   beta                   todo  8368   1.008    0.978  0.108       0.040   0.922  1.214                   NaN             NaN       NaN   NaN          0.784
+cerca <=30 km 22:00-23:40   beta despejado (dBT11>=-3K)   883   1.150    1.135  0.225       0.173   0.799  1.551                   NaN             NaN       NaN 0.298            NaN
+cerca <=30 km       todas    d11                   todo 48804 -14.911  -13.533 16.543      18.218 -45.385  8.453                15.141           2.167     6.303   NaN            NaN
+cerca <=30 km       todas    d11 despejado (dBT11>=-3K) 13930   3.977    3.269  4.684       5.116  -2.184 12.376                 4.159           0.891     2.194 0.285            NaN
+cerca <=30 km       todas   dbtd                   todo 48804  -0.109   -0.100  0.761       0.617  -1.390  1.036                 0.525           0.174     0.522   NaN            NaN
+cerca <=30 km       todas   dbtd despejado (dBT11>=-3K) 13930   0.144    0.124  0.423       0.401  -0.507  0.860                 0.291           0.059     0.362 0.285            NaN
+cerca <=30 km       todas  dbtd8                   todo 48804   0.791    0.500  1.264       1.060  -0.780  3.309                 1.037           0.201     0.694   NaN            NaN
+cerca <=30 km       todas  dbtd8 despejado (dBT11>=-3K) 13930  -0.107   -0.115  0.634       0.530  -1.133  0.917                 0.524           0.083     0.494 0.285            NaN
+cerca <=30 km       todas   beta                   todo 37116   0.985    0.970  0.095       0.040   0.904  1.125                   NaN             NaN       NaN   NaN          0.761
+cerca <=30 km       todas   beta despejado (dBT11>=-3K)  2242   1.104    1.098  0.278       0.224   0.680  1.560                   NaN             NaN       NaN 0.285            NaN
+ lejos >30 km 22:00-23:40    d11                   todo 14097 -11.020   -9.045 11.872      11.668 -34.174  5.572                10.424           0.855     5.618   NaN            NaN
+ lejos >30 km 22:00-23:40    d11 despejado (dBT11>=-3K)  3903   1.942    1.357  3.301       3.193  -2.536  7.871                 2.845           0.543     1.195 0.277            NaN
+ lejos >30 km 22:00-23:40   dbtd                   todo 14097   0.193    0.082  0.606       0.402  -0.511  1.240                 0.429           0.112     0.413   NaN            NaN
+ lejos >30 km 22:00-23:40   dbtd despejado (dBT11>=-3K)  3903   0.058   -0.006  0.348       0.245  -0.360  0.713                 0.351           0.059     0.234 0.277            NaN
+ lejos >30 km 22:00-23:40  dbtd8                   todo 14097   0.636    0.390  1.024       0.867  -0.604  2.601                 0.774           0.152     0.654   NaN            NaN
+ lejos >30 km 22:00-23:40  dbtd8 despejado (dBT11>=-3K)  3903  -0.003   -0.038  0.391       0.352  -0.581  0.662                 0.348           0.085     0.305 0.277            NaN
+ lejos >30 km 22:00-23:40   beta                   todo 11026   1.007    0.985  0.096       0.037   0.928  1.146                   NaN             NaN       NaN   NaN          0.782
+ lejos >30 km 22:00-23:40   beta despejado (dBT11>=-3K)   832   1.086    1.023  0.263       0.187   0.787  1.617                   NaN             NaN       NaN 0.277            NaN
+ lejos >30 km       todas    d11                   todo 64491 -16.012  -12.501 18.470      18.629 -53.031  7.562                16.787           1.823     7.484   NaN            NaN
+ lejos >30 km       todas    d11 despejado (dBT11>=-3K) 18129   3.598    2.637  4.277       4.187  -2.183 11.551                 3.698           0.817     2.249 0.281            NaN
+ lejos >30 km       todas   dbtd                   todo 64491  -0.058   -0.045  0.818       0.621  -1.441  1.208                 0.568           0.175     0.561   NaN            NaN
+ lejos >30 km       todas   dbtd despejado (dBT11>=-3K) 18129   0.108    0.065  0.457       0.396  -0.565  0.898                 0.348           0.067     0.384 0.281            NaN
+ lejos >30 km       todas  dbtd8                   todo 64491   0.989    0.666  1.426       1.257  -0.784  3.705                 1.144           0.229     0.819   NaN            NaN
+ lejos >30 km       todas  dbtd8 despejado (dBT11>=-3K) 18129  -0.122   -0.128  0.623       0.536  -1.125  0.894                 0.508           0.070     0.481 0.281            NaN
+ lejos >30 km       todas   beta                   todo 48692   0.989    0.974  0.095       0.039   0.906  1.117                   NaN             NaN       NaN   NaN          0.755
+ lejos >30 km       todas   beta despejado (dBT11>=-3K)  2330   1.097    1.042  0.314       0.236   0.690  1.661                   NaN             NaN       NaN 0.281            NaN
+
+== 3a. Autocorrelacion espacial (dominio <= 100 km del crater, media del cuadro quitada) ==
+{'medida': 'd11', 'cielo': 'todo', 'cuadros': 581, 'r_1px': 0.941, 'r_2px': 0.846, 'r_3px': 0.77, 'r_4px': 0.707, 'r_6px': 0.608, 'r_8px': 0.527, 'r_12px': 0.4, 'r_16px': 0.292, 'r_24px': 0.119, 'r_32px': -0.017}
+{'medida': 'd11', 'cielo': 'cuadros despejados (>=90 % del dominio con dBT11>=-3K)', 'cuadros': 78, 'r_1px': 0.888, 'r_2px': 0.745, 'r_3px': 0.65, 'r_4px': 0.583, 'r_6px': 0.482, 'r_8px': 0.41, 'r_12px': 0.307, 'r_16px': 0.223, 'r_24px': 0.09, 'r_32px': -0.028}
+{'medida': 'dbtd', 'cielo': 'todo', 'cuadros': 581, 'r_1px': 0.76, 'r_2px': 0.591, 'r_3px': 0.522, 'r_4px': 0.467, 'r_6px': 0.384, 'r_8px': 0.322, 'r_12px': 0.228, 'r_16px': 0.156, 'r_24px': 0.055, 'r_32px': -0.015}
+{'medida': 'dbtd', 'cielo': 'cuadros despejados (>=90 % del dominio con dBT11>=-3K)', 'cuadros': 78, 'r_1px': 0.622, 'r_2px': 0.438, 'r_3px': 0.399, 'r_4px': 0.364, 'r_6px': 0.303, 'r_8px': 0.251, 'r_12px': 0.181, 'r_16px': 0.137, 'r_24px': 0.066, 'r_32px': 0.008}
+
+== 3b. Autocorrelacion temporal (pixeles del corredor; 'local' = media del corredor del cuadro quitada) ==
+{'medida': 'd11', 'desfase_min': 10, 'pares_de_cuadros': 519, 'r': 0.925, 'r_local': 0.682}
+{'medida': 'd11', 'desfase_min': 20, 'pares_de_cuadros': 504, 'r': 0.88, 'r_local': 0.533}
+{'medida': 'd11', 'desfase_min': 30, 'pares_de_cuadros': 498, 'r': 0.848, 'r_local': 0.446}
+{'medida': 'd11', 'desfase_min': 60, 'pares_de_cuadros': 470, 'r': 0.758, 'r_local': 0.293}
+{'medida': 'd11', 'desfase_min': 120, 'pares_de_cuadros': 385, 'r': 0.637, 'r_local': 0.245}
+{'medida': 'd11', 'desfase_min': 1440, 'pares_de_cuadros': 375, 'r': 0.137, 'r_local': -0.005}
+{'medida': 'dbtd', 'desfase_min': 10, 'pares_de_cuadros': 519, 'r': 0.741, 'r_local': 0.55}
+{'medida': 'dbtd', 'desfase_min': 20, 'pares_de_cuadros': 504, 'r': 0.681, 'r_local': 0.457}
+{'medida': 'dbtd', 'desfase_min': 30, 'pares_de_cuadros': 498, 'r': 0.639, 'r_local': 0.4}
+{'medida': 'dbtd', 'desfase_min': 60, 'pares_de_cuadros': 470, 'r': 0.533, 'r_local': 0.294}
+{'medida': 'dbtd', 'desfase_min': 120, 'pares_de_cuadros': 385, 'r': 0.426, 'r_local': 0.23}
+{'medida': 'dbtd', 'desfase_min': 1440, 'pares_de_cuadros': 375, 'r': 0.204, 'r_local': 0.157}
+
+== 4. Pendiente del residuo con la cota, por cuadro (K por km; dominio <= 100 km, pixeles despejados) ==
+d11 pendiente K/km: mediana 0.267, sd entre cuadros 1.964, p05 -3.907, p95 3.056; |r| mediana 0.20
+dbtd pendiente K/km: mediana 0.064, sd entre cuadros 0.164, p05 -0.299, p95 0.248; |r| mediana 0.21
+
+== 5. Cielo del entorno de la huella: fraccion despejada (dBT11 >= -3 K) a 4-12 px, por cuadro ==
+          cuadros  entorno_ge05  cuadros_con_lejos  entorno_lejos_ge05  f_t_mediana  f_l_mediana
+dia                                                                                             
+20261026       39             7                  8                   0         0.07         0.00
+20261027       39            39                  8                   8         1.00         1.00
+20261030       40             2                  8                   2         0.01         0.46
+20261031       34             0                  8                   0         0.00         0.00
+20261101       39             0                  8                   0         0.00         0.01
+20261102       40             0                  8                   0         0.00         0.00
+20261103       40             0                  8                   0         0.00         0.00
+20261104       40            40                  8                   8         0.99         0.92
+20261105       40             6                  8                   0         0.33         0.26
+20261106       40            29                  8                   8         0.81         0.95
+20261109       39             0                  7                   0         0.01         0.24
+20261112       39            18                  7                   1         0.33         0.28
+20261114       41            33                  9                   5         0.62         0.70
+20261115       39             0                  7                   0         0.00         0.00
+20261116       36             0                  5                   0         0.00         0.00
+20261117       37             0                  7                   0         0.00         0.00
+14-11, cuadros con pixeles a > 30 km: {'1930': 0.89, '2220': 0.89, '2230': 0.82, '2240': 0.91, '2250': 0.7, '2300': 0.38, '2310': 0.37, '2330': 0.14, '2340': 0.03}
+
+== 6. Estadistico de la prueba en dias placebo (huella real del 14-11 puesta en cada dia sin evento) ==
+pixeles-cuadro placebo: 10386 ; sin control despejado suficiente: 5189 ; controles despejados por pixel: mediana 10 p05 0
+[lejos, entorno despejado | control D] dias (n>=20) 4, n/dia 172
+     d11: n 172 | D por dia [-11.35, -1.07, 0.11, 0.2] | AUC por dia [0.44, 0.49, 0.68, 0.97]
+     dbtd: n 172 | D por dia [-0.04, 0.02, 0.16, 0.25] | AUC por dia [0.28, 0.28, 0.47, 0.55]
+     beta: n 29 | D por dia [-0.13, -0.03, 0.14] | AUC por dia [0.32, 0.53, 0.81]
+     fraccion fria (> 3 K bajo el control) por dia [0.01, 0.02, 0.05, 0.93]
+     por cuadro (23 cuadros con >= 5 px): D_d11 p05 -9.64 p50 -0.09 p95 +0.45 sd 3.27 | AUC_d11 p05 0.38 p95 0.95 | D_dbtd p05 -0.167 p50 +0.050 p95 +0.248 sd 0.130 | AUC_dbtd p05 0.22 p95 0.73
+[lejos, entorno despejado | control A] dias (n>=20) 4, n/dia 172
+     d11: n 172 | D por dia [-10.8, -0.7, 0.11, 0.3] | AUC por dia [0.42, 0.49, 0.62, 0.87]
+     dbtd: n 172 | D por dia [-0.04, 0.01, 0.14, 0.19] | AUC por dia [0.33, 0.36, 0.49, 0.55]
+     beta: n 29 | D por dia [-0.08, -0.06, 0.09] | AUC por dia [0.38, 0.59, 0.73]
+[lejos, entorno despejado | control B] dias (n>=20) 4, n/dia 172
+     d11: n 171 | D por dia [-0.84, -0.8, 0.64, 0.75] | AUC por dia [0.36, 0.37, 0.58, 0.64]
+     dbtd: n 171 | D por dia [-0.13, -0.05, 0.03, 0.1] | AUC por dia [0.37, 0.45, 0.59, 0.61]
+     beta: n 26 | D por dia [-0.05, -0.04, 0.08] | AUC por dia [0.38, 0.56, 0.68]
+[lejos, entorno nublado | control D] dias (n>=20) 12, n/dia 167
+     d11: n 78 | D por dia [-12.31, -9.25, -8.32, -7.79, -5.51, -4.51, -3.42, -1.76, 0.37] | AUC por dia [0.53, 0.89, 0.92, 0.95, 0.99, 0.99, 1.0, 1.0, 1.0]
+     dbtd: n 78 | D por dia [-0.13, -0.03, 0.0, 0.03, 0.07, 0.18, 0.38, 0.43, 0.43] | AUC por dia [0.11, 0.15, 0.28, 0.33, 0.4, 0.46, 0.49, 0.55, 0.64]
+     beta: n 66 | D por dia [-0.28, -0.2, -0.14, -0.1, -0.04, -0.02, -0.0, 0.03, 0.09] | AUC por dia [0.37, 0.42, 0.52, 0.58, 0.64, 0.72, 0.77, 0.82, 0.82]
+     fraccion fria (> 3 K bajo el control) por dia [0.2, 0.37, 0.56, 0.68, 0.73, 0.8, 0.94, 1.0, 1.0]
+     por cuadro (75 cuadros con >= 5 px): D_d11 p05 -17.66 p50 -5.09 p95 -1.32 sd 5.82 | AUC_d11 p05 0.76 p95 1.00 | D_dbtd p05 -0.204 p50 +0.099 p95 +0.741 sd 0.330 | AUC_dbtd p05 0.04 p95 0.75
+[lejos, entorno nublado | control A] dias (n>=20) 12, n/dia 167
+     d11: n 167 | D por dia [-11.49, -3.03, -2.79, -1.25, -1.24, 1.35, 1.49, 2.65, 2.7, 3.18, 13.7, 15.39] | AUC por dia [0.23, 0.24, 0.25, 0.36, 0.36, 0.4, 0.42, 0.51, 0.53, 0.6, 0.78, 0.87]
+     dbtd: n 167 | D por dia [-0.12, -0.01, 0.05, 0.08, 0.13, 0.14, 0.15, 0.18, 0.21, 0.26, 0.31, 0.34] | AUC por dia [0.25, 0.3, 0.3, 0.35, 0.36, 0.37, 0.38, 0.4, 0.43, 0.45, 0.5, 0.59]
+     beta: n 166 | D por dia [-0.07, -0.02, -0.01, -0.01, 0.0, 0.01, 0.01, 0.01, 0.02, 0.02, 0.03, 0.08] | AUC por dia [0.24, 0.24, 0.28, 0.31, 0.35, 0.4, 0.43, 0.46, 0.56, 0.57, 0.61, 0.67]
+[lejos, entorno nublado | control B] dias (n>=20) 12, n/dia 167
+     d11: n 151 | D por dia [-0.09, 0.72, 0.91, 1.12, 1.19, 1.24, 1.29, 1.34, 2.05, 2.05, 2.24, 2.31] | AUC por dia [0.17, 0.25, 0.26, 0.27, 0.29, 0.32, 0.33, 0.33, 0.35, 0.37, 0.37, 0.47]
+     dbtd: n 151 | D por dia [-0.2, -0.08, -0.06, -0.02, -0.0, 0.01, 0.03, 0.06, 0.19, 0.24, 0.26, 0.42] | AUC por dia [0.23, 0.24, 0.3, 0.39, 0.43, 0.48, 0.48, 0.48, 0.53, 0.55, 0.58, 0.63]
+     beta: n 151 | D por dia [-0.03, -0.01, -0.0, 0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02] | AUC por dia [0.22, 0.23, 0.28, 0.4, 0.41, 0.41, 0.45, 0.47, 0.48, 0.56, 0.6, 0.65]
+[lejos, todo | control D] dias (n>=20) 15, n/dia 172
+     d11: n 141 | D por dia [-11.71, -9.25, -8.32, -7.79, -5.51, -4.51, -3.42, -1.76, -1.07, 0.11, 0.2, 0.37] | AUC por dia [0.44, 0.49, 0.53, 0.68, 0.89, 0.92, 0.95, 0.98, 0.99, 0.99, 1.0, 1.0]
+     dbtd: n 141 | D por dia [-0.13, -0.04, -0.03, 0.0, 0.02, 0.03, 0.07, 0.16, 0.18, 0.3, 0.43, 0.43] | AUC por dia [0.11, 0.15, 0.28, 0.28, 0.33, 0.4, 0.46, 0.47, 0.49, 0.55, 0.55, 0.64]
+     beta: n 55 | D por dia [-0.28, -0.2, -0.13, -0.1, -0.04, -0.03, -0.02, -0.0, 0.03, 0.09, 0.14] | AUC por dia [0.32, 0.37, 0.42, 0.52, 0.53, 0.58, 0.64, 0.72, 0.79, 0.82, 0.82]
+     fraccion fria (> 3 K bajo el control) por dia [0.01, 0.02, 0.05, 0.2, 0.36, 0.56, 0.68, 0.73, 0.8, 0.94, 1.0, 1.0]
+     por cuadro (98 cuadros con >= 5 px): D_d11 p05 -16.01 p50 -3.12 p95 +0.45 sd 5.70 | AUC_d11 p05 0.39 p95 1.00 | D_dbtd p05 -0.176 p50 +0.081 p95 +0.607 sd 0.284 | AUC_dbtd p05 0.07 p95 0.75
+[lejos, todo | control A] dias (n>=20) 15, n/dia 172
+     d11: n 172 | D por dia [-10.97, -3.03, -2.79, -1.25, -1.24, -0.7, 0.11, 0.3, 1.35, 1.5, 2.65, 2.7, 3.18, 13.7, 15.39] | AUC por dia [0.23, 0.24, 0.25, 0.36, 0.36, 0.4, 0.42, 0.42, 0.49, 0.51, 0.53, 0.6, 0.62, 0.78, 0.87]
+     dbtd: n 172 | D por dia [-0.12, -0.04, -0.01, 0.01, 0.05, 0.08, 0.13, 0.14, 0.14, 0.15, 0.18, 0.21, 0.25, 0.26, 0.31] | AUC por dia [0.25, 0.3, 0.3, 0.33, 0.36, 0.36, 0.37, 0.38, 0.4, 0.43, 0.45, 0.49, 0.5, 0.55, 0.59]
+     beta: n 162 | D por dia [-0.07, -0.06, -0.02, -0.01, -0.01, 0.0, 0.01, 0.01, 0.01, 0.02, 0.02, 0.03, 0.08, 0.09] | AUC por dia [0.24, 0.24, 0.28, 0.31, 0.35, 0.38, 0.4, 0.43, 0.46, 0.56, 0.57, 0.59, 0.61, 0.7]
+[lejos, todo | control B] dias (n>=20) 15, n/dia 172
+     d11: n 171 | D por dia [-0.84, -0.31, 0.64, 0.72, 0.75, 0.91, 1.12, 1.19, 1.24, 1.29, 1.34, 2.05, 2.09, 2.24, 2.31] | AUC por dia [0.17, 0.25, 0.26, 0.27, 0.29, 0.32, 0.33, 0.33, 0.35, 0.36, 0.37, 0.37, 0.37, 0.53, 0.64]
+     dbtd: n 171 | D por dia [-0.13, -0.08, -0.06, -0.05, -0.02, -0.0, 0.01, 0.03, 0.03, 0.06, 0.1, 0.19, 0.24, 0.26, 0.42] | AUC por dia [0.23, 0.24, 0.3, 0.37, 0.39, 0.43, 0.45, 0.48, 0.48, 0.48, 0.53, 0.55, 0.58, 0.59, 0.62]
+     beta: n 128 | D por dia [-0.05, -0.04, -0.01, -0.0, 0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02, 0.08] | AUC por dia [0.22, 0.23, 0.28, 0.38, 0.4, 0.41, 0.41, 0.45, 0.47, 0.48, 0.56, 0.56, 0.6, 0.66]
+[cerca, entorno despejado | control D] dias (n>=20) 6, n/dia 315
+     d11: n 259 | D por dia [-6.16, -2.53, -1.83, -1.72, -1.53, 0.44] | AUC por dia [0.43, 0.69, 0.72, 0.73, 0.8, 0.96]
+     dbtd: n 259 | D por dia [-0.3, -0.2, -0.1, -0.04, 0.09, 0.12] | AUC por dia [0.38, 0.43, 0.52, 0.53, 0.69, 0.72]
+     beta: n 3 | D por dia [-0.21, 0.02, 0.36, 0.42] | AUC por dia [0.12, 0.33, 0.45, 0.75]
+     fraccion fria (> 3 K bajo el control) por dia [0.05, 0.22, 0.31, 0.34, 0.39, 0.81]
+     por cuadro (126 cuadros con >= 5 px): D_d11 p05 -7.14 p50 -2.26 p95 +0.72 sd 2.45 | AUC_d11 p05 0.28 p95 0.97 | D_dbtd p05 -0.349 p50 +0.004 p95 +0.301 sd 0.255 | AUC_dbtd p05 0.25 p95 0.77
+[cerca, entorno despejado | control A] dias (n>=20) 6, n/dia 315
+     d11: n 274 | D por dia [-5.88, -2.51, -1.68, -0.81, 1.34, 20.17] | AUC por dia [0.08, 0.33, 0.58, 0.72, 0.79, 0.82]
+     dbtd: n 274 | D por dia [-0.26, -0.2, -0.01, 0.07, 0.12, 0.58] | AUC por dia [0.21, 0.38, 0.45, 0.5, 0.68, 0.69]
+     beta: n 14 | D por dia [-0.2, -0.09, -0.0, 0.01, 0.12] | AUC por dia [0.35, 0.48, 0.51, 0.64, 0.81]
+[cerca, entorno despejado | control B] dias (n>=20) 6, n/dia 315
+     d11: n 289 | D por dia [0.21, 1.12, 2.02, 2.97, 3.78, 3.79] | AUC por dia [0.16, 0.19, 0.25, 0.26, 0.36, 0.49]
+     dbtd: n 289 | D por dia [-0.27, -0.22, -0.17, -0.06, 0.03, 0.09] | AUC por dia [0.45, 0.46, 0.53, 0.6, 0.68, 0.75]
+     beta: n 12 | D por dia [-0.06, -0.05, -0.01, 0.03, 0.4] | AUC por dia [0.16, 0.45, 0.55, 0.6, 0.82]
+[cerca, entorno despejado, cenit <50 | control D] dias (n>=20) 6, n/dia 156
+     d11: n 134 | D por dia [-6.16, -2.75, -2.7, -1.83, -0.19, 0.44] | AUC por dia [0.43, 0.53, 0.73, 0.76, 0.85, 0.96]
+     dbtd: n 134 | D por dia [-0.3, -0.18, -0.14, -0.1, 0.09, 0.09] | AUC por dia [0.43, 0.45, 0.53, 0.58, 0.64, 0.72]
+     beta: n 0 | D por dia [0.36, 0.42] | AUC por dia [0.12, 0.33]
+     fraccion fria (> 3 K bajo el control) por dia [0.05, 0.05, 0.34, 0.44, 0.46, 0.81]
+     por cuadro (70 cuadros con >= 5 px): D_d11 p05 -5.43 p50 -2.13 p95 +0.90 sd 2.13 | AUC_d11 p05 0.25 p95 0.96 | D_dbtd p05 -0.364 p50 +0.011 p95 +0.306 sd 0.209 | AUC_dbtd p05 0.33 p95 0.74
+[cerca, entorno despejado, cenit <50 | control A] dias (n>=20) 6, n/dia 156
+     d11: n 147 | D por dia [-5.88, -2.71, -2.65, 1.34, 3.57, 20.17] | AUC por dia [0.08, 0.31, 0.33, 0.75, 0.82, 0.84]
+     dbtd: n 147 | D por dia [-0.26, -0.18, 0.06, 0.07, 0.1, 0.58] | AUC por dia [0.21, 0.45, 0.45, 0.45, 0.64, 0.68]
+     beta: n 4 | D por dia [-0.09, -0.0, 0.12] | AUC por dia [0.35, 0.51, 0.81]
+[cerca, entorno despejado, cenit <50 | control B] dias (n>=20) 6, n/dia 156
+     d11: n 145 | D por dia [-2.37, 1.12, 2.97, 3.18, 3.78, 5.52] | AUC por dia [0.09, 0.16, 0.19, 0.25, 0.26, 0.78]
+     dbtd: n 145 | D por dia [-0.27, -0.22, -0.14, -0.0, 0.02, 0.09] | AUC por dia [0.45, 0.47, 0.49, 0.6, 0.63, 0.75]
+     beta: n 2 | D por dia [-0.06, -0.05, 0.4] | AUC por dia [0.16, 0.6, 0.82]
+[cerca, entorno despejado, cenit 50-70 | control D] dias (n>=20) 3, n/dia 117
+     d11: n 104 | D por dia [-4.61, -3.76, -1.59] | AUC por dia [0.69, 0.92, 0.93]
+     dbtd: n 104 | D por dia [-0.25, -0.02, 0.1] | AUC por dia [0.4, 0.55, 0.72]
+     beta: n 0 | D por dia [0.04] | AUC por dia [0.48]
+     fraccion fria (> 3 K bajo el control) por dia [0.31, 0.75, 0.83]
+     por cuadro (27 cuadros con >= 5 px): D_d11 p05 -9.21 p50 -3.74 p95 +0.05 sd 3.17 | AUC_d11 p05 0.51 p95 0.99 | D_dbtd p05 -0.351 p50 -0.112 p95 +0.150 sd 0.225 | AUC_dbtd p05 0.37 p95 0.78
+[cerca, entorno despejado, cenit 50-70 | control A] dias (n>=20) 3, n/dia 117
+     d11: n 104 | D por dia [-4.61, -3.76, -1.59] | AUC por dia [0.69, 0.89, 0.91]
+     dbtd: n 104 | D por dia [-0.25, -0.01, 0.1] | AUC por dia [0.4, 0.55, 0.72]
+     beta: n 2 | D por dia [0.03, 0.07] | AUC por dia [0.49, 0.5]
+[cerca, entorno despejado, cenit 50-70 | control B] dias (n>=20) 3, n/dia 117
+     d11: n 111 | D por dia [0.9, 4.99, 7.97] | AUC por dia [0.02, 0.26, 0.43]
+     dbtd: n 111 | D por dia [-0.23, -0.07, 0.02] | AUC por dia [0.49, 0.56, 0.7]
+     beta: n 4 | D por dia [0.01, 0.07] | AUC por dia [0.39, 0.53]
+[cerca, entorno despejado, cenit 70-85 | control D] dias (n>=20) 3, n/dia 189
+     d11: n 189 | D por dia [-1.5, -1.49, -0.95] | AUC por dia [0.62, 0.69, 0.79]
+     dbtd: n 189 | D por dia [-0.21, -0.02, 0.16] | AUC por dia [0.3, 0.5, 0.75]
+     beta: n 6 | D por dia [-0.21, 0.02] | AUC por dia [0.44, 0.75]
+     fraccion fria (> 3 K bajo el control) por dia [0.12, 0.12, 0.19]
+     por cuadro (24 cuadros con >= 5 px): D_d11 p05 -2.69 p50 -1.55 p95 -0.27 sd 0.87 | AUC_d11 p05 0.58 p95 0.97 | D_dbtd p05 -0.279 p50 -0.046 p95 +0.209 sd 0.187 | AUC_dbtd p05 0.25 p95 0.82
+[cerca, entorno despejado, cenit 70-85 | control A] dias (n>=20) 3, n/dia 189
+     d11: n 189 | D por dia [-1.46, -1.1, -0.95] | AUC por dia [0.62, 0.63, 0.77]
+     dbtd: n 189 | D por dia [-0.21, -0.05, 0.16] | AUC por dia [0.31, 0.53, 0.75]
+     beta: n 9 | D por dia [-0.2, 0.0] | AUC por dia [0.48, 0.67]
+[cerca, entorno despejado, cenit 70-85 | control B] dias (n>=20) 3, n/dia 189
+     d11: n 181 | D por dia [-1.02, 1.15, 1.47] | AUC por dia [0.25, 0.34, 0.63]
+     dbtd: n 181 | D por dia [-0.18, -0.09, 0.06] | AUC por dia [0.41, 0.59, 0.73]
+     beta: n 8 | D por dia [-0.08, 0.03] | AUC por dia [0.46, 0.59]
+[cerca, entorno despejado, 22:20-22:50 | control D] dias (n>=20) 3, n/dia 113
+     d11: n 113 | D por dia [-1.24, -0.87, -0.58] | AUC por dia [0.57, 0.67, 0.68]
+     dbtd: n 113 | D por dia [-0.14, 0.05, 0.12] | AUC por dia [0.32, 0.44, 0.7]
+     beta: n 5 | D por dia [-0.17, 0.08] | AUC por dia [0.31, 0.73]
+     fraccion fria (> 3 K bajo el control) por dia [0.01, 0.07, 0.11]
+     por cuadro (12 cuadros con >= 5 px): D_d11 p05 -1.76 p50 -0.97 p95 -0.11 sd 0.56 | AUC_d11 p05 0.55 p95 0.74 | D_dbtd p05 -0.165 p50 +0.031 p95 +0.237 sd 0.157 | AUC_dbtd p05 0.28 p95 0.72
+[cerca, entorno despejado, 22:20-22:50 | control A] dias (n>=20) 3, n/dia 113
+     d11: n 113 | D por dia [-0.92, -0.86, -0.58] | AUC por dia [0.57, 0.62, 0.66]
+     dbtd: n 113 | D por dia [-0.14, 0.03, 0.12] | AUC por dia [0.33, 0.46, 0.7]
+     beta: n 6 | D por dia [-0.24, 0.05] | AUC por dia [0.41, 0.8]
+[cerca, entorno despejado, 22:20-22:50 | control B] dias (n>=20) 3, n/dia 113
+     d11: n 111 | D por dia [0.04, 0.7, 1.73] | AUC por dia [0.16, 0.39, 0.48]
+     dbtd: n 111 | D por dia [-0.16, -0.05, 0.1] | AUC por dia [0.37, 0.54, 0.71]
+     beta: n 4 | D por dia [-0.19, 0.02] | AUC por dia [0.42, 0.77]
+[lejos, entorno despejado, 22:20-22:50 | control D] dias (n>=20) 3, n/dia 69
+     d11: n 69 | D por dia [-1.2, 0.08, 0.21] | AUC por dia [0.48, 0.5, 0.69]
+     dbtd: n 69 | D por dia [-0.09, 0.06, 0.16] | AUC por dia [0.3, 0.42, 0.61]
+     beta: n 0 | D por dia [0.18] | AUC por dia [0.26]
+     fraccion fria (> 3 K bajo el control) por dia [0.0, 0.01, 0.07]
+     por cuadro (12 cuadros con >= 5 px): D_d11 p05 -1.80 p50 -0.13 p95 +0.61 sd 0.88 | AUC_d11 p05 0.40 p95 0.75 | D_dbtd p05 -0.147 p50 +0.044 p95 +0.208 sd 0.122 | AUC_dbtd p05 0.22 p95 0.69
+[lejos, entorno despejado, 22:20-22:50 | control A] dias (n>=20) 3, n/dia 69
+     d11: n 69 | D por dia [-0.87, 0.16, 0.21] | AUC por dia [0.46, 0.5, 0.61]
+     dbtd: n 69 | D por dia [-0.09, 0.05, 0.13] | AUC por dia [0.36, 0.43, 0.61]
+     beta: n 0 | D por dia [0.11] | AUC por dia [0.34]
+[lejos, entorno despejado, 22:20-22:50 | control B] dias (n>=20) 3, n/dia 69
+     d11: n 69 | D por dia [-0.7, 0.55, 0.76] | AUC por dia [0.3, 0.38, 0.61]
+     dbtd: n 69 | D por dia [-0.11, 0.07, 0.08] | AUC por dia [0.4, 0.41, 0.66]
+     beta: n 0 | D por dia [0.1] | AUC por dia [0.32]
+[cerca, entorno nublado | control D] dias (n>=20) 13, n/dia 529
+     d11: n 89 | D por dia [-16.52, -15.59, -13.54, -11.16, -10.8, -9.57, -9.11, -4.6, -4.24, -3.76, -3.08] | AUC por dia [0.78, 0.84, 0.91, 0.93, 0.94, 0.97, 1.0, 1.0, 1.0, 1.0, 1.0]
+     dbtd: n 89 | D por dia [-0.81, -0.65, -0.41, -0.31, -0.29, -0.28, -0.07, -0.07, 0.13, 0.25, 0.25] | AUC por dia [0.23, 0.31, 0.36, 0.54, 0.6, 0.67, 0.71, 0.73, 0.81, 0.92, 0.92]
+     beta: n 75 | D por dia [-0.37, -0.21, -0.19, -0.09, -0.07, -0.06, -0.05, -0.03, -0.03, -0.03, 0.08] | AUC por dia [0.4, 0.54, 0.58, 0.59, 0.64, 0.67, 0.68, 0.71, 0.79, 0.83, 0.9]
+     fraccion fria (> 3 K bajo el control) por dia [0.5, 0.63, 0.63, 0.65, 0.77, 0.87, 0.88, 0.94, 0.95, 1.0, 1.0]
+     por cuadro (404 cuadros con >= 5 px): D_d11 p05 -39.85 p50 -10.37 p95 -0.23 sd 10.86 | AUC_d11 p05 0.56 p95 1.00 | D_dbtd p05 -0.834 p50 -0.185 p95 +0.496 sd 0.424 | AUC_dbtd p05 0.18 p95 1.00
+[cerca, entorno nublado | control A] dias (n>=20) 13, n/dia 529
+     d11: n 516 | D por dia [-10.92, -7.77, -7.6, -6.48, -6.27, -5.4, -1.5, -0.8, -0.57, -0.57, -0.55, 1.7, 12.08] | AUC por dia [0.31, 0.47, 0.51, 0.51, 0.53, 0.55, 0.58, 0.67, 0.71, 0.73, 0.74, 0.77, 0.87]
+     dbtd: n 516 | D por dia [-0.3, -0.28, -0.18, -0.17, -0.04, -0.01, 0.02, 0.05, 0.06, 0.09, 0.09, 0.16, 0.23] | AUC por dia [0.38, 0.4, 0.42, 0.43, 0.46, 0.46, 0.46, 0.5, 0.51, 0.6, 0.63, 0.64, 0.71]
+     beta: n 487 | D por dia [-0.05, -0.03, -0.02, -0.01, -0.01, -0.01, -0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.03] | AUC por dia [0.3, 0.36, 0.44, 0.44, 0.44, 0.48, 0.51, 0.55, 0.55, 0.59, 0.62, 0.66, 0.7]
+[cerca, entorno nublado | control B] dias (n>=20) 13, n/dia 529
+     d11: n 375 | D por dia [2.35, 2.8, 3.15, 3.34, 3.58, 3.91, 4.21, 5.06, 5.16, 5.31, 5.59, 6.66, 7.66] | AUC por dia [0.1, 0.11, 0.11, 0.12, 0.14, 0.15, 0.18, 0.18, 0.19, 0.19, 0.22, 0.24, 0.24]
+     dbtd: n 375 | D por dia [-0.3, -0.13, -0.06, -0.05, -0.02, 0.01, 0.02, 0.07, 0.24, 0.26, 0.32, 0.33, 0.49] | AUC por dia [0.26, 0.26, 0.31, 0.31, 0.33, 0.45, 0.46, 0.48, 0.5, 0.55, 0.55, 0.61, 0.64]
+     beta: n 355 | D por dia [-0.06, -0.02, -0.01, 0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02] | AUC por dia [0.32, 0.33, 0.35, 0.38, 0.38, 0.39, 0.43, 0.44, 0.44, 0.46, 0.59, 0.67, 0.76]
+[cerca, todo | control D] dias (n>=20) 15, n/dia 536
+     d11: n 196 | D por dia [-16.52, -13.54, -10.8, -9.57, -8.98, -5.36, -4.24, -3.76, -3.58, -3.44, -2.53, -1.72, -1.72] | AUC por dia [0.72, 0.72, 0.73, 0.79, 0.8, 0.84, 0.91, 0.97, 1.0, 1.0, 1.0, 1.0, 1.0]
+     dbtd: n 196 | D por dia [-0.81, -0.65, -0.4, -0.28, -0.21, -0.2, -0.07, -0.07, -0.05, 0.12, 0.13, 0.18, 0.25] | AUC por dia [0.23, 0.35, 0.36, 0.38, 0.54, 0.55, 0.6, 0.63, 0.69, 0.73, 0.8, 0.92, 0.92]
+     beta: n 73 | D por dia [-0.37, -0.21, -0.19, -0.09, -0.07, -0.06, -0.05, -0.03, -0.03, -0.03, 0.02, 0.22] | AUC por dia [0.26, 0.45, 0.54, 0.58, 0.59, 0.64, 0.67, 0.71, 0.71, 0.79, 0.83, 0.9]
+     fraccion fria (> 3 K bajo el control) por dia [0.3, 0.31, 0.39, 0.51, 0.54, 0.57, 0.63, 0.65, 0.87, 0.94, 0.94, 1.0, 1.0]
+     por cuadro (530 cuadros con >= 5 px): D_d11 p05 -30.35 p50 -5.18 p95 +0.27 sd 9.94 | AUC_d11 p05 0.48 p95 1.00 | D_dbtd p05 -0.779 p50 -0.101 p95 +0.399 sd 0.376 | AUC_dbtd p05 0.21 p95 0.96
+[cerca, todo | control A] dias (n>=20) 15, n/dia 536
+     d11: n 522 | D por dia [-7.77, -7.6, -6.48, -6.27, -5.51, -2.51, -1.68, -1.0, -0.8, -0.79, -0.66, -0.57, 0.66, 1.7, 12.08] | AUC por dia [0.31, 0.43, 0.47, 0.51, 0.55, 0.57, 0.58, 0.58, 0.67, 0.71, 0.72, 0.75, 0.77, 0.79, 0.87]
+     dbtd: n 522 | D por dia [-0.3, -0.27, -0.2, -0.18, -0.03, -0.01, 0.02, 0.05, 0.06, 0.06, 0.09, 0.1, 0.12, 0.13, 0.23] | AUC por dia [0.38, 0.38, 0.41, 0.42, 0.43, 0.45, 0.46, 0.46, 0.46, 0.51, 0.52, 0.63, 0.64, 0.69, 0.71]
+     beta: n 460 | D por dia [-0.05, -0.03, -0.02, -0.01, -0.01, -0.01, -0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.03] | AUC por dia [0.3, 0.36, 0.44, 0.44, 0.44, 0.48, 0.48, 0.51, 0.54, 0.55, 0.59, 0.62, 0.66, 0.69]
+[cerca, todo | control B] dias (n>=20) 15, n/dia 536
+     d11: n 413 | D por dia [0.21, 2.02, 2.25, 2.86, 2.98, 3.14, 3.34, 3.58, 3.91, 4.14, 4.21, 5.31, 5.59, 6.66, 7.66] | AUC por dia [0.11, 0.11, 0.14, 0.15, 0.18, 0.18, 0.18, 0.19, 0.19, 0.19, 0.22, 0.24, 0.24, 0.36, 0.49]
+     dbtd: n 413 | D por dia [-0.17, -0.14, -0.08, -0.06, -0.02, -0.0, 0.0, 0.01, 0.03, 0.07, 0.24, 0.26, 0.32, 0.33, 0.49] | AUC por dia [0.26, 0.26, 0.31, 0.31, 0.33, 0.44, 0.46, 0.48, 0.48, 0.5, 0.5, 0.55, 0.55, 0.61, 0.68]
+     beta: n 321 | D por dia [-0.06, -0.02, -0.01, 0.0, 0.0, 0.01, 0.01, 0.01, 0.01, 0.01, 0.01, 0.02, 0.02, 0.03] | AUC por dia [0.32, 0.33, 0.35, 0.38, 0.38, 0.39, 0.43, 0.44, 0.45, 0.45, 0.45, 0.59, 0.67, 0.71]

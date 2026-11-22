@@ -16,9 +16,9 @@ import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RES = os.path.join(os.path.dirname(HERE), "resultados"); os.makedirs(RES, exist_ok=True)
-SCR = r"C:\Users\nmend\AppData\Local\Temp\claude\11c46882e3e16008\ea70ca80-5f81-4c66-8568-aa962b07902e\scratchpad"
+SCR = r"D:\goes_notas\scratch_rescate_2026-11-21\h9_calor_rayos_11c46882"
 GLM = os.path.join(SCR, "glm", "glm_versiones.jsonl")
-B73 = r"C:\Users\nmend\AppData\Local\Temp\claude\f4710304fa6a9a5b\6cc950d4-5fd7-4e45-a0af-882008093b90\scratchpad\b73"
+B73 = r"D:\goes_cache\h13\shim\b73"
 VLAT, VLON = -36.86, -71.38
 RNG = np.random.default_rng(20261119)
 NBOOT = 2000

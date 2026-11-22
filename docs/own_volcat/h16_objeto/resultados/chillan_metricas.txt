@@ -1,0 +1,6 @@
+S0 P_obj      F_h 0.000 F_c 0.000 AUC 0.783 IC_AUC 0.706-0.982 Pmed_h 1.87e-10 Pmed_c 8.22e-17 Pmax_h 0.00216 -> no separa  [DECIDE]
+S0 P_obj_sd0  F_h 0.000 F_c 0.000 AUC 0.873 IC_AUC 0.705-0.988 Pmed_h 2.85e-06 Pmed_c 5.65e-16 Pmax_h 0.00313 -> no separa
+S1 P_obj      F_h 0.000 F_c 0.000 AUC 0.280 IC_AUC 0.163-0.375 Pmed_h 1.6e-20 Pmed_c 1.78e-18 Pmax_h 1.32e-06 -> no separa
+S1 P_obj_sd0  F_h 0.000 F_c 0.000 AUC 0.383 IC_AUC 0.160-0.487 Pmed_h 8.47e-16 Pmed_c 1.57e-17 Pmax_h 3.62e-06 -> no separa
+S2 P_obj      F_h 0.000 F_c 0.000 AUC 0.457 IC_AUC 0.200-0.567 Pmed_h 8.85e-15 Pmed_c 1e-17 Pmax_h 0.000431 -> no separa
+S2 P_obj_sd0  F_h 0.000 F_c 0.000 AUC 0.567 IC_AUC 0.215-0.691 Pmed_h 3.49e-12 Pmed_c 1.26e-16 Pmax_h 0.000623 -> no separa

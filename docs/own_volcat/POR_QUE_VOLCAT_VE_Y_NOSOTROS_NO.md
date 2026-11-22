@@ -626,6 +626,17 @@ de VOLCAT aun con su cielo despejado. Etapa 3 (Chillán): **no se ejecutó**, co
 es la firma del píxel, que VOLCAT mismo informa casi nula, sino el objeto y el seguimiento, más una regla de nube
 tenue y un cielo despejado corregido que sólo el autor puede confirmar.
 
+### 3.8 Novena tanda (21-11, noche): la etapa de objeto (H16)
+
+Informe: `docs/own_volcat/h16_objeto/INFORME.md`. La probabilidad de OBJETO de VOLCAT se reprodujo con su tabla
+pública y se validó contra Mauna Loa (error mediano 0,03 décadas en las odds, 97 % dentro de una década). En los 60
+cuadros de Chillán la huella llega como máximo a 0,002 (VOLCAT pide 0,8): **no separa**. La tabla de desviación de
+BT11 en 3 × 3 es la que más la hunde (la cumbre es térmicamente rugosa). Los archivos de evento dicen por dónde entra
+Chillán: `ASHPLUMEPUFF` (49 de 60 cuadros) y `VCB` (11 de 60), no la selección básica de objeto; y tres de cuatro
+eventos parten con actividad térmica VOLCAT de 10 MW o más (según el CDR 2022, el calor relaja los umbrales). Lo
+público de VOLCAT (píxel y objeto) queda reproducido y no ve estas plumas; lo que falta es el clasificador de la
+vía pluma/puff.
+
 ## 4. Hipótesis ordenadas por evidencia
 
 | # | Hipótesis | A favor | En contra o abierto | Qué la falsaría con datos que ya hay o casi |

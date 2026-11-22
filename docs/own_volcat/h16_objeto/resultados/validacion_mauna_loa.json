@@ -1,0 +1,288 @@
+{
+ "variante": {
+  "sd": "sd0",
+  "regla_sd": "tal",
+  "desempate": "menor",
+  "b73": "finito"
+ },
+ "eleccion_cuadros_1a5": [
+  {
+   "variante": [
+    "sd0",
+    "tal",
+    "menor",
+    "finito"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 7.105427357601002e-15,
+   "frac_dentro_1_decada": 0.9722222222222222,
+   "frac_exacto": 0.558641975308642,
+   "p90_dlog10odds": 0.5436242347652509,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd0",
+    "tal",
+    "menor",
+    "eps01"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 7.105427357601002e-15,
+   "frac_dentro_1_decada": 0.9660493827160493,
+   "frac_exacto": 0.5493827160493827,
+   "p90_dlog10odds": 0.608192406863244,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd0",
+    "tal",
+    "mayor",
+    "finito"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 7.105427357601002e-15,
+   "frac_dentro_1_decada": 0.9722222222222222,
+   "frac_exacto": 0.558641975308642,
+   "p90_dlog10odds": 0.5436242347652509,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd0",
+    "tal",
+    "mayor",
+    "eps01"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 7.105427357601002e-15,
+   "frac_dentro_1_decada": 0.9660493827160493,
+   "frac_exacto": 0.5493827160493827,
+   "p90_dlog10odds": 0.608192406863244,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd1",
+    "tal",
+    "menor",
+    "finito"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 7.105427357601002e-15,
+   "frac_dentro_1_decada": 0.9660493827160493,
+   "frac_exacto": 0.5617283950617284,
+   "p90_dlog10odds": 0.5872874797098234,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd1",
+    "tal",
+    "menor",
+    "eps01"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 7.105427357601002e-15,
+   "frac_dentro_1_decada": 0.9598765432098766,
+   "frac_exacto": 0.5524691358024691,
+   "p90_dlog10odds": 0.6169161097493968,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd1",
+    "tal",
+    "mayor",
+    "finito"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 7.105427357601002e-15,
+   "frac_dentro_1_decada": 0.9660493827160493,
+   "frac_exacto": 0.5617283950617284,
+   "p90_dlog10odds": 0.5872874797098234,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd1",
+    "tal",
+    "mayor",
+    "eps01"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 7.105427357601002e-15,
+   "frac_dentro_1_decada": 0.9598765432098766,
+   "frac_exacto": 0.5524691358024691,
+   "p90_dlog10odds": 0.6169161097493968,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd0",
+    "sin075",
+    "menor",
+    "finito"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 0.031264558635282214,
+   "frac_dentro_1_decada": 0.9629629629629629,
+   "frac_exacto": 0.4691358024691358,
+   "p90_dlog10odds": 0.6628767866734546,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd0",
+    "sin075",
+    "mayor",
+    "finito"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 0.031264558635282214,
+   "frac_dentro_1_decada": 0.9629629629629629,
+   "frac_exacto": 0.4691358024691358,
+   "p90_dlog10odds": 0.6628767866734546,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd0",
+    "sin075",
+    "menor",
+    "eps01"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 0.04008455848780734,
+   "frac_dentro_1_decada": 0.9567901234567902,
+   "frac_exacto": 0.46296296296296297,
+   "p90_dlog10odds": 0.6791296155459537,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd0",
+    "sin075",
+    "mayor",
+    "eps01"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 0.04008455848780734,
+   "frac_dentro_1_decada": 0.9567901234567902,
+   "frac_exacto": 0.46296296296296297,
+   "p90_dlog10odds": 0.6791296155459537,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd1",
+    "sin075",
+    "menor",
+    "finito"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 0.058914760865034665,
+   "frac_dentro_1_decada": 0.9598765432098766,
+   "frac_exacto": 0.4567901234567901,
+   "p90_dlog10odds": 0.6151446614302358,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd1",
+    "sin075",
+    "mayor",
+    "finito"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 0.058914760865034665,
+   "frac_dentro_1_decada": 0.9598765432098766,
+   "frac_exacto": 0.4567901234567901,
+   "p90_dlog10odds": 0.6151446614302358,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd1",
+    "sin075",
+    "menor",
+    "eps01"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 0.06339396393639873,
+   "frac_dentro_1_decada": 0.9537037037037037,
+   "frac_exacto": 0.4506172839506173,
+   "p90_dlog10odds": 0.6711712617930559,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  },
+  {
+   "variante": [
+    "sd1",
+    "sin075",
+    "mayor",
+    "eps01"
+   ],
+   "n": 324,
+   "mediana_dlog10odds": 0.06339396393639873,
+   "frac_dentro_1_decada": 0.9537037037037037,
+   "frac_exacto": 0.4506172839506173,
+   "p90_dlog10odds": 0.6711712617930559,
+   "n_P05_volcat": 5,
+   "n_P05_nuestro": 5,
+   "concuerdan_P05": 324
+  }
+ ],
+ "validacion_cuadros_6a10_multi": {
+  "n": 126,
+  "mediana_dlog10odds": 0.026010300563655164,
+  "frac_dentro_1_decada": 0.9682539682539683,
+  "frac_exacto": 0.47619047619047616,
+  "p90_dlog10odds": 0.31773093395224805,
+  "n_P05_volcat": 1,
+  "n_P05_nuestro": 0,
+  "concuerdan_P05": 125
+ },
+ "info_cuadros_6a10_un_pixel": {
+  "n": 434,
+  "mediana_dlog10odds": 1.7763568394002505e-15,
+  "frac_dentro_1_decada": 0.988479262672811,
+  "frac_exacto": 0.7764976958525346,
+  "p90_dlog10odds": 0.2421729092118368,
+  "n_P05_volcat": 0,
+  "n_P05_nuestro": 0,
+  "concuerdan_P05": 434
+ },
+ "umbral": "mediana |dlog10 odds| <= 0,3 y >= 80 % dentro de 1 decada",
+ "valida": true
+}

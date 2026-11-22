@@ -1,0 +1,780 @@
+{
+ "bloque": "eleccion",
+ "tol": 0.01,
+ "casos": {
+  "fuego_vcb": {
+   "n_cuadros": 13,
+   "por_cuadro": [
+    {
+     "hora": "171600",
+     "n_huella": 7,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 7,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 0,
+     "SL_n_valor": 7,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 0,
+     "grupos_en_huella": [
+      -999
+     ],
+     "jaccard_huella_grupo_ceniza": 0.0,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      7,
+      0,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      0.0
+     ]
+    },
+    {
+     "hora": "173100",
+     "n_huella": 27,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 27,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 0,
+     "SL_n_valor": 27,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 0,
+     "grupos_en_huella": [
+      -999
+     ],
+     "jaccard_huella_grupo_ceniza": 0.0,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      27,
+      0,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      15.0
+     ]
+    },
+    {
+     "hora": "174600",
+     "n_huella": 125,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 125,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 0,
+     "SL_n_valor": 125,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 0,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.168,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      104,
+      21,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      30.0
+     ]
+    },
+    {
+     "hora": "180100",
+     "n_huella": 266,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 265,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 1,
+     "SL_n_valor": 261,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 5,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.5375939849624061,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      123,
+      143,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      45.016666412353516
+     ]
+    },
+    {
+     "hora": "181600",
+     "n_huella": 385,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 385,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 0,
+     "SL_n_valor": 381,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 4,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.6935064935064935,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      118,
+      267,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      60.016666412353516
+     ]
+    },
+    {
+     "hora": "183100",
+     "n_huella": 659,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 653,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 6,
+     "SL_n_valor": 653,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 6,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.7314112291350531,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      177,
+      482,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      75.01667022705078
+     ]
+    },
+    {
+     "hora": "184600",
+     "n_huella": 1058,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 1039,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 19,
+     "SL_n_valor": 1039,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 19,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.7060491493383743,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      311,
+      747,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      90.01667022705078
+     ]
+    },
+    {
+     "hora": "190100",
+     "n_huella": 1155,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 1155,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 0,
+     "SL_n_valor": 1155,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 0,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.9212121212121213,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      91,
+      1064,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      105.01667022705078
+     ]
+    },
+    {
+     "hora": "191600",
+     "n_huella": 1189,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 1189,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 0,
+     "SL_n_valor": 1186,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 3,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.8973927670311186,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      122,
+      1067,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      120.01667022705078
+     ]
+    },
+    {
+     "hora": "193100",
+     "n_huella": 1331,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 1331,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 0,
+     "SL_n_valor": 1331,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 0,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.9151014274981217,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      113,
+      1218,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      135.01666259765625
+     ]
+    },
+    {
+     "hora": "194600",
+     "n_huella": 1488,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 1488,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 0,
+     "SL_n_valor": 1487,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 1,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.8528225806451613,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      219,
+      1269,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      150.01666259765625
+     ]
+    },
+    {
+     "hora": "200100",
+     "n_huella": 1675,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 1675,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 0,
+     "SL_n_valor": 1670,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 5,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.8405970149253731,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      267,
+      1408,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      165.01666259765625
+     ]
+    },
+    {
+     "hora": "201600",
+     "n_huella": 1855,
+     "ids_evento": [
+      0
+     ],
+     "S_n_valor": 1855,
+     "S_n_valor_fuera_huella": 0,
+     "S_n_huella_sin_valor": 0,
+     "SL_n_valor": 1840,
+     "SL_n_valor_fuera_huella": 0,
+     "SL_n_huella_sin_valor": 15,
+     "grupos_en_huella": [
+      -999,
+      1
+     ],
+     "jaccard_huella_grupo_ceniza": 0.8517520215633423,
+     "jaccard_huella_grupo_conv": 1.0,
+     "jaccard_huella_union": 1.0,
+     "huella_en_ceniza_conv_ambos_ninguno": [
+      0,
+      275,
+      1580,
+      0
+     ],
+     "grupo_fuera_huella_ceniza_conv": [
+      0,
+      0
+     ],
+     "event_type": [
+      "VCB"
+     ],
+     "feature_age_min": [
+      180.01666259765625
+     ]
+    }
+   ],
+   "candidatos": {
+    "SL|1-P": {
+     "n": 11162,
+     "acuerdo": 0.3775309084393478,
+     "nulo_corrido_max": 0.39689119170984455,
+     "nulo_previo": 0.4127310061601643
+    },
+    "SL|1-P_IR": {
+     "n": 11162,
+     "acuerdo": 0.0,
+     "nulo_corrido_max": 9.131586156515387e-05,
+     "nulo_previo": 0.0
+    },
+    "SL|1-P_SWIR": {
+     "n": 11162,
+     "acuerdo": 0.0,
+     "nulo_corrido_max": 0.0,
+     "nulo_previo": 0.0
+    },
+    "SL|1-P_sub": {
+     "n": 11162,
+     "acuerdo": 0.4285074359433793,
+     "nulo_corrido_max": 0.4504945831370702,
+     "nulo_previo": 0.47735233723879694
+    },
+    "SL|P": {
+     "n": 11162,
+     "acuerdo": 0.6000716717434151,
+     "nulo_corrido_max": 0.5823534944972251,
+     "nulo_previo": 0.5617828240125619
+    },
+    "SL|P_IR": {
+     "n": 11162,
+     "acuerdo": 1.0,
+     "nulo_corrido_max": 0.9926034152132225,
+     "nulo_previo": 0.9873690119760479
+    },
+    "SL|P_SWIR": {
+     "n": 11162,
+     "acuerdo": 0.9942662605267873,
+     "nulo_corrido_max": 0.9942831215970962,
+     "nulo_previo": 0.9936377245508982
+    },
+    "SL|P_sub": {
+     "n": 11162,
+     "acuerdo": 0.565758824583408,
+     "nulo_corrido_max": 0.5463267801711974,
+     "nulo_previo": 0.5186616741152313
+    },
+    "SL|obj:Feature_Prob": {
+     "n": 9266,
+     "acuerdo": 0.9974098856032808,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "SL|obj:Feature_Prob_IR": {
+     "n": 9266,
+     "acuerdo": 0.2959205698251673,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "SL|obj:Feature_Prob_IR_Loose": {
+     "n": 9266,
+     "acuerdo": 0.2959205698251673,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "SL|obj:Feature_Prob_Loose": {
+     "n": 9266,
+     "acuerdo": 0.9974098856032808,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "SL|obj:Probability_Mean": {
+     "n": 9266,
+     "acuerdo": 0.052449816533563565,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "SL|obj:Probability_Mean_IR": {
+     "n": 9266,
+     "acuerdo": 0.9815454349233758,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "SL|obj:Probability_Median": {
+     "n": 9266,
+     "acuerdo": 0.46503345564429094,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "SL|obj:Probability_Subset_Median": {
+     "n": 9266,
+     "acuerdo": 0.27142240448953164,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "S|1-P": {
+     "n": 11194,
+     "acuerdo": 0.0,
+     "nulo_corrido_max": 0.08574380165289257,
+     "nulo_previo": 0.2492467156803664
+    },
+    "S|1-P_IR": {
+     "n": 11162,
+     "acuerdo": 0.3775309084393478,
+     "nulo_corrido_max": 0.3843978102189781,
+     "nulo_previo": 0.3849743350443304
+    },
+    "S|1-P_SWIR": {
+     "n": 11162,
+     "acuerdo": 0.3775309084393478,
+     "nulo_corrido_max": 0.3843978102189781,
+     "nulo_previo": 0.38637424171721885
+    },
+    "S|1-P_sub": {
+     "n": 11194,
+     "acuerdo": 0.03421475790602108,
+     "nulo_corrido_max": 0.09654395191585274,
+     "nulo_previo": 0.2399662528624804
+    },
+    "S|P": {
+     "n": 11194,
+     "acuerdo": 1.0,
+     "nulo_corrido_max": 0.8880120255543029,
+     "nulo_previo": 0.7092925153670001
+    },
+    "S|P_IR": {
+     "n": 11162,
+     "acuerdo": 0.6000716717434151,
+     "nulo_corrido_max": 0.6006822874584792,
+     "nulo_previo": 0.590760615958936
+    },
+    "S|P_SWIR": {
+     "n": 11162,
+     "acuerdo": 0.6058054112166279,
+     "nulo_corrido_max": 0.6049016967411797,
+     "nulo_previo": 0.5959869342043864
+    },
+    "S|P_sub": {
+     "n": 11194,
+     "acuerdo": 0.9491691977845275,
+     "nulo_corrido_max": 0.8879601803155522,
+     "nulo_previo": 0.7378570567675063
+    },
+    "S|obj:Feature_Prob": {
+     "n": 9266,
+     "acuerdo": 0.5262249082667818,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "S|obj:Feature_Prob_IR": {
+     "n": 9266,
+     "acuerdo": 0.44755018346643644,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "S|obj:Feature_Prob_IR_Loose": {
+     "n": 9266,
+     "acuerdo": 0.44755018346643644,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "S|obj:Feature_Prob_Loose": {
+     "n": 9266,
+     "acuerdo": 0.5262249082667818,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "S|obj:Probability_Mean": {
+     "n": 9266,
+     "acuerdo": 0.05428448089790632,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "S|obj:Probability_Mean_IR": {
+     "n": 9266,
+     "acuerdo": 0.5089574789553205,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "S|obj:Probability_Median": {
+     "n": 9266,
+     "acuerdo": 0.4340600043168573,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    },
+    "S|obj:Probability_Subset_Median": {
+     "n": 9266,
+     "acuerdo": 0.46870278437297647,
+     "nulo_corrido_max": null,
+     "nulo_previo": null
+    }
+   },
+   "soporte": {
+    "S|P": {
+     "interseccion": 11194,
+     "union": 11194,
+     "jaccard": 1.0
+    },
+    "S|P_IR": {
+     "interseccion": 11162,
+     "union": 500406,
+     "jaccard": 0.022305887619253166
+    },
+    "S|P_SWIR": {
+     "interseccion": 11162,
+     "union": 500406,
+     "jaccard": 0.022305887619253166
+    },
+    "S|P_sub": {
+     "interseccion": 11194,
+     "union": 11194,
+     "jaccard": 1.0
+    },
+    "SL|P": {
+     "interseccion": 11162,
+     "union": 11194,
+     "jaccard": 0.9971413257102019
+    },
+    "SL|P_IR": {
+     "interseccion": 11162,
+     "union": 500374,
+     "jaccard": 0.022307314129031485
+    },
+    "SL|P_SWIR": {
+     "interseccion": 11162,
+     "union": 500374,
+     "jaccard": 0.022307314129031485
+    },
+    "SL|P_sub": {
+     "interseccion": 11162,
+     "union": 11194,
+     "jaccard": 0.9971413257102019
+    }
+   },
+   "controles": {
+    "ash_cloud_height": {
+     "n": 11220,
+     "acuerdo": 0.4834224598930481,
+     "nulo_corrido_n": 10674,
+     "nulo_corrido": 0.112141652613828
+    },
+    "ash_mass_loading": {
+     "n": 11220,
+     "acuerdo": 1.0,
+     "nulo_corrido_n": 10674,
+     "nulo_corrido": 0.012834925988382987
+    },
+    "effective_radius_of_ash": {
+     "n": 11220,
+     "acuerdo": 0.08110516934046345,
+     "nulo_corrido_n": 10674,
+     "nulo_corrido": 0.0027168821435263257
+    }
+   }
+  }
+ },
+ "granulo": {
+  "candidatos": {
+   "Sg|P": {
+    "n": 11194,
+    "acuerdo": 1.0
+   },
+   "Sg|P_IR": {
+    "n": 11162,
+    "acuerdo": 0.6000716717434151
+   },
+   "Sg|P_SWIR": {
+    "n": 11162,
+    "acuerdo": 0.6058054112166279
+   },
+   "Sg|P_sub": {
+    "n": 11194,
+    "acuerdo": 0.9491691977845275
+   }
+  },
+  "soporte": {
+   "Sg|P": {
+    "interseccion": 11194,
+    "union": 11194,
+    "jaccard": 1.0
+   },
+   "Sg|P_IR": {
+    "interseccion": 11162,
+    "union": 2325971,
+    "jaccard": 0.004798856047646338
+   },
+   "Sg|P_SWIR": {
+    "interseccion": 11162,
+    "union": 2325971,
+    "jaccard": 0.004798856047646338
+   },
+   "Sg|P_sub": {
+    "interseccion": 11194,
+    "union": 11194,
+    "jaccard": 1.0
+   },
+   "Sg|grupo_ceniza": {
+    "interseccion": 9266,
+    "union": 11194,
+    "jaccard": 0.8277648740396641
+   }
+  }
+ }
+}

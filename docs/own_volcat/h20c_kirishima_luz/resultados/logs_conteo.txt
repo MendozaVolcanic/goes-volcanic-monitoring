@@ -1,0 +1,9 @@
+Conteos en logs geocatASHOBJ (AN_IN_HN_SN), informativo, no decide
+cuadro_L2 | lineas 'Temporal selection criteria met for ash' | lineas 'Identification Method: Plume/Puff Extraction (SECO+)'
+201730 | 0 | 1
+204730 | 0 | 1
+205000 | 1 | 0
+205230 | 1 | 0
+205500 | 1 | 0
+205730 | 1 | 0
+210000 | 1 | 0

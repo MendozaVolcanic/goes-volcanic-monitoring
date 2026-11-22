@@ -79,7 +79,7 @@ Rutas cortas: `<R>` = `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Go
 | H7 seguimiento (`h3_h7\INFORME_H7.md`) | `h3_h7\scripts_h7\*` | `det\window.json`, `det\latlon.npz`, `volcat_chillan_10min\frecuencia_pixel_clasificado.npy` y PNG (la ruta al worktree borrado ya se corrigió) | **No** | **No** | **Roto** (falsada; el informe trae los números, no hay cómo rehacerla sin rehacer el caché del detector y los PNG) |
 | β(7,3/11) fuera de muestra (`beta73\INFORME_beta73.md`) | `beta73\scripts\*` | `comun_b73.py` apunta a `h3`, `det`, dos carpetas de PNG y `b73` en scratchpads borrados; lo rescatado: `<F3>\cache_rescatada\b73\` (46 MB) e inventarios y huellas en `<F3>\h12_datos\extra\b73_meta\` y `D:\goes_cache\h13\shim\b73\`. PNG `b73\png_new` (380 MB) **perdidos** | parcial | **No** | **Roto como prueba entera**; el README ya lo anotaba ("no corre hasta apuntarlo al código del repo") |
 | VAAC de Londres (`vaac_londres\INFORME.md`) | `vaac_londres\scripts\rutas.py`, `fetch_c13.py`, `analisis.py`, `verificar.py` | `PREV` = caché del detector `det` (perdido: `window.json`, `planck.json`, `latlon.npz`, `cache\`, huellas); `VAAC_TRABAJO` = scratchpad `vaac` (vivo, copiado a `D:\goes_notas\scratch_rescate_2026-11-21\vaac_470cdb23\`) | parcial | **No** (`rutas.py` falla al no encontrar `det`) | **Roto**; el informe dice que `fetch_c13.py` y "los scripts del 17-11" rehacen los cachés desde S3, pero esos scripts del 17-11 no están en el repo |
-| H9 calor 3,9 µm y rayos GLM (`calor_rayos\INFORME.md`) | `calor_rayos\scripts\*` | `SCR` = scratchpad `11c46882` (vivo, **copiado**: `c07cache`, `glm`, `glm_s3`); `det\latlon.npz` y `det\window.json` (perdidos); `b73\inv_local.json` e `inv_new.json` (perdidos en el scratchpad, **existen** en `<F3>\h12_datos\extra\b73_meta\` y `D:\goes_cache\h13\shim\b73\`) | parcial | **No** tal cual. Reparable: `latlon.npz` de la misma ventana existe en `<F3>\h12_datos\trabajo\rv\` (ventana y0 = 4497, x0 = 2820, reconstruida por `reproducir_volcat\scripts\ventana.py`) | **Frágil + reparable** (cambiar 3 rutas) |
+| H9 calor 3,9 µm y rayos GLM (`calor_rayos\INFORME.md`) | `calor_rayos\scripts\*` | `SCR` = scratchpad `11c46882` (vivo, **copiado**: `c07cache`, `glm`, `glm_s3`); `det\latlon.npz` y `det\window.json` (perdidos); `b73\inv_local.json` e `inv_new.json` (perdidos en el scratchpad, **existen** en `<F3>\h12_datos\extra\b73_meta\` y `D:\goes_cache\h13\shim\b73\`) | **Sí** (21-11) | **Sí**: rutas apuntadas a `D:` el 21-11 (§3, punto 8); `analisis_calor.py` y `analisis_rayos.py` rehechos con salida idéntica salvo la línea de fecha | **Reproducible** (el análisis; `fetch_c07.py` y los de GLM compilan, no re-ejecutados) |
 | H10 dirección de la pluma (`direccion_pluma\INFORME.md`) | `direccion_pluma\scripts\*` | `WORK` = scratchpad `3eed1f0f` (vivo, **copiado**), `det` (perdido: `latlon.npz`, `cache\`), `b73` (perdido; inventarios en `<F3>`), PNG VOLCAT (perdidos) | parcial | **No** | **Roto** (necesita PNG de oct-nov y el caché del detector); las salidas JSON están en el repo |
 | H11 terreno, filas de volcán y SO₂ (`reproducir_volcat\INFORME_H11.md`) | `reproducir_volcat\scripts\comun_h11.py`, `ventana.py`, `rt_niveles.py`, `h11_analisis.py` | `H11_H3`, `H11_B73`, `H11_TRABAJO` en `<F3>\h12_datos\trabajo\` (cielo despejado y nube negra por píxel `rt_h11`, 164 MB), `H3_RT_DL=D:\goes_cache\rt` | **Sí** (copia en D de hoy) | ver §2 | **Reproducible** con la copia de `D:`; antes de hoy, frágil (sólo en la carpeta de notas) |
 | E2, SECO propio entrenado con VOLCAT (`reproducir_volcat\INFORME_E2.md`) | `fetch_e2.py`, `fetch_gfs_e2.py`, `rt_e2.py`, `e2_features.py`, `e2_clasificador.py`, `huella_png.py` | `<F3>\h12_datos\extra\cache_e2`, `gfs_e2`, `png_e2`, `rt_e2` (171 MB), `<F3>\h12_datos\feat_e2` (73 MB, md5 comprobado el 20-11) | **Sí** | compila, insumos presentes (no re-ejecutado) | **Reproducible** con la copia de `D:` |
@@ -138,10 +138,11 @@ Estado de cada punto:
 6. **HECHO.** Las 4 constantes `REPO` resuelven la raíz desde el propio archivo.
 7. **HECHO (`--raw`).** `validate_magnitud.py` y `harvest_volcat_validacion.py` aceptan `--raw` o
    `VOLCAT_VALIDACION_RAW`, defecto sin cambios.
-8. **PENDIENTE. H9 reparable**: cambiar `DET` y `B73` en `calor_rayos\scripts\analisis_calor.py`, `analisis_rayos.py` y
-   `fetch_c07.py` a `D:\goes_notas\local_f3a7d295\h12_datos\trabajo\rv` (por `latlon.npz`; `window.json` no
-   existe, pero `ventana.py` da y0 = 4497, x0 = 2820) y `D:\goes_cache\h13\shim\b73`, y `SCR` a
-   `D:\goes_notas\scratch_rescate_2026-11-21\h9_calor_rayos_11c46882`. No probado.
+8. **HECHO (21-11). H9**: en los cinco scripts de `calor_rayos\scripts\`, `DET` apunta a
+   `D:\goes_notas\local_f3a7d295\cache_rescatada\reproducir_volcat` (ahí sí está `window.json`, y0 = 4497, x0 = 2820,
+   y su `latlon.npz` es idéntico al de `h12_datos\trabajo\rv`), `B73` a `D:\goes_cache\h13\shim\b73` y `SCR` a
+   `D:\goes_notas\scratch_rescate_2026-11-21\h9_calor_rayos_11c46882`. `h9_calor_resultado.txt` y
+   `h9_rayos_resultado.txt` rehechos: idénticos salvo la línea con la fecha de ejecución.
 
 **Perdido sin copia** (no hay nada que salvar, sólo saberlo): el caché del detector del 17-11 (`det`), los PNG
 VOLCAT de oct-nov de las sesiones `58c6c657` y `3960f3d6`, y los PNG de β73 (`b73\png_new`, 380 MB). Por eso
@@ -186,8 +187,9 @@ De **20 resultados** inventariados (incluye los tres PR sin fusionar; excluye la
 - **3 frágiles** al cerrar el inventario: H14 (eventos SSEC restringidos y con plazo), PR 76 y PR 77 (importaban
   copias de scripts desde `D:`). **Actualización 21-11:** PR 76 y 77 pasan a reproducibles (punto 4 de §3; la
   vuelta 2 de PR 76 se rehízo con cifras idénticas), así que quedan **12 reproducibles, 1 frágil (H14), 7 rotos**.
-- **7 rotos**: pruebas A/B y pasos 2 a 4 del 17 y 18-11, H3, H7, β73, VAAC de Londres, H9 y H10. H9 es
-  reparable cambiando tres rutas; H3 lo es en su parte de métricas. Los demás perdieron el caché del detector
+  **Actualización 21-11, noche:** H9 pasa a reproducible (punto 8 de §3): **13 reproducibles, 1 frágil, 6 rotos**.
+- **Rotos** (7 al cerrar el inventario, 6 desde que H9 se reparó): pruebas A/B y pasos 2 a 4 del 17 y 18-11, H3,
+  H7, β73, VAAC de Londres y H10. H3 es reparable en su parte de métricas. Los demás perdieron el caché del detector
   o los PNG VOLCAT de oct-nov, que no tienen copia.
 
 Todos los scripts compilan (86 en main más los de los tres PR).

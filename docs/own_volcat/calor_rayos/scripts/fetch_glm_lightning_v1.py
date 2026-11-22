@@ -11,7 +11,7 @@ import os, json, subprocess, time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
 
-SCR = r"C:\Users\nmend\AppData\Local\Temp\claude\11c46882e3e16008\ea70ca80-5f81-4c66-8568-aa962b07902e\scratchpad\glm"
+SCR = r"D:\goes_notas\scratch_rescate_2026-11-21\h9_calor_rayos_11c46882\glm"
 os.makedirs(SCR, exist_ok=True)
 SHAS = os.path.join(SCR, "commits.json")
 OUT = os.path.join(SCR, "glm_versiones.jsonl")

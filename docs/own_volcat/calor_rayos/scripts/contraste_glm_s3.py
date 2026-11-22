@@ -16,7 +16,7 @@ import requests
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RES = os.path.join(os.path.dirname(HERE), "resultados")
-SCR = r"C:\Users\nmend\AppData\Local\Temp\claude\11c46882e3e16008\ea70ca80-5f81-4c66-8568-aa962b07902e\scratchpad\glm_s3"
+SCR = r"D:\goes_notas\scratch_rescate_2026-11-21\h9_calor_rayos_11c46882\glm_s3"
 os.makedirs(SCR, exist_ok=True)
 HOST = "https://noaa-goes19.s3.amazonaws.com"
 VLAT, VLON = -36.86, -71.38

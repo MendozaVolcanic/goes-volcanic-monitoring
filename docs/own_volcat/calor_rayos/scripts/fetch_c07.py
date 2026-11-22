@@ -9,10 +9,10 @@ from datetime import datetime, timedelta
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import numpy as np
 
-SCR = r"C:\Users\nmend\AppData\Local\Temp\claude\11c46882e3e16008\ea70ca80-5f81-4c66-8568-aa962b07902e\scratchpad"
+SCR = r"D:\goes_notas\scratch_rescate_2026-11-21\h9_calor_rayos_11c46882"
 OUT = os.path.join(SCR, "c07cache")
-DET = r"C:\Users\nmend\AppData\Local\Temp\claude\d6ea8719dcf88502\536a0873-47fb-4b33-9ee5-de0197c3f321\scratchpad\det"
-B73 = r"C:\Users\nmend\AppData\Local\Temp\claude\f4710304fa6a9a5b\6cc950d4-5fd7-4e45-a0af-882008093b90\scratchpad\b73"
+DET = r"D:\goes_notas\local_f3a7d295\cache_rescatada\reproducir_volcat"
+B73 = r"D:\goes_cache\h13\shim\b73"
 WIN = json.load(open(os.path.join(DET, "window.json")))
 _fs = None; _list = {}
 

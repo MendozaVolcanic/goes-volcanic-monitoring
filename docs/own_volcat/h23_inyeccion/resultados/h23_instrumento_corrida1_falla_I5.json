@@ -1,0 +1,26 @@
+{
+ "I4_corr_ref06_cota": -0.9747804605515448,
+ "I4_cumbre_menos_bajo_K": -8.21533203125,
+ "I5_bajo_18_menos_09_K": 3.8648681640625,
+ "I5_cumbre_18_menos_09_K": 0.791717529296875,
+ "I6_btd_ref_mediana_K": 1.1018459796905518,
+ "frac_linea_base_valida": 1.0,
+ "fallas": [
+  "I5"
+ ],
+ "muestras_chillan": {
+  "cumbre_A": 18887,
+  "cumbre_B": 5157,
+  "cumbre_C": 4975,
+  "bajo_A": 434423,
+  "bajo_B": 115751,
+  "bajo_C": 112490
+ },
+ "gfs_Ttop_mediana_K": {
+  "3km": 269.31,
+  "4km": 263.04,
+  "5km": 256.48,
+  "10km": 224.49
+ },
+ "gfs_Ttropo_mediana_K": 221.74291521775984
+}

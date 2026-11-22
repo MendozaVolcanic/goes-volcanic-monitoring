@@ -1,0 +1,319 @@
+{
+ "bloque": "oct",
+ "volcan": "chillan",
+ "dias": 33,
+ "horas": {
+  "00": {
+   "dias_con_escena_despejada": 3,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 267.24,
+    "btd_ref": 0.72
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 277.57,
+    "btd_ref": 0.98
+   }
+  },
+  "01": {
+   "dias_con_escena_despejada": 5,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 266.93,
+    "btd_ref": 0.79
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 278.97,
+    "btd_ref": 1.12
+   }
+  },
+  "02": {
+   "dias_con_escena_despejada": 6,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 267.06,
+    "btd_ref": 0.8
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 279.04,
+    "btd_ref": 0.97
+   }
+  },
+  "03": {
+   "dias_con_escena_despejada": 6,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 267.18,
+    "btd_ref": 0.79
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 279.2,
+    "btd_ref": 0.89
+   }
+  },
+  "04": {
+   "dias_con_escena_despejada": 7,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 266.44,
+    "btd_ref": 0.73
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 278.59,
+    "btd_ref": 0.85
+   }
+  },
+  "05": {
+   "dias_con_escena_despejada": 7,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 264.8,
+    "btd_ref": 0.72
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 276.9,
+    "btd_ref": 0.79
+   }
+  },
+  "06": {
+   "dias_con_escena_despejada": 6,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 264.94,
+    "btd_ref": 0.68
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 276.44,
+    "btd_ref": 0.74
+   }
+  },
+  "07": {
+   "dias_con_escena_despejada": 7,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 265.06,
+    "btd_ref": 0.69
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 278.0,
+    "btd_ref": 0.71
+   }
+  },
+  "08": {
+   "dias_con_escena_despejada": 7,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 265.78,
+    "btd_ref": 0.73
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 278.28,
+    "btd_ref": 0.67
+   }
+  },
+  "09": {
+   "dias_con_escena_despejada": 7,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 266.49,
+    "btd_ref": 0.7
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 277.82,
+    "btd_ref": 0.68
+   }
+  },
+  "10": {
+   "dias_con_escena_despejada": 7,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 266.18,
+    "btd_ref": 0.65
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 277.72,
+    "btd_ref": 0.67
+   }
+  },
+  "11": {
+   "dias_con_escena_despejada": 5,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 267.75,
+    "btd_ref": 0.67
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 279.39,
+    "btd_ref": 0.77
+   }
+  },
+  "12": {
+   "dias_con_escena_despejada": 5,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 269.44,
+    "btd_ref": 0.84
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 281.81,
+    "btd_ref": 1.06
+   }
+  },
+  "13": {
+   "dias_con_escena_despejada": 6,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 270.62,
+    "btd_ref": 0.93
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 284.12,
+    "btd_ref": 1.33
+   }
+  },
+  "14": {
+   "dias_con_escena_despejada": 4,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 272.67,
+    "btd_ref": 1.03
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 286.57,
+    "btd_ref": 1.67
+   }
+  },
+  "15": {
+   "dias_con_escena_despejada": 3,
+   "cumbre": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 273.79,
+    "btd_ref": 1.11
+   },
+   "bajo": {
+    "frac_con_ref": 1.0,
+    "bt11_ref": 289.69,
+    "btd_ref": 1.87
+   }
+  },
+  "16": {
+   "dias_con_escena_despejada": 2,
+   "cumbre": {
+    "frac_con_ref": 0.91,
+    "bt11_ref": 274.16,
+    "btd_ref": 1.1
+   },
+   "bajo": {
+    "frac_con_ref": 0.91,
+    "bt11_ref": 291.01,
+    "btd_ref": 2.24
+   }
+  },
+  "17": {
+   "dias_con_escena_despejada": 0,
+   "cumbre": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   },
+   "bajo": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   }
+  },
+  "18": {
+   "dias_con_escena_despejada": 2,
+   "cumbre": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   },
+   "bajo": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   }
+  },
+  "19": {
+   "dias_con_escena_despejada": 1,
+   "cumbre": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   },
+   "bajo": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   }
+  },
+  "20": {
+   "dias_con_escena_despejada": 2,
+   "cumbre": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   },
+   "bajo": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   }
+  },
+  "21": {
+   "dias_con_escena_despejada": 2,
+   "cumbre": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   },
+   "bajo": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   }
+  },
+  "22": {
+   "dias_con_escena_despejada": 2,
+   "cumbre": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   },
+   "bajo": {
+    "frac_con_ref": 0.0,
+    "bt11_ref": null,
+    "btd_ref": null
+   }
+  },
+  "23": {
+   "dias_con_escena_despejada": 3,
+   "cumbre": {
+    "frac_con_ref": 0.91,
+    "bt11_ref": 263.72,
+    "btd_ref": 0.67
+   },
+   "bajo": {
+    "frac_con_ref": 0.91,
+    "bt11_ref": 276.45,
+    "btd_ref": 1.01
+   }
+  }
+ }
+}

@@ -1,0 +1,53 @@
+{
+ "I4_corr_ref06_cota": -0.9354694099070848,
+ "I4_pixeles_con_referencia": 864,
+ "I4_pixeles": 864,
+ "I4_cumbre_menos_bajo_K": -11.462005615234375,
+ "I5_hora_tarde_utc": 16,
+ "I5_bajo_tarde_menos_09_K": 13.132797241210938,
+ "I5_cumbre_tarde_menos_09_K": 7.6874847412109375,
+ "I6_btd_ref_mediana_K": 0.8298028707504272,
+ "frac_cuadros_con_escena_despejada": 0.1351010101010101,
+ "escena_despejada_por_tramo": {
+  "0": {
+   "frac_cuadros": 0.1734006734006734,
+   "dias_con_alguno": 11
+  },
+  "1": {
+   "frac_cuadros": 0.20202020202020202,
+   "dias_con_alguno": 11
+  },
+  "2": {
+   "frac_cuadros": 0.10606060606060606,
+   "dias_con_alguno": 9
+  },
+  "3": {
+   "frac_cuadros": 0.058922558922558925,
+   "dias_con_alguno": 5
+  }
+ },
+ "frac_muestras_con_referencia": {
+  "cumbre": 0.7436868686868687,
+  "bajo": 0.7436868686868687
+ },
+ "dias_que_sostienen_la_referencia_mediana": {
+  "cumbre": 6.0,
+  "bajo": 6.0
+ },
+ "fallas": [],
+ "muestras_chillan": {
+  "cumbre_A": 20334,
+  "cumbre_B": 3366,
+  "cumbre_C": 3123,
+  "bajo_A": 467686,
+  "bajo_B": 77418,
+  "bajo_C": 70919
+ },
+ "gfs_Ttop_mediana_K": {
+  "3km": 269.2,
+  "4km": 263.21,
+  "5km": 257.26,
+  "10km": 225.39
+ },
+ "gfs_Ttropo_mediana_K": 221.15428980238175
+}

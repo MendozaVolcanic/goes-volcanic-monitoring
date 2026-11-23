@@ -1,0 +1,6 @@
+chequeo huella: {'20:10': {'mia_lejos': 2, 'h29_lejos': 2, 'iguales_en_ventana': True}, '21:30': {'mia_lejos': 4, 'h29_lejos': 4, 'iguales_en_ventana': True}}
+paso 1: {'n_pixel_cuadro': 17, 'mediana_M1': -0.37249174178742805, 'h29': -0.372, 'reproducido': True}
+paso 2 principal: {'cuadros': 10, 'posiciones_U': 14, 'T': -0.23289034652985663, 'p': 0.0953, 'D_por_cuadro': {'20:10': 0.064, '20:20': 0.12, '20:30': -0.833, '20:40': -0.204, '20:50': -0.262, '21:00': 0.337, '21:10': 0.092, '21:30': -0.634, '21:40': -0.414, '22:00': -0.441}}
+potencia (BTD -0,33 K en S_t): 1.0 p mediana inyectada 0.0
+sensibilidad > 15 km: {'cuadros': 35, 'posiciones_U': 46, 'T': -0.48168178032227615, 'p': 0.0}
+VEREDICTO: NO CONCLUYENTE

@@ -1,5 +1,5 @@
 # ════════════════════════════════════════════════════════════════════
-# FICHA SDA · vrp_nocturno.py  ·  SDA: Monitoreo Volcánico GOES-19 · ID: SDA-GOES-01 §C.1
+# FICHA SDA · vrp_nocturno.py  ·  SDA: Monitoreo Volcánico GOES-19 · ID: SDA-GOES-01 §A.8
 # Objetivo      : decir, noche a noche y por volcán, si el cráter tiene material
 #                 incandescente con más de ~10 MW de potencia radiativa, como
 #                 contexto térmico para el turno de OVDAS. No es una alerta ni un

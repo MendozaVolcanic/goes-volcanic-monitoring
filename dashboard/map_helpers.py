@@ -878,7 +878,7 @@ def estado_volcat(senal: dict) -> dict:
             "verificado": estado != "no_disponible"}
 
 
-# ── Calor nocturno en el cráter (VRP a 3,9 µm, ficha SDA §C.1) ──────────────
+# ── Calor nocturno en el cráter (VRP a 3,9 µm, ficha SDA §A.8) ──────────────
 # Mismo principio que FDCF y VOLCAT: el color lo decide un criterio único. Acá hay
 # una regla más: "bajo el límite" tampoco es verde. El indicador no ve bajo ~10 MW,
 # así que Villarrica o Láscar con su actividad débil de siempre quedan "bajo el
@@ -933,5 +933,33 @@ def estado_calor_nocturno(res: dict, noche_txt: str = "") -> dict:
         color = COLOR_SIN_DATO
         motivo = res.get("motivo") or "sin cuadros"
         detalle = f"{pre}{motivo}. No descarta calor"
+    # Huecos y edad van SIEMPRE pegados al estado (ficha §A.8): "encendido" o "bajo el
+    # límite" de hace seis horas no describe la noche de hoy, y una noche a la que le
+    # faltan cuadros se lee distinto de una completa.
+    huecos = res.get("n_huecos") or 0
+    if huecos:
+        detalle += f" · faltan {huecos} cuadros en la serie"
+    detalle += f" · {_edad_serie_txt(res)}"
     return {"color": color, "titulo": titulo, "detalle": detalle,
             "verificado": estado in ("encendido", "bajo_limite")}
+
+
+def _edad_serie_txt(res: dict) -> str:
+    """"serie hasta 11:30 Chile (UTC-3), hace 52 min", más el aviso de atraso."""
+    hasta = res.get("serie_hasta")
+    if hasta is None:
+        return "serie sin hora: no se sabe de cuándo es el dato"
+    from dashboard.utils import fmt_chile
+    edad = res.get("edad_min")
+    if edad is None:
+        hace = ""
+    elif edad >= 120:
+        hace = f", hace {edad // 60} h {edad % 60:02d} min"
+    else:
+        hace = f", hace {edad} min"
+    txt = f"serie hasta {fmt_chile(hasta)}{hace}"
+    if res.get("atrasada"):
+        a = res.get("atraso_min") or 0
+        txt += (f" ⚠ atrasada {a // 60} h {a % 60:02d} min respecto del último scan"
+                if a >= 60 else f" ⚠ atrasada {a} min respecto del último scan")
+    return txt

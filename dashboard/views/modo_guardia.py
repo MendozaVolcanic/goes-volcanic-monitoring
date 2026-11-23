@@ -700,7 +700,10 @@ def _volcan_subtab():
                 # Sub-tab de pagina: hay operador delante que puede atender la
                 # tira de altura propia (y su descarga de ~78 MB). El slot
                 # `tv=volcan` de mas abajo NO la lleva.
-                mostrar_altura=True)
+                mostrar_altura=True,
+                # Calor nocturno en el cráter en la cabecera (ficha §A.8). La
+                # pared del Modo Sala tampoco: primero lo lee el turno.
+                mostrar_calor_nocturno=True)
 
 
 def render():

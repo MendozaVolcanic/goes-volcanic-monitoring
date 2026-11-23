@@ -1,4 +1,4 @@
-"""Indicador nocturno de calor en el cráter (src/process/vrp_nocturno.py, ficha SDA §C.1).
+"""Indicador nocturno de calor en el cráter (src/process/vrp_nocturno.py, ficha SDA §A.8).
 
 Tres cosas que estas pruebas sostienen:
 1. La regla es la validada fuera de muestra (PR 87): mismos números sobre cuadros

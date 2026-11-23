@@ -1290,6 +1290,8 @@ def _live_content():
                 # Hay operador delante: la tira de altura propia puede ofrecer su
                 # boton y disparar sola con hot spot.
                 mostrar_altura=True,
+                # Calor nocturno en el cráter en la cabecera (ficha §A.8).
+                mostrar_calor_nocturno=True,
             )
 
     st.markdown(

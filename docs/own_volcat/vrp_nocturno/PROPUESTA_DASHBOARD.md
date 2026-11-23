@@ -1,9 +1,9 @@
 # Propuesta: dónde y cómo mostrar el indicador nocturno de calor en el cráter
 
-Fecha: 22-11-2026. Estado: **propuesta, nada cableado ni desplegado.** La lógica está en
+Fecha: 22-11-2026. Estado: **aprobada y cableada el 23-11-2026 (ficha SDA v2.10, §A.8); ver el PR del cableado.** Se mantiene el texto original de la propuesta. La lógica está en
 `src/process/vrp_nocturno.py` (con cabecera FICHA SDA) y el criterio de presentación en
 `dashboard/map_helpers.estado_calor_nocturno`; los dos con tests en `tests/test_vrp_nocturno.py`.
-Validación: `docs/own_volcat/vrp_nocturno/INFORME.md` (PR 87). Ficha: `docs/FICHA_SDA_GOES.md` §C.1.
+Validación: `docs/own_volcat/vrp_nocturno/INFORME.md` (PR 87). Ficha: `docs/FICHA_SDA_GOES.md` §A.8 (antes §C.1).
 
 ## 1. Qué le sirve al turno
 

@@ -1,6 +1,6 @@
 # Ficha de Transparencia Algorítmica — Monitoreo Volcánico GOES-19 (dashboard + retrieval de altura de pluma)
 
-**Identificador interno:** SDA-GOES-01   **Versión:** v2.9, 2026-11-22
+**Identificador interno:** SDA-GOES-01   **Versión:** v2.10, 2026-11-23
 *(Resolución CPLT N°372; ver `GUIA_MAESTRA_TRANSPARENCIA_ALGORITMICA.md` del workspace)*
 
 > **Qué cambió respecto de la v1.0 (2026-07-01):** ver §"Historial de versiones" al final.
@@ -278,6 +278,82 @@ degradación va en `scene.py` y en esta ficha, mismo commit.
   crecer) atraparía mejor los sistemas que pasan por encima, pero pide varios
   cuadros por ciclo y queda como mejora posible.
 
+### A.8 Indicador nocturno de calor en el cráter (VRP a 3,9 µm, nov-2026)
+- **Archivos:** `src/process/vrp_nocturno.py` (la regla validada, sin cambios desde
+  v2.9), `src/process/calor_nocturno.py` (agrupa la serie por noche y aplica la
+  regla), `scripts/build_calor_nocturno.py` + workflow `calor_nocturno.yml` (la
+  serie `data/calor_nocturno.json`), `dashboard/calor_nocturno.py` (lectura y
+  HTML), `dashboard/map_helpers.estado_calor_nocturno` (color y texto). Se ve en
+  la cabecera de la grilla de volcán, debajo de la señal VOLCAT, en la pestaña
+  Volcán del Modo Guardia y en la de Vista Operacional. **No** está en la pared
+  del Modo Sala (decisión de Nicolás, 23-11-2026: primero lo lee el turno).
+- **Qué se muestra:** de noche, la noche en curso si ya tiene 4 cuadros
+  nocturnos; si no, y de día, la última noche terminada. El texto dice cuál es,
+  cuántos cuadros visibles pasaron 10 MW, la potencia máxima, cuántos cuadros
+  faltan en la serie y hasta qué hora llega la serie, con el aviso "atrasada"
+  si va más de 30 min detrás del último scan que NOAA ya publicó (scan de :00 o
+  :30 de hace 15 min o más).
+- **Serie:** el workflow corre cada 10 min, con grupo de concurrency propio
+  (`calor-nocturno`), y baja C07 y C14 de ABI L1b RadF sólo en las ventanas de
+  25 × 25 píxeles de los 44 volcanes (lectura por rebanada, sin bajar el disco
+  entero). Guarda una fila por cuadro y por volcán de noche, para la última
+  noche terminada, sus 7 previas (las que pide la referencia de cielo
+  despejado) y la que esté en curso. Rellena huecos del más nuevo al más viejo
+  con presupuesto por corrida (`--gap-fill`), porque GitHub atrasa los cron.
+  **Un cuadro que falta es un hueco, nunca un cero**: una lectura fallida se
+  reintenta en la corrida siguiente y un gránulo que NOAA no publicó en 2 h se
+  anota en `sin_granulo`.
+- **Supuesto de cadencia:** se evalúan los cuadros de :00 y :30, la cadencia con
+  que se validó la regla. Con los de 10 min los mínimos de la regla (2 cuadros
+  sobre 10 MW, 4 visibles, 10 para la referencia) se cumplirían tres veces más
+  rápido y eso no está medido (INFORME §3). Pasar a 10 min exige revalidar.
+- **Comprobación de que la regla no cambió al cablearla:** la función que usa
+  el dashboard reconstruye las 744 noches por volcán de la validación desde sus
+  cuadros, con el mismo estado y el mismo número de cuadros visibles
+  (`tests/test_calor_nocturno.py`).
+
+**Qué decide.** Por volcán y por noche, uno de cuatro estados: `encendido`
+(material incandescente con más de ~10 MW), `bajo_limite` (cráter visible sin
+calor sobre ~10 MW), `sin_dato` (nube sobre el cráter, sin referencia o con
+menos de 4 cuadros visibles) y `de_dia` (no se evalúa). Es contexto térmico para
+el turno; no es una alerta del OVDAS ni detecta explosiones o ceniza.
+
+**Cómo.** A 3,9 µm un material incandescente que ocupa una fracción mínima del
+píxel de 2 km sube mucho la temperatura de brillo y casi nada a 11 µm. En la zona
+del cráter (6 km alrededor de la cumbre aparente, corregida por paralaje con la
+altura del catálogo) se buscan píxeles cuya BT7 − BT14 supera la del anillo de 8 a
+14 km en máx(2 K, 3 desviaciones robustas); su exceso de radiancia contra un fondo
+coherente (Planck7 de la BT14 del propio píxel más la diferencia típica del
+anillo) se convierte en MW con el método del infrarrojo medio (Wooster y otros
+2003, coeficientes Planck del propio NetCDF). La noche se enciende si al menos 2
+cuadros con el cráter visible, y al menos el 25 % de ellos, pasan 10 MW. Un cuadro
+es visible si la BT14 del cráter está a menos de 4 K del cielo despejado de las 7
+noches previas.
+
+**Validación (PR 87, `docs/own_volcat/vrp_nocturno/INFORME.md`).** Criterio
+subido antes de medir; verdad independiente: MIROVA (MODIS/VIIRS) publicado por
+VRP Chile. Detección 5 de 6 noches con MIROVA ≥ 10 MW en Nevados de Chillán (IC 95
+% de 44 a 97 %); falsa alarma 0 de 144 noches en siete cumbres sin actividad de
+−18° a −46°; 0 de 19 noches antes del encendido de Chillán; retardo de una noche.
+Por pasada, la VRP de ABI es 0,86 veces la de MIROVA (mediana) y se ordena igual
+(Spearman 0,70). El FDCF de NOAA no marcó fuego en ninguna de esas noches.
+
+**Límites.**
+- **No ve bajo ~5 a 10 MW.** Láscar, Villarrica, Isluga y los otros siete volcanes
+  con actividad térmica débil quedan siempre en `bajo_limite`. Por eso
+  `bajo_limite` **no es verde** y su texto dice que no descarta actividad débil.
+- **Sólo de noche** (cenit solar ≥ 90°): de día el 3,9 µm suma sol reflejado.
+- **La nube deja la noche sin dato** (Chillán: 17 de 52 noches de la validación).
+  `sin_dato` es gris y nunca se lee como calma.
+- Validado en un solo volcán chileno sobre el límite y con 6 noches positivas: la
+  sensibilidad tiene intervalo ancho. Sin corrección atmosférica.
+- Tras una nevada que enfríe la cumbre más de 4 K, la referencia de cielo
+  despejado tarda hasta 7 noches en ajustarse y el cráter puede quedar `sin_dato`
+  aunque esté despejado (error conservador).
+- **Un hueco largo de la serie deja la noche sin dato** aunque el cráter haya
+  estado despejado: el cron de GitHub corre cada 2 a 12 h en este repo y el
+  relleno de huecos tarda varias corridas en ponerse al día.
+
 ---
 
 ## B. Límites, sesgos y usos excluidos
@@ -432,54 +508,22 @@ conectarlos exige actualizar esta ficha.
 | `src/fetch/goes_lvtp.py` | Perfil T(z) del propio GOES-19 (LVTPF) como cross-check del GFS | `scripts/compare_lvtp_vs_gfs.py`. Ver §B.8.1: cablearlo obliga a revisar el guard de tropopausa. |
 | `src/fetch/volcat_api.py` (`volcat_height_at`) | Leer la altura VOLCAT del PNG de SSEC (barra por bloques discretos, objeto que toca el volcán, rechazo de mantos del tamaño del sector) como **referencia de validación** de la altura propia | `scripts/validate_fase3b.py` y el plan `docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`. *(Desde v2.8 la lectura por objeto de `volcat_colorbar.py` SÍ está en producción, como señal de detección por volcán, §A.7; lo que sigue fuera del dashboard es el uso de esa lectura como altura de validación. La validación lee sin unión de pedazos, la señal con unión de 6 km.)* |
 | `src/fetch/viirs_firms.py`, `src/fetch/viirs_gibs.py` | Hot spots térmicos VIIRS 375 m e imagen VIIRS para volcanes australes | `scripts/viirs_patagonia_snapshots.py` (uso manual) |
-| `src/process/vrp_nocturno.py` + `dashboard/map_helpers.estado_calor_nocturno` | Indicador nocturno de calor en el cráter (VRP a 3,9 µm desde la L1b), §C.1 | sólo sus tests (`tests/test_vrp_nocturno.py`). Validado fuera de muestra; cablearlo exige pasar esta fila a la sección A. |
-
-### C.1 Indicador nocturno de calor en el cráter (VRP a 3,9 µm), validado y no cableado (nov-2026)
-
-**Qué decide.** Por volcán y por noche, uno de cuatro estados: `encendido`
-(material incandescente con más de ~10 MW), `bajo_limite` (cráter visible sin
-calor sobre ~10 MW), `sin_dato` (nube sobre el cráter, sin referencia o con
-menos de 4 cuadros visibles) y `de_dia` (no se evalúa). Es contexto térmico para
-el turno; no es una alerta del OVDAS ni detecta explosiones o ceniza.
-
-**Cómo.** A 3,9 µm un material incandescente que ocupa una fracción mínima del
-píxel de 2 km sube mucho la temperatura de brillo y casi nada a 11 µm. En la zona
-del cráter (6 km alrededor de la cumbre aparente, corregida por paralaje con la
-altura del catálogo) se buscan píxeles cuya BT7 − BT14 supera la del anillo de 8 a
-14 km en máx(2 K, 3 desviaciones robustas); su exceso de radiancia contra un fondo
-coherente (Planck7 de la BT14 del propio píxel más la diferencia típica del
-anillo) se convierte en MW con el método del infrarrojo medio (Wooster y otros
-2003, coeficientes Planck del propio NetCDF). La noche se enciende si al menos 2
-cuadros con el cráter visible, y al menos el 25 % de ellos, pasan 10 MW. Un cuadro
-es visible si la BT14 del cráter está a menos de 4 K del cielo despejado de las 7
-noches previas.
-
-**Validación (PR 87, `docs/own_volcat/vrp_nocturno/INFORME.md`).** Criterio
-subido antes de medir; verdad independiente: MIROVA (MODIS/VIIRS) publicado por
-VRP Chile. Detección 5 de 6 noches con MIROVA ≥ 10 MW en Nevados de Chillán (IC 95
-% de 44 a 97 %); falsa alarma 0 de 144 noches en siete cumbres sin actividad de
-−18° a −46°; 0 de 19 noches antes del encendido de Chillán; retardo de una noche.
-Por pasada, la VRP de ABI es 0,86 veces la de MIROVA (mediana) y se ordena igual
-(Spearman 0,70). El FDCF de NOAA no marcó fuego en ninguna de esas noches.
-
-**Límites.**
-- **No ve bajo ~5 a 10 MW.** Láscar, Villarrica, Isluga y los otros siete volcanes
-  con actividad térmica débil quedan siempre en `bajo_limite`. Por eso
-  `bajo_limite` **no es verde** y su texto dice que no descarta actividad débil.
-- **Sólo de noche** (cenit solar ≥ 90°): de día el 3,9 µm suma sol reflejado.
-- **La nube deja la noche sin dato** (Chillán: 17 de 52 noches de la validación).
-  `sin_dato` es gris y nunca se lee como calma.
-- Validado en un solo volcán chileno sobre el límite y con 6 noches positivas: la
-  sensibilidad tiene intervalo ancho. Sin corrección atmosférica.
-- Tras una nevada que enfríe la cumbre más de 4 K, la referencia de cielo
-  despejado tarda hasta 7 noches en ajustarse y el cráter puede quedar `sin_dato`
-  aunque esté despejado (error conservador).
-
-**Datos personales:** no.
 
 ---
 
 ## Historial de versiones
+
+### v2.10: 2026-11-23 (indicador nocturno de calor en el cráter, cableado)
+**Componente nuevo en producción (§A.8), sale de §C.** La cabecera de la grilla
+de volcán (pestaña Volcán del Modo Guardia y de Vista Operacional, no la pared
+del Modo Sala) dice el estado de la noche en curso o de la última noche:
+`encendido`, `bajo_limite` (azul, nunca verde), `sin_dato` o `de_dia` (grises),
+con la noche, el conteo, los huecos y la edad de la serie. La regla de
+`src/process/vrp_nocturno.py` no cambia (ni umbral, ni zona, ni anillo, ni
+prueba de visibilidad). Se agregan la serie `data/calor_nocturno.json`, el
+workflow `calor_nocturno.yml` (cada 10 min, grupo propio, relleno de huecos) y
+su lector. Supuesto explícito: se evalúan los cuadros de :00 y :30, la cadencia
+validada.
 
 ### v2.9: 2026-11-22 (indicador nocturno de calor en el cráter, validado y no cableado)
 **Nada cambia para el operador.** Se agrega a §C (y §C.1) el indicador nocturno de

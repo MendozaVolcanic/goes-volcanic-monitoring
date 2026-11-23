@@ -1042,9 +1042,11 @@ def _render_altura(v, wr: dict | None, acha: dict | None,
 
 @st.fragment(run_every=f"{RAMMB_REFRESH_S}s")
 def _grid_header(volcan_name: str, show_wind: bool,
-                 radius_deg: float = RADIUS_DEG):
-    """Cabecera: nombre, coords, viento, conteo de hot spots, hora de render
-    y la señal VOLCAT del volcán (`dashboard/volcat_senal.py`).
+                 radius_deg: float = RADIUS_DEG, calor_nocturno: bool = False):
+    """Cabecera: nombre, coords, viento, conteo de hot spots, hora de render,
+    la señal VOLCAT del volcán (`dashboard/volcat_senal.py`) y, con
+    `calor_nocturno=True`, el indicador nocturno de calor en el cráter debajo
+    (`dashboard/calor_nocturno.py`, ficha SDA §A.8).
 
     Fragment aparte y liviano: se refresca al ritmo de RAMMB sin arrastrar el
     redibujo de los cuatro mapas.
@@ -1084,6 +1086,21 @@ def _grid_header(volcan_name: str, show_wind: bool,
         senal = {"estado": "no_disponible",
                  "motivo": "error interno al leer la señal"}
     senal_html = html_senal(senal, compacto=True) if senal else ""
+    # Calor nocturno en el cráter (ficha §A.8): debajo de VOLCAT y con su formato,
+    # porque también es un estado del VOLCÁN y no del mapa. Apagado por defecto:
+    # lo encienden el sub-tab Volcán del Modo Guardia y Vista Operacional, NO la
+    # pared del Modo Sala (decisión de Nicolás, 23-11-2026). Cero descargas: lee
+    # data/calor_nocturno.json, que pre-cocina el workflow calor_nocturno.yml.
+    calor_html = ""
+    if calor_nocturno:
+        from dashboard.calor_nocturno import html_calor, senal_calor
+        try:
+            calor = senal_calor(volcan_name, ahora=now)
+        except Exception:
+            logger.exception("calor nocturno %s", volcan_name)
+            calor = {"estado": "sin_dato",
+                     "motivo": "error interno al leer el indicador"}
+        calor_html = html_calor(calor, compacto=True)
     st.markdown(
         f"<div style='background:#0f1418; border-left:4px solid #ff6644; "
         f"padding:0.7rem 1rem; border-radius:4px; margin-bottom:0.8rem;'>"
@@ -1099,7 +1116,10 @@ def _grid_header(volcan_name: str, show_wind: bool,
         f"Hot spots {est_hs['valor']}</span> ({est_hs['detalle']}) · "
         f"Render {now.strftime('%H:%M:%S')} UTC / "
         f"{fmt_chile(now)}</div></div>"
-        f"<div style='margin-top:0.35rem;'>{senal_html}</div></div>",
+        f"<div style='margin-top:0.35rem;'>{senal_html}</div>"
+        + (f"<div style='margin-top:0.3rem;'>{calor_html}</div>"
+           if calor_html else "")
+        + "</div>",
         unsafe_allow_html=True,
     )
 
@@ -1343,7 +1363,8 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
                 fullscreen: bool = False, panels: list | None = None,
                 per_row: int | None = None, show_header: bool = True,
                 radius_deg: float = RADIUS_DEG, show_legend: bool = True,
-                mostrar_altura: bool = False, regla: bool = False):
+                mostrar_altura: bool = False, regla: bool = False,
+                mostrar_calor_nocturno: bool = False):
     """Grilla de productos del volcan, todos a la vez.
 
     FUENTE UNICA de esta vista — la usan el sub-tab Volcan del Modo Guardia,
@@ -1383,6 +1404,12 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
     un operador delante; el slot `tv=volcan` del Modo Sala NO, porque se
     proyecta 24/7 sin nadie mirando y ahi una descarga de ALTURA_COSTO_TXT
     disparada sola por un hot spot no la ve venir nadie.
+
+    `mostrar_calor_nocturno` agrega a la cabecera el indicador nocturno de
+    calor en el cráter (ficha SDA §A.8). Default False por la misma razón que
+    la altura: lo encienden el sub-tab Volcán del Modo Guardia y Vista
+    Operacional; el slot `tv=volcan` del Modo Sala no (y además va sin
+    cabecera).
     """
     v = get_volcano(volcan_name)
     if v is None:
@@ -1402,7 +1429,8 @@ def volcan_grid(volcan_name: str, show_wind: bool = False,
         _inject_fullscreen_css(len(filas), con_cabecera=show_header,
                                con_leyenda=show_legend)
     if show_header:
-        _grid_header(volcan_name, show_wind, radius_deg=radius_deg)
+        _grid_header(volcan_name, show_wind, radius_deg=radius_deg,
+                     calor_nocturno=mostrar_calor_nocturno)
 
     for fila in filas:
         cols = st.columns(per_row)

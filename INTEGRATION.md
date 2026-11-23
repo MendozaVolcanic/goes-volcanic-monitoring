@@ -1,8 +1,8 @@
 ---
 slug: goes
 title: GOES Volcanic Monitoring
-last_updated: 2026-11-19
-last_commit: 4eafc38
+last_updated: 2026-11-23
+last_commit: a5ab46f
 status: producción
 tier: 1
 deploy_url: "https://mendozavolcanic-goes-volcanic-monitoring.hf.space"
@@ -58,6 +58,12 @@ de tiempo por volcán y altura de pluma VOLCAT (Pavolonis 2013) para los
   (ventana rodante 48h, workflow `frp_timeline.yml`). Aporta la dimensión
   *temporal* que MODIS/VIIRS no dan; COMPLEMENTA, no sustituye, la plataforma
   VRP MODIS/VIIRS (que gana en magnitud/sensibilidad)
+- **Calor nocturno en el cráter (VRP a 3,9 µm)**: estado por volcán y por noche
+  (encendido sobre ~10 MW, bajo el límite, sin dato) desde C07 y C14 de la L1b,
+  validado contra MIROVA (PR 87). Serie rodante de 8 noches en
+  `data/calor_nocturno.json` (workflow `calor_nocturno.yml`, cada 10 min, cuadros
+  de :00 y :30). Se ve en la cabecera de la grilla de volcán. Sólo de noche; no
+  ve actividad bajo ~10 MW (COMPLEMENTA a VRP Chile, no lo sustituye)
 - **VOLCAT** — Ash Height, Ash Loading, Ash Probability, Ash Reff (Pavolonis 2013)
 - **Altura de tope propia (INDICATIVO) — 3 métodos** sobre los píxeles de ceniza:
   - **ACHA** (Fase 0): `HT` del producto NOAA `ABI-L2-ACHA2KMF` (Cloud Top
@@ -122,6 +128,7 @@ streamlit run dashboard/app.py
 | Series de tiempo por volcán | List[TimeSeriesPoint] / CSV | `src/fetch/timeseries.py::fetch_volcano_timeseries(lat, lon, product)` | on-demand |
 | Altura de pluma VOLCAT | PNG con colorbar (no NetCDF) | `src/fetch/volcat_api.py::volcat_latest(sector, ...)` | 10 min |
 | Señal VOLCAT por volcán (objeto anclado al cráter) | dict {estado: detecta/extenso/sin_deteccion/atrasado/no_disponible, edad_min, area_km2, top_lo_km, top_hi_km, sector, etiqueta_sector} | `dashboard/volcat_senal.py::senal_volcat(nombre)` / `senales_volcat()`; lógica pura en `src/process/volcat_deteccion.py` | 10 min (cuadro VOLCAT) |
+| Calor nocturno en el cráter por volcán | JSON `{ultimo_cuadro_utc, cuadros{iso: {volcán: [vrp_mw, bt14_k, n_cal]}}, sin_granulo}`; estado por volcán dict {estado: encendido/bajo_limite/sin_dato/de_dia, noche, en_curso, n_visibles, n_sobre_umbral, vrp_max_mw, n_huecos, serie_hasta, atrasada} | `data/calor_nocturno.json` (workflow `calor_nocturno.yml`, `scripts/build_calor_nocturno.py`); `src/process/calor_nocturno.py::evaluar_volcan(serie, nombre, lat, lon)`; `dashboard/calor_nocturno.py::senal_calor(nombre)` | cuadros de :00 y :30, cron 10 min |
 | Ventana de cuadros VOLCAT (loop) | dict {ok, error, frames[{dt, image_url, coords...}], faltantes[dt], inicio, fin} | `src/fetch/volcat_api.py::volcat_ventana(sector, instr, image_type, horas)` | on-demand |
 | Loop VOLCAT de un volcán o una zona | GIF + MP4 (H.264) | `dashboard/volcat_loop.py` (`encuadre_volcan` / `encuadre_zona`, `componer_cuadro`, `armar_gif`, `armar_mp4`) | on-demand |
 | Altura de tope ACHA (INDICATIVO) | dict {top_km p95, top_max_km, field_km, lat/lon, latency} | `src/process/acha_plume_height.py::plume_top_height(dt, volcano, radius)` | 10 min |

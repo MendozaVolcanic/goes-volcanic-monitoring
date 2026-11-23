@@ -1,0 +1,83 @@
+name: Calor nocturno en el crater
+
+# Serie rodante del indicador nocturno de calor en el crater (VRP a 3,9 um,
+# ficha SDA §A.8). Baja C07 y C14 de ABI L1b SOLO en las ventanas de 25 x 25
+# pixeles de los 44 volcanes, calcula la potencia por cuadro y la guarda en
+# data/calor_nocturno.json: la ultima noche terminada, sus 7 previas (la
+# referencia de cielo despejado) y la que este en curso. El dashboard solo lee
+# el JSON.
+#
+# Se evaluan los cuadros de :00 y :30, la cadencia con que se valido la regla
+# (PR 87). El cron va cada 10 min para recoger cada cuadro nuevo pronto, no
+# para evaluar los de :10, :20, :40 y :50.
+#
+# OJO, igual que frp_timeline.yml: GitHub atrasa los cron de repos poco
+# activos (2 a 12 h medidos). Lo que mantiene la serie completa es --gap-fill,
+# que baja los cuadros faltantes de toda la ventana del mas nuevo al mas
+# viejo, con presupuesto por corrida. Un hueco que no alcanza a rellenarse es
+# "sin dato" en el dashboard, nunca un cero.
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+    inputs:
+      gap_fill:
+        description: 'Cuadros pendientes a bajar en esta corrida (arranque de 8 noches: 400)'
+        required: false
+        default: '40'
+
+# Grupo PROPIO: dos corridas a la vez se pisarian el JSON. No se cancela la que
+# corre, porque deja la serie a medio rellenar.
+concurrency:
+  group: calor-nocturno
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Instalar dependencias
+        run: pip install -r requirements_actions.txt
+
+      - name: Build calor_nocturno.json
+        run: |
+          python scripts/build_calor_nocturno.py \
+            --gap-fill "${{ github.event.inputs.gap_fill || '40' }}" \
+            --nproc 4
+
+      - name: Commit JSON
+        run: |
+          git config user.name "GOESBot"
+          git config user.email "goes-bot@noreply"
+          git add data/calor_nocturno.json 2>/dev/null || true
+          if git diff --quiet --staged 2>/dev/null; then
+            echo "Sin cambios"
+          else
+            TS=$(date -u +'%Y-%m-%dT%H:%MZ')
+            git commit -m "calor nocturno: serie rodante $TS"
+            # Mismo patron que frp_timeline.yml: en REBASE, -X theirs conserva
+            # el JSON recien construido. Retry x3; si falla, el ciclo siguiente
+            # lo rehace desde la serie que quedo en main.
+            ok=""
+            for i in 1 2 3; do
+              git pull origin main --rebase -X theirs && git push origin main && ok=1 && break
+              git rebase --abort 2>/dev/null || true
+              sleep $((i*5))
+            done
+            [ -n "$ok" ] || echo "::warning::calor_nocturno: push fallo tras 3 intentos (se recupera en el proximo ciclo)"
+          fi

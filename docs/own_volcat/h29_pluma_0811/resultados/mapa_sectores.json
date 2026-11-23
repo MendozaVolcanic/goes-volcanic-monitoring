@@ -1,0 +1,106 @@
+{
+ "antes 15:00-17:00": {
+  "N_10-30km": {
+   "anomalia_media_K": 0.052,
+   "frac_bajo_p5_nulo": 0.0,
+   "n": 109
+  },
+  "N_30-60km": {
+   "anomalia_media_K": 0.009,
+   "frac_bajo_p5_nulo": 0.025,
+   "n": 359
+  },
+  "E_10-30km": {
+   "anomalia_media_K": 0.153,
+   "frac_bajo_p5_nulo": 0.045,
+   "n": 67
+  },
+  "E_30-60km": {
+   "anomalia_media_K": -0.028,
+   "frac_bajo_p5_nulo": 0.078,
+   "n": 217
+  },
+  "SE_10-30km": {
+   "anomalia_media_K": 0.022,
+   "frac_bajo_p5_nulo": 0.136,
+   "n": 81
+  },
+  "SE_30-60km": {
+   "anomalia_media_K": 0.027,
+   "frac_bajo_p5_nulo": 0.065,
+   "n": 278
+  },
+  "S-SO_10-30km": {
+   "anomalia_media_K": -0.075,
+   "frac_bajo_p5_nulo": 0.137,
+   "n": 102
+  },
+  "S-SO_30-60km": {
+   "anomalia_media_K": -0.008,
+   "frac_bajo_p5_nulo": 0.042,
+   "n": 358
+  },
+  "O-NO_10-30km": {
+   "anomalia_media_K": 0.058,
+   "frac_bajo_p5_nulo": 0.0,
+   "n": 65
+  },
+  "O-NO_30-60km": {
+   "anomalia_media_K": -0.027,
+   "frac_bajo_p5_nulo": 0.018,
+   "n": 221
+  }
+ },
+ "19:20-21:40": {
+  "N_10-30km": {
+   "anomalia_media_K": 0.011,
+   "frac_bajo_p5_nulo": 0.055,
+   "n": 109
+  },
+  "N_30-60km": {
+   "anomalia_media_K": -0.032,
+   "frac_bajo_p5_nulo": 0.156,
+   "n": 359
+  },
+  "E_10-30km": {
+   "anomalia_media_K": 0.112,
+   "frac_bajo_p5_nulo": 0.06,
+   "n": 67
+  },
+  "E_30-60km": {
+   "anomalia_media_K": -0.069,
+   "frac_bajo_p5_nulo": 0.194,
+   "n": 217
+  },
+  "SE_10-30km": {
+   "anomalia_media_K": -0.079,
+   "frac_bajo_p5_nulo": 0.346,
+   "n": 81
+  },
+  "SE_30-60km": {
+   "anomalia_media_K": -0.101,
+   "frac_bajo_p5_nulo": 0.284,
+   "n": 278
+  },
+  "S-SO_10-30km": {
+   "anomalia_media_K": 0.111,
+   "frac_bajo_p5_nulo": 0.039,
+   "n": 102
+  },
+  "S-SO_30-60km": {
+   "anomalia_media_K": 0.114,
+   "frac_bajo_p5_nulo": 0.014,
+   "n": 360
+  },
+  "O-NO_10-30km": {
+   "anomalia_media_K": -0.059,
+   "frac_bajo_p5_nulo": 0.0,
+   "n": 65
+  },
+  "O-NO_30-60km": {
+   "anomalia_media_K": -0.149,
+   "frac_bajo_p5_nulo": 0.095,
+   "n": 221
+  }
+ }
+}

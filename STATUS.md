@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-23 (cierre de la sesión S19, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-23 (cierre de la sesión S20b, bloque "## 0." abajo; el de S19 quedó como "## 0-prev14."). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,83 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S19, cierre final 2026-11-23 (PR 100 a 105 en main; indicador nocturno desplegado a HF; H29 y "qué nos falta" CORRIENDO al cerrar)
+## 0. S20b (sesión hija de S20), cierre 2026-11-23: verdad de alta resolución; prueba 1 en main (PR 111), prueba 2 CORRIENDO en otra sesión
+
+> **Estado fijado con trabajo en curso:** la sesión `goes-s20d-medir-prueba-2` (`local_228fe8ec`) estaba midiendo
+> la prueba 2 al cerrar, sin PR todavía. La sesión madre S20 (`local_a4c6119a`) escribe el cierre de S20 completo;
+> este bloque cubre sólo lo de S20b. Revisa `gh pr list` antes de creerle a esta tabla.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Prueba 1 (TER-01/02): huella de Sentinel-2 (08-11 14:53) y Landsat 8 (25-10 14:34) en el píxel de GOES-19 | **TERMINADA, en main.** SEÑAL en la BTD pareada (M1) y en la BT11 contra su anillo (M2), los dos días, todas las sensibilidades | PR 111 fusionado 23-11 18:53 UTC (`9db47bb`); criterio `4126049` antes de medir; `docs/own_volcat/s20b_verdad_alta_res/INFORME.md` |
+| Lo que mide la máscara | 25-10: franja al OSO (no al SE del REAV), f máx 0,18; 08-11: bocanada al S, 4,74 km por sombra (VAAC FL150), f máx 0,43 | `resultados/preparar_resumen.json` |
+| Firma en el píxel más cubierto | 25-10: −0,97 K en 11−12 µm, −3,8 K BT11 contra anillo; 08-11: −0,84 K y −7,3 K (calza con ceniza ε11 ≈ 0,5) | `resultados/s20b_resultado.json` |
+| Controles post hoc | capa gris no reproduce M1; ningún otro día despejado deja el píxel tan bajo; cumbres de igual cota p ≤ 0,023 | `resultados/posthoc.json` |
+| Prueba 2 (ventana partida a 100 m Landsat HLS y 70 m ECOSTRESS) | **A MEDIAS, en otra sesión.** Criterio §3 escrito en `4126049`; datos bajados (159 archivos, 541 MB) | `D:\goes_notas\s20b\descargas\`, log `D:\goes_notas\s20b\bajar2.log` |
+| Hoja de ruta para los 43 volcanes | escrita, propuesta | `docs/own_volcat/HOJA_DE_RUTA_VERDAD_ALTA_RESOLUCION.md` |
+| Credencial Earthdata | resuelta: token nuevo de Nicolás en `C:\Users\nmend\.earthdata_token`, fila 2b de REGISTRO_CREDENCIALES | descarga de prueba HTTP 200 |
+| Rama de este cierre | `claude/s20b-cierre` (sólo STATUS.md), sin PR | este commit |
+
+### b. Decisiones que espera el dueño
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | ¿Dónde vive el catálogo de verdad fina por volcán (hoja de ruta, paso 1)? | este repo / Copernicus-v1 | **Copernicus-v1**: ya publica por volcán y ya lee Landsat-v1 por `sparse-checkout` |
+| 2 | ¿Se fusiona este bloque de STATUS o lo absorbe el cierre de S20? | fusionar `claude/s20b-cierre` / que S20 lo copie y cerrar la rama | **que lo absorba S20**, para no tener dos "## 0." peleando |
+| 3 | ¿Pedir al OVDAS las imágenes de cámara de los minutos de las pasadas finas (TER-06 de S19i)? | sí / no | **sí**: amarran cámara, satélite fino y GOES en el mismo minuto |
+
+### c. Lo aprendido
+
+- **La ACMF marca nublada la cumbre nevada casi todos los días despejados** (en ninguno de los 28 días candidatos del 25-10
+  estaban despejados a la vez los 3 píxeles de la pluma). No sirve para exigir "píxel despejado" en la cumbre; usar la regla E1 de H23 (terreno bajo). Destino:
+  `CLAUDE.md` del proyecto, Gotchas.
+- **Con 6 días base, la regla por rango de H29 no controla la falsa alarma** (1/6 por construcción; el ensayo en seco
+  dio SEÑAL en 3 de 20 corridas sin pluma). El nulo espacio-temporal (anomalía contra la propia línea base, contra la
+  huella corrida) dio 0 de 24 (2 eventos, 2 medidas, 6 días). Regla de método del proyecto: con línea base corta, nulo espacial sobre la anomalía.
+- **Máscara de pluma en imagen fina: NDSI del día (cociente) y referencia ANTERIOR.** La diferencia de brillo marca
+  laderas iluminadas a otra hora; una referencia posterior borra la pluma bajo la ceniza que ella misma deja.
+- **M1 (BTD pareada por BT11) es específica**: una capa gris que enfría igual casi no la mueve. M2 no es específica.
+- **`latlon.npz` de los cubos calza exacto con el satélite en −75,0°** (residuo 0,0003 px; con −75,2° no). `h24_medir`
+  usa −75,2 en su paralaje aproximada: error chico, sin corregir.
+- Workspace: **un script de descarga con credencial vencida reintentó 108 veces** antes de detenerlo. Regla general:
+  probar UNA descarga y cortar al primer error (`bajar.py` ya lo hace). Credencial nueva va a REGISTRO antes de usar.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** la firma de la prueba 1 está en un píxel por evento, dos mañanas despejadas.
+- **SOSPECHA:** la señal del 25-10 es 3 veces la esperada porque la franja sigue sobre el bosque fuera de la máscara
+  (f real mayor que 0,18). No medido.
+- **SOSPECHA:** parte de la BT11 baja del 08-11 (−7,3 K contra −3,6 K esperados) es la sombra de la bocanada.
+- **SOSPECHA:** el vencimiento del token (~22-01-2027) es la fecha de creación + 60 días, no leído de Earthdata.
+- **CONFIRMADO:** VOLCAT no tiene píxeles en la ventana a las 14:40 ni 14:50 del 08-11 y sí 3 a las 15:00 (PNG en D:).
+
+### e. Lo que ya está cerrado y no hay que rehacer
+
+- La pluma de la mañana del 25-10 y del 08-11 **sí deja firma IR** donde la pluma de verdad está (p ≤ 0,012 por la
+  regla; ensayo en seco 0 de 6). Corrige la lectura "los pulsos de mañana no dejan firma" (H24 buscó al SE).
+- Altura del 08-11 a las 14:53: 4,74 km por sombra; coincide con el VAAC. No hay que volver a estimarla.
+- Acceso a datos: Sentinel-2 L2A (Element 84) y Landsat L2 (Planetary Computer) sin cuenta; HLS L30 y ECOSTRESS con el
+  token; el nivel 1 de USGS no hace falta (HLS trae B10 y B11). Landsat-v1 publica PNG, no radiometría.
+
+### f. Prompt para la próxima sesión
+
+```
+Goes, después de S20b. Antes de creerle a nada:
+1. git fetch; gh pr list --state all --limit 10; ¿la prueba 2 de S20b (sesión goes-s20d-medir-prueba-2) tiene PR?
+2. Lee docs/own_volcat/s20b_verdad_alta_res/INFORME.md y criterio_2026-11-23.md (§3 = prueba 2).
+3. Si la prueba 2 no se terminó: los datos están en D:\goes_notas\s20b\descargas\ (ECOSTRESS L1CT 25-10 17:35 y
+   08-11 19:28, HLS L30 25-10); token en C:\Users\nmend\.earthdata_token (nunca imprimirlo, nunca _netrc).
+   Comprueba en el archivo qué bandas de ECOSTRESS traen dato. Mide según §3 sin cambiar la regla.
+4. Siguiente paso con más valor: repetir la prueba 1 en las pasadas del 29-10 y 13-11 (Sentinel-2) con el mismo
+   código y sin tocar la regla (s20b_preparar.py + s20b_medir.py).
+Reglas: español de Chile, sin guiones largos, rutas absolutas; criterio commiteado antes de medir; nada de SSEC
+al repo; sin VIIRS; lo pesado a D: (revisar espacio, ~12 GB libres); no fusionar sin el sí de Nicolás, y con
+--match-head-commit. Si no alcanza: deja el criterio empujado y el estado en STATUS.md.
+```
+
+## 0-prev14. S19, cierre final 2026-11-23 (PR 100 a 105 en main; indicador nocturno desplegado a HF; H29 y "qué nos falta" CORRIENDO al cerrar)
 
 > **Estado fijado con trabajo en curso:** dos sesiones hijas seguían trabajando, sin PR, al cerrar. Revisa
 > `gh pr list` antes de creerle a esta tabla:

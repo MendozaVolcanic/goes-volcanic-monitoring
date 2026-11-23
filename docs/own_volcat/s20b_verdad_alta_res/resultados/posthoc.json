@@ -1,0 +1,467 @@
+{
+ "2026-10-25": {
+  "cuadro": "14:30",
+  "ceniza_beta_0.7": {
+   "M1": {
+    "potencia_p05": {
+     "0.3": [
+      0.167,
+      6
+     ],
+     "0.5": [
+      0.333,
+      6
+     ],
+     "0.9": [
+      0.333,
+      6
+     ]
+    },
+    "D_esperado": {
+     "0.3": -1.243,
+     "0.5": -1.945,
+     "0.9": -2.013
+    }
+   },
+   "M2": {
+    "potencia_p05": {
+     "0.3": [
+      0.0,
+      6
+     ],
+     "0.5": [
+      0.0,
+      6
+     ],
+     "0.9": [
+      0.333,
+      6
+     ]
+    },
+    "D_esperado": {
+     "0.3": -4.665,
+     "0.5": -7.795,
+     "0.9": -14.104
+    }
+   }
+  },
+  "gris_beta_1.0": {
+   "M1": {
+    "potencia_p05": {
+     "0.3": [
+      0.0,
+      6
+     ],
+     "0.5": [
+      0.0,
+      6
+     ],
+     "0.9": [
+      0.167,
+      6
+     ]
+    },
+    "D_esperado": {
+     "0.3": -0.078,
+     "0.5": -0.294,
+     "0.9": -0.411
+    }
+   },
+   "M2": {
+    "potencia_p05": {
+     "0.3": [
+      0.0,
+      6
+     ],
+     "0.5": [
+      0.0,
+      6
+     ],
+     "0.9": [
+      0.333,
+      6
+     ]
+    },
+    "D_esperado": {
+     "0.3": -4.665,
+     "0.5": -7.795,
+     "0.9": -14.104
+    }
+   }
+  },
+  "serie_pixel_mayor_f": {
+   "fila": 43,
+   "col": 44,
+   "f": 0.181,
+   "dias": [
+    {
+     "dia": "2026-09-27",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.425,
+     "M2": -4.369,
+     "BT11": 270.28
+    },
+    {
+     "dia": "2026-10-15",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.546,
+     "M2": -4.731,
+     "BT11": 279.42
+    },
+    {
+     "dia": "2026-10-16",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.8,
+     "M2": -3.869,
+     "BT11": 280.28
+    },
+    {
+     "dia": "2026-10-17",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.416,
+     "M2": -5.483,
+     "BT11": 280.73
+    },
+    {
+     "dia": "2026-10-25",
+     "evento": true,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": -1.388,
+     "M2": -8.387,
+     "BT11": 279.18
+    },
+    {
+     "dia": "2026-10-28",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": -0.287,
+     "M2": -3.828,
+     "BT11": 287.37
+    },
+    {
+     "dia": "2026-10-29",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": -0.549,
+     "M2": -5.671,
+     "BT11": 288.08
+    },
+    {
+     "dia": "2026-11-02",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.003,
+     "M2": -1.323,
+     "BT11": 279.61
+    },
+    {
+     "dia": "2026-11-04",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.317,
+     "M2": -6.289,
+     "BT11": 276.26
+    },
+    {
+     "dia": "2026-11-07",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": -0.677,
+     "M2": -2.987,
+     "BT11": 286.54
+    },
+    {
+     "dia": "2026-11-08",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": true,
+     "M1": -0.576,
+     "M2": -3.492,
+     "BT11": 291.5
+    },
+    {
+     "dia": "2026-11-12",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": -0.319,
+     "M2": -2.515,
+     "BT11": 294.8
+    }
+   ]
+  },
+  "placebo_cumbre": {
+   "cota_pixel_m": 1904,
+   "corrimientos_misma_cota": 371,
+   "M1": {
+    "D_real": -6.32,
+    "n": 370,
+    "p": 0.0,
+    "p5_p50": [
+     -3.201,
+     0.29
+    ]
+   },
+   "M2": {
+    "D_real": -21.855,
+    "n": 371,
+    "p": 0.0135,
+    "p5_p50": [
+     -13.698,
+     -2.472
+    ]
+   }
+  }
+ },
+ "2026-11-08": {
+  "cuadro": "14:40",
+  "ceniza_beta_0.7": {
+   "M1": {
+    "potencia_p05": {
+     "0.3": [
+      0.833,
+      6
+     ],
+     "0.5": [
+      1.0,
+      5
+     ],
+     "0.9": [
+      0.75,
+      4
+     ]
+    },
+    "D_esperado": {
+     "0.3": -1.327,
+     "0.5": -2.071,
+     "0.9": -1.576
+    }
+   },
+   "M2": {
+    "potencia_p05": {
+     "0.3": [
+      0.333,
+      6
+     ],
+     "0.5": [
+      0.333,
+      6
+     ],
+     "0.9": [
+      0.667,
+      6
+     ]
+    },
+    "D_esperado": {
+     "0.3": -5.02,
+     "0.5": -8.4,
+     "0.9": -15.307
+    }
+   }
+  },
+  "gris_beta_1.0": {
+   "M1": {
+    "potencia_p05": {
+     "0.3": [
+      0.0,
+      6
+     ],
+     "0.5": [
+      0.0,
+      5
+     ],
+     "0.9": [
+      0.0,
+      4
+     ]
+    },
+    "D_esperado": {
+     "0.3": -0.215,
+     "0.5": -0.062,
+     "0.9": -0.125
+    }
+   },
+   "M2": {
+    "potencia_p05": {
+     "0.3": [
+      0.333,
+      6
+     ],
+     "0.5": [
+      0.333,
+      6
+     ],
+     "0.9": [
+      0.667,
+      6
+     ]
+    },
+    "D_esperado": {
+     "0.3": -5.02,
+     "0.5": -8.4,
+     "0.9": -15.307
+    }
+   }
+  },
+  "serie_pixel_mayor_f": {
+   "fila": 44,
+   "col": 46,
+   "f": 0.427,
+   "dias": [
+    {
+     "dia": "2026-10-10",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.727,
+     "M2": 6.028,
+     "BT11": 272.97
+    },
+    {
+     "dia": "2026-10-15",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.446,
+     "M2": -4.561,
+     "BT11": 276.48
+    },
+    {
+     "dia": "2026-10-16",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.594,
+     "M2": -3.631,
+     "BT11": 276.51
+    },
+    {
+     "dia": "2026-10-17",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.309,
+     "M2": -5.851,
+     "BT11": 278.62
+    },
+    {
+     "dia": "2026-10-25",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": true,
+     "M1": -0.782,
+     "M2": -6.126,
+     "BT11": 279.42
+    },
+    {
+     "dia": "2026-10-28",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": -0.542,
+     "M2": -6.868,
+     "BT11": 283.46
+    },
+    {
+     "dia": "2026-10-29",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": -0.584,
+     "M2": -6.303,
+     "BT11": 285.82
+    },
+    {
+     "dia": "2026-11-02",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.514,
+     "M2": -1.382,
+     "BT11": 280.01
+    },
+    {
+     "dia": "2026-11-04",
+     "evento": false,
+     "excluido_H24": false,
+     "otro_evento": false,
+     "M1": -0.08,
+     "M2": -2.591,
+     "BT11": 274.5
+    },
+    {
+     "dia": "2026-11-07",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": -0.809,
+     "M2": -7.718,
+     "BT11": 281.41
+    },
+    {
+     "dia": "2026-11-08",
+     "evento": true,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": -1.323,
+     "M2": -10.418,
+     "BT11": 283.82
+    },
+    {
+     "dia": "2026-11-12",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": -0.564,
+     "M2": -5.867,
+     "BT11": 291.87
+    },
+    {
+     "dia": "2026-11-13",
+     "evento": false,
+     "excluido_H24": true,
+     "otro_evento": false,
+     "M1": 0.004,
+     "M2": -11.725,
+     "BT11": 282.75
+    }
+   ]
+  },
+  "placebo_cumbre": {
+   "cota_pixel_m": 2073,
+   "corrimientos_misma_cota": 268,
+   "M1": {
+    "D_real": -1.89,
+    "n": 267,
+    "p": 0.0225,
+    "p5_p50": [
+     -1.558,
+     0.266
+    ]
+   },
+   "M2": {
+    "D_real": -19.636,
+    "n": 268,
+    "p": 0.0037,
+    "p5_p50": [
+     -10.408,
+     -2.692
+    ]
+   }
+  }
+ }
+}

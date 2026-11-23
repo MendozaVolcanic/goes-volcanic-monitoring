@@ -1,0 +1,48 @@
+pruebas OK (8 de 8); paralaje hacia 173.6 grados; W, Wc, R de E6-like: 53 54 109
+cuadros presentes por bloque: 4714 1152 3022
+E1 SIN SEÑAL z 0.04 cuadros 4 nulo 9 poder015 1.0 grande 1.0
+E2 SIN PODER z 1.3 cuadros 6 nulo 6 poder015 nan grande nan
+E3 SIN PODER z nan cuadros 7 nulo 5 poder015 nan grande nan
+E4 SIN PODER z nan cuadros 10 nulo 5 poder015 nan grande nan
+E5 SIN DATO (cielo) z nan cuadros 1 nulo 0 poder015 nan grande nan
+E6 SIN SEÑAL z -0.15 cuadros 6 nulo 11 poder015 1.0 grande 1.0
+E7 SIN SEÑAL z 0.16 cuadros 4 nulo 10 poder015 1.0 grande 1.0
+E8 SEÑAL z -2.26 cuadros 22 nulo 9 poder015 1.0 grande 1.0
+E9 SIN PODER z nan cuadros 6 nulo 4 poder015 nan grande nan
+E10 SIN DATO (cielo) z nan cuadros 0 nulo 0 poder015 nan grande nan
+E11 SIN DATO (cielo) z nan cuadros 0 nulo 0 poder015 nan grande nan
+E12 SIN DATO (cielo) z nan cuadros 0 nulo 0 poder015 nan grande nan
+E13 SIN DATO (cielo) z nan cuadros 0 nulo 0 poder015 nan grande nan
+E14 SIN DATO (cielo) z nan cuadros 0 nulo 0 poder015 nan grande nan
+{
+ "criterio_commit": "f2094f7",
+ "veredicto": "NO CONCLUYENTE",
+ "falsas_alarmas": {
+  "n": 39,
+  "detecta": 3,
+  "tasa": 0.07692307692307693
+ },
+ "control_grande_ok": true,
+ "altos": {
+  "n": 6,
+  "decidibles": 1,
+  "senal": 0
+ },
+ "clases": {
+  "E1": "SIN SEÑAL",
+  "E2": "SIN PODER",
+  "E3": "SIN PODER",
+  "E4": "SIN PODER",
+  "E5": "SIN DATO (cielo)",
+  "E6": "SIN SEÑAL",
+  "E7": "SIN SEÑAL",
+  "E8": "SEÑAL",
+  "E9": "SIN PODER",
+  "E10": "SIN DATO (cielo)",
+  "E11": "SIN DATO (cielo)",
+  "E12": "SIN DATO (cielo)",
+  "E13": "SIN DATO (cielo)",
+  "E14": "SIN DATO (cielo)"
+ }
+}
+EXIT 0

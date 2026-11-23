@@ -1,0 +1,87 @@
+E1 mediana SIN PODER z -0.19364368075568847 cuadros 4 nulo 10 franja030 0.1 W015 0.9 placebo -0.9973439046810361 antuco -0.02470186237858638 longavi nan
+E1 p20 SIN SEÑAL z 0.012229063127017936 cuadros 4 nulo 10 franja030 0.8 W015 1.0 placebo -1.7981859679978054 antuco 0.37501188766320426 longavi nan
+E2 mediana SIN PODER z -0.036772579295635516 cuadros 6 nulo 8 franja030 0.5 W015 1.0 placebo -0.4057474384303479 antuco 0.5505486681231375 longavi -0.5372305920855868
+E2 p20 SIN SEÑAL z 0.2803759212027847 cuadros 6 nulo 8 franja030 0.875 W015 1.0 placebo -1.544680011234989 antuco 0.820629823205997 longavi -0.08220973666111721
+E3 mediana SIN PODER z 0.2622635474777616 cuadros 7 nulo 7 franja030 0.5714285714285714 W015 0.8571428571428571 placebo -0.3148362094305783 antuco 0.7328344307295378 longavi 0.7991852169350016
+E3 p20 SIN SEÑAL z 0.5822449923647447 cuadros 7 nulo 7 franja030 0.8571428571428571 W015 1.0 placebo -0.030030181747229403 antuco 1.3404068943370584 longavi -0.02812573326804547
+E4 mediana SIN PODER z 0.3471055348913127 cuadros 10 nulo 6 franja030 nan W015 nan placebo -0.7864407773051937 antuco nan longavi 2.3413550730360893
+E4 p20 SIN PODER z 3.2260943188444258 cuadros 10 nulo 6 franja030 nan W015 nan placebo 0.5694818243135576 antuco nan longavi 2.7130766033483438
+E5 mediana SIN PODER z nan cuadros 28 nulo 0 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E5 p20 SIN PODER z nan cuadros 28 nulo 0 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E6 mediana SIN PODER z -0.025888245680778132 cuadros 6 nulo 13 franja030 0.23076923076923078 W015 1.0 placebo 0.07260046793697406 antuco nan longavi 0.2555727976810627
+E6 p20 SIN SEÑAL z -0.19029811098842042 cuadros 6 nulo 13 franja030 1.0 W015 1.0 placebo 0.11820152453671288 antuco nan longavi 0.763568043539769
+E7 mediana SIN PODER z -0.153481984715782 cuadros 4 nulo 11 franja030 0.36363636363636365 W015 1.0 placebo -0.076892186643587 antuco nan longavi -1.322232700656512
+E7 p20 SIN SEÑAL z 0.28489814058146756 cuadros 4 nulo 11 franja030 1.0 W015 1.0 placebo -0.08813201295920098 antuco nan longavi -0.9784071599429849
+E8 mediana DUDOSO z -3.28723620188894 cuadros 22 nulo 12 franja030 1.0 W015 1.0 placebo 1.3442268546636664 antuco -2.061025505637982 longavi -0.4524560119302492
+E8 p20 DUDOSO z -2.3737900539257857 cuadros 22 nulo 12 franja030 1.0 W015 1.0 placebo 1.5282996688748127 antuco -2.1914549908988605 longavi -0.019523561564624734
+E9 mediana SIN PODER z nan cuadros 7 nulo 5 franja030 nan W015 nan placebo nan antuco nan longavi -0.7189424371168335
+E9 p20 SIN PODER z nan cuadros 7 nulo 5 franja030 nan W015 nan placebo nan antuco nan longavi 0.7663277428068768
+E10 mediana SIN PODER z nan cuadros 7 nulo 0 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E10 p20 SIN PODER z nan cuadros 7 nulo 0 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E11 mediana SIN PODER z nan cuadros 7 nulo 0 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E11 p20 SIN PODER z nan cuadros 7 nulo 0 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E12 mediana SIN PODER z nan cuadros 7 nulo 3 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E12 p20 SIN PODER z nan cuadros 7 nulo 3 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E13 mediana SIN PODER z nan cuadros 5 nulo 3 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E13 p20 SIN PODER z nan cuadros 5 nulo 3 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E14 mediana SIN DATO (cielo) z nan cuadros 0 nulo 0 franja030 nan W015 nan placebo nan antuco nan longavi nan
+E14 p20 SIN DATO (cielo) z nan cuadros 0 nulo 0 franja030 nan W015 nan placebo nan antuco nan longavi nan
+{
+ "enmienda_commit": "7c138fa",
+ "rotulo": "EXPLORATORIO, no decide",
+ "mediana": {
+  "veredicto_exploratorio": "INVÁLIDO",
+  "falsas_alarmas": [
+   8,
+   61,
+   0.13114754098360656
+  ],
+  "control_grande_ok": true,
+  "altos_decidibles": 0,
+  "altos_senal": 0,
+  "clases": {
+   "E1": "SIN PODER",
+   "E2": "SIN PODER",
+   "E3": "SIN PODER",
+   "E4": "SIN PODER",
+   "E5": "SIN PODER",
+   "E6": "SIN PODER",
+   "E7": "SIN PODER",
+   "E8": "DUDOSO",
+   "E9": "SIN PODER",
+   "E10": "SIN PODER",
+   "E11": "SIN PODER",
+   "E12": "SIN PODER",
+   "E13": "SIN PODER",
+   "E14": "SIN DATO (cielo)"
+  }
+ },
+ "p20": {
+  "veredicto_exploratorio": "INVÁLIDO",
+  "falsas_alarmas": [
+   7,
+   61,
+   0.11475409836065574
+  ],
+  "control_grande_ok": true,
+  "altos_decidibles": 1,
+  "altos_senal": 0,
+  "clases": {
+   "E1": "SIN SEÑAL",
+   "E2": "SIN SEÑAL",
+   "E3": "SIN SEÑAL",
+   "E4": "SIN PODER",
+   "E5": "SIN PODER",
+   "E6": "SIN SEÑAL",
+   "E7": "SIN SEÑAL",
+   "E8": "DUDOSO",
+   "E9": "SIN PODER",
+   "E10": "SIN PODER",
+   "E11": "SIN PODER",
+   "E12": "SIN PODER",
+   "E13": "SIN PODER",
+   "E14": "SIN DATO (cielo)"
+  }
+ }
+}
+EXIT 0

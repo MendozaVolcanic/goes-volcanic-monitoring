@@ -1,0 +1,58 @@
+{
+ "enmienda_commit": "7c138fa",
+ "rotulo": "EXPLORATORIO, no decide",
+ "mediana": {
+  "veredicto_exploratorio": "INVÁLIDO",
+  "falsas_alarmas": [
+   8,
+   61,
+   0.13114754098360656
+  ],
+  "control_grande_ok": true,
+  "altos_decidibles": 0,
+  "altos_senal": 0,
+  "clases": {
+   "E1": "SIN PODER",
+   "E2": "SIN PODER",
+   "E3": "SIN PODER",
+   "E4": "SIN PODER",
+   "E5": "SIN PODER",
+   "E6": "SIN PODER",
+   "E7": "SIN PODER",
+   "E8": "DUDOSO",
+   "E9": "SIN PODER",
+   "E10": "SIN PODER",
+   "E11": "SIN PODER",
+   "E12": "SIN PODER",
+   "E13": "SIN PODER",
+   "E14": "SIN DATO (cielo)"
+  }
+ },
+ "p20": {
+  "veredicto_exploratorio": "INVÁLIDO",
+  "falsas_alarmas": [
+   7,
+   61,
+   0.11475409836065574
+  ],
+  "control_grande_ok": true,
+  "altos_decidibles": 1,
+  "altos_senal": 0,
+  "clases": {
+   "E1": "SIN SEÑAL",
+   "E2": "SIN SEÑAL",
+   "E3": "SIN SEÑAL",
+   "E4": "SIN PODER",
+   "E5": "SIN PODER",
+   "E6": "SIN SEÑAL",
+   "E7": "SIN SEÑAL",
+   "E8": "DUDOSO",
+   "E9": "SIN PODER",
+   "E10": "SIN PODER",
+   "E11": "SIN PODER",
+   "E12": "SIN PODER",
+   "E13": "SIN PODER",
+   "E14": "SIN DATO (cielo)"
+  }
+ }
+}

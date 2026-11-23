@@ -1,0 +1,31 @@
+{
+ "criterio_commit": "f2094f7",
+ "veredicto": "NO CONCLUYENTE",
+ "falsas_alarmas": {
+  "n": 39,
+  "detecta": 3,
+  "tasa": 0.07692307692307693
+ },
+ "control_grande_ok": true,
+ "altos": {
+  "n": 6,
+  "decidibles": 1,
+  "senal": 0
+ },
+ "clases": {
+  "E1": "SIN SEÑAL",
+  "E2": "SIN PODER",
+  "E3": "SIN PODER",
+  "E4": "SIN PODER",
+  "E5": "SIN DATO (cielo)",
+  "E6": "SIN SEÑAL",
+  "E7": "SIN SEÑAL",
+  "E8": "SEÑAL",
+  "E9": "SIN PODER",
+  "E10": "SIN DATO (cielo)",
+  "E11": "SIN DATO (cielo)",
+  "E12": "SIN DATO (cielo)",
+  "E13": "SIN DATO (cielo)",
+  "E14": "SIN DATO (cielo)"
+ }
+}

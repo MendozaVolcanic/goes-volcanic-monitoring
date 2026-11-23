@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-22 (cierre de la sesión S17, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-23 (cierre de la sesión S18, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,83 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S17, cierre 2026-11-22 (PR 85 a 97 en main: VOLCAT sostiene Chillán por seguimiento del objeto, no por firma; la pluma queda bajo lo que el IR de GOES-19 ve; ningún paquete de SSEC trae código)
+## 0. S18, cierre 2026-11-23 (H24 en la rama `claude/s18-h24-pulsos-reav`, PR abierto sin fusionar: con verdad del OVDAS, los pulsos medibles no dejan firma IR; los que VOLCAT marcó de tarde quedan sin fondo)
+
+> Sesión hija de "Goes S16: modo día VOLCAT y sitio SSEC" (`local_298f6e00`). Nicolás preguntó: "¿crees que podamos
+> lograr detectar lo que vio VOLCAT esos pocos días en Chillán?". Respuesta escrita en
+> `docs/own_volcat/RESPUESTA_S18_lo_que_vio_volcat.md` (con el resultado de H24 al final).
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Respuesta a la pregunta de Nicolás, tres caminos con probabilidad estimada | Escrita y commiteada antes de medir | `docs/own_volcat/RESPUESTA_S18_lo_que_vio_volcat.md` |
+| H24: pulsos REAV del OVDAS contra el IR de GOES-19 (sector a favor del viento contra viento cruzado, pareado por BT11) | **NO CONCLUYENTE** (criterio `f2094f7`, enmienda 1 `620b5a0`, resultados `e260476`) | `docs/own_volcat/h24_pulsos_reav/INFORME.md` |
+| E6, explosión gris oscura de 2.000 m del 27-10 (amanecer) | **SIN SEÑAL con poder** (z −0,15; capa ε 0,05 en todo el sector 82 %; franja angosta ε 0,15 100 %); VOLCAT 0 de 8 | INFORME §3 y §4 |
+| E8, 27-10 a media mañana | SEÑAL con el criterio (z −2,26) pero **no sobrevive**: Antuco da −2,06 y −2,19 con la ventana larga | INFORME §4 |
+| E11 a E13, los pulsos que VOLCAT marcó (8 de 8, 7 de 7, 10 de 11) | **SIN DATO**: episodio despejado, pero 0 a 3 tardes despejadas sin actividad para el fondo (21-09 a 21-11) | INFORME §6 |
+| Falsas alarmas medidas | criterio 3 de 39 (7,7 %); exploratorio 13,1 % y 11,5 %, INVÁLIDO | `resultados/h24_resumen.json`, `h24_explorar_resumen.json` |
+| Hueco 24 a 31-10 (L1b C14/C15, ACMF, GFS) | Bajado y verificado (I1 a I3 pasan) | `D:\goes_notas\s18\h24\`; `resultados/h24_instrumento_cubo_oct.json` |
+| main | `c1b2cd0` al abrir S18; el PR de H24 no está fusionado | `git ls-remote` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | Fusionar el PR de H24 (sólo docs y scripts de investigación, no toca `src/` ni la app) | sí / no | Sí: deja escrito, con verdad del OVDAS, que los pulsos medibles no tienen firma IR |
+| 2 | Prueba prospectiva de verano: la misma H24 sin cambios sobre los REAV de diciembre a febrero | sí / no | Sí: es la única forma limpia de saber si los pulsos de tarde que VOLCAT marca tienen firma IR |
+| 3 | E6 con la dirección del GFS (17°, a 62° de la del REAV) como prueba nueva | sí / no | Sí, barata (datos ya en D:), con criterio propio |
+| 4 | Las decisiones de S17 (POR_QUE con H19 a H24, correo a Pavolonis, cableado del indicador nocturno) | | Siguen abiertas, ver "## 0-prev11 b." |
+
+### c. Lo aprendido
+
+- **Las 30 marcas del Grafana de VOLCAT no son todos los días con VOLCAT** (propio del proyecto, en memoria
+  `project_loops_volcat_chillan_nov2026.md`): el 11-11 y el 16-11 tienen objetos en el catálogo por cuadro del PNG
+  (`calor_rayos/resultados/frames_calor.csv`) y no están en las marcas. Nicolás lo recordó por los loops que pidió.
+- **Una línea base "a la misma hora en días despejados" deja sin fondo a la tarde de primavera en la cordillera**
+  (propio del proyecto): 15 a 19 % de los cuadros de 14 a 23 UTC tienen escena despejada, y al excluir los días con
+  actividad quedan 0 a 3. Antes de diseñar una prueba de tarde, contar los días de fondo disponibles.
+- **Una mediana sobre un sector no ve una pluma angosta** (regla de método, para `GUIA_MAESTRA_AUDITORIAS.md` §3b):
+  el control positivo tiene que tener la forma del fenómeno; una capa que llena el sector da poder 100 % y esconde
+  que la mediana no se mueve si la pluma cubre menos de la mitad.
+- **Contrastar el sector de la pluma contra el viento cruzado en el mismo cuadro** cancela el corrimiento de todo el
+  día que hundió las pruebas de promediar; el nulo resultante tuvo 7,7 % de falsas alarmas con z ≤ −2.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (H24, E6, E1, E7):** pulsos documentados por el OVDAS en la mañana, incluida una explosión de ceniza
+  de 2 km, no dejan firma IR medible a favor del viento, con poder para una pluma angosta de ε 0,15.
+- **SIN DATO:** si los pulsos de tarde que VOLCAT marcó (28-10, 10-11) tienen firma IR.
+- **SOSPECHA:** E6 pudo irse hacia el NNE (GFS) y no hacia el NO (REAV); el sector de ±30° la perdería en parte.
+- **SOSPECHA (H23, sigue):** la pluma de Chillán está bajo la emisividad mínima detectable o tiene β cercano a 1.
+
+### e. Cerrado, no rehacer
+
+Todo lo de "## 0-prev11 e." (S17) más: "E8 del 27-10 es una detección" (Antuco da lo mismo); "ampliar el fondo a
+dos meses resuelve la tarde" (falsas alarmas 11 a 13 %, inválido, y siguen 0 a 3 días de fondo).
+
+### f. Prompt para la próxima sesión (S19)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Esta es la sesión S19; titúlala
+"Goes S19: ..." y numera su traspaso como S19. Usa /retomar.
+
+1. Verifica antes de creer: git fetch; gh pr list (al cerrar S18 quedaba abierto el PR de H24,
+   rama claude/s18-h24-pulsos-reav); git ls-remote origin -h refs/heads/main.
+2. Lee CLAUDE.md, STATUS.md "## 0." (S18), docs/own_volcat/RESPUESTA_S18_lo_que_vio_volcat.md y
+   docs/own_volcat/h24_pulsos_reav/INFORME.md.
+3. Pregunta a Nicolás las decisiones de "## 0. b." (fusionar H24, prueba de verano, E6 con GFS) y las de S17.
+4. Antes de cada prueba, por escrito: el régimen (día/noche, mar/tierra, sensor, versión), las dos preguntas de
+   C:\Users\nmend\OneDrive\Escritorio\claude\GUIA_MAESTRA_AUDITORIAS.md §3, y cuántos días de fondo hay.
+5. Reglas: español de Chile sin voseo ni guiones largos; rutas absolutas; no VIIRS; la carpeta principal
+   (rama audit/2026-11-previa-local) no se toca; docs/auditoria_2026-11 no se sube; nada de SSEC al repo ni al
+   Space; criterio commiteado antes de medir; control pareado por BT11; huella = event_idx cuando hay archivo de
+   evento; días con VOLCAT desde frames_calor.csv y no sólo las 30 marcas; lo grande a D:; fusionar sólo con el sí
+   de Nicolás para ESE PR y con --match-head-commit; cambio de lógica = ficha SDA en el mismo commit.
+```
+
+## 0-prev11. S17, cierre 2026-11-22 (PR 85 a 97 en main: VOLCAT sostiene Chillán por seguimiento del objeto, no por firma; la pluma queda bajo lo que el IR de GOES-19 ve; ningún paquete de SSEC trae código)
 
 > **Estado fijado con trabajo ajeno en curso:** al cerrar corría un proceso Python lanzado a las 14:29 que S17 no
 > lanzó (probablemente de la sesión coordinadora S16 o de otro proyecto). S17 no tiene subagentes ni descargas

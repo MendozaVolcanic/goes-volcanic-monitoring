@@ -1,0 +1,73 @@
+S20c: controles limpios. Criterio b06c711 + enmiendas 1 y 2 (antes de medir, 5f295a5)
+
+== principal_btd
+  paso2    unid  11/ 38 dias 3 | S -0.235 K p_baja 0.0035 p_alta 1.0000 | E_orig -0.170 (n 11) | pos-base -0.021 plac-base +0.211 | nulo [+0.214, +0.240] | C -0.000 (n 13, p 0.003) | AUC orig 0.368 limpio 0.535 plac 0.797 corr 0.239 | FA 0.000 poder 0.05:1.00 0.1:1.00 0.15:1.00 0.3:1.00 | p_holm 0.0176 | INVÁLIDA
+  H3       unid  12/ 34 dias 3 | S -0.355 K p_baja 0.0715 p_alta 0.9292 | E_orig -0.187 (n 12) | pos-base -0.280 plac-base +0.097 | nulo [-0.478, +0.263] | C -0.103 (n 14, p 0.227) | AUC orig 0.286 limpio 0.207 plac 0.570 corr 0.137 | FA 0.038 poder 0.05:0.10 0.1:0.06 0.15:0.14 0.3:0.95 | p_holm 0.2141 | SIN PODER
+  beta73   unid  13/ 43 dias 3 | S -0.312 K p_baja 0.0010 p_alta 1.0000 | E_orig +0.059 (n 13) | pos-base -0.119 plac-base +0.195 | nulo [-0.292, +0.306] | C -0.292 (n 13, p 0.001) | AUC orig 0.527 limpio 0.522 plac 0.743 corr 0.280 | FA 0.000 poder 0.05:0.18 0.1:0.43 0.15:0.92 0.3:1.00 | p_holm 0.0062 | INVÁLIDA
+  VAAC     unid  11/ 40 dias 3 | S -0.232 K p_baja 0.1157 p_alta 0.8853 | E_orig -0.204 (n 11) | pos-base +0.017 plac-base +0.195 | nulo [-0.268, +0.322] | C -0.089 (n 12, p 0.275) | AUC orig 0.352 limpio 0.523 plac 0.744 corr 0.279 | FA 0.000 poder 0.05:0.18 0.1:0.57 0.15:0.92 0.3:1.00 | p_holm 0.2141 | INVÁLIDA
+  H13      unid  30/ 66 dias 5 | S -0.417 K p_baja 0.0663 p_alta 0.9344 | E_orig -0.268 (n 30) | pos-base -0.286 plac-base +0.181 | nulo [-0.490, +0.237] | C -0.221 (n 21, p 0.053) | AUC orig 0.326 limpio 0.243 plac 0.596 corr 0.147 | FA 0.000 poder 0.05:0.06 0.1:0.07 0.15:0.18 0.3:1.00 | p_holm 0.2141 | SIN PODER
+  H11_H12  unid  24/ 60 dias 5 | S -0.334 K p_baja 0.0535 p_alta 0.9471 | E_orig -0.086 (n 24) | pos-base -0.162 plac-base +0.169 | nulo [-0.352, +0.276] | C -0.180 (n 24, p 0.059) | AUC orig 0.410 limpio 0.351 plac 0.627 corr 0.224 | FA 0.059 poder 0.05:0.11 0.1:0.16 0.15:0.65 0.3:1.00 | p_holm 0.2141 | SIN PODER
+
+== S5_bt11
+  paso2    unid  11/ 38 dias 3 | S +6.275 K p_baja 1.0000 p_alta 0.0035 | E_orig -2.928 (n 11) | pos-base +11.022 plac-base +5.468 | nulo [-5.097, +0.465] | C +9.971 (n 13, p 1.000) | AUC orig 0.347 limpio 0.993 plac 0.913 corr 0.580
+  H3       unid  12/ 34 dias 3 | S +5.587 K p_baja 0.9533 p_alta 0.0475 | E_orig +0.613 (n 12) | pos-base +9.083 plac-base +3.693 | nulo [-5.594, +5.197] | C +8.810 (n 14, p 1.000) | AUC orig 0.556 limpio 0.978 plac 0.728 corr 0.749
+  beta73   unid  13/ 43 dias 3 | S +5.855 K p_baja 0.8874 p_alta 0.1136 | E_orig +0.484 (n 13) | pos-base +10.421 plac-base +5.455 | nulo [-6.307, +5.956] | C +6.585 (n 13, p 1.000) | AUC orig 0.555 limpio 0.976 plac 0.801 corr 0.675
+  VAAC     unid  11/ 40 dias 3 | S +6.547 K p_baja 1.0000 p_alta 0.0010 | E_orig +0.467 (n 11) | pos-base +10.305 plac-base +5.413 | nulo [-5.877, +5.664] | C +9.083 (n 12, p 1.000) | AUC orig 0.539 limpio 0.965 plac 0.791 corr 0.675
+  H13      unid  30/ 66 dias 5 | S +3.420 K p_baja 0.8198 p_alta 0.1809 | E_orig +0.795 (n 30) | pos-base +8.303 plac-base +4.688 | nulo [-5.668, +5.155] | C +3.211 (n 21, p 0.843) | AUC orig 0.567 limpio 0.963 plac 0.753 corr 0.710
+  H11_H12  unid  24/ 60 dias 5 | S +5.610 K p_baja 0.9364 p_alta 0.0642 | E_orig +0.613 (n 24) | pos-base +9.695 plac-base +5.356 | nulo [-5.594, +5.895] | C +6.976 (n 24, p 1.000) | AUC orig 0.554 limpio 0.972 plac 0.752 corr 0.721
+
+== S5_dbtd
+  paso2    unid  11/ 38 dias 3 | S -0.036 K p_baja 0.0035 p_alta 1.0000 | E_orig +0.079 (n 11) | pos-base -0.058 plac-base -0.023 | nulo [+0.167, +0.441] | C -0.085 (n 13, p 0.003) | AUC orig 0.548 limpio 0.398 plac 0.537 corr 0.361
+  H3       unid  12/ 34 dias 3 | S -0.071 K p_baja 0.2139 p_alta 0.7868 | E_orig +0.021 (n 12) | pos-base -0.069 plac-base -0.005 | nulo [-0.171, +0.073] | C -0.033 (n 14, p 0.242) | AUC orig 0.477 limpio 0.416 plac 0.470 corr 0.446
+  beta73   unid  13/ 43 dias 3 | S -0.039 K p_baja 0.3874 p_alta 0.6136 | E_orig +0.047 (n 13) | pos-base -0.058 plac-base -0.007 | nulo [-0.171, +0.254] | C -0.014 (n 13, p 0.265) | AUC orig 0.504 limpio 0.448 plac 0.522 corr 0.426
+  VAAC     unid  11/ 40 dias 3 | S -0.095 K p_baja 0.2035 p_alta 0.7975 | E_orig -0.076 (n 11) | pos-base -0.065 plac-base +0.013 | nulo [-0.171, +0.256] | C -0.047 (n 12, p 0.261) | AUC orig 0.467 limpio 0.395 plac 0.521 corr 0.373
+  H13      unid  30/ 66 dias 5 | S -0.039 K p_baja 0.2430 p_alta 0.7577 | E_orig -0.004 (n 30) | pos-base -0.053 plac-base -0.006 | nulo [-0.092, +0.167] | C -0.017 (n 21, p 0.402) | AUC orig 0.510 limpio 0.464 plac 0.490 corr 0.474
+  H11_H12  unid  24/ 60 dias 5 | S -0.058 K p_baja 0.1656 p_alta 0.8350 | E_orig +0.032 (n 24) | pos-base -0.064 plac-base -0.005 | nulo [-0.171, +0.212] | C -0.024 (n 24, p 0.258) | AUC orig 0.499 limpio 0.431 plac 0.491 corr 0.440
+
+== S5_dbt11
+  paso2    unid  11/ 38 dias 3 | S -0.055 K p_baja 0.5141 p_alta 0.4894 | E_orig +0.020 (n 11) | pos-base -0.089 plac-base +0.006 | nulo [-0.071, +0.954] | C -0.208 (n 13, p 0.438) | AUC orig 0.500 limpio 0.461 plac 0.650 corr 0.311
+  H3       unid  12/ 34 dias 3 | S -0.029 K p_baja 0.4313 p_alta 0.5694 | E_orig +0.155 (n 12) | pos-base -0.026 plac-base +0.003 | nulo [-0.577, +1.538] | C -0.237 (n 14, p 0.382) | AUC orig 0.559 limpio 0.508 plac 0.580 corr 0.429
+  beta73   unid  13/ 43 dias 3 | S +0.004 K p_baja 0.3306 p_alta 0.6705 | E_orig +0.039 (n 13) | pos-base -0.039 plac-base +0.016 | nulo [-1.029, +2.319] | C -0.214 (n 13, p 0.284) | AUC orig 0.509 limpio 0.500 plac 0.670 corr 0.331
+  VAAC     unid  11/ 40 dias 3 | S -0.068 K p_baja 0.3306 p_alta 0.6705 | E_orig +0.550 (n 11) | pos-base -0.076 plac-base +0.036 | nulo [-1.029, +2.134] | C -0.269 (n 12, p 0.439) | AUC orig 0.560 limpio 0.471 plac 0.635 corr 0.336
+  H13      unid  30/ 66 dias 5 | S +0.019 K p_baja 0.4469 p_alta 0.5538 | E_orig -0.043 (n 30) | pos-base +0.011 plac-base -0.001 | nulo [-0.680, +1.597] | C -0.003 (n 21, p 0.488) | AUC orig 0.450 limpio 0.460 plac 0.583 corr 0.377
+  H11_H12  unid  24/ 60 dias 5 | S -0.026 K p_baja 0.3967 p_alta 0.6039 | E_orig +0.038 (n 24) | pos-base -0.046 plac-base +0.016 | nulo [-0.631, +2.134] | C -0.223 (n 24, p 0.338) | AUC orig 0.523 limpio 0.490 plac 0.613 corr 0.377
+
+== S1_anillo_btd
+  paso2    unid  11/ 38 dias 3 | S -0.364 K p_baja 0.0035 p_alta 1.0000 | E_orig -0.170 (n 11) | pos-base -0.377 plac-base -0.005 | nulo [+0.142, +0.392] | C -0.344 (n 13, p 0.003) | AUC orig 0.368 limpio 0.535 plac 0.797 corr 0.239
+  H3       unid  12/ 34 dias 3 | S -0.360 K p_baja 0.0007 p_alta 1.0000 | E_orig -0.187 (n 12) | pos-base -0.341 plac-base -0.017 | nulo [-0.126, +0.216] | C -0.265 (n 14, p 0.001) | AUC orig 0.286 limpio 0.207 plac 0.570 corr 0.137
+  beta73   unid  13/ 43 dias 3 | S -0.356 K p_baja 0.0010 p_alta 1.0000 | E_orig +0.059 (n 13) | pos-base -0.347 plac-base -0.005 | nulo [-0.127, +0.398] | C -0.138 (n 13, p 0.001) | AUC orig 0.527 limpio 0.522 plac 0.743 corr 0.280
+  VAAC     unid  11/ 40 dias 3 | S -0.522 K p_baja 0.0010 p_alta 1.0000 | E_orig -0.204 (n 11) | pos-base -0.533 plac-base -0.014 | nulo [-0.127, +0.392] | C -0.282 (n 12, p 0.001) | AUC orig 0.352 limpio 0.523 plac 0.744 corr 0.279
+  H13      unid  30/ 66 dias 5 | S -0.378 K p_baja 0.0007 p_alta 1.0000 | E_orig -0.268 (n 30) | pos-base -0.377 plac-base -0.023 | nulo [-0.126, +0.228] | C -0.061 (n 21, p 0.176) | AUC orig 0.326 limpio 0.243 plac 0.596 corr 0.147
+  H11_H12  unid  24/ 60 dias 5 | S -0.353 K p_baja 0.0006 p_alta 1.0000 | E_orig -0.086 (n 24) | pos-base -0.329 plac-base -0.017 | nulo [-0.126, +0.382] | C -0.147 (n 24, p 0.001) | AUC orig 0.410 limpio 0.351 plac 0.627 corr 0.224
+
+== S1_anillo_bt11
+  paso2    unid  11/ 38 dias 3 | S -2.178 K p_baja 0.0035 p_alta 1.0000 | E_orig -2.928 (n 11) | pos-base -1.119 plac-base +1.197 | nulo [+0.804, +3.222] | C -3.975 (n 13, p 0.003) | AUC orig 0.347 limpio 0.993 plac 0.913 corr 0.580
+  H3       unid  12/ 34 dias 3 | S -1.604 K p_baja 0.1317 p_alta 0.8690 | E_orig +0.613 (n 12) | pos-base -1.409 plac-base +0.833 | nulo [-2.065, +2.794] | C -4.033 (n 14, p 0.001) | AUC orig 0.556 limpio 0.978 plac 0.728 corr 0.749
+  beta73   unid  13/ 43 dias 3 | S -1.191 K p_baja 0.0826 p_alta 0.9184 | E_orig +0.484 (n 13) | pos-base -0.434 plac-base +0.856 | nulo [-3.001, +3.695] | C -2.866 (n 13, p 0.001) | AUC orig 0.555 limpio 0.976 plac 0.801 corr 0.675
+  VAAC     unid  11/ 40 dias 3 | S -1.191 K p_baja 0.0826 p_alta 0.9184 | E_orig +0.467 (n 11) | pos-base -0.434 plac-base +0.842 | nulo [-3.001, +3.695] | C -4.203 (n 12, p 0.001) | AUC orig 0.539 limpio 0.965 plac 0.791 corr 0.675
+  H13      unid  30/ 66 dias 5 | S -2.628 K p_baja 0.0007 p_alta 1.0000 | E_orig +0.795 (n 30) | pos-base -1.948 plac-base +0.767 | nulo [-2.258, +2.883] | C -1.736 (n 21, p 0.118) | AUC orig 0.567 limpio 0.963 plac 0.753 corr 0.710
+  H11_H12  unid  24/ 60 dias 5 | S -1.564 K p_baja 0.0850 p_alta 0.9156 | E_orig +0.613 (n 24) | pos-base -1.168 plac-base +0.849 | nulo [-1.872, +3.222] | C -3.342 (n 24, p 0.001) | AUC orig 0.554 limpio 0.972 plac 0.752 corr 0.721
+
+== S2_sin_ACMF_btd
+  paso2    unid  38/ 38 dias 3 | S +0.307 K p_baja 0.7906 p_alta 0.2099 | E_orig -0.160 (n 38) | pos-base +0.149 plac-base -0.189 | nulo [-0.276, +0.489] | C +0.646 (n 37, p 1.000) | AUC orig 0.359 limpio 0.537 plac 0.383 corr 0.654
+  H3       unid  34/ 34 dias 3 | S +0.202 K p_baja 0.7436 p_alta 0.2569 | E_orig -0.097 (n 34) | pos-base +0.001 plac-base -0.156 | nulo [-0.276, +0.500] | C +0.412 (n 31, p 0.911) | AUC orig 0.390 limpio 0.389 plac 0.431 corr 0.458
+  beta73   unid  43/ 43 dias 7 | S +0.131 K p_baja 0.6767 p_alta 0.3238 | E_orig -0.104 (n 43) | pos-base +0.017 plac-base -0.134 | nulo [-0.252, +0.410] | C +0.614 (n 36, p 1.000) | AUC orig 0.438 limpio 0.487 plac 0.426 corr 0.561
+  VAAC     unid  40/ 40 dias 3 | S +0.264 K p_baja 0.7591 p_alta 0.2414 | E_orig -0.151 (n 40) | pos-base +0.077 plac-base -0.156 | nulo [-0.272, +0.460] | C +0.574 (n 33, p 0.994) | AUC orig 0.410 limpio 0.511 plac 0.420 corr 0.591
+  H13      unid  66/ 66 dias 8 | S -0.002 K p_baja 0.5152 p_alta 0.4853 | E_orig -0.280 (n 66) | pos-base -0.217 plac-base -0.138 | nulo [-0.207, +0.339] | C +0.374 (n 56, p 0.983) | AUC orig 0.354 limpio 0.349 plac 0.416 corr 0.433
+  H11_H12  unid  60/ 60 dias 9 | S +0.089 K p_baja 0.6572 p_alta 0.3433 | E_orig -0.102 (n 60) | pos-base -0.029 plac-base -0.138 | nulo [-0.231, +0.390] | C +0.416 (n 50, p 0.951) | AUC orig 0.421 limpio 0.433 plac 0.429 corr 0.504
+
+== S3_huella_guardada_btd
+  paso2    unid  11/ 38 dias 3 | S -0.235 K p_baja 0.0035 p_alta 1.0000 | E_orig -0.170 (n 11) | pos-base -0.021 plac-base +0.211 | nulo [+0.214, +0.240] | C -0.000 (n 13, p 0.003) | AUC orig 0.368 limpio 0.535 plac 0.797 corr 0.239
+  H3       unid  12/ 35 dias 3 | S -0.332 K p_baja 0.0715 p_alta 0.9292 | E_orig -0.189 (n 12) | pos-base -0.166 plac-base +0.138 | nulo [-0.452, +0.235] | C -0.043 (n 14, p 0.250) | AUC orig 0.341 limpio 0.313 plac 0.572 corr 0.240
+  beta73   unid  13/ 44 dias 3 | S -0.044 K p_baja 0.3564 p_alta 0.6446 | E_orig +0.114 (n 13) | pos-base +0.097 plac-base +0.193 | nulo [-0.161, +0.241] | C -0.332 (n 13, p 0.001) | AUC orig 0.590 limpio 0.617 plac 0.747 corr 0.370
+  VAAC     unid  11/ 40 dias 3 | S -0.232 K p_baja 0.1157 p_alta 0.8853 | E_orig -0.204 (n 11) | pos-base +0.017 plac-base +0.195 | nulo [-0.268, +0.322] | C -0.089 (n 12, p 0.275) | AUC orig 0.352 limpio 0.523 plac 0.744 corr 0.279
+  H13      unid  30/ 66 dias 5 | S -0.417 K p_baja 0.0663 p_alta 0.9344 | E_orig -0.268 (n 30) | pos-base -0.286 plac-base +0.181 | nulo [-0.490, +0.237] | C -0.221 (n 21, p 0.053) | AUC orig 0.326 limpio 0.243 plac 0.596 corr 0.147
+  H11_H12  unid  24/ 61 dias 5 | S -0.210 K p_baja 0.0567 p_alta 0.9440 | E_orig -0.065 (n 24) | pos-base -0.062 plac-base +0.181 | nulo [-0.293, +0.241] | C -0.178 (n 24, p 0.051) | AUC orig 0.465 limpio 0.447 plac 0.634 corr 0.313
+
+== S4_con_crater_btd
+  paso2    unid  12/ 44 dias 3 | S -0.320 K p_baja 0.0035 p_alta 1.0000 | E_orig -0.253 (n 12) | pos-base -0.117 plac-base +0.229 | nulo [-0.181, +0.086] | C -0.145 (n 15, p 0.004) | AUC orig 0.334 limpio 0.423 plac 0.777 corr 0.147
+  H3       unid  13/ 37 dias 3 | S -0.417 K p_baja 0.0715 p_alta 0.9292 | E_orig -0.190 (n 13) | pos-base -0.305 plac-base +0.200 | nulo [-0.470, +0.263] | C -0.196 (n 15, p 0.001) | AUC orig 0.288 limpio 0.212 plac 0.583 corr 0.128
+  beta73   unid  14/ 49 dias 3 | S -0.305 K p_baja 0.0010 p_alta 1.0000 | E_orig +0.060 (n 14) | pos-base -0.097 plac-base +0.215 | nulo [-0.249, +0.249] | C -0.336 (n 15, p 0.001) | AUC orig 0.496 limpio 0.460 plac 0.732 corr 0.228
+  VAAC     unid  12/ 45 dias 3 | S -0.354 K p_baja 0.0010 p_alta 1.0000 | E_orig -0.285 (n 12) | pos-base -0.129 plac-base +0.223 | nulo [-0.243, +0.220] | C -0.134 (n 14, p 0.275) | AUC orig 0.319 limpio 0.435 plac 0.732 corr 0.203
+  H13      unid  31/ 72 dias 6 | S -0.490 K p_baja 0.0007 p_alta 1.0000 | E_orig -0.354 (n 31) | pos-base -0.339 plac-base +0.216 | nulo [-0.483, +0.219] | C -0.299 (n 23, p 0.046) | AUC orig 0.307 limpio 0.217 plac 0.614 corr 0.103
+  H11_H12  unid  25/ 66 dias 5 | S -0.385 K p_baja 0.0497 p_alta 0.9509 | E_orig -0.155 (n 25) | pos-base -0.182 plac-base +0.203 | nulo [-0.319, +0.249] | C -0.218 (n 26, p 0.054) | AUC orig 0.403 limpio 0.330 plac 0.636 corr 0.194

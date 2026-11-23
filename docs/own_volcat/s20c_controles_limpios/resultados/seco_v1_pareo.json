@@ -1,0 +1,336 @@
+{
+ "criterio": "criterio_2026-11-23.md (commit b06c711)",
+ "placebo": [
+  "23-10",
+  "26-10",
+  "31-10",
+  "01-11",
+  "02-11",
+  "03-11",
+  "04-11",
+  "05-11",
+  "09-11",
+  "15-11",
+  "17-11",
+  "19-11",
+  "20-11",
+  "21-11"
+ ],
+ "limpio": "21-09 a 21-10",
+ "descartados_huella<3px": {
+  "paso2": 8,
+  "H3": 3,
+  "beta73": 6,
+  "VAAC": 5,
+  "H13": 6,
+  "H11_H12": 0
+ },
+ "pruebas": {
+  "paso2": {
+   "principal": {
+    "cuadros": 38,
+    "dias_positivos": [
+     "08-11",
+     "10-11",
+     "14-11"
+    ],
+    "cobertura": 0.02631578947368421,
+    "cubiertos": 1,
+    "placebos_validos_mediana": 2.0,
+    "falsa_alarma": 0.022,
+    "poder": {
+     "0.05": 0.02,
+     "0.1": 0.072,
+     "0.15": 0.138,
+     "0.3": 0.8126272912423625
+    },
+    "nulo_mediana": 0.017661720514297485,
+    "nulo_p05": -0.6299341470003128,
+    "nulo_p95": 0.5704139582812786
+   },
+   "S2_sin_ACMF": {
+    "cuadros": 38,
+    "dias_positivos": [
+     "08-11",
+     "10-11",
+     "14-11"
+    ],
+    "cobertura": 0.02631578947368421,
+    "cubiertos": 1,
+    "placebos_validos_mediana": 7.0,
+    "falsa_alarma": 0.044,
+    "poder": {
+     "0.05": 0.162,
+     "0.1": 0.468,
+     "0.15": 0.62,
+     "0.3": 0.838
+    },
+    "nulo_mediana": -0.021835096180438995,
+    "nulo_p05": -0.1854783110320568,
+    "nulo_p95": 0.3141065537929535
+   },
+   "medicion_principal": "S2_sin_ACMF",
+   "valida": true
+  },
+  "H3": {
+   "principal": {
+    "cuadros": 34,
+    "dias_positivos": [
+     "14-11",
+     "28-10",
+     "29-10"
+    ],
+    "cobertura": 0.029411764705882353,
+    "cubiertos": 1,
+    "placebos_validos_mediana": 2.0,
+    "falsa_alarma": 0.058,
+    "poder": {
+     "0.05": 0.134,
+     "0.1": 0.59,
+     "0.15": 0.836,
+     "0.3": 0.956
+    },
+    "nulo_mediana": -0.017661720514297485,
+    "nulo_p05": -0.21571556851267815,
+    "nulo_p95": 0.5944588631391525
+   },
+   "S2_sin_ACMF": {
+    "cuadros": 34,
+    "dias_positivos": [
+     "14-11",
+     "28-10",
+     "29-10"
+    ],
+    "cobertura": 0.08823529411764706,
+    "cubiertos": 3,
+    "placebos_validos_mediana": 7.0,
+    "falsa_alarma": 0.048,
+    "poder": {
+     "0.05": 0.182,
+     "0.1": 0.608,
+     "0.15": 0.766,
+     "0.3": 0.822
+    },
+    "nulo_mediana": -0.04423356428742409,
+    "nulo_p05": -0.17244351655244827,
+    "nulo_p95": 0.41989161539822817
+   },
+   "medicion_principal": "S2_sin_ACMF",
+   "valida": true
+  },
+  "beta73": {
+   "principal": {
+    "cuadros": 43,
+    "dias_positivos": [
+     "07-11",
+     "08-11",
+     "10-11",
+     "14-11",
+     "22-10",
+     "24-10",
+     "25-10"
+    ],
+    "cobertura": 0.06976744186046512,
+    "cubiertos": 3,
+    "placebos_validos_mediana": 2.0,
+    "falsa_alarma": 0.032,
+    "poder": {
+     "0.05": 0.098,
+     "0.1": 0.326,
+     "0.15": 0.678,
+     "0.3": 0.9216867469879518
+    },
+    "nulo_mediana": 0.024707689881324768,
+    "nulo_p05": -0.403140664100647,
+    "nulo_p95": 0.6703322157263756
+   },
+   "S2_sin_ACMF": {
+    "cuadros": 43,
+    "dias_positivos": [
+     "07-11",
+     "08-11",
+     "10-11",
+     "14-11",
+     "22-10",
+     "24-10",
+     "25-10"
+    ],
+    "cobertura": 0.18604651162790697,
+    "cubiertos": 8,
+    "placebos_validos_mediana": 7.0,
+    "falsa_alarma": 0.028,
+    "poder": {
+     "0.05": 0.078,
+     "0.1": 0.174,
+     "0.15": 0.394,
+     "0.3": 0.766
+    },
+    "nulo_mediana": -0.008133679628372192,
+    "nulo_p05": -0.2858903259038925,
+    "nulo_p95": 0.28995776381343585
+   },
+   "medicion_principal": "S2_sin_ACMF",
+   "valida": true
+  },
+  "VAAC": {
+   "principal": {
+    "cuadros": 40,
+    "dias_positivos": [
+     "08-11",
+     "10-11",
+     "14-11"
+    ],
+    "cobertura": 0.05,
+    "cubiertos": 2,
+    "placebos_validos_mediana": 2.0,
+    "falsa_alarma": 0.042,
+    "poder": {
+     "0.05": 0.164,
+     "0.1": 0.648,
+     "0.15": 0.722,
+     "0.3": 0.8299180327868853
+    },
+    "nulo_mediana": -0.05676180124282837,
+    "nulo_p05": -0.2552408277988434,
+    "nulo_p95": 0.9375237673521042
+   },
+   "S2_sin_ACMF": {
+    "cuadros": 40,
+    "dias_positivos": [
+     "08-11",
+     "10-11",
+     "14-11"
+    ],
+    "cobertura": 0.1,
+    "cubiertos": 4,
+    "placebos_validos_mediana": 7.0,
+    "falsa_alarma": 0.044,
+    "poder": {
+     "0.05": 0.13,
+     "0.1": 0.298,
+     "0.15": 0.45,
+     "0.3": 0.806
+    },
+    "nulo_mediana": -0.029998525977134705,
+    "nulo_p05": -0.23846572637557983,
+    "nulo_p95": 0.322154969815164
+   },
+   "medicion_principal": "S2_sin_ACMF",
+   "valida": true
+  },
+  "H13": {
+   "principal": {
+    "cuadros": 66,
+    "dias_positivos": [
+     "08-11",
+     "10-11",
+     "14-11",
+     "22-10",
+     "24-10",
+     "25-10",
+     "28-10",
+     "29-10"
+    ],
+    "cobertura": 0.06060606060606061,
+    "cubiertos": 4,
+    "placebos_validos_mediana": 2.0,
+    "falsa_alarma": 0.034,
+    "poder": {
+     "0.05": 0.372,
+     "0.1": 0.902,
+     "0.15": 0.966,
+     "0.3": 0.994
+    },
+    "nulo_mediana": -0.010908685624599457,
+    "nulo_p05": -0.19155870862305163,
+    "nulo_p95": 0.1341540515422821
+   },
+   "S2_sin_ACMF": {
+    "cuadros": 66,
+    "dias_positivos": [
+     "08-11",
+     "10-11",
+     "14-11",
+     "22-10",
+     "24-10",
+     "25-10",
+     "28-10",
+     "29-10"
+    ],
+    "cobertura": 0.2727272727272727,
+    "cubiertos": 18,
+    "placebos_validos_mediana": 7.0,
+    "falsa_alarma": 0.042,
+    "poder": {
+     "0.05": 0.084,
+     "0.1": 0.226,
+     "0.15": 0.508,
+     "0.3": 0.78
+    },
+    "nulo_mediana": -0.01327424868941307,
+    "nulo_p05": -0.2604850307106972,
+    "nulo_p95": 0.26883519105613224
+   },
+   "medicion_principal": "S2_sin_ACMF",
+   "valida": true
+  },
+  "H11_H12": {
+   "principal": {
+    "cuadros": 60,
+    "dias_positivos": [
+     "07-11",
+     "08-11",
+     "10-11",
+     "14-11",
+     "22-10",
+     "24-10",
+     "25-10",
+     "28-10",
+     "29-10"
+    ],
+    "cobertura": 0.06666666666666667,
+    "cubiertos": 4,
+    "placebos_validos_mediana": 2.0,
+    "falsa_alarma": 0.054,
+    "poder": {
+     "0.05": 0.172,
+     "0.1": 0.678,
+     "0.15": 0.874,
+     "0.3": 0.986
+    },
+    "nulo_mediana": 0.01526574045419693,
+    "nulo_p05": -0.21298401057720184,
+    "nulo_p95": 0.304812490940094
+   },
+   "S2_sin_ACMF": {
+    "cuadros": 60,
+    "dias_positivos": [
+     "07-11",
+     "08-11",
+     "10-11",
+     "14-11",
+     "22-10",
+     "24-10",
+     "25-10",
+     "28-10",
+     "29-10"
+    ],
+    "cobertura": 0.18333333333333332,
+    "cubiertos": 11,
+    "placebos_validos_mediana": 7.0,
+    "falsa_alarma": 0.058,
+    "poder": {
+     "0.05": 0.126,
+     "0.1": 0.402,
+     "0.15": 0.538,
+     "0.3": 0.882
+    },
+    "nulo_mediana": -0.014057109598070383,
+    "nulo_p05": -0.20672936886548995,
+    "nulo_p95": 0.25562794506549835
+   },
+   "medicion_principal": "S2_sin_ACMF",
+   "valida": true
+  }
+ }
+}

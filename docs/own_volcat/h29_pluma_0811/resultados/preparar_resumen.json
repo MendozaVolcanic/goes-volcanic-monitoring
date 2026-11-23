@@ -1,0 +1,164 @@
+{
+ "cuadros": 64,
+ "barra_ok": 64,
+ "pixeles_cuadro_mas30km": 17,
+ "pixeles_cuadro_15_30km": 102,
+ "cuadros_con_lejanos": [
+  "20:10",
+  "20:20",
+  "20:30",
+  "20:40",
+  "20:50",
+  "21:00",
+  "21:10",
+  "21:30",
+  "21:40",
+  "22:00"
+ ],
+ "png_px_fuera_ventana_200km": 0,
+ "dias_nulos_candidatos": [
+  "2026-10-18",
+  "2026-10-19",
+  "2026-10-20",
+  "2026-10-21",
+  "2026-10-23",
+  "2026-10-26",
+  "2026-10-31",
+  "2026-11-01",
+  "2026-11-02",
+  "2026-11-03",
+  "2026-11-04",
+  "2026-11-05",
+  "2026-11-09",
+  "2026-11-15",
+  "2026-11-17",
+  "2026-11-19",
+  "2026-11-20",
+  "2026-11-21"
+ ],
+ "georef": {
+  "grilla_filas": [
+   {
+    "lat": -34,
+    "calc": 144.75,
+    "centro_linea": 146.33,
+    "borde_sup": 144
+   },
+   {
+    "lat": -36,
+    "calc": 243.65,
+    "centro_linea": 245.22,
+    "borde_sup": 243
+   },
+   {
+    "lat": -38,
+    "calc": 342.56,
+    "centro_linea": 344.1,
+    "borde_sup": 342
+   },
+   {
+    "lat": -40,
+    "calc": 441.46,
+    "centro_linea": 442.98,
+    "borde_sup": 441
+   },
+   {
+    "lat": -42,
+    "calc": 540.36,
+    "centro_linea": 542.0,
+    "borde_sup": 540
+   }
+  ],
+  "grilla_cols": [
+   {
+    "lon": -75,
+    "calc": 300.61,
+    "centro_linea": 301.97,
+    "borde_izq": 301
+   },
+   {
+    "lon": -70,
+    "calc": 547.86,
+    "centro_linea": 549.56,
+    "borde_izq": 548
+   }
+  ],
+  "volcanes": [
+   {
+    "volcan": "chillan",
+    "calc_rc": [
+     286.2,
+     479.6
+    ],
+    "glifo_esquina_rc": [
+     285,
+     479
+    ],
+    "glifo_alto_ancho": [
+     7,
+     6
+    ]
+   },
+   {
+    "volcan": "antuco",
+    "calc_rc": [
+     313.4,
+     481.1
+    ],
+    "glifo_esquina_rc": [
+     312,
+     481
+    ],
+    "glifo_alto_ancho": [
+     7,
+     6
+    ]
+   },
+   {
+    "volcan": "callaqui",
+    "calc_rc": [
+     338.6,
+     476.2
+    ],
+    "glifo_esquina_rc": [
+     337,
+     476
+    ],
+    "glifo_alto_ancho": [
+     7,
+     6
+    ]
+   },
+   {
+    "volcan": "copahue",
+    "calc_rc": [
+     335.1,
+     490.0
+    ],
+    "glifo_esquina_rc": [
+     334,
+     489
+    ],
+    "glifo_alto_ancho": [
+     7,
+     6
+    ]
+   },
+   {
+    "volcan": "longavi",
+    "calc_rc": [
+     253.0,
+     490.5
+    ],
+    "glifo_esquina_rc": [
+     252,
+     490
+    ],
+    "glifo_alto_ancho": [
+     6,
+     6
+    ]
+   }
+  ]
+ }
+}

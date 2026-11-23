@@ -1,0 +1,32 @@
+{
+ "capa_uniforme_eps_0.02": {
+  "dM1_mediana_K": -0.049,
+  "dM2_mediana_K": -0.119,
+  "n": 50
+ },
+ "capa_uniforme_eps_0.05": {
+  "dM1_mediana_K": -0.132,
+  "dM2_mediana_K": -0.299,
+  "n": 50
+ },
+ "capa_uniforme_eps_0.1": {
+  "dM1_mediana_K": -0.273,
+  "dM2_mediana_K": -0.598,
+  "n": 50
+ },
+ "capa_uniforme_eps_0.2": {
+  "dM1_mediana_K": -0.498,
+  "dM2_mediana_K": -1.2,
+  "n": 50
+ },
+ "capa_uniforme_eps_0.3": {
+  "dM1_mediana_K": -0.738,
+  "dM2_mediana_K": -1.805,
+  "n": 49
+ },
+ "capa_uniforme_eps_0.5": {
+  "dM1_mediana_K": -1.08,
+  "dM2_mediana_K": -3.027,
+  "n": 48
+ }
+}

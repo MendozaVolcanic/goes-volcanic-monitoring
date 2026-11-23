@@ -1,0 +1,6 @@
+pruebas OK (5 de 5); pixeles-cuadro lejanos: 17
+principal {'E_M1': -0.3720132112503052, 'E_M2': -1.400299072265625, 'z_M1': np.float64(-1.8846305015928906), 'z_M2': np.float64(-0.3423089310009223), 'p_M1': 0.005099439061703213, 'p_M2': 0.11462047885888946, 'pot_ref_M1': 0.294, 'pot_ref_M2': 0.056, 'clase_M1': 'SEÑAL', 'clase_M2': 'NO CONCLUYENTE'}
+nom {'E_M1': -0.6493606418371201, 'E_M2': -1.03082275390625, 'z_M1': np.float64(-6.961173749116286), 'z_M2': np.float64(-0.2956900353903916), 'p_M1': 0.0, 'p_M2': 0.11815252416756176, 'clase_M1': 'SEÑAL', 'clase_M2': 'NO CONCLUYENTE'}
+dil {'E_M1': -0.37247133255004883, 'E_M2': -1.351593017578125, 'z_M1': np.float64(-3.256297029900672), 'z_M2': np.float64(-0.26579449710552705), 'p_M1': 0.000576036866359447, 'p_M2': 0.10368663594470046, 'clase_M1': 'SEÑAL', 'clase_M2': 'NO CONCLUYENTE'}
+15-30 {'E_M1': -0.7651909589767456, 'E_M2': -1.8009490966796875, 'z_M1': np.float64(-5.393892729479454), 'z_M2': np.float64(-2.774728721239223), 'p_M1': 0.0, 'p_M2': 0.049637479085331844, 'clase_M1': 'SEÑAL', 'clase_M2': 'SOSPECHA'}
+(línea final con la tabla por píxel-cuadro omitida: queda en D:\goes_notas\s19\h29\descriptivo_lejanos.csv)

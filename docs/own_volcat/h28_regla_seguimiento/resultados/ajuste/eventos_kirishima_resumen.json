@@ -1,0 +1,66 @@
+{
+ "cuadros": 7,
+ "nacimientos": 2,
+ "continuaciones": 5,
+ "cadenas": 2,
+ "C0": {
+  "edad_ok": true,
+  "json_ok": true,
+  "huella_ok": true,
+  "area_por_pix_mediana": 5.511474022498498,
+  "cumple": true
+ },
+ "tipos": {
+  "ASHPLUMEPUFF": 7
+ },
+ "n_eventos_por_archivo": {
+  "1": 7
+ },
+ "C1": {
+  "continuaciones": 5,
+  "con_cuadro_anterior": 5,
+  "sin_cuadro_anterior": []
+ },
+ "C2": {
+  "evaluadas": 5,
+  "dentro": 5,
+  "dist_max_km": 0.0,
+  "cumple": true
+ },
+ "C3": {
+  "evaluadas": 5,
+  "con_pixel_compartido": 5
+ },
+ "C4": {
+  "nacimientos": 2,
+  "dmin_km": [
+   1.25,
+   0.92
+  ],
+  "horas": [
+   "02-07 20:17",
+   "02-07 20:47"
+  ],
+  "dentro_4km": 2,
+  "cumple": true
+ },
+ "C5": {
+  "pix_subida_total": 9,
+  "en_nacimientos": 0,
+  "en_continuaciones": 9,
+  "cuadros_con_subida": 5,
+  "nacimientos_de_dia": 1,
+  "nacimientos_cenit": [
+   90.2,
+   84.4
+  ],
+  "continuaciones_de_dia": 5,
+  "continuaciones_de_dia_con_subida": 5,
+  "cumple": true
+ },
+ "explicadas_por_B": {
+  "continuaciones": 5,
+  "explicadas": 5,
+  "fraccion": 1.0
+ }
+}

@@ -1,0 +1,5 @@
+caso,hora,n,tipo,veredicto,fase,indice,grouping_opt,mode4_only,msgs,group_idx_linea,veredicto_txt,Time Trend Count,Robust Time Trend Count,Robust Time Trend Frac,New Emission Count,New Emission Count2,Minor Emission Count,Minor Emission Frac,Bad Emission Count,BTD Bullseye Count,Dynamic Corr Count,Spatial/Spectral Corr Count,Robust Spatial/Spectral Corr Count,BTD Stripe Count 1,BTD Stripe Frac 1,Bad 10/11/12 Count
+mauna_loa,094600,1,spectral,KEEPING,ASH,1,3,YES,,1 316.2333 51.13334 0 1,KEEPING spectral object with robust space and/or time pattern,30,23,.767,3,0,4,.13,18,19,0,0,0,0,.00,2
+mauna_loa,095100,1,spectral,KEEPING,ASH,1,3,YES,,1 318.2381 50.15873 1 1,KEEPING spectral object with robust space and/or time pattern,63,40,.635,1,0,2,.03,41,39,0,0,0,0,.00,3
+mauna_loa,095600,1,spectral,KEEPING,ASH,1,3,YES,,1 320.2043 49.03226 1 1,KEEPING spectral object with robust space and/or time pattern,93,34,.366,2,0,3,.03,57,32,0,0,0,0,.00,4
+mauna_loa,100130,1,spectral,KEEPING,ASH,1,3,YES,,1 322.1526 47.93221 1 2,KEEPING spectral object with robust space and/or time pattern,118,64,.542,1,0,6,.05,70,60,0,0,0,37,.31,0

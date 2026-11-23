@@ -1,0 +1,415 @@
+{
+ "caso": "fuego_prueba",
+ "cuadros": 20,
+ "integridad": {
+  "texto": {
+   "met": 383,
+   "g2o": 2685,
+   "keep": 26,
+   "elim": 0,
+   "clasif": 42
+  },
+  "tabla": {
+   "met": 383,
+   "g2o": 2685,
+   "keep": 26,
+   "elim": 0,
+   "clasif": 42
+  },
+  "igual": true
+ },
+ "filas_historia_sin_linea_hist": 0,
+ "T1": {
+  "filas": 2685,
+  "frac_ok_umbral": 1.0,
+  "max_dif_km": 0.05000000000000426,
+  "filas_refinado": 2123,
+  "frac_ok_refinado": 0.9835138954309939,
+  "max_dif_ref_km": 0.07000000000000028,
+  "time_diff_valores": {
+   "900": 1895,
+   "930": 776,
+   "920": 10,
+   "910": 4
+  },
+  "umbral_valores": {
+   "45.0": 1670,
+   "46.5": 649,
+   "44.9": 222,
+   "46.4": 122,
+   "46.3": 5,
+   "45.9": 3,
+   "46.2": 3,
+   "45.8": 2
+  },
+  "cumple": false
+ },
+ "T2": {
+  "filas": 2540,
+  "frac_ok": 0.9933070866141732,
+  "rama3": 1997,
+  "rama1": 543,
+  "otras_ramas": {
+   "3,3": 109,
+   "1,1": 19,
+   "3,1": 10,
+   "1,3": 7
+  },
+  "rama3_con_criterio": 0,
+  "cumple": true
+ },
+ "T3": {
+  "filas": 379,
+  "cumplen": 362,
+  "no_cumplen": 17,
+  "fase_ASH": {
+   "filas": 330,
+   "cumplen": 323,
+   "aciertos": 229,
+   "exactitud_balanceada": 0.7737726669615215
+  },
+  "fase_ICE": {
+   "filas": 49,
+   "cumplen": 39,
+   "aciertos": 48,
+   "exactitud_balanceada": 0.9871794871794872
+  },
+  "exactitud_balanceada": 0.8310854728631785,
+  "confusion": {
+   "cumple_pred1": 261,
+   "cumple_pred0": 101,
+   "nocumple_pred1": 1,
+   "nocumple_pred0": 16
+  },
+  "con_poder": true,
+  "placebo_mediana": 0.6155346116347091,
+  "placebo_p95": 0.707913552161196,
+  "cumple": false
+ },
+ "T6": {
+  "filas": 2685,
+  "frac_ok": 1.0,
+  "min": 896.0,
+  "max": 931.0,
+  "cumple": true
+ },
+ "T4": {
+  "plumas": 1,
+  "keeping": 1,
+  "eliminating": 0,
+  "sin_veredicto": 0,
+  "keeping_con_contraste_ok": 1,
+  "eliminating_con_contraste_ok": 0,
+  "T4a_cumple": true,
+  "T4b_aciertos": 1,
+  "T4b_exactitud_balanceada": null,
+  "detalle": [
+   {
+    "hora": 233100,
+    "veredicto": "KEEPING",
+    "vol_idx": 1214.0,
+    "bulk": "FAILED",
+    "contraste_sin_dist": "PASSED",
+    "contraste_con_dist": "PASSED",
+    "ruido_nube": "PASSED",
+    "obj_pix_total": 13.0,
+    "Time Trend Count": 13,
+    "Robust Time Trend Count": 13,
+    "New Emission Count": 3,
+    "BTD Bullseye Count": 13,
+    "Dynamic Corr Count": 0,
+    "Spatial/Spectral Corr Count": 0,
+    "Min Plume Distance": 8.1,
+    "msgs": null
+   }
+  ]
+ },
+ "clasificados_por_tipo": {
+  "ash": 26,
+  "ice": 16
+ },
+ "T5": {
+  "grupos": 26,
+  "old": 26,
+  "new": 0,
+  "con_kd": 25,
+  "new_con_kd": 0,
+  "contradicen": 0,
+  "posthoc_new_sii_sin_historia": 26,
+  "detalle": [
+   {
+    "hora": 190100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 5,
+    "Time Diff(s)": 900,
+    "pix": 1064,
+    "en_rasgo_previo_n": 1019,
+    "cl Time Trend Count": 1064,
+    "cl K-d Overlap Count": 1019
+   },
+   {
+    "hora": 191600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 6,
+    "Time Diff(s)": 900,
+    "pix": 1067,
+    "en_rasgo_previo_n": 1004,
+    "cl Time Trend Count": 1067,
+    "cl K-d Overlap Count": 1004
+   },
+   {
+    "hora": 193100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 7,
+    "Time Diff(s)": 900,
+    "pix": 1218,
+    "en_rasgo_previo_n": 1162,
+    "cl Time Trend Count": 1218,
+    "cl K-d Overlap Count": 1162
+   },
+   {
+    "hora": 194600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 8,
+    "Time Diff(s)": 900,
+    "pix": 1269,
+    "en_rasgo_previo_n": 1222,
+    "cl Time Trend Count": 1269,
+    "cl K-d Overlap Count": 1222
+   },
+   {
+    "hora": 200100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 9,
+    "Time Diff(s)": 900,
+    "pix": 1408,
+    "en_rasgo_previo_n": 1375,
+    "cl Time Trend Count": 1408,
+    "cl K-d Overlap Count": 1375
+   },
+   {
+    "hora": 201600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 10,
+    "Time Diff(s)": 900,
+    "pix": 1580,
+    "en_rasgo_previo_n": 1496,
+    "cl Time Trend Count": 1580,
+    "cl K-d Overlap Count": 1496
+   },
+   {
+    "hora": 203100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 11,
+    "Time Diff(s)": 900,
+    "pix": 1660,
+    "en_rasgo_previo_n": 1558,
+    "cl Time Trend Count": 1660,
+    "cl K-d Overlap Count": 1558
+   },
+   {
+    "hora": 204600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 12,
+    "Time Diff(s)": 900,
+    "pix": 1586,
+    "en_rasgo_previo_n": 1503,
+    "cl Time Trend Count": 1586,
+    "cl K-d Overlap Count": 1503
+   },
+   {
+    "hora": 210100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 13,
+    "Time Diff(s)": 900,
+    "pix": 1609,
+    "en_rasgo_previo_n": 1557,
+    "cl Time Trend Count": 1609,
+    "cl K-d Overlap Count": 1557
+   },
+   {
+    "hora": 211600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 14,
+    "Time Diff(s)": 900,
+    "pix": 1660,
+    "en_rasgo_previo_n": 1616,
+    "cl Time Trend Count": 1660,
+    "cl K-d Overlap Count": 1616
+   },
+   {
+    "hora": 213100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 15,
+    "Time Diff(s)": 900,
+    "pix": 1828,
+    "en_rasgo_previo_n": 1791,
+    "cl Time Trend Count": 1828,
+    "cl K-d Overlap Count": 1791
+   },
+   {
+    "hora": 214600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 16,
+    "Time Diff(s)": 900,
+    "pix": 1928,
+    "en_rasgo_previo_n": 1888,
+    "cl Time Trend Count": 1928,
+    "cl K-d Overlap Count": 1888
+   },
+   {
+    "hora": 214600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 16,
+    "Time Diff(s)": 900,
+    "pix": 28,
+    "en_rasgo_previo_n": 28,
+    "cl Time Trend Count": 28,
+    "cl K-d Overlap Count": 28
+   },
+   {
+    "hora": 220100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 17,
+    "Time Diff(s)": 900,
+    "pix": 2133,
+    "en_rasgo_previo_n": 2115,
+    "cl Time Trend Count": 2133,
+    "cl K-d Overlap Count": 2115
+   },
+   {
+    "hora": 220100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 18,
+    "Time Diff(s)": 900,
+    "pix": 162,
+    "en_rasgo_previo_n": 162,
+    "cl Time Trend Count": 162,
+    "cl K-d Overlap Count": 162
+   },
+   {
+    "hora": 221600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 19,
+    "Time Diff(s)": 900,
+    "pix": 3,
+    "en_rasgo_previo_n": 3,
+    "cl Time Trend Count": 3,
+    "cl K-d Overlap Count": 3
+   },
+   {
+    "hora": 221600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 19,
+    "Time Diff(s)": 900,
+    "pix": 2220,
+    "en_rasgo_previo_n": 2220,
+    "cl Time Trend Count": 2220,
+    "cl K-d Overlap Count": 2220
+   },
+   {
+    "hora": 221600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 20,
+    "Time Diff(s)": 900,
+    "pix": 32,
+    "en_rasgo_previo_n": 32,
+    "cl Time Trend Count": 32,
+    "cl K-d Overlap Count": 32
+   },
+   {
+    "hora": 223100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 22,
+    "Time Diff(s)": 900,
+    "pix": 1436,
+    "en_rasgo_previo_n": 1436,
+    "cl Time Trend Count": 1436,
+    "cl K-d Overlap Count": 1436
+   },
+   {
+    "hora": 223100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 23,
+    "Time Diff(s)": 900,
+    "pix": 8,
+    "en_rasgo_previo_n": 8,
+    "cl Time Trend Count": 8,
+    "cl K-d Overlap Count": 8
+   },
+   {
+    "hora": 224600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 24,
+    "Time Diff(s)": 900,
+    "pix": 559,
+    "en_rasgo_previo_n": 548,
+    "cl Time Trend Count": 559,
+    "cl K-d Overlap Count": 548
+   },
+   {
+    "hora": 224600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 25,
+    "Time Diff(s)": 900,
+    "pix": 2,
+    "en_rasgo_previo_n": 2,
+    "cl Time Trend Count": 2,
+    "cl K-d Overlap Count": 2
+   },
+   {
+    "hora": 230100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 26,
+    "Time Diff(s)": 900,
+    "pix": 113,
+    "en_rasgo_previo_n": 99,
+    "cl Time Trend Count": 113,
+    "cl K-d Overlap Count": 99
+   },
+   {
+    "hora": 231600,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 28,
+    "Time Diff(s)": 900,
+    "pix": 12,
+    "en_rasgo_previo_n": 5,
+    "cl Time Trend Count": 12,
+    "cl K-d Overlap Count": 5
+   },
+   {
+    "hora": 233100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 15,
+    "Time Diff(s)": 8100,
+    "pix": 13,
+    "en_rasgo_previo_n": 0,
+    "cl Time Trend Count": 13,
+    "cl K-d Overlap Count": 0
+   },
+   {
+    "hora": 233100,
+    "clasificacion": "Old Volcanic Feature",
+    "History Index": 29,
+    "Time Diff(s)": 900,
+    "pix": 5,
+    "en_rasgo_previo_n": 4,
+    "cl Time Trend Count": 5,
+    "cl K-d Overlap Count": 4
+   }
+  ],
+  "otras_clases": {},
+  "cumple": true
+ },
+ "T7": {
+  "filas": 5,
+  "match": 0,
+  "aciertos": 4,
+  "exactitud_balanceada": null
+ },
+ "plumas_fuertes": {
+  "match": 1,
+  "no_match": 2,
+  "eliminadas_por_falta_de_actividad": 0
+ }
+}

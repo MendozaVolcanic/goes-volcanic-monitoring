@@ -1,0 +1,11 @@
+caso,dia,hora,sufijo,inicio_imagen,archivo,crea_historia,n_l1_temporales,alertas_ceniza,alertas_cb,grupos_ceniza_sin_alerta,grupos_cb_sin_alerta,match_plumas,n_plumas,n_hist_obj,n_grupos,alert_status,metodo,area_alerta_km2
+mauna_loa,2022332,091600,AN_IN_HN_SN,2022-11-28 09:16:14,geocatASHOBJ.GOES-17.CONUS.2022332.091600.AN_IN_HN_SN.log,1,1,0,0,0,0,,0,0,0,,,
+mauna_loa,2022332,092100,AN_IN_HN_SN,2022-11-28 09:21:14,geocatASHOBJ.GOES-17.CONUS.2022332.092100.AN_IN_HN_SN.log,,1,0,0,0,0,,0,0,0,,,
+mauna_loa,2022332,092600,AN_IN_HN_SN,2022-11-28 09:26:14,geocatASHOBJ.GOES-17.CONUS.2022332.092600.AN_IN_HN_SN.log,,1,0,0,0,0,,0,0,0,,,
+mauna_loa,2022332,093100,AN_IN_HY_SN,2022-11-28 09:31:14,geocatASHOBJ.GOES-17.CONUS.2022332.093100.AN_IN_HY_SN.log,,1,0,0,0,0,,0,0,0,New Volcanic Feature,Enhanced Contextual (Cloud),
+mauna_loa,2022332,093600,AN_IN_HN_SN,2022-11-28 09:36:14,geocatASHOBJ.GOES-17.CONUS.2022332.093600.AN_IN_HN_SN.log,,1,0,0,0,0,,0,0,0,Old Volcanic Feature,Enhanced Contextual (Cloud),
+mauna_loa,2022332,094100,AN_IY_HN_SN,2022-11-28 09:41:14,geocatASHOBJ.GOES-17.CONUS.2022332.094100.AN_IY_HN_SN.log,,1,0,1,0,0,,0,0,1,New Volcanic Feature | Old Volcanic Feature,Cloud Growth Anomaly (CGA) | Enhanced Contextual (Cloud),179.5
+mauna_loa,2022332,094600,AN_IN_HN_SN,2022-11-28 09:46:14,geocatASHOBJ.GOES-17.CONUS.2022332.094600.AN_IN_HN_SN.log,,1,0,0,0,1,,1,61,2,Old Volcanic Feature,Enhanced Contextual (Bias),
+mauna_loa,2022332,095100,AN_IN_HY_SN,2022-11-28 09:51:14,geocatASHOBJ.GOES-17.CONUS.2022332.095100.AN_IN_HY_SN.log,,1,0,0,0,1,,1,79,2,New Volcanic Feature,Enhanced Contextual (Bias),
+mauna_loa,2022332,095600,AN_IN_HY_SN,2022-11-28 09:56:14,geocatASHOBJ.GOES-17.CONUS.2022332.095600.AN_IN_HY_SN.log,,1,0,0,0,1,,1,80,2,New Volcanic Feature,Enhanced Contextual (Bias),
+mauna_loa,2022332,100130,AN_IN_HY_SN,2022-11-28 10:01:18,geocatASHOBJ.GOES-17.CONUS.2022332.100130.AN_IN_HY_SN.log,,1,0,0,0,1,,1,85,2,New Volcanic Feature,Enhanced Contextual (Bias),

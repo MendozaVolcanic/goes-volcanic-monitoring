@@ -1,0 +1,24 @@
+Pregunta 2 del instrumento (BT11 mediana del terreno bajo, escena despejada menos no despejada, por hora UTC)
+cuadros 1916, sin BT11 en el terreno bajo 1
+  00 UTC: despejada 280.6 K (n 22), no despejada 268.2 K (n 84), dif +12.40 K
+  01 UTC: despejada 282.0 K (n 37), no despejada 268.1 K (n 54), dif +13.96 K
+  09 UTC: despejada 285.5 K (n 5), no despejada 269.6 K (n 37), dif +15.87 K
+  10 UTC: despejada 283.9 K (n 6), no despejada 271.0 K (n 36), dif +12.88 K
+  11 UTC: despejada 286.9 K (n 18), no despejada 276.2 K (n 45), dif +10.75 K
+  12 UTC: despejada 289.7 K (n 13), no despejada 277.9 K (n 35), dif +11.78 K
+  13 UTC: despejada 293.0 K (n 15), no despejada 276.2 K (n 34), dif +16.80 K
+  14 UTC: despejada 292.9 K (n 34), no despejada 276.0 K (n 91), dif +16.92 K
+  15 UTC: despejada 293.7 K (n 15), no despejada 278.2 K (n 44), dif +15.52 K
+  16 UTC: despejada 296.5 K (n 47), no despejada 268.0 K (n 104), dif +28.45 K
+  17 UTC: despejada 297.5 K (n 53), no despejada 267.3 K (n 100), dif +30.17 K
+  18 UTC: despejada 296.2 K (n 53), no despejada 267.9 K (n 116), dif +28.27 K
+  19 UTC: despejada 295.0 K (n 50), no despejada 266.3 K (n 118), dif +28.72 K
+  20 UTC: despejada 293.1 K (n 48), no despejada 265.3 K (n 118), dif +27.73 K
+  21 UTC: despejada 291.7 K (n 44), no despejada 268.7 K (n 118), dif +23.02 K
+  22 UTC: despejada 289.2 K (n 41), no despejada 269.8 K (n 126), dif +19.41 K
+  23 UTC: despejada 285.7 K (n 30), no despejada 268.4 K (n 93), dif +17.25 K
+mediana por hora = +16.92 K en 17 horas (pide >= +3 K) -> PASA
+
+Lectura post hoc (NO decide): variante decide, cuadros t en escena despejada
+  orig  POD 0.034 (n 87)  FAR 0.014 (n 289)  POD-FAR IC95 [-0.024; 0.084]
+  desp  POD 0.060 (n 83)  FAR 0.020 (n 253)  POD-FAR IC95 [-0.029; 0.157]

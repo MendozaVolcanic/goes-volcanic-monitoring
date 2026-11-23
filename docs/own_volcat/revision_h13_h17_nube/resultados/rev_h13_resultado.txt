@@ -1,0 +1,95 @@
+Revision H13 (S19e), pares contra la mascara de nubes de NOAA. Generado 2026-11-23 08:28
+pares 72 | cuadros sin ACMF 0 de 576
+escena despejada en t: positivos 0.806, controles 0.556 | fraccion de terreno bajo despejado en t (mediana): positivos 0.993, controles 0.851
+F13 (pares con positivo y control en cielos distintos en algun tiempo): 0.514 (37 de 72)
+pares 'despejado' (8 cuadros despejados): 30 | 'mismo cielo': 35
+=== Todos los pares (linea base roja: tiene que dar el maximo 0,582 de H13): pares 72 | jornadas 9 | dia 54 noche 18
+  d1_bt11   AUC=0.544 IC95dia=[0.510,0.567] anillo=0.519 dias>0,5=5/9 SEPARA=False
+  d3_bt11   AUC=0.582 IC95dia=[0.523,0.631] anillo=0.547 dias>0,5=6/9 SEPARA=False
+  p_bt11    AUC=0.490 IC95dia=[0.413,0.566] anillo=0.549 dias>0,5=5/9 SEPARA=False
+  d1_btd    AUC=0.462 IC95dia=[0.444,0.489] anillo=0.494 dias>0,5=2/9 SEPARA=False
+  d3_btd    AUC=0.445 IC95dia=[0.428,0.464] anillo=0.488 dias>0,5=2/9 SEPARA=False
+  p_btd     AUC=0.480 IC95dia=[0.464,0.490] anillo=0.500 dias>0,5=3/9 SEPARA=False
+  d1_e11    AUC=0.550 IC95dia=[0.527,0.566] anillo=0.515 dias>0,5=6/9 SEPARA=False
+  d3_e11    AUC=0.582 IC95dia=[0.541,0.650] anillo=0.543 dias>0,5=6/9 SEPARA=False
+  p_e11     AUC=0.514 IC95dia=[0.454,0.622] anillo=0.538 dias>0,5=6/9 SEPARA=False
+  d1_bt12   AUC=0.457 IC95dia=[0.439,0.480] anillo=0.497 dias>0,5=2/9 SEPARA=False
+  d3_bt12   AUC=0.444 IC95dia=[0.409,0.467] anillo=0.485 dias>0,5=2/9 SEPARA=False
+  p_bt12    AUC=0.476 IC95dia=[0.446,0.485] anillo=0.501 dias>0,5=1/9 SEPARA=False
+  d1_bt85   AUC=0.494 IC95dia=[0.465,0.537] anillo=0.492 dias>0,5=5/9 SEPARA=False
+  d3_bt85   AUC=0.512 IC95dia=[0.486,0.563] anillo=0.493 dias>0,5=5/9 SEPARA=False
+  p_bt85    AUC=0.466 IC95dia=[0.443,0.502] anillo=0.475 dias>0,5=3/9 SEPARA=False
+  d1_bt73   AUC=0.539 IC95dia=[0.496,0.602] anillo=0.478 dias>0,5=6/9 SEPARA=False
+  d3_bt73   AUC=0.562 IC95dia=[0.499,0.651] anillo=0.508 dias>0,5=5/9 SEPARA=False
+  p_bt73    AUC=0.514 IC95dia=[0.461,0.569] anillo=0.482 dias>0,5=5/9 SEPARA=False
+  veredicto con la regla de H13: H13 SE FALSA (AUC maximo de las 18 variables temporales = 0.582 < 0,60)
+=== Pares 'despejado' (decide): pares 30 | jornadas 6 | dia 26 noche 4
+  d1_bt11   AUC=0.530 IC95dia=[0.436,0.553] anillo=0.534 dias>0,5=2/6 SEPARA=False
+  d3_bt11   AUC=0.531 IC95dia=[0.388,0.572] anillo=0.549 dias>0,5=2/6 SEPARA=False
+  p_bt11    AUC=0.459 IC95dia=[0.355,0.480] anillo=0.537 dias>0,5=1/6 SEPARA=False
+  d1_btd    AUC=0.462 IC95dia=[0.422,0.492] anillo=0.493 dias>0,5=1/6 SEPARA=False
+  d3_btd    AUC=0.468 IC95dia=[0.447,0.534] anillo=0.484 dias>0,5=2/6 SEPARA=False
+  p_btd     AUC=0.495 IC95dia=[0.487,0.556] anillo=0.486 dias>0,5=3/6 SEPARA=False
+  d1_e11    AUC=0.529 IC95dia=[0.473,0.549] anillo=0.540 dias>0,5=4/6 SEPARA=False
+  d3_e11    AUC=0.504 IC95dia=[0.429,0.533] anillo=0.552 dias>0,5=3/6 SEPARA=False
+  p_e11     AUC=0.476 IC95dia=[0.445,0.535] anillo=0.553 dias>0,5=2/6 SEPARA=False
+  d1_bt12   AUC=0.470 IC95dia=[0.426,0.494] anillo=0.505 dias>0,5=1/6 SEPARA=False
+  d3_bt12   AUC=0.492 IC95dia=[0.408,0.528] anillo=0.507 dias>0,5=2/6 SEPARA=False
+  p_bt12    AUC=0.506 IC95dia=[0.486,0.552] anillo=0.511 dias>0,5=2/6 SEPARA=False
+  d1_bt85   AUC=0.499 IC95dia=[0.484,0.630] anillo=0.497 dias>0,5=3/6 SEPARA=False
+  d3_bt85   AUC=0.513 IC95dia=[0.481,0.653] anillo=0.503 dias>0,5=4/6 SEPARA=False
+  p_bt85    AUC=0.489 IC95dia=[0.434,0.563] anillo=0.503 dias>0,5=3/6 SEPARA=False
+  d1_bt73   AUC=0.604 IC95dia=[0.482,0.668] anillo=0.396 dias>0,5=4/6 SEPARA=False
+  d3_bt73   AUC=0.568 IC95dia=[0.333,0.732] anillo=0.364 dias>0,5=2/6 SEPARA=False
+  p_bt73    AUC=0.441 IC95dia=[0.267,0.640] anillo=0.380 dias>0,5=2/6 SEPARA=False
+  veredicto con la regla de H13: NO CONCLUYENTE (AUC maximo 0.604 >= 0,60 pero ninguna variable separa)
+  nulo: maximo de las 18 en 2000 subconjuntos al azar de 30 pares: mediana 0.605, p95 0.679; maximo observado 0.604 -> dentro de el p95
+=== Pares 'mismo cielo' (lectura): pares 35 | jornadas 9 | dia 29 noche 6
+  d1_bt11   AUC=0.543 IC95dia=[0.491,0.588] anillo=0.530 dias>0,5=5/9 SEPARA=False
+  d3_bt11   AUC=0.550 IC95dia=[0.475,0.593] anillo=0.560 dias>0,5=6/9 SEPARA=False
+  p_bt11    AUC=0.471 IC95dia=[0.420,0.551] anillo=0.541 dias>0,5=4/9 SEPARA=False
+  d1_btd    AUC=0.474 IC95dia=[0.448,0.540] anillo=0.491 dias>0,5=3/9 SEPARA=False
+  d3_btd    AUC=0.471 IC95dia=[0.439,0.557] anillo=0.480 dias>0,5=4/9 SEPARA=False
+  p_btd     AUC=0.488 IC95dia=[0.459,0.535] anillo=0.487 dias>0,5=5/9 SEPARA=False
+  d1_e11    AUC=0.541 IC95dia=[0.504,0.607] anillo=0.534 dias>0,5=7/9 SEPARA=False
+  d3_e11    AUC=0.529 IC95dia=[0.503,0.626] anillo=0.561 dias>0,5=6/9 SEPARA=False
+  p_e11     AUC=0.490 IC95dia=[0.475,0.610] anillo=0.557 dias>0,5=5/9 SEPARA=False
+  d1_bt12   AUC=0.477 IC95dia=[0.447,0.530] anillo=0.500 dias>0,5=3/9 SEPARA=False
+  d3_bt12   AUC=0.489 IC95dia=[0.435,0.530] anillo=0.489 dias>0,5=4/9 SEPARA=False
+  p_bt12    AUC=0.500 IC95dia=[0.478,0.552] anillo=0.507 dias>0,5=4/9 SEPARA=False
+  d1_bt85   AUC=0.487 IC95dia=[0.408,0.528] anillo=0.480 dias>0,5=4/9 SEPARA=False
+  d3_bt85   AUC=0.502 IC95dia=[0.409,0.537] anillo=0.474 dias>0,5=4/9 SEPARA=False
+  p_bt85    AUC=0.473 IC95dia=[0.385,0.503] anillo=0.475 dias>0,5=3/9 SEPARA=False
+  d1_bt73   AUC=0.565 IC95dia=[0.420,0.684] anillo=0.450 dias>0,5=6/9 SEPARA=False
+  d3_bt73   AUC=0.565 IC95dia=[0.435,0.721] anillo=0.497 dias>0,5=5/9 SEPARA=False
+  p_bt73    AUC=0.438 IC95dia=[0.321,0.611] anillo=0.446 dias>0,5=3/9 SEPARA=False
+  veredicto con la regla de H13: H13 SE FALSA (AUC maximo de las 18 variables temporales = 0.565 < 0,60)
+  nulo: maximo de las 18 en 2000 subconjuntos al azar de 35 pares: mediana 0.600, p95 0.662; maximo observado 0.565 -> dentro de el p95
+
+== Informativo: 26 cuadros sin control ==
+  20261025_1440: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.27 de escenas despejadas (n 15)
+  20261025_1700: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.27 de escenas despejadas (n 15)
+  20261028_1830: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.28 de escenas despejadas (n 18)
+  20261028_1930: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.33 de escenas despejadas (n 18)
+  20261107_1950: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.35 de escenas despejadas (n 20)
+  20261108_2010: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.25 de escenas despejadas (n 20)
+  20261108_2030: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.25 de escenas despejadas (n 20)
+  20261108_2040: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.20 de escenas despejadas (n 20)
+  20261108_2100: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.25 de escenas despejadas (n 20)
+  20261108_2120: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.20 de escenas despejadas (n 20)
+  20261110_2140: escena del positivo despejada (terreno bajo 0.86); mismo minuto en +-10 dias: 0.26 de escenas despejadas (n 19)
+  20261110_2250: escena del positivo despejada (terreno bajo 0.92); mismo minuto en +-10 dias: 0.26 de escenas despejadas (n 19)
+  20261114_1910: escena del positivo no despejada (terreno bajo 0.50); mismo minuto en +-10 dias: 0.33 de escenas despejadas (n 15)
+  20261114_2010: escena del positivo despejada (terreno bajo 0.97); mismo minuto en +-10 dias: 0.27 de escenas despejadas (n 15)
+  20261114_2030: escena del positivo despejada (terreno bajo 1.00); mismo minuto en +-10 dias: 0.27 de escenas despejadas (n 15)
+  20261114_2040: escena del positivo no despejada (terreno bajo 0.57); mismo minuto en +-10 dias: 0.27 de escenas despejadas (n 15)
+  20261114_2050: escena del positivo despejada (terreno bajo 0.80); mismo minuto en +-10 dias: 0.33 de escenas despejadas (n 15)
+  20261114_2100: escena del positivo no despejada (terreno bajo 0.72); mismo minuto en +-10 dias: 0.33 de escenas despejadas (n 15)
+  20261114_2110: escena del positivo no despejada (terreno bajo 0.64); mismo minuto en +-10 dias: 0.40 de escenas despejadas (n 15)
+  20261114_2120: escena del positivo no despejada (terreno bajo 0.63); mismo minuto en +-10 dias: 0.33 de escenas despejadas (n 15)
+  20261114_2140: escena del positivo no despejada (terreno bajo 0.66); mismo minuto en +-10 dias: 0.40 de escenas despejadas (n 15)
+  20261114_2150: escena del positivo no despejada (terreno bajo 0.55); mismo minuto en +-10 dias: 0.40 de escenas despejadas (n 15)
+  20261114_2200: escena del positivo no despejada (terreno bajo 0.51); mismo minuto en +-10 dias: 0.33 de escenas despejadas (n 15)
+  20261114_2210: escena del positivo no despejada (terreno bajo 0.75); mismo minuto en +-10 dias: 0.27 de escenas despejadas (n 15)
+  20261114_2220: escena del positivo no despejada (terreno bajo 0.43); mismo minuto en +-10 dias: 0.33 de escenas despejadas (n 15)
+  20261114_2230: escena del positivo no despejada (terreno bajo 0.29); mismo minuto en +-10 dias: 0.33 de escenas despejadas (n 15)

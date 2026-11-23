@@ -1,0 +1,63 @@
+pruebas OK (8 de 8); paralaje hacia 173.6 grados; W, Wc, R de E6-like: 53 54 109
+pruebas H27 OK
+E1 SIN PODER z -0.6001943811450244 cuadros 4 nulo 38 capa015 1.0 franja030 0.5526315789473685 grande 1.0 FA 3 / 38 T1 0.20237622002116948 1.4900894980649282 T2 1 / 10
+E6 SIN PODER z -0.7036173223347715 cuadros 6 nulo 46 capa015 1.0 franja030 0.45652173913043476 grande 1.0 FA 4 / 46 T1 0.4682515173225515 0.8125432395486074 T2 0 / 13
+E7 SIN PODER z -0.1263532383832892 cuadros 4 nulo 36 capa015 0.9722222222222222 franja030 0.7222222222222222 grande 1.0 FA 3 / 36 T1 0.017201623017149472 1.543857971213563 T2 1 / 11
+E9 SIN PODER z -1.5811341168783624 cuadros 7 nulo 27 capa015 1.0 franja030 0.5185185185185185 grande 1.0 FA 2 / 27 T1 1.2981391175016954 1.0685088231307127 T2 0 / 5
+E10 SIN PODER z -1.8606777981195057 cuadros 7 nulo 16 capa015 1.0 franja030 0.625 grande 1.0 FA 0 / 16 T1 0.2449220788122747 0.3190058535323662 T2 0 / 3
+E11 SIN SEÑAL z -1.3016371150583494 cuadros 7 nulo 22 capa015 1.0 franja030 0.8636363636363636 grande 1.0 FA 0 / 22 T1 0.7434715018098865 0.9911976575993263 T2 0 / 2
+E12 SIN PODER z -2.437283757765468 cuadros 7 nulo 22 capa015 1.0 franja030 0.7727272727272727 grande 1.0 FA 1 / 22 T1 0.8599249379930924 1.988613962562196 T2 1 / 3
+E13 SIN SEÑAL z -1.0599031988363734 cuadros 7 nulo 25 capa015 1.0 franja030 0.92 grande 1.0 FA 1 / 25 T1 1.0320937138974942 1.129739843558031 T2 1 / 4
+E14 SIN DATO (cielo) z nan cuadros 0 nulo 21 capa015 1.0 franja030 0.7142857142857143 grande 1.0 FA 0 / 21 T1 nan nan T2 0 / 0
+{
+ "criterio_commit": "a82c540",
+ "veredicto": "INVÁLIDO",
+ "falsas_alarmas": {
+  "n": 133,
+  "detecta": 4,
+  "tasa": 0.03007518796992481
+ },
+ "T1": {
+  "calculable": true,
+  "pasa": false,
+  "por_episodio": {
+   "E1": {
+    "dmed_en_mad": 0.20237622002116948,
+    "razon_mad": 1.4900894980649282,
+    "n_propio": 10
+   },
+   "E6": {
+    "dmed_en_mad": 0.4682515173225515,
+    "razon_mad": 0.8125432395486074,
+    "n_propio": 13
+   },
+   "E7": {
+    "dmed_en_mad": 0.017201623017149472,
+    "razon_mad": 1.543857971213563,
+    "n_propio": 11
+   }
+  }
+ },
+ "T2": {
+  "n": 17,
+  "detecta": 2,
+  "sin_dato": false,
+  "falla": false
+ },
+ "control_grande_ok": true,
+ "deciden": {
+  "senal": 0,
+  "decidibles": 2
+ },
+ "clases": {
+  "E1": "SIN PODER",
+  "E6": "SIN PODER",
+  "E7": "SIN PODER",
+  "E9": "SIN PODER",
+  "E10": "SIN PODER",
+  "E11": "SIN SEÑAL",
+  "E12": "SIN PODER",
+  "E13": "SIN SEÑAL",
+  "E14": "SIN DATO (cielo)"
+ }
+}

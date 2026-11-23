@@ -1,0 +1,129 @@
+{
+ "caso": "fuego_ajuste",
+ "cuadros": 20,
+ "integridad": {
+  "texto": {
+   "met": 11,
+   "g2o": 651,
+   "keep": 5,
+   "elim": 1,
+   "clasif": 12
+  },
+  "tabla": {
+   "met": 11,
+   "g2o": 651,
+   "keep": 5,
+   "elim": 1,
+   "clasif": 12
+  },
+  "igual": true
+ },
+ "filas_historia_sin_linea_hist": 0,
+ "T1": {
+  "filas": 651,
+  "frac_ok_umbral": 1.0,
+  "max_dif_km": 0.05000000000000426,
+  "filas_refinado": 589,
+  "frac_ok_refinado": 1.0,
+  "max_dif_ref_km": 0.0033333333333338544,
+  "time_diff_valores": {
+   "900": 488,
+   "930": 158,
+   "920": 4,
+   "910": 1
+  },
+  "umbral_valores": {
+   "45.0": 488,
+   "46.5": 157,
+   "46.0": 2,
+   "45.7": 1,
+   "46.4": 1,
+   "46.2": 1,
+   "45.8": 1
+  },
+  "cumple": true
+ },
+ "T2": {
+  "filas": 651,
+  "frac_ok": 1.0,
+  "rama3": 589,
+  "rama1": 62,
+  "otras_ramas": {},
+  "rama3_con_criterio": 0,
+  "cumple": true
+ },
+ "T3": {
+  "filas": 45,
+  "cumplen": 11,
+  "no_cumplen": 34,
+  "fase_ASH": {
+   "filas": 1,
+   "cumplen": 1,
+   "aciertos": 1,
+   "exactitud_balanceada": null
+  },
+  "fase_ICE": {
+   "filas": 44,
+   "cumplen": 10,
+   "aciertos": 44,
+   "exactitud_balanceada": 1.0
+  },
+  "exactitud_balanceada": 1.0,
+  "confusion": {
+   "cumple_pred1": 11,
+   "cumple_pred0": 0,
+   "nocumple_pred1": 0,
+   "nocumple_pred0": 34
+  },
+  "con_poder": true,
+  "placebo_mediana": 0.5788770053475936,
+  "placebo_p95": 0.6991978609625669,
+  "cumple": true
+ },
+ "T6": {
+  "filas": 651,
+  "frac_ok": 1.0,
+  "min": 899.0,
+  "max": 931.0,
+  "cumple": true
+ },
+ "T4": {
+  "plumas": 1,
+  "keeping": 0,
+  "eliminating": 1,
+  "sin_veredicto": 0,
+  "keeping_con_contraste_ok": 0,
+  "eliminating_con_contraste_ok": 0,
+  "T4a_cumple": "sin dato",
+  "T4b_aciertos": 1,
+  "T4b_exactitud_balanceada": null,
+  "detalle_en": "D:/goes_notas/s19/h28/resultados/ (no esta en el repo: transcribe lineas de log de SSEC)"
+ },
+ "clasificados_por_tipo": {
+  "ice": 7,
+  "ash": 5
+ },
+ "T5": {
+  "grupos": 5,
+  "old": 4,
+  "new": 1,
+  "con_kd": 5,
+  "new_con_kd": 1,
+  "contradicen": 1,
+  "posthoc_new_sii_sin_historia": 5,
+  "otras_clases": {},
+  "cumple": false,
+  "detalle_en": "D:/goes_notas/s19/h28/resultados/ (no esta en el repo: transcribe lineas de log de SSEC)"
+ },
+ "T7": {
+  "filas": 27,
+  "match": 1,
+  "aciertos": 26,
+  "exactitud_balanceada": 0.5
+ },
+ "plumas_fuertes": {
+  "match": 4,
+  "no_match": 1,
+  "eliminadas_por_falta_de_actividad": 4
+ }
+}

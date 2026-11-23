@@ -1,0 +1,136 @@
+{
+ "pares": {
+  "kirishima": {
+   "pares": 31,
+   "lineas_hist_idx_por_texto": 31,
+   "T1_umbral_ok": 31,
+   "T1_refinado_n": 26,
+   "T1_refinado_ok": 26,
+   "dt_min_s": 143.0,
+   "dt_max_s": 156.0,
+   "umbral_min_km": 7.2,
+   "umbral_max_km": 7.8,
+   "pares_con_rama": 31,
+   "pares_sin_rama": 0,
+   "T2_ok": 31,
+   "rama3_que_cumple": 0,
+   "rama1_lejos_sin_enlace": 0
+  },
+  "fuego_ajuste": {
+   "pares": 651,
+   "lineas_hist_idx_por_texto": 651,
+   "T1_umbral_ok": 651,
+   "T1_refinado_n": 589,
+   "T1_refinado_ok": 589,
+   "dt_min_s": 899.0,
+   "dt_max_s": 931.0,
+   "umbral_min_km": 45.0,
+   "umbral_max_km": 46.5,
+   "pares_con_rama": 651,
+   "pares_sin_rama": 0,
+   "T2_ok": 651,
+   "rama3_que_cumple": 0,
+   "rama1_lejos_sin_enlace": 0
+  },
+  "fuego_prueba": {
+   "pares": 2982,
+   "lineas_hist_idx_por_texto": 2982,
+   "T1_umbral_ok": 2982,
+   "T1_refinado_n": 2232,
+   "T1_refinado_ok": 2232,
+   "dt_min_s": 896.0,
+   "dt_max_s": 931.0,
+   "umbral_min_km": 44.8,
+   "umbral_max_km": 46.5,
+   "pares_con_rama": 2830,
+   "pares_sin_rama": 152,
+   "T2_ok": 2790,
+   "rama3_que_cumple": 1,
+   "rama1_lejos_sin_enlace": 39
+  },
+  "mauna_loa": {
+   "pares": 305,
+   "lineas_hist_idx_por_texto": 305,
+   "T1_umbral_ok": 305,
+   "T1_refinado_n": 296,
+   "T1_refinado_ok": 296,
+   "dt_min_s": 282.0,
+   "dt_max_s": 328.0,
+   "umbral_min_km": 14.1,
+   "umbral_max_km": 16.4,
+   "pares_con_rama": 305,
+   "pares_sin_rama": 0,
+   "T2_ok": 305,
+   "rama3_que_cumple": 0,
+   "rama1_lejos_sin_enlace": 0
+  }
+ },
+ "ceniza_en_alcance": {
+  "kirishima_ASH": {
+   "objetos_en_rama_1": 5,
+   "cumplen": 5,
+   "cumplen_sin_solape_ni_emisividad": 0,
+   "no_cumplen_con_solape_o_emisividad": 0
+  },
+  "fuego_ajuste_ASH": {
+   "objetos_en_rama_1": 1,
+   "cumplen": 1,
+   "cumplen_sin_solape_ni_emisividad": 0,
+   "no_cumplen_con_solape_o_emisividad": 0
+  },
+  "fuego_ajuste_ICE": {
+   "objetos_en_rama_1": 44,
+   "cumplen": 10,
+   "cumplen_sin_solape_ni_emisividad": 0,
+   "no_cumplen_con_solape_o_emisividad": 0
+  },
+  "fuego_prueba_ASH": {
+   "objetos_en_rama_1": 351,
+   "cumplen": 341,
+   "cumplen_sin_solape_ni_emisividad": 103,
+   "no_cumplen_con_solape_o_emisividad": 1
+  },
+  "fuego_prueba_ICE": {
+   "objetos_en_rama_1": 63,
+   "cumplen": 42,
+   "cumplen_sin_solape_ni_emisividad": 1,
+   "no_cumplen_con_solape_o_emisividad": 0
+  },
+  "mauna_loa_ASH": {
+   "objetos_en_rama_1": 1,
+   "cumplen": 0,
+   "cumplen_sin_solape_ni_emisividad": 0,
+   "no_cumplen_con_solape_o_emisividad": 0
+  },
+  "mauna_loa_ICE": {
+   "objetos_en_rama_1": 4,
+   "cumplen": 4,
+   "cumplen_sin_solape_ni_emisividad": 0,
+   "no_cumplen_con_solape_o_emisividad": 0
+  }
+ },
+ "subcriterios": {
+  "ash (1) sin solape": 46,
+  "ash (1) con solape": 158,
+  "ash (2) sin solape": 141,
+  "ash (2) con solape": 2,
+  "ice (1) sin solape": 15,
+  "ice (1) con solape": 36,
+  "ice (2) sin solape": 2,
+  "ice (2) con solape": 3
+ },
+ "chillan_atraso": {
+  "cuadros_seguidos_de_hueco": 5,
+  "atraso_de_esos_min": [
+   30.0,
+   30.0,
+   31.0,
+   30.0,
+   31.0
+  ],
+  "atraso_max_del_resto_min": 28.0,
+  "atraso_mediana_del_resto_min": 23.0,
+  "resto_con_atraso_ge_30": 0,
+  "resto_n": 55
+ }
+}

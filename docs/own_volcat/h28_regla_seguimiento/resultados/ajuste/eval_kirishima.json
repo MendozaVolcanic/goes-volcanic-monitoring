@@ -1,0 +1,119 @@
+{
+ "caso": "kirishima",
+ "cuadros": 25,
+ "integridad": {
+  "texto": {
+   "met": 5,
+   "g2o": 31,
+   "keep": 7,
+   "elim": 11,
+   "clasif": 7
+  },
+  "tabla": {
+   "met": 5,
+   "g2o": 31,
+   "keep": 7,
+   "elim": 11,
+   "clasif": 7
+  },
+  "igual": true
+ },
+ "filas_historia_sin_linea_hist": 0,
+ "T1": {
+  "filas": 31,
+  "frac_ok_umbral": 1.0,
+  "max_dif_km": 0.04999999999999982,
+  "filas_refinado": 26,
+  "frac_ok_refinado": 1.0,
+  "max_dif_ref_km": 0.0033333333333334103,
+  "time_diff_valores": {
+   "150": 19,
+   "140": 7,
+   "160": 5
+  },
+  "umbral_valores": {
+   "7.7": 8,
+   "7.2": 7,
+   "7.6": 7,
+   "7.8": 5,
+   "7.4": 4
+  },
+  "cumple": true
+ },
+ "T2": {
+  "filas": 31,
+  "frac_ok": 1.0,
+  "rama3": 26,
+  "rama1": 5,
+  "otras_ramas": {},
+  "rama3_con_criterio": 0,
+  "cumple": true
+ },
+ "T3": {
+  "filas": 5,
+  "cumplen": 5,
+  "no_cumplen": 0,
+  "fase_ASH": {
+   "filas": 5,
+   "cumplen": 5,
+   "aciertos": 5,
+   "exactitud_balanceada": null
+  },
+  "exactitud_balanceada": null,
+  "confusion": {
+   "cumple_pred1": 5,
+   "cumple_pred0": 0,
+   "nocumple_pred1": 0,
+   "nocumple_pred0": 0
+  },
+  "con_poder": false,
+  "placebo_mediana": null,
+  "placebo_p95": null,
+  "cumple": "sin poder"
+ },
+ "T6": {
+  "filas": 31,
+  "frac_ok": 1.0,
+  "min": 143.0,
+  "max": 156.0,
+  "cumple": true
+ },
+ "T4": {
+  "plumas": 13,
+  "keeping": 2,
+  "eliminating": 11,
+  "sin_veredicto": 0,
+  "keeping_con_contraste_ok": 2,
+  "eliminating_con_contraste_ok": 1,
+  "T4a_cumple": true,
+  "T4b_aciertos": 13,
+  "T4b_exactitud_balanceada": 1.0,
+  "detalle_en": "D:/goes_notas/s19/h28/resultados/ (no esta en el repo: transcribe lineas de log de SSEC)"
+ },
+ "clasificados_por_tipo": {
+  "ash": 7
+ },
+ "T5": {
+  "grupos": 7,
+  "old": 6,
+  "new": 1,
+  "con_kd": 5,
+  "new_con_kd": 0,
+  "contradicen": 0,
+  "posthoc_new_sii_sin_historia": 7,
+  "otras_clases": {},
+  "cumple": true,
+  "detalle_en": "D:/goes_notas/s19/h28/resultados/ (no esta en el repo: transcribe lineas de log de SSEC)"
+ },
+ "T7": {
+  "filas": 49,
+  "match": 9,
+  "aciertos": 49,
+  "exactitud_balanceada": 1.0
+ },
+ "plumas_fuertes": {
+  "match": 4,
+  "no_match": 0,
+  "eliminadas_por_falta_de_actividad": 0
+ }
+}

@@ -110,3 +110,19 @@ terreno y no por una cota circular.
    resto de octubre; si no se ven, cerrar la línea "reproducir VOLCAT" y dejar a VOLCAT como capa externa
    (como está hoy en el dashboard, ficha SDA §A.7).
 3. En los dos casos, el correo a Pavolonis se vuelve más corto y más preciso, pero eso sigue siendo decisión tuya.
+
+## Resultado de H24 (agregado el 23-11-2026, después de medir)
+
+Informe completo: `h24_pulsos_reav/INFORME.md`. **Veredicto con la regla escrita antes: NO CONCLUYENTE.**
+
+- La explosión de columna gris oscura de 2.000 m del 27-10 al amanecer (E6) **no deja firma** en 11 y 12 µm, con
+  una prueba que habría visto una capa de ε 0,05 sobre el sector o una pluma angosta de ε 0,15. VOLCAT tampoco la
+  marcó. Lo mismo E1 y E7 (pulsos de 960 y 1.320 m de la mañana).
+- El único SEÑAL (E8, 27-10 a media mañana) no sobrevive: una cumbre sin actividad (Antuco) da lo mismo a esas
+  horas.
+- **Los pulsos que VOLCAT sí marcó (tardes del 28-10 y del 10-11) no se pudieron medir**: el episodio estaba
+  despejado, pero entre septiembre y noviembre casi no hubo tardes despejadas sin actividad para armar el fondo.
+
+Con eso, mi estimación para el camino (a) baja: donde se puede medir, ni los pulsos documentados por el OVDAS se
+ven. Queda una sola puerta abierta y es de calendario: repetir la misma prueba en verano, con más tardes
+despejadas, sobre los pulsos de tarde que VOLCAT marque.

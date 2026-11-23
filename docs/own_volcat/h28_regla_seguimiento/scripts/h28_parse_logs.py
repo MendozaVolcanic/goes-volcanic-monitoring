@@ -69,6 +69,7 @@ def parse_log(path):
     cur_plume = None    # bloque de pluma / objeto espectral abierto
     cur_hist = None     # objeto de historia abierto
     last_group = None
+    pendientes, indexables, clase = [], [], ""
     i = 0
     n = len(lines)
     while i < n:
@@ -217,10 +218,19 @@ def parse_log(path):
                         if k in d:
                             h["filtro " + k] = d[k]
         # ---------------- grupos y clasificacion
+        elif "IDENTIFY_ALERT_OBJECTS" in l and "Classifying" in l:
+            # los bloques ORGANIZE_GROUP_OUTPUT que vienen ANTES de esta linea son de este tipo
+            # (ash, ice, ...). Sin esto, el grupo de hielo 1 pisaba al grupo de ceniza 1.
+            clase = l.rsplit("Classifying", 1)[1].split()[0]
+            for g_ in pendientes:
+                g_["tipo"] = clase
+            indexables = pendientes
+            pendientes = []
         elif "ORGANIZE_GROUP_OUTPUT" in l and "coherent BTD tendency" in l:
             v = re.findall(NUM, l.split(" : ", 1)[1])
-            last_group = {"btd_tend_n": v[0], "pix": v[1]}
+            last_group = {"tipo": "", "btd_tend_n": v[0], "pix": v[1]}
             grupos.append(last_group)
+            pendientes.append(last_group)
         elif "ORGANIZE_GROUP_OUTPUT" in l and "within previously detected feature" in l and last_group is not None:
             v = re.findall(NUM, l.split(" : ", 1)[1])
             last_group["en_rasgo_previo_n"] = v[0]
@@ -230,8 +240,10 @@ def parse_log(path):
         elif s.startswith("Group Index:"):
             d = kv_pairs(s)
             gi = int(d.get("Group Index", "0"))
-            g = grupos[gi - 1] if 0 < gi <= len(grupos) else {}
-            if not g:
+            if 0 < gi <= len(indexables):
+                g = indexables[gi - 1]
+            else:
+                g = {"tipo": clase}
                 grupos.append(g)
             g["Group Index"] = d.get("Group Index")
             g["History Index"] = d.get("History Index")

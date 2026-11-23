@@ -74,6 +74,7 @@ git add \
     src/ \
     tests/ \
     data/frp_timeline.json \
+    data/calor_nocturno.json \
     scripts/build_hires_cache.py \
     scripts/build_animation_cache.py \
     scripts/build_backfill.py \

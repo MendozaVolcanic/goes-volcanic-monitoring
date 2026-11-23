@@ -1,0 +1,230 @@
+{
+ "candidatas": [],
+ "por_episodio": {
+  "E9": {
+   "ancho0": {
+    "chillan_libres": 7,
+    "antuco": 13,
+    "longavi": 15,
+    "algun_control_dia_sitio": 28
+   },
+   "ancho6": {
+    "chillan_libres": 9,
+    "antuco": 17,
+    "longavi": 18,
+    "algun_control_dia_sitio": 35
+   },
+   "ancho12": {
+    "chillan_libres": 12,
+    "antuco": 21,
+    "longavi": 22,
+    "algun_control_dia_sitio": 43
+   },
+   "episodio_despejado": {
+    "chillan": 7,
+    "antuco": 7,
+    "longavi": 7
+   }
+  },
+  "E10": {
+   "ancho0": {
+    "chillan_libres": 3,
+    "antuco": 11,
+    "longavi": 10,
+    "algun_control_dia_sitio": 21
+   },
+   "ancho6": {
+    "chillan_libres": 4,
+    "antuco": 15,
+    "longavi": 14,
+    "algun_control_dia_sitio": 29
+   },
+   "ancho12": {
+    "chillan_libres": 7,
+    "antuco": 15,
+    "longavi": 18,
+    "algun_control_dia_sitio": 33
+   },
+   "episodio_despejado": {
+    "chillan": 7,
+    "antuco": 7,
+    "longavi": 7
+   }
+  },
+  "E11": {
+   "ancho0": {
+    "chillan_libres": 3,
+    "antuco": 11,
+    "longavi": 11,
+    "algun_control_dia_sitio": 22
+   },
+   "ancho6": {
+    "chillan_libres": 4,
+    "antuco": 12,
+    "longavi": 14,
+    "algun_control_dia_sitio": 26
+   },
+   "ancho12": {
+    "chillan_libres": 5,
+    "antuco": 14,
+    "longavi": 17,
+    "algun_control_dia_sitio": 31
+   },
+   "episodio_despejado": {
+    "chillan": 7,
+    "antuco": 7,
+    "longavi": 7
+   }
+  },
+  "E12": {
+   "ancho0": {
+    "chillan_libres": 4,
+    "antuco": 12,
+    "longavi": 14,
+    "algun_control_dia_sitio": 26
+   },
+   "ancho6": {
+    "chillan_libres": 5,
+    "antuco": 13,
+    "longavi": 17,
+    "algun_control_dia_sitio": 30
+   },
+   "ancho12": {
+    "chillan_libres": 7,
+    "antuco": 13,
+    "longavi": 17,
+    "algun_control_dia_sitio": 30
+   },
+   "episodio_despejado": {
+    "chillan": 7,
+    "antuco": 7,
+    "longavi": 7
+   }
+  },
+  "E13": {
+   "ancho0": {
+    "chillan_libres": 5,
+    "antuco": 13,
+    "longavi": 15,
+    "algun_control_dia_sitio": 28
+   },
+   "ancho6": {
+    "chillan_libres": 7,
+    "antuco": 13,
+    "longavi": 17,
+    "algun_control_dia_sitio": 30
+   },
+   "ancho12": {
+    "chillan_libres": 7,
+    "antuco": 13,
+    "longavi": 17,
+    "algun_control_dia_sitio": 30
+   },
+   "episodio_despejado": {
+    "chillan": 7,
+    "antuco": 4,
+    "longavi": 11
+   }
+  },
+  "E14": {
+   "ancho0": {
+    "chillan_libres": 3,
+    "antuco": 10,
+    "longavi": 11,
+    "algun_control_dia_sitio": 21
+   },
+   "ancho6": {
+    "chillan_libres": 3,
+    "antuco": 13,
+    "longavi": 13,
+    "algun_control_dia_sitio": 26
+   },
+   "ancho12": {
+    "chillan_libres": 5,
+    "antuco": 15,
+    "longavi": 16,
+    "algun_control_dia_sitio": 31
+   },
+   "episodio_despejado": {
+    "chillan": 0,
+    "antuco": 2,
+    "longavi": 2
+   }
+  },
+  "E1": {
+   "ancho0": {
+    "chillan_libres": 10,
+    "antuco": 20,
+    "longavi": 21,
+    "algun_control_dia_sitio": 41
+   },
+   "ancho6": {
+    "chillan_libres": 13,
+    "antuco": 29,
+    "longavi": 28,
+    "algun_control_dia_sitio": 57
+   },
+   "ancho12": {
+    "chillan_libres": 16,
+    "antuco": 29,
+    "longavi": 30,
+    "algun_control_dia_sitio": 59
+   },
+   "episodio_despejado": {
+    "chillan": 4,
+    "antuco": 4,
+    "longavi": 1
+   }
+  },
+  "E6": {
+   "ancho0": {
+    "chillan_libres": 14,
+    "antuco": 27,
+    "longavi": 24,
+    "algun_control_dia_sitio": 51
+   },
+   "ancho6": {
+    "chillan_libres": 14,
+    "antuco": 30,
+    "longavi": 28,
+    "algun_control_dia_sitio": 58
+   },
+   "ancho12": {
+    "chillan_libres": 15,
+    "antuco": 32,
+    "longavi": 29,
+    "algun_control_dia_sitio": 61
+   },
+   "episodio_despejado": {
+    "chillan": 6,
+    "antuco": 0,
+    "longavi": 6
+   }
+  },
+  "E7": {
+   "ancho0": {
+    "chillan_libres": 11,
+    "antuco": 22,
+    "longavi": 21,
+    "algun_control_dia_sitio": 43
+   },
+   "ancho6": {
+    "chillan_libres": 14,
+    "antuco": 29,
+    "longavi": 28,
+    "algun_control_dia_sitio": 57
+   },
+   "ancho12": {
+    "chillan_libres": 16,
+    "antuco": 31,
+    "longavi": 29,
+    "algun_control_dia_sitio": 60
+   },
+   "episodio_despejado": {
+    "chillan": 4,
+    "antuco": 0,
+    "longavi": 4
+   }
+  }
+ }
+}

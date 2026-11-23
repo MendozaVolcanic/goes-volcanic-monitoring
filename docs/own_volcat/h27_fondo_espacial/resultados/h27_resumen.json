@@ -1,0 +1,52 @@
+{
+ "criterio_commit": "a82c540",
+ "veredicto": "INVÁLIDO",
+ "falsas_alarmas": {
+  "n": 133,
+  "detecta": 4,
+  "tasa": 0.03007518796992481
+ },
+ "T1": {
+  "calculable": true,
+  "pasa": false,
+  "por_episodio": {
+   "E1": {
+    "dmed_en_mad": 0.20237622002116948,
+    "razon_mad": 1.4900894980649282,
+    "n_propio": 10
+   },
+   "E6": {
+    "dmed_en_mad": 0.4682515173225515,
+    "razon_mad": 0.8125432395486074,
+    "n_propio": 13
+   },
+   "E7": {
+    "dmed_en_mad": 0.017201623017149472,
+    "razon_mad": 1.543857971213563,
+    "n_propio": 11
+   }
+  }
+ },
+ "T2": {
+  "n": 17,
+  "detecta": 2,
+  "sin_dato": false,
+  "falla": false
+ },
+ "control_grande_ok": true,
+ "deciden": {
+  "senal": 0,
+  "decidibles": 2
+ },
+ "clases": {
+  "E1": "SIN PODER",
+  "E6": "SIN PODER",
+  "E7": "SIN PODER",
+  "E9": "SIN PODER",
+  "E10": "SIN PODER",
+  "E11": "SIN SEÑAL",
+  "E12": "SIN PODER",
+  "E13": "SIN SEÑAL",
+  "E14": "SIN DATO (cielo)"
+ }
+}

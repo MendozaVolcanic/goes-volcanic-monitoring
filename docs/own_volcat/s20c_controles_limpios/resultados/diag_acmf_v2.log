@@ -1,0 +1,11 @@
+paso2    n 38 | dias base med 2 (>=3: 0.03) | placebo cuadros med 7, dias med 1 (ref ok: 0.03) | pos claro 0.68
+H3       n 34 | dias base med 2 (>=3: 0.26) | placebo cuadros med 7, dias med 1 (ref ok: 0.09) | pos claro 0.62
+beta73   n 43 | dias base med 2 (>=3: 0.28) | placebo cuadros med 7, dias med 1 (ref ok: 0.05) | pos claro 0.67
+VAAC     n 40 | dias base med 2 (>=3: 0.23) | placebo cuadros med 7, dias med 1 (ref ok: 0.03) | pos claro 0.57
+H13      n 66 | dias base med 2 (>=3: 0.32) | placebo cuadros med 7, dias med 1 (ref ok: 0.11) | pos claro 0.80
+H11_H12  n 60 | dias base med 2 (>=3: 0.30) | placebo cuadros med 7, dias med 1 (ref ok: 0.08) | pos claro 0.65
+limpio 00:0.12 01:0.20 02:0.20 03:0.18 04:0.18 05:0.22 06:0.19 07:0.23 08:0.23 09:0.23 10:0.22 11:0.19 12:0.18 13:0.18 14:0.12 15:0.11 16:0.05 17:0.04 18:0.05 19:0.05 20:0.06 21:0.06 22:0.08 23:0.08
+placebo 00:0.17 01:0.30 02:0.21 03:0.21 04:0.19 05:0.14 06:0.20 07:0.30 08:0.29 09:0.29 10:0.30 11:0.17 12:0.10 13:0.08 14:0.11 15:0.10 16:0.07 17:0.07 18:0.07 19:0.07 20:0.07 21:0.06 22:0.04 23:0.01
+positivos 00:0.44 01:0.65 02:0.67 03:0.67 04:0.67 05:0.67 06:0.67 07:0.67 08:0.63 09:0.61 10:0.57 11:0.56 12:0.52 13:0.56 14:0.56 15:0.56 16:0.65 17:0.67 18:0.63 19:0.57 20:0.65 21:0.57 22:0.43 23:0.44
+limpio fraccion despejada media 15-21 UTC: 0.14 | pixeles terreno bajo: 138
+placebo fraccion despejada media 15-21 UTC: 0.15 | pixeles terreno bajo: 138

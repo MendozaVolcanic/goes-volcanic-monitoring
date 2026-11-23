@@ -1,0 +1,168 @@
+{
+ "criterio": "criterio_2026-11-23.md (b06c711) + enmiendas 1 y 2 antes de medir",
+ "placebo": [
+  "23-10",
+  "26-10",
+  "31-10",
+  "01-11",
+  "02-11",
+  "03-11",
+  "04-11",
+  "05-11",
+  "09-11",
+  "15-11",
+  "17-11",
+  "19-11",
+  "20-11",
+  "21-11"
+ ],
+ "limpio": "21-09 a 21-10",
+ "descartados_huella<3px": {
+  "paso2": 8,
+  "H3": 3,
+  "beta73": 6,
+  "VAAC": 5,
+  "H13": 6,
+  "H11_H12": 0
+ },
+ "pruebas": {
+  "paso2": {
+   "cuadros": 38,
+   "positivo_despejado": 31,
+   "unidades_validas": 11,
+   "dias_validos": 3,
+   "cobertura": 0.2894736842105263,
+   "placebo_cuadros_mediana": 14.0,
+   "placebo_dias_mediana": 2.0,
+   "falsa_alarma": 0.0,
+   "poder": {
+    "0.05": 1.0,
+    "0.1": 1.0,
+    "0.15": 1.0,
+    "0.3": 1.0
+   },
+   "nulo_validas": 283,
+   "nulo_p05": 0.21449816226959229,
+   "nulo_p95": 0.23967957496643066,
+   "nulo_distintos": 2,
+   "sin_cobertura": false,
+   "nulo_degenerado": true,
+   "valida": false
+  },
+  "H3": {
+   "cuadros": 34,
+   "positivo_despejado": 26,
+   "unidades_validas": 12,
+   "dias_validos": 3,
+   "cobertura": 0.35294117647058826,
+   "placebo_cuadros_mediana": 14.0,
+   "placebo_dias_mediana": 3.0,
+   "falsa_alarma": 0.03768115942028986,
+   "poder": {
+    "0.05": 0.09659090909090909,
+    "0.1": 0.06162464985994398,
+    "0.15": 0.13559322033898305,
+    "0.3": 0.9505494505494505
+   },
+   "nulo_validas": 1411,
+   "nulo_p05": -0.47821542620658875,
+   "nulo_p95": 0.262829914689064,
+   "nulo_distintos": 72,
+   "sin_cobertura": false,
+   "nulo_degenerado": false,
+   "valida": true
+  },
+  "beta73": {
+   "cuadros": 43,
+   "positivo_despejado": 33,
+   "unidades_validas": 13,
+   "dias_validos": 3,
+   "cobertura": 0.3023255813953488,
+   "placebo_cuadros_mediana": 14.0,
+   "placebo_dias_mediana": 3.0,
+   "falsa_alarma": 0.0,
+   "poder": {
+    "0.05": 0.17551020408163265,
+    "0.1": 0.430327868852459,
+    "0.15": 0.9166666666666666,
+    "0.3": 1.0
+   },
+   "nulo_validas": 967,
+   "nulo_p05": -0.2915904074907303,
+   "nulo_p95": 0.305907741189003,
+   "nulo_distintos": 13,
+   "sin_cobertura": false,
+   "nulo_degenerado": true,
+   "valida": false
+  },
+  "VAAC": {
+   "cuadros": 40,
+   "positivo_despejado": 30,
+   "unidades_validas": 11,
+   "dias_validos": 3,
+   "cobertura": 0.275,
+   "placebo_cuadros_mediana": 14.0,
+   "placebo_dias_mediana": 3.0,
+   "falsa_alarma": 0.0,
+   "poder": {
+    "0.05": 0.17551020408163265,
+    "0.1": 0.5737704918032787,
+    "0.15": 0.9166666666666666,
+    "0.3": 1.0
+   },
+   "nulo_validas": 967,
+   "nulo_p05": -0.2678440883755684,
+   "nulo_p95": 0.3224981725215912,
+   "nulo_distintos": 13,
+   "sin_cobertura": false,
+   "nulo_degenerado": true,
+   "valida": false
+  },
+  "H13": {
+   "cuadros": 66,
+   "positivo_despejado": 58,
+   "unidades_validas": 30,
+   "dias_validos": 5,
+   "cobertura": 0.45454545454545453,
+   "placebo_cuadros_mediana": 14.0,
+   "placebo_dias_mediana": 3.0,
+   "falsa_alarma": 0.0,
+   "poder": {
+    "0.05": 0.057692307692307696,
+    "0.1": 0.06906077348066299,
+    "0.15": 0.1794871794871795,
+    "0.3": 1.0
+   },
+   "nulo_validas": 1431,
+   "nulo_p05": -0.49015092849731445,
+   "nulo_p95": 0.23748990893363953,
+   "nulo_distintos": 88,
+   "sin_cobertura": false,
+   "nulo_degenerado": false,
+   "valida": true
+  },
+  "H11_H12": {
+   "cuadros": 60,
+   "positivo_despejado": 46,
+   "unidades_validas": 24,
+   "dias_validos": 5,
+   "cobertura": 0.4,
+   "placebo_cuadros_mediana": 14.0,
+   "placebo_dias_mediana": 3.0,
+   "falsa_alarma": 0.059278350515463915,
+   "poder": {
+    "0.05": 0.1141439205955335,
+    "0.1": 0.15521628498727735,
+    "0.15": 0.6491228070175439,
+    "0.3": 1.0
+   },
+   "nulo_validas": 1587,
+   "nulo_p05": -0.352327436208725,
+   "nulo_p95": 0.2760736122727394,
+   "nulo_distintos": 136,
+   "sin_cobertura": false,
+   "nulo_degenerado": false,
+   "valida": true
+  }
+ }
+}

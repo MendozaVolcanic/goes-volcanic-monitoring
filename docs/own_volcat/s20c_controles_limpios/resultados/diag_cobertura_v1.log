@@ -1,0 +1,13 @@
+gate True paso2 |dif| pos med 10.5 p25 8.1 p75 12.5 | plac med 5.5 | pos ACMF claro 0.68 plac claro 0.05
+gate True H3 |dif| pos med 9.5 p25 7.8 p75 11.5 | plac med 4.7 | pos ACMF claro 0.62 plac claro 0.03
+gate True beta73 |dif| pos med 9.6 p25 6.9 p75 12.1 | plac med 5.4 | pos ACMF claro 0.67 plac claro 0.06
+gate True VAAC |dif| pos med 9.6 p25 7.8 p75 12.0 | plac med 5.4 | pos ACMF claro 0.57 plac claro 0.04
+gate True H13 |dif| pos med 4.4 p25 3.1 p75 10.7 | plac med 5.1 | pos ACMF claro 0.80 plac claro 0.09
+gate True H11_H12 |dif| pos med 9.0 p25 5.7 p75 11.6 | plac med 4.7 | pos ACMF claro 0.65 plac claro 0.06
+gate False paso2 |dif| pos med 9.5 p25 7.9 p75 11.6 | plac med 0.4 | pos ACMF claro 0.68 plac claro 0.05
+gate False H3 |dif| pos med 9.4 p25 7.8 p75 11.3 | plac med 0.4 | pos ACMF claro 0.62 plac claro 0.03
+gate False beta73 |dif| pos med 9.0 p25 4.9 p75 11.1 | plac med 0.4 | pos ACMF claro 0.67 plac claro 0.06
+gate False VAAC |dif| pos med 9.4 p25 7.7 p75 10.9 | plac med 0.4 | pos ACMF claro 0.57 plac claro 0.04
+gate False H13 |dif| pos med 3.6 p25 3.0 p75 9.3 | plac med 0.4 | pos ACMF claro 0.80 plac claro 0.09
+gate False H11_H12 |dif| pos med 8.5 p25 3.4 p75 10.2 | plac med 0.4 | pos ACMF claro 0.65 plac claro 0.06
+dif (control - positivo) mediana -9.1 K

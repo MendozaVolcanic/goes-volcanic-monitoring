@@ -1,0 +1,39 @@
+pruebas OK (8 de 8); paralaje hacia 173.6 grados; W, Wc, R de E6-like: 53 54 109
+pruebas H25 OK; W, Wc, R (sin 315), R de H24, franja: 55 52 78 106 22
+  antuco: W 54, Wc 51, R 78
+  longavi: W 57, Wc 55, R 81
+{
+ "estimador": "p20",
+ "chillan_E": -0.048390072584152205,
+ "chillan_cuadros": 6,
+ "chillan_z": 0.6846332654129503,
+ "chillan_nnulo": 11,
+ "chillan_mad": 0.09659825435757637,
+ "longavi_E": -0.25420335233211516,
+ "longavi_cuadros": 6,
+ "longavi_z": -1.3688847440270744,
+ "longavi_nnulo": 9,
+ "longavi_mad": 0.08450621503651143,
+ "placebo_z": 0.048603314585920473,
+ "fa_k-2": "2/9",
+ "fa_k-1": "0/9",
+ "fa_k+0": "3/11",
+ "fa_k+1": "1/10",
+ "fa_k+2": "0/0",
+ "fa_n": 39,
+ "fa_det": 6,
+ "fa_tasa": 0.15384615384615385,
+ "poder_W_0.05": 0.6363636363636364,
+ "poder_W_0.05_n": 11,
+ "poder_W_0.15": 1.0,
+ "poder_W_0.15_n": 11,
+ "poder_franja_0.15": 1.0,
+ "poder_franja_0.15_n": 11,
+ "poder_franja_0.30": 1.0,
+ "poder_franja_0.30_n": 11,
+ "poder_franja_0.50": 1.0,
+ "poder_franja_0.50_n": 11,
+ "poder_grande": 1.0,
+ "poder_grande_n": 11,
+ "lectura": "INVÁLIDA"
+}

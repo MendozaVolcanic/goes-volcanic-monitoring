@@ -1,0 +1,20 @@
+Revision H17 (S19e), base temporal contra la mascara de nubes de NOAA. Generado 2026-11-23 09:51
+cuadros C14+C15 1916 | con ACMF 1915 | sin ACMF 1 | escena despejada 536 (0.280)
+Q2 instrumento: BT11 mediana del terreno bajo, despejado menos no despejado, mediana por hora UTC = +nan K en 17 horas (pide >= +3 K) -> FALLA
+F17 (fraccion de la base en escena NO despejada): todos los cuadros con base n 1833, mediana 0.696, p90 1.000; cuadros con F17 > 0,75: 0.405
+   60 cuadros de evento con base: 60; F17 mediana 0.623, p90 0.677; con F17 > 0,75: 1 de 60 -> base sospechosa de nube: False
+   eventos con base despejada (>= 5 cuadros): 60 de 60; dias distintos en la base despejada (mediana) 4
+   huella en el cuadro t: fraccion ACM despejada media 0.111; en los cuadros de la base 0.074 | cumbre en t (eventos) 0.111 | escena t despejada en eventos 0.483, en negativos 0.204
+
+== Huella event_idx de los cuadros de evento, por base (pareo BT11 +-0,5 K, mismo cuadro) ==
+orig  cuadros 60 | huella n 768: candidatos 0.017, mediana dBT11 +1.28 K, dBTD -0.19 K | controles n 3835: candidatos 0.317, dBT11 -12.52 K, dBTD -0.11 K
+desp  cuadros 60 | huella n 768: candidatos 0.056, mediana dBT11 -0.81 K, dBTD -0.22 K | controles n 3835: candidatos 0.264, dBT11 -14.87 K, dBTD -0.02 K
+nub   cuadros 60 | huella n 768: candidatos 0.007, mediana dBT11 +3.84 K, dBTD -0.30 K | controles n 3835: candidatos 0.369, dBT11 -8.18 K, dBTD -0.29 K
+azar  cuadros 60 | huella n 768: candidatos 0.033, mediana dBT11 +1.19 K, dBTD -0.21 K | controles n 3835: candidatos 0.307, dBT11 -12.90 K, dBTD -0.13 K
+control positivo (cuadros con base nublada y despejada, n 60): mediana dBT11 huella nublada +3.84 K, despejada -0.81 K, diferencia +4.64 K (pide >= +1 K) -> PASA
+nulo medido (azar, mismo tamano que desp): +1.19 K contra H17 +1,28 K; |dif| 0.09 K (pide <= 0,3 K) -> PASA
+
+== Etapa 2, variante decide, por base ==
+orig  POD 0.134 (n 127)  FAR 0.066 (n 1380)  POD-FAR IC95 [-0.078; 0.193]  -> no separa del fondo
+desp  POD 0.190 (n 121)  FAR 0.067 (n 1127)  POD-FAR IC95 [-0.069; 0.289]  -> no separa del fondo
+azar  POD 0.124 (n 121)  FAR 0.075 (n 1127)  POD-FAR IC95 [-0.090; 0.163]  -> no separa del fondo

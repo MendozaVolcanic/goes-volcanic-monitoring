@@ -1,0 +1,42 @@
+H26 seguidor. Generado 2026-11-23 08:27 | criterio commit 95d6171
+cuadros con C14+C15: 1916 | 20261020_1410 a 20261118_2320
+cuadros con base: 1833
+I3 rango BT11 215.4 a 322.2 K -> pasa
+compuerta encendida chillan: 0.616 de los cuadros con base
+compuerta encendida antuco: 0.231 de los cuadros con base
+compuerta encendida longavi: 0.140 de los cuadros con base
+días con VOLCAT: 13 ['2026-10-22', '2026-10-24', '2026-10-25', '2026-10-28', '2026-10-29', '2026-11-07', '2026-11-08', '2026-11-10', '2026-11-11', '2026-11-13', '2026-11-14', '2026-11-16', '2026-11-18']
+días sin VOLCAT con IR: 17 ['2026-10-20', '2026-10-21', '2026-10-23', '2026-10-26', '2026-10-27', '2026-10-30', '2026-10-31', '2026-11-01', '2026-11-02', '2026-11-03', '2026-11-04', '2026-11-05', '2026-11-06', '2026-11-09', '2026-11-12', '2026-11-15', '2026-11-17']
+I1 cuadros de evento: 60 con C14+C15 y base: 60 -> pasa
+I2 |BT11 nuestra - BT11 evento| en la huella: mediana 0.050 K, p90 0.054 K (n 769) -> pasa
+
+control positivo: tramos elegibles (4 cuadros de 10 min, día sin VOLCAT, base y compuerta): 428
+control positivo: pasa 10 de 20 tramos (0.50); IoU mediano cuadros 3-4 0.635 -> FALLA
+
+== Concordancia con event_idx (Chillán, 60 cuadros) ==
+R1                IoU tol med 0.000 (exacto 0.000, reflejada 0.000) | recuperada 0.016 | dispara en eventos 0.150, en clase P 0.050 (n 100) | FA Chillán 0.077 (n 1007, días 0.31) | FA Antuco 0.071 Longaví 0.034
+      dia         eventos 53 IoU 0.0 dispara 0.1509433962264151 | FA n 741 0.07692307692307693
+      crepusculo  eventos  5 IoU 0.0 dispara 0.0 | FA n 97 0.07216494845360824
+      noche       eventos  2 IoU 0.0 dispara 0.5 | FA n 169 0.08284023668639054
+R1_sin_compuerta  IoU tol med 0.000 (exacto 0.000, reflejada 0.000) | recuperada 0.016 | dispara en eventos 0.150, en clase P 0.050 (n 100) | FA Chillán 0.139 (n 1007, días 0.44) | FA Antuco 0.278 Longaví 0.197
+      dia         eventos 53 IoU 0.0 dispara 0.1509433962264151 | FA n 741 0.14035087719298245
+      crepusculo  eventos  5 IoU 0.0 dispara 0.0 | FA n 97 0.10309278350515463
+      noche       eventos  2 IoU 0.0 dispara 0.5 | FA n 169 0.15384615384615385
+R2                IoU tol med 0.000 (exacto 0.000, reflejada 0.000) | recuperada 0.000 | dispara en eventos 0.000, en clase P 0.000 (n 100) | FA Chillán 0.007 (n 1007, días 0.06) | FA Antuco 0.000 Longaví 0.006
+      dia         eventos 53 IoU 0.0 dispara 0.0 | FA n 741 0.0
+      crepusculo  eventos  5 IoU 0.0 dispara 0.0 | FA n 97 0.0
+      noche       eventos  2 IoU 0.0 dispara 0.0 | FA n 169 0.04142011834319527
+R0                IoU tol med 0.729 (exacto 0.184, reflejada 0.763) | recuperada 0.505 | dispara en eventos 0.983, en clase P 0.990 (n 100) | FA Chillán 0.522 (n 1007, días 0.75) | FA Antuco 0.231 Longaví 0.140
+      dia         eventos 53 IoU 0.8181818181818182 dispara 1.0 | FA n 741 0.48043184885290147
+      crepusculo  eventos  5 IoU 0.0 dispara 0.8 | FA n 97 0.4742268041237113
+      noche       eventos  2 IoU 0.0 dispara 1.0 | FA n 169 0.7337278106508875
+seguidor vivo en controles (dispara alguna vez en Antuco o Longaví sin compuerta): True
+
+FA controles (R1 sin compuerta, el peor de Antuco y Longaví): 0.278
+VEREDICTO H26 (R1): SIN PODER
+
+== Por evento (R1, informativo) ==
+13-11 VCB    cuadros 11 dispara 0.00 IoU tol med 0.000 recuperada 0.0/15.0
+14-11 12:40  cuadros  7 dispara 0.43 IoU tol med 0.000 recuperada 0.0/22.0
+14-11 16:30  cuadros 41 dispara 0.15 IoU tol med 0.000 recuperada 12.0/728.0
+18-11        cuadros  1 dispara 0.00 IoU tol med 0.000 recuperada 0.0/4.0

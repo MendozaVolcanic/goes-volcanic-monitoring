@@ -6,7 +6,7 @@ del detector (`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\sid
 
 ## 1. Respuesta corta, para geólogo
 
-**Respuesta vigente (23-11-2026, después de H17 a H28; detalle en §3.9).** Lo que sigue en esta sección después de
+**Respuesta vigente (23-11-2026, después de H17 a H29 y la revisión S20; detalle en §3.9).** Lo que sigue en esta sección después de
 este bloque es la historia de cómo se llegó, desde el 17-11.
 
 - **VOLCAT no ve la pluma de Chillán en el píxel.** Su propia probabilidad infrarroja es menor que 0,05 en 762 de
@@ -28,9 +28,18 @@ este bloque es la historia de cómo se llegó, desde el 17-11.
 - **Copiar la decisión con nuestras radiancias no da los mismos píxeles** (H26): un seguidor anclado al cráter
   caliente recupera 12 de 769 píxeles de VOLCAT y dispara en 7,7 % de los cuadros sin VOLCAT. Lo único que coincide
   es la cercanía al cráter.
+- **Lejos del cráter apareció la primera firma, débil** (H29, revisión S20). El 08-11, en los píxeles que VOLCAT
+  marca a más de 30 km, la BTD (11 − 12 µm) queda 0,37 K bajo la de píxeles del mismo cuadro con igual BT11 y cota,
+  fuera de lo que dan los días sin evento. Entre 15 y 60 km esa BTD baja se mueve con la huella de VOLCAT cuadro a
+  cuadro (p < 0,0001); a más de 30 km solo, la tendencia no alcanza (p 0,095). Equivale a una pluma tenue o angosta
+  (f·ε ≈ 0,12). Atribución a ceniza: SOSPECHA reforzada, porque una nube que VOLCAT siga desde el cráter daría lo mismo.
+- **Varias pruebas "sin firma" comparaban pluma contra pluma** (MET-01, §3.9): sus controles "sin pluma" caían casi
+  todos en días con actividad, y en el paso 2, H3 y Londres además con un objeto de VOLCAT cerca. Esas pruebas no
+  demuestran ausencia de firma.
 
 **En una frase:** VOLCAT publica Chillán por una decisión de objeto (nacimiento por contraste y seguimiento por
-distancia), no por una medición de ceniza en 11 y 12 µm, y con nuestro IR no hay señal que medir en esos píxeles.
+distancia), no por una medición de ceniza en 11 y 12 µm; nuestro IR ve, en el mejor caso medido, una firma débil que
+acompaña a su objeto, y parte de las pruebas que no vieron nada usaban controles con el volcán activo.
 Para el dashboard, VOLCAT sigue como capa externa (ficha SDA §A.7).
 
 **El fenómeno.** Las plumas de Chillán de noviembre son chicas (3 a 5 km de altura, unos 8 km de largo)
@@ -664,11 +673,10 @@ eventos parten con actividad térmica VOLCAT de 10 MW o más (según el CDR 2022
 público de VOLCAT (píxel y objeto) queda reproducido y no ve estas plumas; lo que falta es el clasificador de la
 vía pluma/puff.
 
-### 3.9 Décima a duodécima tanda (22 y 23-11, S16 a S19): seguimiento, límite IR y verdad del OVDAS (H17 a H28)
+### 3.9 Décima a decimotercera tanda (22 y 23-11, S16 a S20): seguimiento, límite IR, verdad del OVDAS y primera firma (H17 a H29)
 
 Cada prueba tiene su criterio commiteado antes de medir y su informe en `docs/own_volcat/<carpeta>/INFORME.md`.
-Al 23-11, H26, H27, H28 y la revisión de H13 y H17 están en PR abiertos (102, 101, 103 y 104) y sus carpetas
-todavía no están en main.
+Todas están en main (PR 100 a 107; H29 fusionado el 23-11 en S20, merge `7891563`).
 
 | Prueba | Pregunta | Resultado | Carpeta |
 |---|---|---|---|
@@ -686,9 +694,24 @@ todavía no están en main.
 | H26 | ¿Copiar la decisión de VOLCAT da sus píxeles? | **Sin poder** por la regla (control positivo 10 de 20); recupera 12 de 769 píxeles; 7,7 % de falsas alarmas | `h26_seguidor_volcat/` (PR 102) |
 | H27 | ¿Un fondo de cumbres de control mide los pulsos de tarde? | **Inválido**: Chillán sin pluma es 1,54 veces más ruidoso que las cumbres; E12 z −2,44 sin poder | `h27_fondo_espacial/` (PR 101) |
 | H28 | ¿Cuál es la regla de seguimiento de VOLCAT? | **Se sostiene en parte**: radio de 3 km por minuto exacto (3.969 de 3.969); el parecido propuesto no. Chillán: 56 de 60 continuaciones, 51 explicadas (**compatible**) | `h28_regla_seguimiento/` (PR 103) |
+| H29 | ¿La pluma del 08-11 lejos del cráter (> 30 km, 17 píxeles-cuadro) tiene firma en 11 y 12 µm? | **SEÑAL por la regla** en la BTD pareada por BT11 y cota del mismo cuadro: −0,37 K, bajo los 17 días nulos y p 0,005 en 1.961 huellas corridas. Equivale a f·ε ≈ 0,12 (pluma tenue o angosta). Atribución a la pluma: SOSPECHA (bandas meteorológicas de igual amplitud esa tarde; la BTD baja empieza 50 min antes que VOLCAT en esas posiciones) | `h29_pluma_0811/` (PR 107) |
+| Revisión S20 de H29 | ¿La BTD baja se mueve con la huella de VOLCAT cuadro a cuadro? | Código propio: M1 se reproduce (−0,3725 K). Seguimiento: a > 30 km **no concluyente** (−0,23 K, p 0,095; potencia 1,0); a > 15 km, como sensibilidad, **sí sigue** (−0,48 K, p < 0,0001, 35 cuadros). Descarta una banda quieta; no separa ceniza de una nube que VOLCAT siga desde el cráter. Atribución: **SOSPECHA reforzada** | `revision_s20_h29/` |
 
 Lo que queda abierto: la puerta de nacimiento de VOLCAT (H28 §1), los pulsos de tarde con fondo propio (verano,
-`h24_verano/REGISTRO_PROSPECTIVO.md`) y una pluma angosta en E6 (H25).
+`h24_verano/REGISTRO_PROSPECTIVO.md`), una pluma angosta en E6 (H25), repetir H29 sin cambiar la regla en otro evento
+con píxeles lejanos, y repetir las pruebas pareadas con controles de antes de la actividad (ver el párrafo siguiente).
+
+**Los controles "sin pluma" de las pruebas pareadas eran, casi todos, días con actividad (MET-01, revisor de método de
+S19i; cifras recontadas en S20 con scripts propios, todas exactas).** Controles en días que H24 excluye por actividad:
+paso 2, 45 de 46; H3, 34 de 37; β73, 42 de 49; VAAC de Londres, 38 de 45; H13, 62 de 72. Trece controles del paso 2,
+ocho de H3 y diez de Londres caen el 13-11 entre las 19:00 y las 21:00 UTC, dentro de una cadena que VOLCAT publicó.
+El efecto es **parcial**: en el paso 2, H3 y Londres el control tiene además un objeto de VOLCAT cerca (contaminación
+directa); β73 y H13 eligen controles sin VOLCAT a ± 60 min, así que su contaminación es sólo "día con actividad". La
+causa es el pareo por BT11: los días sin actividad de noviembre estaban 8 a 9 K más fríos (mediana del mejor candidato
+libre), así que no había alternativa dentro de 3 K. Consecuencia: los "sin firma" del paso 2, H3, Londres y de las que
+heredan sus pares (H11, H12) compararon pluma contra un volcán que también emitía, y no pueden leerse como ausencia de
+firma. La prueba que lo resuelve sin bajar nada: repetir las variables de 11 y 12 µm con controles del 21-09 al 23-10
+(cubos de H23 en `D:\goes_notas\s17\h23\`), con criterio antes de medir.
 
 **Revisión de las líneas base contra la máscara de nubes (S19e, PR 104).** H13 sigue en pie: con sólo pares
 despejados en los ocho cuadros (30 pares), la mejor de 18 variables da AUC 0,604, lo que da el azar. H17 se debilita

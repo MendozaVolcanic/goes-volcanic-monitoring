@@ -1,10 +1,37 @@
 # Por qué VOLCAT ve ceniza en Nevados de Chillán (nov-2026) y nuestro detector no
 
-Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1), el 19-11 (H3 y H7, §3.2; H6 cerrada) el 19-11 en la tarde (β(7,3/11) fuera de muestra y prueba tolerante del VAAC de Londres, §3.3), el 19-11 en la noche (calor a 3,9 µm, rayos GLM y dirección de la pluma, §3.4) el 20-11 (H11 y SECO propio entrenado con VOLCAT, §3.5; corrección del alcance de H8) y el 20-11 en la noche (Test 3 original de Francis 2012 y cambio entre cuadros consecutivos, §3.6) y el 21-11 (tablas, configuración y eventos públicos de VOLCAT: H14, C2, C2b y H15, §3.7). Estado: **informe con diecinueve pruebas y lecturas medidas y un plan; no cambia código de detección.** Desde el 19-11 el dashboard muestra la detección VOLCAT por volcán como capa externa (ficha SDA v2.8, §A.7).
+Fecha: 17-11-2026, actualizado el 18-11 (pasos 2, 3 y 4 del plan, §3.1), el 19-11 (H3 y H7, §3.2; H6 cerrada) el 19-11 en la tarde (β(7,3/11) fuera de muestra y prueba tolerante del VAAC de Londres, §3.3), el 19-11 en la noche (calor a 3,9 µm, rayos GLM y dirección de la pluma, §3.4) el 20-11 (H11 y SECO propio entrenado con VOLCAT, §3.5; corrección del alcance de H8) y el 20-11 en la noche (Test 3 original de Francis 2012 y cambio entre cuadros consecutivos, §3.6) y el 21-11 (tablas, configuración y eventos públicos de VOLCAT: H14, C2, C2b y H15, §3.7) y el 23-11 (H16 a H28, §3.9, con la respuesta vigente al comienzo de §1). Estado: **informe con diecinueve pruebas y lecturas medidas y un plan; no cambia código de detección.** Desde el 19-11 el dashboard muestra la detección VOLCAT por volcán como capa externa (ficha SDA v2.8, §A.7).
 Antecedentes: plan de validación §3.4 a §3.6 (`docs/own_volcat/PLAN_VALIDACION_MAGNITUD.md`) y el informe
 del detector (`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_f3a7d295-ddde-4b7c-b258-25e760c44266\INFORME_variantes.md`).
 
 ## 1. Respuesta corta, para geólogo
+
+**Respuesta vigente (23-11-2026, después de H17 a H28; detalle en §3.9).** Lo que sigue en esta sección después de
+este bloque es la historia de cómo se llegó, desde el 17-11.
+
+- **VOLCAT no ve la pluma de Chillán en el píxel.** Su propia probabilidad infrarroja es menor que 0,05 en 762 de
+  767 píxeles de la huella (H20a), y la probabilidad que publica de día es baja (sitio de VOLCAT).
+- **La publica por seguimiento.** De los 60 cuadros con archivo de evento, 56 son continuaciones de un objeto que
+  nació antes. La regla de seguimiento, leída de los registros de VOLCAT y probada en datos que no se usaron para
+  deducirla, es un radio de 3 km por minuto entre imágenes alrededor de lo último publicado (30 km con 10 min), con
+  los filtros de ruido y de tamaño apagados. Se cumplió en 3.969 de 3.969 comparaciones, en tres satélites (H28).
+  Explica 51 de las 56 continuaciones de Chillán; las otras 5 siguen a cuadros que VOLCAT se saltó por atraso.
+- **Lo que decide es el nacimiento, y no lo conocemos.** Cuatro cadenas nacen el 13, 14 (dos) y 18-11. La puerta de
+  nacimiento mide contraste de forma y borde contra el entorno, no firma de ceniza, y su regla completa no está en
+  ningún registro público (H28).
+- **Con verdad del OVDAS, los pulsos de la mañana no dejan firma IR.** La explosión de 2.000 m del 27-10 no deja
+  firma ni hacia el NO (dirección del REAV, H24) ni hacia el NNE (viento GFS, H25), con una prueba que habría visto
+  una capa de ε 0,10 sobre el sector. Una pluma angosta (6 km) queda sin probar.
+- **Los pulsos de tarde que VOLCAT marcó siguen sin respuesta.** No hay tardes despejadas sin actividad para el fondo
+  en primavera (H24); el fondo prestado de Antuco y Longaví no sirve porque Chillán es 1,5 veces más ruidoso (H27,
+  inválido). Queda la prueba de verano, ya registrada (`h24_verano/REGISTRO_PROSPECTIVO.md`).
+- **Copiar la decisión con nuestras radiancias no da los mismos píxeles** (H26): un seguidor anclado al cráter
+  caliente recupera 12 de 769 píxeles de VOLCAT y dispara en 7,7 % de los cuadros sin VOLCAT. Lo único que coincide
+  es la cercanía al cráter.
+
+**En una frase:** VOLCAT publica Chillán por una decisión de objeto (nacimiento por contraste y seguimiento por
+distancia), no por una medición de ceniza en 11 y 12 µm, y con nuestro IR no hay señal que medir en esos píxeles.
+Para el dashboard, VOLCAT sigue como capa externa (ficha SDA §A.7).
 
 **El fenómeno.** Las plumas de Chillán de noviembre son chicas (3 a 5 km de altura, unos 8 km de largo)
 y casi transparentes en el infrarrojo térmico. Dentro de la zona donde VOLCAT dibuja ceniza, la
@@ -636,6 +663,38 @@ Chillán: `ASHPLUMEPUFF` (49 de 60 cuadros) y `VCB` (11 de 60), no la selección
 eventos parten con actividad térmica VOLCAT de 10 MW o más (según el CDR 2022, el calor relaja los umbrales). Lo
 público de VOLCAT (píxel y objeto) queda reproducido y no ve estas plumas; lo que falta es el clasificador de la
 vía pluma/puff.
+
+### 3.9 Décima a duodécima tanda (22 y 23-11, S16 a S19): seguimiento, límite IR y verdad del OVDAS (H17 a H28)
+
+Cada prueba tiene su criterio commiteado antes de medir y su informe en `docs/own_volcat/<carpeta>/INFORME.md`.
+Al 23-11, H26, H27, H28 y la revisión de H13 y H17 están en PR abiertos (102, 101, 103 y 104) y sus carpetas
+todavía no están en main.
+
+| Prueba | Pregunta | Resultado | Carpeta |
+|---|---|---|---|
+| H17 | ¿Una regla propia (calor a 3,9 µm + pluma anclada) ve lo que VOLCAT? | **Falla.** Detecta 13 % de los cuadros con pluma con 7 % de falsas alarmas. Su "huella 1,3 K más tibia que el suelo" **no se sostiene**: la base tenía 62 % de cuadros nublados, y con base despejada la huella queda 0,81 K más fría, bajo el umbral de −1 K y sin separar (revisión S19e) | `h17_regla_propia/`, `revision_h13_h17_nube/` (PR 104) |
+| H18 | ¿Las tablas de día de VOLCAT validan? | **No validan** contra Fuego 2018 (κ 0,002); las IR sí, de día y sobre tierra (κ 1,000) | `h18_modo_dia/` |
+| Sitio | ¿Qué probabilidad publica VOLCAT en la huella? | **Baja**: de día 0 de 30 cuadros con P ≥ 20 %; alta sólo al atardecer del 14-11 | `sitio_volcat/` |
+| H19 | ¿Se reproduce el paso de objeto en Fuego? | **En parte**: la P del objeto sí en píxel opaco; la pertenencia al objeto no (59,5 %) | `h19_objeto_fuego/` |
+| H20a | ¿Qué son los campos de los archivos de evento? | P infrarroja de píxel < 0,05 en 762 de 767 píxeles de Chillán; la publicada sube sólo en 5 de 60 cuadros | `h20a_campos_evento/` |
+| H20b, H20c | ¿Qué sube la P publicada en Kirishima? | **El seguimiento** (4 de 4 cuadros), desde "Temporal selection criteria met for ash" | `h20b_kirishima/`, `h20c_kirishima_luz/` |
+| H21 | ¿El VAAC de Buenos Aires confirma las marcas de VOLCAT? | **No coincide**: 3 de 30 | `h21_vaac/` |
+| H22 | ¿La pluma desprendida del 14-11 tiene señal IR lejos del cráter? | **Sin señal** a más de 30 km, con control positivo aprobado | `h22_pluma_desprendida/` |
+| H23 | ¿Qué capa ve GOES-19 sobre la cumbre? | ε 0,15 a 5 km sí (AUC 0,91 a 0,95); a 3 km no. Chillán queda bajo el límite (sospecha, cota en parte circular) | `h23_inyeccion/` |
+| H24 | ¿Los pulsos del OVDAS (REAV) dejan firma IR a favor del viento? | **No concluyente.** De mañana, sin firma con poder (incluida la explosión de 2 km, E6); de tarde, sin fondo | `h24_pulsos_reav/` |
+| H25 | ¿E6 deja firma hacia donde soplaba el GFS (NNE)? | **Sin señal** (z +0,52; poder de capa 100 %); pluma angosta sin poder | `h25_e6_gfs/` |
+| H26 | ¿Copiar la decisión de VOLCAT da sus píxeles? | **Sin poder** por la regla (control positivo 10 de 20); recupera 12 de 769 píxeles; 7,7 % de falsas alarmas | `h26_seguidor_volcat/` (PR 102) |
+| H27 | ¿Un fondo de cumbres de control mide los pulsos de tarde? | **Inválido**: Chillán sin pluma es 1,54 veces más ruidoso que las cumbres; E12 z −2,44 sin poder | `h27_fondo_espacial/` (PR 101) |
+| H28 | ¿Cuál es la regla de seguimiento de VOLCAT? | **Se sostiene en parte**: radio de 3 km por minuto exacto (3.969 de 3.969); el parecido propuesto no. Chillán: 56 de 60 continuaciones, 51 explicadas (**compatible**) | `h28_regla_seguimiento/` (PR 103) |
+
+Lo que queda abierto: la puerta de nacimiento de VOLCAT (H28 §1), los pulsos de tarde con fondo propio (verano,
+`h24_verano/REGISTRO_PROSPECTIVO.md`) y una pluma angosta en E6 (H25).
+
+**Revisión de las líneas base contra la máscara de nubes (S19e, PR 104).** H13 sigue en pie: con sólo pares
+despejados en los ocho cuadros (30 pares), la mejor de 18 variables da AUC 0,604, lo que da el azar. H17 se debilita
+en su física, no en su veredicto: la huella no está más tibia que el suelo despejado, sino 0,81 K más fría, y eso no
+alcanza para separarla del resto del cuadro (POD 0,19, FAR 0,07). Toda cita de "la huella 1,3 K más tibia" en
+informes anteriores queda superada por esta revisión.
 
 ## 4. Hipótesis ordenadas por evidencia
 

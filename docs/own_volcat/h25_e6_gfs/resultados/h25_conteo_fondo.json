@@ -1,0 +1,36 @@
+{
+ "dia_e6": "2026-10-27",
+ "slots_e6": [
+  56,
+  57,
+  58,
+  59,
+  60,
+  61
+ ],
+ "nulos_candidatos": 27,
+ "chillan": {
+  "e6_cuadros_despejados": 6,
+  "k-2_dias_con_2_despejados": 9,
+  "k-1_dias_con_2_despejados": 9,
+  "k+0_dias_con_2_despejados": 11,
+  "k+1_dias_con_2_despejados": 10,
+  "k+2_dias_con_2_despejados": 7
+ },
+ "antuco": {
+  "e6_cuadros_despejados": 0,
+  "k-2_dias_con_2_despejados": 10,
+  "k-1_dias_con_2_despejados": 9,
+  "k+0_dias_con_2_despejados": 10,
+  "k+1_dias_con_2_despejados": 9,
+  "k+2_dias_con_2_despejados": 8
+ },
+ "longavi": {
+  "e6_cuadros_despejados": 6,
+  "k-2_dias_con_2_despejados": 10,
+  "k-1_dias_con_2_despejados": 10,
+  "k+0_dias_con_2_despejados": 9,
+  "k+1_dias_con_2_despejados": 9,
+  "k+2_dias_con_2_despejados": 10
+ }
+}

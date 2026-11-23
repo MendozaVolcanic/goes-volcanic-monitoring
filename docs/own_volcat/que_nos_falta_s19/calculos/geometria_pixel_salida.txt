@@ -1,0 +1,16 @@
+Distancia satelite-Chillan: 37261 km; angulo cenital de vista: 42.9 grados
+Pixel IR 2 km (56 urad): 2.09 km E-O x 2.84 km N-S; area 5.95 km2
+Pixel C02 0,5 km (14 urad): 0.52 km E-O x 0.71 km N-S; area 0.37 km2
+
+Paralaje (la grilla fija se navega sobre el elipsoide):
+  cumbre 3,2 km: aparece 2.99 km corrido, rumbo 174 grados (-1.04 filas IR, +0.09 columnas IR; signo: y crece al norte, x crece al este)
+  pluma 1 km sobre el crater (4,2 km): aparece 3.91 km corrido, rumbo 174 grados (-1.37 filas IR, +0.11 columnas IR; signo: y crece al norte, x crece al este)
+  pluma 2,5 km sobre el crater (5,7 km): aparece 5.31 km corrido, rumbo 174 grados (-1.86 filas IR, +0.16 columnas IR; signo: y crece al norte, x crece al este)
+  por cada km de altura: aparece 0.93 km corrido, rumbo 174 grados (-0.33 filas IR, +0.03 columnas IR; signo: y crece al norte, x crece al este)
+
+Fraccion de un pixel IR que llena una pluma recta que lo cruza entero:
+  ancho 0.3 km: 0.11 si corre E-O, 0.14 si corre N-S
+  ancho 0.5 km: 0.18 si corre E-O, 0.24 si corre N-S
+  ancho 1.0 km: 0.35 si corre E-O, 0.48 si corre N-S
+  ancho 2.0 km: 0.70 si corre E-O, 0.96 si corre N-S
+  (cota superior: supone el pixel como caja; la respuesta espacial real del detector reparte ademas parte de la senal en los vecinos)

@@ -667,11 +667,12 @@ vía pluma/puff.
 ### 3.9 Décima a duodécima tanda (22 y 23-11, S16 a S19): seguimiento, límite IR y verdad del OVDAS (H17 a H28)
 
 Cada prueba tiene su criterio commiteado antes de medir y su informe en `docs/own_volcat/<carpeta>/INFORME.md`.
-Al 23-11, H26, H27 y H28 están en PR abiertos (102, 101 y 103) y sus carpetas todavía no están en main.
+Al 23-11, H26, H27, H28 y la revisión de H13 y H17 están en PR abiertos (102, 101, 103 y 104) y sus carpetas
+todavía no están en main.
 
 | Prueba | Pregunta | Resultado | Carpeta |
 |---|---|---|---|
-| H17 | ¿Una regla propia (calor a 3,9 µm + pluma anclada) ve lo que VOLCAT? | **Falla.** Detecta 13 % de los cuadros con pluma con 7 % de falsas alarmas; la huella está 1,3 K más tibia que su base despejada | `h17_regla_propia/` |
+| H17 | ¿Una regla propia (calor a 3,9 µm + pluma anclada) ve lo que VOLCAT? | **Falla.** Detecta 13 % de los cuadros con pluma con 7 % de falsas alarmas. Su "huella 1,3 K más tibia que el suelo" **no se sostiene**: la base tenía 62 % de cuadros nublados, y con base despejada la huella queda 0,81 K más fría, bajo el umbral de −1 K y sin separar (revisión S19e) | `h17_regla_propia/`, `revision_h13_h17_nube/` (PR 104) |
 | H18 | ¿Las tablas de día de VOLCAT validan? | **No validan** contra Fuego 2018 (κ 0,002); las IR sí, de día y sobre tierra (κ 1,000) | `h18_modo_dia/` |
 | Sitio | ¿Qué probabilidad publica VOLCAT en la huella? | **Baja**: de día 0 de 30 cuadros con P ≥ 20 %; alta sólo al atardecer del 14-11 | `sitio_volcat/` |
 | H19 | ¿Se reproduce el paso de objeto en Fuego? | **En parte**: la P del objeto sí en píxel opaco; la pertenencia al objeto no (59,5 %) | `h19_objeto_fuego/` |
@@ -687,8 +688,13 @@ Al 23-11, H26, H27 y H28 están en PR abiertos (102, 101 y 103) y sus carpetas t
 | H28 | ¿Cuál es la regla de seguimiento de VOLCAT? | **Se sostiene en parte**: radio de 3 km por minuto exacto (3.969 de 3.969); el parecido propuesto no. Chillán: 56 de 60 continuaciones, 51 explicadas (**compatible**) | `h28_regla_seguimiento/` (PR 103) |
 
 Lo que queda abierto: la puerta de nacimiento de VOLCAT (H28 §1), los pulsos de tarde con fondo propio (verano,
-`h24_verano/REGISTRO_PROSPECTIVO.md`) y una pluma angosta en E6 (H25). La revisión de si las líneas base de H13 y
-H17 cayeron en nube corre aparte.
+`h24_verano/REGISTRO_PROSPECTIVO.md`) y una pluma angosta en E6 (H25).
+
+**Revisión de las líneas base contra la máscara de nubes (S19e, PR 104).** H13 sigue en pie: con sólo pares
+despejados en los ocho cuadros (30 pares), la mejor de 18 variables da AUC 0,604, lo que da el azar. H17 se debilita
+en su física, no en su veredicto: la huella no está más tibia que el suelo despejado, sino 0,81 K más fría, y eso no
+alcanza para separarla del resto del cuadro (POD 0,19, FAR 0,07). Toda cita de "la huella 1,3 K más tibia" en
+informes anteriores queda superada por esta revisión.
 
 ## 4. Hipótesis ordenadas por evidencia
 

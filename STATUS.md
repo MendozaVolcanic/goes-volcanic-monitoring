@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-23 (cierre de la sesión S18, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-23 (cierre de la sesión S19, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,100 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S18, cierre 2026-11-23 (H24 en la rama `claude/s18-h24-pulsos-reav`, PR abierto sin fusionar: con verdad del OVDAS, los pulsos medibles no dejan firma IR; los que VOLCAT marcó de tarde quedan sin fondo)
+## 0. S19, cierre 2026-11-23 (PR 100 a 104 abiertos sin fusionar: VOLCAT publica Chillán por nacimiento y seguimiento del objeto; la regla de seguimiento quedó leída; ninguna prueba encontró firma IR)
+
+> Sesión coordinadora S19 (`local_ad43daee` la lanzó). Nicolás pidió correr todas las pruebas a la vez. S19 hizo H25
+> y el registro de verano. Lanzó cuatro sesiones hijas con PR propio: S19b (H26, `local_a96445ff`), S19c (H27,
+> `local_88505056`), S19e (revisión de H13 y H17, `local_be25e0dd`) y S19f (H28 en Fable 5.2, `local_07a4fffe`).
+> **Corrección del traspaso S18:** el PR 99 de H24 SÍ quedó fusionado el 23-11 a las 10:42 UTC (merge `4a6fdef`);
+> la tabla de S18 de abajo lo da como abierto porque se escribió antes de fusionar.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| H25: E6 (explosión de 2 km del 27-10) hacia el NNE, viento GFS 16,9° | **SIN SEÑAL** (z +0,52; poder de capa ε 0,10 100 %; falsas alarmas 3 de 39). Pluma angosta sin poder (27 %); la lectura con percentil 20 da z +0,68 pero es INVÁLIDA (falsas alarmas 15 %) | PR 100, `docs/own_volcat/h25_e6_gfs/INFORME.md`; criterio `0716d72` empujado antes de medir |
+| H24 de verano | **Registrada** antes de existir los datos: mismo criterio `f2094f7` + `620b5a0`; primera corrida al cierre de enero de 2027, decide la de febrero | PR 100, `docs/own_volcat/h24_verano/REGISTRO_PROSPECTIVO.md` |
+| H26: copiar la decisión de VOLCAT (seguidor anclado a cráter caliente + criterio temporal) | **SIN PODER** por la regla (control positivo 10 de 20 tramos). Recupera 12 de 769 píxeles de VOLCAT; dispara en 7,7 % de los cuadros sin VOLCAT. Lo único que coincide es la cercanía al cráter | PR 102, `docs/own_volcat/h26_seguidor_volcat/` |
+| H27: fondo de cumbres de control (Antuco, Longaví) para los pulsos de tarde | **INVÁLIDO**: Chillán sin pluma es 1,54 veces más ruidoso (tope 1,5). Lectura: E11 y E13 sin señal; E12 z −2,44 sin poder; Antuco "detecta" z −4,04 el 10-11 | PR 101, `docs/own_volcat/h27_fondo_espacial/` |
+| H28 (Fable): regla de seguimiento de VOLCAT leída de sus logs | **Se sostiene en parte**: radio 0,05 km/s × Δt (3 km por minuto) exacto en 3.969 de 3.969 comparaciones, tres satélites; el parecido propuesto no. Chillán: 56 de 60 cuadros son continuaciones, 51 explicadas (**compatible**); 4 nacimientos con puerta no leída | PR 103, `docs/own_volcat/h28_regla_seguimiento/` |
+| Revisión H13 y H17 contra la ACMF | **H13 sigue en pie** (AUC 0,604 = azar). **H17 se debilita en la física**: la base tenía 62 % de cuadros nublados; con base despejada la huella queda 0,81 K más FRÍA, no 1,28 K más tibia. El veredicto no cambia | PR 104, `docs/own_volcat/revision_h13_h17_nube/` |
+| `POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md` | Al día: respuesta vigente al comienzo de §1 y tabla de H17 a H28 con la revisión, en §3.9 | PR 100 |
+| Tablas del PR 103 que transcriben logs y eventos de SSEC (26) | Movidas a `D:\goes_notas\s19\h28\resultados\` (verificadas byte a byte), quitadas en commit nuevo (cabeza `ecafbcf`). **Siguen en los commits viejos de la rama, que es pública**: el force-push lo bloqueó el modo automático | PR 103 |
+| main | `4a6fdef`; PR 100 a 104 abiertos | `git ls-remote`, `gh pr list` |
+| Disco | C: 18 GB libres, D: 13 GB. 16 worktrees además del principal | `df`, `git worktree list` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Opciones | Recomendación |
+|---|---|---|---|
+| 1 | Fusionar PR 100, 101, 102 y 104 (sólo docs y scripts de investigación) | sí / no, cada uno | Sí, los cuatro, con `--match-head-commit` |
+| 2 | Fusionar PR 103 (H28) | squash / merge / no | **Squash**: así las tablas transcritas no entran a la historia de main |
+| 3 | Borrar las tablas transcritas también de los commits viejos del PR 103 | force-push en la rama / dejarlo | Si la licencia de SSEC te preocupa, hazlo tú en una sesión que tenga el permiso (`git reset --soft` + `git push --force-with-lease` en la rama del PR, nunca en main). GitHub puede seguir mostrando los commits viejos en el historial del PR; para purgarlos del todo hay que pedirlo al soporte de GitHub |
+| 4 | Correo a Pavolonis | enviar / esperar | Ahora hay una pregunta chica y exacta: qué pide la puerta de nacimiento `ASHPLUMEPUFF` (contraste con el entorno) y qué distingue los subcriterios "(1)" y "(2)" del seguimiento. Sólo si tú lo pides |
+| 5 | Las decisiones de S17 que siguen abiertas: cablear el indicador nocturno, desplegar el PR 88 a HF, borrar el paquete de Fuego (16 GB) | | Igual que en "## 0-prev12 b." y "## 0-prev11 b."; el paquete de Fuego lo usó H28, mantenerlo hasta la respuesta de Pavolonis |
+| 6 | Limpiar worktrees viejos (s16, s17, s18 y los de agentes, ya integrados) | sí / no | Sí, después de fusionar; comprobar cada uno con `git cherry` antes de quitarlo |
+
+### c. Lo aprendido
+
+- **VOLCAT sigue por distancia y con los filtros apagados** (propio del proyecto, H28): una vez publicado un objeto,
+  hereda cualquier objeto a ≤ 0,05 km/s × Δt del rasgo anterior, aunque sea de un píxel y sin superponerse. En disco
+  completo (10 min) eso son 30 km. La decisión real está en el nacimiento.
+- **Un fondo prestado de otra cumbre no representa al volcán activo** (propio del proyecto, H27): el centro del nulo
+  coincide pero la dispersión no; el error va hacia falsas detecciones. Antes de prestar un nulo, medir la razón de
+  dispersiones donde ambos tienen dato.
+- **La referencia de viento cruzado puede contener la dirección alternativa de la pluma** (regla de método, H25): si
+  dos fuentes de dirección difieren más de 45°, sacar de R los píxeles a ≤ 30° de la otra.
+- **Una línea base "despejada" por percentil puede estar nublada** (confirmado de nuevo, revisión S19e, ya sabido
+  desde H23): la base de H17 tenía 62 % de cuadros nublados y eso invirtió el signo de su número físico. Toda línea
+  base se arma con cuadros que la ACMF da despejados en el terreno bajo (≥ 80 %).
+- **`start_session` ignora un `model` más caro que el de la sesión madre** (propio del entorno): la sesión arranca con
+  el modelo de la madre. Para correrla en Fable hay que `set_session_model`, detener su primer turno y reenviarle el
+  encargo. Comprobar el modelo con `get_session` después de lanzarla.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (H28):** la ley de distancia del seguimiento de VOLCAT, en cuatro casos y tres satélites.
+- **CONFIRMADO (H24, H25):** E6 sin firma IR ni hacia el NO ni hacia el NNE, para una capa que cubre el sector.
+- **SIN DATO:** la puerta de nacimiento de VOLCAT (qué contraste pide; por qué dos nacimientos de Chillán están a 8,5
+  y 12,5 km del cráter).
+- **SIN DATO:** si los pulsos de tarde que VOLCAT marcó tienen firma IR (espera al verano).
+- **SIN DATO:** una pluma angosta (≤ 6 km) en E6.
+- **SOSPECHA (H23, sigue):** la pluma de Chillán queda bajo la emisividad mínima detectable, o tiene β cercano a 1.
+- **Seguimiento:** el informe de H26 (PR 102) cita "la huella 1,3 K más tibia" de H17, que la revisión S19e dejó
+  superada; corregir esa frase si se toca H26.
+
+### e. Cerrado, no rehacer
+
+Todo lo de "## 0-prev12 e." (S18) más: "E6 se fue hacia el NNE y por eso H24 no la vio" (H25); "un fondo de cumbres
+de control resuelve la tarde" (H27); "copiar el seguidor de VOLCAT con nuestras radiancias da sus píxeles" (H26);
+"la huella de H17 está más tibia que el suelo despejado" (revisión S19e).
+
+### f. Prompt para la próxima sesión (S20)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Esta es la sesión S20; titúlala
+"Goes S20: ..." y numera su traspaso como S20. Usa /retomar.
+
+1. Verifica antes de creer: git fetch; gh pr list (al cerrar S19 quedaban abiertos los PR 100 a 104);
+   git ls-remote origin -h refs/heads/main (era 4a6fdef).
+2. Lee CLAUDE.md, STATUS.md "## 0." (S19) y docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md §1 y §3.9.
+3. Pregunta a Nicolás las decisiones de "## 0. b." (fusiones; squash del 103; force-push de las tablas
+   transcritas; correo a Pavolonis; decisiones de S17; limpieza de worktrees).
+4. Lo que queda por probar: la puerta de nacimiento de VOLCAT (sólo con el correo o con más logs de SSEC); H24 de
+   verano (enero de 2027, registro en docs/own_volcat/h24_verano/). No repetir lo de "## 0. e.".
+5. Reglas: español de Chile sin voseo ni guiones largos; rutas absolutas; no VIIRS; la carpeta principal (rama
+   audit/2026-11-previa-local) no se toca; docs/auditoria_2026-11 no se sube; nada de SSEC al repo ni al Space
+   (tampoco transcripciones fila por fila de sus logs o eventos); criterio commiteado antes de medir; control pareado
+   por BT11; huella = event_idx cuando hay archivo de evento; líneas base sólo con cuadros despejados por ACMF; lo
+   grande a D: (13 GB libres al cerrar S19); fusionar sólo con el sí de Nicolás para ESE PR y con
+   --match-head-commit; cambio de lógica = ficha SDA en el mismo commit.
+```
+
+---
+
+## 0-prev12. S18, cierre 2026-11-23 (H24 en la rama `claude/s18-h24-pulsos-reav`, PR abierto sin fusionar: con verdad del OVDAS, los pulsos medibles no dejan firma IR; los que VOLCAT marcó de tarde quedan sin fondo)
 
 > Sesión hija de "Goes S16: modo día VOLCAT y sitio SSEC" (`local_298f6e00`). Nicolás preguntó: "¿crees que podamos
 > lograr detectar lo que vio VOLCAT esos pocos días en Chillán?". Respuesta escrita en

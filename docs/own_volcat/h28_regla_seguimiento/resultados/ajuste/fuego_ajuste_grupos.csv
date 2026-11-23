@@ -1,0 +1,13 @@
+caso,hora,n,clasificacion,btd_tend_n,pix,en_rasgo_previo_n,Group Index,History Index,Time Diff(s),cl Always Alert Flag,cl Missing History Count,cl Time Trend Count,cl K-d Overlap Count,area_km2,hist_method,cur_method
+fuego_ajuste,171600,1,New Volcanic Feature,0,7,0,1,NA,NA,0,0,7,0,,,
+fuego_ajuste,173100,1,Old Volcanic Feature,0,27,0,1,1,900,0,0,27,0,,,
+fuego_ajuste,174600,1,Old Volcanic Feature,0,21,21,1,2,900,0,0,125,20,96.72,1,1
+fuego_ajuste,174600,2,,0,125,20,,,,,,,,,,
+fuego_ajuste,180100,1,Old Volcanic Feature,106,143,143,1,3,900,0,0,264,146,657.85,1,1
+fuego_ajuste,180100,2,,0,264,146,,,,,,,,,,
+fuego_ajuste,181600,1,Old Volcanic Feature,201,267,267,1,4,900,0,0,372,280,1227.24,1,1
+fuego_ajuste,181600,2,,0,372,280,,,,,,,,,,
+fuego_ajuste,183100,1,Old Volcanic Feature,353,482,459,1,5,900,0,0,656,548,2215.44,1,1
+fuego_ajuste,183100,2,,0,656,548,,,,,,,,,,
+fuego_ajuste,184600,1,Old Volcanic Feature,547,747,643,1,6,900,0,0,1053,843,3433.37,1,1
+fuego_ajuste,184600,2,,0,1053,843,,,,,,,,,,

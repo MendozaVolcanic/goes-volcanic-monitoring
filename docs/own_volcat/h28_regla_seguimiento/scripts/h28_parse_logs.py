@@ -17,7 +17,10 @@ decide algo sobre un objeto de ceniza:
 No copia el log: guarda solo los numeros de los bloques de decision.
 
 Uso:
-  python -I h28_parse_logs.py <carpeta_logs> <carpeta_salida> <etiqueta>
+  python -I h28_parse_logs.py <carpeta_logs> <carpeta_salida> <etiqueta> [hora_min hora_max]
+
+hora_min y hora_max (HHMMSS, inclusive) dejan fuera los cuadros de prueba: los logs
+que caen fuera del rango NO se abren.
 
 Por que existe (SDA, Res. CPLT 372): H28 busca la regla con que VOLCAT publica un
 objeto que su propio pixel no ve. Este script NO decide nada del dashboard; solo
@@ -60,6 +63,7 @@ def parse_log(path):
         lines = [l.rstrip("\n") for l in fh]
 
     seccion = None      # 'strong' | 'weak' | None
+    fase = ""           # ICE | ASH | HOT | SO2: ultimo "Assessing objects ... (X)"
     grouping_opt = None
     mode4_only = None
     cur_plume = None    # bloque de pluma / objeto espectral abierto
@@ -70,6 +74,9 @@ def parse_log(path):
     while i < n:
         l = lines[i]
         s = l.strip()
+        mf = re.search(r"Assessing objects (?:with|without) volcanoes \((\w+)\)", l)
+        if mf:
+            fase = mf.group(1)
         if "Looking for strong plumes" in l:
             seccion = "strong"
         elif "Looking for weak plumes" in l:
@@ -86,7 +93,7 @@ def parse_log(path):
             mode4_only = s.split(":")[1].strip()
         # ---------------- bloque de pluma / objeto espectral
         elif "OBJECT_GROUPING_CONTRAST_ASH" in l and ("Processing plume" in l or "Processing spectral feature" in l):
-            cur_plume = {"tipo": "plume" if "Processing plume" in l else "spectral",
+            cur_plume = {"fase": fase, "tipo": "plume" if "Processing plume" in l else "spectral",
                          "indice": l.rsplit(":", 1)[1].strip(), "grouping_opt": grouping_opt,
                          "mode4_only": mode4_only, "veredicto": "", "msgs": []}
             plumas.append(cur_plume)
@@ -120,6 +127,19 @@ def parse_log(path):
             elif s.startswith("In-feature minus out of feature"):
                 v = re.findall(NUM, s)
                 p["btd_in_menos_out"] = v[0] if fnum(v[0]) is not None else ""
+            elif s.startswith("Object with ID of") and "RGB1" in s:
+                v = re.findall(NUM, s.replace("RGB1", ""))
+                p["obj_pix_total"] = p.get("obj_pix_total", 0) + int(v[3])
+                p["obj_ids"] = (p.get("obj_ids", "") + " " + v[0]).strip()
+                p["_rgb"] = "rgb1"
+            elif s.startswith("Object with ID of") and "RGB2" in s:
+                p["_rgb"] = "rgb2"
+            elif s.startswith("Min Dist (avg)"):
+                v = re.findall(NUM, s)
+                k = p.get("_rgb", "rgb1")
+                p[k + "_mindist_avg"] = (p.get(k + "_mindist_avg", "") + " " + v[0]).strip()
+                p[k + "_mindist_max"] = (p.get(k + "_mindist_max", "") + " " + v[1]).strip()
+                p[k + "_swfrac"] = (p.get(k + "_swfrac", "") + " " + v[3]).strip()
             elif re.match(r"Plume \d+ is composed of", s):
                 v = re.findall(NUM, s)
                 k = "rgb1" if "RGB1" in s else "rgb2"
@@ -143,14 +163,14 @@ def parse_log(path):
                     p["msgs"].append(msg)
             elif re.match(r"Group Idx\s", s):
                 p["group_idx_linea"] = " ".join(s.split()[2:])
-            elif ":" in s and not s.startswith("Object with ID") and not s.startswith("Min Dist"):
+            elif ":" in s:
                 d = kv_pairs(s)
                 for k, v in d.items():
                     p[k] = v
         # ---------------- historia: objeto contra grupo historico
         elif s.startswith("VOLCAT_HISTORY_UTILS:HISTORY_GROUP2OBJECT>>"):
             d = kv_pairs(s.split(">>", 1)[1])
-            cur_hist = {"Obj Id": d.get("Obj Id"), "Selection Opt": d.get("Selection Opt"),
+            cur_hist = {"fase": fase, "Obj Id": d.get("Obj Id"), "Selection Opt": d.get("Selection Opt"),
                         "Explosive Frac": d.get("Explosive Frac"), "Area": d.get("Area(km^2)"),
                         "Count": d.get("Count"), "Kd Group": d.get("Kd Group"),
                         "criterio_cumplido": 0, "rama": "", "seleccionado": 0}
@@ -182,6 +202,7 @@ def parse_log(path):
             if cur_hist is not None:
                 cur_hist["criterio_cumplido"] = 1
                 cur_hist["criterio_txt"] = s
+                cur_hist["criterio_tipo"] = s.split(" for ")[1].split()[0] if " for " in s else ""
         elif s.startswith("***SELECTED object"):
             oid = re.findall(r"\d+", s)
             for h in historia:
@@ -260,6 +281,7 @@ def parse_log(path):
             frame[k] = " | ".join(frame[k])
     for p in plumas:
         p["msgs"] = " | ".join(p["msgs"])
+        p.pop("_rgb", None)
     return frame, plumas, historia, grupos
 
 
@@ -280,6 +302,9 @@ def main():
     logdir, outdir, tag = sys.argv[1], sys.argv[2], sys.argv[3]
     os.makedirs(outdir, exist_ok=True)
     files = sorted(glob.glob(os.path.join(logdir, "geocatASHOBJ.*.A?_I?_H?_S?.log")))
+    if len(sys.argv) >= 6:
+        lo, hi = sys.argv[4], sys.argv[5]
+        files = [f for f in files if lo <= re.search(r"\.(\d{6})\.A[YN]_", os.path.basename(f)).group(1) <= hi]
     cuadros, P, H, G = [], [], [], []
     for f in files:
         fr, pl, hi, gr = parse_log(f)

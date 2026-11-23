@@ -1,0 +1,8 @@
+caso,hora,n,clasificacion,btd_tend_n,pix,en_rasgo_previo_n,area_km2,hist_method,cur_method,Group Index,History Index,Time Diff(s),cl Always Alert Flag,cl Missing History Count,cl Time Trend Count,cl K-d Overlap Count
+kirishima,201730,1,New Volcanic Feature,0,8,0,44.11,1,1,1,NA,NA,0,0,8,0
+kirishima,204730,1,Old Volcanic Feature,0,9,0,49.61,1,1,1,1,1800,0,0,9,0
+kirishima,205000,1,Old Volcanic Feature,0,11,11,60.63,1,1,1,2,152,0,0,11,11
+kirishima,205230,1,Old Volcanic Feature,0,4,4,22.04,1,1,1,3,154,0,0,4,4
+kirishima,205500,1,Old Volcanic Feature,0,4,4,22.04,1,1,1,4,147,0,0,4,4
+kirishima,205730,1,Old Volcanic Feature,0,5,4,27.55,1,1,1,5,147,0,0,5,4
+kirishima,210000,1,Old Volcanic Feature,0,13,13,71.65,1,1,1,6,151,0,0,13,13

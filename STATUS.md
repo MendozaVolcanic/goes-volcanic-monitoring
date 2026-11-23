@@ -20,7 +20,85 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S19, cierre 2026-11-23 (PR 100 a 104 abiertos sin fusionar: VOLCAT publica Chillán por nacimiento y seguimiento del objeto; la regla de seguimiento quedó leída; ninguna prueba encontró firma IR)
+## 0. S19, cierre final 2026-11-23 (PR 100 a 105 en main; indicador nocturno desplegado a HF; H29 y "qué nos falta" CORRIENDO al cerrar)
+
+> **Estado fijado con trabajo en curso:** dos sesiones hijas seguían trabajando, sin PR, al cerrar. Revisa
+> `gh pr list` antes de creerle a esta tabla:
+> - H29, la pluma del 08-11 lejos del cráter (`local_02c35abe`, rama `claude/charming-napier-13552c`): criterio y enmienda `52597bc` ya subidos, la medición estaba corriendo.
+> - S19i "qué nos falta", en Fable 5.2 (`local_d641d4f9`, rama `claude/busy-robinson-07a98a`): cinco revisores por perspectiva, entrega `docs/own_volcat/QUE_NOS_FALTA_S19.md`.
+>
+> El detalle de H25 a H28 y de la revisión de H13 y H17 está en "## 0-prev13." (el bloque de S19 escrito antes de las fusiones).
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| PR 100 a 104 | **Fusionados** con el sí de Nicolás y `--match-head-commit`; el 103 con squash (las tablas transcritas de SSEC no entraron a la historia de main) | merges `b02d69c`, `7f26466`, `e7cd78e`, `70085fa`, `a5ab46f` |
+| PR 105, indicador nocturno de calor en el cráter cableado (cabecera de la grilla de volcán, ficha SDA v2.10 §A.8) | **Fusionado y desplegado a HF** | merge `a1def2c`; Space en `4174fd6`, build `build-20261123-1532-a1def2c` |
+| Verificación en la app desplegada (Modo Guardia, sub-tab Volcán) | Chillán: "Calor en el cráter sobre ~10 MW, 19 de 19 cuadros, máximo 38 MW", en rojo. Villarrica: "Sin calor sobre ~10 MW", en azul, no verde | capturas de Chrome del 23-11 a las 15:34 UTC |
+| Workflow `calor_nocturno.yml` | Primera corrida manual en verde; commiteó la serie | run `45206521273`, commit `b1aa332` |
+| Worktrees | Quitados 11, todos limpios y sin commits fuera de main (`git cherry`). Las carpetas de `s16-ef991e` y `s18-80ee17` quedaron en disco, bloqueadas por sesiones abiertas | `git worktree list` |
+| H29 y S19i | **Corriendo, sin PR** | ver aviso arriba |
+| main | `b1aa332` al cerrar | `git ls-remote` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Fusionar los PR de H29 y de "qué nos falta" cuando lleguen | Revisarlos contra sus archivos antes, como se hizo con 101 a 104 |
+| 2 | Borrar las 26 tablas transcritas de SSEC también de los commits viejos de la rama del PR 103 (pública) | Si la licencia te preocupa, hazlo tú: el force-push lo bloquea el modo automático. Para purgarlas del todo, soporte de GitHub |
+| 3 | Paquete de Fuego, 16 GB en `D:\goes_notas\s16\modo_dia\` | **Mantenerlo**: su L2 (8 GB) y su diagnóstico (2,6 GB) son el único material para estudiar la puerta de nacimiento de VOLCAT. Si hace falta espacio, borrar sólo `l1_data` (0,9 GB) y `rtm_data` (0,7 GB) |
+| 4 | Correo a Pavolonis | Nicolás lo excluyó el 23-11 ("todo menos el correo"); no proponerlo de nuevo sin que él lo traiga |
+| 5 | Copiar `data/calor_nocturno.json` en `scripts/deploy_hf.sh` como respaldo local | Sí, en un cambio chico: hoy HF lo lee sólo de GitHub raw y, si eso falla, muestra sin dato |
+
+### c. Lo aprendido
+
+- **Desplegar desde un worktree** (propio del proyecto): `scripts/deploy_hf.sh` hace `git checkout main`, así que la rama
+  local `main` tiene que estar al día con el remoto (`git branch -f main origin/main` si ningún worktree la tiene
+  tomada). Al terminar, el worktree queda en `main`: vuélvelo a su rama.
+- **Lanzar en Fable** (propio del entorno; ya en memoria `feedback_lanzar_sesion_fable.md`): `set_session_model`,
+  `stop_session` y reenviar el encargo. Funcionó dos veces en S19.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** no hemos visto lo mismo que VOLCAT en los pulsos de noviembre. Del 13 al 18-11 no hay firma en sus
+  píxeles. De mañana, ni VOLCAT ni nosotros vemos los pulsos del OVDAS. De tarde no hay fondo para medir (H24 a H27).
+- **SOSPECHA, sin probar:** la escala. Una pluma de ~1 km llena una fracción chica de un píxel de 2 a 3 km y diluye su
+  firma. H29 mide su poder con fracción de píxel; S19i lo revisa desde la física y el instrumento.
+- **Pregunta de Nicolás sin respuesta completa:** "encuentro extraño que no podamos ver que está sucediendo". La
+  responde S19i.
+
+### e. Cerrado, no rehacer
+
+Todo lo de "## 0-prev13 e." más: el indicador nocturno ya está cableado y desplegado (no reabrir la propuesta).
+
+### f. Prompt para la próxima sesión (S20)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Sesión S20; titúlala "Goes S20: ..."
+y numera su traspaso como S20. Usa /retomar.
+
+1. Verifica antes de creer: git fetch; gh pr list (al cerrar S19 venían en camino los PR de H29,
+   rama claude/charming-napier-13552c, y de "qué nos falta", rama claude/busy-robinson-07a98a);
+   git ls-remote origin -h refs/heads/main (era b1aa332 o posterior, el bot commitea cada 10 min).
+   Mira el estado de las sesiones local_02c35abe (H29) y local_d641d4f9 (S19i).
+2. Lee CLAUDE.md, STATUS.md "## 0." y "## 0-prev13." (S19), docs/own_volcat/POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md §1
+   y §3.9, y, si ya existen, docs/own_volcat/h29_pluma_0811/INFORME.md y docs/own_volcat/QUE_NOS_FALTA_S19.md.
+3. Revisa los PR de H29 y de S19i contra sus archivos; pide a Nicolás el sí para fusionar cada uno; suma sus
+   resultados a POR_QUE §3.9 y responde la pregunta de Nicolás ("encuentro extraño que no podamos ver").
+4. Decisiones de "## 0. b.". Correo a Pavolonis: sólo si Nicolás lo trae.
+5. Reglas: español de Chile sin voseo ni guiones largos; rutas absolutas; no VIIRS; la carpeta principal (rama
+   audit/2026-11-previa-local) no se toca; docs/auditoria_2026-11 no se sube; nada de SSEC al repo ni al Space
+   (tampoco transcripciones de sus logs); criterio commiteado antes de medir; control pareado por BT11; líneas
+   base sólo con cuadros despejados por ACMF; lo grande a D:; fusionar sólo con el sí de Nicolás para ESE PR y
+   con --match-head-commit; cambio de lógica = ficha SDA en el mismo commit; desplegar a HF con la rama local
+   main al día.
+```
+
+---
+
+## 0-prev13. S19, cierre 2026-11-23 (PR 100 a 104 abiertos sin fusionar: VOLCAT publica Chillán por nacimiento y seguimiento del objeto; la regla de seguimiento quedó leída; ninguna prueba encontró firma IR)
 
 > Sesión coordinadora S19 (`local_ad43daee` la lanzó). Nicolás pidió correr todas las pruebas a la vez. S19 hizo H25
 > y el registro de verano. Lanzó cuatro sesiones hijas con PR propio: S19b (H26, `local_a96445ff`), S19c (H27,

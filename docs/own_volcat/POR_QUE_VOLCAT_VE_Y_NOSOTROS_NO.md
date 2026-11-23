@@ -703,10 +703,11 @@ Todas están en main (PR 100 a 107; H29 fusionado el 23-11 en S20, merge `789156
 | H29 | ¿La pluma del 08-11 lejos del cráter (> 30 km, 17 píxeles-cuadro) tiene firma en 11 y 12 µm? | **SEÑAL por la regla** en la BTD pareada por BT11 y cota del mismo cuadro: −0,37 K, bajo los 17 días nulos y p 0,005 en 1.961 huellas corridas. Equivale a f·ε ≈ 0,12 (pluma tenue o angosta). Atribución a la pluma: SOSPECHA (bandas meteorológicas de igual amplitud esa tarde; la BTD baja empieza 50 min antes que VOLCAT en esas posiciones) | `h29_pluma_0811/` (PR 107) |
 | S20b, prueba 1 | Con la huella de la pluma medida por Sentinel-2 (08-11 14:53) y Landsat 8 (25-10 14:34), llevada a la grilla ABI con su paralaje, ¿deja firma en el píxel de GOES-19? | **SEÑAL** los dos días en la BTD pareada (M1) y en la BT11 contra su anillo (M2), contra el mismo píxel en 6 días despejados y contra la huella corrida (p ≤ 0,012; ensayo en seco 0 de 6). La pluma llena 18 % (25-10) y 43 % (08-11) de un píxel; ese píxel queda 0,97 y 0,84 K más bajo en 11 − 12 µm y 3,8 y 7,3 K más frío que su anillo. El 08-11 calza con ceniza de ε11 ≈ 0,5. Post hoc: una capa gris no reproduce M1 (la firma es espectral), ningún otro día despejado deja el píxel tan bajo, y cumbres de igual cota tampoco (p ≤ 0,023). VOLCAT no dibujó la bocanada a las 14:40 ni a las 14:50; sí a las 15:00. Prueba 2 (ventana partida a 100 y 70 m) pendiente de credenciales | `s20b_verdad_alta_res/` |
 | Revisión S20 de H29 | ¿La BTD baja se mueve con la huella de VOLCAT cuadro a cuadro? | Código propio: M1 se reproduce (−0,3725 K). Seguimiento: a > 30 km **no concluyente** (−0,23 K, p 0,095; potencia 1,0); a > 15 km, como sensibilidad, **sí sigue** (−0,48 K, p < 0,0001, 35 cuadros). Descarta una banda quieta; no separa ceniza de una nube que VOLCAT siga desde el cráter. Atribución: **SOSPECHA reforzada** | `revision_s20_h29/` |
+| S20c | ¿Las pruebas pareadas viejas (paso 2, H3, β73, Londres, H13, H11/H12) salieron "sin firma" porque sus controles tenían pluma? | **SIN PODER** en H3, H13 y H11/H12; paso 2, β73 y Londres **inválidas** (nulo degenerado, decidido en seco). Antes de medir se vio la causa de MET-01: los días con VOLCAT son los despejados (ACMF de tarde: 57 a 67 % contra 4 a 7 % en días sin actividad) y el pozo limpio está 9 K más frío, así que la regla vieja no podía dar controles limpios. Con línea base limpia y placebo de días libres despejados, la BTD de la huella queda 0,23 a 0,42 K bajo el placebo en las seis, 0,15 a 0,25 K más que con el control viejo en las válidas (ε ≈ 0,13 a 0,16), pero p 0,054 a 0,072 con poder 0,06 a 0,16 a ε 0,10. Los controles viejos se comportan como positivos (huella contra anillo: p 0,001 en H3 y H11/H12). El cambio en 10 min (H13) sigue en el azar. Lectura: apunta a control contaminado, sin demostrarlo; el "sin firma" de esas pruebas no se lee como ausencia | `s20c_controles_limpios/` |
 
 Lo que queda abierto: la puerta de nacimiento de VOLCAT (H28 §1), los pulsos de tarde con fondo propio (verano,
 `h24_verano/REGISTRO_PROSPECTIVO.md`), una pluma angosta en E6 (H25), repetir H29 sin cambiar la regla en otro evento
-con píxeles lejanos, repetir las pruebas pareadas con controles de antes de la actividad (ver el párrafo siguiente),
+con píxeles lejanos, repetir las pruebas pareadas con más días despejados en los dos lados (S20c quedó sin poder; el verano es la ocasión),
 la ventana partida a 100 y 70 m (S20b, prueba 2) y sumar pasadas finas como verdad periódica
 (`HOJA_DE_RUTA_VERDAD_ALTA_RESOLUCION.md`).
 
@@ -721,6 +722,10 @@ libre), así que no había alternativa dentro de 3 K. Consecuencia: los "sin fir
 heredan sus pares (H11, H12) compararon pluma contra un volcán que también emitía, y no pueden leerse como ausencia de
 firma. La prueba que lo resuelve sin bajar nada: repetir las variables de 11 y 12 µm con controles del 21-09 al 23-10
 (cubos de H23 en `D:\goes_notas\s17\h23\`), con criterio antes de medir.
+**Hecho en S20c** (`s20c_controles_limpios/INFORME.md`): la regla de pareo no admite controles limpios (el pozo de
+septiembre y octubre está 9 K más frío y los días sin actividad casi nunca están despejados de tarde); con línea base
+limpia y placebo, la diferencia crece hacia la ceniza en las seis pruebas y los controles viejos se parecen a los
+positivos, pero sin poder para afirmarlo con la regla escrita (p 0,054 a 0,072; tres pruebas inválidas por nulo degenerado).
 
 **Revisión de las líneas base contra la máscara de nubes (S19e, PR 104).** H13 sigue en pie: con sólo pares
 despejados en los ocho cuadros (30 pares), la mejor de 18 variables da AUC 0,604, lo que da el azar. H17 se debilita

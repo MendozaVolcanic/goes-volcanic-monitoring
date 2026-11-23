@@ -480,7 +480,7 @@ def medir():
 
 def resumen(res):
     f = lambda x, n=3: "nan" if x is None or not np.isfinite(x) else f"{x:+.{n}f}"  # noqa: E731
-    L = ["S20c: controles limpios. Criterio b06c711 + enmienda 1 (antes de medir)", ""]
+    L = ["S20c: controles limpios. Criterio b06c711 + enmiendas 1 y 2 (antes de medir, 5f295a5)", ""]
     for nombre, v in res["variantes"].items():
         L.append(f"== {nombre}")
         for p in PRUEBAS:

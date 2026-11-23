@@ -40,3 +40,16 @@ ensayo: `resultados/seco_0411.log`.
 Nada más cambia: medidas, población, huella, nulo B, pluma de referencia (f = 0,4, ε11 = 0,5) y umbral de potencia
 (0,8) son los del criterio. Se repite el ensayo en seco con estos cambios antes de medir el 08-11; si el 04-11 sale
 SEÑAL o SOSPECHA, se dice y no se vuelve a cambiar la regla.
+
+## Agregado informativo (también antes de medir el 08-11, no cambia el veredicto)
+
+El segundo ensayo en seco (`resultados/seco_0411_enmienda1.log`, `resultados/seco_0411.json`) da falsas alarmas de
+1 de 16 (M1) y 1 de 17 (M2), y el 04-11 sale NO CONCLUYENTE en M1 (segundo más bajo de 17, p = 0,052) y SIN PODER en
+M2. No sale SEÑAL. Pero la potencia con todo cielo es muy baja: M1 0,25 y M2 0,06 para la pluma de referencia, y no
+pasa de 0,25 y 0,12 ni con una capa casi opaca que llena el píxel, porque en la mayoría de los días nulos la capa queda
+oculta bajo nube más fría. Por eso se agrega, **sólo como información**:
+
+- **Potencia en el propio 08-11 contra el nulo B:** se pinta cada (f, ε) de la grilla en los píxeles lejanos del 08-11
+  y se informa el percentil del estadístico pintado entre los corrimientos sin pintar del mismo día. Dice si, con el
+  cielo de ese día, la pluma de referencia habría quedado en el 5 % más bajo.
+- **Fracción de píxeles-cuadro lejanos del 08-11 donde la capa sería visible** (BT11 observada > T_tope).

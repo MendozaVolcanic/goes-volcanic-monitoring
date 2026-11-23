@@ -249,6 +249,20 @@ def correr(M, dia_ev, variante, dmin, dmax, potencia=True, nulo_b=True):
             out[f"corr_{k}_validos"] = int(len(eb))
             out[f"corr_{k}_cuartiles"] = [round(float(q), 3) for q in np.percentile(eb, [5, 25, 50, 75, 95])] if len(eb) else []
             out[f"p_{k}"] = float(np.mean(eb <= out[f"E_{k}"])) if (len(eb) >= MIN_CORR and np.isfinite(out[f"E_{k}"])) else np.nan
+            out[f"_eb_{k}"] = eb
+        if potencia:   # informativo (agregado de la enmienda 1): potencia en el propio dia contra el nulo B
+            vis = [float(M.bt11[dia_ev, s, p]) > M.Tgfs[dia_ev, s, M.alturas.index(round(hk * 1000))] for s, p, hk in pc]
+            out["frac_visible_dia_ev"] = round(float(np.mean(vis)), 3)
+            pb = {}
+            for f in F_GRID:
+                for eps in E_GRID:
+                    i1, i2, _, _ = M.estadistico(dia_ev, pc, ex4, ex1, iny=(f, eps))
+                    pb[f"{f:.1f}x{eps:.1f}"] = {k: (round(float(np.mean(out[f"_eb_{k}"] <= iv)), 3)
+                                                     if (np.isfinite(iv) and len(out[f"_eb_{k}"])) else None)
+                                                 for k, iv in (("M1", i1), ("M2", i2))}
+            out["p_pintado_dia_ev"] = pb
+        for k in ("M1", "M2"):
+            out.pop(f"_eb_{k}", None)
     if potencia:
         grid = {}
         for f in F_GRID:

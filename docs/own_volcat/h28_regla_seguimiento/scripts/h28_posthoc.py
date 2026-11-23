@@ -9,6 +9,10 @@ puedan repetir).
   4. Chillan: atraso de produccion de cada archivo (hora de creacion menos hora de la
      imagen) contra los huecos de la cadena, y saltos de la cadena del 14-11 12:40.
 
+Lee las tablas de pares de <carpeta_tablas> (fuera del repositorio, en
+D:/goes_notas/s19/h28/tablas/). Escribe solo conteos y la tabla de atrasos (hora de imagen y
+minutos de atraso), que son propios y si se commitean.
+
 Uso:
   python -I h28_posthoc.py <carpeta_tablas> <carpeta_eventos_chillan> <salida.json> \
          <logs_kirishima> <logs_fuego> <logs_mauna_loa>
@@ -19,7 +23,6 @@ import os
 import re
 import sys
 
-import numpy as np
 import pandas as pd
 
 

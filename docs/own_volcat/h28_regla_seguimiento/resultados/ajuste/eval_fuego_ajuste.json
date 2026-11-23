@@ -97,26 +97,7 @@
   "T4a_cumple": "sin dato",
   "T4b_aciertos": 1,
   "T4b_exactitud_balanceada": null,
-  "detalle": [
-   {
-    "hora": 164600,
-    "veredicto": "ELIMINATING",
-    "vol_idx": 1214.0,
-    "bulk": "FAILED",
-    "contraste_sin_dist": "FAILED",
-    "contraste_con_dist": "PASSED",
-    "ruido_nube": "PASSED",
-    "obj_pix_total": 2.0,
-    "Time Trend Count": 2,
-    "Robust Time Trend Count": 2,
-    "New Emission Count": 0,
-    "BTD Bullseye Count": 2,
-    "Dynamic Corr Count": 0,
-    "Spatial/Spectral Corr Count": 1,
-    "Min Plume Distance": 33.0,
-    "msgs": null
-   }
-  ]
+  "detalle_en": "D:/goes_notas/s19/h28/resultados/ (no esta en el repo: transcribe lineas de log de SSEC)"
  },
  "clasificados_por_tipo": {
   "ice": 7,
@@ -130,60 +111,9 @@
   "new_con_kd": 1,
   "contradicen": 1,
   "posthoc_new_sii_sin_historia": 5,
-  "detalle": [
-   {
-    "hora": 174600,
-    "clasificacion": "New Volcanic Feature",
-    "History Index": null,
-    "Time Diff(s)": null,
-    "pix": 21,
-    "en_rasgo_previo_n": 21,
-    "cl Time Trend Count": 21,
-    "cl K-d Overlap Count": 21
-   },
-   {
-    "hora": 180100,
-    "clasificacion": "Old Volcanic Feature",
-    "History Index": 1.0,
-    "Time Diff(s)": 900.0,
-    "pix": 143,
-    "en_rasgo_previo_n": 143,
-    "cl Time Trend Count": 143,
-    "cl K-d Overlap Count": 143
-   },
-   {
-    "hora": 181600,
-    "clasificacion": "Old Volcanic Feature",
-    "History Index": 2.0,
-    "Time Diff(s)": 900.0,
-    "pix": 267,
-    "en_rasgo_previo_n": 267,
-    "cl Time Trend Count": 267,
-    "cl K-d Overlap Count": 267
-   },
-   {
-    "hora": 183100,
-    "clasificacion": "Old Volcanic Feature",
-    "History Index": 3.0,
-    "Time Diff(s)": 900.0,
-    "pix": 482,
-    "en_rasgo_previo_n": 459,
-    "cl Time Trend Count": 482,
-    "cl K-d Overlap Count": 459
-   },
-   {
-    "hora": 184600,
-    "clasificacion": "Old Volcanic Feature",
-    "History Index": 4.0,
-    "Time Diff(s)": 900.0,
-    "pix": 747,
-    "en_rasgo_previo_n": 643,
-    "cl Time Trend Count": 747,
-    "cl K-d Overlap Count": 643
-   }
-  ],
   "otras_clases": {},
-  "cumple": false
+  "cumple": false,
+  "detalle_en": "D:/goes_notas/s19/h28/resultados/ (no esta en el repo: transcribe lineas de log de SSEC)"
  },
  "T7": {
   "filas": 27,

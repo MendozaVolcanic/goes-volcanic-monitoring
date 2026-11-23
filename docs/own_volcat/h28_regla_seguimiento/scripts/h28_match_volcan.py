@@ -3,6 +3,9 @@
 Por cada volcan evaluado en cada cuadro guarda los dos numeros del renglon resumen
 ("<nombre>  v1  v2"), cuantos objetos se evaluaron, el mejor FINAL y si hubo MATCH.
 
+La salida transcribe lineas de log de SSEC: va FUERA del repositorio
+(D:/goes_notas/s19/h28/tablas/). No commitearla.
+
 Uso: python -I h28_match_volcan.py <carpeta_logs> <salida.csv> <etiqueta> [hora_min hora_max]
 No decide nada del dashboard: ordena lo que el log de SSEC imprime.
 """

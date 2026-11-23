@@ -7,6 +7,9 @@ renglon por objeto mezclaba el tiempo de un par con el umbral refinado del otro.
 es un renglon, con la marca "Temporal selection criteria met" puesta en el par tras el cual se
 imprime.
 
+La salida transcribe lineas de log de SSEC: va FUERA del repositorio
+(D:/goes_notas/s19/h28/tablas/). No commitearla.
+
 Uso: python -I h28_pares_historia.py <carpeta_logs> <salida.csv> <etiqueta> [hora_min hora_max]
 """
 import csv, glob, os, re, sys

@@ -3,13 +3,14 @@
 de VOLCAT (pruebas C0 a C5 de 01_REGLA_Y_CRITERIO.md).
 
 Uso:
-  python -I h28_chillan.py <carpeta_eventos> <patron_nc> <cadencia_s> <salida_prefijo>
+  python -I h28_chillan.py <carpeta_eventos> <patron_nc> <cadencia_s> <tabla_cuadros.csv> <resumen.json>
 
   <patron_nc>  por ejemplo "VOLCAT-FD-vid357070_*.nc" (Chillan) o "VOLCAT-JP-vid282090_*.nc"
                (Kirishima, control positivo: el log dice cuales son nacimientos).
 
-Escribe <salida_prefijo>_cuadros.csv (un renglon por cuadro, numeros propios; no copia el
-archivo de SSEC) y <salida_prefijo>_resumen.json.
+Escribe <tabla_cuadros.csv> (un renglon por cuadro con campos del archivo de evento: va
+FUERA del repositorio, en D:/goes_notas/s19/h28/resultados/, porque transcribe datos de
+SSEC de licencia restringida) y <resumen.json> (conteos propios: ese si se commitea).
 
 FICHA SDA (Res. CPLT 372): este script no clasifica ni decide nada del dashboard. Lee
 archivos de evento publicados por SSEC/CIMSS y cuenta si son compatibles con una regla
@@ -40,7 +41,7 @@ def epoch_from_name(name):
 
 
 def main():
-    d, pat, cad, pref = sys.argv[1], sys.argv[2], float(sys.argv[3]), sys.argv[4]
+    d, pat, cad, sal_tabla, sal_resumen = sys.argv[1], sys.argv[2], float(sys.argv[3]), sys.argv[4], sys.argv[5]
     files = sorted(glob.glob(os.path.join(d, pat)))
     rows, huellas = [], []
     for f in files:
@@ -100,7 +101,6 @@ def main():
     # ---- cadenas
     T["nacimiento"] = T.edad_min.abs() < 0.05
     T["cadena"] = T.t_inicio_primera
-    idx_por_t = {(c, t): i for i, (c, t) in enumerate(zip(T.cadena, T.t_inicio))}
     T["tiene_anterior"] = False
     T["dt_anterior_s"] = np.nan
     T["dist_huella_anterior_km"] = np.nan
@@ -155,8 +155,8 @@ def main():
     expl = cont[cont.tiene_anterior & (cont.dist_huella_anterior_km <= 0.05 * cont.dt_anterior_s)]
     res["explicadas_por_B"] = {"continuaciones": int(len(cont)), "explicadas": int(len(expl)),
                                "fraccion": float(len(expl) / len(cont)) if len(cont) else None}
-    T.drop(columns=["archivo"]).to_csv(pref + "_cuadros.csv", index=False)
-    json.dump(res, open(pref + "_resumen.json", "w"), indent=1, ensure_ascii=False)
+    T.drop(columns=["archivo"]).to_csv(sal_tabla, index=False)
+    json.dump(res, open(sal_resumen, "w"), indent=1, ensure_ascii=False)
     print(json.dumps(res, indent=1, ensure_ascii=False))
 
 

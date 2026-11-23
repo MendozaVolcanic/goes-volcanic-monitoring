@@ -12,8 +12,15 @@ abrir los datos de prueba). Lo decidido después de ver los datos de prueba est�
 
 Los archivos nombrados sin ruta completa están en
 `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\xenodochial-pare-413fc0\docs\own_volcat\h28_regla_seguimiento\`
-(en el repositorio: `docs/own_volcat/h28_regla_seguimiento/`). Ningún archivo de SSEC está en el
-repositorio: sólo tablas propias con los números de los bloques de decisión.
+(en el repositorio: `docs/own_volcat/h28_regla_seguimiento/`).
+
+**Qué está en el repositorio y qué no.** En el repositorio quedan los scripts, las evaluaciones
+agregadas (`eval_*.json`, `*_resumen.json`, `posthoc.json`), la tabla de atrasos de producción y el
+listado de NOAA. Las tablas que transcriben fila por fila líneas de los logs o campos de los archivos
+de evento de SSEC **no están en el repositorio porque transcriben datos de SSEC de licencia
+restringida** (decisión de Nicolás, 23-11-2026). Están en `D:\goes_notas\s19\h28\resultados\`, con la
+misma estructura de carpetas (`ajuste`, `prueba`, `posthoc`): 26 archivos CSV, más las cuatro
+evaluaciones completas con sus filas de detalle.
 
 ## 1. Para geólogo
 
@@ -185,7 +192,7 @@ y 20:47 y continuaciones de 20:50 a 21:00, igual que el log
 Continuaciones explicadas por la puerta de seguimiento: 51 de 56 (91,1 %), sobre el 90 % que pedía
 el criterio: **COMPATIBLE**.
 
-Cadenas (`resultados/prueba/eventos_chillan_cuadros.csv`):
+Cadenas (`D:\goes_notas\s19\h28\resultados\prueba\eventos_chillan_cuadros.csv`, fuera del repositorio):
 
 | Nace (UTC) | Tipo | Cuadros | Distancia mínima al cráter al nacer | Lo que se ve |
 |---|---|---|---|---|
@@ -200,7 +207,8 @@ creación del archivo menos hora de la imagen. Los 5 cuadros seguidos de un huec
 
 ### 2.6 Lo que se leyó de la puerta de nacimiento (ajuste, 14 candidatas)
 
-`resultados/ajuste/kirishima_plumas.csv` y `fuego_ajuste_plumas.csv`.
+`D:\goes_notas\s19\h28\resultados\ajuste\kirishima_plumas.csv` y
+`D:\goes_notas\s19\h28\resultados\ajuste\fuego_ajuste_plumas.csv` (fuera del repositorio).
 
 - 12 eliminadas, 2 aceptadas (Kirishima 20:17:30 y 20:47:30). Las 2 aceptadas pasan "detailed
   spatial contrast testing without distance check"; 11 de las 12 eliminadas la fallan.
@@ -297,10 +305,13 @@ python -I scripts\h28_match_volcan.py %F% %T%\fuego_prueba_match.csv fuego_prueb
 python -I scripts\h28_evaluar_logs.py %T% fuego_prueba %F% 900 190000 235959
 python -I scripts\h28_evaluar_logs.py %T% mauna_loa %M% 300
 python -I scripts\h28_pares_historia.py %F% %T%\fuego_prueba_pares.csv fuego_prueba 190000 235959
-python -I scripts\h28_chillan.py D:\goes_notas\busqueda_2026-11-20\volcat_eventos_357070 "VOLCAT-FD-vid357070_*.nc" 600 resultados\prueba\eventos_chillan
+python -I scripts\h28_chillan.py D:\goes_notas\busqueda_2026-11-20\volcat_eventos_357070 "VOLCAT-FD-vid357070_*.nc" 600 D:\goes_notas\s19\h28\resultados\prueba\eventos_chillan_cuadros.csv resultados\prueba\eventos_chillan_resumen.json
 python -I scripts\h28_posthoc.py %T% D:\goes_notas\busqueda_2026-11-20\volcat_eventos_357070 resultados\posthoc\posthoc.json %K% %F% %M%
 ```
 
 Los otros casos de `h28_match_volcan.py` y `h28_pares_historia.py` se corren igual cambiando la
 carpeta, la etiqueta y el rango de horas. Las tablas de trabajo quedan en
-`D:\goes_notas\s19\h28\tablas\` (2 MB) y sus copias en `resultados\`.
+`D:\goes_notas\s19\h28\tablas\` (2 MB) y sus copias en `D:\goes_notas\s19\h28\resultados\`. Ninguna de
+las dos carpetas va al repositorio, porque transcriben datos de SSEC. Para que el evaluador escriba
+las filas de detalle de T4 y T5 hay que poner la variable de entorno `H28_DETALLE=1`; lo que se
+commitea va sin ellas.

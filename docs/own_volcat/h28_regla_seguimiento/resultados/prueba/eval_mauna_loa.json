@@ -106,50 +106,9 @@
   "new_con_kd": 1,
   "contradicen": 1,
   "posthoc_new_sii_sin_historia": 4,
-  "detalle": [
-   {
-    "hora": 94600,
-    "clasificacion": "New Volcanic Feature",
-    "History Index": null,
-    "Time Diff(s)": null,
-    "pix": 30,
-    "en_rasgo_previo_n": 30,
-    "cl Time Trend Count": 30,
-    "cl K-d Overlap Count": 30
-   },
-   {
-    "hora": 95100,
-    "clasificacion": "Old Volcanic Feature",
-    "History Index": 1.0,
-    "Time Diff(s)": 300.0,
-    "pix": 63,
-    "en_rasgo_previo_n": 63,
-    "cl Time Trend Count": 63,
-    "cl K-d Overlap Count": 63
-   },
-   {
-    "hora": 95600,
-    "clasificacion": "Old Volcanic Feature",
-    "History Index": 2.0,
-    "Time Diff(s)": 300.0,
-    "pix": 93,
-    "en_rasgo_previo_n": 92,
-    "cl Time Trend Count": 93,
-    "cl K-d Overlap Count": 92
-   },
-   {
-    "hora": 100130,
-    "clasificacion": "Old Volcanic Feature",
-    "History Index": 3.0,
-    "Time Diff(s)": 304.0,
-    "pix": 118,
-    "en_rasgo_previo_n": 118,
-    "cl Time Trend Count": 118,
-    "cl K-d Overlap Count": 118
-   }
-  ],
   "otras_clases": {},
-  "cumple": false
+  "cumple": false,
+  "detalle_en": "D:/goes_notas/s19/h28/resultados/ (no esta en el repo: transcribe lineas de log de SSEC)"
  },
  "plumas_fuertes": {
   "match": 0,

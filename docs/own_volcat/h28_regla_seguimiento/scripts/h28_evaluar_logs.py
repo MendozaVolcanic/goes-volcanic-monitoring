@@ -7,6 +7,11 @@ Uso:
   python -I h28_evaluar_logs.py <carpeta_tablas> <etiqueta> <carpeta_logs> <cadencia_s> [hora_min hora_max]
 
 Imprime un JSON con el resultado de cada prueba. No decide nada del dashboard.
+
+Las tablas de entrada transcriben lineas de log de SSEC y NO estan en el repositorio:
+viven en D:/goes_notas/s19/h28/tablas/ (copia en D:/goes_notas/s19/h28/resultados/).
+Por la misma razon, las filas de detalle de T4 y T5 solo se escriben si la variable de
+entorno H28_DETALLE vale 1; la salida que se commitea va sin ellas.
 """
 import glob
 import json
@@ -181,6 +186,10 @@ def main():
         s = M[(M.seccion == "strong")]
         out["plumas_fuertes"] = {"match": int((s.match == 1).sum()), "no_match": int((s.match == 0).sum()),
                                  "eliminadas_por_falta_de_actividad": int(s.volcan.astype(str).str.contains("falta de actividad").sum())}
+    if os.environ.get("H28_DETALLE") != "1":
+        for k in ("T4", "T5"):
+            if isinstance(out.get(k), dict):
+                out[k].pop("detalle", None)
     print(json.dumps(out, indent=1, ensure_ascii=False))
 
 

@@ -15,6 +15,8 @@ decide algo sobre un objeto de ceniza:
                   alertas, de grupos validos sin alerta, MATCH de pluma por volcan.
 
 No copia el log: guarda solo los numeros de los bloques de decision.
+Aun asi son transcripciones fila por fila de lineas de log de SSEC: la <carpeta_salida> va
+FUERA del repositorio (D:/goes_notas/s19/h28/tablas/). No commitear esas tablas.
 
 Uso:
   python -I h28_parse_logs.py <carpeta_logs> <carpeta_salida> <etiqueta> [hora_min hora_max]

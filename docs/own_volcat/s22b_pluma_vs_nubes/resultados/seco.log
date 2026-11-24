@@ -1,0 +1,107 @@
+datos listos en 2 s; días de desarrollo con clase: 31; cuadros para nublado de costumbre por hora: mín 53, máx 239
+S calculado en 33 s
+{
+ "fa_media_por_dia": 0.031693384424476854,
+ "fa_pozo": 0.03638644918444166,
+ "aprobado": true,
+ "por_hora": {
+  "00-02 UTC": {
+   "n": 116,
+   "fa": 0.0603448275862069
+  },
+  "03-05 UTC": {
+   "n": 168,
+   "fa": 0.06547619047619048
+  },
+  "06-08 UTC": {
+   "n": 221,
+   "fa": 0.02262443438914027
+  },
+  "09-11 UTC": {
+   "n": 116,
+   "fa": 0.04310344827586207
+  },
+  "12-14 UTC": {
+   "n": 64,
+   "fa": 0.0
+  },
+  "15-17 UTC": {
+   "n": 41,
+   "fa": 0.024390243902439025
+  },
+  "18-20 UTC": {
+   "n": 25,
+   "fa": 0.0
+  },
+  "21-23 UTC": {
+   "n": 46,
+   "fa": 0.0
+  }
+ },
+ "por_E1": {
+  "despejado": {
+   "n": 784,
+   "fa": 0.036989795918367346
+  },
+  "nublado": {
+   "n": 13,
+   "fa": 0.0
+  }
+ },
+ "horas_sin_umbral": [],
+ "tajada_minimo_en_N": [
+  0.038,
+  0.111,
+  0.079,
+  0.081,
+  0.183,
+  0.077,
+  0.059,
+  0.054,
+  0.03,
+  0.083,
+  0.115,
+  0.09
+ ],
+ "n_N_evaluados": 810,
+ "nube_dinamica_placebo_S22a_12a24": {
+  "mediana": 0.7682198327359617,
+  "frac_pasa_compuerta": 0.16765873015873015
+ },
+ "nube_dinamica_P_VOLCAT": {
+  "n": 100,
+  "mediana": 0.07646356033452807,
+  "max": 0.7825567502986858
+ }
+}
+{'dia': '2026-10-20', 'N': 72, 'N_compuerta': 0, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-10-21', 'N': 144, 'N_compuerta': 0, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-10-22', 'N': 125, 'N_compuerta': 3, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-10-23', 'N': 144, 'N_compuerta': 11, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-10-24', 'N': 99, 'N_compuerta': 3, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-10-25', 'N': 84, 'N_compuerta': 84, 'N_evaluados': 57, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-10-26', 'N': 141, 'N_compuerta': 30, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-10-27', 'N': 90, 'N_compuerta': 79, 'N_evaluados': 32, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-10-28', 'N': 76, 'N_compuerta': 75, 'N_evaluados': 68, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-10-29', 'N': 112, 'N_compuerta': 112, 'N_evaluados': 66, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-10-30', 'N': 136, 'N_compuerta': 49, 'N_evaluados': 18, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-10-31', 'N': 135, 'N_compuerta': 38, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-11-01', 'N': 132, 'N_compuerta': 1, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-11-02', 'N': 135, 'N_compuerta': 70, 'N_evaluados': 22, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-11-03', 'N': 132, 'N_compuerta': 10, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-11-04', 'N': 137, 'N_compuerta': 104, 'N_evaluados': 55, 'disparos': 2, 'fa': 0.03636363636363636}
+{'dia': '2026-11-05', 'N': 138, 'N_compuerta': 99, 'N_evaluados': 60, 'disparos': 19, 'fa': 0.31666666666666665}
+{'dia': '2026-11-06', 'N': 138, 'N_compuerta': 87, 'N_evaluados': 40, 'disparos': 1, 'fa': 0.025}
+{'dia': '2026-11-07', 'N': 100, 'N_compuerta': 100, 'N_evaluados': 94, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-11-08', 'N': 82, 'N_compuerta': 82, 'N_evaluados': 77, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-11-09', 'N': 139, 'N_compuerta': 78, 'N_evaluados': 61, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-11-10', 'N': 106, 'N_compuerta': 32, 'N_evaluados': 1, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-11-11', 'N': 116, 'N_compuerta': 61, 'N_evaluados': 33, 'disparos': 2, 'fa': 0.06060606060606061}
+{'dia': '2026-11-12', 'N': 127, 'N_compuerta': 80, 'N_evaluados': 49, 'disparos': 4, 'fa': 0.08163265306122448}
+{'dia': '2026-11-13', 'N': 117, 'N_compuerta': 44, 'N_evaluados': 10, 'disparos': 0, 'fa': 0.0}
+{'dia': '2026-11-14', 'N': 72, 'N_compuerta': 60, 'N_evaluados': 54, 'disparos': 1, 'fa': 0.018518518518518517}
+{'dia': '2026-11-15', 'N': 130, 'N_compuerta': 0, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-11-16', 'N': 62, 'N_compuerta': 0, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-11-17', 'N': 138, 'N_compuerta': 0, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-11-18', 'N': 114, 'N_compuerta': 14, 'N_evaluados': 0, 'disparos': 0, 'fa': None}
+{'dia': '2026-11-19', 'N': 53, 'N_compuerta': 2, 'N_evaluados': 0, 'disparos': 0, 'fa': None}

@@ -1,0 +1,85 @@
+{
+ "N_evaluados": 200,
+ "disparos": 0,
+ "FA_nuevo": 0.0,
+ "por_dia": [
+  {
+   "dia": "2026-11-22",
+   "cuadros_con_clase": 144,
+   "N": 114,
+   "otro": 30,
+   "P": 0,
+   "con_clase_que_pasan_compuerta": 144,
+   "N_evaluados": 96,
+   "disparos_en_N": 0,
+   "disparos_todos": 0,
+   "tajadas_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "horas_disparos": []
+  },
+  {
+   "dia": "2026-11-23",
+   "cuadros_con_clase": 142,
+   "N": 142,
+   "otro": 0,
+   "P": 0,
+   "con_clase_que_pasan_compuerta": 61,
+   "N_evaluados": 43,
+   "disparos_en_N": 0,
+   "disparos_todos": 0,
+   "tajadas_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "horas_disparos": []
+  },
+  {
+   "dia": "2026-11-24",
+   "cuadros_con_clase": 92,
+   "N": 81,
+   "otro": 11,
+   "P": 0,
+   "con_clase_que_pasan_compuerta": 87,
+   "N_evaluados": 61,
+   "disparos_en_N": 0,
+   "disparos_todos": 0,
+   "tajadas_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "horas_disparos": []
+  }
+ ]
+}

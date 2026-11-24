@@ -1,0 +1,3097 @@
+{
+ "criterio": "criterio_2026-11-24.md (commit bdd73e7)",
+ "tau": 30.0,
+ "vmin": 3.0,
+ "ancho_max": 3.0,
+ "verdad_km": 4.7,
+ "prueba_21_verdad": {
+  "2026-11-08": {
+   "hora": "14:53",
+   "az": 207.0,
+   "dist_km": 1.6,
+   "h_ref": 4.7,
+   "ref": "sombra Sentinel-2",
+   "principal": {
+    "h": 3.2,
+    "desajuste": 27.8,
+    "V_h": 4.1,
+    "banda": [
+     3.2,
+     3.2
+    ],
+    "ancho": 0.0,
+    "restringe": true,
+    "n_compat": 1,
+    "toca_verdad": false
+   },
+   "sensibilidad": {
+    "tau_30": {
+     "h": 3.2,
+     "desajuste": 27.8,
+     "V_h": 4.1,
+     "banda": [
+      3.2,
+      3.2
+     ],
+     "ancho": 0.0,
+     "restringe": true,
+     "n_compat": 1,
+     "toca_verdad": false
+    },
+    "tau_20": {
+     "h": null,
+     "banda": null,
+     "ancho": null,
+     "restringe": false,
+     "n_compat": 0
+    },
+    "tau_45": {
+     "h": 3.2,
+     "desajuste": 27.8,
+     "V_h": 4.1,
+     "banda": [
+      3.2,
+      4.1
+     ],
+     "ancho": 0.9,
+     "restringe": true,
+     "n_compat": 10,
+     "toca_verdad": true
+    }
+   },
+   "veredicto": "FALLA",
+   "decide": true,
+   "perfil": [
+    {
+     "z_km": 3.5,
+     "hacia": 173.0,
+     "V": 4.3
+    },
+    {
+     "z_km": 4.0,
+     "hacia": 164.0,
+     "V": 3.9
+    },
+    {
+     "z_km": 4.5,
+     "hacia": 155.0,
+     "V": 2.8
+    },
+    {
+     "z_km": 5.0,
+     "hacia": 146.0,
+     "V": 1.7
+    },
+    {
+     "z_km": 5.5,
+     "hacia": 138.0,
+     "V": 1.9
+    },
+    {
+     "z_km": 6.0,
+     "hacia": 115.0,
+     "V": 2.2
+    },
+    {
+     "z_km": 6.5,
+     "hacia": 85.0,
+     "V": 3.3
+    },
+    {
+     "z_km": 7.0,
+     "hacia": 72.0,
+     "V": 2.6
+    },
+    {
+     "z_km": 7.5,
+     "hacia": 53.0,
+     "V": 1.9
+    },
+    {
+     "z_km": 8.0,
+     "hacia": 68.0,
+     "V": 2.7
+    },
+    {
+     "z_km": 8.5,
+     "hacia": 75.0,
+     "V": 4.3
+    },
+    {
+     "z_km": 9.0,
+     "hacia": 78.0,
+     "V": 8.4
+    },
+    {
+     "z_km": 9.5,
+     "hacia": 79.0,
+     "V": 12.4
+    },
+    {
+     "z_km": 10.0,
+     "hacia": 83.0,
+     "V": 16.2
+    },
+    {
+     "z_km": 10.5,
+     "hacia": 86.0,
+     "V": 20.1
+    },
+    {
+     "z_km": 11.0,
+     "hacia": 88.0,
+     "V": 24.2
+    },
+    {
+     "z_km": 11.5,
+     "hacia": 90.0,
+     "V": 28.6
+    },
+    {
+     "z_km": 12.0,
+     "hacia": 92.0,
+     "V": 32.9
+    },
+    {
+     "z_km": 12.5,
+     "hacia": 92.0,
+     "V": 34.1
+    },
+    {
+     "z_km": 13.0,
+     "hacia": 92.0,
+     "V": 34.1
+    },
+    {
+     "z_km": 13.5,
+     "hacia": 92.0,
+     "V": 34.1
+    },
+    {
+     "z_km": 14.0,
+     "hacia": 92.0,
+     "V": 34.1
+    }
+   ]
+  },
+  "2026-10-25": {
+   "hora": "14:34",
+   "az": 253.0,
+   "dist_km": 4.6,
+   "h_ref": 4.3,
+   "ref": "VAAC (no es sombra)",
+   "principal": {
+    "h": null,
+    "banda": null,
+    "ancho": null,
+    "restringe": false,
+    "n_compat": 0
+   },
+   "sensibilidad": {
+    "tau_30": {
+     "h": null,
+     "banda": null,
+     "ancho": null,
+     "restringe": false,
+     "n_compat": 0
+    },
+    "tau_20": {
+     "h": null,
+     "banda": null,
+     "ancho": null,
+     "restringe": false,
+     "n_compat": 0
+    },
+    "tau_45": {
+     "h": null,
+     "banda": null,
+     "ancho": null,
+     "restringe": false,
+     "n_compat": 0
+    }
+   },
+   "veredicto": "NO RESTRINGE",
+   "decide": false,
+   "perfil": [
+    {
+     "z_km": 3.5,
+     "hacia": 199.0,
+     "V": 2.7
+    },
+    {
+     "z_km": 4.0,
+     "hacia": 173.0,
+     "V": 2.5
+    },
+    {
+     "z_km": 4.5,
+     "hacia": 143.0,
+     "V": 2.5
+    },
+    {
+     "z_km": 5.0,
+     "hacia": 116.0,
+     "V": 3.0
+    },
+    {
+     "z_km": 5.5,
+     "hacia": 86.0,
+     "V": 4.4
+    },
+    {
+     "z_km": 6.0,
+     "hacia": 73.0,
+     "V": 6.7
+    },
+    {
+     "z_km": 6.5,
+     "hacia": 68.0,
+     "V": 9.6
+    },
+    {
+     "z_km": 7.0,
+     "hacia": 71.0,
+     "V": 11.5
+    },
+    {
+     "z_km": 7.5,
+     "hacia": 73.0,
+     "V": 13.0
+    },
+    {
+     "z_km": 8.0,
+     "hacia": 73.0,
+     "V": 13.8
+    },
+    {
+     "z_km": 8.5,
+     "hacia": 73.0,
+     "V": 15.6
+    },
+    {
+     "z_km": 9.0,
+     "hacia": 72.0,
+     "V": 18.8
+    },
+    {
+     "z_km": 9.5,
+     "hacia": 73.0,
+     "V": 22.0
+    },
+    {
+     "z_km": 10.0,
+     "hacia": 77.0,
+     "V": 25.4
+    },
+    {
+     "z_km": 10.5,
+     "hacia": 80.0,
+     "V": 28.8
+    },
+    {
+     "z_km": 11.0,
+     "hacia": 79.0,
+     "V": 27.8
+    },
+    {
+     "z_km": 11.5,
+     "hacia": 78.0,
+     "V": 26.2
+    },
+    {
+     "z_km": 12.0,
+     "hacia": 76.0,
+     "V": 24.5
+    },
+    {
+     "z_km": 12.5,
+     "hacia": 76.0,
+     "V": 24.5
+    },
+    {
+     "z_km": 13.0,
+     "hacia": 76.0,
+     "V": 24.5
+    },
+    {
+     "z_km": 13.5,
+     "hacia": 76.0,
+     "V": 24.5
+    },
+    {
+     "z_km": 14.0,
+     "hacia": 76.0,
+     "V": 24.5
+    }
+   ]
+  }
+ },
+ "dias": {
+  "2026-11-08": {
+   "resumen": {
+    "n_disparos": 23,
+    "n_con_altura": 23,
+    "h_mediana": 5.1,
+    "h_p25_p75": [
+     5.0,
+     5.2
+    ],
+    "ancho_mediano": 10.2,
+    "frac_banda_toca_3p7_5p7": 1.0,
+    "frac_restringe": 0.0,
+    "volcat_n_cuadros_con_ceniza": 22,
+    "volcat_h_mediana": 3.25,
+    "dif_h_menos_volcat_mediana": 1.85,
+    "veredicto_22": "NO RESTRINGE"
+   },
+   "cuadros": [
+    {
+     "slot": 99,
+     "hora": "16:30",
+     "tajada": 4,
+     "rumbo_aparente": 140.9,
+     "dist_aparente_km": 26.7,
+     "filas": [
+      48,
+      49,
+      49,
+      45,
+      45,
+      46,
+      51,
+      52
+     ],
+     "cols": [
+      53,
+      58,
+      55,
+      50,
+      49,
+      51,
+      56,
+      56
+     ],
+     "principal": {
+      "h": 4.8,
+      "desajuste": 8.0,
+      "V_h": 3.1,
+      "banda": [
+       3.6,
+       14.0
+      ],
+      "ancho": 10.4,
+      "restringe": false,
+      "n_compat": 58,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 4.8,
+       "desajuste": 8.0,
+       "V_h": 3.1,
+       "banda": [
+        4.4,
+        14.0
+       ],
+       "ancho": 9.6,
+       "restringe": false,
+       "n_compat": 33,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 4.8,
+       "desajuste": 8.0,
+       "V_h": 3.1,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 96,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 132.7,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 4,
+      "h_mediana": 1.5,
+      "h_max": 2.5
+     }
+    },
+    {
+     "slot": 100,
+     "hora": "16:40",
+     "tajada": 4,
+     "rumbo_aparente": 139.1,
+     "dist_aparente_km": 23.9,
+     "filas": [
+      49,
+      45,
+      46,
+      45,
+      48,
+      48,
+      47,
+      51
+     ],
+     "cols": [
+      54,
+      50,
+      50,
+      49,
+      52,
+      61,
+      55,
+      58
+     ],
+     "principal": {
+      "h": 14.0,
+      "desajuste": 5.2,
+      "V_h": 35.1,
+      "banda": [
+       3.8,
+       14.0
+      ],
+      "ancho": 10.2,
+      "restringe": false,
+      "n_compat": 63,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 14.0,
+       "desajuste": 5.2,
+       "V_h": 35.1,
+       "banda": [
+        4.5,
+        14.0
+       ],
+       "ancho": 9.5,
+       "restringe": false,
+       "n_compat": 38,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 14.0,
+       "desajuste": 5.2,
+       "V_h": 35.1,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 98,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 97.9,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 2,
+      "h_mediana": 2.0,
+      "h_max": 2.5
+     }
+    },
+    {
+     "slot": 105,
+     "hora": "17:30",
+     "tajada": 4,
+     "rumbo_aparente": 135.5,
+     "dist_aparente_km": 27.2,
+     "filas": [
+      45,
+      49,
+      49,
+      45,
+      49,
+      49,
+      46,
+      47
+     ],
+     "cols": [
+      49,
+      54,
+      58,
+      50,
+      59,
+      53,
+      54,
+      59
+     ],
+     "principal": {
+      "h": 5.1,
+      "desajuste": 1.6,
+      "V_h": 3.1,
+      "banda": [
+       3.9,
+       14.0
+      ],
+      "ancho": 10.1,
+      "restringe": false,
+      "n_compat": 84,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.1,
+       "desajuste": 1.6,
+       "V_h": 3.1,
+       "banda": [
+        4.6,
+        14.0
+       ],
+       "ancho": 9.4,
+       "restringe": false,
+       "n_compat": 45,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.1,
+       "desajuste": 1.6,
+       "V_h": 3.1,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 107,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 126.3,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 9,
+      "h_mediana": 1.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 106,
+     "hora": "17:40",
+     "tajada": 5,
+     "rumbo_aparente": 164.1,
+     "dist_aparente_km": 17.7,
+     "filas": [
+      46,
+      45,
+      50,
+      46,
+      48,
+      46,
+      50,
+      48
+     ],
+     "cols": [
+      49,
+      47,
+      46,
+      48,
+      51,
+      47,
+      47,
+      50
+     ],
+     "principal": {
+      "h": 3.6,
+      "desajuste": 0.1,
+      "V_h": 5.7,
+      "banda": [
+       3.2,
+       14.0
+      ],
+      "ancho": 10.8,
+      "restringe": false,
+      "n_compat": 24,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 3.6,
+       "desajuste": 0.1,
+       "V_h": 5.7,
+       "banda": [
+        3.2,
+        4.7
+       ],
+       "ancho": 1.5,
+       "restringe": true,
+       "n_compat": 16,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 3.6,
+       "desajuste": 0.1,
+       "V_h": 5.7,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 47,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 161.3,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 9,
+      "h_mediana": 1.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 107,
+     "hora": "17:50",
+     "tajada": 4,
+     "rumbo_aparente": 143.1,
+     "dist_aparente_km": 23.5,
+     "filas": [
+      48,
+      45,
+      45,
+      46,
+      49,
+      49,
+      48,
+      47
+     ],
+     "cols": [
+      53,
+      49,
+      50,
+      50,
+      52,
+      54,
+      52,
+      55
+     ],
+     "principal": {
+      "h": 4.9,
+      "desajuste": 0.5,
+      "V_h": 3.8,
+      "banda": [
+       3.3,
+       14.0
+      ],
+      "ancho": 10.7,
+      "restringe": false,
+      "n_compat": 67,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 4.9,
+       "desajuste": 0.5,
+       "V_h": 3.8,
+       "banda": [
+        4.0,
+        14.0
+       ],
+       "ancho": 10.0,
+       "restringe": false,
+       "n_compat": 40,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 4.9,
+       "desajuste": 0.5,
+       "V_h": 3.8,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 109,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 134.0,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 2,
+      "h_mediana": 2.5,
+      "h_max": 2.5
+     }
+    },
+    {
+     "slot": 108,
+     "hora": "18:00",
+     "tajada": 5,
+     "rumbo_aparente": 159.7,
+     "dist_aparente_km": 16.4,
+     "filas": [
+      46,
+      47,
+      48,
+      46,
+      48,
+      45,
+      50,
+      45
+     ],
+     "cols": [
+      49,
+      50,
+      51,
+      48,
+      50,
+      47,
+      46,
+      48
+     ],
+     "principal": {
+      "h": 4.0,
+      "desajuste": 0.5,
+      "V_h": 6.1,
+      "banda": [
+       3.2,
+       14.0
+      ],
+      "ancho": 10.8,
+      "restringe": false,
+      "n_compat": 46,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 4.0,
+       "desajuste": 0.5,
+       "V_h": 6.1,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 34,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 4.0,
+       "desajuste": 0.5,
+       "V_h": 6.1,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 62,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 155.0,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 2,
+      "h_mediana": 2.5,
+      "h_max": 2.5
+     }
+    },
+    {
+     "slot": 109,
+     "hora": "18:10",
+     "tajada": 4,
+     "rumbo_aparente": 140.6,
+     "dist_aparente_km": 23.9,
+     "filas": [
+      45,
+      46,
+      48,
+      47,
+      49,
+      49,
+      45,
+      48
+     ],
+     "cols": [
+      50,
+      50,
+      52,
+      55,
+      54,
+      52,
+      49,
+      61
+     ],
+     "principal": {
+      "h": 5.0,
+      "desajuste": 1.1,
+      "V_h": 3.8,
+      "banda": [
+       3.4,
+       14.0
+      ],
+      "ancho": 10.6,
+      "restringe": false,
+      "n_compat": 77,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.0,
+       "desajuste": 1.1,
+       "V_h": 3.8,
+       "banda": [
+        4.2,
+        14.0
+       ],
+       "ancho": 9.8,
+       "restringe": false,
+       "n_compat": 43,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.0,
+       "desajuste": 1.1,
+       "V_h": 3.8,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 109,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 131.3,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 1,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 110,
+     "hora": "18:20",
+     "tajada": 4,
+     "rumbo_aparente": 134.3,
+     "dist_aparente_km": 27.7,
+     "filas": [
+      49,
+      49,
+      48,
+      47,
+      45,
+      46,
+      49,
+      47
+     ],
+     "cols": [
+      58,
+      59,
+      53,
+      59,
+      50,
+      51,
+      52,
+      58
+     ],
+     "principal": {
+      "h": 5.1,
+      "desajuste": 0.5,
+      "V_h": 3.8,
+      "banda": [
+       3.9,
+       14.0
+      ],
+      "ancho": 10.1,
+      "restringe": false,
+      "n_compat": 84,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.1,
+       "desajuste": 0.5,
+       "V_h": 3.8,
+       "banda": [
+        4.5,
+        14.0
+       ],
+       "ancho": 9.5,
+       "restringe": false,
+       "n_compat": 44,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.1,
+       "desajuste": 0.5,
+       "V_h": 3.8,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 109,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 125.8,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 4,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 111,
+     "hora": "18:30",
+     "tajada": 4,
+     "rumbo_aparente": 138.4,
+     "dist_aparente_km": 25.3,
+     "filas": [
+      45,
+      49,
+      49,
+      49,
+      46,
+      49,
+      48,
+      44
+     ],
+     "cols": [
+      50,
+      53,
+      58,
+      59,
+      51,
+      55,
+      53,
+      49
+     ],
+     "principal": {
+      "h": 5.1,
+      "desajuste": 1.0,
+      "V_h": 4.0,
+      "banda": [
+       3.7,
+       14.0
+      ],
+      "ancho": 10.3,
+      "restringe": false,
+      "n_compat": 88,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.1,
+       "desajuste": 1.0,
+       "V_h": 4.0,
+       "banda": [
+        4.4,
+        14.0
+       ],
+       "ancho": 9.6,
+       "restringe": false,
+       "n_compat": 49,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.1,
+       "desajuste": 1.0,
+       "V_h": 4.0,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 109,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 127.8,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 5,
+      "h_mediana": 2.5,
+      "h_max": 2.5
+     }
+    },
+    {
+     "slot": 112,
+     "hora": "18:40",
+     "tajada": 4,
+     "rumbo_aparente": 143.8,
+     "dist_aparente_km": 20.5,
+     "filas": [
+      48,
+      45,
+      45,
+      51,
+      46,
+      46,
+      50,
+      49
+     ],
+     "cols": [
+      53,
+      50,
+      49,
+      58,
+      50,
+      51,
+      54,
+      52
+     ],
+     "principal": {
+      "h": 4.9,
+      "desajuste": 0.5,
+      "V_h": 4.6,
+      "banda": [
+       3.4,
+       14.0
+      ],
+      "ancho": 10.6,
+      "restringe": false,
+      "n_compat": 70,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 4.9,
+       "desajuste": 0.5,
+       "V_h": 4.6,
+       "banda": [
+        4.0,
+        14.0
+       ],
+       "ancho": 10.0,
+       "restringe": false,
+       "n_compat": 42,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 4.9,
+       "desajuste": 0.5,
+       "V_h": 4.6,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 109,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 134.7,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 1,
+      "h_mediana": 2.5,
+      "h_max": 2.5
+     }
+    },
+    {
+     "slot": 113,
+     "hora": "18:50",
+     "tajada": 4,
+     "rumbo_aparente": 138.8,
+     "dist_aparente_km": 27.8,
+     "filas": [
+      49,
+      49,
+      45,
+      49,
+      48,
+      46,
+      49,
+      52
+     ],
+     "cols": [
+      58,
+      59,
+      50,
+      53,
+      53,
+      51,
+      55,
+      56
+     ],
+     "principal": {
+      "h": 5.0,
+      "desajuste": 0.4,
+      "V_h": 4.5,
+      "banda": [
+       3.7,
+       14.0
+      ],
+      "ancho": 10.3,
+      "restringe": false,
+      "n_compat": 70,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.0,
+       "desajuste": 0.4,
+       "V_h": 4.5,
+       "banda": [
+        4.2,
+        14.0
+       ],
+       "ancho": 9.8,
+       "restringe": false,
+       "n_compat": 35,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.0,
+       "desajuste": 0.4,
+       "V_h": 4.5,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 109,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 131.0,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 7,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 114,
+     "hora": "19:00",
+     "tajada": 4,
+     "rumbo_aparente": 138.1,
+     "dist_aparente_km": 25.3,
+     "filas": [
+      48,
+      46,
+      45,
+      49,
+      49,
+      46,
+      49,
+      48
+     ],
+     "cols": [
+      52,
+      50,
+      50,
+      54,
+      59,
+      51,
+      55,
+      61
+     ],
+     "principal": {
+      "h": 5.1,
+      "desajuste": 1.1,
+      "V_h": 4.4,
+      "banda": [
+       3.8,
+       14.0
+      ],
+      "ancho": 10.2,
+      "restringe": false,
+      "n_compat": 78,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.1,
+       "desajuste": 1.1,
+       "V_h": 4.4,
+       "banda": [
+        4.3,
+        14.0
+       ],
+       "ancho": 9.7,
+       "restringe": false,
+       "n_compat": 43,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.1,
+       "desajuste": 1.1,
+       "V_h": 4.4,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 109,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 129.3,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 6,
+      "h_mediana": 2.5,
+      "h_max": 2.5
+     }
+    },
+    {
+     "slot": 115,
+     "hora": "19:10",
+     "tajada": 4,
+     "rumbo_aparente": 139.7,
+     "dist_aparente_km": 26.0,
+     "filas": [
+      49,
+      49,
+      45,
+      45,
+      46,
+      47,
+      48,
+      50
+     ],
+     "cols": [
+      53,
+      59,
+      49,
+      50,
+      50,
+      59,
+      54,
+      53
+     ],
+     "principal": {
+      "h": 5.1,
+      "desajuste": 1.5,
+      "V_h": 4.6,
+      "banda": [
+       3.8,
+       14.0
+      ],
+      "ancho": 10.2,
+      "restringe": false,
+      "n_compat": 79,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.1,
+       "desajuste": 1.5,
+       "V_h": 4.6,
+       "banda": [
+        4.3,
+        14.0
+       ],
+       "ancho": 9.7,
+       "restringe": false,
+       "n_compat": 45,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.1,
+       "desajuste": 1.5,
+       "V_h": 4.6,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 109,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 130.4,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 11,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 116,
+     "hora": "19:20",
+     "tajada": 4,
+     "rumbo_aparente": 143.2,
+     "dist_aparente_km": 23.5,
+     "filas": [
+      46,
+      49,
+      45,
+      46,
+      48,
+      49,
+      49,
+      48
+     ],
+     "cols": [
+      50,
+      54,
+      50,
+      51,
+      52,
+      55,
+      52,
+      53
+     ],
+     "principal": {
+      "h": 5.0,
+      "desajuste": 1.7,
+      "V_h": 5.0,
+      "banda": [
+       3.7,
+       14.0
+      ],
+      "ancho": 10.3,
+      "restringe": false,
+      "n_compat": 66,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.0,
+       "desajuste": 1.7,
+       "V_h": 5.0,
+       "banda": [
+        4.1,
+        14.0
+       ],
+       "ancho": 9.9,
+       "restringe": false,
+       "n_compat": 37,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.0,
+       "desajuste": 1.7,
+       "V_h": 5.0,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 109,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 134.6,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 10,
+      "h_mediana": 2.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 117,
+     "hora": "19:30",
+     "tajada": 4,
+     "rumbo_aparente": 144.5,
+     "dist_aparente_km": 19.9,
+     "filas": [
+      46,
+      46,
+      49,
+      45,
+      48,
+      48,
+      49,
+      45
+     ],
+     "cols": [
+      50,
+      51,
+      54,
+      50,
+      53,
+      52,
+      52,
+      49
+     ],
+     "principal": {
+      "h": 5.0,
+      "desajuste": 1.5,
+      "V_h": 5.2,
+      "banda": [
+       3.8,
+       14.0
+      ],
+      "ancho": 10.2,
+      "restringe": false,
+      "n_compat": 72,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.0,
+       "desajuste": 1.5,
+       "V_h": 5.2,
+       "banda": [
+        4.1,
+        14.0
+       ],
+       "ancho": 9.9,
+       "restringe": false,
+       "n_compat": 43,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.0,
+       "desajuste": 1.5,
+       "V_h": 5.2,
+       "banda": [
+        3.2,
+        14.0
+       ],
+       "ancho": 10.8,
+       "restringe": false,
+       "n_compat": 109,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 134.8,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 6,
+      "h_mediana": 3.0,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 118,
+     "hora": "19:40",
+     "tajada": 4,
+     "rumbo_aparente": 138.8,
+     "dist_aparente_km": 26.0,
+     "filas": [
+      49,
+      49,
+      49,
+      46,
+      48,
+      44,
+      45,
+      50
+     ],
+     "cols": [
+      59,
+      53,
+      58,
+      50,
+      54,
+      50,
+      50,
+      53
+     ],
+     "principal": {
+      "h": 5.2,
+      "desajuste": 0.3,
+      "V_h": 5.0,
+      "banda": [
+       4.0,
+       14.0
+      ],
+      "ancho": 10.0,
+      "restringe": false,
+      "n_compat": 83,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.2,
+       "desajuste": 0.3,
+       "V_h": 5.0,
+       "banda": [
+        4.4,
+        14.0
+       ],
+       "ancho": 9.6,
+       "restringe": false,
+       "n_compat": 48,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.2,
+       "desajuste": 0.3,
+       "V_h": 5.0,
+       "banda": [
+        3.3,
+        14.0
+       ],
+       "ancho": 10.7,
+       "restringe": false,
+       "n_compat": 108,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 128.5,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 10,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 119,
+     "hora": "19:50",
+     "tajada": 4,
+     "rumbo_aparente": 138.5,
+     "dist_aparente_km": 27.8,
+     "filas": [
+      48,
+      49,
+      49,
+      49,
+      50,
+      49,
+      45,
+      46
+     ],
+     "cols": [
+      53,
+      58,
+      59,
+      53,
+      55,
+      55,
+      50,
+      51
+     ],
+     "principal": {
+      "h": 5.1,
+      "desajuste": 0.8,
+      "V_h": 5.4,
+      "banda": [
+       4.0,
+       14.0
+      ],
+      "ancho": 10.0,
+      "restringe": false,
+      "n_compat": 76,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.1,
+       "desajuste": 0.8,
+       "V_h": 5.4,
+       "banda": [
+        4.4,
+        14.0
+       ],
+       "ancho": 9.6,
+       "restringe": false,
+       "n_compat": 39,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.1,
+       "desajuste": 0.8,
+       "V_h": 5.4,
+       "banda": [
+        3.3,
+        14.0
+       ],
+       "ancho": 10.7,
+       "restringe": false,
+       "n_compat": 108,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 130.4,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 5,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 120,
+     "hora": "20:00",
+     "tajada": 4,
+     "rumbo_aparente": 139.0,
+     "dist_aparente_km": 27.8,
+     "filas": [
+      49,
+      49,
+      49,
+      49,
+      48,
+      45,
+      45,
+      51
+     ],
+     "cols": [
+      53,
+      59,
+      58,
+      55,
+      54,
+      49,
+      50,
+      56
+     ],
+     "principal": {
+      "h": 5.2,
+      "desajuste": 0.6,
+      "V_h": 5.3,
+      "banda": [
+       4.0,
+       14.0
+      ],
+      "ancho": 10.0,
+      "restringe": false,
+      "n_compat": 79,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.2,
+       "desajuste": 0.6,
+       "V_h": 5.3,
+       "banda": [
+        4.4,
+        14.0
+       ],
+       "ancho": 9.6,
+       "restringe": false,
+       "n_compat": 44,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.2,
+       "desajuste": 0.6,
+       "V_h": 5.3,
+       "banda": [
+        3.4,
+        14.0
+       ],
+       "ancho": 10.6,
+       "restringe": false,
+       "n_compat": 107,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 130.2,
+     "volcat": {
+      "estado": "sin PNG"
+     }
+    },
+    {
+     "slot": 121,
+     "hora": "20:10",
+     "tajada": 4,
+     "rumbo_aparente": 139.2,
+     "dist_aparente_km": 24.2,
+     "filas": [
+      45,
+      49,
+      49,
+      48,
+      46,
+      48,
+      45,
+      48
+     ],
+     "cols": [
+      50,
+      59,
+      54,
+      54,
+      50,
+      52,
+      49,
+      60
+     ],
+     "principal": {
+      "h": 5.2,
+      "desajuste": 0.9,
+      "V_h": 5.4,
+      "banda": [
+       4.1,
+       14.0
+      ],
+      "ancho": 9.9,
+      "restringe": false,
+      "n_compat": 81,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.2,
+       "desajuste": 0.9,
+       "V_h": 5.4,
+       "banda": [
+        4.5,
+        14.0
+       ],
+       "ancho": 9.5,
+       "restringe": false,
+       "n_compat": 48,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.2,
+       "desajuste": 0.9,
+       "V_h": 5.4,
+       "banda": [
+        3.4,
+        14.0
+       ],
+       "ancho": 10.6,
+       "restringe": false,
+       "n_compat": 107,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 129.5,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 11,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 122,
+     "hora": "20:20",
+     "tajada": 4,
+     "rumbo_aparente": 139.8,
+     "dist_aparente_km": 26.0,
+     "filas": [
+      49,
+      48,
+      49,
+      47,
+      45,
+      49,
+      50,
+      46
+     ],
+     "cols": [
+      53,
+      54,
+      55,
+      52,
+      50,
+      59,
+      54,
+      51
+     ],
+     "principal": {
+      "h": 5.2,
+      "desajuste": 0.0,
+      "V_h": 5.5,
+      "banda": [
+       4.1,
+       14.0
+      ],
+      "ancho": 9.9,
+      "restringe": false,
+      "n_compat": 71,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.2,
+       "desajuste": 0.0,
+       "V_h": 5.5,
+       "banda": [
+        4.5,
+        14.0
+       ],
+       "ancho": 9.5,
+       "restringe": false,
+       "n_compat": 38,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.2,
+       "desajuste": 0.0,
+       "V_h": 5.5,
+       "banda": [
+        3.5,
+        14.0
+       ],
+       "ancho": 10.5,
+       "restringe": false,
+       "n_compat": 106,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 131.1,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 10,
+      "h_mediana": 3.5,
+      "h_max": 5.5
+     }
+    },
+    {
+     "slot": 123,
+     "hora": "20:30",
+     "tajada": 4,
+     "rumbo_aparente": 144.9,
+     "dist_aparente_km": 23.5,
+     "filas": [
+      48,
+      49,
+      49,
+      46,
+      48,
+      45,
+      50,
+      45
+     ],
+     "cols": [
+      52,
+      54,
+      52,
+      50,
+      53,
+      50,
+      54,
+      49
+     ],
+     "principal": {
+      "h": 5.0,
+      "desajuste": 1.1,
+      "V_h": 6.1,
+      "banda": [
+       4.0,
+       14.0
+      ],
+      "ancho": 10.0,
+      "restringe": false,
+      "n_compat": 61,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.0,
+       "desajuste": 1.1,
+       "V_h": 6.1,
+       "banda": [
+        4.3,
+        14.0
+       ],
+       "ancho": 9.7,
+       "restringe": false,
+       "n_compat": 39,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.0,
+       "desajuste": 1.1,
+       "V_h": 6.1,
+       "banda": [
+        3.3,
+        14.0
+       ],
+       "ancho": 10.7,
+       "restringe": false,
+       "n_compat": 108,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 136.0,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 9,
+      "h_mediana": 3.5,
+      "h_max": 5.5
+     }
+    },
+    {
+     "slot": 124,
+     "hora": "20:40",
+     "tajada": 4,
+     "rumbo_aparente": 137.9,
+     "dist_aparente_km": 26.0,
+     "filas": [
+      49,
+      48,
+      49,
+      45,
+      47,
+      47,
+      48,
+      50
+     ],
+     "cols": [
+      53,
+      53,
+      58,
+      50,
+      59,
+      52,
+      54,
+      54
+     ],
+     "principal": {
+      "h": 5.3,
+      "desajuste": 0.9,
+      "V_h": 5.5,
+      "banda": [
+       4.2,
+       14.0
+      ],
+      "ancho": 9.8,
+      "restringe": false,
+      "n_compat": 73,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.3,
+       "desajuste": 0.9,
+       "V_h": 5.5,
+       "banda": [
+        4.7,
+        14.0
+       ],
+       "ancho": 9.3,
+       "restringe": false,
+       "n_compat": 39,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.3,
+       "desajuste": 0.9,
+       "V_h": 5.5,
+       "banda": [
+        3.8,
+        14.0
+       ],
+       "ancho": 10.2,
+       "restringe": false,
+       "n_compat": 103,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 129.4,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 8,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 125,
+     "hora": "20:50",
+     "tajada": 4,
+     "rumbo_aparente": 136.5,
+     "dist_aparente_km": 27.8,
+     "filas": [
+      48,
+      45,
+      49,
+      47,
+      50,
+      47,
+      49,
+      49
+     ],
+     "cols": [
+      53,
+      50,
+      53,
+      55,
+      54,
+      59,
+      58,
+      55
+     ],
+     "principal": {
+      "h": 5.4,
+      "desajuste": 0.5,
+      "V_h": 5.4,
+      "banda": [
+       4.3,
+       14.0
+      ],
+      "ancho": 9.7,
+      "restringe": false,
+      "n_compat": 75,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 5.4,
+       "desajuste": 0.5,
+       "V_h": 5.4,
+       "banda": [
+        4.7,
+        14.0
+       ],
+       "ancho": 9.3,
+       "restringe": false,
+       "n_compat": 40,
+       "toca_verdad": true
+      },
+      "tau_45": {
+       "h": 5.4,
+       "desajuste": 0.5,
+       "V_h": 5.4,
+       "banda": [
+        3.9,
+        14.0
+       ],
+       "ancho": 10.1,
+       "restringe": false,
+       "n_compat": 102,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 128.0,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 4,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    }
+   ]
+  },
+  "2026-11-14": {
+   "resumen": {
+    "n_disparos": 8,
+    "n_con_altura": 8,
+    "h_mediana": 9.5,
+    "h_p25_p75": [
+     8.97,
+     9.72
+    ],
+    "ancho_mediano": 9.7,
+    "frac_banda_toca_3p7_5p7": 0.625,
+    "frac_restringe": 0.0,
+    "volcat_n_cuadros_con_ceniza": 8,
+    "volcat_h_mediana": 3.75,
+    "dif_h_menos_volcat_mediana": 5.4,
+    "veredicto_22": "NO RESTRINGE"
+   },
+   "cuadros": [
+    {
+     "slot": 105,
+     "hora": "17:30",
+     "tajada": 4,
+     "rumbo_aparente": 137.7,
+     "dist_aparente_km": 30.6,
+     "filas": [
+      49,
+      49,
+      49,
+      45,
+      49,
+      52,
+      49,
+      46
+     ],
+     "cols": [
+      55,
+      57,
+      58,
+      50,
+      59,
+      56,
+      53,
+      51
+     ],
+     "principal": {
+      "h": 8.3,
+      "desajuste": 0.0,
+      "V_h": 14.3,
+      "banda": [
+       3.6,
+       14.0
+      ],
+      "ancho": 10.4,
+      "restringe": false,
+      "n_compat": 88,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 8.3,
+       "desajuste": 0.0,
+       "V_h": 14.3,
+       "banda": [
+        7.0,
+        14.0
+       ],
+       "ancho": 7.0,
+       "restringe": false,
+       "n_compat": 71,
+       "toca_verdad": false
+      },
+      "tau_45": {
+       "h": 8.3,
+       "desajuste": 0.0,
+       "V_h": 14.3,
+       "banda": [
+        3.3,
+        14.0
+       ],
+       "ancho": 10.7,
+       "restringe": false,
+       "n_compat": 101,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 123.1,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 8,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 106,
+     "hora": "17:40",
+     "tajada": 4,
+     "rumbo_aparente": 136.6,
+     "dist_aparente_km": 29.2,
+     "filas": [
+      48,
+      49,
+      45,
+      46,
+      47,
+      49,
+      49,
+      51
+     ],
+     "cols": [
+      53,
+      58,
+      50,
+      51,
+      59,
+      59,
+      53,
+      55
+     ],
+     "principal": {
+      "h": 9.2,
+      "desajuste": 0.0,
+      "V_h": 15.8,
+      "banda": [
+       3.7,
+       14.0
+      ],
+      "ancho": 10.3,
+      "restringe": false,
+      "n_compat": 86,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 9.2,
+       "desajuste": 0.0,
+       "V_h": 15.8,
+       "banda": [
+        7.1,
+        14.0
+       ],
+       "ancho": 6.9,
+       "restringe": false,
+       "n_compat": 70,
+       "toca_verdad": false
+      },
+      "tau_45": {
+       "h": 9.2,
+       "desajuste": 0.0,
+       "V_h": 15.8,
+       "banda": [
+        3.4,
+        14.0
+       ],
+       "ancho": 10.6,
+       "restringe": false,
+       "n_compat": 99,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 119.1,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 9,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 107,
+     "hora": "17:50",
+     "tajada": 4,
+     "rumbo_aparente": 135.8,
+     "dist_aparente_km": 24.6,
+     "filas": [
+      48,
+      46,
+      45,
+      45,
+      47,
+      47,
+      47,
+      49
+     ],
+     "cols": [
+      53,
+      50,
+      50,
+      49,
+      58,
+      55,
+      57,
+      58
+     ],
+     "principal": {
+      "h": 10.2,
+      "desajuste": 5.0,
+      "V_h": 18.3,
+      "banda": [
+       3.8,
+       14.0
+      ],
+      "ancho": 10.2,
+      "restringe": false,
+      "n_compat": 81,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 10.2,
+       "desajuste": 5.0,
+       "V_h": 18.3,
+       "banda": [
+        7.3,
+        13.0
+       ],
+       "ancho": 5.7,
+       "restringe": false,
+       "n_compat": 58,
+       "toca_verdad": false
+      },
+      "tau_45": {
+       "h": 10.2,
+       "desajuste": 5.0,
+       "V_h": 18.3,
+       "banda": [
+        3.4,
+        14.0
+       ],
+       "ancho": 10.6,
+       "restringe": false,
+       "n_compat": 97,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 109.3,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 12,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 110,
+     "hora": "18:20",
+     "tajada": 4,
+     "rumbo_aparente": 141.1,
+     "dist_aparente_km": 23.5,
+     "filas": [
+      45,
+      45,
+      48,
+      48,
+      46,
+      49,
+      48,
+      52
+     ],
+     "cols": [
+      50,
+      49,
+      52,
+      53,
+      50,
+      54,
+      61,
+      57
+     ],
+     "principal": {
+      "h": 10.1,
+      "desajuste": 0.0,
+      "V_h": 18.0,
+      "banda": [
+       3.8,
+       14.0
+      ],
+      "ancho": 10.2,
+      "restringe": false,
+      "n_compat": 87,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 10.1,
+       "desajuste": 0.0,
+       "V_h": 18.0,
+       "banda": [
+        7.0,
+        14.0
+       ],
+       "ancho": 7.0,
+       "restringe": false,
+       "n_compat": 71,
+       "toca_verdad": false
+      },
+      "tau_45": {
+       "h": 10.1,
+       "desajuste": 0.0,
+       "V_h": 18.0,
+       "banda": [
+        3.4,
+        14.0
+       ],
+       "ancho": 10.6,
+       "restringe": false,
+       "n_compat": 100,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 116.7,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 12,
+      "h_mediana": 4.0,
+      "h_max": 4.5
+     }
+    },
+    {
+     "slot": 113,
+     "hora": "18:50",
+     "tajada": 4,
+     "rumbo_aparente": 140.8,
+     "dist_aparente_km": 16.3,
+     "filas": [
+      45,
+      49,
+      45,
+      44,
+      49,
+      46,
+      48,
+      46
+     ],
+     "cols": [
+      49,
+      54,
+      50,
+      50,
+      59,
+      51,
+      52,
+      50
+     ],
+     "principal": {
+      "h": 8.2,
+      "desajuste": 6.7,
+      "V_h": 14.0,
+      "banda": [
+       4.4,
+       13.6
+      ],
+      "ancho": 9.2,
+      "restringe": false,
+      "n_compat": 69,
+      "toca_verdad": true
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 8.2,
+       "desajuste": 6.7,
+       "V_h": 14.0,
+       "banda": [
+        7.1,
+        11.7
+       ],
+       "ancho": 4.6,
+       "restringe": false,
+       "n_compat": 47,
+       "toca_verdad": false
+      },
+      "tau_45": {
+       "h": 8.2,
+       "desajuste": 6.7,
+       "V_h": 14.0,
+       "banda": [
+        3.6,
+        14.0
+       ],
+       "ancho": 10.4,
+       "restringe": false,
+       "n_compat": 95,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 117.7,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 8,
+      "h_mediana": 4.0,
+      "h_max": 4.5
+     }
+    },
+    {
+     "slot": 114,
+     "hora": "19:00",
+     "tajada": 4,
+     "rumbo_aparente": 136.1,
+     "dist_aparente_km": 20.5,
+     "filas": [
+      45,
+      45,
+      46,
+      49,
+      47,
+      44,
+      48,
+      49
+     ],
+     "cols": [
+      50,
+      49,
+      51,
+      59,
+      58,
+      50,
+      53,
+      57
+     ],
+     "principal": {
+      "h": 9.4,
+      "desajuste": 10.7,
+      "V_h": 16.1,
+      "banda": [
+       7.0,
+       13.3
+      ],
+      "ancho": 6.3,
+      "restringe": false,
+      "n_compat": 64,
+      "toca_verdad": false
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 9.4,
+       "desajuste": 10.7,
+       "V_h": 16.1,
+       "banda": [
+        7.2,
+        11.2
+       ],
+       "ancho": 4.0,
+       "restringe": false,
+       "n_compat": 41,
+       "toca_verdad": false
+      },
+      "tau_45": {
+       "h": 9.4,
+       "desajuste": 10.7,
+       "V_h": 16.1,
+       "banda": [
+        3.8,
+        14.0
+       ],
+       "ancho": 10.2,
+       "restringe": false,
+       "n_compat": 90,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 109.2,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 11,
+      "h_mediana": 5.5,
+      "h_max": 5.5
+     }
+    },
+    {
+     "slot": 115,
+     "hora": "19:10",
+     "tajada": 4,
+     "rumbo_aparente": 135.0,
+     "dist_aparente_km": 31.0,
+     "filas": [
+      48,
+      45,
+      49,
+      47,
+      47,
+      49,
+      53,
+      45
+     ],
+     "cols": [
+      53,
+      50,
+      59,
+      59,
+      58,
+      58,
+      56,
+      49
+     ],
+     "principal": {
+      "h": 9.6,
+      "desajuste": 5.4,
+      "V_h": 16.3,
+      "banda": [
+       6.9,
+       14.0
+      ],
+      "ancho": 7.1,
+      "restringe": false,
+      "n_compat": 72,
+      "toca_verdad": false
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 9.6,
+       "desajuste": 5.4,
+       "V_h": 16.3,
+       "banda": [
+        7.2,
+        13.4
+       ],
+       "ancho": 6.2,
+       "restringe": false,
+       "n_compat": 63,
+       "toca_verdad": false
+      },
+      "tau_45": {
+       "h": 9.6,
+       "desajuste": 5.4,
+       "V_h": 16.3,
+       "banda": [
+        3.9,
+        14.0
+       ],
+       "ancho": 10.1,
+       "restringe": false,
+       "n_compat": 90,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 114.2,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 8,
+      "h_mediana": 3.5,
+      "h_max": 3.5
+     }
+    },
+    {
+     "slot": 116,
+     "hora": "19:20",
+     "tajada": 4,
+     "rumbo_aparente": 139.6,
+     "dist_aparente_km": 23.5,
+     "filas": [
+      49,
+      49,
+      45,
+      49,
+      48,
+      46,
+      48,
+      46
+     ],
+     "cols": [
+      54,
+      59,
+      50,
+      52,
+      52,
+      54,
+      53,
+      51
+     ],
+     "principal": {
+      "h": 9.6,
+      "desajuste": 0.9,
+      "V_h": 16.2,
+      "banda": [
+       6.8,
+       14.0
+      ],
+      "ancho": 7.2,
+      "restringe": false,
+      "n_compat": 73,
+      "toca_verdad": false
+     },
+     "sensibilidad": {
+      "tau_20": {
+       "h": 9.6,
+       "desajuste": 0.9,
+       "V_h": 16.2,
+       "banda": [
+        7.1,
+        14.0
+       ],
+       "ancho": 6.9,
+       "restringe": false,
+       "n_compat": 70,
+       "toca_verdad": false
+      },
+      "tau_45": {
+       "h": 9.6,
+       "desajuste": 0.9,
+       "V_h": 16.2,
+       "banda": [
+        3.8,
+        14.0
+       ],
+       "ancho": 10.2,
+       "restringe": false,
+       "n_compat": 95,
+       "toca_verdad": true
+      }
+     },
+     "rumbo_corregido": 119.3,
+     "volcat": {
+      "estado": "ceniza",
+      "n": 7,
+      "h_mediana": 4.5,
+      "h_max": 7.5
+     }
+    }
+   ]
+  }
+ },
+ "metodo_b": {
+  "base": [
+   "2026-10-10",
+   "2026-10-15",
+   "2026-10-16",
+   "2026-10-17",
+   "2026-11-02",
+   "2026-11-04"
+  ],
+  "pixel": [
+   44,
+   46
+  ],
+  "f": 0.43,
+  "por_beta": {
+   "0.7": {
+    "soluciones": [
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-10",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 266.61,
+      "btd_base": 1.54,
+      "residuo_K": 2.891,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-15",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 276.73,
+      "btd_base": 0.92,
+      "residuo_K": 0.49,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-16",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 275.69,
+      "btd_base": 0.65,
+      "residuo_K": 0.432,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-17",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 278.62,
+      "btd_base": 0.98,
+      "residuo_K": 0.528,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-11-02",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 280.01,
+      "btd_base": 0.95,
+      "residuo_K": 0.484,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-11-04",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 274.5,
+      "btd_base": 1.34,
+      "residuo_K": 0.597,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-10",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 272.97,
+      "btd_base": 1.0,
+      "residuo_K": 0.762,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-15",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 275.98,
+      "btd_base": 0.54,
+      "residuo_K": 0.649,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-16",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 277.33,
+      "btd_base": 0.73,
+      "residuo_K": 0.708,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-17",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 279.04,
+      "btd_base": 0.83,
+      "residuo_K": 0.73,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-11-02",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 280.52,
+      "btd_base": 1.04,
+      "residuo_K": 0.783,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-11-04",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 274.25,
+      "btd_base": 1.2,
+      "residuo_K": 0.835,
+      "n_soluciones_res_ok": 0
+     }
+    ],
+    "n": 12,
+    "n_con_altura": 0,
+    "veredicto": "NO RESTRINGE"
+   },
+   "0.6": {
+    "soluciones": [
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-10",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 266.61,
+      "btd_base": 1.54,
+      "residuo_K": 2.891,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-15",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 276.73,
+      "btd_base": 0.92,
+      "residuo_K": 0.49,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-16",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 275.69,
+      "btd_base": 0.65,
+      "residuo_K": 0.432,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-17",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 278.62,
+      "btd_base": 0.98,
+      "residuo_K": 0.528,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-11-02",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 280.01,
+      "btd_base": 0.95,
+      "residuo_K": 0.484,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-11-04",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 274.5,
+      "btd_base": 1.34,
+      "residuo_K": 0.597,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-10",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 272.97,
+      "btd_base": 1.0,
+      "residuo_K": 0.762,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-15",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 275.98,
+      "btd_base": 0.54,
+      "residuo_K": 0.649,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-16",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 277.33,
+      "btd_base": 0.73,
+      "residuo_K": 0.708,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-17",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 279.04,
+      "btd_base": 0.83,
+      "residuo_K": 0.73,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-11-02",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 280.52,
+      "btd_base": 1.04,
+      "residuo_K": 0.795,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-11-04",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 274.25,
+      "btd_base": 1.2,
+      "residuo_K": 0.835,
+      "n_soluciones_res_ok": 0
+     }
+    ],
+    "n": 12,
+    "n_con_altura": 0,
+    "veredicto": "NO RESTRINGE"
+   },
+   "0.8": {
+    "soluciones": [
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-10",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 266.61,
+      "btd_base": 1.54,
+      "residuo_K": 2.891,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-15",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 276.73,
+      "btd_base": 0.92,
+      "residuo_K": 0.49,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-16",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 275.69,
+      "btd_base": 0.65,
+      "residuo_K": 0.432,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-10-17",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 278.62,
+      "btd_base": 0.98,
+      "residuo_K": 0.509,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-11-02",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 280.01,
+      "btd_base": 0.95,
+      "residuo_K": 0.484,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:40",
+      "base": "2026-11-04",
+      "bt11_obs": 283.82,
+      "btd_obs": -0.39,
+      "bt11_base": 274.5,
+      "btd_base": 1.34,
+      "residuo_K": 0.597,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-10",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 272.97,
+      "btd_base": 1.0,
+      "residuo_K": 0.762,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-15",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 275.98,
+      "btd_base": 0.54,
+      "residuo_K": 0.649,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-16",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 277.33,
+      "btd_base": 0.73,
+      "residuo_K": 0.703,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-10-17",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 279.04,
+      "btd_base": 0.83,
+      "residuo_K": 0.721,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-11-02",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 280.52,
+      "btd_base": 1.04,
+      "residuo_K": 0.772,
+      "n_soluciones_res_ok": 0
+     },
+     {
+      "cuadro": "14:50",
+      "base": "2026-11-04",
+      "bt11_obs": 282.12,
+      "btd_obs": -0.9,
+      "bt11_base": 274.25,
+      "btd_base": 1.2,
+      "residuo_K": 0.835,
+      "n_soluciones_res_ok": 0
+     }
+    ],
+    "n": 12,
+    "n_con_altura": 0,
+    "veredicto": "NO RESTRINGE"
+   }
+  },
+  "T_aire_3p2_4p7_6_km": [
+   278.69,
+   267.93,
+   258.37
+  ]
+ },
+ "veredicto_conjunto": "NO SIRVE"
+}

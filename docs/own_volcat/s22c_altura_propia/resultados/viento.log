@@ -1,0 +1,139 @@
+2026-10-25 14:00:00 ok
+2026-10-25 15:00:00 ok
+2026-11-08 10:00:00 ok
+2026-11-08 11:00:00 ok
+2026-11-08 12:00:00 ok
+2026-11-08 13:00:00 ok
+2026-11-08 14:00:00 ok
+2026-11-08 15:00:00 ok
+2026-11-08 16:00:00 ok
+2026-11-08 17:00:00 ok
+2026-11-08 18:00:00 ok
+2026-11-08 19:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261108/18/atmos/gfs.t18z.pgrb2.0p25.f001.idx"')
+2026-11-08 20:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261108/18/atmos/gfs.t18z.pgrb2.0p25.f002.idx"')
+2026-11-08 21:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261108/18/atmos/gfs.t18z.pgrb2.0p25.f003.idx"')
+2026-11-08 22:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261108/18/atmos/gfs.t18z.pgrb2.0p25.f004.idx"')
+2026-11-08 23:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261108/18/atmos/gfs.t18z.pgrb2.0p25.f005.idx"')
+2026-11-09 00:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261109/00/atmos/gfs.t00z.pgrb2.0p25.f000.idx"')
+2026-11-14 10:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004.idx"')
+2026-11-14 11:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005.idx"')
+2026-11-14 12:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f000.idx"')
+2026-11-14 13:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f001.idx"')
+2026-11-14 14:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f002.idx"')
+2026-11-14 15:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f003.idx"')
+2026-11-14 16:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f004.idx"')
+2026-11-14 17:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f005.idx"')
+2026-11-14 18:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/18/atmos/gfs.t18z.pgrb2.0p25.f000.idx"')
+2026-11-14 19:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/18/atmos/gfs.t18z.pgrb2.0p25.f001.idx"')
+2026-11-14 20:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/18/atmos/gfs.t18z.pgrb2.0p25.f002.idx"')
+2026-11-14 21:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/18/atmos/gfs.t18z.pgrb2.0p25.f003.idx"')
+2026-11-14 22:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/18/atmos/gfs.t18z.pgrb2.0p25.f004.idx"')
+2026-11-14 23:00:00 ok
+2026-11-15 00:00:00 ok
+2026-11-08 10:00:00 cache
+2026-11-08 11:00:00 cache
+2026-11-08 12:00:00 cache
+2026-11-08 13:00:00 cache
+2026-11-08 14:00:00 cache
+2026-11-08 15:00:00 cache
+2026-11-08 16:00:00 cache
+2026-11-08 17:00:00 cache
+2026-11-08 18:00:00 cache
+2026-11-08 19:00:00 ok
+2026-11-08 20:00:00 ok
+2026-11-08 21:00:00 ok
+2026-11-08 22:00:00 ok
+2026-11-08 23:00:00 ok
+2026-11-09 00:00:00 ok
+GFS archive range [203169382,203894638] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [320204024,321073557] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [214059248,214773803] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [192942434,193673800] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [225156000,225862277] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [320204024,321073557] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [235612470,236311366] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [265964636,266764568] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [192942434,193673800] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [235612470,236311366] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [245873617,246566478] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [320204024,321073557] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [225156000,225862277] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [265964636,266764568] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [214059248,214773803] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [203169382,203894638] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [320204024,321073557] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [235612470,236311366] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [245873617,246566478] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [192942434,193673800] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [203169382,203894638] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [214059248,214773803] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [235612470,236311366] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [225156000,225862277] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+GFS archive range [265964636,266764568] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"
+2026-11-14 10:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f004"')
+GFS archive range [338077590,339021342] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [385294632,386247218] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [362091032,363041239] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [326192826,327113843] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [207748433,208333759] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [394942131,395891898] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [385294632,386247218] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [350110099,351063642] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [197828549,198405009] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [326192826,327113843] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [338077590,339021342] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [394942131,395891898] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [385294632,386247218] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [207748433,208333759] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [326192826,327113843] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [362091032,363041239] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [338077590,339021342] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [350110099,351063642] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [197828549,198405009] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [394942131,395891898] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [207748433,208333759] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [338077590,339021342] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [385294632,386247218] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [326192826,327113843] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [394942131,395891898] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [350110099,351063642] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [362091032,363041239] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [197828549,198405009] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [314740406,315640256] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [282242704,283130325] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [207748433,208333759] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [292884047,293769869] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [350110099,351063642] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [303567589,304457261] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [362091032,363041239] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [303567589,304457261] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [292884047,293769869] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [282242704,283130325] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [314740406,315640256] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [197828549,198405009] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [271389025,272283035] intento 1: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [292884047,293769869] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [282242704,283130325] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [303567589,304457261] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [314740406,315640256] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [271389025,272283035] intento 2: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [292884047,293769869] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [282242704,283130325] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [314740406,315640256] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [271389025,272283035] intento 3: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [303567589,304457261] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+GFS archive range [271389025,272283035] intento 4: Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"
+2026-11-14 11:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/06/atmos/gfs.t06z.pgrb2.0p25.f005"')
+2026-11-14 12:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f000.idx"')
+2026-11-14 13:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f001.idx"')
+2026-11-14 14:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f002.idx"')
+2026-11-14 15:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f003.idx"')
+2026-11-14 16:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f004.idx"')
+2026-11-14 17:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/12/atmos/gfs.t12z.pgrb2.0p25.f005.idx"')
+2026-11-14 18:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/18/atmos/gfs.t18z.pgrb2.0p25.f000.idx"')
+2026-11-14 19:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/18/atmos/gfs.t18z.pgrb2.0p25.f001.idx"')
+2026-11-14 20:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/18/atmos/gfs.t18z.pgrb2.0p25.f002.idx"')
+2026-11-14 21:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/18/atmos/gfs.t18z.pgrb2.0p25.f003.idx"')
+2026-11-14 22:00:00 FALLA EndpointConnectionError('Could not connect to the endpoint URL: "https://noaa-gfs-bdp-pds.s3.amazonaws.com/gfs.20261114/18/atmos/gfs.t18z.pgrb2.0p25.f004.idx"')
+2026-11-14 23:00:00 cache
+2026-11-15 00:00:00 cache

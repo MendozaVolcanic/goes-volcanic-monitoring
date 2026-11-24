@@ -5,8 +5,9 @@ Criterio: `criterio_2026-11-23.md`, commit `4126049`, empujado antes de medir. M
 
 - **Prueba 1 (TER-01 y TER-02), huella fina en el píxel de GOES-19: SEÑAL**, los dos días, en la BTD pareada (M1) y
   en la BT11 contra su anillo (M2). Pasa los tres controles post hoc.
-- **Prueba 2 (ventana partida a 100 y 70 m): PENDIENTE.** El acceso a Earthdata falla (401) y el nivel 1 de Landsat
-  pide cuenta USGS; se preguntó a Nicolás. El criterio ya está escrito (§3 del criterio).
+- **Prueba 2 (ventana partida a 100 y 70 m): medida en S20d**, informe aparte en `INFORME_S20d_prueba2.md`. Por la
+  regla, SIN FIRMA; los controles post hoc muestran que es un artefacto del control (pluma no marcada dentro de él) y
+  que a 100 m la pluma del 25-10 tiene 11 − 12 µm de −1,5 K contra +0,2 K el mismo lugar sin pluma.
 
 ## 1. El fenómeno, antes de los números
 
@@ -113,9 +114,7 @@ Script `scripts/s20b_posthoc.py`, salida `resultados/posthoc.json` y `posthoc.lo
 
 ## 6. Prueba 2: estado
 
-Criterio en §3 del criterio. Datos localizados, sin bajar: HLS L30 del 25-10 (B10 y B11 como temperatura de brillo
-de Landsat) y ECOSTRESS L1CT_RAD del 25-10 17:35 y 08-11 19:28 (teselas 19HBV, 23 a 42 MB por pasada; el catálogo
-lista `radiance_1` a `radiance_5`, falta ver cuáles traen dato). Bloqueo: el `_netrc` de Earthdata está vencido
-(REGISTRO_CREDENCIALES fila 2) y el nivel 1 de USGS pide cuenta ERS. Lo que importa de la prueba 2 después de la
-prueba 1: si a 100 m la franja del 25-10 tiene diferencia 11 − 12 µm negativa, la firma que vio GOES es de la ceniza
-y no de la mezcla de superficies dentro del píxel.
+Medida en S20d (23-11): `INFORME_S20d_prueba2.md`, enmienda `enmienda_1_s20d_antes_de_medir_2026-11-23.md`. Veredicto
+por la regla: SIN FIRMA (Landsat 8, 25-10). Post hoc: con el sector de la pluma fuera del control, T2 = −1,54 K (p 0 de
+2.022) y el mismo lugar el 17-10 da +0,23 K; la regla de reflectancia marca un tercio de la pluma que se ve en el
+térmico. Falta repetirla con el control corregido escrito antes de medir.

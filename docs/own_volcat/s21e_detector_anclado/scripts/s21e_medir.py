@@ -14,7 +14,7 @@ Medidas (definiciones sin cambios):
 - B(p, h): mediana de M1(p) en los cuadros despejados por E1 (H24.despejada, 80 %) del pozo 21-09 a 21-10 a +-10 min.
 - D = M1 - B; S(t) = minimo de D en Z (>= 80 % de Z con D valido).
 
-Uso: python -I s21e_medir.py pruebas | seco | medir
+Uso: python -I s21e_medir.py pruebas | seco | medir | figura
   seco  : solo dias del pozo y placebo (no calcula M1 ni S en los dias con actividad ni en los positivos).
   medir : positivos, nulo del evento, poder e informativo; exige resultados/seco.json.
 """
@@ -566,9 +566,10 @@ def figura(det):
             a.set_xlabel("columna ABI")
             if k == 0:
                 a.set_ylabel("fila ABI (norte arriba)")
-                a.legend(fontsize=7, loc="lower left")
+                h, l = a.get_legend_handles_labels()
             k += 1
     fig.colorbar(im, ax=ax, shrink=0.85, label="D = M1 - B (K)")
+    fig.legend(h, l, loc="outside lower center", ncol=3, fontsize=8)
     fig.savefig(os.path.join(FIG, "mapa_D_positivos.png"), dpi=90)
 
 
@@ -581,5 +582,9 @@ if __name__ == "__main__":
         seco()
     elif modo == "medir":
         medir()
+    elif modo == "figura":
+        M, E1, _ = cargar()
+        det = Detector(M.bt11, M.btd, E1)
+        figura(det)
     else:
         print(__doc__)

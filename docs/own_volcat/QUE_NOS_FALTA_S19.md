@@ -22,8 +22,10 @@ Lo pidió Nicolás: "encuentro extraño que no podamos ver que esta sucediendo".
 > - **La prueba 1 de §5 está hecha en su parte infrarroja** (S20b, `s20b_verdad_alta_res/`): con la huella de
 >   Landsat (25-10) y Sentinel-2 (08-11) en la grilla de ABI con paralaje, el píxel junto al cráter da SEÑAL (unos
 >   1 K más bajo en 11 menos 12 µm). La parte en reflejado (C02, C05, C06) sigue sin hacer.
-> - **La prueba 10 de §5 está en curso** en S20d (`s20d`): Landsat a 100 m sin firma de ventana partida en la franja
->   del 25-10, según su medición todavía sin PR ni revisión.
+> - **La prueba 10 de §5 se midió en S20d** (PR 113, `s20b_verdad_alta_res/INFORME_S20d_prueba2.md`): por la regla,
+>   Landsat a 100 m da SIN FIRMA en la franja del 25-10, pero los controles post hoc muestran que el control tenía
+>   pluma sin marcar; en crudo la pluma da 11 menos 12 µm de −1,9 K contra −0,4 K de la nieve de alrededor y +0,05 K
+>   del mismo lugar el 17-10 (firma de ceniza, post hoc, falta repetirla con criterio escrito antes).
 > - **H29 y su revisión** encontraron una firma débil lejos del cráter el 08-11 que se mueve con la huella de VOLCAT.
 > - Por eso la frase de §1 "con el infrarrojo de 2 km solo no habrá un detector confiable" sigue en pie, pero "las
 >   28 pruebas sin firma" ya no: hay firma de un píxel y de un kelvin cuando se sabe dónde mirar.

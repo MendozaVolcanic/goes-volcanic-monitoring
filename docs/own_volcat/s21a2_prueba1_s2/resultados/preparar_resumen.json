@@ -1,0 +1,236 @@
+{
+ "cota_crater_m": 2856,
+ "ajuste_abi_residuo_px": 0.00031114845478441566,
+ "regla": {
+  "NDSI_MIN": 0.6,
+  "VERDE_MIN": 0.4,
+  "SW1_REF_MAX": 0.15,
+  "DSW1_MIN": 0.04,
+  "ROJO_MIN": 0.3,
+  "NDSI_OBJ_MAX": 0.8,
+  "MIN_CELDAS": 5,
+  "MAX_KM": 15.0,
+  "SOMBRA_MAX": 0.5,
+  "ANG_MIN": 30.0,
+  "REF_DIAS": 10,
+  "DIL_NUBE": 3,
+  "F_MIN": 0.15
+ },
+ "2026-10-29": {
+  "objetivo": "S2C_19HBV_20261029_0_L2A",
+  "hora_utc": "14:53:03",
+  "referencias": [
+   {
+    "id": "LC08_L2SP_233085_20261025_02_T1",
+    "fecha": "2026-10-25T14:34:31.819538Z",
+    "celdas_aportadas": 980045
+   },
+   {
+    "id": "LC08_L2SP_233086_20261025_02_T1",
+    "fecha": "2026-10-25T14:34:55.778353Z",
+    "celdas_aportadas": 223546
+   },
+   {
+    "id": "S2B_19HBV_20261024_0_L2A",
+    "fecha": "2026-10-24T14:53:06.257000Z",
+    "celdas_aportadas": 414128
+   },
+   {
+    "id": "S2A_19HBV_20261031_1_L2A",
+    "fecha": "2026-10-31T14:53:12Z",
+    "celdas_aportadas": 84812
+   },
+   {
+    "id": "S2B_19HBV_20261031_0_L2A",
+    "fecha": "2026-10-31T14:43:11.796000Z",
+    "celdas_aportadas": 7601
+   },
+   {
+    "id": "LC09_L2SP_233085_20261102_02_T1",
+    "fecha": "2026-11-02T14:34:34.745850Z",
+    "celdas_aportadas": 5086
+   },
+   {
+    "id": "LC09_L2SP_233086_20261102_02_T1",
+    "fecha": "2026-11-02T14:34:58.704641Z",
+    "celdas_aportadas": 7038
+   },
+   {
+    "id": "S2C_19HBV_20261105_0_L2A",
+    "fecha": "2026-11-05T14:43:06.228000Z",
+    "celdas_aportadas": 5393
+   },
+   {
+    "id": "S2C_19HBV_20261108_0_L2A",
+    "fecha": "2026-11-08T14:53:02.202000Z",
+    "celdas_aportadas": 45104
+   }
+  ],
+  "frac_nieve_ref_15km": 0.355,
+  "frac_sin_referencia_15km": 0.004,
+  "sol_azimut": 49.8,
+  "sol_elevacion": 58.3,
+  "vista_cenit": 3.62,
+  "vista_azimut_hacia_sensor": 234.0,
+  "paralaje_sensor_fino_m": 158,
+  "celdas_pluma": 9952,
+  "forma": {
+   "area_km2": 8.957,
+   "largo_km_p2_p98": 26.1,
+   "ancho_km_p2_p98": 15.94,
+   "azimut_eje_grados_0_180": 113.9,
+   "azimut_centroide_desde_crater": 51.3,
+   "dist_centroide_km": 6.77,
+   "dist_max_km": 16.07,
+   "dist_min_km": 0.43
+  },
+  "altura_sombra": {
+   "valida": false,
+   "d_m": 5100.0,
+   "mediana_rojo_rel": 0.784,
+   "angulo_eje_sombra": 64.1,
+   "h_sobre_terreno_m": 8253,
+   "cota_sombra_m": 2176,
+   "H_m": 10429,
+   "azimut_sombra": 229.8
+  },
+  "H_usada_m": 4267,
+  "fuente_H": "VAAC",
+  "pixel_abi_crater": [
+   42,
+   46
+  ],
+  "pixeles_abi_con_pluma": 75,
+  "pixeles_abi_f_ge_fmin": 1,
+  "poblacion": [
+   {
+    "fila": 41,
+    "col": 53,
+    "f": 0.165,
+    "f_observable": 0.472,
+    "cota_m": 1376
+   }
+  ],
+  "f_bloque_crater": 0.118,
+  "poblacion_H-1km": 0,
+  "poblacion_H+1km": 1,
+  "f_max": 0.165,
+  "pluma_km2_en_ventana": 8.957
+ },
+ "2026-11-13": {
+  "objetivo": "S2B_19HBV_20261113_0_L2A",
+  "hora_utc": "14:53:06",
+  "referencias": [
+   {
+    "id": "S2B_19HBV_20261110_0_L2A",
+    "fecha": "2026-11-10T14:43:11.389000Z",
+    "celdas_aportadas": 596122
+   },
+   {
+    "id": "S2C_19HBV_20261108_0_L2A",
+    "fecha": "2026-11-08T14:53:02.202000Z",
+    "celdas_aportadas": 1141512
+   },
+   {
+    "id": "S2C_19HBV_20261105_0_L2A",
+    "fecha": "2026-11-05T14:43:06.228000Z",
+    "celdas_aportadas": 2859
+   },
+   {
+    "id": "LC09_L2SP_233085_20261118_02_T1",
+    "fecha": "2026-11-18T14:34:36.616774Z",
+    "celdas_aportadas": 16581
+   },
+   {
+    "id": "S2B_19HBV_20261123_0_L2A",
+    "fecha": "2026-11-23T14:53:08.312000Z",
+    "celdas_aportadas": 4979
+   }
+  ],
+  "frac_nieve_ref_15km": 0.207,
+  "frac_sin_referencia_15km": 0.003,
+  "sol_azimut": 56.0,
+  "sol_elevacion": 61.5,
+  "vista_cenit": 3.63,
+  "vista_azimut_hacia_sensor": 232.2,
+  "paralaje_sensor_fino_m": 142,
+  "celdas_pluma": 21266,
+  "forma": {
+   "area_km2": 19.139,
+   "largo_km_p2_p98": 28.5,
+   "ancho_km_p2_p98": 16.28,
+   "azimut_eje_grados_0_180": 132.6,
+   "azimut_centroide_desde_crater": 90.4,
+   "dist_centroide_km": 4.09,
+   "dist_max_km": 15.94,
+   "dist_min_km": 1.05
+  },
+  "altura_sombra": {
+   "valida": false,
+   "d_m": 4950.0,
+   "mediana_rojo_rel": 0.748,
+   "angulo_eje_sombra": 76.6,
+   "h_sobre_terreno_m": 9134,
+   "cota_sombra_m": 2388,
+   "H_m": 11522,
+   "azimut_sombra": 236.0
+  },
+  "H_usada_m": 4267,
+  "fuente_H": "VAAC",
+  "pixel_abi_crater": [
+   42,
+   46
+  ],
+  "pixeles_abi_con_pluma": 80,
+  "pixeles_abi_f_ge_fmin": 6,
+  "poblacion": [
+   {
+    "fila": 39,
+    "col": 43,
+    "f": 0.159,
+    "f_observable": 0.256,
+    "cota_m": 1809
+   },
+   {
+    "fila": 40,
+    "col": 44,
+    "f": 0.172,
+    "f_observable": 0.73,
+    "cota_m": 2258
+   },
+   {
+    "fila": 44,
+    "col": 52,
+    "f": 0.178,
+    "f_observable": 0.366,
+    "cota_m": 2048
+   },
+   {
+    "fila": 45,
+    "col": 51,
+    "f": 0.207,
+    "f_observable": 0.8,
+    "cota_m": 2323
+   },
+   {
+    "fila": 46,
+    "col": 51,
+    "f": 0.26,
+    "f_observable": 0.598,
+    "cota_m": 2112
+   },
+   {
+    "fila": 46,
+    "col": 52,
+    "f": 0.268,
+    "f_observable": 0.568,
+    "cota_m": 2393
+   }
+  ],
+  "f_bloque_crater": 0.056,
+  "poblacion_H-1km": 5,
+  "poblacion_H+1km": 4,
+  "f_max": 0.268,
+  "pluma_km2_en_ventana": 19.139
+ }
+}

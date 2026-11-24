@@ -1,0 +1,464 @@
+{
+ "2026-10-29": {
+  "componentes_total": 393,
+  "suma_f_poblacion_regla": 1.08,
+  "mayores_15": [
+   {
+    "km2": 0.847,
+    "dmin_km": 13.0,
+    "dcentroide_km": 14.3,
+    "azimut": 69,
+    "frac_borde_nieve": 0.72,
+    "suma_f_en_poblacion": 0.134,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.455,
+    "dmin_km": 14.6,
+    "dcentroide_km": 15.3,
+    "azimut": 61,
+    "frac_borde_nieve": 0.92,
+    "suma_f_en_poblacion": 0.077,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.319,
+    "dmin_km": 0.4,
+    "dcentroide_km": 0.8,
+    "azimut": 126,
+    "frac_borde_nieve": 0.38,
+    "suma_f_en_poblacion": 0.0,
+    "f_en_bloque": 0.054
+   },
+   {
+    "km2": 0.218,
+    "dmin_km": 9.3,
+    "dcentroide_km": 9.8,
+    "azimut": 42,
+    "frac_borde_nieve": 0.86,
+    "suma_f_en_poblacion": 0.037,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.213,
+    "dmin_km": 6.8,
+    "dcentroide_km": 7.3,
+    "azimut": 48,
+    "frac_borde_nieve": 0.46,
+    "suma_f_en_poblacion": 0.036,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.191,
+    "dmin_km": 8.5,
+    "dcentroide_km": 9.0,
+    "azimut": 39,
+    "frac_borde_nieve": 0.59,
+    "suma_f_en_poblacion": 0.032,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.189,
+    "dmin_km": 9.0,
+    "dcentroide_km": 9.5,
+    "azimut": 48,
+    "frac_borde_nieve": 0.37,
+    "suma_f_en_poblacion": 0.032,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.159,
+    "dmin_km": 8.4,
+    "dcentroide_km": 8.7,
+    "azimut": 297,
+    "frac_borde_nieve": 0.98,
+    "suma_f_en_poblacion": 0.027,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.153,
+    "dmin_km": 7.7,
+    "dcentroide_km": 8.1,
+    "azimut": 82,
+    "frac_borde_nieve": 0.82,
+    "suma_f_en_poblacion": 0.026,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.152,
+    "dmin_km": 3.9,
+    "dcentroide_km": 4.3,
+    "azimut": 82,
+    "frac_borde_nieve": 0.17,
+    "suma_f_en_poblacion": 0.024,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.122,
+    "dmin_km": 0.9,
+    "dcentroide_km": 1.1,
+    "azimut": 83,
+    "frac_borde_nieve": 0.24,
+    "suma_f_en_poblacion": 0.0,
+    "f_en_bloque": 0.021
+   },
+   {
+    "km2": 0.121,
+    "dmin_km": 13.8,
+    "dcentroide_km": 14.1,
+    "azimut": 108,
+    "frac_borde_nieve": 0.62,
+    "suma_f_en_poblacion": 0.02,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.12,
+    "dmin_km": 14.7,
+    "dcentroide_km": 15.0,
+    "azimut": 65,
+    "frac_borde_nieve": 0.91,
+    "suma_f_en_poblacion": 0.02,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.1,
+    "dmin_km": 10.6,
+    "dcentroide_km": 11.0,
+    "azimut": 84,
+    "frac_borde_nieve": 0.5,
+    "suma_f_en_poblacion": 0.002,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.095,
+    "dmin_km": 9.1,
+    "dcentroide_km": 9.5,
+    "azimut": 51,
+    "frac_borde_nieve": 0.86,
+    "suma_f_en_poblacion": 0.016,
+    "f_en_bloque": 0.0
+   }
+  ],
+  "nucleo": {
+   "R4km": {
+    "km2": 0.725,
+    "componentes": 8,
+    "H": {
+     "suma_f_poblacion": 0.032,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.032,
+     "f_bloque": 0.077
+    },
+    "H-1km": {
+     "suma_f_poblacion": 0.041,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.041,
+     "f_bloque": 0.077
+    },
+    "H+1km": {
+     "suma_f_poblacion": 0.039,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.039,
+     "f_bloque": 0.077
+    }
+   },
+   "R5km": {
+    "km2": 0.743,
+    "componentes": 11,
+    "H": {
+     "suma_f_poblacion": 0.033,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.033,
+     "f_bloque": 0.077
+    },
+    "H-1km": {
+     "suma_f_poblacion": 0.043,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.043,
+     "f_bloque": 0.077
+    },
+    "H+1km": {
+     "suma_f_poblacion": 0.04,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.04,
+     "f_bloque": 0.077
+    }
+   },
+   "R6km": {
+    "km2": 1.012,
+    "componentes": 26,
+    "H": {
+     "suma_f_poblacion": 0.033,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.033,
+     "f_bloque": 0.1
+    },
+    "H-1km": {
+     "suma_f_poblacion": 0.043,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.043,
+     "f_bloque": 0.082
+    },
+    "H+1km": {
+     "suma_f_poblacion": 0.04,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.04,
+     "f_bloque": 0.1
+    }
+   },
+   "R8km": {
+    "km2": 2.303,
+    "componentes": 93,
+    "H": {
+     "suma_f_poblacion": 0.206,
+     "pixeles": 6,
+     "f_max_fuera_bloque": 0.061,
+     "f_bloque": 0.118
+    },
+    "H-1km": {
+     "suma_f_poblacion": 0.261,
+     "pixeles": 6,
+     "f_max_fuera_bloque": 0.074,
+     "f_bloque": 0.082
+    },
+    "H+1km": {
+     "suma_f_poblacion": 0.182,
+     "pixeles": 5,
+     "f_max_fuera_bloque": 0.051,
+     "f_bloque": 0.144
+    }
+   }
+  }
+ },
+ "2026-11-13": {
+  "componentes_total": 380,
+  "suma_f_poblacion_regla": 2.928,
+  "mayores_15": [
+   {
+    "km2": 1.94,
+    "dmin_km": 13.8,
+    "dcentroide_km": 14.7,
+    "azimut": 124,
+    "frac_borde_nieve": 0.44,
+    "suma_f_en_poblacion": 0.323,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 1.429,
+    "dmin_km": 10.6,
+    "dcentroide_km": 12.1,
+    "azimut": 99,
+    "frac_borde_nieve": 0.54,
+    "suma_f_en_poblacion": 0.235,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.805,
+    "dmin_km": 2.1,
+    "dcentroide_km": 3.2,
+    "azimut": 65,
+    "frac_borde_nieve": 0.59,
+    "suma_f_en_poblacion": 0.117,
+    "f_en_bloque": 0.016
+   },
+   {
+    "km2": 0.755,
+    "dmin_km": 8.6,
+    "dcentroide_km": 9.5,
+    "azimut": 319,
+    "frac_borde_nieve": 0.38,
+    "suma_f_en_poblacion": 0.127,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.738,
+    "dmin_km": 12.3,
+    "dcentroide_km": 12.7,
+    "azimut": 112,
+    "frac_borde_nieve": 0.14,
+    "suma_f_en_poblacion": 0.124,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.677,
+    "dmin_km": 12.3,
+    "dcentroide_km": 12.8,
+    "azimut": 126,
+    "frac_borde_nieve": 0.57,
+    "suma_f_en_poblacion": 0.114,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.62,
+    "dmin_km": 12.8,
+    "dcentroide_km": 13.4,
+    "azimut": 134,
+    "frac_borde_nieve": 0.79,
+    "suma_f_en_poblacion": 0.104,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.553,
+    "dmin_km": 11.1,
+    "dcentroide_km": 11.9,
+    "azimut": 121,
+    "frac_borde_nieve": 0.37,
+    "suma_f_en_poblacion": 0.093,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.477,
+    "dmin_km": 14.0,
+    "dcentroide_km": 14.7,
+    "azimut": 131,
+    "frac_borde_nieve": 0.83,
+    "suma_f_en_poblacion": 0.08,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.367,
+    "dmin_km": 8.6,
+    "dcentroide_km": 9.0,
+    "azimut": 304,
+    "frac_borde_nieve": 0.88,
+    "suma_f_en_poblacion": 0.062,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.349,
+    "dmin_km": 11.4,
+    "dcentroide_km": 12.4,
+    "azimut": 323,
+    "frac_borde_nieve": 0.94,
+    "suma_f_en_poblacion": 0.059,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.312,
+    "dmin_km": 7.9,
+    "dcentroide_km": 8.6,
+    "azimut": 141,
+    "frac_borde_nieve": 0.2,
+    "suma_f_en_poblacion": 0.052,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.278,
+    "dmin_km": 7.7,
+    "dcentroide_km": 8.1,
+    "azimut": 157,
+    "frac_borde_nieve": 0.99,
+    "suma_f_en_poblacion": 0.034,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.266,
+    "dmin_km": 13.6,
+    "dcentroide_km": 13.8,
+    "azimut": 325,
+    "frac_borde_nieve": 1.0,
+    "suma_f_en_poblacion": 0.045,
+    "f_en_bloque": 0.0
+   },
+   {
+    "km2": 0.266,
+    "dmin_km": 14.9,
+    "dcentroide_km": 15.4,
+    "azimut": 114,
+    "frac_borde_nieve": 0.75,
+    "suma_f_en_poblacion": 0.045,
+    "f_en_bloque": 0.0
+   }
+  ],
+  "nucleo": {
+   "R4km": {
+    "km2": 0.871,
+    "componentes": 9,
+    "H": {
+     "suma_f_poblacion": 0.12,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.12,
+     "f_bloque": 0.021
+    },
+    "H-1km": {
+     "suma_f_poblacion": 0.117,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.117,
+     "f_bloque": 0.03
+    },
+    "H+1km": {
+     "suma_f_poblacion": 0.126,
+     "pixeles": 2,
+     "f_max_fuera_bloque": 0.087,
+     "f_bloque": 0.015
+    }
+   },
+   "R5km": {
+    "km2": 1.072,
+    "componentes": 25,
+    "H": {
+     "suma_f_poblacion": 0.135,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.135,
+     "f_bloque": 0.023
+    },
+    "H-1km": {
+     "suma_f_poblacion": 0.122,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.122,
+     "f_bloque": 0.031
+    },
+    "H+1km": {
+     "suma_f_poblacion": 0.141,
+     "pixeles": 2,
+     "f_max_fuera_bloque": 0.088,
+     "f_bloque": 0.016
+    }
+   },
+   "R6km": {
+    "km2": 1.462,
+    "componentes": 42,
+    "H": {
+     "suma_f_poblacion": 0.159,
+     "pixeles": 2,
+     "f_max_fuera_bloque": 0.138,
+     "f_bloque": 0.054
+    },
+    "H-1km": {
+     "suma_f_poblacion": 0.122,
+     "pixeles": 1,
+     "f_max_fuera_bloque": 0.122,
+     "f_bloque": 0.039
+    },
+    "H+1km": {
+     "suma_f_poblacion": 0.17,
+     "pixeles": 3,
+     "f_max_fuera_bloque": 0.088,
+     "f_bloque": 0.047
+    }
+   },
+   "R8km": {
+    "km2": 3.685,
+    "componentes": 106,
+    "H": {
+     "suma_f_poblacion": 0.428,
+     "pixeles": 7,
+     "f_max_fuera_bloque": 0.138,
+     "f_bloque": 0.056
+    },
+    "H-1km": {
+     "suma_f_poblacion": 0.501,
+     "pixeles": 10,
+     "f_max_fuera_bloque": 0.122,
+     "f_bloque": 0.039
+    },
+    "H+1km": {
+     "suma_f_poblacion": 0.405,
+     "pixeles": 8,
+     "f_max_fuera_bloque": 0.088,
+     "f_bloque": 0.086
+    }
+   }
+  }
+ }
+}

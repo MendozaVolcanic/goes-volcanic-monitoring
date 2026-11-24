@@ -1,0 +1,419 @@
+{
+ "dia": "2026-10-25",
+ "referencia": "2026-10-17",
+ "eje_grados": 252.5,
+ "semi_grados": 45.0,
+ "sector_km": [
+  2.0,
+  15.0
+ ],
+ "sector_celdas": 193453,
+ "mascara_en_sector_frac": 0.9458,
+ "H_tope_m": 4267,
+ "T_tope_GFS_K": 265.451,
+ "decide_erosion_3_sector_2_15": {
+  "T1_K": -3.325,
+  "T2_K": -1.54,
+  "celdas_T1": 283,
+  "celdas_T2": 107,
+  "celdas_mascara": 283,
+  "celdas_mascara_validas": 283,
+  "celdas_control": 235728,
+  "celdas_anillo": 1891,
+  "corrimientos": 1985,
+  "p_bajo_T1": 0.0035,
+  "p_bajo_T2": 0.0,
+  "p_alto_T2": 1.0,
+  "nulo_T1_p5_p50_p95": [
+   -1.324,
+   -0.05,
+   2.089
+  ],
+  "nulo_T2_p5_p50_p95": [
+   -0.24,
+   0.0,
+   0.23
+  ],
+  "T_sup_anillo_K": 274.22,
+  "fmask_nube_sombra_pluma": 0.0,
+  "fmask_nube_sombra_control": 0.0,
+  "fmask_nieve_pluma": 1.0,
+  "BT10_pluma_mediana_K": 271.43,
+  "BTD_pluma_mediana_K": -1.94,
+  "BTD_control_mediana_K": -0.35,
+  "eps11_de_T1": 0.379,
+  "BTD_ceniza_esperada_K": -0.837,
+  "veredicto_tabla": "FIRMA DE CENIZA",
+  "veredicto": "FIRMA DE CENIZA",
+  "referencia_2026-10-17": {
+   "T1_K": -0.36,
+   "T2_K": 0.23,
+   "celdas_T1": 283,
+   "celdas_T2": 283,
+   "celdas_mascara": 283,
+   "celdas_mascara_validas": 283,
+   "celdas_control": 235228,
+   "celdas_anillo": 1891,
+   "corrimientos": 1981,
+   "p_bajo_T1": 0.2559,
+   "p_bajo_T2": 0.8672,
+   "p_alto_T2": 0.1343,
+   "nulo_T1_p5_p50_p95": [
+    -1.24,
+    -0.06,
+    1.575
+   ],
+   "nulo_T2_p5_p50_p95": [
+    -0.23,
+    -0.02,
+    0.33
+   ],
+   "T_sup_anillo_K": 275.41,
+   "fmask_nube_sombra_pluma": 0.0,
+   "fmask_nube_sombra_control": 0.0002,
+   "fmask_nieve_pluma": 1.0,
+   "BT10_pluma_mediana_K": 275.32,
+   "BTD_pluma_mediana_K": 0.05,
+   "BTD_control_mediana_K": -0.1
+  },
+  "D_evento_menos_2026-10-17": {
+   "corrimientos_comunes": 1981,
+   "D_T1_K": -2.965,
+   "p_bajo_D_T1": 0.0,
+   "p_alto_D_T1": 1.0,
+   "nulo_D_T1_p5_p50_p95": [
+    -0.6,
+    0.0,
+    1.02
+   ],
+   "D_T2_K": -1.77,
+   "p_bajo_D_T2": 0.0,
+   "p_alto_D_T2": 1.0,
+   "nulo_D_T2_p5_p50_p95": [
+    -0.48,
+    0.04,
+    0.36
+   ]
+  },
+  "referencia_2026-09-15_informativa": {
+   "T1_K": -0.13,
+   "T2_K": 0.04,
+   "celdas_T1": 283,
+   "celdas_T2": 283,
+   "celdas_mascara": 283,
+   "celdas_mascara_validas": 283,
+   "celdas_control": 235456,
+   "celdas_anillo": 1890,
+   "corrimientos": 1983,
+   "p_bajo_T1": 0.3696,
+   "p_bajo_T2": 0.6354,
+   "p_alto_T2": 0.3732,
+   "nulo_T1_p5_p50_p95": [
+    -1.62,
+    -0.02,
+    1.17
+   ],
+   "nulo_T2_p5_p50_p95": [
+    -0.15,
+    0.0,
+    0.14
+   ],
+   "T_sup_anillo_K": 272.88,
+   "fmask_nube_sombra_pluma": 0.0,
+   "fmask_nube_sombra_control": 0.0,
+   "fmask_nieve_pluma": 1.0,
+   "BT10_pluma_mediana_K": 273.03,
+   "BTD_pluma_mediana_K": -0.02,
+   "BTD_control_mediana_K": -0.05
+  },
+  "D_evento_menos_2026-09-15_informativa": {
+   "corrimientos_comunes": 1983,
+   "D_T1_K": -3.195,
+   "p_bajo_D_T1": 0.0005,
+   "p_alto_D_T1": 0.9995,
+   "nulo_D_T1_p5_p50_p95": [
+    -1.17,
+    0.015,
+    1.919
+   ],
+   "D_T2_K": -1.58,
+   "p_bajo_D_T2": 0.0,
+   "p_alto_D_T2": 1.0,
+   "nulo_D_T2_p5_p50_p95": [
+    -0.33,
+    0.025,
+    0.29
+   ]
+  }
+ },
+ "inf_erosion_2_sector_2_15": {
+  "T1_K": -3.23,
+  "T2_K": -1.515,
+  "celdas_T1": 535,
+  "celdas_T2": 290,
+  "celdas_mascara": 535,
+  "celdas_mascara_validas": 535,
+  "celdas_control": 235728,
+  "celdas_anillo": 4659,
+  "corrimientos": 1762,
+  "p_bajo_T1": 0.0006,
+  "p_bajo_T2": 0.0,
+  "p_alto_T2": 1.0,
+  "nulo_T1_p5_p50_p95": [
+   -1.21,
+   -0.071,
+   1.485
+  ],
+  "nulo_T2_p5_p50_p95": [
+   -0.22,
+   -0.0,
+   0.22
+  ],
+  "T_sup_anillo_K": 273.85,
+  "fmask_nube_sombra_pluma": 0.0,
+  "fmask_nube_sombra_control": 0.0,
+  "fmask_nieve_pluma": 1.0,
+  "BT10_pluma_mediana_K": 271.84,
+  "BTD_pluma_mediana_K": -1.94,
+  "BTD_control_mediana_K": -0.35,
+  "eps11_de_T1": 0.385,
+  "BTD_ceniza_esperada_K": -0.81,
+  "veredicto_tabla": "FIRMA DE CENIZA",
+  "veredicto": "FIRMA DE CENIZA",
+  "referencia_2026-10-17": {
+   "T1_K": 0.11,
+   "T2_K": 0.21,
+   "celdas_T1": 535,
+   "celdas_T2": 535,
+   "celdas_mascara": 535,
+   "celdas_mascara_validas": 535,
+   "celdas_control": 235228,
+   "celdas_anillo": 4659,
+   "corrimientos": 1757,
+   "p_bajo_T1": 0.6579,
+   "p_bajo_T2": 0.8463,
+   "p_alto_T2": 0.1548,
+   "nulo_T1_p5_p50_p95": [
+    -1.29,
+    -0.08,
+    1.186
+   ],
+   "nulo_T2_p5_p50_p95": [
+    -0.21,
+    -0.01,
+    0.32
+   ],
+   "T_sup_anillo_K": 274.94,
+   "fmask_nube_sombra_pluma": 0.0,
+   "fmask_nube_sombra_control": 0.0002,
+   "fmask_nieve_pluma": 1.0,
+   "BT10_pluma_mediana_K": 275.77,
+   "BTD_pluma_mediana_K": 0.04,
+   "BTD_control_mediana_K": -0.1
+  },
+  "D_evento_menos_2026-10-17": {
+   "corrimientos_comunes": 1757,
+   "D_T1_K": -3.34,
+   "p_bajo_D_T1": 0.0,
+   "p_alto_D_T1": 1.0,
+   "nulo_D_T1_p5_p50_p95": [
+    -0.54,
+    0.01,
+    0.856
+   ],
+   "D_T2_K": -1.725,
+   "p_bajo_D_T2": 0.0,
+   "p_alto_D_T2": 1.0,
+   "nulo_D_T2_p5_p50_p95": [
+    -0.48,
+    0.03,
+    0.345
+   ]
+  },
+  "referencia_2026-09-15_informativa": {
+   "T1_K": -0.265,
+   "T2_K": 0.03,
+   "celdas_T1": 535,
+   "celdas_T2": 535,
+   "celdas_mascara": 535,
+   "celdas_mascara_validas": 535,
+   "celdas_control": 235456,
+   "celdas_anillo": 4658,
+   "corrimientos": 1760,
+   "p_bajo_T1": 0.2898,
+   "p_bajo_T2": 0.6108,
+   "p_alto_T2": 0.4131,
+   "nulo_T1_p5_p50_p95": [
+    -1.601,
+    -0.02,
+    0.958
+   ],
+   "nulo_T2_p5_p50_p95": [
+    -0.13,
+    0.0,
+    0.14
+   ],
+   "T_sup_anillo_K": 272.81,
+   "fmask_nube_sombra_pluma": 0.0,
+   "fmask_nube_sombra_control": 0.0,
+   "fmask_nieve_pluma": 1.0,
+   "BT10_pluma_mediana_K": 273.21,
+   "BTD_pluma_mediana_K": -0.03,
+   "BTD_control_mediana_K": -0.05
+  },
+  "D_evento_menos_2026-09-15_informativa": {
+   "corrimientos_comunes": 1760,
+   "D_T1_K": -2.965,
+   "p_bajo_D_T1": 0.0,
+   "p_alto_D_T1": 1.0,
+   "nulo_D_T1_p5_p50_p95": [
+    -1.09,
+    0.0,
+    1.58
+   ],
+   "D_T2_K": -1.545,
+   "p_bajo_D_T2": 0.0,
+   "p_alto_D_T2": 1.0,
+   "nulo_D_T2_p5_p50_p95": [
+    -0.31,
+    0.02,
+    0.28
+   ]
+  }
+ },
+ "inf_erosion_3_sector_2_12": {
+  "T1_K": -3.325,
+  "T2_K": -1.54,
+  "celdas_T1": 283,
+  "celdas_T2": 107,
+  "celdas_mascara": 283,
+  "celdas_mascara_validas": 283,
+  "celdas_control": 236175,
+  "celdas_anillo": 1891,
+  "corrimientos": 1985,
+  "p_bajo_T1": 0.0035,
+  "p_bajo_T2": 0.0,
+  "p_alto_T2": 1.0,
+  "nulo_T1_p5_p50_p95": [
+   -1.324,
+   -0.05,
+   2.089
+  ],
+  "nulo_T2_p5_p50_p95": [
+   -0.24,
+   0.0,
+   0.23
+  ],
+  "T_sup_anillo_K": 274.22,
+  "fmask_nube_sombra_pluma": 0.0,
+  "fmask_nube_sombra_control": 0.0,
+  "fmask_nieve_pluma": 1.0,
+  "BT10_pluma_mediana_K": 271.43,
+  "BTD_pluma_mediana_K": -1.94,
+  "BTD_control_mediana_K": -0.35,
+  "eps11_de_T1": 0.379,
+  "BTD_ceniza_esperada_K": -0.837,
+  "veredicto_tabla": "FIRMA DE CENIZA",
+  "veredicto": "FIRMA DE CENIZA",
+  "referencia_2026-10-17": {
+   "T1_K": -0.36,
+   "T2_K": 0.23,
+   "celdas_T1": 283,
+   "celdas_T2": 283,
+   "celdas_mascara": 283,
+   "celdas_mascara_validas": 283,
+   "celdas_control": 235672,
+   "celdas_anillo": 1891,
+   "corrimientos": 1981,
+   "p_bajo_T1": 0.2559,
+   "p_bajo_T2": 0.8672,
+   "p_alto_T2": 0.1348,
+   "nulo_T1_p5_p50_p95": [
+    -1.24,
+    -0.06,
+    1.575
+   ],
+   "nulo_T2_p5_p50_p95": [
+    -0.23,
+    -0.02,
+    0.33
+   ],
+   "T_sup_anillo_K": 275.41,
+   "fmask_nube_sombra_pluma": 0.0,
+   "fmask_nube_sombra_control": 0.0013,
+   "fmask_nieve_pluma": 1.0,
+   "BT10_pluma_mediana_K": 275.32,
+   "BTD_pluma_mediana_K": 0.05,
+   "BTD_control_mediana_K": -0.1
+  },
+  "D_evento_menos_2026-10-17": {
+   "corrimientos_comunes": 1981,
+   "D_T1_K": -2.965,
+   "p_bajo_D_T1": 0.0,
+   "p_alto_D_T1": 1.0,
+   "nulo_D_T1_p5_p50_p95": [
+    -0.6,
+    0.0,
+    1.02
+   ],
+   "D_T2_K": -1.77,
+   "p_bajo_D_T2": 0.0,
+   "p_alto_D_T2": 1.0,
+   "nulo_D_T2_p5_p50_p95": [
+    -0.48,
+    0.04,
+    0.36
+   ]
+  },
+  "referencia_2026-09-15_informativa": {
+   "T1_K": -0.13,
+   "T2_K": 0.04,
+   "celdas_T1": 283,
+   "celdas_T2": 283,
+   "celdas_mascara": 283,
+   "celdas_mascara_validas": 283,
+   "celdas_control": 235895,
+   "celdas_anillo": 1890,
+   "corrimientos": 1983,
+   "p_bajo_T1": 0.3696,
+   "p_bajo_T2": 0.6354,
+   "p_alto_T2": 0.3732,
+   "nulo_T1_p5_p50_p95": [
+    -1.62,
+    -0.02,
+    1.17
+   ],
+   "nulo_T2_p5_p50_p95": [
+    -0.15,
+    0.0,
+    0.14
+   ],
+   "T_sup_anillo_K": 272.88,
+   "fmask_nube_sombra_pluma": 0.0,
+   "fmask_nube_sombra_control": 0.0,
+   "fmask_nieve_pluma": 1.0,
+   "BT10_pluma_mediana_K": 273.03,
+   "BTD_pluma_mediana_K": -0.02,
+   "BTD_control_mediana_K": -0.05
+  },
+  "D_evento_menos_2026-09-15_informativa": {
+   "corrimientos_comunes": 1983,
+   "D_T1_K": -3.195,
+   "p_bajo_D_T1": 0.0005,
+   "p_alto_D_T1": 0.9995,
+   "nulo_D_T1_p5_p50_p95": [
+    -1.17,
+    0.015,
+    1.919
+   ],
+   "D_T2_K": -1.58,
+   "p_bajo_D_T2": 0.0,
+   "p_alto_D_T2": 1.0,
+   "nulo_D_T2_p5_p50_p95": [
+    -0.33,
+    0.03,
+    0.29
+   ]
+  }
+ }
+}

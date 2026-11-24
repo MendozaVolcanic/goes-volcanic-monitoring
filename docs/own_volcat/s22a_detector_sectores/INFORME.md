@@ -94,6 +94,12 @@ Por estado de cielo: 30 de 75 cuadros P despejados por E1, 6 de 21 nublados.
   meteorológico. Lo decide una verdad independiente: cámaras del OVDAS o REAV del 15-11 de 16:00 a 22:50 UTC (13:00
   a 19:50 en Chile). Si fue pluma, el 15-11 sale de los placebo, pero eso es un cambio después de ver el resultado:
   se prueba con criterio nuevo en días no mirados, no se reetiqueta este veredicto.
+- **Lado a lado con VOLCAT (`scripts/s22a_lado_a_lado.py`, videos sólo locales por la licencia de SSEC).** El 08-11 y
+  el 14-11 las marcas del detector caen donde VOLCAT pinta la pluma o la continúan aguas abajo hacia el SE (el 14-11
+  VOLCAT pinta de 0 a 15 km y el detector de 10 a 30 km, en la misma línea). El 15-11 las marcas caen a 20 a 25 km
+  al SE, justo en el borde entre una capa de nubes que cubre el lado chileno y el lado argentino despejado: un borde
+  de nube es una falsa alarma conocida de la diferencia 11 − 12 µm. Lectura: el 15-11 se ve más como borde de nube
+  que como pluma, sin decidirlo.
 
 ## 4. Lo que puede estar mal
 

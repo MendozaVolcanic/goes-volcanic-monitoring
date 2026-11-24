@@ -1,0 +1,16 @@
+== E10 (17:38): R 17:20 P 17:40; nulo 39 pares a +-120 min {'2026-09-21': 7, '2026-10-17': 11, '2026-11-04': 21}
+  C02: Chillan T 0.0269 az 300 signo +0.0269 p 0.900 | Antuco p 1.000 | Longavi p 1.000 | poder 0.0 (mitad 0.0) | info {'17:30': {'T': 0.0275, 'sector_az': 330.0, 'signo': -0.0275, 'p': 0.878, 'n': 40}}
+  C05: Chillan T 0.0088 az 300 signo -0.0088 p 0.875 | Antuco p 1.000 | Longavi p 0.975 | poder 0.0 (mitad 0.0) | info {'17:30': {'T': 0.0067, 'sector_az': 330.0, 'signo': 0.0067, 'p': 0.8537, 'n': 40}}
+  C06: Chillan T 0.0064 az 240 signo -0.0064 p 0.875 | Antuco p 1.000 | Longavi p 0.875 | info {'17:30': {'T': 0.0055, 'sector_az': 90.0, 'signo': 0.0055, 'p': 0.8537, 'n': 40}}
+  -> SIN SEÑAL (poder del pulso 0.0, mitad 0.0, contra los n pares 0.029)
+== E11 (20:32): R 20:20 P 20:30; nulo 52 pares a +-90 min {'2026-09-21': 16, '2026-10-17': 19, '2026-11-04': 17}
+  C02: Chillan T 0.0292 az 165 signo -0.0292 p 0.981 | Antuco p 1.000 | Longavi p 1.000 | poder 0.019 (mitad 0.019) | info {'20:40': {'T': 0.0304, 'sector_az': 105.0, 'signo': -0.0304, 'p': 1.0, 'n': 51}}
+  C05: Chillan T 0.0252 az 180 signo -0.0252 p 0.868 | Antuco p 1.000 | Longavi p 1.000 | poder 0.012 (mitad 0.017) | info {'20:40': {'T': 0.0189, 'sector_az': 180.0, 'signo': -0.0189, 'p': 1.0, 'n': 51}}
+  C06: Chillan T 0.0204 az 180 signo -0.0204 p 0.868 | Antuco p 1.000 | Longavi p 1.000 | info {'20:40': {'T': 0.0163, 'sector_az': 180.0, 'signo': -0.0163, 'p': 1.0, 'n': 51}}
+  -> SIN SEÑAL (poder del pulso 0.031, mitad 0.036, contra los n pares 0.017)
+== E12 (21:49): R 21:30 P 21:50; nulo 45 pares a +-120 min {'2026-09-21': 15, '2026-10-17': 17, '2026-11-04': 13}
+  C02: Chillan T 0.0571 az 165 signo +0.0571 p 0.891 | Antuco p 0.935 | Longavi p 0.891 | poder 0.025 (mitad 0.022) | info {'21:40': {'T': 0.0445, 'sector_az': 135.0, 'signo': -0.0445, 'p': 0.8571, 'n': 48}, '22:00': {'T': 0.074, 'sector_az': 195.0, 'signo': -0.074, 'p': 0.9091, 'n': 43}}
+  C05: Chillan T 0.0622 az 195 signo -0.0622 p 0.717 | Antuco p 0.848 | Longavi p 0.609 | poder 0.022 (mitad 0.022) | info {'21:40': {'T': 0.0475, 'sector_az': 210.0, 'signo': -0.0475, 'p': 0.6939, 'n': 48}, '22:00': {'T': 0.0895, 'sector_az': 195.0, 'signo': -0.0895, 'p': 0.5682, 'n': 43}}
+  C06: Chillan T 0.0395 az 165 signo +0.0395 p 0.783 | Antuco p 0.978 | Longavi p 0.783 | info {'21:40': {'T': 0.0209, 'sector_az': 210.0, 'signo': -0.0209, 'p': 0.8776, 'n': 48}, '22:00': {'T': 0.0585, 'sector_az': 165.0, 'signo': 0.0585, 'p': 0.6136, 'n': 43}}
+  -> SIN SEÑAL (poder del pulso 0.047, mitad 0.044, contra los n pares 0.025)
+== EPISODIO 28-10: NO CONCLUYENTE (0 de 3 con SEÑAL; 0 con poder)

@@ -1,8 +1,8 @@
 {
 "version":1,
 "cadencia_min":30,
-"actualizado_utc":"2026-11-24T12:55Z",
-"ultimo_cuadro_utc":"2026-11-24T12:30Z",
+"actualizado_utc":"2026-11-24T22:56Z",
+"ultimo_cuadro_utc":"2026-11-24T22:30Z",
 "sin_granulo":[],
 "cuadros": {
   "2026-11-16T23:00Z": {"Taapaca":[0.0,278.69,0],"Parinacota":[0.0,279.15,0],"Guallatiri":[0.0,279.15,0],"Isluga":[0.0,280.18,0],"Irruputuncu":[0.0,280.86,0],"Ollague":[0.0,281.47,0],"San Pedro":[1.56,281.31,1],"Lascar":[0.0,277.47,0],"Lastarria":[0.0,276.41,0]},

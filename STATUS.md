@@ -20,11 +20,11 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S22, 2026-11-24 (PR 121 a 123 abiertos: detector propio por tajadas, sin nubes y con altura; ninguno llega; los controles de sep-nov 2026 tenían pluma)
+## 0. S22, 2026-11-24 (PR 121 a 124 en main: detector propio por tajadas, sin nubes y con altura; ninguno llega; los controles de sep-nov 2026 tenían pluma)
 
 > Sesión S22 (worktree `s22-5a2702`, lanzada por S21). S22a la hizo esta sesión; S22b y S22c, dos subagentes en
-> paralelo en sus worktrees (`agent-a717009ec169a622a`, `agent-a574eb91fb7c2f8fe`). Nada fusionado: los tres PR
-> esperan el sí de Nicolás, cada uno por separado. PR 122 y 123 traen los commits de PR 121.
+> paralelo en sus worktrees (`agent-a717009ec169a622a`, `agent-a574eb91fb7c2f8fe`). Con el sí de Nicolás se fusionaron
+> en orden PR 121 (`a5c36e0`), 123 (`b548111`), 122 (`99caa76`, tras resolver el choque de la tabla 3.9) y 124.
 
 ### a. Todo en una pantalla
 
@@ -45,7 +45,7 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 | # | Pregunta | Recomendación |
 |---|---|---|
-| 1 | Fusionar PR 121, 122 y 123 (sólo investigación, no tocan el dashboard) | **Sí, en orden 121, 123, 122**, cada uno con su sí y `--match-head-commit` |
+| 1 | Fusionar PR 121, 122 y 123 | **Hecho** el 24-11 con el sí de Nicolás (orden 121, 123, 122, 124; `--match-head-commit`) |
 | 2 | Disparo externo de los workflows de 10 min (calor nocturno) | Sigue en pie de S21; no se trató en S22 |
 | 3 | Respaldar el resto de oct-nov 2026 de VOLCAT antes de que SSEC lo borre (~1 GB) | **Sí**: es la meta de Nicolás y se pierde un día por día |
 | 4 | Sector de mesoescala sobre Chillán vía VAAC | Sigue de S21 |
@@ -84,13 +84,13 @@ Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\
 MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Sesión S23; titúlala "Goes S23: ..." y numera su
 traspaso como S23. Usa /retomar.
 
-1. Verifica: git fetch; gh pr list (al cerrar S22 quedaban abiertos 121, 122 y 123); git ls-remote origin -h
+1. Verifica: git fetch; gh pr list (al cerrar S22 no quedaba ninguno abierto; main con PR 121 a 124); git ls-remote origin -h
    refs/heads/main; que la bajada de oct-nov 2025 terminó (D:\goes_notas\s22\s22d_2025\bajar_l1b.log y
    bajar_acm.log, línea FIN) y cuántos cuadros faltan.
 2. Lee STATUS.md "## 0." (S22) y la memoria project_placebo_con_pluma_0511 (TODOS los días de jul-nov 2026 tienen
    pluma; oct-nov 2025 tranquilos).
 3. Trabajo: con el fondo de oct-nov 2025 como línea base y nulo (misma estación, sin pluma), rehacer el detector de
-   S22b (scripts en la rama claude/s22b-pluma-vs-nubes) y medirlo contra lo que VOLCAT mostró en oct-nov 2026,
+   S22b (scripts en docs/own_volcat/s22b_pluma_vs_nubes/, ya en main) y medirlo contra lo que VOLCAT mostró en oct-nov 2026,
    criterio commiteado y empujado antes de medir. Mostrar el resultado lado a lado como VOLCAT (píxeles llenos,
    mismo encuadre). La dirección de la pluma la comprueba Nicolás con las cámaras.
 4. Respaldar en D: el resto de oct-nov 2026 de VOLCAT antes de que SSEC lo borre, si Nicolás dice sí.

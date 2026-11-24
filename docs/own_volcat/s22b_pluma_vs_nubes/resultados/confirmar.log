@@ -1,0 +1,117 @@
+datos listos en 3 s; días de desarrollo con clase: 31; cuadros para nublado de costumbre por hora: mín 53, máx 239
+S calculado en 43 s
+FALSA ALARMA EN LO NUEVO: {
+ "N_evaluados": 200,
+ "disparos": 0,
+ "FA_nuevo": 0.0,
+ "por_dia": [
+  {
+   "dia": "2026-11-22",
+   "cuadros_con_clase": 144,
+   "N": 114,
+   "otro": 30,
+   "P": 0,
+   "con_clase_que_pasan_compuerta": 144,
+   "N_evaluados": 96,
+   "disparos_en_N": 0,
+   "disparos_todos": 0,
+   "tajadas_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "horas_disparos": []
+  },
+  {
+   "dia": "2026-11-23",
+   "cuadros_con_clase": 142,
+   "N": 142,
+   "otro": 0,
+   "P": 0,
+   "con_clase_que_pasan_compuerta": 61,
+   "N_evaluados": 43,
+   "disparos_en_N": 0,
+   "disparos_todos": 0,
+   "tajadas_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "horas_disparos": []
+  },
+  {
+   "dia": "2026-11-24",
+   "cuadros_con_clase": 92,
+   "N": 81,
+   "otro": 11,
+   "P": 0,
+   "con_clase_que_pasan_compuerta": 87,
+   "N_evaluados": 61,
+   "disparos_en_N": 0,
+   "disparos_todos": 0,
+   "tajadas_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ],
+   "horas_disparos": []
+  }
+ ]
+}
+{
+ "veredicto": "NO DECIDIBLE (recuerdo)",
+ "seco_aprobado": true,
+ "seco_fa": 0.031693384424476854,
+ "poder": {
+  "pares_disponibles": 738,
+  "dias_de_los_pares": 16,
+  "0.33": 0.045,
+  "0.97": 0.735
+ },
+ "instrumento": {
+  "cuadros_hasta_el_ultimo": 389,
+  "presentes": 389,
+  "cobertura": 1.0,
+  "ultimo": "2026-11-24 16:40",
+  "scan_distinto": 0,
+  "congelados": 0,
+  "bt11_en_rango": 1.0,
+  "planck_igual_a_desarrollo": true,
+  "acm_presentes": 389,
+  "falla": []
+ },
+ "FA_nuevo": 0.0,
+ "N_evaluados_nuevo": 200,
+ "P_evaluables_nuevo": 0,
+ "P_alcanzados_nuevo": 0,
+ "R_nuevo": null,
+ "r_N_nuevo": 0.0,
+ "p_fisher": null
+}

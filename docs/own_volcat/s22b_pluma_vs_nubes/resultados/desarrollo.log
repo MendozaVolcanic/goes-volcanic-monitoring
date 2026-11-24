@@ -1,0 +1,236 @@
+datos listos en 3 s; días de desarrollo con clase: 31; cuadros para nublado de costumbre por hora: mín 53, máx 239
+S calculado en 50 s
+{
+ "nota": "DESARROLLO: días ya mirados; la regla se eligió mirándolos. No decide.",
+ "P_evaluables": 54,
+ "P_alcanzados": 13,
+ "R": 0.24074074074074073,
+ "N_evaluables": 797,
+ "N_alcanzados": 56,
+ "r_N": 0.07026348808030113,
+ "p_fisher": 0.0001655966076642067,
+ "episodios": 13,
+ "episodios_alcanzados": 4,
+ "por_dia": [
+  {
+   "dia": "2026-10-22",
+   "P": 1,
+   "P_evaluables": 0,
+   "P_alcanzados": 0,
+   "P_no_evaluables_por_nubes": 1,
+   "disparos_del_dia": 0,
+   "tajadas_de_los_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-10-24",
+   "P": 1,
+   "P_evaluables": 0,
+   "P_alcanzados": 0,
+   "P_no_evaluables_por_nubes": 0,
+   "disparos_del_dia": 0,
+   "tajadas_de_los_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-10-25",
+   "P": 4,
+   "P_evaluables": 0,
+   "P_alcanzados": 0,
+   "P_no_evaluables_por_nubes": 0,
+   "disparos_del_dia": 0,
+   "tajadas_de_los_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-10-28",
+   "P": 26,
+   "P_evaluables": 17,
+   "P_alcanzados": 4,
+   "P_no_evaluables_por_nubes": 0,
+   "disparos_del_dia": 2,
+   "tajadas_de_los_disparos": [
+    0,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-10-29",
+   "P": 6,
+   "P_evaluables": 3,
+   "P_alcanzados": 3,
+   "P_no_evaluables_por_nubes": 0,
+   "disparos_del_dia": 4,
+   "tajadas_de_los_disparos": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-11-07",
+   "P": 1,
+   "P_evaluables": 1,
+   "P_alcanzados": 0,
+   "P_no_evaluables_por_nubes": 0,
+   "disparos_del_dia": 0,
+   "tajadas_de_los_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-11-08",
+   "P": 13,
+   "P_evaluables": 13,
+   "P_alcanzados": 4,
+   "P_no_evaluables_por_nubes": 0,
+   "disparos_del_dia": 3,
+   "tajadas_de_los_disparos": [
+    0,
+    0,
+    0,
+    0,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-11-10",
+   "P": 12,
+   "P_evaluables": 2,
+   "P_alcanzados": 0,
+   "P_no_evaluables_por_nubes": 4,
+   "disparos_del_dia": 0,
+   "tajadas_de_los_disparos": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-11-11",
+   "P": 3,
+   "P_evaluables": 3,
+   "P_alcanzados": 2,
+   "P_no_evaluables_por_nubes": 0,
+   "disparos_del_dia": 5,
+   "tajadas_de_los_disparos": [
+    0,
+    0,
+    0,
+    0,
+    3,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-11-14",
+   "P": 33,
+   "P_evaluables": 15,
+   "P_alcanzados": 0,
+   "P_no_evaluables_por_nubes": 2,
+   "disparos_del_dia": 1,
+   "tajadas_de_los_disparos": [
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ ]
+}

@@ -32,6 +32,7 @@ sys.path.insert(0, os.path.join(OV, "h29_pluma_0811", "scripts"))
 import h29_comun as C29  # noqa: E402  (decodifica_png, proyección del PNG, hav)
 
 PNG = r"D:\goes_notas\s22\volcat_png\Chile_Central_2_km\frames"
+PNG_DIRS = [PNG, r"D:\goes_notas\s22\s22b\volcat_png\frames"]   # la segunda: desde 24-11 11:50 (s22b_volcat_bajar.py)
 FRAMES_CALOR = os.path.join(OV, "calor_rayos", "resultados", "frames_calor.csv")
 CHI = (-36.86, -71.38)
 _rr, _cc = np.mgrid[0:755, 0:1000]
@@ -61,8 +62,13 @@ def uno(fn):
 
 
 def inventario(dias):
-    fs = sorted(os.path.join(PNG, f) for f in os.listdir(PNG)
-                if f.endswith(".png") and "_annot" not in f and f[:10] in dias)
+    fs = {}
+    for carpeta in PNG_DIRS:                        # el mismo nombre en las dos carpetas es el mismo cuadro
+        if os.path.isdir(carpeta):
+            for f in os.listdir(carpeta):
+                if f.endswith(".png") and "_annot" not in f and f[:10] in dias:
+                    fs.setdefault(f, os.path.join(carpeta, f))
+    fs = [fs[k] for k in sorted(fs)]
     with ProcessPoolExecutor(3) as ex:
         res = list(ex.map(uno, fs, chunksize=8))
     return {dt: r for dt, r in res}

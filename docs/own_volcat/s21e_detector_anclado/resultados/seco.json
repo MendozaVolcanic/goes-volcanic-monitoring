@@ -1,0 +1,241 @@
+{
+ "criterio": "criterio_2026-11-24.md (6f51c96) + enmienda 1 antes de medir",
+ "Z_pixeles": 65,
+ "control_pixeles": 7684,
+ "crater_px": [
+  42,
+  46
+ ],
+ "placebo": [
+  "2026-10-23",
+  "2026-10-26",
+  "2026-10-31",
+  "2026-11-01",
+  "2026-11-02",
+  "2026-11-03",
+  "2026-11-04",
+  "2026-11-05",
+  "2026-11-09",
+  "2026-11-15",
+  "2026-11-17",
+  "2026-11-19",
+  "2026-11-20",
+  "2026-11-21"
+ ],
+ "pozo": "2026-09-21 a 2026-10-21",
+ "cobertura_positivos": {
+  "25-10 14:20": {
+   "cuadros_pozo_E1_pm10": 11,
+   "pixeles_Z_con_base": 65,
+   "U": -1.086518657207489,
+   "ventana_U_min": 120,
+   "n_U": 32,
+   "placebo_por_dia": {
+    "10-26": 2,
+    "11-02": 5,
+    "11-04": 25
+   },
+   "pixel_verdad_con_base": true
+  },
+  "25-10 14:30": {
+   "cuadros_pozo_E1_pm10": 10,
+   "pixeles_Z_con_base": 65,
+   "U": -1.086518657207489,
+   "ventana_U_min": 120,
+   "n_U": 32,
+   "placebo_por_dia": {
+    "10-26": 2,
+    "11-02": 5,
+    "11-04": 25
+   },
+   "pixel_verdad_con_base": true
+  },
+  "08-11 14:40": {
+   "cuadros_pozo_E1_pm10": 10,
+   "pixeles_Z_con_base": 65,
+   "U": -1.2892485052347182,
+   "ventana_U_min": 120,
+   "n_U": 32,
+   "placebo_por_dia": {
+    "10-26": 2,
+    "11-02": 5,
+    "11-04": 25
+   },
+   "pixel_verdad_con_base": true
+  },
+  "08-11 14:50": {
+   "cuadros_pozo_E1_pm10": 10,
+   "pixeles_Z_con_base": 65,
+   "U": -1.2897978723049164,
+   "ventana_U_min": 120,
+   "n_U": 31,
+   "placebo_por_dia": {
+    "10-26": 2,
+    "11-02": 5,
+    "11-04": 24
+   },
+   "pixel_verdad_con_base": true
+  }
+ },
+ "ventana_decision": [
+  "12:20",
+  "16:50"
+ ],
+ "seco_decide": {
+  "por_dia": {
+   "2026-10-23": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   },
+   "2026-10-26": {
+    "cuadros": 2,
+    "disparos": 2,
+    "sin_umbral": 0,
+    "tasa": 1.0
+   },
+   "2026-10-31": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   },
+   "2026-11-01": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   },
+   "2026-11-02": {
+    "cuadros": 5,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": 0.0
+   },
+   "2026-11-03": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   },
+   "2026-11-04": {
+    "cuadros": 2,
+    "disparos": 0,
+    "sin_umbral": 25,
+    "tasa": 0.0
+   },
+   "2026-11-05": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   },
+   "2026-11-09": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   },
+   "2026-11-15": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   },
+   "2026-11-17": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   },
+   "2026-11-19": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   },
+   "2026-11-20": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   },
+   "2026-11-21": {
+    "cuadros": 0,
+    "disparos": 0,
+    "sin_umbral": 0,
+    "tasa": null
+   }
+  },
+  "dias_con_cuadros": 3,
+  "falsa_alarma_media": 0.3333333333333333,
+  "cuadros_total": 9,
+  "disparos_total": 2
+ },
+ "valida": false,
+ "seco_todas_las_horas_informativo": {
+  "dias_con_cuadros": 8,
+  "falsa_alarma_media": 0.3038596846106309,
+  "cuadros_total": 244,
+  "disparos_total": 21
+ },
+ "placebo_cuadros_por_dia": {
+  "2026-10-23": {
+   "evaluados": 117,
+   "evaluados_E1": 0
+  },
+  "2026-10-26": {
+   "evaluados": 123,
+   "evaluados_E1": 7
+  },
+  "2026-10-31": {
+   "evaluados": 97,
+   "evaluados_E1": 13
+  },
+  "2026-11-01": {
+   "evaluados": 141,
+   "evaluados_E1": 0
+  },
+  "2026-11-02": {
+   "evaluados": 119,
+   "evaluados_E1": 46
+  },
+  "2026-11-03": {
+   "evaluados": 122,
+   "evaluados_E1": 2
+  },
+  "2026-11-04": {
+   "evaluados": 135,
+   "evaluados_E1": 89
+  },
+  "2026-11-05": {
+   "evaluados": 117,
+   "evaluados_E1": 64
+  },
+  "2026-11-09": {
+   "evaluados": 102,
+   "evaluados_E1": 73
+  },
+  "2026-11-15": {
+   "evaluados": 84,
+   "evaluados_E1": 0
+  },
+  "2026-11-17": {
+   "evaluados": 120,
+   "evaluados_E1": 0
+  },
+  "2026-11-19": {
+   "evaluados": 121,
+   "evaluados_E1": 0
+  },
+  "2026-11-20": {
+   "evaluados": 132,
+   "evaluados_E1": 0
+  },
+  "2026-11-21": {
+   "evaluados": 138,
+   "evaluados_E1": 1
+  }
+ }
+}

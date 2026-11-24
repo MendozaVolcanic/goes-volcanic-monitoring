@@ -1,0 +1,200 @@
+{
+ "regla": {
+  "FMASK_MAX_DISCO": 0.3,
+  "FMASK_MAX_CUMBRE": 0.3,
+  "MIN_EROS3": 100,
+  "FMASK_MAX_MASC": 0.2,
+  "DMIN_MAX_km": 6.0
+ },
+ "2026-09-15": {
+  "landsat_c2": "LC09_L2SP_233085_20260915_02_T1",
+  "hls": "HLS.L30.T19HBV.2026258T143426.v2.0",
+  "nube_catalogo_pc": 4.16,
+  "nube_catalogo_hls": 0,
+  "fmask_nube_sombra_2_15km": 0.0,
+  "fmask_nube_sombra_0_5km": 0.0,
+  "fmask_nieve_0_5km": 0.9986,
+  "referencias": [
+   [
+    "S2B_19HBV_20260914_0_L2A",
+    1689326
+   ],
+   [
+    "S2A_19HBV_20260908_0_L2A",
+    53557
+   ],
+   [
+    "LC08_L2SP_233085_20260907_02_T1",
+    18968
+   ],
+   [
+    "LC08_L2SP_233086_20260907_02_T1",
+    10316
+   ],
+   [
+    "S2C_19HBV_20260906_0_L2A",
+    17
+   ],
+   [
+    "S2C_19HBV_20260916_0_L2A",
+    387
+   ],
+   [
+    "S2A_19HBV_20260921_1_L2A",
+    3403
+   ],
+   [
+    "S2B_19HBV_20260921_0_L2A",
+    0
+   ]
+  ],
+  "frac_nieve_ref_2_15km": 0.5505,
+  "celdas_mascara": 800,
+  "celdas_erosion_3": 0,
+  "forma": {
+   "area_km2": 0.72,
+   "largo_km_p2_p98": 26.72,
+   "ancho_km_p2_p98": 25.37,
+   "azimut_eje_grados_0_180": 169.3,
+   "azimut_centroide_desde_crater": 321.6,
+   "dist_centroide_km": 2.08,
+   "dist_max_km": 15.14,
+   "dist_min_km": 8.09
+  },
+  "fmask_nube_sombra_mascara": 0.0,
+  "sirve": false,
+  "motivo": "paso 3: 0 celdas erosionadas (< 100); paso 3: la mascara empieza a mas de 6 km del crater"
+ },
+ "2026-09-23": {
+  "landsat_c2": "LC08_L2SP_233085_20260923_02_T2",
+  "hls": null,
+  "nube_catalogo_pc": 100.0,
+  "nube_catalogo_hls": null,
+  "sirve": false,
+  "motivo": "paso 0: 100 % de nube en Planetary Computer y sin granulo HLS"
+ },
+ "2026-10-01": {
+  "landsat_c2": "LC09_L2SP_233085_20261001_02_T1",
+  "hls": "HLS.L30.T19HBV.2026274T143434.v2.0",
+  "nube_catalogo_pc": 53.59,
+  "nube_catalogo_hls": 91,
+  "fmask_nube_sombra_2_15km": 1.0,
+  "fmask_nube_sombra_0_5km": 1.0,
+  "fmask_nieve_0_5km": 0.0,
+  "sirve": false,
+  "motivo": "paso 1: cumbre o disco con nube"
+ },
+ "2026-10-09": {
+  "landsat_c2": "LC08_L2SP_233085_20261009_02_T1",
+  "hls": "HLS.L30.T19HBV.2026282T143431.v2.0",
+  "nube_catalogo_pc": 47.71,
+  "nube_catalogo_hls": 77,
+  "fmask_nube_sombra_2_15km": 0.9764,
+  "fmask_nube_sombra_0_5km": 0.9363,
+  "fmask_nieve_0_5km": 0.0684,
+  "sirve": false,
+  "motivo": "paso 1: cumbre o disco con nube"
+ },
+ "2026-10-17": {
+  "landsat_c2": "LC09_L2SP_233085_20261017_02_T1",
+  "hls": "HLS.L30.T19HBV.2026290T143436.v2.0",
+  "nube_catalogo_pc": 22.92,
+  "nube_catalogo_hls": 56,
+  "fmask_nube_sombra_2_15km": 0.0969,
+  "fmask_nube_sombra_0_5km": 0.0,
+  "fmask_nieve_0_5km": 0.9877,
+  "referencias": [
+   [
+    "S2C_19HBV_20261016_0_L2A",
+    1072055
+   ],
+   [
+    "S2B_19HBV_20261014_0_L2A",
+    297965
+   ],
+   [
+    "S2B_19HBV_20261011_0_L2A",
+    109
+   ],
+   [
+    "LC08_L2SP_233085_20261009_02_T1",
+    23372
+   ],
+   [
+    "LC08_L2SP_233086_20261009_02_T1",
+    3937
+   ],
+   [
+    "S2C_19HBV_20261009_0_L2A",
+    96673
+   ],
+   [
+    "S2A_19HBV_20261018_0_L2A",
+    2100
+   ],
+   [
+    "S2B_19HBV_20261024_0_L2A",
+    181018
+   ],
+   [
+    "LC08_L2SP_233085_20261025_02_T1",
+    48617
+   ],
+   [
+    "LC08_L2SP_233086_20261025_02_T1",
+    31421
+   ]
+  ],
+  "frac_nieve_ref_2_15km": 0.3949,
+  "celdas_mascara": 6058,
+  "celdas_erosion_3": 1857,
+  "forma": {
+   "area_km2": 5.452,
+   "largo_km_p2_p98": 21.35,
+   "ancho_km_p2_p98": 26.87,
+   "azimut_eje_grados_0_180": 117.2,
+   "azimut_centroide_desde_crater": 218.1,
+   "dist_centroide_km": 1.51,
+   "dist_max_km": 15.21,
+   "dist_min_km": 2.34
+  },
+  "fmask_nube_sombra_mascara": 0.3787,
+  "sirve": false,
+  "motivo": "paso 3: Fmask marca nube o sombra en la mascara"
+ },
+ "2026-11-02": {
+  "landsat_c2": "LC09_L2SP_233085_20261102_02_T1",
+  "hls": "HLS.L30.T19HBV.2026306T143434.v2.0",
+  "nube_catalogo_pc": 17.94,
+  "nube_catalogo_hls": 13,
+  "fmask_nube_sombra_2_15km": 0.5525,
+  "fmask_nube_sombra_0_5km": 0.2282,
+  "fmask_nieve_0_5km": 0.776,
+  "sirve": false,
+  "motivo": "paso 1: cumbre o disco con nube"
+ },
+ "2026-11-10": {
+  "landsat_c2": null,
+  "hls": "HLS.L30.T19HBV.2026314T143439.v2.0",
+  "nube_catalogo_pc": null,
+  "nube_catalogo_hls": 93,
+  "fmask_nube_sombra_2_15km": 0.7478,
+  "fmask_nube_sombra_0_5km": 0.3075,
+  "fmask_nieve_0_5km": 0.6325,
+  "sirve": false,
+  "motivo": "paso 1: cumbre o disco con nube"
+ },
+ "2026-11-18": {
+  "landsat_c2": "LC09_L2SP_233085_20261118_02_T1",
+  "hls": "HLS.L30.T19HBV.2026322T143436.v2.0",
+  "nube_catalogo_pc": 53.17,
+  "nube_catalogo_hls": 83,
+  "fmask_nube_sombra_2_15km": 0.6022,
+  "fmask_nube_sombra_0_5km": 0.6176,
+  "fmask_nieve_0_5km": 0.3611,
+  "sirve": false,
+  "motivo": "paso 1: cumbre o disco con nube"
+ },
+ "elegida": null,
+ "tambien_sirven": []
+}

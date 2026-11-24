@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-24 (cierre de la sesión S20, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-24 (cierre de la sesión S21, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,118 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S20, cierre 2026-11-24 (PR 107 a 113 en main: GOES ve la ceniza de Chillán cuando se sabe dónde mirar; firma de ceniza a 100 m, post hoc)
+## 0. S21, cierre 2026-11-24 (PR 115 a 119 en main: firma de ceniza a 100 m confirmada con criterio previo; ningún documento público explica el nacimiento de VOLCAT; el detector propio no se puede validar en noviembre)
+
+> Sesión coordinadora S21 (`local_a4c6119a`, lanzada por S20 como independiente). Lanzó S21a2 (`local_404f3a41`),
+> S21b (`local_3ab201ca`) y S21c (`local_7b96b615`) como sesiones; S21a1, la auditoría bibliográfica y S21e los hizo
+> con subagentes en este worktree (el filtro de permisos no dejó abrir S21a1 como sesión). Al cerrar no queda nada
+> corriendo: sesiones y subagentes terminados, ningún PR abierto, las cinco ramas de S21 integradas (`git cherry` 0).
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Deploy a HF con el respaldo de calor nocturno (PR 110) | **Hecho y verificado en la app** el 24-11 03:16 UTC: build `build-20261124-0316-6ef49c6`, Space `501419e`, `data/calor_nocturno.json` (208 kB) presente; la cabecera del sub-tab Volcán muestra el calor nocturno | API del Space; captura en Chrome |
+| S21a1: ventana partida a 100 m con el control fuera de ±45° del eje, escrito antes | **En main, FIRMA DE CENIZA por la regla, confirmatoria** (misma pasada del 25-10): T1 −3,33 K (p 0,0035), T2 −1,54 K (0 de 1.985 corrimientos), 17-10 sin pluma +0,23 K, 15-09 +0,04 K. Ninguna otra de 8 pasadas Landsat (15-09 a 18-11) sirve | PR 115, merge `3fe0fb3`; criterio pushado 03:33:49, medida 03:39:36 UTC; revisión propia T2 −1,545 K |
+| S21b: bandas reflejadas C02, C05, C06 | **En main.** Prueba 1 (franja 25-10) SIN PODER (S 2,6 a 2,9, p 0,07 a 0,12; nulo de la ventana entera contaminado por nubes de días base). Prueba 2 (tarde 28-10) SIN SEÑAL, episodio NO CONCLUYENTE (poder 0,03 a 0,05) | PR 116, merge `66c3006`; revisión propia de ρ05 desde S3: 0,1338 contra 0,1344 |
+| S21c: GOES-18 en estéreo | **En main, NO CONCLUYENTE** (estadístico sin poder). Estéreo validado contra terreno (r 0,93 a 0,97; ±0,26 km de altura); ninguna columna asoma en la tarde del 28-10; franja Landsat 25-10 SIN SEÑAL | PR 117, merge `e288138`; geometría recalculada: GOES-18 79,26° de cenit, 5,27 km por km |
+| S21a2: prueba 1 en Sentinel-2 del 29-10 y 13-11 | **En main: no repite ni contradice S20b.** La máscara marca borde de nieve en fusión, no pluma; M1 SIN PODER los dos días; M2 INVÁLIDO 29-10, SIN PODER 13-11 | PR 118, merge `f034520`; área en componentes a 6 km o menos del cráter: 10 % y 8 % (S20b: 92 % y 61 %), recontado |
+| Auditoría bibliográfica de VOLCAT (pedida por Nicolás) | **Hecha.** 62 documentos del grupo sobre detección, seguimiento o alertas; teníamos 19; **ninguno describe cómo nace un objeto ASHPLUMEPUFF**. Pavolonis 2018, Apéndice A: caja de 100 m/s con cirro y 50 m/s sin él (el 0,05 km/s de H28) | `D:\goes_notas\s21\biblio\AUDITORIA_BIBLIOGRAFIA_VOLCAT.md`; cita verificada en el texto |
+| S21e: detector anclado al cráter, juzgado contra verdad fina | **En main, INVÁLIDA por la regla** (ensayo en seco: falsa alarma 0,33 contra 0,10). En las mañanas placebo sólo hay cuadros despejados por E1 el 26-10 (2), 02-11 (5) y 04-11 (28); los otros 11 días, 0. Poder a −0,97 K: 0,07 a 0,22 | PR 119, merge `fa53113`; criterio `6f51c96` antes de medir; conteo E1 rehecho con código propio |
+| main | `fa53113` (remoto) | `git ls-remote` |
+| Calor nocturno y FRP | Corren poco: cada uno tuvo **1** corrida programada entre el 23-11 22:00 y el 24-11 10:24 UTC (GitHub frena los cron de 10 min; ya documentado en `frp_timeline.yml`). El gap-fill rellena y la app avisa el atraso | `gh run list` |
+| Disco | D: 10,1 GB libres (S21 usa ~0,75 GB en `D:\goes_notas\s21\`) | `Get-PSDrive` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Pedir al OVDAS la serie de cámaras con hora al segundo en los minutos de las pasadas finas, y posición y rumbo de cada cámara (S19i §6) | **Sí.** Es la verdad que más falta, y la única que sirve para juzgar un detector fuera de las dos huellas finas |
+| 2 | Pedir a NOAA, vía el VAAC, un sector de mesoescala de GOES-19 sobre Chillán unas horas | **Sí, si el OVDAS lo ve viable.** S21c midió que el disco completo cada 10 min no alcanza a ver columnas de segundos a minutos |
+| 3 | Disparo externo para los workflows de 10 min (calor nocturno sobre todo), porque el cron de GitHub corre cada 2 a 12 h | **Sí, en S22**, con un token de alcance mínimo registrado antes en `REGISTRO_CREDENCIALES.md`. El calor nocturno sirve de noche, y hoy puede llegar 8 h tarde |
+| 4 | Medir la pasada de Landsat 8 del 26-11 con el código de S21a1 si trae pluma sobre nieve con cumbre despejada | **Sí**: es la primera repetición independiente de la firma a 100 m. El criterio de elección de pasada ya está escrito |
+| 5 | Dónde vive el catálogo de verdad fina por volcán | Copernicus-v1 (sin cambio) |
+| 6 | Paquete de Fuego de SSEC (16 GB en D:) con D: en 10 GB libres | Mantenerlo mientras D: tenga más de 8 GB; si baja de eso, borrarlo es lo primero |
+| 7 | Correo a Pavolonis | Sólo si tú lo traes. La auditoría dejó la pregunta concreta: qué abre un objeto ASHPLUMEPUFF con probabilidad de píxel menor que 0,05, y si el seguidor kd-tree conserva los 50 m/s de 2018 |
+
+### c. Lo aprendido
+
+- **Un detector de ceniza no se valida contra los nacimientos de VOLCAT** (regla de método, proyecto). Los cuatro
+  nacimientos de Chillán tienen BTD de −0,04 a +1,84 K, no de ceniza, y VOLCAT no marcó la bocanada del 08-11 a las
+  14:40 ni a las 14:50 que GOES muestra. Verdad útil: huellas finas y pulsos del OVDAS. Explica en parte por qué H17
+  y H26 "fallaron": medían otra cosa.
+- **Antes de fijar un umbral con días placebo, contar cuántos cuadros despejados aporta cada día** (método,
+  proyecto; extiende la lección de S20c). En noviembre 3 de 14 días tienen mañanas despejadas y uno aporta 28 de 35
+  cuadros: el umbral queda en manos de un día.
+- **El nulo espacial no puede abarcar más que la zona que revisa la regla de nubes** (método, proyecto; S21b): un
+  corrimiento que cae sobre una nube lejana de un día base infla el nulo y deja la prueba sin poder.
+- **Dos PR paralelos que agregan fila a la misma tabla chocan** (proyecto): se resuelve uniendo `main` en la rama y
+  dejando las filas en orden cronológico; el diff contra `main` tiene que quedar con una sola fila nueva. Pasó tres
+  veces en S21.
+- **Contar guiones largos con `grep` y una expresión entre corchetes que los liste da falsos positivos** (regla general del workspace): en una expresión
+  entre corchetes sin locale UTF-8, el signo menos (U+2212) comparte el primer byte con el guion largo. Contar con
+  Python (`'\u2014' in linea`) o con la cadena literal, no con corchetes. Propuesta: anotarlo en el `CLAUDE.md` global
+  junto a la regla de contar guiones largos antes de entregar.
+- **Una auditoría bibliográfica se hace por autor, no por tema** (regla general): buscar de a pedazos dejó fuera 43
+  de 62 documentos del grupo, y un paper "leído" sólo en el resumen y en §6 tenía la cita clave en su apéndice.
+- **Si el filtro de permisos rechaza abrir una sesión hija**, un subagente en una rama propia dentro del worktree hace
+  el mismo trabajo (S21a1, S21e); no reintentar la sesión igual.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** a 100 m la ceniza de Chillán tiene ventana partida negativa (S21a1, por la regla, una pluma).
+- **CONFIRMADO:** ningún documento público del grupo VOLCAT describe el nacimiento de un objeto ASHPLUMEPUFF.
+- **CONFIRMADO:** en noviembre las mañanas despejadas sin actividad no alcanzan para fijar un umbral de detector.
+- **CONFIRMADO:** los workflows de 10 min corrieron una vez en 12 h.
+- **SOSPECHA:** los cuatro nacimientos de VOLCAT tienen BTD ≥ 0 (lo leyó un subagente del inventario de H28; no lo
+  recalculé).
+- **SOSPECHA (post hoc):** la mancha a 1,6 µm que sube y baja en 30 min el 25-10 es pluma en el aire (S21b).
+- **SOSPECHA:** el 26-10, día placebo que dispara el detector, tuvo actividad no registrada (no revisado).
+- **SIN DATO:** un detector propio validado; la temporada sin nieve (enero 2027).
+
+### e. Cerrado, no rehacer
+
+Todo lo de "## 0-prev16 e." (S20), más: la auditoría bibliográfica de VOLCAT (no repetir salvo publicación nueva);
+las 8 pasadas Landsat del 15-09 al 18-11 (sólo el 25-10 sirve); Sentinel-2 del 29-10 y 13-11 con la máscara de S20b
+(marca borde de nieve: 10 % y 8 % del área cerca del cráter); la navegación de GOES-18 y GOES-19 contra el terreno y
+la geometría del estéreo (r 0,93 a 0,97, ±0,26 km); "la tarde del 28-10 deja columna en C02 del disco completo" (post
+hoc con poder 0,8 a contraste 0,10: p 0,45 a 0,98); el informe de S20d §3(c) decía que su control "habría dado FIRMA
+DE CENIZA", pero ahí T1 salía vacío (`T1_K: None` en `s20d_posthoc.json`): habría sido NO CONCLUYENTE; S21a1 lo
+corrigió con criterio previo.
+
+### f. Prompt para la próxima sesión (S22)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Sesión S22; titúlala "Goes S22: ..."
+y numera su traspaso como S22. Usa /retomar.
+
+1. Verifica antes de creer: git fetch; gh pr list (al cerrar S21 no quedaba ninguno abierto);
+   git ls-remote origin -h refs/heads/main (era fa53113 o posterior; los bots commitean).
+2. Lee CLAUDE.md, STATUS.md "## 0." (S21), POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md §1 y la tabla §3.9 (filas S21a1 a
+   S21e), y D:\goes_notas\s21\biblio\AUDITORIA_BIBLIOGRAFIA_VOLCAT.md (resumen).
+3. Trabajo en orden, cada prueba con criterio commiteado y empujado antes de medir:
+   a. Pasada Landsat 8 del 26-11: elegirla o descartarla con la regla de S21a1 (sólo visible y 1,6 µm); si sirve,
+      medir con docs/own_volcat/s21a1_ventana_partida/scripts/ sin cambiar la regla. Es la primera repetición
+      independiente de la firma a 100 m.
+   b. Decisión 3 de "## 0. b." (disparo externo de los workflows de 10 min), si Nicolás dice sí: credencial a
+      REGISTRO_CREDENCIALES.md antes de usarla.
+   c. Si hay pasadas finas nuevas con pluma, sumarlas como verdad (hoja de ruta de verdad fina).
+4. Decisiones de "## 0. b." con Nicolás. Correo a Pavolonis sólo si él lo trae.
+5. Reglas: español de Chile sin voseo ni guiones largos (contar con Python, no con grep entre corchetes); rutas
+   absolutas; no VIIRS; la carpeta principal (rama audit/2026-11-previa-local) no se toca; docs/auditoria_2026-11 no
+   se sube; nada de SSEC al repo ni al Space; criterio commiteado antes de medir; controles: revisar de qué días
+   salen y cuántos cuadros despejados aporta cada día; líneas base sólo con cuadros despejados por E1; un detector
+   no se valida contra nacimientos de VOLCAT; lo grande a D: (10 GB libres); token Earthdata en
+   C:\Users\nmend\.earthdata_token (nunca imprimirlo); fusionar sólo con el sí de Nicolás para ESE PR y con
+   --match-head-commit; cambio de lógica del dashboard = ficha SDA en el mismo commit; /cierre al llegar a la base
+   + 250 mil tokens.
+Si la sesión no alcanza: deja cada criterio empujado y el estado en STATUS.md.
+```
+
+---
+
+## 0-prev16. S20, cierre 2026-11-24 (PR 107 a 113 en main: GOES ve la ceniza de Chillán cuando se sabe dónde mirar; firma de ceniza a 100 m, post hoc)
 
 > Sesión coordinadora S20 (`local_a4c6119a`, lanzada por S19 como independiente). Lanzó S20b (alta resolución,
 > `local_541c877e`), S20c (controles limpios, `local_59c3537b`) y S20d (prueba 2 de S20b, `local_228fe8ec`). Las tres

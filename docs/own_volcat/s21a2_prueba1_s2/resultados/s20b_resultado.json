@@ -1,0 +1,1028 @@
+{
+ "2026-10-29": {
+  "cuadros": [
+   {
+    "cuadro": "14:40",
+    "inicio": "14:40:20",
+    "fin": "14:49:51",
+    "hora_chillan_estimada": "14:48:17",
+    "dt_min": -4.8
+   },
+   {
+    "cuadro": "14:50",
+    "inicio": "14:50:20",
+    "fin": "14:59:51",
+    "hora_chillan_estimada": "14:58:17",
+    "dt_min": 5.2
+   }
+  ],
+  "resultados": {
+   "f_14:40": {
+    "cuadro": "14:40",
+    "corrimientos": 1007,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     1,
+     2,
+     1,
+     0,
+     0,
+     3,
+     2,
+     1,
+     0,
+     0,
+     2,
+     0,
+     0,
+     0,
+     1,
+     1,
+     3,
+     3,
+     3,
+     1,
+     2,
+     1
+    ],
+    "despejada_E1": true,
+    "M1": {
+     "k_evento": 0.786,
+     "D": 3.921,
+     "D_corrimientos_p5_p50_p95": [
+      -3.375,
+      0.783,
+      3.544
+     ],
+     "p": 0.9702,
+     "corrimientos_validos": 1007,
+     "potencia_ref": 0.5,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": -24.371,
+     "D": -14.104,
+     "D_corrimientos_p5_p50_p95": [
+      -15.477,
+      -0.615,
+      14.41
+     ],
+     "p": 0.0665,
+     "corrimientos_validos": 1007,
+     "potencia_ref": 0.333,
+     "falsas_alarmas_seco": [
+      2,
+      6
+     ],
+     "veredicto": "INVÁLIDO"
+    },
+    "pixel_mayor_f": {
+     "fila": 41,
+     "col": 53,
+     "f": 0.165,
+     "M1": -0.405,
+     "M1_base_mediana": -0.548,
+     "M2": -3.499,
+     "M2_base_mediana": -2.297,
+     "BT11": 292.76,
+     "BTD": 1.314
+    }
+   },
+   "f_14:50": {
+    "cuadro": "14:50",
+    "corrimientos": 1007,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     1,
+     2,
+     1,
+     0,
+     0,
+     3,
+     2,
+     2,
+     0,
+     0,
+     2,
+     0,
+     0,
+     0,
+     1,
+     0,
+     3,
+     3,
+     3,
+     1,
+     2,
+     1
+    ],
+    "despejada_E1": true,
+    "M1": {
+     "k_evento": 2.687,
+     "D": 5.822,
+     "D_corrimientos_p5_p50_p95": [
+      -3.385,
+      0.848,
+      3.802
+     ],
+     "p": 0.995,
+     "corrimientos_validos": 1007,
+     "potencia_ref": 0.5,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": -22.498,
+     "D": -8.553,
+     "D_corrimientos_p5_p50_p95": [
+      -15.998,
+      -0.455,
+      14.03
+     ],
+     "p": 0.1718,
+     "corrimientos_validos": 1007,
+     "potencia_ref": 0.333,
+     "falsas_alarmas_seco": [
+      2,
+      6
+     ],
+     "veredicto": "INVÁLIDO"
+    },
+    "pixel_mayor_f": {
+     "fila": 41,
+     "col": 53,
+     "f": 0.165,
+     "M1": -0.334,
+     "M1_base_mediana": -0.703,
+     "M2": -2.998,
+     "M2_base_mediana": -2.651,
+     "BT11": 293.71,
+     "BTD": 1.461
+    }
+   },
+   "f_menos_14:40": {
+    "cuadro": "14:40",
+    "corrimientos": 1004,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     0,
+     1,
+     2,
+     1,
+     0,
+     2,
+     1,
+     0,
+     0,
+     2,
+     0,
+     0,
+     3,
+     1,
+     2,
+     1,
+     3,
+     3,
+     1,
+     2,
+     1
+    ],
+    "despejada_E1": true,
+    "M1": {
+     "k_evento": 1.401,
+     "D": 4.306,
+     "D_corrimientos_p5_p50_p95": [
+      -3.253,
+      0.755,
+      3.329
+     ],
+     "p": 0.9871,
+     "corrimientos_validos": 1004,
+     "potencia_ref": 0.167,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": -26.036,
+     "D": -17.674,
+     "D_corrimientos_p5_p50_p95": [
+      -14.517,
+      -0.75,
+      13.926
+     ],
+     "p": 0.0329,
+     "corrimientos_validos": 1004,
+     "potencia_ref": 0.333,
+     "falsas_alarmas_seco": [
+      2,
+      6
+     ],
+     "veredicto": "INVÁLIDO"
+    },
+    "pixel_mayor_f": {
+     "fila": 40,
+     "col": 50,
+     "f": 0.137,
+     "M1": -0.248,
+     "M1_base_mediana": -0.588,
+     "M2": -1.333,
+     "M2_base_mediana": -3.076,
+     "BT11": 293.31,
+     "BTD": 1.48
+    }
+   },
+   "f_menos_14:50": {
+    "cuadro": "14:50",
+    "corrimientos": 1004,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     0,
+     1,
+     2,
+     1,
+     0,
+     2,
+     2,
+     0,
+     0,
+     2,
+     0,
+     0,
+     3,
+     0,
+     2,
+     1,
+     3,
+     3,
+     1,
+     2,
+     1
+    ],
+    "despejada_E1": true,
+    "M1": {
+     "k_evento": 2.824,
+     "D": 5.648,
+     "D_corrimientos_p5_p50_p95": [
+      -3.206,
+      0.809,
+      3.677
+     ],
+     "p": 0.999,
+     "corrimientos_validos": 1004,
+     "potencia_ref": 0.167,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": -24.51,
+     "D": -9.643,
+     "D_corrimientos_p5_p50_p95": [
+      -14.835,
+      -0.251,
+      13.334
+     ],
+     "p": 0.1345,
+     "corrimientos_validos": 1004,
+     "potencia_ref": 0.333,
+     "falsas_alarmas_seco": [
+      2,
+      6
+     ],
+     "veredicto": "INVÁLIDO"
+    },
+    "pixel_mayor_f": {
+     "fila": 40,
+     "col": 50,
+     "f": 0.137,
+     "M1": 0.226,
+     "M1_base_mediana": -0.699,
+     "M2": -1.236,
+     "M2_base_mediana": -3.461,
+     "BT11": 293.92,
+     "BTD": 1.928
+    }
+   },
+   "f_mas_14:40": {
+    "cuadro": "14:40",
+    "corrimientos": 990,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     1,
+     2,
+     1,
+     0,
+     0,
+     3,
+     3,
+     3,
+     1,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     0,
+     3,
+     3,
+     3,
+     3,
+     1,
+     2,
+     1,
+     3,
+     1
+    ],
+    "despejada_E1": true,
+    "M1": {
+     "k_evento": 0.021,
+     "D": 2.365,
+     "D_corrimientos_p5_p50_p95": [
+      -3.135,
+      0.698,
+      3.147
+     ],
+     "p": 0.8657,
+     "corrimientos_validos": 990,
+     "potencia_ref": 0.5,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": -24.672,
+     "D": -14.821,
+     "D_corrimientos_p5_p50_p95": [
+      -14.371,
+      -0.372,
+      13.379
+     ],
+     "p": 0.0434,
+     "corrimientos_validos": 990,
+     "potencia_ref": 0.333,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SEÑAL"
+    },
+    "pixel_mayor_f": {
+     "fila": 41,
+     "col": 53,
+     "f": 0.173,
+     "M1": -0.405,
+     "M1_base_mediana": -0.548,
+     "M2": -3.499,
+     "M2_base_mediana": -2.297,
+     "BT11": 292.76,
+     "BTD": 1.314
+    }
+   },
+   "f_mas_14:50": {
+    "cuadro": "14:50",
+    "corrimientos": 990,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     1,
+     2,
+     1,
+     0,
+     0,
+     3,
+     3,
+     3,
+     1,
+     0,
+     0,
+     0,
+     0,
+     1,
+     1,
+     0,
+     3,
+     3,
+     3,
+     3,
+     1,
+     2,
+     1,
+     3,
+     1
+    ],
+    "despejada_E1": true,
+    "M1": {
+     "k_evento": 1.661,
+     "D": 4.35,
+     "D_corrimientos_p5_p50_p95": [
+      -3.113,
+      0.728,
+      3.506
+     ],
+     "p": 0.9838,
+     "corrimientos_validos": 990,
+     "potencia_ref": 0.5,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": -22.813,
+     "D": -11.247,
+     "D_corrimientos_p5_p50_p95": [
+      -14.028,
+      -0.124,
+      12.145
+     ],
+     "p": 0.0879,
+     "corrimientos_validos": 990,
+     "potencia_ref": 0.333,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "NO CONCLUYENTE"
+    },
+    "pixel_mayor_f": {
+     "fila": 41,
+     "col": 53,
+     "f": 0.173,
+     "M1": -0.328,
+     "M1_base_mediana": -0.696,
+     "M2": -2.998,
+     "M2_base_mediana": -2.651,
+     "BT11": 293.71,
+     "BTD": 1.461
+    }
+   }
+  }
+ },
+ "2026-11-13": {
+  "cuadros": [
+   {
+    "cuadro": "14:40",
+    "inicio": "14:40:20",
+    "fin": "14:49:51",
+    "hora_chillan_estimada": "14:48:17",
+    "dt_min": -4.8
+   },
+   {
+    "cuadro": "14:50",
+    "inicio": "14:50:20",
+    "fin": "14:59:51",
+    "hora_chillan_estimada": "14:58:17",
+    "dt_min": 5.2
+   }
+  ],
+  "resultados": {
+   "f_14:40": {
+    "cuadro": "14:40",
+    "corrimientos": 969,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     1,
+     0,
+     1,
+     1,
+     0,
+     0,
+     1,
+     3,
+     3,
+     3,
+     0,
+     0,
+     1,
+     0,
+     3,
+     0,
+     2,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "despejada_E1": false,
+    "M1": {
+     "k_evento": 2.234,
+     "D": 3.213,
+     "D_corrimientos_p5_p50_p95": [
+      -2.637,
+      -0.05,
+      4.028
+     ],
+     "p": 0.9171,
+     "corrimientos_validos": 965,
+     "potencia_ref": 0.667,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": 31.282,
+     "D": 37.438,
+     "D_corrimientos_p5_p50_p95": [
+      -84.757,
+      -3.597,
+      18.178
+     ],
+     "p": 0.9886,
+     "corrimientos_validos": 969,
+     "potencia_ref": 0.333,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "pixel_mayor_f": {
+     "fila": 46,
+     "col": 52,
+     "f": 0.268,
+     "M1": NaN,
+     "M1_base_mediana": 0.069,
+     "M2": -5.075,
+     "M2_base_mediana": -0.858,
+     "BT11": 248.64,
+     "BTD": 3.522
+    }
+   },
+   "f_14:50": {
+    "cuadro": "14:50",
+    "corrimientos": 969,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     2,
+     3,
+     3,
+     3,
+     3,
+     0,
+     2,
+     3,
+     3,
+     3,
+     3,
+     0,
+     2,
+     0,
+     0,
+     0,
+     3,
+     3,
+     3,
+     1,
+     3,
+     3,
+     1,
+     3,
+     3,
+     3,
+     3,
+     2,
+     2,
+     0,
+     0,
+     3,
+     3
+    ],
+    "despejada_E1": true,
+    "M1": {
+     "k_evento": -0.4,
+     "D": 0.737,
+     "D_corrimientos_p5_p50_p95": [
+      -2.583,
+      0.16,
+      4.917
+     ],
+     "p": 0.599,
+     "corrimientos_validos": 955,
+     "potencia_ref": 0.5,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": -22.475,
+     "D": -14.626,
+     "D_corrimientos_p5_p50_p95": [
+      -94.703,
+      -4.262,
+      26.027
+     ],
+     "p": 0.3478,
+     "corrimientos_validos": 969,
+     "potencia_ref": 0.333,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "pixel_mayor_f": {
+     "fila": 46,
+     "col": 52,
+     "f": 0.268,
+     "M1": NaN,
+     "M1_base_mediana": 0.056,
+     "M2": -1.777,
+     "M2_base_mediana": -1.322,
+     "BT11": 275.51,
+     "BTD": 2.575
+    }
+   },
+   "f_menos_14:40": {
+    "cuadro": "14:40",
+    "corrimientos": 961,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     0,
+     0,
+     0,
+     0,
+     1,
+     0,
+     1,
+     1,
+     0,
+     0,
+     0,
+     1,
+     3,
+     3,
+     3,
+     0,
+     0,
+     2,
+     1,
+     3,
+     0,
+     0,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "despejada_E1": false,
+    "M1": {
+     "k_evento": 1.336,
+     "D": 2.519,
+     "D_corrimientos_p5_p50_p95": [
+      -2.533,
+      -0.072,
+      4.342
+     ],
+     "p": 0.8653,
+     "corrimientos_validos": 958,
+     "potencia_ref": 0.0,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": 46.861,
+     "D": 52.395,
+     "D_corrimientos_p5_p50_p95": [
+      -93.547,
+      -3.899,
+      18.035
+     ],
+     "p": 0.9958,
+     "corrimientos_validos": 961,
+     "potencia_ref": 0.333,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "pixel_mayor_f": {
+     "fila": 45,
+     "col": 52,
+     "f": 0.287,
+     "M1": NaN,
+     "M1_base_mediana": -0.201,
+     "M2": 2.976,
+     "M2_base_mediana": -0.53,
+     "BT11": 266.22,
+     "BTD": 3.778
+    }
+   },
+   "f_menos_14:50": {
+    "cuadro": "14:50",
+    "corrimientos": 961,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     3,
+     3,
+     3,
+     0,
+     2,
+     3,
+     3,
+     3,
+     3,
+     3,
+     0,
+     2,
+     3,
+     3,
+     3,
+     3,
+     0,
+     0,
+     2,
+     3,
+     0,
+     0,
+     3,
+     3,
+     1,
+     0,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     2,
+     2,
+     0,
+     3,
+     3
+    ],
+    "despejada_E1": true,
+    "M1": {
+     "k_evento": -0.837,
+     "D": 0.387,
+     "D_corrimientos_p5_p50_p95": [
+      -2.896,
+      0.171,
+      4.929
+     ],
+     "p": 0.5457,
+     "corrimientos_validos": 951,
+     "potencia_ref": 0.167,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": -34.557,
+     "D": -27.485,
+     "D_corrimientos_p5_p50_p95": [
+      -103.254,
+      -4.411,
+      26.351
+     ],
+     "p": 0.2695,
+     "corrimientos_validos": 961,
+     "potencia_ref": 0.333,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "pixel_mayor_f": {
+     "fila": 45,
+     "col": 52,
+     "f": 0.287,
+     "M1": -0.303,
+     "M1_base_mediana": -0.18,
+     "M2": -3.916,
+     "M2_base_mediana": -1.064,
+     "BT11": 280.35,
+     "BTD": 1.961
+    }
+   },
+   "f_mas_14:40": {
+    "cuadro": "14:40",
+    "corrimientos": 976,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     1,
+     0,
+     1,
+     1,
+     0,
+     0,
+     1,
+     3,
+     3,
+     3,
+     0,
+     1,
+     3,
+     0,
+     1,
+     3,
+     0,
+     2,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "despejada_E1": false,
+    "M1": {
+     "k_evento": 2.696,
+     "D": 3.697,
+     "D_corrimientos_p5_p50_p95": [
+      -2.743,
+      -0.055,
+      4.219
+     ],
+     "p": 0.9258,
+     "corrimientos_validos": 971,
+     "potencia_ref": 0.667,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": 20.022,
+     "D": 25.675,
+     "D_corrimientos_p5_p50_p95": [
+      -94.047,
+      -3.55,
+      19.064
+     ],
+     "p": 0.9723,
+     "corrimientos_validos": 976,
+     "potencia_ref": 0.5,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "pixel_mayor_f": {
+     "fila": 46,
+     "col": 52,
+     "f": 0.299,
+     "M1": NaN,
+     "M1_base_mediana": 0.069,
+     "M2": -4.937,
+     "M2_base_mediana": -0.767,
+     "BT11": 248.64,
+     "BTD": 3.522
+    }
+   },
+   "f_mas_14:50": {
+    "cuadro": "14:50",
+    "corrimientos": 976,
+    "dias_nulos": 6,
+    "acm_poblacion": [
+     2,
+     3,
+     3,
+     3,
+     3,
+     0,
+     2,
+     3,
+     3,
+     3,
+     3,
+     2,
+     3,
+     0,
+     0,
+     0,
+     0,
+     3,
+     3,
+     3,
+     1,
+     3,
+     3,
+     1,
+     3,
+     3,
+     3,
+     3,
+     2,
+     2,
+     0,
+     0,
+     0,
+     3,
+     3,
+     3
+    ],
+    "despejada_E1": true,
+    "M1": {
+     "k_evento": 1.286,
+     "D": 2.589,
+     "D_corrimientos_p5_p50_p95": [
+      -2.894,
+      0.191,
+      5.184
+     ],
+     "p": 0.8106,
+     "corrimientos_validos": 966,
+     "potencia_ref": 0.667,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "M2": {
+     "k_evento": -21.459,
+     "D": -14.006,
+     "D_corrimientos_p5_p50_p95": [
+      -103.898,
+      -4.378,
+      25.92
+     ],
+     "p": 0.3678,
+     "corrimientos_validos": 976,
+     "potencia_ref": 0.5,
+     "falsas_alarmas_seco": [
+      0,
+      6
+     ],
+     "veredicto": "SIN PODER"
+    },
+    "pixel_mayor_f": {
+     "fila": 46,
+     "col": 52,
+     "f": 0.299,
+     "M1": NaN,
+     "M1_base_mediana": 0.056,
+     "M2": -0.929,
+     "M2_base_mediana": -1.178,
+     "BT11": 275.51,
+     "BTD": 2.575
+    }
+   }
+  }
+ }
+}

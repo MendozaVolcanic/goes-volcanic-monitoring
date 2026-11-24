@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-24 (cierre de la sesión S21, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-24 (sesión S22, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,89 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S21, cierre 2026-11-24 (PR 115 a 119 en main: firma de ceniza a 100 m confirmada con criterio previo; ningún documento público explica el nacimiento de VOLCAT; el detector propio no se puede validar en noviembre)
+## 0. S22, 2026-11-24 (PR 121 a 124 en main: detector propio por tajadas, sin nubes y con altura; ninguno llega; los controles de sep-nov 2026 tenían pluma)
+
+> Sesión S22 (worktree `s22-5a2702`, lanzada por S21). S22a la hizo esta sesión; S22b y S22c, dos subagentes en
+> paralelo en sus worktrees (`agent-a717009ec169a622a`, `agent-a574eb91fb7c2f8fe`). Con el sí de Nicolás se fusionaron
+> en orden PR 121 (`a5c36e0`), 123 (`b548111`), 122 (`99caa76`, tras resolver el choque de la tabla 3.9) y 124.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Decisión de Nicolás (corrige S21) | **El detector es sólo GOES; Landsat, Sentinel-2 y las cámaras del OVDAS sirven para COMPROBAR.** Meta: que el detector propio llegue a lo que VOLCAT mostró de Chillán en noviembre. La decisión 1 de S21 (pedir cámaras) queda reemplazada: Nicolás revisa cámaras cuando le mostramos algo | conversación S22 |
+| **Todos los días tienen pluma** (Nicolás, cámaras) | Erupción desde julio de 2026; ceniza de 1 a 2 km sobre el cráter desde septiembre; plumas de distinta magnitud, las chicas VOLCAT no las ve. **Oct-nov 2025 tranquilos.** El 05-11, día "placebo", tuvo pluma hacia el E todo el día. **Todo control "sin actividad" de sep-nov 2026 tenía pluma**: pozo de S20c, placebo de S21e/S22a/S22b, fondos de H23/H24/H29 | memoria `project_placebo_con_pluma_0511` |
+| S22a: detector por 12 tajadas de 30°, cola de 8 píxeles, persistencia | **SIN PODER** (R 36/96, p 2/15, poder 0,01 a 0,33 K). 08-11: 10 de 13 cuadros de VOLCAT, sobre su pluma al SE, desde antes que VOLCAT. 15-11 dispara igual: borde de nube | [PR 121](https://github.com/MendozaVolcanic/goes-volcanic-monitoring/pull/121); criterio `7c59431` antes de medir |
+| S22b: sin nubes dinámicas ni bordes, compuerta de cielo, base despejada | **NO DECIDIBLE** en días nuevos (22 a 24-11: VOLCAT sin pluma anclada; 0 falsas alarmas en 200 cuadros). 15-11 ya no se evalúa; 08-11 baja a 4/13; 14-11 a 0. Los placebo de S22a eran tardes nubladas (77 % contra 8 %). Enmienda 1 tras un seco INVÁLIDO, antes de días nuevos, declarada | [PR 123](https://github.com/MendozaVolcanic/goes-volcanic-monitoring/pull/123); criterio `6af2d27` |
+| S22c: altura por rumbo contra viento GFS | **NO SIRVE**: contra la sombra del 08-11 (4,7 km) da 3,2 km (GFS calmo y con otro rumbo); de tarde la banda compatible va de 3,5 a 14 km. Wen-Rose con f·ε: 0 de 12 soluciones | [PR 122](https://github.com/MendozaVolcanic/goes-volcanic-monitoring/pull/122); criterio `bdd73e7` antes del viento |
+| Videos lado a lado (VOLCAT tal cual / detector pintado igual) | En `C:\Users\nmend\Downloads\`: `s22a_lado_a_lado_*`, `s22b_lado_a_lado_*` (05, 08, 14, 15, 22, 23, 24-11), `s22c_lado_a_lado_altura_*`. Fuera del repo (licencia SSEC) | scripts `s22a_lado_a_lado.py`, `s22b_lado_a_lado.py` |
+| Respaldo VOLCAT (SSEC guarda ~30 días) | En D: (sólo local): 19-11 00:00 a 24-11 16:10, más 28-10, 05, 10, 11, 14, 15-11. Los otros días de oct-nov se borran uno por día | `D:\goes_notas\s22\volcat_png\`, `D:\goes_notas\s22\s22b\volcat_png\` |
+| Fondo sin pluma oct-nov 2025 | **Bajando** al escribir este bloque: C14, C15 y ACMF del 21-09 al 21-11-2025, misma ventana y método que 2026 | `docs/own_volcat/s22d_fondo_2025/scripts/s22d_bajar_2025.py`; logs en `D:\goes_notas\s22\s22d_2025\` |
+| Landsat 8 del 26-11 | Aún no ocurría el 24-11 | |
+| Disco | D: 8,6 GB libres al lanzar la bajada de 2025 | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Fusionar PR 121, 122 y 123 | **Hecho** el 24-11 con el sí de Nicolás (orden 121, 123, 122, 124; `--match-head-commit`) |
+| 2 | Disparo externo de los workflows de 10 min (calor nocturno) | Sigue en pie de S21; no se trató en S22 |
+| 3 | Respaldar el resto de oct-nov 2026 de VOLCAT antes de que SSEC lo borre (~1 GB) | **Sí**: es la meta de Nicolás y se pierde un día por día |
+| 4 | Sector de mesoescala sobre Chillán vía VAAC | Sigue de S21 |
+| 5 | Correo a Pavolonis | Sólo si Nicolás lo trae |
+
+### c. Lo aprendido
+
+- **"No figura en REAV, VOLCAT ni VCB" no es "sin pluma"** (método, proyecto). En una erupción continua no hay
+  días de control en la misma temporada: se usan años anteriores tranquilos (aquí oct-nov 2025).
+- **Mostrar como VOLCAT o no se entiende** (Nicolás): píxeles llenos sobre el IR en gris, mismo encuadre, anillos y
+  frontera, lado a lado con el PNG de VOLCAT. Un borde naranja sobre otro fondo no se compara a simple vista.
+- **Comparar cielos parecidos**: un nulo de tardes nubladas contra positivos despejados mide las nubes (S22b).
+- **Altura por rumbo y viento no resuelve de tarde**: el giro del viento con la altura y el paralaje se compensan;
+  lo que falta es la rapidez de avance de la pluma (S22c).
+- **Subagentes en paralelo con worktree propio funcionan**; una caída de red (ENOTFOUND) corta al agente, y se
+  reanuda con un mensaje sin perder su worktree.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (cámaras):** el 05-11 hubo pluma hacia el E todo el día y VOLCAT no la marcó.
+- **CONFIRMADO:** los cuadros con pluma de VOLCAT son despejados y los "placebo" de S22a eran nublados (S22b).
+- **SOSPECHA:** la tajada E queda baja también el 04-11 por pluma (todos los días tienen pluma), no por sesgo propio.
+- **SOSPECHA:** los umbrales de S21e, S22a y S22b están inflados por controles con pluma; con el fondo de 2025 el
+  detector podría ver más.
+- **SIN DATO:** altura propia confiable; un día nuevo con pluma de VOLCAT en tarde despejada para confirmar S22b.
+
+### e. Cerrado, no rehacer
+
+Todo lo de "## 0-prev17" (S21), más: altura por rumbo contra viento GFS de un solo cuadro (S22c); Wen-Rose con f·ε
+en el píxel de la verdad del 08-11 (más tibio que su fondo); la lista de 14 placebo de S21e como días sin pluma.
+
+### f. Prompt para la próxima sesión (S23)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Sesión S23; titúlala "Goes S23: ..." y numera su
+traspaso como S23. Usa /retomar.
+
+1. Verifica: git fetch; gh pr list (al cerrar S22 no quedaba ninguno abierto; main con PR 121 a 124); git ls-remote origin -h
+   refs/heads/main; que la bajada de oct-nov 2025 terminó (D:\goes_notas\s22\s22d_2025\bajar_l1b.log y
+   bajar_acm.log, línea FIN) y cuántos cuadros faltan.
+2. Lee STATUS.md "## 0." (S22) y la memoria project_placebo_con_pluma_0511 (TODOS los días de jul-nov 2026 tienen
+   pluma; oct-nov 2025 tranquilos).
+3. Trabajo: con el fondo de oct-nov 2025 como línea base y nulo (misma estación, sin pluma), rehacer el detector de
+   S22b (scripts en docs/own_volcat/s22b_pluma_vs_nubes/, ya en main) y medirlo contra lo que VOLCAT mostró en oct-nov 2026,
+   criterio commiteado y empujado antes de medir. Mostrar el resultado lado a lado como VOLCAT (píxeles llenos,
+   mismo encuadre). La dirección de la pluma la comprueba Nicolás con las cámaras.
+4. Respaldar en D: el resto de oct-nov 2026 de VOLCAT antes de que SSEC lo borre, si Nicolás dice sí.
+5. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS;
+   la carpeta principal no se toca; docs/auditoria_2026-11 no se sube; nada de SSEC al repo ni al Space; criterio
+   antes de medir; fusionar sólo con el sí de Nicolás para ESE PR y con --match-head-commit; /cierre al llegar a la
+   base + 250 mil tokens.
+```
+
+---
+
+## 0-prev17. S21, cierre 2026-11-24 (PR 115 a 119 en main: firma de ceniza a 100 m confirmada con criterio previo; ningún documento público explica el nacimiento de VOLCAT; el detector propio no se puede validar en noviembre)
 
 > Sesión coordinadora S21 (`local_a4c6119a`, lanzada por S20 como independiente). Lanzó S21a2 (`local_404f3a41`),
 > S21b (`local_3ab201ca`) y S21c (`local_7b96b615`) como sesiones; S21a1, la auditoría bibliográfica y S21e los hizo

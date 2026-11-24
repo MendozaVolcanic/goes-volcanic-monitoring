@@ -1,0 +1,27 @@
+  referencia {'id': 'S2B_19HBV_20260914_0_L2A', 'fecha': '2026-09-14T14:53:03.952000Z', 'celdas_aportadas': 1689326}
+  referencia {'id': 'S2A_19HBV_20260908_0_L2A', 'fecha': '2026-09-08T14:43:25.557000Z', 'celdas_aportadas': 53557}
+  referencia {'id': 'LC08_L2SP_233085_20260907_02_T1', 'fecha': '2026-09-07T14:34:18.063275Z', 'celdas_aportadas': 18968}
+  referencia {'id': 'LC08_L2SP_233086_20260907_02_T1', 'fecha': '2026-09-07T14:34:42.026328Z', 'celdas_aportadas': 10316}
+  referencia {'id': 'S2C_19HBV_20260906_0_L2A', 'fecha': '2026-09-06T14:43:08.848000Z', 'celdas_aportadas': 17}
+  referencia {'id': 'S2C_19HBV_20260916_0_L2A', 'fecha': '2026-09-16T14:43:10.168000Z', 'celdas_aportadas': 387}
+  referencia {'id': 'S2A_19HBV_20260921_1_L2A', 'fecha': '2026-09-21T14:53:19.531000Z', 'celdas_aportadas': 3403}
+  referencia {'id': 'S2B_19HBV_20260921_0_L2A', 'fecha': '2026-09-21T14:43:10.090000Z', 'celdas_aportadas': 0}
+2026-09-15 {"landsat_c2": "LC09_L2SP_233085_20260915_02_T1", "hls": "HLS.L30.T19HBV.2026258T143426.v2.0", "nube_catalogo_pc": 4.16, "nube_catalogo_hls": 0, "fmask_nube_sombra_2_15km": 0.0, "fmask_nube_sombra_0_5km": 0.0, "fmask_nieve_0_5km": 0.9986, "frac_nieve_ref_2_15km": 0.5505, "celdas_mascara": 800, "celdas_erosion_3": 0, "forma": {"area_km2": 0.72, "largo_km_p2_p98": 26.72, "ancho_km_p2_p98": 25.37, "azimut_eje_grados_0_180": 169.3, "azimut_centroide_desde_crater": 321.6, "dist_centroide_km": 2.08, "dist_max_km": 15.14, "dist_min_km": 8.09}, "fmask_nube_sombra_mascara": 0.0, "sirve": false, "motivo": "paso 3: 0 celdas erosionadas (< 100); paso 3: la mascara empieza a mas de 6 km del crater"}
+2026-09-23 {"landsat_c2": "LC08_L2SP_233085_20260923_02_T2", "hls": null, "nube_catalogo_pc": 100.0, "nube_catalogo_hls": null, "sirve": false, "motivo": "paso 0: 100 % de nube en Planetary Computer y sin granulo HLS"}
+2026-10-01 {"landsat_c2": "LC09_L2SP_233085_20261001_02_T1", "hls": "HLS.L30.T19HBV.2026274T143434.v2.0", "nube_catalogo_pc": 53.59, "nube_catalogo_hls": 91, "fmask_nube_sombra_2_15km": 1.0, "fmask_nube_sombra_0_5km": 1.0, "fmask_nieve_0_5km": 0.0, "sirve": false, "motivo": "paso 1: cumbre o disco con nube"}
+2026-10-09 {"landsat_c2": "LC08_L2SP_233085_20261009_02_T1", "hls": "HLS.L30.T19HBV.2026282T143431.v2.0", "nube_catalogo_pc": 47.71, "nube_catalogo_hls": 77, "fmask_nube_sombra_2_15km": 0.9764, "fmask_nube_sombra_0_5km": 0.9363, "fmask_nieve_0_5km": 0.0684, "sirve": false, "motivo": "paso 1: cumbre o disco con nube"}
+  referencia {'id': 'S2C_19HBV_20261016_0_L2A', 'fecha': '2026-10-16T14:43:11.948000Z', 'celdas_aportadas': 1072055}
+  referencia {'id': 'S2B_19HBV_20261014_0_L2A', 'fecha': '2026-10-14T14:53:04.764000Z', 'celdas_aportadas': 297965}
+  referencia {'id': 'S2B_19HBV_20261011_0_L2A', 'fecha': '2026-10-11T14:43:10.256000Z', 'celdas_aportadas': 109}
+  referencia {'id': 'LC08_L2SP_233085_20261009_02_T1', 'fecha': '2026-10-09T14:34:31.111923Z', 'celdas_aportadas': 23372}
+  referencia {'id': 'LC08_L2SP_233086_20261009_02_T1', 'fecha': '2026-10-09T14:34:55.070739Z', 'celdas_aportadas': 3937}
+  referencia {'id': 'S2C_19HBV_20261009_0_L2A', 'fecha': '2026-10-09T14:53:07.632000Z', 'celdas_aportadas': 96673}
+  referencia {'id': 'S2A_19HBV_20261018_0_L2A', 'fecha': '2026-10-18T14:43:21.106000Z', 'celdas_aportadas': 2100}
+  referencia {'id': 'S2B_19HBV_20261024_0_L2A', 'fecha': '2026-10-24T14:53:06.257000Z', 'celdas_aportadas': 181018}
+  referencia {'id': 'LC08_L2SP_233085_20261025_02_T1', 'fecha': '2026-10-25T14:34:31.819538Z', 'celdas_aportadas': 48617}
+  referencia {'id': 'LC08_L2SP_233086_20261025_02_T1', 'fecha': '2026-10-25T14:34:55.778353Z', 'celdas_aportadas': 31421}
+2026-10-17 {"landsat_c2": "LC09_L2SP_233085_20261017_02_T1", "hls": "HLS.L30.T19HBV.2026290T143436.v2.0", "nube_catalogo_pc": 22.92, "nube_catalogo_hls": 56, "fmask_nube_sombra_2_15km": 0.0969, "fmask_nube_sombra_0_5km": 0.0, "fmask_nieve_0_5km": 0.9877, "frac_nieve_ref_2_15km": 0.3949, "celdas_mascara": 6058, "celdas_erosion_3": 1857, "forma": {"area_km2": 5.452, "largo_km_p2_p98": 21.35, "ancho_km_p2_p98": 26.87, "azimut_eje_grados_0_180": 117.2, "azimut_centroide_desde_crater": 218.1, "dist_centroide_km": 1.51, "dist_max_km": 15.21, "dist_min_km": 2.34}, "fmask_nube_sombra_mascara": 0.3787, "sirve": false, "motivo": "paso 3: Fmask marca nube o sombra en la mascara"}
+2026-11-02 {"landsat_c2": "LC09_L2SP_233085_20261102_02_T1", "hls": "HLS.L30.T19HBV.2026306T143434.v2.0", "nube_catalogo_pc": 17.94, "nube_catalogo_hls": 13, "fmask_nube_sombra_2_15km": 0.5525, "fmask_nube_sombra_0_5km": 0.2282, "fmask_nieve_0_5km": 0.776, "sirve": false, "motivo": "paso 1: cumbre o disco con nube"}
+2026-11-10 {"landsat_c2": null, "hls": "HLS.L30.T19HBV.2026314T143439.v2.0", "nube_catalogo_pc": null, "nube_catalogo_hls": 93, "fmask_nube_sombra_2_15km": 0.7478, "fmask_nube_sombra_0_5km": 0.3075, "fmask_nieve_0_5km": 0.6325, "sirve": false, "motivo": "paso 1: cumbre o disco con nube"}
+2026-11-18 {"landsat_c2": "LC09_L2SP_233085_20261118_02_T1", "hls": "HLS.L30.T19HBV.2026322T143436.v2.0", "nube_catalogo_pc": 53.17, "nube_catalogo_hls": 83, "fmask_nube_sombra_2_15km": 0.6022, "fmask_nube_sombra_0_5km": 0.6176, "fmask_nieve_0_5km": 0.3611, "sirve": false, "motivo": "paso 1: cumbre o disco con nube"}
+elegida None tambien []

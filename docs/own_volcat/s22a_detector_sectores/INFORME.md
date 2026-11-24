@@ -85,6 +85,15 @@ Por estado de cielo: 30 de 75 cuadros P despejados por E1, 6 de 21 nublados.
   objetos anclados. El detector dispara 13 veces, 9 en la tajada SE. O es un efecto de superficie o de tiempo al SE
   por la tarde, o es una pluma que VOLCAT no vio. No se revisó con imagen fina ni con cámara.
 - La tajada SE es la "más baja" en 14 % de los cuadros placebo (lo esperado al azar sería 8 %).
+- **Hipótesis de Nicolás (24-11): el 15-11 puede ser una pluma que VOLCAT no vio.** Chillán lanzó pulsos casi a
+  diario en noviembre, varios hacia el SE, y el 15-11 entró como placebo sólo porque no figura en REAV, VOLCAT ni
+  VCB. Mirada rápida a la cola de la tajada SE (Q4, media de sus 8 M1 más bajos) de 15:00 a 22:30 UTC: el 15-11
+  llega a −1,06 a −1,34 K entre 16:00 y 17:00, al nivel del 08-11 (−1,2 a −1,46 K), mientras que el 04-11, tarde
+  despejada y sin actividad, se queda en −0,4 a −0,9 K. O sea, la tajada SE no es tan baja por sí sola en una tarde
+  tranquila y caliente; eso debilita la explicación por el suelo y deja dos: pluma no registrada o tiempo
+  meteorológico. Lo decide una verdad independiente: cámaras del OVDAS o REAV del 15-11 de 16:00 a 22:50 UTC (13:00
+  a 19:50 en Chile). Si fue pluma, el 15-11 sale de los placebo, pero eso es un cambio después de ver el resultado:
+  se prueba con criterio nuevo en días no mirados, no se reetiqueta este veredicto.
 
 ## 4. Lo que puede estar mal
 

@@ -147,3 +147,17 @@ en rojo, los 8 píxeles de la tajada cuando dispara; en el texto, "no evaluable 
    muestre Chillán, guardar sus PNG (SSEC guarda unos 30 días) y correr `s22b_medir.py confirmar` sin cambiar nada.
 3. El sesgo de la tajada SE sigue abierto y merece prueba propia: ¿superficie o desgasificación permanente a
    sotavento?
+
+### Verdad de cámaras del OVDAS para el 05-11 (Nicolás, 24-11, después de los veredictos)
+
+Nicolás revisó las cámaras del OVDAS: el 05-11 el viento iba hacia Argentina y **la pluma se desplazó todo el día
+hacia el E**. Consecuencias, todas post hoc:
+
+- El 05-11 **no era un día sin actividad**: estaba entre los placebo de S21e, S22a y S22b. VOLCAT no lo marcó.
+- Los disparos de S22b ese día (20 cuadros, de noche, hacia el SE, el NO y el O) **son errores**: ninguno apunta al E.
+- Con la regla de S22a, de día y casi todo nublado por E1, las tajadas del E (60° a 120°) quedan entre las 3 más
+  bajas en 8 de 10 horas con dato, pero débiles (−0,1 a −0,26 K bajo la mediana; −0,56 K a las 20:00 UTC): una
+  señal que ningún umbral alcanzó.
+- El 04-11, el día "tranquilo" de referencia, las tajadas del E son también las más bajas en casi todas las horas
+  despejadas (−0,2 a −0,6 K). O el E tiene un sesgo propio, o el 04-11 también tuvo pluma hacia el E. Sin cámaras
+  no se distingue. **La suposición de que los días placebo no tenían pluma queda en duda para todo noviembre.**

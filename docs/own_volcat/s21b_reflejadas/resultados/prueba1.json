@@ -1,0 +1,601 @@
+{
+ "criterio": "criterio_2026-11-24.md",
+ "evento": "2026-10-25",
+ "H_m": 4267.2,
+ "decide": {
+  "cuadro": "14:30",
+  "H_m": 4267.2,
+  "dias_base": [
+   "2026-10-15",
+   "2026-10-16",
+   "2026-10-17"
+  ],
+  "bandas": {
+   "C02": {
+    "S": 2.715,
+    "p": 0.0708,
+    "corrimientos": 17821,
+    "S_nulo_p5_p50_p95": [
+     -0.465,
+     -0.142,
+     4.174
+    ],
+    "veredicto": "SIN PODER",
+    "pixeles_huella": 40,
+    "f_max": 0.833,
+    "pixel_mayor_f": {
+     "fila": 163,
+     "col": 58,
+     "f": 0.833,
+     "rho_evento": 0.2525,
+     "rho_base": [
+      0.2507,
+      0.2343,
+      0.2239
+     ],
+     "A": 0.0182,
+     "esperado_P": -0.0127
+    },
+    "suma_fA": -0.161,
+    "suma_fP": -0.1016,
+    "falsas_alarmas_seco": [
+     0,
+     3
+    ],
+    "poder": 0.0,
+    "poder_mitad": 0.0
+   },
+   "C05": {
+    "S": 2.634,
+    "p": 0.1231,
+    "corrimientos": 1901,
+    "S_nulo_p5_p50_p95": [
+     -0.901,
+     0.39,
+     10.316
+    ],
+    "veredicto": "SIN PODER",
+    "pixeles_huella": 25,
+    "f_max": 0.436,
+    "pixel_mayor_f": {
+     "fila": 81,
+     "col": 29,
+     "f": 0.436,
+     "rho_evento": 0.1344,
+     "rho_base": [
+      0.0768,
+      0.0748,
+      0.0855
+     ],
+     "A": 0.0576,
+     "esperado_P": 0.0298
+    },
+    "suma_fA": 0.0523,
+    "suma_fP": 0.0188,
+    "falsas_alarmas_seco": [
+     0,
+     3
+    ],
+    "poder": 0.0,
+    "poder_mitad": 0.0
+   },
+   "C06": {
+    "S": 2.9,
+    "p": 0.0736,
+    "corrimientos": 856,
+    "S_nulo_p5_p50_p95": [
+     -1.733,
+     -0.549,
+     19.494
+    ],
+    "veredicto": "SIN PODER",
+    "pixeles_huella": 16,
+    "f_max": 0.186,
+    "pixel_mayor_f": {
+     "fila": 40,
+     "col": 14,
+     "f": 0.186,
+     "rho_evento": 0.0815,
+     "rho_base": [
+      0.049,
+      0.0472,
+      0.0564
+     ],
+     "A": 0.0325,
+     "esperado_P": 0.0127
+    },
+    "suma_fA": 0.0073,
+    "suma_fP": 0.0025,
+    "falsas_alarmas_seco": [
+     0,
+     3
+    ],
+    "poder": 0.0,
+    "poder_mitad": 0.0
+   }
+  }
+ },
+ "14:20": {
+  "cuadro": "14:20",
+  "H_m": 4267.2,
+  "dias_base": [
+   "2026-10-15",
+   "2026-10-16",
+   "2026-10-17"
+  ],
+  "bandas": {
+   "C02": {
+    "S": 2.248,
+    "p": 0.082,
+    "corrimientos": 17367,
+    "S_nulo_p5_p50_p95": [
+     -0.436,
+     -0.143,
+     3.866
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 40,
+    "f_max": 0.833,
+    "pixel_mayor_f": {
+     "fila": 163,
+     "col": 58,
+     "f": 0.833,
+     "rho_evento": 0.2764,
+     "rho_base": [
+      0.2555,
+      0.251,
+      0.2284
+     ],
+     "A": 0.0254,
+     "esperado_P": -0.02
+    },
+    "suma_fA": -0.1336,
+    "suma_fP": -0.1138
+   },
+   "C05": {
+    "S": 3.827,
+    "p": 0.1276,
+    "corrimientos": 2085,
+    "S_nulo_p5_p50_p95": [
+     -0.929,
+     0.354,
+     10.935
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 25,
+    "f_max": 0.436,
+    "pixel_mayor_f": {
+     "fila": 81,
+     "col": 29,
+     "f": 0.436,
+     "rho_evento": 0.1668,
+     "rho_base": [
+      0.0703,
+      0.0748,
+      0.0793
+     ],
+     "A": 0.092,
+     "esperado_P": 0.0303
+    },
+    "suma_fA": 0.0757,
+    "suma_fP": 0.0192
+   },
+   "C06": {
+    "S": 3.788,
+    "p": 0.0776,
+    "corrimientos": 889,
+    "S_nulo_p5_p50_p95": [
+     -1.59,
+     -0.52,
+     21.75
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 16,
+    "f_max": 0.186,
+    "pixel_mayor_f": {
+     "fila": 40,
+     "col": 14,
+     "f": 0.186,
+     "rho_evento": 0.0924,
+     "rho_base": [
+      0.0485,
+      0.0466,
+      0.0496
+     ],
+     "A": 0.0439,
+     "esperado_P": 0.0127
+    },
+    "suma_fA": 0.0094,
+    "suma_fP": 0.0025
+   }
+  }
+ },
+ "14:40": {
+  "cuadro": "14:40",
+  "H_m": 4267.2,
+  "dias_base": [
+   "2026-10-15",
+   "2026-10-16",
+   "2026-10-17"
+  ],
+  "bandas": {
+   "C02": {
+    "S": 2.925,
+    "p": 0.0577,
+    "corrimientos": 17005,
+    "S_nulo_p5_p50_p95": [
+     -0.558,
+     -0.158,
+     3.336
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 40,
+    "f_max": 0.833,
+    "pixel_mayor_f": {
+     "fila": 163,
+     "col": 58,
+     "f": 0.833,
+     "rho_evento": 0.1927,
+     "rho_base": [
+      0.2573,
+      0.2476,
+      0.2461
+     ],
+     "A": -0.055,
+     "esperado_P": -0.0185
+    },
+    "suma_fA": -0.3192,
+    "suma_fP": -0.1124
+   },
+   "C05": {
+    "S": 1.396,
+    "p": 0.1954,
+    "corrimientos": 1827,
+    "S_nulo_p5_p50_p95": [
+     -1.101,
+     0.411,
+     10.413
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 25,
+    "f_max": 0.436,
+    "pixel_mayor_f": {
+     "fila": 81,
+     "col": 29,
+     "f": 0.436,
+     "rho_evento": 0.102,
+     "rho_base": [
+      0.0706,
+      0.0765,
+      0.0808
+     ],
+     "A": 0.0255,
+     "esperado_P": 0.0299
+    },
+    "suma_fA": 0.0282,
+    "suma_fP": 0.0189
+   },
+   "C06": {
+    "S": 1.543,
+    "p": 0.1093,
+    "corrimientos": 814,
+    "S_nulo_p5_p50_p95": [
+     -2.141,
+     -0.594,
+     20.037
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 16,
+    "f_max": 0.186,
+    "pixel_mayor_f": {
+     "fila": 40,
+     "col": 14,
+     "f": 0.186,
+     "rho_evento": 0.0652,
+     "rho_base": [
+      0.0496,
+      0.0478,
+      0.0568
+     ],
+     "A": 0.0156,
+     "esperado_P": 0.0126
+    },
+    "suma_fA": 0.0039,
+    "suma_fP": 0.0024
+   }
+  }
+ },
+ "H-1km": {
+  "cuadro": "14:30",
+  "H_m": 3267.2,
+  "dias_base": [
+   "2026-10-15",
+   "2026-10-16",
+   "2026-10-17"
+  ],
+  "bandas": {
+   "C02": {
+    "S": 2.383,
+    "p": 0.3109,
+    "corrimientos": 3738,
+    "S_nulo_p5_p50_p95": [
+     0.205,
+     1.553,
+     6.845
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 38,
+    "f_max": 0.777,
+    "pixel_mayor_f": {
+     "fila": 161,
+     "col": 58,
+     "f": 0.777,
+     "rho_evento": 0.3389,
+     "rho_base": [
+      0.4714,
+      0.4659,
+      0.4462
+     ],
+     "A": -0.127,
+     "esperado_P": -0.1072
+    },
+    "suma_fA": -0.5094,
+    "suma_fP": -0.2192
+   },
+   "C05": {
+    "S": 2.682,
+    "p": 0.2181,
+    "corrimientos": 1348,
+    "S_nulo_p5_p50_p95": [
+     -1.198,
+     0.839,
+     16.554
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 25,
+    "f_max": 0.251,
+    "pixel_mayor_f": {
+     "fila": 80,
+     "col": 29,
+     "f": 0.251,
+     "rho_evento": 0.0703,
+     "rho_base": [
+      0.0241,
+      0.0271,
+      0.0317
+     ],
+     "A": 0.0432,
+     "esperado_P": 0.0238
+    },
+    "suma_fA": 0.0448,
+    "suma_fP": 0.0154
+   },
+   "C06": {
+    "S": 2.543,
+    "p": 0.0748,
+    "corrimientos": 842,
+    "S_nulo_p5_p50_p95": [
+     -1.505,
+     -0.443,
+     16.603
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 19,
+    "f_max": 0.206,
+    "pixel_mayor_f": {
+     "fila": 40,
+     "col": 14,
+     "f": 0.206,
+     "rho_evento": 0.0815,
+     "rho_base": [
+      0.049,
+      0.0472,
+      0.0564
+     ],
+     "A": 0.0325,
+     "esperado_P": 0.014
+    },
+    "suma_fA": 0.0076,
+    "suma_fP": 0.003
+   }
+  }
+ },
+ "H+1km": {
+  "cuadro": "14:30",
+  "H_m": 5267.2,
+  "dias_base": [
+   "2026-10-15",
+   "2026-10-16",
+   "2026-10-17"
+  ],
+  "bandas": {
+   "C02": {
+    "S": 3.58,
+    "p": 0.1568,
+    "corrimientos": 5129,
+    "S_nulo_p5_p50_p95": [
+     -1.046,
+     0.586,
+     9.215
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 41,
+    "f_max": 0.867,
+    "pixel_mayor_f": {
+     "fila": 164,
+     "col": 58,
+     "f": 0.867,
+     "rho_evento": 0.168,
+     "rho_base": [
+      0.1369,
+      0.1381,
+      0.1309
+     ],
+     "A": 0.0311,
+     "esperado_P": 0.0316
+    },
+    "suma_fA": 0.1266,
+    "suma_fP": 0.0487
+   },
+   "C05": {
+    "S": 5.31,
+    "p": 0.0947,
+    "corrimientos": 2978,
+    "S_nulo_p5_p50_p95": [
+     -1.886,
+     -0.606,
+     14.359
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 27,
+    "f_max": 0.366,
+    "pixel_mayor_f": {
+     "fila": 82,
+     "col": 29,
+     "f": 0.366,
+     "rho_evento": 0.1726,
+     "rho_base": [
+      0.1551,
+      0.1607,
+      0.1599
+     ],
+     "A": 0.0127,
+     "esperado_P": 0.0089
+    },
+    "suma_fA": 0.0285,
+    "suma_fP": 0.0066
+   },
+   "C06": {
+    "S": 4.413,
+    "p": 0.046,
+    "corrimientos": 1175,
+    "S_nulo_p5_p50_p95": [
+     -3.268,
+     -0.84,
+     4.015
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 19,
+    "f_max": 0.141,
+    "pixel_mayor_f": {
+     "fila": 41,
+     "col": 14,
+     "f": 0.141,
+     "rho_evento": 0.1087,
+     "rho_base": [
+      0.0917,
+      0.0928,
+      0.1142
+     ],
+     "A": 0.0159,
+     "esperado_P": 0.0063
+    },
+    "suma_fA": 0.0052,
+    "suma_fP": 0.0013
+   }
+  }
+ },
+ "base_ampliada": {
+  "cuadro": "14:30",
+  "H_m": 4267.2,
+  "dias_base": [
+   "2026-10-15",
+   "2026-10-16",
+   "2026-10-17",
+   "2026-11-02",
+   "2026-11-04"
+  ],
+  "bandas": {
+   "C02": {
+    "S": 2.48,
+    "p": 0.0223,
+    "corrimientos": 18298,
+    "S_nulo_p5_p50_p95": [
+     -0.476,
+     -0.135,
+     1.785
+    ],
+    "veredicto": "SIN SEÑAL",
+    "pixeles_huella": 40,
+    "f_max": 0.833,
+    "pixel_mayor_f": {
+     "fila": 163,
+     "col": 58,
+     "f": 0.833,
+     "rho_evento": 0.2525,
+     "rho_base": [
+      0.2507,
+      0.2343,
+      0.2239,
+      0.3659,
+      0.2381
+     ],
+     "A": 0.0144,
+     "esperado_P": -0.0143
+    },
+    "suma_fA": -0.1785,
+    "suma_fP": -0.1111
+   },
+   "C05": {
+    "S": 2.54,
+    "p": 0.0028,
+    "corrimientos": 2121,
+    "S_nulo_p5_p50_p95": [
+     -2.596,
+     -0.208,
+     0.969
+    ],
+    "veredicto": "SEÑAL",
+    "pixeles_huella": 25,
+    "f_max": 0.436,
+    "pixel_mayor_f": {
+     "fila": 81,
+     "col": 29,
+     "f": 0.436,
+     "rho_evento": 0.1344,
+     "rho_base": [
+      0.0768,
+      0.0748,
+      0.0855,
+      0.3026,
+      0.0738
+     ],
+     "A": 0.0576,
+     "esperado_P": 0.0298
+    },
+    "suma_fA": 0.05,
+    "suma_fP": 0.0186
+   },
+   "C06": {
+    "S": 2.808,
+    "p": 0.0,
+    "corrimientos": 857,
+    "S_nulo_p5_p50_p95": [
+     -2.841,
+     -0.648,
+     0.803
+    ],
+    "veredicto": "SEÑAL",
+    "pixeles_huella": 16,
+    "f_max": 0.186,
+    "pixel_mayor_f": {
+     "fila": 40,
+     "col": 14,
+     "f": 0.186,
+     "rho_evento": 0.0815,
+     "rho_base": [
+      0.049,
+      0.0472,
+      0.0564,
+      0.1568,
+      0.0452
+     ],
+     "A": 0.0325,
+     "esperado_P": 0.0127
+    },
+    "suma_fA": 0.007,
+    "suma_fP": 0.0025
+   }
+  }
+ }
+}

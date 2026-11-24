@@ -45,6 +45,7 @@ CLASES_NUEVAS = os.path.join(RES, "volcat_clases_22a24nov.csv")
 # ---------- parámetros del criterio (§2, §3) ----------
 G_MAX = 0.5               # compuerta: fracción máxima del anillo con nube dinámica
 COSTUMBRE = 0.5           # nublado de costumbre: ACM 2-3 en >= 50 % de los cuadros N despejados por E1
+COSTUMBRE_VENT, MIN_COSTUMBRE = (9, 18), 20     # enmienda 1: a la misma hora (+-90 o +-180 min), mínimo 20 cuadros
 W_BASE, MIN_BASE = 9, 8   # línea base: +-90 min, mínimo 8 valores por píxel
 VENTANAS_U = (6, 12, 18)  # +-60, +-120, +-180 min
 MIN_POZO, MIN_DIAS_U, MAX_FRAC_U, PCT_U = 40, 5, 0.35, 5.0
@@ -181,22 +182,34 @@ class Datos:
         self.DEV = [d for d in range(NDEV) if (self.CL[d] != "").any()]     # días de desarrollo con clase VOLCAT
         self.NUL = self.CL == "N"
         self.NUL[NDEV:] = False if not con_nuevos else self.NUL[NDEV:]
-        # nublado de costumbre: sólo con cuadros N despejados por E1 del desarrollo
+        # nublado de costumbre a cada hora (enmienda 1): cuadros N despejados por E1 del desarrollo a +-90 min,
+        # o +-180 min si son menos de 20. De día ACM usa reflectancia y la nieve parece nube; de noche no.
         sel = [(d, s) for d in self.DEV for s in range(144) if self.NUL[d, s] and self.E1[d, s]]
-        a = np.array([self.acm[d, s] for d, s in sel])
-        self.ESTAT = ((a >= 2) & (a <= 3)).mean(0) >= COSTUMBRE
-        self.n_costumbre = len(sel)
+        nub = np.array([(self.acm[d, s] >= 2) & (self.acm[d, s] <= 3) for d, s in sel])
+        ss = np.array([s for _, s in sel])
+        self.ESTAT = np.zeros((144, M.NY * M.NX), bool)
+        self.n_costumbre = np.zeros(144, int)
+        for s in range(144):
+            dd = np.abs(ss - s) % 144
+            dd = np.minimum(dd, 144 - dd)
+            for w in COSTUMBRE_VENT:
+                m = dd <= w
+                if m.sum() >= MIN_COSTUMBRE:
+                    self.ESTAT[s] = nub[m].mean(0) >= COSTUMBRE
+                    self.n_costumbre[s] = int(m.sum())
+                    break
         # nube dinámica, borde y compuerta
         self.FD = np.zeros((ND, 144))
         self.mm = self.m1.copy()
         for d in range(ND):
             for s in range(144):
-                nd = dinamica(self.acm[d, s], self.ESTAT)
+                nd = dinamica(self.acm[d, s], self.ESTAT[s])
                 self.FD[d, s] = nd[M.AP].mean() if (self.acm[d, s] != 255).any() else np.nan
                 self.mm[d, s][borde(nd)[M.AP]] = np.nan
         self.GATE = self.FD <= G_MAX
         print(f"datos listos en {time.time() - t:.0f} s; días de desarrollo con clase: {len(self.DEV)}; "
-              f"cuadros para nublado de costumbre: {self.n_costumbre}", flush=True)
+              f"cuadros para nublado de costumbre por hora: mín {self.n_costumbre.min()}, máx {self.n_costumbre.max()}",
+              flush=True)
         self._B, self._U = {}, {}
         self.S = np.full((ND, 144), np.nan)
         self.K = np.full((ND, 144), -1, int)
@@ -369,8 +382,10 @@ def seco():
                                                 "frac_pasa_compuerta": float(np.nanmean(fd_plac <= G_MAX))},
            "nube_dinamica_P_VOLCAT": {"n": int(len(fd_P)), "mediana": float(np.nanmedian(fd_P)),
                                       "max": float(np.nanmax(fd_P))},
-           "pixeles_nublados_de_costumbre": int(D.ESTAT[M.AP].sum()),
-           "por_tajada_costumbre": np.bincount(M.SEC[D.ESTAT[M.AP]], minlength=12).tolist()}
+           "pixeles_anillo_nublados_de_costumbre_por_hora": {M.hhmm(s): int(D.ESTAT[s][M.AP].sum())
+                                                             for s in range(0, 144, 18)},
+           "tajada_SE_costumbre_por_hora": {M.hhmm(s): int(D.ESTAT[s][M.AP][M.SEC == 4].sum())
+                                            for s in range(0, 144, 18)}}
     os.makedirs(RES, exist_ok=True)
     json.dump(out, open(os.path.join(RES, "seco.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print(json.dumps({k: out[k] for k in ("fa_media_por_dia", "fa_pozo", "aprobado", "por_hora", "por_E1",

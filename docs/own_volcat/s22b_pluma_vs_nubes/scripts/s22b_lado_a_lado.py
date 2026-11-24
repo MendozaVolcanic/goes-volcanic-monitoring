@@ -73,7 +73,7 @@ def dibujar(D, dia, s0=72, s1=143):
         b = bt[s].reshape(M.NY, M.NX)
         if np.isfinite(b).any():
             a2.pcolormesh(C29.LON, C29.LAT, b, cmap="gray_r", vmin=210, vmax=320, shading="nearest")
-        nd = B.dinamica(D.acm[d, s], D.ESTAT)
+        nd = B.dinamica(D.acm[d, s], D.ESTAT[s])
         nub = B.borde(nd).reshape(M.NY, M.NX)
         a2.pcolormesh(C29.LON, C29.LAT, np.where(nub, 1.0, np.nan),
                       cmap=matplotlib.colors.ListedColormap(["#5ec8ff"]), vmin=0, vmax=1, shading="nearest", alpha=0.35)

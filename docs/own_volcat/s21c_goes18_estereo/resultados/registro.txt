@@ -1,0 +1,6 @@
+GOES-18 16-10 14:40: con DEM r 0.943, corrimiento (-0.25 filas, +0.50 col); terreno plano a 3,2 km r 0.928 (-1.50, -1.50); pixeles cubiertos 719
+GOES-18 28-10 14:40: con DEM r 0.927, corrimiento (-0.25 filas, +0.75 col); terreno plano a 3,2 km r 0.91 (-1.50, -1.25); pixeles cubiertos 719
+GOES-18: navegacion VERIFICADA (diferencia entre cuadros 0.25 px); sesgo usado (28-10): -0.25 filas, +0.75 col
+GOES-19 16-10 14:40: con DEM r 0.975, corrimiento (-0.25 filas, +0.00 col); terreno plano a 3,2 km r 0.969 (-1.75, +0.00); pixeles cubiertos 2745
+GOES-19 28-10 14:40: con DEM r 0.946, corrimiento (+0.00 filas, +0.00 col); terreno plano a 3,2 km r 0.942 (-1.75, +0.00); pixeles cubiertos 2745
+GOES-19: navegacion VERIFICADA (diferencia entre cuadros 0.25 px); sesgo usado (28-10): +0.00 filas, +0.00 col

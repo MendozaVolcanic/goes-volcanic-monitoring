@@ -73,7 +73,7 @@ def vista(sat, lat=VENT[0], lon=VENT[1], h_m=CRATER_KM * 1000):
 
 
 def desplazar(lat, lon, de_km, dn_km):
-    return lat + dn_km / 111.2, lon + de_km / (111.2 * math.cos(math.radians(lat)))
+    return lat + dn_km / 111.2, lon + de_km / (111.2 * np.cos(np.radians(lat)))
 
 
 def t_obs(sat, lat=VENT[0], lon=VENT[1], h_m=CRATER_KM * 1000):

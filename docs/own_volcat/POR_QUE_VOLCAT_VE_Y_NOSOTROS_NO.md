@@ -9,6 +9,14 @@ del detector (`C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\sid
 **Respuesta vigente (23-11-2026, después de H17 a H29 y la revisión S20; detalle en §3.9).** Lo que sigue en esta sección después de
 este bloque es la historia de cómo se llegó, desde el 17-11.
 
+**Lo nuevo de S20 (24-11-2026), en cuatro líneas.** (1) Cuando un satélite fino dice dónde está la pluma, GOES-19 la
+ve: el píxel junto al cráter baja cerca de 1 K en 11 − 12 µm (S20b, dos mañanas). (2) A 100 m la pluma del 25-10 tiene
+firma de ceniza de unos −1,5 K (S20d, post hoc: por la regla salió SIN FIRMA porque el control tenía pluma). (3) Lejos
+del cráter hay una firma débil que se mueve con el objeto de VOLCAT (H29 y su revisión). (4) Las pruebas viejas "sin
+firma" usaban controles con el volcán activo y no valen como ausencia (S20c, sin poder para afirmar lo contrario). En
+una frase: GOES ve la ceniza de Chillán, diluida en un píxel que la pluma llena sólo en parte; no hay todavía un
+detector.
+
 - **VOLCAT no ve la pluma de Chillán en el píxel.** Su propia probabilidad infrarroja es menor que 0,05 en 762 de
   767 píxeles de la huella (H20a), y la probabilidad que publica de día es baja (sitio de VOLCAT).
 - **La publica por seguimiento.** De los 60 cuadros con archivo de evento, 56 son continuaciones de un objeto que

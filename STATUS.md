@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-23 (cierre de la sesión S20b, bloque "## 0." abajo; el de S19 quedó como "## 0-prev14."). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-24 (cierre de la sesión S20, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,112 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S20b (sesión hija de S20), cierre 2026-11-23: verdad de alta resolución; prueba 1 en main (PR 111), prueba 2 CORRIENDO en otra sesión
+## 0. S20, cierre 2026-11-24 (PR 107 a 113 en main: GOES ve la ceniza de Chillán cuando se sabe dónde mirar; firma de ceniza a 100 m, post hoc)
+
+> Sesión coordinadora S20 (`local_a4c6119a`, lanzada por S19 como independiente). Lanzó S20b (alta resolución,
+> `local_541c877e`), S20c (controles limpios, `local_59c3537b`) y S20d (prueba 2 de S20b, `local_228fe8ec`). Las tres
+> terminaron; ninguna quedó corriendo al cerrar. El bloque "## 0-prev15." es el cierre propio de S20b, absorbido
+> aquí (rama `claude/s20b-cierre` integrada por cherry-pick).
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| H29, pluma del 08-11 lejos del cráter (S19h) | **En main.** M1 SEÑAL por la regla (−0,37 K, p 0,005); atribución SOSPECHA | PR 107, merge `7891563` |
+| Revisión S20 de H29: ¿la firma sigue a la huella cuadro a cuadro? | **En main.** M1 se reproduce con código propio (−0,3725 K). A > 30 km NO CONCLUYENTE (p 0,095, potencia 1,0); a > 15 km sí sigue (p < 0,0001) | PR 109, merge `313db6f`; `docs/own_volcat/revision_s20_h29/`; criterio empujado antes de medir (`1b430f0`, rebasado a `6b58e44`) |
+| MET-01: controles "sin pluma" en días con actividad | **CONFIRMADO número por número** (paso 2 45/46, H3 34/37, β73 42/49, Londres 38/45, H13 62/72); contaminación directa en paso 2, H3 y Londres | conteo con scripts propios; POR_QUE §3.9 |
+| S20b prueba 1: huella de Landsat (25-10) y Sentinel-2 (08-11) en el píxel de GOES-19 | **En main. SEÑAL** los dos días (≈ −1 K en 11 − 12 µm). Revisión S20: se reproduce; el 25-10 es el más bajo de 62 días con todo cielo, el 08-11 el tercero de 61 (detrás de un día nublado y de uno con actividad) | PR 111, merge `9db47bb` |
+| S20c: pruebas pareadas con controles limpios | **En main.** SIN PODER en H3, H13, H11/H12 (BTD 0,23 a 0,42 K hacia ceniza, p 0,054 a 0,072); paso 2, β73 y Londres INVÁLIDAS | PR 112, merge `d26377c` |
+| S20d: ventana partida a 100 y 70 m | **En main.** SIN FIRMA por la regla; post hoc, artefacto del control: en crudo la pluma da −1,94 K contra −0,38 K de la nieve y +0,05 K del mismo lugar el 17-10 | PR 113, merge `0769913` (lo fusionó la sesión S20d, con el head revisado `cb518ed`) |
+| S19i, "qué nos falta" | **En main**, con nota de actualización S20 | PR 108, merge `df33be5` |
+| Respaldo de `data/calor_nocturno.json` en `scripts/deploy_hf.sh` | **En main, NO desplegado**: entra en el próximo deploy a HF | PR 110, merge `4c75ca4` |
+| `POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md` | §1 con "Lo nuevo de S20"; §3.9 con H29, revisión, S20b, S20c, S20d y MET-01 | este commit y los PR |
+| main | `235ebec` al empezar el cierre (el bot commitea cada 10 min) | `git ls-remote` |
+| Disco | C: 22 GB libres; D: 13 GB (bajó a 7 durante S20d y se recuperó) | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Desplegar a HF para que entre el respaldo del calor nocturno (PR 110) | Sí, en S21, con la rama local `main` al día |
+| 2 | Pedir al OVDAS la serie de cámaras con hora al segundo en los minutos de las pasadas finas, y la posición y el rumbo de cada cámara (S19i §6) | **Sí**: es la verdad que más falta y sólo tú puedes pedirla |
+| 3 | Pedir a NOAA, vía el VAAC, un sector de mesoescala de GOES-19 sobre Chillán unas horas | Sí, si el OVDAS lo ve viable: es la única forma de ver un pulso nacer cada minuto |
+| 4 | Dónde vive el catálogo de verdad fina por volcán | Copernicus-v1 (recomendación de S20b) |
+| 5 | Token USGS de Landsat-v1 | Ya no hace falta: HLS L30 trae B10 y B11 con el token de Earthdata |
+| 6 | Tablas transcritas de SSEC en commits viejos de la rama del PR 103; paquete de Fuego (16 GB en D:) | Sin cambio respecto de S19: lo primero sólo si la licencia te preocupa (force-push tuyo); el paquete se mantiene |
+| 7 | Correo a Pavolonis | Sólo si tú lo traes; S19i §6 dejó siete preguntas listas |
+
+### c. Lo aprendido
+
+- **Una regla de pareo puede imponer la contaminación del control** (regla de método, propia del proyecto; S20c):
+  "BT11 parecida y mismo minuto" sólo encuentra días despejados de noviembre, que son los días con el volcán activo.
+  Antes de parear por temperatura, medir de qué días salen los controles.
+- **Una máscara de pluma por reflectancia puede marcar un tercio de la pluma** y dejar el resto en el control (S20d).
+  Si el estadístico cambia mucho con la erosión de la máscara y la medida cruda no, el control está contaminado.
+  Escribir antes de medir un control que excluya el sector de la pluma.
+- **Probar la unicidad con todo cielo, no sólo contra días despejados** (revisión S20 de S20b): contra despejados el
+  08-11 era el más bajo; con todo cielo, el tercero.
+- **Un nulo de huellas permutadas entre cuadros cancela una banda quieta** y pregunta lo que distingue pluma de banda:
+  si la anomalía se mueve con el objeto (revisión de H29).
+- **Una sesión hija puede fusionar su propio PR** si Nicolás se lo dice allí (S20d lo hizo): antes de fusionar, mirar
+  `gh pr view --json state` para no duplicar.
+- Regla general del workspace: **un script con credencial vencida reintentó 108 veces** (S20b). Probar una descarga y
+  cortar al primer error.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** GOES-19 ve la pluma de la mañana en el píxel junto al cráter cuando la huella viene de un satélite
+  fino (S20b, dos eventos, un píxel cada uno; reproducido en S20).
+- **CONFIRMADO:** las cuentas de MET-01. **SIN PODER** para afirmar que los viejos "sin firma" escondían señal (S20c).
+- **SOSPECHA reforzada:** la firma de H29 lejos del cráter es de la pluma (sigue a la huella a > 15 km; a > 30 km no
+  alcanza).
+- **SOSPECHA (post hoc, fuerte):** la ceniza de Chillán tiene firma de ventana partida de unos −1,5 K a 100 m (S20d).
+  Falta la prueba con el control corregido escrito antes.
+- **SIN DATO:** si las bandas reflejadas de GOES-19 (C02 0,5 km, C05 1,6 µm) separan la pluma de la nieve, sobre todo
+  de tarde (S19i prueba 2), y GOES-18 en estéreo (S19i prueba 3).
+- **SIN DATO:** un detector. La señal es de un píxel y de un kelvin; sin saber dónde mirar no se separa.
+
+### e. Cerrado, no rehacer
+
+Todo lo de "## 0-prev15 e." (S20b) y "## 0-prev14 e." (S19), más: "M1 de H29 está mal calculado" (se reproduce,
+−0,3725 K); "la huella del PNG está mal leída" (coincide píxel a píxel con decodificación propia y corrimiento H14);
+"las cifras de MET-01 están infladas" (recontadas, exactas); "la firma de GOES es sólo mezcla de superficies" (a 100 m
+la pluma tiene firma propia, post hoc).
+
+### f. Prompt para la próxima sesión (S21)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes,
+repo MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Sesión S21; titúlala "Goes S21: ..."
+y numera su traspaso como S21. Usa /retomar.
+
+1. Verifica antes de creer: git fetch; gh pr list (al cerrar S20 no quedaba ninguno abierto);
+   git ls-remote origin -h refs/heads/main (era 235ebec o posterior; el bot commitea cada 10 min).
+2. Lee CLAUDE.md, STATUS.md "## 0." (S20) y "## 0-prev15." (S20b), POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md §1
+   (empieza por "Lo nuevo de S20") y §3.9, y docs/own_volcat/QUE_NOS_FALTA_S19.md §5 y §6.
+3. Trabajo en orden, cada prueba con criterio commiteado y empujado antes de medir. Puedes lanzar sesiones paralelas
+   independientes, una por prueba, y revisar cada PR contra sus archivos antes de pedir el sí:
+   a. Repetir la ventana partida a 100 m (S20d) con el control que excluye el sector de la pluma escrito antes, en
+      otra pasada de Landsat 8/9 con pluma sobre nieve; y la prueba 1 de S20b en las pasadas de Sentinel-2 del
+      29-10 y 13-11 con el mismo código, sin tocar la regla.
+   b. Bandas reflejadas de GOES-19 (C02 0,5 km, C05 1,6 µm, C06) sobre la franja del 25-10 y en los pulsos de la
+      tarde del 28-10 (S19i, parte reflejada de la prueba 1 y prueba 2).
+   c. GOES-18 en estéreo sobre los mismos pulsos (S19i prueba 3).
+   d. Desplegar a HF (entra el respaldo de calor nocturno, PR 110) con la rama local main al día.
+4. Decisiones de "## 0. b.". Correo a Pavolonis sólo si Nicolás lo trae.
+5. Reglas: español de Chile sin voseo ni guiones largos; rutas absolutas; no VIIRS; la carpeta principal (rama
+   audit/2026-11-previa-local) no se toca; docs/auditoria_2026-11 no se sube; nada de SSEC al repo ni al Space;
+   criterio commiteado antes de medir; control pareado por BT11 revisando de qué días salen los controles; líneas
+   base sólo con cuadros despejados por ACMF (regla E1 de H23 en la cumbre); lo grande a D: (13 GB libres);
+   token Earthdata en C:\Users\nmend\.earthdata_token (nunca imprimirlo, nunca el _netrc vencido); fusionar sólo con
+   el sí de Nicolás para ESE PR y con --match-head-commit; cambio de lógica = ficha SDA en el mismo commit;
+   /cierre al llegar a la base + 250 mil tokens.
+Si la sesión no alcanza: deja cada criterio empujado y el estado en STATUS.md.
+```
+
+---
+
+## 0-prev15. S20b (sesión hija de S20), cierre 2026-11-23: verdad de alta resolución; prueba 1 en main (PR 111), prueba 2 CORRIENDO en otra sesión
 
 > **Estado fijado con trabajo en curso:** la sesión `goes-s20d-medir-prueba-2` (`local_228fe8ec`) estaba midiendo
 > la prueba 2 al cerrar, sin PR todavía. La sesión madre S20 (`local_a4c6119a`) escribe el cierre de S20 completo;

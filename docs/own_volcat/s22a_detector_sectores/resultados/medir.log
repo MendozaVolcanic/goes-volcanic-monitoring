@@ -1,0 +1,169 @@
+cubos cargados en 7 s
+  M1 2026-10-21 (1/17) 6 s
+  M1 2026-10-22 (2/17) 13 s
+  M1 2026-10-24 (3/17) 19 s
+  M1 2026-10-25 (4/17) 28 s
+  M1 2026-10-27 (5/17) 35 s
+  M1 2026-10-28 (6/17) 43 s
+  M1 2026-10-29 (7/17) 51 s
+  M1 2026-11-06 (8/17) 58 s
+  M1 2026-11-07 (9/17) 66 s
+  M1 2026-11-08 (10/17) 74 s
+  M1 2026-11-10 (11/17) 80 s
+  M1 2026-11-11 (12/17) 86 s
+  M1 2026-11-12 (13/17) 90 s
+  M1 2026-11-13 (14/17) 95 s
+  M1 2026-11-14 (15/17) 100 s
+  M1 2026-11-16 (16/17) 104 s
+  M1 2026-11-18 (17/17) 109 s
+C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\.claude\worktrees\s22-5a2702\docs\own_volcat\s22a_detector_sectores\scripts\s22a_medir.py:532: DeprecationWarning: datetime.datetime.utcfromtimestamp() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.fromtimestamp(timestamp, datetime.UTC).
+  dtv = datetime.utcfromtimestamp(int(r["t_inicio"]))     # inicio del scan, epoch UTC
+{
+ "veredicto": "SIN PODER",
+ "R": 0.375,
+ "R_ep": 0.38461538461538464,
+ "cuadros_P_evaluables": 96,
+ "cuadros_P_alcanzados": 36,
+ "episodios": 13,
+ "episodios_alcanzados": 5,
+ "p": 0.13333333333333333,
+ "R_azar": [
+  0.0,
+  0.0,
+  0.0667,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.3855,
+  0.1959,
+  0.0,
+  0.05,
+  0.0
+ ],
+ "seco_fa": 0.02746175743061299,
+ "poder": {
+  "pares_disponibles": 1678,
+  "0.33": 0.01,
+  "0.97": 0.185
+ },
+ "por_E1": {
+  "despejado": {
+   "n": 75,
+   "alcanzados": 30
+  },
+  "nublado": {
+   "n": 21,
+   "alcanzados": 6
+  }
+ },
+ "tasa_otras_clases_dias_actividad": {
+  "N": {
+   "n": 1501,
+   "disparos": 65,
+   "tasa": 0.04330446369087275
+  },
+  "otro": {
+   "n": 442,
+   "disparos": 32,
+   "tasa": 0.07239819004524888
+  }
+ },
+ "verdad_fina": [
+  {
+   "dia": "2026-10-25",
+   "hora": "14:20",
+   "F": false,
+   "S": -0.3381,
+   "U": -0.5769,
+   "k": 7,
+   "sector_de_la_verdad": 7,
+   "acimut_verdad": 224.3,
+   "k_contiene_verdad_o_vecino": true
+  },
+  {
+   "dia": "2026-10-25",
+   "hora": "14:30",
+   "F": false,
+   "S": -0.4062,
+   "U": -0.6125,
+   "k": 7,
+   "sector_de_la_verdad": 7,
+   "acimut_verdad": 224.3,
+   "k_contiene_verdad_o_vecino": true
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "14:40",
+   "F": false,
+   "S": -0.4538,
+   "U": -0.6126,
+   "k": 1,
+   "sector_de_la_verdad": 6,
+   "acimut_verdad": 181.1,
+   "k_contiene_verdad_o_vecino": false
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "14:50",
+   "F": false,
+   "S": -0.4795,
+   "U": -0.6127,
+   "k": 1,
+   "sector_de_la_verdad": 6,
+   "acimut_verdad": 181.1,
+   "k_contiene_verdad_o_vecino": false
+  }
+ ],
+ "nacimientos": [
+  {
+   "dia": "2026-11-13",
+   "hora": "19:00",
+   "evaluado": true,
+   "F": false,
+   "S": -0.5706,
+   "U": -0.5763
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "12:40",
+   "evaluado": false,
+   "F": false,
+   "S": null,
+   "U": -0.6403
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "16:30",
+   "evaluado": true,
+   "F": false,
+   "S": -0.3458,
+   "U": -0.6664
+  },
+  {
+   "dia": "2026-11-18",
+   "hora": "10:10",
+   "evaluado": true,
+   "F": false,
+   "S": -0.0574,
+   "U": -0.5322
+  }
+ ],
+ "cuadros_evento_volcat": {
+  "n": 60,
+  "evaluados": 51,
+  "disparos": 8
+ }
+}
+{'dia': '2026-10-22', 'P': 1, 'evaluables': 1, 'alcanzados': 0, 'R': 0.0, 'episodios': 1, 'episodios_alcanzados': 0, 'R_azar_mediana': 0.0, 'p_dia': 1.0}
+{'dia': '2026-10-24', 'P': 1, 'evaluables': 1, 'alcanzados': 0, 'R': 0.0, 'episodios': 1, 'episodios_alcanzados': 0, 'R_azar_mediana': 0.0, 'p_dia': 1.0}
+{'dia': '2026-10-25', 'P': 4, 'evaluables': 4, 'alcanzados': 0, 'R': 0.0, 'episodios': 2, 'episodios_alcanzados': 0, 'R_azar_mediana': 0.0, 'p_dia': 1.0}
+{'dia': '2026-10-28', 'P': 26, 'evaluables': 26, 'alcanzados': 8, 'R': 0.3076923076923077, 'episodios': 1, 'episodios_alcanzados': 1, 'R_azar_mediana': 0.0, 'p_dia': 0.13333333333333333}
+{'dia': '2026-10-29', 'P': 6, 'evaluables': 6, 'alcanzados': 0, 'R': 0.0, 'episodios': 2, 'episodios_alcanzados': 0, 'R_azar_mediana': 0.0, 'p_dia': 1.0}
+{'dia': '2026-11-07', 'P': 1, 'evaluables': 1, 'alcanzados': 0, 'R': 0.0, 'episodios': 1, 'episodios_alcanzados': 0, 'R_azar_mediana': 0.0, 'p_dia': 1.0}
+{'dia': '2026-11-08', 'P': 13, 'evaluables': 13, 'alcanzados': 10, 'R': 0.7692307692307693, 'episodios': 1, 'episodios_alcanzados': 1, 'R_azar_mediana': 0.0, 'p_dia': 0.06666666666666667}
+{'dia': '2026-11-10', 'P': 12, 'evaluables': 10, 'alcanzados': 2, 'R': 0.2, 'episodios': 2, 'episodios_alcanzados': 1, 'R_azar_mediana': 0.0, 'p_dia': 0.13333333333333333}
+{'dia': '2026-11-11', 'P': 3, 'evaluables': 3, 'alcanzados': 3, 'R': 1.0, 'episodios': 1, 'episodios_alcanzados': 1, 'R_azar_mediana': 0.0, 'p_dia': 0.07692307692307693}
+{'dia': '2026-11-14', 'P': 33, 'evaluables': 31, 'alcanzados': 13, 'R': 0.41935483870967744, 'episodios': 1, 'episodios_alcanzados': 1, 'R_azar_mediana': 0.0, 'p_dia': 0.13333333333333333}

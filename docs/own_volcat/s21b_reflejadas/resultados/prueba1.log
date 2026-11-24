@@ -1,0 +1,54 @@
+== decide: 14:30, H de S20b, base antes del 24-10
+  base 2026-09-27 14:30: fraccion rho05>0,30 a 15 km = 0.452 -> DESCARTADO
+  base 2026-10-15 14:30: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-16 14:30: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-17 14:30: fraccion rho05>0,30 a 15 km = 0.004 -> ok
+  evento 2026-10-25 14:30: fraccion rho05>0,30 a 15 km = 0.000
+  [decide] C02: S +2.715 p 0.0708 (n 17821) -> SIN PODER; seco [0, 3] poder 0.0 (mitad 0.0)
+  [decide] C05: S +2.634 p 0.1231 (n 1901) -> SIN PODER; seco [0, 3] poder 0.0 (mitad 0.0)
+  [decide] C06: S +2.900 p 0.0736 (n 856) -> SIN PODER; seco [0, 3] poder 0.0 (mitad 0.0)
+== informativo: 14:20 y 14:40
+  base 2026-09-27 14:20: fraccion rho05>0,30 a 15 km = 0.425 -> DESCARTADO
+  base 2026-10-15 14:20: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-16 14:20: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-17 14:20: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  evento 2026-10-25 14:20: fraccion rho05>0,30 a 15 km = 0.000
+  [14:20] C02: S +2.248 p 0.0820 (n 17367) -> SIN SEÑAL
+  [14:20] C05: S +3.827 p 0.1276 (n 2085) -> SIN SEÑAL
+  [14:20] C06: S +3.788 p 0.0776 (n 889) -> SIN SEÑAL
+  base 2026-09-27 14:40: fraccion rho05>0,30 a 15 km = 0.463 -> DESCARTADO
+  base 2026-10-15 14:40: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-16 14:40: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-17 14:40: fraccion rho05>0,30 a 15 km = 0.006 -> ok
+  evento 2026-10-25 14:40: fraccion rho05>0,30 a 15 km = 0.000
+  [14:40] C02: S +2.925 p 0.0577 (n 17005) -> SIN SEÑAL
+  [14:40] C05: S +1.396 p 0.1954 (n 1827) -> SIN SEÑAL
+  [14:40] C06: S +1.543 p 0.1093 (n 814) -> SIN SEÑAL
+== informativo: H - 1 km y H + 1 km (14:30)
+  base 2026-09-27 14:30: fraccion rho05>0,30 a 15 km = 0.452 -> DESCARTADO
+  base 2026-10-15 14:30: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-16 14:30: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-17 14:30: fraccion rho05>0,30 a 15 km = 0.004 -> ok
+  evento 2026-10-25 14:30: fraccion rho05>0,30 a 15 km = 0.000
+  [H-1km] C02: S +2.383 p 0.3109 (n 3738) -> SIN SEÑAL
+  [H-1km] C05: S +2.682 p 0.2181 (n 1348) -> SIN SEÑAL
+  [H-1km] C06: S +2.543 p 0.0748 (n 842) -> SIN SEÑAL
+  base 2026-09-27 14:30: fraccion rho05>0,30 a 15 km = 0.452 -> DESCARTADO
+  base 2026-10-15 14:30: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-16 14:30: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-17 14:30: fraccion rho05>0,30 a 15 km = 0.004 -> ok
+  evento 2026-10-25 14:30: fraccion rho05>0,30 a 15 km = 0.000
+  [H+1km] C02: S +3.580 p 0.1568 (n 5129) -> SIN SEÑAL
+  [H+1km] C05: S +5.310 p 0.0947 (n 2978) -> SIN SEÑAL
+  [H+1km] C06: S +4.413 p 0.0460 (n 1175) -> SIN SEÑAL
+== informativo: base con 02-11 y 04-11 (14:30)
+  base 2026-09-27 14:30: fraccion rho05>0,30 a 15 km = 0.452 -> DESCARTADO
+  base 2026-10-15 14:30: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-16 14:30: fraccion rho05>0,30 a 15 km = 0.000 -> ok
+  base 2026-10-17 14:30: fraccion rho05>0,30 a 15 km = 0.004 -> ok
+  base 2026-11-02 14:30: fraccion rho05>0,30 a 15 km = 0.050 -> ok
+  base 2026-11-04 14:30: fraccion rho05>0,30 a 15 km = 0.004 -> ok
+  evento 2026-10-25 14:30: fraccion rho05>0,30 a 15 km = 0.000
+  [base+nov] C02: S +2.480 p 0.0223 (n 18298) -> SIN SEÑAL
+  [base+nov] C05: S +2.540 p 0.0028 (n 2121) -> SEÑAL
+  [base+nov] C06: S +2.808 p 0.0000 (n 857) -> SEÑAL

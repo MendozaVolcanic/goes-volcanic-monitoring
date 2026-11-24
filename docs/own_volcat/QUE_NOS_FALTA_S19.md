@@ -14,6 +14,22 @@ Lo pidió Nicolás: "encuentro extraño que no podamos ver que esta sucediendo".
 - **Cómo leer la confianza:** CONFIRMADO quiere decir que la fuente se leyó en esta sesión y el verificador no la
   refutó. SOSPECHA es inferencia o cuenta propia. SIN DATO es lo que se buscó y no se encontró.
 
+> **Actualización S20 (24-11-2026), agregada al revisar este PR. El diagnóstico se escribió antes de H29, S20b, S20c
+> y S20d.** Lo que cambió desde entonces (detalle en `POR_QUE_VOLCAT_VE_Y_NOSOTROS_NO.md` §1 y §3.9):
+> - **MET-01 (§3.4) quedó confirmado** número por número en S20 y medido en S20c (`s20c_controles_limpios/`): con
+>   controles previos a la actividad, la BTD de la huella queda 0,23 a 0,42 K hacia la ceniza en las seis pruebas,
+>   sin poder para la regla. Es la prueba 5 de §5, hecha.
+> - **La prueba 1 de §5 está hecha en su parte infrarroja** (S20b, `s20b_verdad_alta_res/`): con la huella de
+>   Landsat (25-10) y Sentinel-2 (08-11) en la grilla de ABI con paralaje, el píxel junto al cráter da SEÑAL (unos
+>   1 K más bajo en 11 menos 12 µm). La parte en reflejado (C02, C05, C06) sigue sin hacer.
+> - **La prueba 10 de §5 está en curso** en S20d (`s20d`): Landsat a 100 m sin firma de ventana partida en la franja
+>   del 25-10, según su medición todavía sin PR ni revisión.
+> - **H29 y su revisión** encontraron una firma débil lejos del cráter el 08-11 que se mueve con la huella de VOLCAT.
+> - Por eso la frase de §1 "con el infrarrojo de 2 km solo no habrá un detector confiable" sigue en pie, pero "las
+>   28 pruebas sin firma" ya no: hay firma de un píxel y de un kelvin cuando se sabe dónde mirar.
+> - Siguen abiertas, y son lo más nuevo de este documento: las bandas reflejadas de GOES-19 (prueba 2), GOES-18 en
+>   estéreo (prueba 3), el sector de mesoescala y la serie de las cámaras del OVDAS con hora al segundo (§6).
+
 ## 1. Para geólogo
 
 **En una frase:** lo más probable es que estas plumas, vistas desde arriba, sean bocanadas más chicas que un píxel

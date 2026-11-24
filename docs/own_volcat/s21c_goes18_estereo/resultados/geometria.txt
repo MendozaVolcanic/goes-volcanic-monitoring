@@ -1,0 +1,50 @@
+GOES-18: angulo cenital 79.26 grados, azimut hacia el satelite 285.2, distancia 40503 km
+  pixel C02 del centro de emision a 3.2 km: fila 17617.18, columna 19075.96
+  por km de altura sobre el crater (columna vertical): +1.116 filas, +1.332 columnas, 1.74 px; direccion en la imagen atan2(dc, -dr) = 130 grados (0 = arriba en la imagen, 90 = derecha)
+  C02 perpendicular a la linea de vista: 0.567 km; en el suelo: 0.567 x 3.04 km (aprox.)
+  corrimiento en el suelo por km de altura: 5.27 km hacia el azimut 105
+  franja del disco (desde 0 al norte): 17; hora estimada de barrido: 496 s tras el minuto redondo (8 min 16 s)
+GOES-19: angulo cenital 42.91 grados, azimut hacia el satelite 354.0, distancia 37259 km
+  pixel C02 del centro de emision a 3.2 km: fila 18159.89, columna 11466.31
+  por km de altura sobre el crater (columna vertical): +1.301 filas, +0.109 columnas, 1.31 px; direccion en la imagen atan2(dc, -dr) = 175 grados (0 = arriba en la imagen, 90 = derecha)
+  C02 perpendicular a la linea de vista: 0.522 km; en el suelo: 0.522 x 0.71 km (aprox.)
+  corrimiento en el suelo por km de altura: 0.93 km hacia el azimut 174
+  franja del disco (desde 0 al norte): 18; hora estimada de barrido: 518 s tras el minuto redondo (8 min 38 s)
+Desfase estimado GOES-19 menos GOES-18 sobre Chillan: +23 s (incertidumbre declarada +-30 s)
+Estereo, tope 1.0 km sobre el crater: recupera de +0.000 km, dn +0.000 km, h 4.200 km (rms 0.0e+00 px); error 1 sigma con 0,5 px por coordenada en los dos: E 0.27 km, N 0.26 km, h 0.26 km
+Estereo, tope 2.0 km sobre el crater: recupera de -0.000 km, dn +0.000 km, h 5.200 km (rms 1.8e-12 px); error 1 sigma con 0,5 px por coordenada en los dos: E 0.27 km, N 0.26 km, h 0.26 km
+Estereo, tope 2.4 km sobre el crater: recupera de -0.000 km, dn +0.000 km, h 5.600 km (rms 0.0e+00 px); error 1 sigma con 0,5 px por coordenada en los dos: E 0.27 km, N 0.26 km, h 0.26 km
+Solo GOES-18, columna vertical sobre el centro: 1.74 px por km -> 0,5 px = 0.29 km de altura
+Viento 5 m/s: la pluma se mueve 0.11 km entre los dos barridos (+-30 s: hasta 0.26 km)
+Viento 10 m/s: la pluma se mueve 0.23 km entre los dos barridos (+-30 s: hasta 0.53 km)
+Viento 20 m/s: la pluma se mueve 0.45 km entre los dos barridos (+-30 s: hasta 1.05 km)
+  E6 rotulo 27-10 09:10: GOES-19 mira 09:18:38, GOES-18 09:18:15 (-7.4 min del inicio); sol -6.2 grados de elevacion, azimut 111
+  E6 rotulo 27-10 09:20: GOES-19 mira 09:28:38, GOES-18 09:28:15 (+2.6 min del inicio); sol -4.3 grados de elevacion, azimut 109
+  E6 rotulo 27-10 09:30: GOES-19 mira 09:38:38, GOES-18 09:38:15 (+12.6 min del inicio); sol -2.4 grados de elevacion, azimut 108
+  E6 rotulo 27-10 09:40: GOES-19 mira 09:48:38, GOES-18 09:48:15 (+22.6 min del inicio); sol -0.5 grados de elevacion, azimut 106
+  E6 rotulo 27-10 09:50: GOES-19 mira 09:58:38, GOES-18 09:58:15 (+32.6 min del inicio); sol 1.5 grados de elevacion, azimut 105
+  E9 rotulo 28-10 15:20: GOES-19 mira 15:28:38, GOES-18 15:28:15 (-5.4 min del inicio); sol 62.5 grados de elevacion, azimut 33
+  E9 rotulo 28-10 15:30: GOES-19 mira 15:38:38, GOES-18 15:38:15 (+4.6 min del inicio); sol 63.5 grados de elevacion, azimut 29
+  E9 rotulo 28-10 15:40: GOES-19 mira 15:48:38, GOES-18 15:48:15 (+14.6 min del inicio); sol 64.4 grados de elevacion, azimut 23
+  E9 rotulo 28-10 15:50: GOES-19 mira 15:58:38, GOES-18 15:58:15 (+24.6 min del inicio); sol 65.1 grados de elevacion, azimut 18
+  E9 rotulo 28-10 16:00: GOES-19 mira 16:08:38, GOES-18 16:08:15 (+34.6 min del inicio); sol 65.6 grados de elevacion, azimut 12
+  E10 rotulo 28-10 17:20: GOES-19 mira 17:28:38, GOES-18 17:28:15 (-9.4 min del inicio); sol 62.6 grados de elevacion, azimut 327
+  E10 rotulo 28-10 17:30: GOES-19 mira 17:38:38, GOES-18 17:38:15 (+0.6 min del inicio); sol 61.5 grados de elevacion, azimut 323
+  E10 rotulo 28-10 17:40: GOES-19 mira 17:48:38, GOES-18 17:48:15 (+10.6 min del inicio); sol 60.2 grados de elevacion, azimut 318
+  E10 rotulo 28-10 17:50: GOES-19 mira 17:58:38, GOES-18 17:58:15 (+20.6 min del inicio); sol 58.8 grados de elevacion, azimut 314
+  E10 rotulo 28-10 18:00: GOES-19 mira 18:08:38, GOES-18 18:08:15 (+30.6 min del inicio); sol 57.3 grados de elevacion, azimut 311
+  E11 rotulo 28-10 20:20: GOES-19 mira 20:28:38, GOES-18 20:28:15 (-3.4 min del inicio); sol 31.8 grados de elevacion, azimut 278
+  E11 rotulo 28-10 20:30: GOES-19 mira 20:38:38, GOES-18 20:38:15 (+6.6 min del inicio); sol 29.8 grados de elevacion, azimut 276
+  E11 rotulo 28-10 20:40: GOES-19 mira 20:48:38, GOES-18 20:48:15 (+16.6 min del inicio); sol 27.8 grados de elevacion, azimut 274
+  E11 rotulo 28-10 20:50: GOES-19 mira 20:58:38, GOES-18 20:58:15 (+26.6 min del inicio); sol 25.8 grados de elevacion, azimut 273
+  E11 rotulo 28-10 21:00: GOES-19 mira 21:08:38, GOES-18 21:08:15 (+36.6 min del inicio); sol 23.8 grados de elevacion, azimut 271
+  E12 rotulo 28-10 21:30: GOES-19 mira 21:38:38, GOES-18 21:38:15 (-10.4 min del inicio); sol 17.8 grados de elevacion, azimut 267
+  E12 rotulo 28-10 21:40: GOES-19 mira 21:48:38, GOES-18 21:48:15 (-0.4 min del inicio); sol 15.8 grados de elevacion, azimut 265
+  E12 rotulo 28-10 21:50: GOES-19 mira 21:58:38, GOES-18 21:58:15 (+9.6 min del inicio); sol 13.8 grados de elevacion, azimut 264
+  E12 rotulo 28-10 22:00: GOES-19 mira 22:08:38, GOES-18 22:08:15 (+19.6 min del inicio); sol 11.8 grados de elevacion, azimut 263
+  E12 rotulo 28-10 22:10: GOES-19 mira 22:18:38, GOES-18 22:18:15 (+29.6 min del inicio); sol 9.9 grados de elevacion, azimut 261
+  L8 rotulo 25-10 14:20: GOES-19 mira 14:28:38, GOES-18 14:28:15 (-5.4 min del inicio); sol 53.1 grados de elevacion, azimut 55
+  L8 rotulo 25-10 14:30: GOES-19 mira 14:38:38, GOES-18 14:38:15 (+4.6 min del inicio); sol 54.7 grados de elevacion, azimut 52
+  L8 rotulo 25-10 14:40: GOES-19 mira 14:48:38, GOES-18 14:48:15 (+14.6 min del inicio); sol 56.3 grados de elevacion, azimut 49
+  L8 rotulo 25-10 14:50: GOES-19 mira 14:58:38, GOES-18 14:58:15 (+24.6 min del inicio); sol 57.7 grados de elevacion, azimut 45
+  L8 rotulo 25-10 15:00: GOES-19 mira 15:08:38, GOES-18 15:08:15 (+34.6 min del inicio); sol 59.1 grados de elevacion, azimut 41

@@ -108,6 +108,7 @@ def cubo():
     btdn, _, instn = _leer(B.TRAB, datetime(2026, 11, 22), 3, co_fijo={14: co26[0], 15: co26[1]})
     np.save(_npy("n26_btd"), btdn)
     print("22-24-11-2026:", json.dumps(instn), flush=True)
+    os.makedirs(RES, exist_ok=True)
     json.dump({"2025": inst, "2026_22a24nov": instn}, open(os.path.join(RES, "instrumento.json"), "w",
                                                              encoding="utf-8"), indent=1)
 

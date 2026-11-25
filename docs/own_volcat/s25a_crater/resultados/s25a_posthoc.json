@@ -1,0 +1,143 @@
+{
+ "nota": "POST HOC: no cambia el veredicto del criterio.",
+ "todo": {
+  "P_evaluados": 93,
+  "P_alcanzados": 44,
+  "R": 0.4731182795698925,
+  "N_cerca": 649,
+  "N_cerca_alcanzados": 116,
+  "tasa_N_cerca": 0.17873651771956856,
+  "pN": 2.28158151287431e-09
+ },
+ "de_dia_12_24_UTC": {
+  "P_evaluados": 88,
+  "P_alcanzados": 43,
+  "R": 0.48863636363636365,
+  "N_cerca": 461,
+  "N_cerca_alcanzados": 60,
+  "tasa_N_cerca": 0.1301518438177874,
+  "pN": 7.92884590228376e-13
+ },
+ "de_noche_00_12_UTC": {
+  "P_evaluados": 5,
+  "P_alcanzados": 1,
+  "R": 0.2,
+  "N_cerca": 188,
+  "N_cerca_alcanzados": 56,
+  "tasa_N_cerca": 0.2978723404255319,
+  "pN": 0.8300599517130999
+ },
+ "sin_cada_dia": {
+  "2026-10-22": {
+   "P_evaluados": 93,
+   "P_alcanzados": 44,
+   "R": 0.4731182795698925,
+   "N_cerca": 646,
+   "N_cerca_alcanzados": 113,
+   "tasa_N_cerca": 0.17492260061919504,
+   "pN": 1.2808830226326095e-09
+  },
+  "2026-10-24": {
+   "P_evaluados": 92,
+   "P_alcanzados": 44,
+   "R": 0.4782608695652174,
+   "N_cerca": 649,
+   "N_cerca_alcanzados": 116,
+   "tasa_N_cerca": 0.17873651771956856,
+   "pN": 1.523286697863345e-09
+  },
+  "2026-10-25": {
+   "P_evaluados": 89,
+   "P_alcanzados": 44,
+   "R": 0.4943820224719101,
+   "N_cerca": 518,
+   "N_cerca_alcanzados": 104,
+   "tasa_N_cerca": 0.20077220077220076,
+   "pN": 1.9542604709118663e-08
+  },
+  "2026-10-28": {
+   "P_evaluados": 67,
+   "P_alcanzados": 29,
+   "R": 0.43283582089552236,
+   "N_cerca": 626,
+   "N_cerca_alcanzados": 116,
+   "tasa_N_cerca": 0.1853035143769968,
+   "pN": 1.0502499582694812e-05
+  },
+  "2026-10-29": {
+   "P_evaluados": 87,
+   "P_alcanzados": 43,
+   "R": 0.4942528735632184,
+   "N_cerca": 447,
+   "N_cerca_alcanzados": 63,
+   "tasa_N_cerca": 0.14093959731543623,
+   "pN": 4.6937661856367574e-12
+  },
+  "2026-11-07": {
+   "P_evaluados": 92,
+   "P_alcanzados": 44,
+   "R": 0.4782608695652174,
+   "N_cerca": 603,
+   "N_cerca_alcanzados": 107,
+   "tasa_N_cerca": 0.17744610281923714,
+   "pN": 1.5552424730667719e-09
+  },
+  "2026-11-08": {
+   "P_evaluados": 80,
+   "P_alcanzados": 44,
+   "R": 0.55,
+   "N_cerca": 626,
+   "N_cerca_alcanzados": 101,
+   "tasa_N_cerca": 0.16134185303514376,
+   "pN": 2.7780644291356735e-13
+  },
+  "2026-11-10": {
+   "P_evaluados": 85,
+   "P_alcanzados": 36,
+   "R": 0.4235294117647059,
+   "N_cerca": 623,
+   "N_cerca_alcanzados": 91,
+   "tasa_N_cerca": 0.14606741573033707,
+   "pN": 1.3250250177016085e-08
+  },
+  "2026-11-11": {
+   "P_evaluados": 90,
+   "P_alcanzados": 44,
+   "R": 0.4888888888888889,
+   "N_cerca": 623,
+   "N_cerca_alcanzados": 106,
+   "tasa_N_cerca": 0.17014446227929375,
+   "pN": 1.8955391921800092e-10
+  },
+  "2026-11-14": {
+   "P_evaluados": 62,
+   "P_alcanzados": 24,
+   "R": 0.3870967741935484,
+   "N_cerca": 634,
+   "N_cerca_alcanzados": 109,
+   "tasa_N_cerca": 0.1719242902208202,
+   "pN": 0.000125009641843227
+  }
+ },
+ "tasa_disparo_2026": {
+  "dia_12_24": 0.0858765081618169,
+  "noche_00_12": 0.2425554953979426
+ },
+ "pixeles_en_disparos": {
+  "(43,47) 5.0 km": 239,
+  "(43,46) 4.6 km": 214,
+  "(41,46) 1.2 km": 196,
+  "(43,45) 5.2 km": 97,
+  "(41,45) 2.8 km": 79,
+  "(42,45) 3.0 km": 73,
+  "(41,47) 1.9 km": 68,
+  "(41,48) 3.8 km": 65,
+  "(42,46) 1.8 km": 57,
+  "(40,46) 4.0 km": 30,
+  "(42,47) 2.5 km": 20
+ },
+ "P_por_mitad": {
+  "dia": 94,
+  "noche": 6
+ }
+}

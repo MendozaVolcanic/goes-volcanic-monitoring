@@ -1,0 +1,25 @@
+{
+ "2025": {
+  "cuadros": 8928,
+  "l1b_presentes": 8911,
+  "cobertura_l1b": 0.9980958781362007,
+  "acm_presentes": 8803,
+  "cobertura_acm": 0.9859991039426523,
+  "scan_distinto_descartados": 0,
+  "congelados": 0,
+  "bt11_en_rango": 1.0,
+  "ultimo_l1b": 8927,
+  "falla": []
+ },
+ "2026_22a24nov": {
+  "cuadros": 432,
+  "l1b_presentes": 389,
+  "cobertura_l1b": 0.9004629629629629,
+  "acm_presentes": 389,
+  "cobertura_acm": 0.9004629629629629,
+  "scan_distinto_descartados": 0,
+  "congelados": 0,
+  "bt11_en_rango": 1.0,
+  "ultimo_l1b": 388
+ }
+}

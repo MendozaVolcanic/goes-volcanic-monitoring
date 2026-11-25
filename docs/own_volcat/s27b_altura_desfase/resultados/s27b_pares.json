@@ -1,0 +1,56 @@
+{
+ "nota": "sin viento ni altura; sólo la tabla de disparos de S26a",
+ "pulsos_totales_tabla": 137,
+ "llegadas_dias_mirados": [
+  {
+   "llegada": "2026-10-28 18:20",
+   "tajada": 5,
+   "clase_llegada": "otro",
+   "pulsos_candidatos": [],
+   "dt_min": [],
+   "tipo": "sin pulso"
+  },
+  {
+   "llegada": "2026-10-28 19:20",
+   "tajada": 5,
+   "clase_llegada": "P",
+   "pulsos_candidatos": [
+    "2026-10-28 18:10"
+   ],
+   "dt_min": [
+    70
+   ],
+   "tipo": "único"
+  },
+  {
+   "llegada": "2026-10-28 20:00",
+   "tajada": 4,
+   "clase_llegada": "P",
+   "pulsos_candidatos": [],
+   "dt_min": [],
+   "tipo": "sin pulso"
+  },
+  {
+   "llegada": "2026-11-08 17:30",
+   "tajada": 5,
+   "clase_llegada": "otro",
+   "pulsos_candidatos": [
+    "2026-11-08 15:50",
+    "2026-11-08 17:00"
+   ],
+   "dt_min": [
+    100,
+    30
+   ],
+   "tipo": "ambiguo"
+  },
+  {
+   "llegada": "2026-11-11 17:00",
+   "tajada": 4,
+   "clase_llegada": "otro",
+   "pulsos_candidatos": [],
+   "dt_min": [],
+   "tipo": "sin pulso"
+  }
+ ]
+}

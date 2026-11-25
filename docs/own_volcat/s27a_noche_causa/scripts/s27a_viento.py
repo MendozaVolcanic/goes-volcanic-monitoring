@@ -1,4 +1,4 @@
-r"""S27a: viento y temperatura GFS 0,25 grados alrededor de Nevados de Chillán para todas las noches de la ventana
+r"""S27a: viento y temperatura GFS 1,0 grado (enmienda 1: el de 0,25 grados no bajaba con la red saturada) alrededor de Nevados de Chillán para todas las noches de la ventana
 (21-09 a 24-11-2026 y 21-09 a 21-11-2025) y para las tardes de 2026, desde el archivo público noaa-gfs-bdp-pds leído
 por rango de bytes.
 
@@ -9,7 +9,7 @@ sólo de 750 a 450 hPa (2,4 a 6,6 km, la capa que importa), agrega la temperatur
 cada 2 o 3 h. Hora válida = la hora pedida; ciclo = último 00/06/12/18 UTC <= esa hora; plazo f000 a f005. El GRIB
 no se guarda: sólo la caja chica en npz.
 
-Uso: python -I s27a_viento.py todo        (las noches de los dos años y las tardes de 2026)
+Uso: python -I s27a_viento.py todo [k n]  (las noches de los dos años y las tardes de 2026; porción k de n)
      python -I s27a_viento.py 2026102503  (horas sueltas, AAAAMMDDHH)
 """
 import os
@@ -29,16 +29,16 @@ from src.fetch.gfs_archive import _parse_idx, _read_range  # noqa: E402
 OUT = r"D:\goes_notas\s27\s27a\gfs"
 LEVELS = [750, 700, 650, 600, 550, 500, 450]
 TMP_LEVELS = [750, 700, 650]
-LATS = np.arange(-35.75, -38.0 - 1e-6, -0.25)
-LONS = np.arange(287.5, 289.75 + 1e-6, 0.25)
+LATS = np.arange(-35.0, -38.0 - 1e-6, -1.0)       # GFS 1,0 grados (enmienda 1 del criterio: red saturada)
+LONS = np.arange(287.0, 290.0 + 1e-6, 1.0)
 MIN_LIBRE_GB = 6.0
 _DECODE = threading.Lock()          # eccodes no es seguro en hilos: se decodifica de a uno
-HORAS_NOCHE = (3, 5, 7, 9)          # cubren 03:00 a 08:50 UTC (00:00 a 05:50 hora de Chile)
+HORAS_NOCHE = (3, 6, 9)             # cubren 03:00 a 08:50 UTC (00:00 a 05:50 hora de Chile); el 1 grado es cada 3 h
 HORAS_TARDE = (12, 15, 18, 21)      # 09:00 a 18:00 hora de Chile: la pluma diaria de día
 
 
 def ruta(h):
-    return os.path.join(OUT, f"gfst_{h:%Y%m%d%H}.npz")
+    return os.path.join(OUT, f"gfst1_{h:%Y%m%d%H}.npz")
 
 
 def bajar(h, s3=None):
@@ -54,7 +54,7 @@ def bajar(h, s3=None):
         s3 = s3fs.S3FileSystem(anon=True)
     cyc = h.replace(hour=(h.hour // 6) * 6)
     fh = int((h - cyc).total_seconds() // 3600)
-    g = f"noaa-gfs-bdp-pds/gfs.{cyc:%Y%m%d}/{cyc:%H}/atmos/gfs.t{cyc:%H}z.pgrb2.0p25.f{fh:03d}"
+    g = f"noaa-gfs-bdp-pds/gfs.{cyc:%Y%m%d}/{cyc:%H}/atmos/gfs.t{cyc:%H}z.pgrb2.1p00.f{fh:03d}"
     recs = _parse_idx(s3.cat(g + ".idx").decode())
     size = int(s3.info(g)["size"])
     idx = {(r["var"], r["level"]): r for r in recs}
@@ -126,16 +126,16 @@ if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
     import s3fs
     S3 = s3fs.S3FileSystem(anon=True)
-    hs = horas_todo() if sys.argv[1] == "todo" else [datetime.strptime(a, "%Y%m%d%H") for a in sys.argv[1:]]
-
-    def uno(h):
+    if sys.argv[1] == "todo":                  # todo [k n]: la porción k de n (procesos en paralelo, uno por porción)
+        k, n = (int(sys.argv[2]), int(sys.argv[3])) if len(sys.argv) > 3 else (0, 1)
+        hs = horas_todo()[k::n]
+    else:
+        hs = [datetime.strptime(a, "%Y%m%d%H") for a in sys.argv[1:]]
+    for h in hs:                              # en serie dentro del proceso: s3fs compartido entre hilos se trabó
         for intento in range(3):
             try:
-                return f"{h} {bajar(h, S3)}"
+                print(h, bajar(h, S3), flush=True)
+                break
             except Exception as e:  # noqa: BLE001
                 if intento == 2:
-                    return f"{h} FALLA {e!r}"
-
-    with ThreadPoolExecutor(8) as ex:          # 8 horas a la vez, cada una con 8 lecturas por rango
-        for linea in ex.map(uno, hs):
-            print(linea, flush=True)
+                    print(h, "FALLA", repr(e), flush=True)

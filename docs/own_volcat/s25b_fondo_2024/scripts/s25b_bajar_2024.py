@@ -9,6 +9,8 @@ entonces GOES-16, en la misma posición (75,2° O) y con la misma grilla fija AB
 Variante de h23_bajar.py y h23_bajar_acm.py, que tienen el bucket noaa-goes19 escrito adentro. No se tocan: aquí se
 reemplaza el listado (L1b) y se repite la lectura del ACMF con el bucket de GOES-16. Mismo método, misma ventana
 (h23_comun.WIN), mismos coeficientes de Planck leídos de cada NetCDF (los de GOES-16, no los de GOES-19).
+Bloque de lectura de 64 KB en vez de 256 KB (medido el 25-11-2026: una ventana de C14 trae 0,5 MB en vez de 1,5 MB; la
+conexión de ese día rendía ~160 KB/s por flujo). Los valores leídos son los mismos: sólo cambia cuánto trae cada pedido.
 Escrituras atómicas (temporal por proceso + os.replace): dos corridas pueden cruzarse sin dañarse.
 Todo va a D:\goes_notas\s25\s25b_2024. Corta solo si D: baja de 6 GB libres.
 Uso: python -I s25b_bajar_2024.py l1b|acm [nproc] [rev]
@@ -46,11 +48,36 @@ def listar16(h):
     return []
 
 
+BLOQUE = 2**16
+
+
+def leer16(key):
+    """h23_bajar.leer con bloque de 64 KB (mismo recorte, misma conversión, mismos coeficientes)."""
+    import h5py
+    W = K.WIN
+    err = None
+    for i in range(4):
+        try:
+            with BL.fs().open(key, "rb", block_size=BLOQUE, cache_type="readahead") as fo, h5py.File(fo, "r") as f:
+                r = f["Rad"]
+                raw = r[W["y0"]:W["y1"], W["x0"]:W["x1"]].astype("float64")
+                rad = raw * r.attrs["scale_factor"][0] + r.attrs["add_offset"][0]
+                rad[raw == r.attrs["_FillValue"][0]] = np.nan
+                co = [float(np.ravel(f[n][()])[0]) for n in ("planck_fk1", "planck_fk2", "planck_bc1", "planck_bc2")]
+                return rad.astype("float32"), np.array(co)
+        except Exception as e:  # noqa: BLE001
+            err = e
+            time.sleep(2 * (i + 1))
+    print("FALLA", key, repr(err), flush=True)
+    return None, None
+
+
+BL.leer = leer16
 BL.listar = listar16          # h23_bajar.hora busca `listar` en su módulo: así lista GOES-16 (también en los hijos)
 
 
 def hora_l1b(h):
-    BL.listar = listar16
+    BL.listar, BL.leer = listar16, leer16
     return BL.hora(h)
 
 
@@ -81,7 +108,7 @@ def hora_acm(h):
         err = None
         for i in range(4):
             try:
-                with BL.fs().open(kk[0], "rb", block_size=2**18, cache_type="readahead") as fo, \
+                with BL.fs().open(kk[0], "rb", block_size=BLOQUE, cache_type="readahead") as fo, \
                         h5py.File(fo, "r") as f:
                     acm = f["ACM"][W["y0"]:W["y1"], W["x0"]:W["x1"]]
                     dqf = f["DQF"][W["y0"]:W["y1"], W["x0"]:W["x1"]]

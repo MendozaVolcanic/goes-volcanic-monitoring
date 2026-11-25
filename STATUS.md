@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-24 (sesión S22, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-25 (sesión S25a, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,67 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S24, 2026-11-25 (la noche de 2026 dispara más que una noche común de 2025; el 14-11 quedó INVÁLIDA por el control; la regla de rumbo S24c se abandona en la calibración; S23b sigue esperando días nuevos)
+## 0. S25a, 2026-11-25 (la zona de 0 a 4 km del cráter ALCANZA por su regla: 44 de 93 cuadros de VOLCAT y el 14-11, 20 de 31; en 2026 la zona dispara de más de noche; S23b sigue esperando días nuevos)
+
+> Sesión S25a (worktree `s25a-crater-s23b-92d67e`, lanzada por la sesión que corre S25a y S25b en paralelo). Informe:
+> `docs/own_volcat/s25a_crater/INFORME.md`. S25b (fondo 2024 con GOES-16) corre aparte en `docs/own_volcat/s25b_*`.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Confirmación S23b en días nuevos | **Esperando**: 0 cuadros P de VOLCAT el 25-11 hasta 11:30 UTC (55 N, 15 otro). La medida exige 20 P en 2 días | `docs/own_volcat/s23_fondo_2025/resultados/volcat_clases_desde_25nov.csv` |
+| Zona de 0 a 4 km del cráter (11 píxeles que ningún anillo mira) | **ALCANZA** por su regla: cada píxel contra sí mismo en 2025, corrección regional por cota, dos píxeles más bajos. Seco 2025 0,032; R 44 de 93 (esperado 4,1); pN 2e-9 | criterio `1306fb5`, resultado `08ba80a` |
+| 14-11 (pluma pegada al cráter, 0 en todas las versiones anteriores) | **ALCANZADO**: 20 de 31 cuadros | `resultados/s25a_resultado.json` |
+| Complemento con el anillo (post hoc) | Zona: 14-11, 10-11, 28-10; anillo S23b: 08-11, 29-10, 11-11, 28-10. Donde uno no llega, llega el otro | `INFORME.md` §3 |
+| Noche de 2026 | La zona dispara en el 24 % de los cuadros de noche de 2026 (4 % en 2025) y 8,6 % de día (3 %), desde el 21-09. **Sin explicar**: pluma diaria, depósito de ceniza o nieve | `resultados/s25a_posthoc.json` |
+| Videos lado a lado (estilo VOLCAT, píxeles llenos, ±0,7°, anillos 10/25/50 km) | `C:\Users\nmend\Downloads\s25a_lado_a_lado_volcat_vs_zona_crater_chillan_<día>_10min.mp4`: 14-11, 28-10, 10-11, 08-11 | `scripts/s25a_lado_a_lado.py` |
+| Disco D: | 15 GB libres; S25a usa 0,4 GB en `D:\goes_notas\s25\s25a\` | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Mirar cámaras del OVDAS en noches en que la zona dispara sin VOLCAT (27-09, 04-10, 05-10, 27-10, 12-11) | Sí: separa pluma diaria de depósito o nieve |
+| 2 | Comprobar con cámaras el 14-11 de 13:00 a 17:00 hora de Chile y el 10-11 de tarde: ¿pluma sobre el cráter? | Sí: son los días que la zona alcanza y el anillo no |
+| 3 | Las de S23 y S24 (dirección del 14-11 de 17 a 19 UTC; cámaras 28-10, 29-10, 11-11; correo a Pavolonis) | Siguen |
+
+### c. Lo aprendido
+
+- **En la cumbre, cada píxel contra sí mismo** (método): donde el relieve y el calor rompen la comparación con otros
+  píxeles, la referencia es el mismo píxel a la misma hora en el año tranquilo, más una corrección regional por cota.
+  Con el mínimo de dos píxeles, el píxel caliente no puede fabricar disparos.
+- **Dos piezas que se complementan** (proyecto): el anillo ve la pluma lejana y la zona la pegada al cráter.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (por la regla, en días ya mirados):** la zona del cráter alcanza los cuadros de VOLCAT con pluma sobre
+  el cráter y los separa de los otros cuadros de 2026 de día.
+- **SOSPECHA:** los disparos nocturnos de 2026 son pluma diaria (o depósito); sin dato que lo decida.
+- **SIN PROBAR:** confirmación en días nuevos (`criterio_confirmacion_2026-11-25.md`, mismo gatillo que S23b) y el
+  detector unión anillo más zona (necesita criterio y ensayo en seco propios).
+
+### e. Prompt para la próxima sesión (S26)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Sesión S26; titúlala "Goes S26: ..." y numera su
+traspaso como S26. Usa /retomar.
+1. Verifica: git fetch; gh pr list; main en el remoto; espacio en D: (15 GB el 25-11).
+2. Lee STATUS.md "## 0." (S25a, y S25b si ya está), docs/own_volcat/s25a_crater/INFORME.md.
+3. Confirmaciones en días nuevos: `python -I docs/own_volcat/s23_fondo_2025/scripts/s23b_confirmar.py contar <hoy>`.
+   Cuando diga LISTO PARA MEDIR: `bajar <hora>`, `medir` S23b UNA vez, y la zona del cráter UNA vez con
+   docs/own_volcat/s25a_crater/criterio_confirmacion_2026-11-25.md (falta extender s25a_medir.py para leer los días
+   nuevos de D:\goes_notas\s23\s23b\). Videos de los días nuevos con P.
+4. Si queda tiempo: criterio para el detector unión (anillo S23b más zona S25a), con su ensayo en seco en 2025.
+5. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS;
+   la carpeta principal no se toca; docs/auditoria_2026-11 no se sube; nada de SSEC al repo; criterio antes de
+   medir; ningún día de jul-nov 2026 es "sin actividad"; fusionar sólo con el sí de Nicolás y --match-head-commit.
+```
+
+---
+
+## 0-prev20. S24, 2026-11-25 (la noche de 2026 dispara más que una noche común de 2025; el 14-11 quedó INVÁLIDA por el control; la regla de rumbo S24c se abandona en la calibración; S23b sigue esperando días nuevos)
 
 > Sesión S24 (worktree `s24-confirmar-s23b-11fe53`, lanzada por S23). Informe: `docs/own_volcat/s24_dia14_noche/INFORME.md`.
 > Rama `claude/s24-confirmar-s23b-11fe53`, sin fusionar al escribir este bloque.

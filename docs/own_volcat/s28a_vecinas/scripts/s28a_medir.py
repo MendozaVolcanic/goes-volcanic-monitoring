@@ -164,7 +164,22 @@ class Anillo:
                 mm[d, s][B.borde(nd)[self.geo.AP]] = np.nan
         return FD, mm
 
-    base = S.Detector.base
+    def base(self, excl):
+        """s23_medir.Detector.base con el largo del anillo de esta geometría (el original fija M.NA de Chillán)."""
+        if excl in self._B:
+            return self._B[excl]
+        Bs = np.full((144, self.geo.NA), np.nan, np.float32)
+        pozo = [(d, x) for d in self.DIASR if d != excl for x in range(144)
+                if self.NULR[d, x] and self.E1R[d, x] and self.GATER[d, x]]
+        for s in range(144):
+            rows = [self.mmR[d, x] for d, x in pozo if M.dslot(x, s) <= B.W_BASE]
+            if len(rows) >= B.MIN_BASE:
+                R = np.array(rows)
+                n = np.isfinite(R).sum(0)
+                Bs[s] = np.where(n >= B.MIN_BASE, np.nanmedian(R, 0), np.nan)
+        self._B[excl] = Bs
+        return Bs
+
     umbral = S.Detector.umbral
 
     def seco(self):

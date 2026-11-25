@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-25 (sesión S27a, bloque "## 0." abajo; S27b queda como 0-prev24). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-25 (sesión S28a, bloque "## 0." abajo; el cierre de la coordinación S23 queda como 0-prev26 y S27a como 0-prev25). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,63 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. Cierre de la coordinación S23, 2026-11-25 (coordinó S24 a S27, PR 125 a 131 en main; S25b sigue corriendo; la coordinación pasa a S28, sesión de primer nivel)
+## 0. S28a, 2026-11-25 (falsa alarma de S26a en Antuco y Longaví, 2026 contra 2025: de noche NO CONCLUYENTE; de día MIXTO, Antuco sin pluma sube tanto como Chillán)
+
+> Sesión S28a (worktree `s28a-vecinas-falsa-alarma-7791f2`, lanzada por la coordinadora S28
+> `local_36977cef-5c6d-46e6-b890-b4299891d5c8`). Informe: `docs/own_volcat/s28a_vecinas/INFORME.md`. El cierre de la
+> coordinación S23 sigue abajo como `0-prev26` y S27a como `0-prev25`. Ningún día posterior al 24-11: las
+> confirmaciones siguen intactas. PR abierto contra `main`; lo revisa y fusiona S28.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Criterio | Empujado antes de calcular un disparo del anillo o de la unión en las vecinas; dice que la zona de las vecinas ya estaba publicada por S27a | `39da17b` |
+| Pluma de Chillán | Fuera del anillo de cada vecina las tajadas con algún píxel a < 45 km de Chillán (Antuco 0, 1, 10, 11; Longaví 5, 6, 7), mínimo de tajadas al 75 %; los dos anillos caben en la ventana | `resultados/s28a_resultado.json` (`geometria`) |
+| Comprobación de código | Anillo generalizado = el de Chillán (S, tajadas, seco 269 de 5.499, 0 diferencias con `tabla_2026.csv`); M1 igual al caché en 3 días; zona = conteos de S27a | idem (`comprobacion`) |
+| Noche, unión | Antuco 6,2 % a 3,3 % (R 0,53; 0,09 a 2,13); Longaví 5,9 % a 6,7 % (R 1,14; 0,42 a 3,16); Chillán 6,7 % a 18,6 % (R 2,76) | **NO CONCLUYENTE** (el límite superior de Longaví pasa el R de Chillán) |
+| Día, unión | Antuco 4,0 % a 10,6 % (R 2,64; 1,05 a 8,98; lo pone la zona, R 3,66); Longaví 4,0 % a 3,2 % (R 0,80); Chillán 3,9 % a 10,4 % (R 2,67; sin cuadros P 7,7 %) | **MIXTO (sube Antuco)** |
+| Viento | Sin los cuadros con viento desde Chillán hacia Antuco, Antuco de día sube igual (R 3,10): no es la pluma de Chillán | idem (`viento`) |
+| Post hoc | El 10-11 disparan de tarde las tres cumbres (Chillán con VOLCAT, Antuco 33, Longaví 24) y el 14-11 Antuco dispara con VOLCAT de Chillán: los dos días fuertes de la zona en S26a. Como placebo, la unión en Antuco alcanza 20 de 88 P de Chillán y en Longaví 5 de 93 (Chillán 63 de 93) | `resultados/s28a_posthoc.json` |
+| Disco D: | S28a usa ~120 MB en `D:\goes_notas\s28\s28a\` (M1 de las vecinas y cuadros) | `du` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Agregar a la confirmación en días nuevos la unión en Antuco y Longaví como placebo informativo (con criterio escrito antes de la medida)? | Sí: el 10-11 mostró que la zona de una cumbre sin pluma reacciona a la misma tarde que la de Chillán |
+| 2 | ¿Mirar una imagen óptica de la cumbre de Antuco el 10-11 o el 04-10-2026 contra 2025 (nieve, roca descubierta, nube baja)? | Sí: dice si el aumento diurno de Antuco es superficie o atmósfera |
+| 3 | Las de `0-prev26` (cámaras del OVDAS, archivar sesiones, capa experimental, disparo externo, correo a Pavolonis) | Siguen |
+
+### c. Lo aprendido
+
+- **La falsa alarma de 2025 no se traslada a 2026 de día** (proyecto): una cumbre sin pluma de la misma imagen
+  (Antuco) pasa de 4,0 % a 10,6 % de día; el exceso diurno de Chillán cabe entero en esa subida. De noche no hay señal
+  de subida en las vecinas, sin intervalo que lo respalde.
+- **Los disparos de 2025 se juntan en pocos días** (método): el remuestreo por días da intervalos de R de ×4 a ×10 de
+  ancho con dos meses por año. Un Fisher por cuadros los habría dado angostos y falsos.
+- **El código de Chillán trae constantes de Chillán escondidas** (código): `Detector.base` fija el largo del anillo
+  (`M.NA`). Al generalizar a otra cumbre, reproducir Chillán primero no basta: hay que correr también la geometría
+  nueva antes de leer.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** de día, en 2026, una cumbre sin pluma (Antuco) dispara tanto como Chillán; no es la pluma de Chillán
+  llevada por el viento.
+- **SOSPECHA:** el aumento diurno de Antuco es superficie al sol (menos nieve, roca descubierta) o nube baja de tarde;
+  sin probar.
+- **SOSPECHA (post hoc):** parte de los aciertos de la zona de Chillán el 10-11 y el 14-11 es regional.
+- **SIN DATO:** si la noche de 2026 sube en las vecinas (intervalos muy anchos).
+
+### e. Prompt para la próxima sesión
+
+El de `0-prev26` §f sigue vigente (coordinación, confirmación en días nuevos). Sumar: antes de la medida única de
+confirmación, decidir por escrito si se corre la unión en Antuco y Longaví como placebo informativo con los mismos
+días (`docs/own_volcat/s28a_vecinas/scripts/s28a_medir.py` tiene la geometría y el anillo generalizados).
+
+---
+
+## 0-prev26. Cierre de la coordinación S23, 2026-11-25 (coordinó S24 a S27, PR 125 a 131 en main; S25b sigue corriendo; la coordinación pasa a S28, sesión de primer nivel)
 
 > Sesión `s23-fondo-2025-68f1e1` (S23, lanzada por S22). Hizo S23 y después, a pedido de Nicolás ("sigue con todo,
 > que más podemos hacer en paralelo"), lanzó y revisó S24, S25a, S25b, S26a, S26b, S27a y S27b, y fusionó con su

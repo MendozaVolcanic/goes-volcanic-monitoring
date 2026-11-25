@@ -1,0 +1,7126 @@
+{
+ "nota": "estimación previa, sin datos de pluma; perfiles GFS ya publicados por S22c",
+ "casos": [
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 20,
+   "d_real_km": 6.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     11.1
+    ],
+    "ancho": 7.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 30,
+   "d_real_km": 9.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 40,
+   "d_real_km": 12.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 50,
+   "d_real_km": 14.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 60,
+   "d_real_km": 17.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 70,
+   "d_real_km": 20.3,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 80,
+   "d_real_km": 23.0,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 90,
+   "d_real_km": 25.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 100,
+   "d_real_km": 28.4,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 110,
+   "d_real_km": 31.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "hacia": 171,
+   "dt_min": 120,
+   "d_real_km": 33.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "hacia": 164,
+   "dt_min": 30,
+   "d_real_km": 8.4,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     13.6
+    ],
+    "ancho": 10.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "hacia": 164,
+   "dt_min": 40,
+   "d_real_km": 10.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "hacia": 164,
+   "dt_min": 50,
+   "d_real_km": 13.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "hacia": 164,
+   "dt_min": 60,
+   "d_real_km": 15.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "hacia": 164,
+   "dt_min": 70,
+   "d_real_km": 18.0,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "hacia": 164,
+   "dt_min": 80,
+   "d_real_km": 20.4,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "hacia": 164,
+   "dt_min": 90,
+   "d_real_km": 22.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "hacia": 164,
+   "dt_min": 100,
+   "d_real_km": 25.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "hacia": 164,
+   "dt_min": 110,
+   "d_real_km": 27.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "hacia": 164,
+   "dt_min": 120,
+   "d_real_km": 30.0,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.7,
+   "V_real": 2.4,
+   "hacia": 153,
+   "dt_min": 40,
+   "d_real_km": 6.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     12.3
+    ],
+    "ancho": 9.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.7,
+   "V_real": 2.4,
+   "hacia": 153,
+   "dt_min": 50,
+   "d_real_km": 8.0,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.7,
+   "V_real": 2.4,
+   "hacia": 153,
+   "dt_min": 60,
+   "d_real_km": 9.4,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.7,
+   "V_real": 2.4,
+   "hacia": 153,
+   "dt_min": 70,
+   "d_real_km": 10.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.7,
+   "V_real": 2.4,
+   "hacia": 153,
+   "dt_min": 80,
+   "d_real_km": 12.4,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.7,
+   "V_real": 2.4,
+   "hacia": 153,
+   "dt_min": 90,
+   "d_real_km": 13.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.7,
+   "V_real": 2.4,
+   "hacia": 153,
+   "dt_min": 100,
+   "d_real_km": 15.3,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.7,
+   "V_real": 2.4,
+   "hacia": 153,
+   "dt_min": 110,
+   "d_real_km": 16.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.7,
+   "V_real": 2.4,
+   "hacia": 153,
+   "dt_min": 120,
+   "d_real_km": 18.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 5.5,
+   "V_real": 2.0,
+   "hacia": 138,
+   "dt_min": 50,
+   "d_real_km": 6.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.4,
+     12.9
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.4,
+     8.1
+    ],
+    "ancho": 4.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 5.5,
+   "V_real": 2.0,
+   "hacia": 138,
+   "dt_min": 60,
+   "d_real_km": 7.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.4,
+     14.0
+    ],
+    "ancho": 10.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.4,
+     8.1
+    ],
+    "ancho": 4.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 5.5,
+   "V_real": 2.0,
+   "hacia": 138,
+   "dt_min": 70,
+   "d_real_km": 8.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.5,
+     14.0
+    ],
+    "ancho": 10.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     8.1
+    ],
+    "ancho": 4.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 5.5,
+   "V_real": 2.0,
+   "hacia": 138,
+   "dt_min": 80,
+   "d_real_km": 10.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.5,
+     14.0
+    ],
+    "ancho": 10.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     8.1
+    ],
+    "ancho": 4.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 5.5,
+   "V_real": 2.0,
+   "hacia": 138,
+   "dt_min": 90,
+   "d_real_km": 11.3,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.6,
+     14.0
+    ],
+    "ancho": 10.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.6,
+     8.1
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 5.5,
+   "V_real": 2.0,
+   "hacia": 138,
+   "dt_min": 100,
+   "d_real_km": 12.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.6,
+     14.0
+    ],
+    "ancho": 10.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.6,
+     8.1
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 5.5,
+   "V_real": 2.0,
+   "hacia": 138,
+   "dt_min": 110,
+   "d_real_km": 13.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.6,
+     14.0
+    ],
+    "ancho": 10.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.6,
+     8.1
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 5.5,
+   "V_real": 2.0,
+   "hacia": 138,
+   "dt_min": 120,
+   "d_real_km": 14.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.6,
+     14.0
+    ],
+    "ancho": 10.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.6,
+     8.1
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 86,
+   "dt_min": 30,
+   "d_real_km": 6.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.9
+    ],
+    "ancho": 5.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     10.6
+    ],
+    "ancho": 6.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.9
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 86,
+   "dt_min": 40,
+   "d_real_km": 8.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.8
+    ],
+    "ancho": 5.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     11.2
+    ],
+    "ancho": 6.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.8
+    ],
+    "ancho": 4.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 86,
+   "dt_min": 50,
+   "d_real_km": 10.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     11.8
+    ],
+    "ancho": 7.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.7
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 86,
+   "dt_min": 60,
+   "d_real_km": 12.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     12.6
+    ],
+    "ancho": 8.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.7
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 86,
+   "dt_min": 70,
+   "d_real_km": 14.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     13.5
+    ],
+    "ancho": 9.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.7
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 86,
+   "dt_min": 80,
+   "d_real_km": 16.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     14.0
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.7
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 86,
+   "dt_min": 90,
+   "d_real_km": 18.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     14.0
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.7
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 86,
+   "dt_min": 100,
+   "d_real_km": 20.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     14.0
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 86,
+   "dt_min": 110,
+   "d_real_km": 22.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     14.0
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 86,
+   "dt_min": 120,
+   "d_real_km": 24.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     14.0
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 8.0,
+   "V_real": 2.7,
+   "hacia": 70,
+   "dt_min": 40,
+   "d_real_km": 7.4,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     10.3
+    ],
+    "ancho": 5.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.7
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 8.0,
+   "V_real": 2.7,
+   "hacia": 70,
+   "dt_min": 50,
+   "d_real_km": 9.0,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     10.5
+    ],
+    "ancho": 6.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.7
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 8.0,
+   "V_real": 2.7,
+   "hacia": 70,
+   "dt_min": 60,
+   "d_real_km": 10.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     10.8
+    ],
+    "ancho": 6.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 8.0,
+   "V_real": 2.7,
+   "hacia": 70,
+   "dt_min": 70,
+   "d_real_km": 12.3,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     10.9
+    ],
+    "ancho": 6.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 8.0,
+   "V_real": 2.7,
+   "hacia": 70,
+   "dt_min": 80,
+   "d_real_km": 13.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     11.1
+    ],
+    "ancho": 6.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 8.0,
+   "V_real": 2.7,
+   "hacia": 70,
+   "dt_min": 90,
+   "d_real_km": 15.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     11.3
+    ],
+    "ancho": 6.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 8.0,
+   "V_real": 2.7,
+   "hacia": 70,
+   "dt_min": 100,
+   "d_real_km": 17.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     11.4
+    ],
+    "ancho": 6.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 8.0,
+   "V_real": 2.7,
+   "hacia": 70,
+   "dt_min": 110,
+   "d_real_km": 18.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     11.6
+    ],
+    "ancho": 7.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 8.0,
+   "V_real": 2.7,
+   "hacia": 70,
+   "dt_min": 120,
+   "d_real_km": 20.4,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     11.7
+    ],
+    "ancho": 7.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 10.0,
+   "V_real": 16.2,
+   "hacia": 83,
+   "dt_min": 10,
+   "d_real_km": 14.6,
+   "rapidez": {
+    "banda": [
+     8.9,
+     14.0
+    ],
+    "ancho": 5.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     14.0
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     8.9,
+     14.0
+    ],
+    "ancho": 5.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 10.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 10.0,
+   "V_real": 16.2,
+   "hacia": 83,
+   "dt_min": 20,
+   "d_real_km": 24.4,
+   "rapidez": {
+    "banda": [
+     9.1,
+     11.4
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     14.0
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     9.1,
+     11.4
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 10.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 10.0,
+   "V_real": 16.2,
+   "hacia": 83,
+   "dt_min": 30,
+   "d_real_km": 34.1,
+   "rapidez": {
+    "banda": [
+     9.2,
+     11.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     14.0
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     9.2,
+     11.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 10.0
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 12.0,
+   "V_real": 32.9,
+   "hacia": 92,
+   "dt_min": 10,
+   "d_real_km": 29.6,
+   "rapidez": {
+    "banda": [
+     10.1,
+     14.0
+    ],
+    "ancho": 3.9,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     14.0
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     10.1,
+     14.0
+    ],
+    "ancho": 3.9,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 12.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 162,
+   "dt_min": 20,
+   "d_real_km": 7.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     12.7
+    ],
+    "ancho": 9.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.0
+    ],
+    "ancho": 1.8,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 162,
+   "dt_min": 30,
+   "d_real_km": 11.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.0
+    ],
+    "ancho": 1.8,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 162,
+   "dt_min": 40,
+   "d_real_km": 14.3,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 162,
+   "dt_min": 50,
+   "d_real_km": 17.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 162,
+   "dt_min": 60,
+   "d_real_km": 20.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 162,
+   "dt_min": 70,
+   "d_real_km": 23.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 162,
+   "dt_min": 80,
+   "d_real_km": 27.0,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 162,
+   "dt_min": 90,
+   "d_real_km": 30.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 162,
+   "dt_min": 100,
+   "d_real_km": 33.3,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 162,
+   "dt_min": 110,
+   "d_real_km": 36.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     4.9
+    ],
+    "ancho": 1.7,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.0,
+   "V_real": 6.1,
+   "hacia": 156,
+   "dt_min": 20,
+   "d_real_km": 9.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.0,
+   "V_real": 6.1,
+   "hacia": 156,
+   "dt_min": 30,
+   "d_real_km": 12.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.0,
+   "V_real": 6.1,
+   "hacia": 156,
+   "dt_min": 40,
+   "d_real_km": 16.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.0,
+   "V_real": 6.1,
+   "hacia": 156,
+   "dt_min": 50,
+   "d_real_km": 20.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.0,
+   "V_real": 6.1,
+   "hacia": 156,
+   "dt_min": 60,
+   "d_real_km": 23.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.0,
+   "V_real": 6.1,
+   "hacia": 156,
+   "dt_min": 70,
+   "d_real_km": 27.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.0,
+   "V_real": 6.1,
+   "hacia": 156,
+   "dt_min": 80,
+   "d_real_km": 31.1,
+   "rapidez": {
+    "banda": [
+     3.3,
+     8.6
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.3,
+     5.1
+    ],
+    "ancho": 1.8,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.0,
+   "V_real": 6.1,
+   "hacia": 156,
+   "dt_min": 90,
+   "d_real_km": 34.8,
+   "rapidez": {
+    "banda": [
+     3.3,
+     8.6
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.1
+    ],
+    "ancho": 1.9,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.3,
+     5.1
+    ],
+    "ancho": 1.8,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "hacia": 142,
+   "dt_min": 20,
+   "d_real_km": 7.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     13.4
+    ],
+    "ancho": 10.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     7.7
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "hacia": 142,
+   "dt_min": 30,
+   "d_real_km": 10.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "hacia": 142,
+   "dt_min": 40,
+   "d_real_km": 13.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "hacia": 142,
+   "dt_min": 50,
+   "d_real_km": 16.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "hacia": 142,
+   "dt_min": 60,
+   "d_real_km": 19.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "hacia": 142,
+   "dt_min": 70,
+   "d_real_km": 22.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "hacia": 142,
+   "dt_min": 80,
+   "d_real_km": 26.0,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "hacia": 142,
+   "dt_min": 90,
+   "d_real_km": 29.0,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "hacia": 142,
+   "dt_min": 100,
+   "d_real_km": 32.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "hacia": 142,
+   "dt_min": 110,
+   "d_real_km": 35.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     5.5
+    ],
+    "ancho": 2.3,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "hacia": 112,
+   "dt_min": 30,
+   "d_real_km": 8.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.5,
+     12.6
+    ],
+    "ancho": 8.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.5,
+     8.5
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "hacia": 112,
+   "dt_min": 40,
+   "d_real_km": 10.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.4
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.6,
+     14.0
+    ],
+    "ancho": 9.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.6,
+     8.4
+    ],
+    "ancho": 3.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "hacia": 112,
+   "dt_min": 50,
+   "d_real_km": 12.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.3
+    ],
+    "ancho": 5.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.6,
+     14.0
+    ],
+    "ancho": 9.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.6,
+     8.3
+    ],
+    "ancho": 3.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "hacia": 112,
+   "dt_min": 60,
+   "d_real_km": 15.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.3
+    ],
+    "ancho": 5.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.6,
+     14.0
+    ],
+    "ancho": 9.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.6,
+     8.3
+    ],
+    "ancho": 3.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "hacia": 112,
+   "dt_min": 70,
+   "d_real_km": 17.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.3
+    ],
+    "ancho": 5.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.6,
+     14.0
+    ],
+    "ancho": 9.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.6,
+     8.3
+    ],
+    "ancho": 3.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "hacia": 112,
+   "dt_min": 80,
+   "d_real_km": 19.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.7,
+     14.0
+    ],
+    "ancho": 9.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.7,
+     8.2
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "hacia": 112,
+   "dt_min": 90,
+   "d_real_km": 22.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.7,
+     14.0
+    ],
+    "ancho": 9.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.7,
+     8.2
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "hacia": 112,
+   "dt_min": 100,
+   "d_real_km": 24.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.7,
+     14.0
+    ],
+    "ancho": 9.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.7,
+     8.2
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "hacia": 112,
+   "dt_min": 110,
+   "d_real_km": 26.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.7,
+     14.0
+    ],
+    "ancho": 9.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.7,
+     8.2
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "hacia": 112,
+   "dt_min": 120,
+   "d_real_km": 29.3,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.7,
+     14.0
+    ],
+    "ancho": 9.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.7,
+     8.2
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 91,
+   "dt_min": 30,
+   "d_real_km": 6.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.5
+    ],
+    "ancho": 5.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.0,
+     10.6
+    ],
+    "ancho": 5.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.0,
+     8.5
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 91,
+   "dt_min": 40,
+   "d_real_km": 8.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.3
+    ],
+    "ancho": 5.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.1,
+     11.4
+    ],
+    "ancho": 6.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.1,
+     8.3
+    ],
+    "ancho": 3.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 91,
+   "dt_min": 50,
+   "d_real_km": 10.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.1,
+     12.3
+    ],
+    "ancho": 7.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.1,
+     8.2
+    ],
+    "ancho": 3.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 91,
+   "dt_min": 60,
+   "d_real_km": 12.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.2,
+     13.3
+    ],
+    "ancho": 8.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.2,
+     8.2
+    ],
+    "ancho": 3.0,
+    "restringe": true,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 91,
+   "dt_min": 70,
+   "d_real_km": 14.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.2,
+     14.0
+    ],
+    "ancho": 8.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.2,
+     8.2
+    ],
+    "ancho": 3.0,
+    "restringe": true,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 91,
+   "dt_min": 80,
+   "d_real_km": 16.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.2,
+     14.0
+    ],
+    "ancho": 8.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.2,
+     8.1
+    ],
+    "ancho": 2.9,
+    "restringe": true,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 91,
+   "dt_min": 90,
+   "d_real_km": 18.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.2,
+     14.0
+    ],
+    "ancho": 8.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.2,
+     8.1
+    ],
+    "ancho": 2.9,
+    "restringe": true,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 91,
+   "dt_min": 100,
+   "d_real_km": 20.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.2,
+     14.0
+    ],
+    "ancho": 8.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.2,
+     8.1
+    ],
+    "ancho": 2.9,
+    "restringe": true,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 91,
+   "dt_min": 110,
+   "d_real_km": 22.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.2,
+     14.0
+    ],
+    "ancho": 8.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.2,
+     8.1
+    ],
+    "ancho": 2.9,
+    "restringe": true,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "hacia": 91,
+   "dt_min": 120,
+   "d_real_km": 24.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.2,
+     14.0
+    ],
+    "ancho": 8.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.2,
+     8.1
+    ],
+    "ancho": 2.9,
+    "restringe": true,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "hacia": 92,
+   "dt_min": 20,
+   "d_real_km": 8.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     9.2
+    ],
+    "ancho": 6.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.8,
+     12.5
+    ],
+    "ancho": 7.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.8,
+     9.2
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "hacia": 92,
+   "dt_min": 30,
+   "d_real_km": 11.4,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.9
+    ],
+    "ancho": 5.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     4.9,
+     14.0
+    ],
+    "ancho": 9.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.9,
+     8.9
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "hacia": 92,
+   "dt_min": 40,
+   "d_real_km": 14.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.8
+    ],
+    "ancho": 5.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.0,
+     14.0
+    ],
+    "ancho": 9.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.0,
+     8.8
+    ],
+    "ancho": 3.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "hacia": 92,
+   "dt_min": 50,
+   "d_real_km": 17.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.1,
+     14.0
+    ],
+    "ancho": 8.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.1,
+     8.7
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "hacia": 92,
+   "dt_min": 60,
+   "d_real_km": 21.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.1,
+     14.0
+    ],
+    "ancho": 8.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.1,
+     8.7
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "hacia": 92,
+   "dt_min": 70,
+   "d_real_km": 24.3,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.7
+    ],
+    "ancho": 5.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.1,
+     14.0
+    ],
+    "ancho": 8.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.1,
+     8.7
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "hacia": 92,
+   "dt_min": 80,
+   "d_real_km": 27.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.1,
+     14.0
+    ],
+    "ancho": 8.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.1,
+     8.6
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "hacia": 92,
+   "dt_min": 90,
+   "d_real_km": 30.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.1,
+     14.0
+    ],
+    "ancho": 8.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.1,
+     8.6
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "hacia": 92,
+   "dt_min": 100,
+   "d_real_km": 34.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.2,
+     14.0
+    ],
+    "ancho": 8.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.2,
+     8.6
+    ],
+    "ancho": 3.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "hacia": 92,
+   "dt_min": 110,
+   "d_real_km": 37.3,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.6
+    ],
+    "ancho": 5.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.2,
+     14.0
+    ],
+    "ancho": 8.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     5.2,
+     8.6
+    ],
+    "ancho": 3.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 10.0,
+   "V_real": 18.4,
+   "hacia": 87,
+   "dt_min": 10,
+   "d_real_km": 16.5,
+   "rapidez": {
+    "banda": [
+     8.8,
+     14.0
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.0,
+     14.0
+    ],
+    "ancho": 9.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     8.8,
+     14.0
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 10.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 10.0,
+   "V_real": 18.4,
+   "hacia": 87,
+   "dt_min": 20,
+   "d_real_km": 27.6,
+   "rapidez": {
+    "banda": [
+     9.1,
+     11.5
+    ],
+    "ancho": 2.4,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.2,
+     14.0
+    ],
+    "ancho": 8.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     9.1,
+     11.5
+    ],
+    "ancho": 2.4,
+    "restringe": true,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 10.0
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 12.0,
+   "V_real": 34.4,
+   "hacia": 93,
+   "dt_min": 10,
+   "d_real_km": 31.0,
+   "rapidez": {
+    "banda": [
+     10.0,
+     14.0
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     5.0,
+     14.0
+    ],
+    "ancho": 9.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     10.0,
+     14.0
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 12.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 164,
+   "dt_min": 20,
+   "d_real_km": 8.0,
+   "rapidez": {
+    "banda": [
+     3.2,
+     7.1
+    ],
+    "ancho": 3.9,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     11.9
+    ],
+    "ancho": 8.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     7.1
+    ],
+    "ancho": 3.9,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 164,
+   "dt_min": 30,
+   "d_real_km": 11.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     6.9
+    ],
+    "ancho": 3.7,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     6.9
+    ],
+    "ancho": 3.7,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 164,
+   "dt_min": 40,
+   "d_real_km": 14.4,
+   "rapidez": {
+    "banda": [
+     3.2,
+     6.9
+    ],
+    "ancho": 3.7,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     6.9
+    ],
+    "ancho": 3.7,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 164,
+   "dt_min": 50,
+   "d_real_km": 17.6,
+   "rapidez": {
+    "banda": [
+     3.2,
+     6.8
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.7
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     6.8
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 164,
+   "dt_min": 60,
+   "d_real_km": 20.8,
+   "rapidez": {
+    "banda": [
+     3.2,
+     6.8
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     6.8
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 164,
+   "dt_min": 70,
+   "d_real_km": 23.9,
+   "rapidez": {
+    "banda": [
+     3.2,
+     6.8
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     6.8
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 164,
+   "dt_min": 80,
+   "d_real_km": 27.1,
+   "rapidez": {
+    "banda": [
+     3.2,
+     6.7
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     6.7
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 164,
+   "dt_min": 90,
+   "d_real_km": 30.3,
+   "rapidez": {
+    "banda": [
+     3.2,
+     6.7
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     6.7
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 164,
+   "dt_min": 100,
+   "d_real_km": 33.5,
+   "rapidez": {
+    "banda": [
+     3.2,
+     6.7
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     6.7
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "hacia": 164,
+   "dt_min": 110,
+   "d_real_km": 36.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     6.7
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.5
+    ],
+    "ancho": 4.3,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     6.7
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 3.6
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.0,
+   "V_real": 7.4,
+   "hacia": 157,
+   "dt_min": 10,
+   "d_real_km": 6.7,
+   "rapidez": {
+    "banda": [
+     3.2,
+     8.0
+    ],
+    "ancho": 4.8,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     10.9
+    ],
+    "ancho": 7.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     8.0
+    ],
+    "ancho": 4.8,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.0,
+   "V_real": 7.4,
+   "hacia": 157,
+   "dt_min": 20,
+   "d_real_km": 11.2,
+   "rapidez": {
+    "banda": [
+     3.2,
+     7.7
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.2,
+     7.7
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.0,
+   "V_real": 7.4,
+   "hacia": 157,
+   "dt_min": 30,
+   "d_real_km": 15.6,
+   "rapidez": {
+    "banda": [
+     3.3,
+     7.6
+    ],
+    "ancho": 4.3,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.3,
+     7.6
+    ],
+    "ancho": 4.3,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.0,
+   "V_real": 7.4,
+   "hacia": 157,
+   "dt_min": 40,
+   "d_real_km": 20.1,
+   "rapidez": {
+    "banda": [
+     3.4,
+     7.6
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.4,
+     7.6
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.0,
+   "V_real": 7.4,
+   "hacia": 157,
+   "dt_min": 50,
+   "d_real_km": 24.5,
+   "rapidez": {
+    "banda": [
+     3.4,
+     7.6
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.4,
+     7.6
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.0,
+   "V_real": 7.4,
+   "hacia": 157,
+   "dt_min": 60,
+   "d_real_km": 29.0,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.5
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.3
+    ],
+    "ancho": 5.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.5
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.0,
+   "V_real": 7.4,
+   "hacia": 157,
+   "dt_min": 70,
+   "d_real_km": 33.5,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.5
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.3
+    ],
+    "ancho": 5.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.5
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.0,
+   "V_real": 7.4,
+   "hacia": 157,
+   "dt_min": 80,
+   "d_real_km": 37.9,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.5
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.5
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.7,
+   "V_real": 9.3,
+   "hacia": 158,
+   "dt_min": 10,
+   "d_real_km": 8.4,
+   "rapidez": {
+    "banda": [
+     3.4,
+     9.1
+    ],
+    "ancho": 5.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     13.2
+    ],
+    "ancho": 10.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.4,
+     9.1
+    ],
+    "ancho": 5.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.7,
+   "V_real": 9.3,
+   "hacia": 158,
+   "dt_min": 20,
+   "d_real_km": 14.0,
+   "rapidez": {
+    "banda": [
+     3.6,
+     8.3
+    ],
+    "ancho": 4.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.6,
+     8.3
+    ],
+    "ancho": 4.7,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.7,
+   "V_real": 9.3,
+   "hacia": 158,
+   "dt_min": 30,
+   "d_real_km": 19.6,
+   "rapidez": {
+    "banda": [
+     3.7,
+     8.1
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.7,
+     8.1
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.7,
+   "V_real": 9.3,
+   "hacia": 158,
+   "dt_min": 40,
+   "d_real_km": 25.2,
+   "rapidez": {
+    "banda": [
+     3.7,
+     8.1
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.7,
+     8.1
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.7,
+   "V_real": 9.3,
+   "hacia": 158,
+   "dt_min": 50,
+   "d_real_km": 30.8,
+   "rapidez": {
+    "banda": [
+     3.8,
+     8.0
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.2
+    ],
+    "ancho": 5.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.8,
+     8.0
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.7,
+   "V_real": 9.3,
+   "hacia": 158,
+   "dt_min": 60,
+   "d_real_km": 36.4,
+   "rapidez": {
+    "banda": [
+     3.8,
+     8.0
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     8.1
+    ],
+    "ancho": 4.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.8,
+     8.0
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 4.7
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 5.5,
+   "V_real": 7.8,
+   "hacia": 174,
+   "dt_min": 10,
+   "d_real_km": 7.0,
+   "rapidez": {
+    "banda": [
+     3.3,
+     8.4
+    ],
+    "ancho": 5.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     13.0
+    ],
+    "ancho": 9.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.3,
+     7.1
+    ],
+    "ancho": 3.8,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 5.5,
+   "V_real": 7.8,
+   "hacia": 174,
+   "dt_min": 20,
+   "d_real_km": 11.7,
+   "rapidez": {
+    "banda": [
+     3.4,
+     8.0
+    ],
+    "ancho": 4.6,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.1
+    ],
+    "ancho": 3.9,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.4,
+     7.1
+    ],
+    "ancho": 3.7,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 5.5,
+   "V_real": 7.8,
+   "hacia": 174,
+   "dt_min": 30,
+   "d_real_km": 16.3,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.8
+    ],
+    "ancho": 4.3,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.1
+    ],
+    "ancho": 3.9,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.1
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 5.5,
+   "V_real": 7.8,
+   "hacia": 174,
+   "dt_min": 40,
+   "d_real_km": 21.0,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.8
+    ],
+    "ancho": 4.3,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.1
+    ],
+    "ancho": 3.9,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.1
+    ],
+    "ancho": 3.6,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 5.5,
+   "V_real": 7.8,
+   "hacia": 174,
+   "dt_min": 50,
+   "d_real_km": 25.6,
+   "rapidez": {
+    "banda": [
+     3.6,
+     7.7
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.1
+    ],
+    "ancho": 3.9,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.6,
+     7.1
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 5.5,
+   "V_real": 7.8,
+   "hacia": 174,
+   "dt_min": 60,
+   "d_real_km": 30.3,
+   "rapidez": {
+    "banda": [
+     3.6,
+     7.7
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.1
+    ],
+    "ancho": 3.9,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.6,
+     7.1
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 5.5,
+   "V_real": 7.8,
+   "hacia": 174,
+   "dt_min": 70,
+   "d_real_km": 35.0,
+   "rapidez": {
+    "banda": [
+     3.6,
+     7.7
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.1
+    ],
+    "ancho": 3.9,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.6,
+     7.1
+    ],
+    "ancho": 3.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 5.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 6.5,
+   "V_real": 7.2,
+   "hacia": 163,
+   "dt_min": 10,
+   "d_real_km": 6.4,
+   "rapidez": {
+    "banda": [
+     3.3,
+     8.5
+    ],
+    "ancho": 5.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     13.2
+    ],
+    "ancho": 10.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.3,
+     7.8
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 6.5,
+   "V_real": 7.2,
+   "hacia": 163,
+   "dt_min": 20,
+   "d_real_km": 10.7,
+   "rapidez": {
+    "banda": [
+     3.4,
+     8.0
+    ],
+    "ancho": 4.6,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     14.0
+    ],
+    "ancho": 10.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.4,
+     7.7
+    ],
+    "ancho": 4.3,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 6.5,
+   "V_real": 7.2,
+   "hacia": 163,
+   "dt_min": 30,
+   "d_real_km": 15.0,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.8
+    ],
+    "ancho": 4.3,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 6.5,
+   "V_real": 7.2,
+   "hacia": 163,
+   "dt_min": 40,
+   "d_real_km": 19.3,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.7
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 6.5,
+   "V_real": 7.2,
+   "hacia": 163,
+   "dt_min": 50,
+   "d_real_km": 23.6,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 6.5,
+   "V_real": 7.2,
+   "hacia": 163,
+   "dt_min": 60,
+   "d_real_km": 27.9,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 6.5,
+   "V_real": 7.2,
+   "hacia": 163,
+   "dt_min": 70,
+   "d_real_km": 32.2,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.6
+    ],
+    "ancho": 4.1,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 6.5,
+   "V_real": 7.2,
+   "hacia": 163,
+   "dt_min": 80,
+   "d_real_km": 36.5,
+   "rapidez": {
+    "banda": [
+     3.5,
+     7.5
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.2,
+     7.6
+    ],
+    "ancho": 4.4,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     3.5,
+     7.5
+    ],
+    "ancho": 4.0,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 6.5
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 8.0,
+   "V_real": 12.3,
+   "hacia": 128,
+   "dt_min": 10,
+   "d_real_km": 11.1,
+   "rapidez": {
+    "banda": [
+     4.0,
+     11.4
+    ],
+    "ancho": 7.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.5,
+     14.0
+    ],
+    "ancho": 10.5,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.0,
+     11.4
+    ],
+    "ancho": 7.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 8.0,
+   "V_real": 12.3,
+   "hacia": 128,
+   "dt_min": 20,
+   "d_real_km": 18.5,
+   "rapidez": {
+    "banda": [
+     4.1,
+     10.7
+    ],
+    "ancho": 6.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.6,
+     14.0
+    ],
+    "ancho": 10.4,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.1,
+     10.7
+    ],
+    "ancho": 6.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 8.0,
+   "V_real": 12.3,
+   "hacia": 128,
+   "dt_min": 30,
+   "d_real_km": 25.9,
+   "rapidez": {
+    "banda": [
+     4.2,
+     10.3
+    ],
+    "ancho": 6.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.7,
+     14.0
+    ],
+    "ancho": 10.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.2,
+     10.3
+    ],
+    "ancho": 6.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 8.0,
+   "V_real": 12.3,
+   "hacia": 128,
+   "dt_min": 40,
+   "d_real_km": 33.3,
+   "rapidez": {
+    "banda": [
+     4.2,
+     10.1
+    ],
+    "ancho": 5.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.7,
+     14.0
+    ],
+    "ancho": 10.3,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     4.2,
+     10.1
+    ],
+    "ancho": 5.9,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 8.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 10.0,
+   "V_real": 17.4,
+   "hacia": 115,
+   "dt_min": 10,
+   "d_real_km": 15.7,
+   "rapidez": {
+    "banda": [
+     7.4,
+     14.0
+    ],
+    "ancho": 6.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.8,
+     14.0
+    ],
+    "ancho": 10.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     7.4,
+     14.0
+    ],
+    "ancho": 6.6,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 10.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 10.0,
+   "V_real": 17.4,
+   "hacia": 115,
+   "dt_min": 20,
+   "d_real_km": 26.2,
+   "rapidez": {
+    "banda": [
+     7.7,
+     11.9
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     6.9,
+     14.0
+    ],
+    "ancho": 7.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     7.7,
+     11.9
+    ],
+    "ancho": 4.2,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 10.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 10.0,
+   "V_real": 17.4,
+   "hacia": 115,
+   "dt_min": 30,
+   "d_real_km": 36.6,
+   "rapidez": {
+    "banda": [
+     7.8,
+     11.6
+    ],
+    "ancho": 3.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     7.0,
+     14.0
+    ],
+    "ancho": 7.0,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     7.8,
+     11.6
+    ],
+    "ancho": 3.8,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "h_estrella": 10.0
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 12.0,
+   "V_real": 29.4,
+   "hacia": 117,
+   "dt_min": 10,
+   "d_real_km": 26.4,
+   "rapidez": {
+    "banda": [
+     9.5,
+     14.0
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "rumbo": {
+    "banda": [
+     3.9,
+     14.0
+    ],
+    "ancho": 10.1,
+    "restringe": false,
+    "separa_capas": false,
+    "contiene_h_real": true
+   },
+   "rapidez_y_rumbo": {
+    "banda": [
+     9.5,
+     14.0
+    ],
+    "ancho": 4.5,
+    "restringe": false,
+    "separa_capas": true,
+    "contiene_h_real": true
+   },
+   "h_estrella": 12.0
+  }
+ ],
+ "resumen": [
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 3.6,
+   "V_real": 4.5,
+   "n_dt": 11,
+   "dt_min_rango": [
+    20,
+    120
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.5,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.9,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.0,
+   "V_real": 4.0,
+   "n_dt": 10,
+   "dt_min_rango": [
+    30,
+    120
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.4,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.9,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 4.7,
+   "V_real": 2.4,
+   "n_dt": 9,
+   "dt_min_rango": [
+    40,
+    120
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.3,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.9,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 5.5,
+   "V_real": 2.0,
+   "n_dt": 8,
+   "dt_min_rango": [
+    50,
+    120
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.2,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.55,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "n_dt": 10,
+   "dt_min_rango": [
+    30,
+    120
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.5,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.2,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 8.0,
+   "V_real": 2.7,
+   "n_dt": 9,
+   "dt_min_rango": [
+    40,
+    120
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.4,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.1,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 10.0,
+   "V_real": 16.2,
+   "n_dt": 3,
+   "dt_min_rango": [
+    10,
+    30
+   ],
+   "rapidez": {
+    "ancho_mediano": 2.3,
+    "frac_restringe": 0.67,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 2.3,
+    "frac_restringe": 0.67,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 15:00",
+   "h_real": 12.0,
+   "V_real": 32.9,
+   "n_dt": 1,
+   "dt_min_rango": [
+    10,
+    10
+   ],
+   "rapidez": {
+    "ancho_mediano": 3.9,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 3.9,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "n_dt": 10,
+   "dt_min_rango": [
+    20,
+    110
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.2,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 1.7,
+    "frac_restringe": 1.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.0,
+   "V_real": 6.1,
+   "n_dt": 8,
+   "dt_min_rango": [
+    20,
+    90
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.4,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 1.9,
+    "frac_restringe": 1.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 4.7,
+   "V_real": 5.1,
+   "n_dt": 10,
+   "dt_min_rango": [
+    20,
+    110
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.3,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 2.3,
+    "frac_restringe": 0.9,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 5.5,
+   "V_real": 3.9,
+   "n_dt": 10,
+   "dt_min_rango": [
+    30,
+    120
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.05,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 3.6,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 6.5,
+   "V_real": 3.3,
+   "n_dt": 10,
+   "dt_min_rango": [
+    30,
+    120
+   ],
+   "rapidez": {
+    "ancho_mediano": 4.95,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 2.95,
+    "frac_restringe": 0.7,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 8.0,
+   "V_real": 5.4,
+   "n_dt": 10,
+   "dt_min_rango": [
+    20,
+    110
+   ],
+   "rapidez": {
+    "ancho_mediano": 5.5,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 3.6,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 10.0,
+   "V_real": 18.4,
+   "n_dt": 2,
+   "dt_min_rango": [
+    10,
+    20
+   ],
+   "rapidez": {
+    "ancho_mediano": 3.8,
+    "frac_restringe": 0.5,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 3.8,
+    "frac_restringe": 0.5,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-08 18:30",
+   "h_real": 12.0,
+   "V_real": 34.4,
+   "n_dt": 1,
+   "dt_min_rango": [
+    10,
+    10
+   ],
+   "rapidez": {
+    "ancho_mediano": 4.0,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.0,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 3.6,
+   "V_real": 5.3,
+   "n_dt": 10,
+   "dt_min_rango": [
+    20,
+    110
+   ],
+   "rapidez": {
+    "ancho_mediano": 3.6,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 3.6,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.0,
+   "V_real": 7.4,
+   "n_dt": 8,
+   "dt_min_rango": [
+    10,
+    80
+   ],
+   "rapidez": {
+    "ancho_mediano": 4.2,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.2,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 4.7,
+   "V_real": 9.3,
+   "n_dt": 6,
+   "dt_min_rango": [
+    10,
+    60
+   ],
+   "rapidez": {
+    "ancho_mediano": 4.4,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.33,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.4,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.33,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 5.5,
+   "V_real": 7.8,
+   "n_dt": 7,
+   "dt_min_rango": [
+    10,
+    70
+   ],
+   "rapidez": {
+    "ancho_mediano": 4.3,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.86,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 3.6,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 6.5,
+   "V_real": 7.2,
+   "n_dt": 8,
+   "dt_min_rango": [
+    10,
+    80
+   ],
+   "rapidez": {
+    "ancho_mediano": 4.15,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.88,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.1,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 8.0,
+   "V_real": 12.3,
+   "n_dt": 4,
+   "dt_min_rango": [
+    10,
+    40
+   ],
+   "rapidez": {
+    "ancho_mediano": 6.35,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 6.35,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 10.0,
+   "V_real": 17.4,
+   "n_dt": 3,
+   "dt_min_rango": [
+    10,
+    30
+   ],
+   "rapidez": {
+    "ancho_mediano": 4.2,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.2,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 0.0,
+    "frac_contiene_h_real": 1.0
+   }
+  },
+  {
+   "perfil": "2026-11-14 18:00",
+   "h_real": 12.0,
+   "V_real": 29.4,
+   "n_dt": 1,
+   "dt_min_rango": [
+    10,
+    10
+   ],
+   "rapidez": {
+    "ancho_mediano": 4.5,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   },
+   "rapidez_y_rumbo": {
+    "ancho_mediano": 4.5,
+    "frac_restringe": 0.0,
+    "frac_separa_capas": 1.0,
+    "frac_contiene_h_real": 1.0
+   }
+  }
+ ]
+}

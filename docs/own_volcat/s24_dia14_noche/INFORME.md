@@ -65,7 +65,20 @@ las siete noches de 2025.
   ubicación de VOLCAT o el día: con A inválida, no se interpreta.
 - La persistencia de rumbo del 14-11 la vi después de medir: es una hipótesis, no un resultado.
 
-## 4. Lo que sigue
+## 4. S24c, persistencia de rumbo: abandonada por su criterio
 
-Una regla de persistencia de rumbo (S24c), calibrada en 2025 y con criterio congelado antes de los días nuevos, para
-medirla junto a S23b en los mismos días nuevos.
+Criterio `criterio_S24c_2026-11-25.md` (commit `d11eab8`, antes de calibrar). Idea: umbral más blando y que 4 de los
+últimos 6 cuadros caigan en el mismo arco de 90°, porque la pluma sostiene su rumbo y el ruido no. La calibración en
+2025 (año sin pluma) no encontró un percentil que cumpla la falsa alarma de 0,05: con P_B 10, 15, 20, 25 y 30 el
+ensayo en seco da 0,056, 0,076, 0,109, 0,139 y 0,165 (`resultados/s24c_calibracion.json`). Por el §2, S24c se
+abandona y no se mira 2026 con ella. No pruebo percentiles más bajos: sería ajustar la regla al resultado.
+
+**Lo que enseña.** En el año tranquilo la tajada más baja también sostiene su rumbo: la estructura del suelo y de la
+atmósfera (las noches de capa baja de §1, la nieve, el relieve) tiene dirección propia. El rumbo por sí solo no separa
+pluma de fondo; habría que pedir un rumbo distinto del que el fondo prefiere a esa hora, y eso es otra regla.
+
+## 5. Lo que sigue
+
+S23b sigue esperando días nuevos con pluma de VOLCAT (al 25-11 10:30 UTC, 0 cuadros P). Pistas sin criterio todavía:
+la zona de 0 a 4 km (donde vive la huella del 14-11, con el calor del cráter encima) y un rumbo contra el rumbo
+preferido del fondo a esa hora.

@@ -28,6 +28,7 @@ import s22a_mapas as G  # noqa: E402
 import s22a_lado_a_lado as L  # noqa: E402
 
 G.PNG_DIRS.append(r"D:\goes_notas\s22\s22b\volcat_png\frames")
+G.PNG_DIRS.append(r"D:\goes_notas\s23\volcat_png\Chile_Central_2_km\frames")    # respaldo S23 (25-10 a 25-11)
 SALIDA = r"C:\Users\nmend\Downloads"
 TRABAJO = r"D:\goes_notas\s23\s23a\lado_a_lado"
 PREFIJO = "s23a"

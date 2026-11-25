@@ -1,0 +1,262 @@
+{
+ "nota": "POST HOC: cada año con su nublado de costumbre; base y umbral de 2025. No cambia el veredicto.",
+ "P_evaluados": 54,
+ "P_alcanzados": 25,
+ "R": 0.46296296296296297,
+ "E25": 2.5541463097829875,
+ "p25": 9.965796999531566e-20,
+ "N_2026_cerca_de_P": 234,
+ "N_2026_cerca_alcanzados": 3,
+ "pN_fisher": 5.841718440676327e-18,
+ "N_2026_evaluados": 1010,
+ "r_N_2026": 0.01485148514851485,
+ "por_dia": [
+  {
+   "dia": "2026-10-22",
+   "P": 1,
+   "P_evaluados": 0,
+   "P_alcanzados": 0,
+   "disparos_del_dia": 0,
+   "tajadas": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-10-24",
+   "P": 1,
+   "P_evaluados": 0,
+   "P_alcanzados": 0,
+   "disparos_del_dia": 0,
+   "tajadas": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-10-25",
+   "P": 4,
+   "P_evaluados": 0,
+   "P_alcanzados": 0,
+   "disparos_del_dia": 3,
+   "tajadas": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    2,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-10-28",
+   "P": 26,
+   "P_evaluados": 17,
+   "P_alcanzados": 10,
+   "disparos_del_dia": 7,
+   "tajadas": [
+    0,
+    0,
+    1,
+    0,
+    3,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-10-29",
+   "P": 6,
+   "P_evaluados": 3,
+   "P_alcanzados": 3,
+   "disparos_del_dia": 6,
+   "tajadas": [
+    0,
+    0,
+    0,
+    0,
+    2,
+    4,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-11-07",
+   "P": 1,
+   "P_evaluados": 1,
+   "P_alcanzados": 0,
+   "disparos_del_dia": 0,
+   "tajadas": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-11-08",
+   "P": 13,
+   "P_evaluados": 13,
+   "P_alcanzados": 9,
+   "disparos_del_dia": 18,
+   "tajadas": [
+    0,
+    0,
+    0,
+    0,
+    13,
+    5,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-11-10",
+   "P": 12,
+   "P_evaluados": 2,
+   "P_alcanzados": 0,
+   "disparos_del_dia": 0,
+   "tajadas": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-11-11",
+   "P": 3,
+   "P_evaluados": 3,
+   "P_alcanzados": 3,
+   "disparos_del_dia": 4,
+   "tajadas": [
+    0,
+    0,
+    0,
+    0,
+    2,
+    0,
+    2,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  {
+   "dia": "2026-11-14",
+   "P": 33,
+   "P_evaluados": 15,
+   "P_alcanzados": 0,
+   "disparos_del_dia": 0,
+   "tajadas": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  }
+ ],
+ "sin_cada_dia": {
+  "2026-10-28": {
+   "P_evaluados": 37,
+   "P_alcanzados": 15,
+   "p25": 7.847503973259996e-11
+  },
+  "2026-10-29": {
+   "P_evaluados": 51,
+   "P_alcanzados": 22,
+   "p25": 8.472260058237431e-17
+  },
+  "2026-11-07": {
+   "P_evaluados": 53,
+   "P_alcanzados": 25,
+   "p25": 7.854108887872369e-20
+  },
+  "2026-11-08": {
+   "P_evaluados": 41,
+   "P_alcanzados": 16,
+   "p25": 1.6282730955363706e-11
+  },
+  "2026-11-10": {
+   "P_evaluados": 52,
+   "P_alcanzados": 25,
+   "p25": 1.4517854279004575e-20
+  },
+  "2026-11-11": {
+   "P_evaluados": 51,
+   "P_alcanzados": 22,
+   "p25": 6.751023167378365e-17
+  },
+  "2026-11-14": {
+   "P_evaluados": 39,
+   "P_alcanzados": 25,
+   "p25": 3.229188183543651e-25
+  }
+ }
+}

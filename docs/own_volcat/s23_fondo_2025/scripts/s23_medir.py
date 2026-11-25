@@ -125,7 +125,7 @@ class Detector:
     ref='2026N': la referencia de S22b (cuadros N de VOLCAT de los días de desarrollo de 2026); sólo para comprobar
     que este código reproduce el ensayo en seco de S22b."""
 
-    def __init__(self, ref="2025", con_blanco=True):
+    def __init__(self, ref="2025", con_blanco=True, estat_blanco=None):
         t = time.time()
         self.CLT = B.clases()                                  # (65, 144) clases VOLCAT de 2026
         bt26, acm26, m126 = B.cargar_dev()
@@ -175,7 +175,9 @@ class Detector:
             m1T[B.NDEV:] = np.load(os.path.join(B.TRAB, "nuevo_m1.npy"))
             self.acmT = acmT
             self.E1T = H24.despejada("chillan", acmT)
-            self.FDT, self.mmT = self._nubes(acmT, m1T)
+            # estat_blanco: nublado de costumbre propio de 2026 (sensibilidad POST HOC, no es la regla del criterio)
+            self.ESTAT_T = self.ESTAT if estat_blanco is None else estat_blanco
+            self.FDT, self.mmT = self._nubes(acmT, m1T, self.ESTAT_T)
             self.GATET = self.FDT <= B.G_MAX
             B0 = self.base(None)
             self.ST = np.full((B.ND, 144), np.nan)
@@ -186,14 +188,15 @@ class Detector:
                         self.ST[d, s], self.KT[d, s], _ = M.estadistico(self.mmT[d, s] - B0[s])
             print(f"blanco 2026 listo en {time.time() - t:.0f} s", flush=True)
 
-    def _nubes(self, acm, m1):
+    def _nubes(self, acm, m1, estat=None):
+        estat = self.ESTAT if estat is None else estat
         FD = np.full(acm.shape[:2], np.nan)
         mm = m1.copy()
         for d in range(acm.shape[0]):
             for s in range(144):
                 if not (acm[d, s] != 255).any():
                     continue
-                nd = B.dinamica(acm[d, s], self.ESTAT[s])
+                nd = B.dinamica(acm[d, s], estat[s])
                 FD[d, s] = nd[M.AP].mean()
                 mm[d, s][B.borde(nd)[M.AP]] = np.nan
         return FD, mm

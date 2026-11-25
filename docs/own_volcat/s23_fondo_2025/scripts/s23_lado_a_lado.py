@@ -30,6 +30,8 @@ import s22a_lado_a_lado as L  # noqa: E402
 G.PNG_DIRS.append(r"D:\goes_notas\s22\s22b\volcat_png\frames")
 SALIDA = r"C:\Users\nmend\Downloads"
 TRABAJO = r"D:\goes_notas\s23\s23a\lado_a_lado"
+PREFIJO = "s23a"
+NOTA = ("Base y umbral de oct-nov 2025 (año tranquilo). Celeste: nube y borde que el detector no usa.")
 C29 = L.C29
 
 
@@ -69,7 +71,7 @@ def dibujar(D, dia, s0=72, s1=143):
         b = bt[s].reshape(M.NY, M.NX)
         if np.isfinite(b).any():
             a2.pcolormesh(C29.LON, C29.LAT, b, cmap="gray_r", vmin=210, vmax=320, shading="nearest")
-        nd = B.dinamica(D.acmT[d, s], D.ESTAT[s])
+        nd = B.dinamica(D.acmT[d, s], D.ESTAT_T[s])
         nub = B.borde(nd).reshape(M.NY, M.NX)
         a2.pcolormesh(C29.LON, C29.LAT, np.where(nub, 1.0, np.nan),
                       cmap=matplotlib.colors.ListedColormap(["#5ec8ff"]), vmin=0, vmax=1, shading="nearest", alpha=0.35)
@@ -99,22 +101,28 @@ def dibujar(D, dia, s0=72, s1=143):
         hl = datetime.strptime(dia, "%Y-%m-%d") + timedelta(minutes=10 * s) - timedelta(hours=3)
         fig.suptitle(f"Nevados de Chillán ±0,7°   {dia[8:10]}-{dia[5:7]}-{dia[:4]}   {M.hhmm(s)} UTC · "
                      f"{hl:%H:%M} hora de Chile (UTC-3)", color="white", fontsize=13)
-        fig.text(0.5, 0.01, "Base y umbral de oct-nov 2025 (año tranquilo). Celeste: nube y borde que el detector no "
-                 "usa. Prueba en curso, no operativa.", color="#9aa4b2", fontsize=8.5, ha="center")
+        fig.text(0.5, 0.01, NOTA + " Prueba en curso, no operativa.", color="#9aa4b2", fontsize=8.5, ha="center")
         fig.subplots_adjust(left=0.01, right=0.99, top=0.9, bottom=0.08, wspace=0.03)
-        fn = os.path.join(TRABAJO, f"{dia}_{s:03d}.png")
+        fn = os.path.join(TRABAJO, f"{PREFIJO}_{dia}_{s:03d}.png")
         fig.savefig(fn, facecolor=fig.get_facecolor())
         plt.close(fig)
         cuadros.append(imageio.imread(fn))
-    out = os.path.join(SALIDA, f"s23a_lado_a_lado_volcat_vs_detector_fondo2025_chillan_{dia}_10min.mp4")
+    out = os.path.join(SALIDA, f"{PREFIJO}_lado_a_lado_volcat_vs_detector_fondo2025_chillan_{dia}_10min.mp4")
     imageio.mimsave(out, cuadros, fps=2, macro_block_size=1)
     print(f"{dia}: {len(cuadros)} cuadros, detector marca en {n_f}, no evaluable por nubes {n_nub}, "
           f"VOLCAT dibuja en {n_v} -> {out}", flush=True)
 
 
 if __name__ == "__main__":
-    D = S.Detector(ref="2025", con_blanco=True)
-    for arg in sys.argv[1:]:
+    args = sys.argv[1:]
+    if "--costumbre2026" in args:      # S23b, candidata POST HOC: cada año con su nublado de costumbre
+        args.remove("--costumbre2026")
+        PREFIJO, NOTA = "s23b", ("Candidata S23b (post hoc, sin confirmar): base y umbral de 2025, nublado de costumbre "
+                                 "de cada año. Celeste: nube y borde que el detector no usa.")
+        D = S.Detector(ref="2025", con_blanco=True, estat_blanco=S.Detector(ref="2026N", con_blanco=False).ESTAT)
+    else:
+        D = S.Detector(ref="2025", con_blanco=True)
+    for arg in args:
         dia, _, rango = arg.partition("@")
         s0, s1 = (72, 143) if not rango else (M.slot(rango.split("-")[0]), M.slot(rango.split("-")[1]))
         dibujar(D, dia, s0, s1)

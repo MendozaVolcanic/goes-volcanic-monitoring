@@ -9,11 +9,13 @@ una ~4 % de los cuadros tranquilos fallan juntas en más del 5 %; el criterio fi
 Las dos partes se importan sin cambios (s23_medir.Detector y disparos; funciones de s25a_medir). Lo único que se
 mueve es s22b_medir.PCT_U, el percentil que usan las dos funciones de umbral.
 
-Uso: python -I s26a_medir.py pruebas | medir | confirmar [--vistazo]
+Uso: python -I s26a_medir.py pruebas | medir | confirmar_s25a [--vistazo] | confirmar [--vistazo]
   medir      ensayo en seco conjunto en 2025 (elige p*), comprobación de que cada parte sola reproduce lo publicado, y
              recuerdo contra VOLCAT de 2026 (DESARROLLO). Escribe resultados/s26a_seco.json, s26a_desarrollo.json y la
              tabla por cuadro en D:\goes_notas\s26\s26a\tabla_2026.csv (para los videos).
-  confirmar  días nuevos desde el 25-11 (criterio §5): sólo con 20 P en 2 días nuevos; va después de S23b y S25a.
+  confirmar_s25a  la confirmación congelada de S25a (zona sola, percentil 5), después de `s23b_confirmar.py medir`.
+  confirmar  la unión en días nuevos desde el 25-11 (criterio §5): sólo con 20 P en 2 días nuevos; va después de
+             S23b y S25a (se niega si falta alguno de sus resultados).
 """
 import csv
 import hashlib
@@ -46,6 +48,8 @@ SHA_ESTAT26 = Z.SHA_ESTAT26
 SECO_MAX = 0.05
 PCTS = [5.0 - 0.25 * i for i in range(13)]          # 5,0; 4,75; ... ; 2,0 (§2)
 R_MIN, P25_MAX, PN_MAX, MIN_P_EVAL, MIN_DIAS_ALC = 0.40, 0.01, 0.05, 10, 3
+R_MIN_S25A = 0.25                                    # s25a_crater/criterio_confirmacion_2026-11-25.md §3
+RES_S25A = os.path.join(OV, "s25a_crater", "resultados", "s25a_confirmacion.json")
 P25_SIN_CORREGIR = 0.01 / 3                          # §5: "confirma con un umbral sin corregir por tres pruebas"
 NOCHE, DIA = range(18, 54), range(72, 144)          # 03:00 a 08:50 UTC; 12:00 a 23:50 UTC
 REPRO = {"anillo_P": (25, 54), "zona_P": (44, 93), "anillo_seco_media_dia": 0.04279096445833097,
@@ -346,7 +350,8 @@ def _cubo_nuevo(dias, carpeta):
     return btd.reshape(nd, 144, -1), acm.reshape(nd, 144, -1), m1.reshape(nd, 144, -1), inst
 
 
-def confirmar(vistazo=False):
+def confirmar(vistazo=False, s25a=False):
+    """s25a=True: la confirmación congelada de S25a (zona sola, percentil 5, R >= 0,25), que va antes que la unión."""
     import s23b_confirmar as SB
     with open(SB.CLASES, encoding="utf-8") as f:
         filas = list(csv.DictReader(f))
@@ -359,15 +364,19 @@ def confirmar(vistazo=False):
     if (nP < SB.MIN_P or dP < SB.MIN_DIAS_P) and not vistazo:
         print(f"criterio §5: {nP} P en {dP} días nuevos; hacen falta {SB.MIN_P} en {SB.MIN_DIAS_P}. No se mide.")
         return
-    for previo in ("s23b_resultado.json",):
-        if not os.path.exists(os.path.join(S.RES, previo)) and not vistazo:
-            sys.exit(f"criterio §5: primero S23b ({previo}) y S25a; después S26a")
-    seco = json.load(open(os.path.join(RES, "s26a_seco.json"), encoding="utf-8"))
-    p = seco["p_estrella"]
-    assert p is not None, "la unión no pasó el ensayo en seco: NO SIRVE, no se confirma"
+    previos = [os.path.join(S.RES, "s23b_resultado.json")] + ([] if s25a else [RES_S25A])
+    for previo in previos:
+        if not os.path.exists(previo) and not vistazo:
+            sys.exit(f"criterio §5: el orden es S23b, S25a, S26a; falta {previo}")
+    if s25a:
+        p, parte, r_min = 5.0, "z", R_MIN_S25A
+    else:
+        seco = json.load(open(os.path.join(RES, "s26a_seco.json"), encoding="utf-8"))
+        p, parte, r_min = seco["p_estrella"], "u", R_MIN
+        assert p is not None, "la unión no pasó el ensayo en seco: NO SIRVE, no se confirma"
     X = Partes()
     sec = X.seco(p)
-    r25 = azar(sec["u"])
+    r25 = azar(sec[parte])
     btd, acm, m1, inst = _cubo_nuevo(dias, SB.TRAB)
     _pct(p)
     X.A._U = {}
@@ -391,12 +400,12 @@ def confirmar(vistazo=False):
         Fz, evz = Z.disparos(Sz, d, Uz)
         res.append({"u": (Fa | Fz, eva | evz), "a": (Fa, eva), "z": (Fz, evz)})
     nuevos = list(range(1, len(dias)))                     # el día 0 (24-11) es sólo arranque
-    ru = recuerdo(lista(res, CL, "u", nuevos), r25)
+    ru = recuerdo(lista(res, CL, parte, nuevos), r25)
     if inst["falla"]:
         ver = "INVÁLIDA"
     elif ru["P_evaluados"] < MIN_P_EVAL or ru["dias_P_evaluado"] < 2:
         ver = "NO DECIDIBLE"
-    elif ru["p25"] <= P25_MAX and ru["R"] >= R_MIN and ru["pN"] is not None and ru["pN"] <= PN_MAX:
+    elif ru["p25"] <= P25_MAX and ru["R"] >= r_min and ru["pN"] is not None and ru["pN"] <= PN_MAX:
         ver = "CONFIRMA"
     elif ru["p25"] <= P25_MAX:
         ver = "PARCIAL"
@@ -413,10 +422,20 @@ def confirmar(vistazo=False):
             pe = [B.alcanzado(F, ev, s)[1] for s in Ps if ev[s]]
             fila[k] = {"P_evaluados": len(pe), "P_alcanzados": int(sum(pe)), "disparos": int(F.sum())}
         por_dia.append(fila)
-    out = {"veredicto": ver if not vistazo else f"VISTAZO (no decide): {ver}", "p_estrella": p, "instrumento": inst,
-           "P_total": nP, "dias_con_P": dP, "union": ru, "por_dia": por_dia}
-    nombre = "s26a_confirmacion_vistazo.json" if vistazo else "s26a_confirmacion.json"
-    json.dump(out, open(os.path.join(RES, nombre), "w", encoding="utf-8"), ensure_ascii=False, indent=1, default=int)
+    # tasa de disparo de los N nuevos, de día y de noche (S25a §3 la pide)
+    tas = {}
+    for nom, rg in (("dia", DIA), ("noche", NOCHE)):
+        v = [res[d][parte][0][s] for d in nuevos for s in rg if res[d][parte][1][s] and CL[d, s] == "N"]
+        tas[nom] = {"n": len(v), "fraccion": float(np.mean(v)) if v else None}
+    out = {"veredicto": ver if not vistazo else f"VISTAZO (no decide): {ver}",
+           "regla": "S25a, zona sola a percentil 5" if s25a else "S26a, unión a p*", "percentil": p,
+           "instrumento": inst, "P_total": nP, "dias_con_P": dP, "medida": ru, "tasa_disparo_N_nuevos": tas,
+           "por_dia": por_dia}
+    if s25a:
+        destino = RES_S25A.replace(".json", "_vistazo.json") if vistazo else RES_S25A
+    else:
+        destino = os.path.join(RES, "s26a_confirmacion_vistazo.json" if vistazo else "s26a_confirmacion.json")
+    json.dump(out, open(destino, "w", encoding="utf-8"), ensure_ascii=False, indent=1, default=int)
     print(json.dumps(out, ensure_ascii=False, indent=1, default=int))
 
 
@@ -446,5 +465,7 @@ if __name__ == "__main__":
     c = sys.argv[1]
     if c == "confirmar":
         confirmar(vistazo="--vistazo" in sys.argv)
+    elif c == "confirmar_s25a":
+        confirmar(vistazo="--vistazo" in sys.argv, s25a=True)
     else:
         {"pruebas": pruebas, "medir": medir}[c]()

@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-25 (sesión S25a, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-25 (sesión S26a, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,69 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S25a, 2026-11-25 (la zona de 0 a 4 km del cráter ALCANZA por su regla: 44 de 93 cuadros de VOLCAT y el 14-11, 20 de 31; en 2026 la zona dispara de más de noche; S23b sigue esperando días nuevos)
+## 0. S26a, 2026-11-25 (un solo detector, zona del cráter O anillo: 63 de 93 cuadros de VOLCAT con 4,9 % de falsa alarma en 2025, como DESARROLLO; criterio único de confirmación en días nuevos)
+
+> Sesión S26a (worktree `s26a-combinado-cceab0`, lanzada por la sesión que corre S26a y S26b en paralelo). Informe:
+> `docs/own_volcat/s26a_combinado/INFORME.md`. S25b (fondo 2024 con GOES-16) y S26b (disparo nocturno del cráter
+> contra calor) corren aparte en `docs/own_volcat/s25b_*` y `s26b_*`.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Criterio de la unión (zona S25a O anillo S23b) | Empujado antes de calcular un disparo: corrección de falsa alarma fijada (mismo percentil en las dos partes, el más alto que deje la unión en 5 % o menos) | `28f963b` |
+| Comprobación de código | Cada parte sola reproduce lo publicado a percentil 5 (anillo 25 de 54, zona 44 de 93, secos idénticos) | `resultados/s26a_seco.json` |
+| Falsa alarma conjunta 2025 (cada día sin sí mismo) | Percentil 5: 0,0515 (no pasa). **p* = 4,75**: global 0,0489, media por día 0,0431 | idem |
+| Recuerdo contra VOLCAT 2026 (**desarrollo**, días ya mirados) | **ALCANZA (desarrollo)**: 63 de 93 P (0,68), esperado 5,9, p25 6e-53; N cercanos 113 de 649, pN 2e-22; 6 de 9 días; 6 de 11 episodios. Sin cada día, R 0,64 a 0,71 | `resultados/s26a_desarrollo.json` |
+| Complemento | Las partes coinciden en 2 de 63 alcanzados: 28-10 20 de 26 (anillo 8, zona 13), 08-11 9 de 13 (anillo), 10-11 8 de 8 y 14-11 20 de 31 (zona) | idem, `por_dia` |
+| Disparo fuera de VOLCAT en 2026 | Día 5,4 % (2025 3,9 %), noche 19 % (2025 6,7 %): lo hereda de la zona | idem, `tasas_disparo` |
+| Confirmación en días nuevos | **Esperando** (0 P el 25-11 hasta 14:30 UTC). Criterio único (§5): mismo gatillo que S23b, orden S23b, S25a, S26a; ninguna anula a otra. `s26a_medir.py confirmar_s25a` y `confirmar` listos; se niegan antes del gatillo | `criterio_2026-11-25.md` §5 |
+| Videos lado a lado (rojo anillo, amarillo zona) | `C:\Users\nmend\Downloads\s26a_lado_a_lado_volcat_vs_crater_y_anillo_chillan_<día>_10min.mp4`: 28-10, 29-10 (00 a 02 UTC), 08-11, 10-11, 11-11, 14-11 | `scripts/s26a_lado_a_lado.py` |
+| Disco D: | 13 GB libres; S26a usa ~0,1 GB en `D:\goes_notas\s26\s26a\` | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Mirar los videos de S26a: ¿lo que marca el detector (rojo y amarillo) es la pluma que ves en cámaras esos días? | Sí: es el detector que se confirmará en días nuevos |
+| 2 | Cámaras del OVDAS en noches en que la zona marca sin VOLCAT (27-09, 04-10, 05-10, 27-10, 12-11) | Sí: es lo que más pesa en el disparo fuera de VOLCAT de la unión |
+| 3 | Las de S25a, S24 y S23 (14-11 y 10-11 de tarde; 28-10, 29-10, 11-11; correo a Pavolonis) | Siguen |
+
+### c. Lo aprendido
+
+- **Unir dos reglas cuesta poco si sus falsas alarmas coinciden** (método): la unión de dos reglas al 4 % dio 5,15 % y
+  no 7 %, porque en 2025 fallan juntas en 36 de 319 disparos. Fijar la corrección antes (un solo percentil común)
+  dejó el costo en bajar de 5 a 4,75.
+- **El anillo y la zona ven la misma pluma en momentos distintos** (proyecto): coinciden en 2 de 63 cuadros
+  alcanzados. El 28-10 la zona marca mientras la pluma está sobre el cráter y el anillo cuando se estira al SE.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (desarrollo, días ya mirados):** la unión llega a dos de cada tres cuadros de VOLCAT y separa esos
+  cuadros de los otros de 2026 a la misma hora.
+- **SOSPECHA:** el disparo nocturno de 2026 (19 %) es pluma diaria o depósito; sin dato que lo decida.
+- **SIN PROBAR:** las tres confirmaciones en días nuevos (S23b, S25a, S26a), esperando a VOLCAT.
+
+### e. Prompt para la próxima sesión (S27)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Sesión S27; titúlala "Goes S27: ..." y numera su
+traspaso como S27. Usa /retomar.
+1. Verifica: git fetch; gh pr list; main en el remoto; espacio en D: (13 GB el 25-11).
+2. Lee STATUS.md "## 0." (S26a, y S25b y S26b si ya están) y docs/own_volcat/s26a_combinado/INFORME.md.
+3. Confirmaciones: `python -I docs/own_volcat/s23_fondo_2025/scripts/s23b_confirmar.py contar <hoy>`. Cuando diga
+   LISTO PARA MEDIR: `bajar <hora>`, y en este orden, UNA vez cada una: `s23b_confirmar.py medir`,
+   `docs/own_volcat/s26a_combinado/scripts/s26a_medir.py confirmar_s25a`, `s26a_medir.py confirmar`. Titular: el de
+   la unión (S26a). Videos de los días nuevos con s26a_lado_a_lado.py (hay que extenderlo a leer los días nuevos).
+4. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS;
+   la carpeta principal no se toca; docs/auditoria_2026-11 no se sube; nada de SSEC al repo; criterio antes de
+   medir; ningún día de jul-nov 2026 es "sin actividad"; fusionar sólo con el sí de Nicolás y --match-head-commit.
+```
+
+---
+
+## 0-prev21. S25a, 2026-11-25 (la zona de 0 a 4 km del cráter ALCANZA por su regla: 44 de 93 cuadros de VOLCAT y el 14-11, 20 de 31; en 2026 la zona dispara de más de noche; S23b sigue esperando días nuevos)
 
 > Sesión S25a (worktree `s25a-crater-s23b-92d67e`, lanzada por la sesión que corre S25a y S25b en paralelo). Informe:
 > `docs/own_volcat/s25a_crater/INFORME.md`. S25b (fondo 2024 con GOES-16) corre aparte en `docs/own_volcat/s25b_*`.

@@ -1,0 +1,1089 @@
+{
+ "rotulo": "DESARROLLO: los P de 21-09 a 24-11-2026 ya se miraron; describe, no prueba (criterio §3)",
+ "p_estrella": 4.75,
+ "veredicto": "ALCANZA (desarrollo)",
+ "union": {
+  "P_evaluados": 93,
+  "P_alcanzados": 63,
+  "R": 0.6774193548387096,
+  "E25": 5.869409985981778,
+  "p25": 6.158293552019926e-53,
+  "N_cerca": 649,
+  "N_cerca_alcanzados": 113,
+  "pN": 1.7670733427881738e-22,
+  "dias_P_evaluado": 9,
+  "dias_P_alcanzado": 6
+ },
+ "anillo_a_p": {
+  "P_evaluados": 54,
+  "P_alcanzados": 23,
+  "R": 0.42592592592592593,
+  "E25": 2.328840673055053,
+  "p25": 4.741489621455894e-18,
+  "N_cerca": 234,
+  "N_cerca_alcanzados": 3,
+  "pN": 3.416822194831208e-16,
+  "dias_P_evaluado": 7,
+  "dias_P_alcanzado": 4
+ },
+ "zona_a_p": {
+  "P_evaluados": 93,
+  "P_alcanzados": 42,
+  "R": 0.45161290322580644,
+  "E25": 3.7435890274292585,
+  "p25": 1.124960348853824e-33,
+  "N_cerca": 649,
+  "N_cerca_alcanzados": 110,
+  "pN": 5.9432115905203186e-09,
+  "dias_P_evaluado": 9,
+  "dias_P_alcanzado": 4
+ },
+ "episodios": 11,
+ "episodios_alcanzados": 6,
+ "tasas_disparo": {
+  "N_2026_dia": {
+   "n": 594,
+   "fraccion": 0.05387205387205387
+  },
+  "N_2026_noche": {
+   "n": 588,
+   "fraccion": 0.1921768707482993
+  },
+  "2025_dia": {
+   "n": 2704,
+   "fraccion": 0.03883136094674556
+  },
+  "2025_noche": {
+   "n": 1453,
+   "fraccion": 0.06744666207845836
+  }
+ },
+ "por_dia": [
+  {
+   "dia": "2026-09-21",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 2
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 19
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 21
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-09-26",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 10
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 10
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-09-27",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 36
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 36
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-09-28",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 2
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 2
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-09-29",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-01",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 12
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 12
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-04",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 27
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 27
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-05",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 28
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 28
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-07",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 16
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 16
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-08",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 6
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 6
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-12",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-14",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-15",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 7
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 8
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-16",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 8
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 9
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 15
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-17",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 6
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 7
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-18",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 18
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 18
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 0,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-22",
+   "P": 1,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 2
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 2
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 3,
+   "N_con_disparo": 1
+  },
+  {
+   "dia": "2026-10-24",
+   "P": 1,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 1,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "union": {
+    "P_evaluados": 1,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 3,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-25",
+   "P": 4,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 3
+   },
+   "zona": {
+    "P_evaluados": 4,
+    "P_alcanzados": 0,
+    "disparos": 23
+   },
+   "union": {
+    "P_evaluados": 4,
+    "P_alcanzados": 0,
+    "disparos": 26
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 84,
+   "N_con_disparo": 23
+  },
+  {
+   "dia": "2026-10-26",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 30,
+   "N_con_disparo": 1
+  },
+  {
+   "dia": "2026-10-27",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 30
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 30
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 79,
+   "N_con_disparo": 18
+  },
+  {
+   "dia": "2026-10-28",
+   "P": 26,
+   "anillo": {
+    "P_evaluados": 17,
+    "P_alcanzados": 8,
+    "disparos": 6
+   },
+   "zona": {
+    "P_evaluados": 26,
+    "P_alcanzados": 13,
+    "disparos": 10
+   },
+   "union": {
+    "P_evaluados": 26,
+    "P_alcanzados": 20,
+    "disparos": 16
+   },
+   "P_alcanzados_por_los_dos": 1,
+   "N_evaluados": 75,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-29",
+   "P": 6,
+   "anillo": {
+    "P_evaluados": 3,
+    "P_alcanzados": 3,
+    "disparos": 4
+   },
+   "zona": {
+    "P_evaluados": 6,
+    "P_alcanzados": 1,
+    "disparos": 5
+   },
+   "union": {
+    "P_evaluados": 6,
+    "P_alcanzados": 3,
+    "disparos": 7
+   },
+   "P_alcanzados_por_los_dos": 1,
+   "N_evaluados": 112,
+   "N_con_disparo": 0
+  },
+  {
+   "dia": "2026-10-31",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 15
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 15
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 37,
+   "N_con_disparo": 15
+  },
+  {
+   "dia": "2026-11-02",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 4
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 4
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 70,
+   "N_con_disparo": 4
+  },
+  {
+   "dia": "2026-11-03",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 5
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 5
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 10,
+   "N_con_disparo": 5
+  },
+  {
+   "dia": "2026-11-04",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 3
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 3
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 104,
+   "N_con_disparo": 3
+  },
+  {
+   "dia": "2026-11-05",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 4
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 4
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 99,
+   "N_con_disparo": 4
+  },
+  {
+   "dia": "2026-11-06",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 5
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 5
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 87,
+   "N_con_disparo": 5
+  },
+  {
+   "dia": "2026-11-07",
+   "P": 1,
+   "anillo": {
+    "P_evaluados": 1,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 1,
+    "P_alcanzados": 0,
+    "disparos": 9
+   },
+   "union": {
+    "P_evaluados": 1,
+    "P_alcanzados": 0,
+    "disparos": 9
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 100,
+   "N_con_disparo": 5
+  },
+  {
+   "dia": "2026-11-08",
+   "P": 13,
+   "anillo": {
+    "P_evaluados": 13,
+    "P_alcanzados": 9,
+    "disparos": 18
+   },
+   "zona": {
+    "P_evaluados": 13,
+    "P_alcanzados": 0,
+    "disparos": 52
+   },
+   "union": {
+    "P_evaluados": 13,
+    "P_alcanzados": 9,
+    "disparos": 70
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 82,
+   "N_con_disparo": 52
+  },
+  {
+   "dia": "2026-11-09",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 4
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 4
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 78,
+   "N_con_disparo": 4
+  },
+  {
+   "dia": "2026-11-10",
+   "P": 12,
+   "anillo": {
+    "P_evaluados": 2,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 8,
+    "P_alcanzados": 8,
+    "disparos": 33
+   },
+   "union": {
+    "P_evaluados": 8,
+    "P_alcanzados": 8,
+    "disparos": 33
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 32,
+   "N_con_disparo": 18
+  },
+  {
+   "dia": "2026-11-11",
+   "P": 3,
+   "anillo": {
+    "P_evaluados": 3,
+    "P_alcanzados": 3,
+    "disparos": 4
+   },
+   "zona": {
+    "P_evaluados": 3,
+    "P_alcanzados": 0,
+    "disparos": 19
+   },
+   "union": {
+    "P_evaluados": 3,
+    "P_alcanzados": 3,
+    "disparos": 22
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 61,
+   "N_con_disparo": 16
+  },
+  {
+   "dia": "2026-11-12",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 26
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 27
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 80,
+   "N_con_disparo": 26
+  },
+  {
+   "dia": "2026-11-13",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 11
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 11
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 44,
+   "N_con_disparo": 7
+  },
+  {
+   "dia": "2026-11-14",
+   "P": 33,
+   "anillo": {
+    "P_evaluados": 15,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 31,
+    "P_alcanzados": 20,
+    "disparos": 42
+   },
+   "union": {
+    "P_evaluados": 31,
+    "P_alcanzados": 20,
+    "disparos": 42
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 60,
+   "N_con_disparo": 25
+  },
+  {
+   "dia": "2026-11-19",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 1
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 2,
+   "N_con_disparo": 1
+  },
+  {
+   "dia": "2026-11-22",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 4
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 4
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 114,
+   "N_con_disparo": 4
+  },
+  {
+   "dia": "2026-11-23",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 16
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 16
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 61,
+   "N_con_disparo": 16
+  },
+  {
+   "dia": "2026-11-24",
+   "P": 0,
+   "anillo": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "zona": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 10
+   },
+   "union": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 10
+   },
+   "P_alcanzados_por_los_dos": 0,
+   "N_evaluados": 76,
+   "N_con_disparo": 7
+  }
+ ],
+ "sin_cada_dia": {
+  "2026-10-22": {
+   "P_evaluados": 93,
+   "P_alcanzados": 63,
+   "R": 0.6774193548387096,
+   "p25": 6.158293552019926e-53,
+   "pN": 6.906531381430301e-23
+  },
+  "2026-10-24": {
+   "P_evaluados": 92,
+   "P_alcanzados": 63,
+   "R": 0.6847826086956522,
+   "p25": 2.358476884377439e-53,
+   "pN": 7.445865191311292e-23
+  },
+  "2026-10-25": {
+   "P_evaluados": 89,
+   "P_alcanzados": 63,
+   "R": 0.7078651685393258,
+   "p25": 7.389949813781379e-55,
+   "pN": 4.251502746051301e-21
+  },
+  "2026-10-28": {
+   "P_evaluados": 67,
+   "P_alcanzados": 43,
+   "R": 0.6417910447761194,
+   "p25": 6.039681360182208e-35,
+   "pN": 9.199063336325484e-15
+  },
+  "2026-10-29": {
+   "P_evaluados": 87,
+   "P_alcanzados": 60,
+   "R": 0.6896551724137931,
+   "p25": 1.7683766623227774e-51,
+   "pN": 2.0248139579834492e-24
+  },
+  "2026-11-07": {
+   "P_evaluados": 92,
+   "P_alcanzados": 63,
+   "R": 0.6847826086956522,
+   "p25": 2.163246701832675e-53,
+   "pN": 8.922193232756906e-23
+  },
+  "2026-11-08": {
+   "P_evaluados": 80,
+   "P_alcanzados": 54,
+   "R": 0.675,
+   "p25": 3.231059297154302e-45,
+   "pN": 1.8114071377710983e-21
+  },
+  "2026-11-10": {
+   "P_evaluados": 85,
+   "P_alcanzados": 55,
+   "R": 0.6470588235294118,
+   "p25": 6.366841544764588e-45,
+   "pN": 1.2094181288663654e-21
+  },
+  "2026-11-11": {
+   "P_evaluados": 90,
+   "P_alcanzados": 60,
+   "R": 0.6666666666666666,
+   "p25": 6.102502733918876e-50,
+   "pN": 6.455929838328528e-22
+  },
+  "2026-11-14": {
+   "P_evaluados": 62,
+   "P_alcanzados": 43,
+   "R": 0.6935483870967742,
+   "p25": 3.358666866466479e-37,
+   "pN": 1.1249859231313336e-17
+  }
+ },
+ "umbral_anillo_por_hora": {
+  "00:00": -0.3401,
+  "01:00": -0.27525,
+  "02:00": -0.25521,
+  "03:00": -0.26031,
+  "04:00": -0.31109,
+  "05:00": -0.36802,
+  "06:00": -0.39499,
+  "07:00": -0.37153,
+  "08:00": -0.33789,
+  "09:00": -0.30786,
+  "10:00": -0.2857,
+  "11:00": -0.28229,
+  "12:00": -0.37169,
+  "13:00": -0.45238,
+  "14:00": -0.48885,
+  "15:00": -0.57274,
+  "16:00": -0.68243,
+  "17:00": -0.60637,
+  "18:00": -0.55613,
+  "19:00": -0.50645,
+  "20:00": -0.47352,
+  "21:00": -0.5091,
+  "22:00": -0.52624,
+  "23:00": -0.47394
+ },
+ "umbral_zona_por_hora": {
+  "00:00": -0.44944,
+  "01:00": -0.40981,
+  "02:00": -0.40207,
+  "03:00": -0.42127,
+  "04:00": -0.47406,
+  "05:00": -0.50638,
+  "06:00": -0.47087,
+  "07:00": -0.43071,
+  "08:00": -0.43496,
+  "09:00": -0.41348,
+  "10:00": -0.37315,
+  "11:00": -0.40693,
+  "12:00": -0.57939,
+  "13:00": -0.68714,
+  "14:00": -0.79484,
+  "15:00": -0.9134,
+  "16:00": -0.91898,
+  "17:00": -0.93689,
+  "18:00": -0.97834,
+  "19:00": -0.99087,
+  "20:00": -0.92168,
+  "21:00": -0.7765,
+  "22:00": -0.64822,
+  "23:00": -0.5441
+ }
+}

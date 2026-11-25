@@ -1,0 +1,70 @@
+{
+ "cuadros": 8928,
+ "l1b_presentes": 8841,
+ "cobertura_l1b": 0.990255376344086,
+ "acm_presentes": 8775,
+ "cobertura_acm": 0.9828629032258065,
+ "scan_distinto_descartados": 0,
+ "congelados": 0,
+ "bt11_en_rango": 1.0,
+ "planck_g16_c14": [
+  8510.2197265625,
+  1286.27001953125,
+  0.22516000270843506,
+  0.9991999864578247
+ ],
+ "planck_g16_c15": [
+  6454.6201171875,
+  1173.030029296875,
+  0.21702000498771667,
+  0.9991599917411804
+ ],
+ "planck_g19_c14": [
+  8500.6298828125,
+  1285.780029296875,
+  0.2105100005865097,
+  0.9992499947547913
+ ],
+ "planck_g19_c15": [
+  6489.4599609375,
+  1175.1300048828125,
+  0.22448000311851501,
+  0.9991300106048584
+ ],
+ "planck_dif_rel_g16_g19_c14": [
+  0.0011281333127313165,
+  0.00038108402931325003,
+  0.06959290333527357,
+  -5.0045831602729685e-05
+ ],
+ "planck_dif_rel_g16_g19_c15": [
+  -0.005368681517370355,
+  -0.0017870155448433955,
+  -0.03323235044174433,
+  3.0007242304508353e-05
+ ],
+ "planck_variacion_dentro_de_2024": {
+  "14": 0.0,
+  "15": 0.0
+ },
+ "I4_noches_2024": 892,
+ "I4_noches_2025": 1255,
+ "I4_correlacion": 0.9871159413738898,
+ "I5_proyeccion_g16": {
+  "longitude_of_projection_origin": -75.0,
+  "perspective_point_height": 35786023.0,
+  "semi_major_axis": 6378137.0,
+  "semi_minor_axis": 6356752.31414,
+  "archivo": "OR_ABI-L1b-RadF-M6C14_G16_s20242890600205_e20242890609513_c20242890609571.nc"
+ },
+ "I5_proyeccion_g19": {
+  "longitude_of_projection_origin": -75.0,
+  "perspective_point_height": 35786023.0,
+  "semi_major_axis": 6378137.0,
+  "semi_minor_axis": 6356752.31414,
+  "archivo": "OR_ABI-L1b-RadF-M6C14_G19_s20252880600206_e20252880609514_c20252880609586.nc"
+ },
+ "I5_iguales": true,
+ "falla": [],
+ "veredicto_a": "COMPARABLE"
+}

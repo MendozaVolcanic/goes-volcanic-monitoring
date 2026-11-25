@@ -1,0 +1,2336 @@
+{
+ "criterio": "criterio_2026-11-25.md (5c83319)",
+ "A_14-11": {
+  "dia": "2026-11-14",
+  "cuadros_P_con_compuerta": 31,
+  "veredictos": {
+   "huella 4-8 km": {
+    "veredicto": "SIN SEÑAL",
+    "cuadros": 7,
+    "mediana_q": 0.2542,
+    "frac_q_le_0.10": 0.1429
+   },
+   "huella 8-15 km": {
+    "veredicto": "DÉBIL",
+    "cuadros": 7,
+    "mediana_q": 0.1573,
+    "frac_q_le_0.10": 0.2857
+   },
+   "huella 15-40 km": {
+    "veredicto": "SIN DATO",
+    "cuadros": 3,
+    "mediana_q": 0.257,
+    "frac_q_le_0.10": 0.3333
+   },
+   "huella anillo": {
+    "veredicto": "SIN SEÑAL",
+    "cuadros": 20,
+    "mediana_q": 0.2435,
+    "frac_q_le_0.10": 0.25
+   },
+   "giro 4-8 km": {
+    "veredicto": "SIN DATO",
+    "cuadros": 2,
+    "mediana_q": 0.0893,
+    "frac_q_le_0.10": 0.5
+   },
+   "giro 8-15 km": {
+    "veredicto": "SEÑAL",
+    "cuadros": 6,
+    "mediana_q": 0.0479,
+    "frac_q_le_0.10": 0.6667
+   },
+   "giro 15-40 km": {
+    "veredicto": "SIN DATO",
+    "cuadros": 0,
+    "mediana_q": null,
+    "frac_q_le_0.10": null
+   },
+   "giro anillo": {
+    "veredicto": "DÉBIL",
+    "cuadros": 12,
+    "mediana_q": 0.0652,
+    "frac_q_le_0.10": 0.5833
+   }
+  },
+  "cuadros": [
+   {
+    "hora": "16:40",
+    "S": -0.3964,
+    "k": 6,
+    "n_huella_anillo": 0,
+    "n_nulo": 469,
+    "huella 4-8 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "16:50",
+    "S": -0.1923,
+    "k": 4,
+    "n_huella_anillo": 0,
+    "n_nulo": 461,
+    "huella 4-8 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "17:00",
+    "S": -0.2945,
+    "k": 1,
+    "n_huella_anillo": 4,
+    "n_nulo": 454,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 4,
+     "H": null,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 4,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "17:20",
+    "S": -0.6002,
+    "k": 4,
+    "n_huella_anillo": 6,
+    "n_nulo": 446,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 6,
+     "H": -0.2999,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 6,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "17:30",
+    "S": -0.539,
+    "k": 4,
+    "n_huella_anillo": 6,
+    "n_nulo": 443,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 6,
+     "H": -0.1342,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 6,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "17:40",
+    "S": -0.5071,
+    "k": 4,
+    "n_huella_anillo": 3,
+    "n_nulo": 440,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "17:50",
+    "S": -0.4854,
+    "k": 4,
+    "n_huella_anillo": 7,
+    "n_nulo": 440,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 4,
+     "H": -0.5407,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 4,
+     "H": -0.0362,
+     "q": 0.4182
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 7,
+     "H": -0.2633,
+     "q": 0.2881
+    },
+    "giro anillo": {
+     "n_pix": 7,
+     "H": -0.0403,
+     "q": 0.4267
+    }
+   },
+   {
+    "hora": "18:00",
+    "S": -0.486,
+    "k": 4,
+    "n_huella_anillo": 5,
+    "n_nulo": 439,
+    "huella 4-8 km": {
+     "n_pix": 4,
+     "H": 0.0131,
+     "q": 0.6383
+    },
+    "giro 4-8 km": {
+     "n_pix": 4,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 5,
+     "H": -0.0288,
+     "q": 0.5915
+    },
+    "giro anillo": {
+     "n_pix": 5,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "18:10",
+    "S": -0.5353,
+    "k": 4,
+    "n_huella_anillo": 3,
+    "n_nulo": 441,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "18:20",
+    "S": -0.6838,
+    "k": 4,
+    "n_huella_anillo": 5,
+    "n_nulo": 444,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 5,
+     "H": -0.0584,
+     "q": 0.6818
+    },
+    "giro anillo": {
+     "n_pix": 5,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "18:40",
+    "S": -0.5062,
+    "k": 4,
+    "n_huella_anillo": 4,
+    "n_nulo": 454,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 4,
+     "H": -0.137,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 4,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "18:50",
+    "S": -0.3398,
+    "k": 4,
+    "n_huella_anillo": 3,
+    "n_nulo": 462,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 3,
+     "H": 0.1308,
+     "q": 0.6875
+    },
+    "giro anillo": {
+     "n_pix": 3,
+     "H": 0.1298,
+     "q": 0.7697
+    }
+   },
+   {
+    "hora": "19:00",
+    "S": -0.2629,
+    "k": 4,
+    "n_huella_anillo": 5,
+    "n_nulo": 467,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 3,
+     "H": -0.5265,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 5,
+     "H": -0.2504,
+     "q": 0.25
+    },
+    "giro anillo": {
+     "n_pix": 5,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "19:10",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 6,
+    "n_nulo": 473,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 4,
+     "H": -0.1132,
+     "q": 0.6818
+    },
+    "giro 8-15 km": {
+     "n_pix": 4,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 6,
+     "H": -0.0771,
+     "q": 0.5325
+    },
+    "giro anillo": {
+     "n_pix": 6,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "19:20",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 6,
+    "n_nulo": 480,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 6,
+     "H": 0.0494,
+     "q": 0.6162
+    },
+    "giro anillo": {
+     "n_pix": 6,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "19:30",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 9,
+    "n_nulo": 485,
+    "huella 4-8 km": {
+     "n_pix": 4,
+     "H": 0.487,
+     "q": 0.9222
+    },
+    "giro 4-8 km": {
+     "n_pix": 4,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 5,
+     "H": 0.0261,
+     "q": 0.5128
+    },
+    "giro 15-40 km": {
+     "n_pix": 5,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 9,
+     "H": 0.199,
+     "q": 0.8008
+    },
+    "giro anillo": {
+     "n_pix": 9,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "19:40",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 3,
+    "n_nulo": 491,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": -0.1952,
+     "q": 0.2542
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 3,
+     "H": -0.1952,
+     "q": 0.2542
+    },
+    "giro anillo": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "19:50",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 1,
+    "n_nulo": 496,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "20:00",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 4,
+    "n_nulo": 500,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 4,
+     "H": null,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 4,
+     "H": 0.0269,
+     "q": 0.5592
+    }
+   },
+   {
+    "hora": "20:10",
+    "S": -0.2307,
+    "k": 0,
+    "n_huella_anillo": 6,
+    "n_nulo": 506,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 3,
+     "H": -0.1847,
+     "q": 0.2296
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 6,
+     "H": -0.4017,
+     "q": 0.25
+    },
+    "giro anillo": {
+     "n_pix": 6,
+     "H": -0.2035,
+     "q": 0.2196
+    }
+   },
+   {
+    "hora": "20:30",
+    "S": -0.3318,
+    "k": 0,
+    "n_huella_anillo": 4,
+    "n_nulo": 516,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 4,
+     "H": -0.6515,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 4,
+     "H": -0.3427,
+     "q": 0.1329
+    }
+   },
+   {
+    "hora": "20:40",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 9,
+    "n_nulo": 520,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 6,
+     "H": -0.3336,
+     "q": 0.1538
+    },
+    "giro 8-15 km": {
+     "n_pix": 6,
+     "H": -0.6604,
+     "q": 0.0101
+    },
+    "huella 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 9,
+     "H": -0.2569,
+     "q": 0.2247
+    },
+    "giro anillo": {
+     "n_pix": 9,
+     "H": -0.6604,
+     "q": 0.0087
+    }
+   },
+   {
+    "hora": "20:50",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 4,
+    "n_nulo": 522,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 4,
+     "H": -0.5635,
+     "q": 0.0075
+    },
+    "giro anillo": {
+     "n_pix": 4,
+     "H": -0.3379,
+     "q": 0.0166
+    }
+   },
+   {
+    "hora": "21:00",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 7,
+    "n_nulo": 521,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 5,
+     "H": -0.5127,
+     "q": 0.0533
+    },
+    "giro 8-15 km": {
+     "n_pix": 5,
+     "H": -0.3685,
+     "q": 0.0519
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 7,
+     "H": -0.5127,
+     "q": 0.025
+    },
+    "giro anillo": {
+     "n_pix": 7,
+     "H": -0.3648,
+     "q": 0.0642
+    }
+   },
+   {
+    "hora": "21:10",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 5,
+    "n_nulo": 522,
+    "huella 4-8 km": {
+     "n_pix": 4,
+     "H": -0.1985,
+     "q": 0.3333
+    },
+    "giro 4-8 km": {
+     "n_pix": 4,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 5,
+     "H": -0.1985,
+     "q": 0.2361
+    },
+    "giro anillo": {
+     "n_pix": 5,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "21:20",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 5,
+    "n_nulo": 522,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 4,
+     "H": -0.2803,
+     "q": 0.1573
+    },
+    "giro 8-15 km": {
+     "n_pix": 4,
+     "H": -0.427,
+     "q": 0.0439
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 5,
+     "H": -0.2693,
+     "q": 0.1618
+    },
+    "giro anillo": {
+     "n_pix": 5,
+     "H": -0.3964,
+     "q": 0.032
+    }
+   },
+   {
+    "hora": "21:40",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 6,
+    "n_nulo": 518,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 3,
+     "H": -0.1992,
+     "q": 0.3478
+    },
+    "giro 8-15 km": {
+     "n_pix": 3,
+     "H": -0.4628,
+     "q": 0.0101
+    },
+    "huella 15-40 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 6,
+     "H": -0.1803,
+     "q": 0.237
+    },
+    "giro anillo": {
+     "n_pix": 6,
+     "H": -0.6081,
+     "q": 0.0
+    }
+   },
+   {
+    "hora": "21:50",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 7,
+    "n_nulo": 515,
+    "huella 4-8 km": {
+     "n_pix": 4,
+     "H": -0.2699,
+     "q": 0.1505
+    },
+    "giro 4-8 km": {
+     "n_pix": 4,
+     "H": -0.3659,
+     "q": 0.0449
+    },
+    "huella 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 7,
+     "H": -0.3026,
+     "q": 0.1062
+    },
+    "giro anillo": {
+     "n_pix": 7,
+     "H": -0.3227,
+     "q": 0.0662
+    }
+   },
+   {
+    "hora": "22:00",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 7,
+    "n_nulo": 514,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": -0.3964,
+     "q": 0.0412
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": -0.2219,
+     "q": 0.1337
+    },
+    "huella 8-15 km": {
+     "n_pix": 3,
+     "H": -0.2297,
+     "q": 0.1798
+    },
+    "giro 8-15 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 7,
+     "H": -0.313,
+     "q": 0.063
+    },
+    "giro anillo": {
+     "n_pix": 7,
+     "H": -0.3318,
+     "q": 0.0225
+    }
+   },
+   {
+    "hora": "22:10",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 17,
+    "n_nulo": 512,
+    "huella 4-8 km": {
+     "n_pix": 4,
+     "H": -0.2474,
+     "q": 0.227
+    },
+    "giro 4-8 km": {
+     "n_pix": 4,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 7,
+     "H": -0.4707,
+     "q": 0.0476
+    },
+    "giro 8-15 km": {
+     "n_pix": 7,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 6,
+     "H": -0.1445,
+     "q": 0.257
+    },
+    "giro 15-40 km": {
+     "n_pix": 6,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 17,
+     "H": -0.2925,
+     "q": 0.0664
+    },
+    "giro anillo": {
+     "n_pix": 17,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "22:20",
+    "S": null,
+    "k": -1,
+    "n_huella_anillo": 30,
+    "n_nulo": 508,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 26,
+     "H": -0.3737,
+     "q": 0.0293
+    },
+    "giro 15-40 km": {
+     "n_pix": 26,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 30,
+     "H": -0.3737,
+     "q": 0.0244
+    },
+    "giro anillo": {
+     "n_pix": 30,
+     "H": null,
+     "q": null
+    }
+   }
+  ]
+ },
+ "A_control_08-11": {
+  "dia": "2026-11-08",
+  "cuadros_P_con_compuerta": 13,
+  "veredictos": {
+   "huella 4-8 km": {
+    "veredicto": "SIN DATO",
+    "cuadros": 1,
+    "mediana_q": 1.0,
+    "frac_q_le_0.10": 0.0
+   },
+   "huella 8-15 km": {
+    "veredicto": "SIN DATO",
+    "cuadros": 4,
+    "mediana_q": 0.5124,
+    "frac_q_le_0.10": 0.0
+   },
+   "huella 15-40 km": {
+    "veredicto": "SEÑAL",
+    "cuadros": 7,
+    "mediana_q": 0.0193,
+    "frac_q_le_0.10": 0.7143
+   },
+   "huella anillo": {
+    "veredicto": "SIN SEÑAL",
+    "cuadros": 11,
+    "mediana_q": 0.2488,
+    "frac_q_le_0.10": 0.3636
+   },
+   "giro 4-8 km": {
+    "veredicto": "SIN DATO",
+    "cuadros": 0,
+    "mediana_q": null,
+    "frac_q_le_0.10": null
+   },
+   "giro 8-15 km": {
+    "veredicto": "SIN DATO",
+    "cuadros": 4,
+    "mediana_q": 0.6976,
+    "frac_q_le_0.10": 0.0
+   },
+   "giro 15-40 km": {
+    "veredicto": "SIN SEÑAL",
+    "cuadros": 7,
+    "mediana_q": 0.455,
+    "frac_q_le_0.10": 0.0
+   },
+   "giro anillo": {
+    "veredicto": "SIN SEÑAL",
+    "cuadros": 11,
+    "mediana_q": 0.6675,
+    "frac_q_le_0.10": 0.0
+   }
+  },
+  "cuadros": [
+   {
+    "hora": "17:40",
+    "S": -0.7094,
+    "k": 5,
+    "n_huella_anillo": 6,
+    "n_nulo": 440,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 5,
+     "H": -0.7695,
+     "q": 0.0297
+    },
+    "giro 15-40 km": {
+     "n_pix": 5,
+     "H": -0.0363,
+     "q": 0.4064
+    },
+    "huella anillo": {
+     "n_pix": 6,
+     "H": -0.7695,
+     "q": 0.0257
+    },
+    "giro anillo": {
+     "n_pix": 6,
+     "H": -0.0363,
+     "q": 0.4064
+    }
+   },
+   {
+    "hora": "18:10",
+    "S": -0.7673,
+    "k": 4,
+    "n_huella_anillo": 1,
+    "n_nulo": 441,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "19:10",
+    "S": -0.6696,
+    "k": 4,
+    "n_huella_anillo": 8,
+    "n_nulo": 473,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 4,
+     "H": -0.7449,
+     "q": 0.0193
+    },
+    "giro 15-40 km": {
+     "n_pix": 4,
+     "H": 0.0513,
+     "q": 0.6743
+    },
+    "huella anillo": {
+     "n_pix": 8,
+     "H": -0.6295,
+     "q": 0.034
+    },
+    "giro anillo": {
+     "n_pix": 8,
+     "H": 0.282,
+     "q": 0.9006
+    }
+   },
+   {
+    "hora": "19:20",
+    "S": -0.852,
+    "k": 4,
+    "n_huella_anillo": 9,
+    "n_nulo": 480,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 7,
+     "H": -0.7643,
+     "q": 0.0083
+    },
+    "giro 15-40 km": {
+     "n_pix": 7,
+     "H": 0.0032,
+     "q": 0.582
+    },
+    "huella anillo": {
+     "n_pix": 9,
+     "H": -0.5033,
+     "q": 0.0524
+    },
+    "giro anillo": {
+     "n_pix": 9,
+     "H": 0.0499,
+     "q": 0.6675
+    }
+   },
+   {
+    "hora": "19:30",
+    "S": -0.8783,
+    "k": 4,
+    "n_huella_anillo": 6,
+    "n_nulo": 485,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 4,
+     "H": -0.2992,
+     "q": 0.2794
+    },
+    "giro 15-40 km": {
+     "n_pix": 4,
+     "H": 0.0343,
+     "q": 0.6321
+    },
+    "huella anillo": {
+     "n_pix": 6,
+     "H": -0.3068,
+     "q": 0.2488
+    },
+    "giro anillo": {
+     "n_pix": 6,
+     "H": -0.0182,
+     "q": 0.4925
+    }
+   },
+   {
+    "hora": "20:10",
+    "S": -0.5454,
+    "k": 4,
+    "n_huella_anillo": 10,
+    "n_nulo": 506,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 4,
+     "H": -0.1354,
+     "q": 0.5217
+    },
+    "giro 8-15 km": {
+     "n_pix": 4,
+     "H": 0.2174,
+     "q": 0.839
+    },
+    "huella 15-40 km": {
+     "n_pix": 5,
+     "H": -0.653,
+     "q": 0.0086
+    },
+    "giro 15-40 km": {
+     "n_pix": 5,
+     "H": -0.0301,
+     "q": 0.455
+    },
+    "huella anillo": {
+     "n_pix": 10,
+     "H": -0.423,
+     "q": 0.0734
+    },
+    "giro anillo": {
+     "n_pix": 10,
+     "H": 0.1453,
+     "q": 0.8206
+    }
+   },
+   {
+    "hora": "20:20",
+    "S": -0.7265,
+    "k": 4,
+    "n_huella_anillo": 9,
+    "n_nulo": 511,
+    "huella 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 3,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 4,
+     "H": -0.5693,
+     "q": 0.0192
+    },
+    "giro 15-40 km": {
+     "n_pix": 4,
+     "H": -0.0299,
+     "q": 0.4265
+    },
+    "huella anillo": {
+     "n_pix": 9,
+     "H": -0.323,
+     "q": 0.1203
+    },
+    "giro anillo": {
+     "n_pix": 9,
+     "H": 0.0845,
+     "q": 0.7267
+    }
+   },
+   {
+    "hora": "20:30",
+    "S": -0.6781,
+    "k": 4,
+    "n_huella_anillo": 7,
+    "n_nulo": 516,
+    "huella 4-8 km": {
+     "n_pix": 4,
+     "H": 0.5912,
+     "q": 1.0
+    },
+    "giro 4-8 km": {
+     "n_pix": 4,
+     "H": 0.4995,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 3,
+     "H": 0.1419,
+     "q": 0.8485
+    },
+    "giro 8-15 km": {
+     "n_pix": 3,
+     "H": 0.1779,
+     "q": 0.83
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 7,
+     "H": 0.3665,
+     "q": 0.9545
+    },
+    "giro anillo": {
+     "n_pix": 7,
+     "H": 0.3387,
+     "q": 0.97
+    }
+   },
+   {
+    "hora": "20:40",
+    "S": -0.5473,
+    "k": 4,
+    "n_huella_anillo": 5,
+    "n_nulo": 520,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 5,
+     "H": -0.0834,
+     "q": 0.4233
+    },
+    "giro anillo": {
+     "n_pix": 5,
+     "H": 0.0383,
+     "q": 0.5509
+    }
+   },
+   {
+    "hora": "21:00",
+    "S": -0.5357,
+    "k": 4,
+    "n_huella_anillo": 9,
+    "n_nulo": 521,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 4,
+     "H": -0.0267,
+     "q": 0.503
+    },
+    "giro 8-15 km": {
+     "n_pix": 4,
+     "H": -0.1216,
+     "q": 0.2396
+    },
+    "huella 15-40 km": {
+     "n_pix": 4,
+     "H": -0.0517,
+     "q": 0.5089
+    },
+    "giro 15-40 km": {
+     "n_pix": 4,
+     "H": -0.0858,
+     "q": 0.2952
+    },
+    "huella anillo": {
+     "n_pix": 9,
+     "H": -0.0083,
+     "q": 0.5257
+    },
+    "giro anillo": {
+     "n_pix": 9,
+     "H": -0.1261,
+     "q": 0.2292
+    }
+   },
+   {
+    "hora": "21:10",
+    "S": -0.487,
+    "k": 4,
+    "n_huella_anillo": 2,
+    "n_nulo": 522,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 0,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro anillo": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    }
+   },
+   {
+    "hora": "21:20",
+    "S": -0.2378,
+    "k": 4,
+    "n_huella_anillo": 4,
+    "n_nulo": 522,
+    "huella 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 8-15 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 4,
+     "H": 0.0058,
+     "q": 0.7027
+    },
+    "giro anillo": {
+     "n_pix": 4,
+     "H": 0.2256,
+     "q": 0.8918
+    }
+   },
+   {
+    "hora": "21:30",
+    "S": -0.2131,
+    "k": 4,
+    "n_huella_anillo": 7,
+    "n_nulo": 520,
+    "huella 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "giro 4-8 km": {
+     "n_pix": 2,
+     "H": null,
+     "q": null
+    },
+    "huella 8-15 km": {
+     "n_pix": 4,
+     "H": -0.2893,
+     "q": 0.1549
+    },
+    "giro 8-15 km": {
+     "n_pix": 4,
+     "H": 0.0276,
+     "q": 0.5652
+    },
+    "huella 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "giro 15-40 km": {
+     "n_pix": 1,
+     "H": null,
+     "q": null
+    },
+    "huella anillo": {
+     "n_pix": 7,
+     "H": -0.0616,
+     "q": 0.4732
+    },
+    "giro anillo": {
+     "n_pix": 7,
+     "H": -0.0303,
+     "q": 0.3787
+    }
+   }
+  ]
+ },
+ "A_valida": false,
+ "B": {
+  "B1": {
+   "disparos_noche_2025": 78,
+   "evaluados_noche_2025": 1754,
+   "tasa_2025": 0.0445,
+   "disparos_noche_2026": 12,
+   "evaluados_noche_2026": 858,
+   "tasa_2026": 0.014,
+   "top_noches_2025": [
+    {
+     "dia": "2025-11-17",
+     "disparos": 19,
+     "evaluados": 47
+    },
+    {
+     "dia": "2025-11-06",
+     "disparos": 16,
+     "evaluados": 54
+    },
+    {
+     "dia": "2025-10-28",
+     "disparos": 12,
+     "evaluados": 53
+    },
+    {
+     "dia": "2025-11-18",
+     "disparos": 11,
+     "evaluados": 48
+    },
+    {
+     "dia": "2025-11-15",
+     "disparos": 8,
+     "evaluados": 54
+    },
+    {
+     "dia": "2025-10-03",
+     "disparos": 7,
+     "evaluados": 35
+    },
+    {
+     "dia": "2025-09-30",
+     "disparos": 3,
+     "evaluados": 54
+    },
+    {
+     "dia": "2025-10-19",
+     "disparos": 1,
+     "evaluados": 34
+    },
+    {
+     "dia": "2025-10-25",
+     "disparos": 1,
+     "evaluados": 49
+    },
+    {
+     "dia": "2025-09-21",
+     "disparos": 0,
+     "evaluados": 0
+    }
+   ],
+   "frac_top5": 0.8462,
+   "noches_comunes_2025": 55,
+   "evaluados_comunes": 1409,
+   "disparos_comunes": 2,
+   "tasa_comunes_2025": 0.0014,
+   "p_fisher_comunes_vs_2026": 0.0003205973628426277,
+   "veredicto": "NO EPISÓDICO",
+   "noches_2026_con_disparo": {
+    "2026-10-15": 1,
+    "2026-10-17": 1,
+    "2026-10-29": 6,
+    "2026-11-05": 2,
+    "2026-11-11": 2
+   }
+  },
+  "B2": {
+   "FD": {
+    "mediana_disparan": 0.0054,
+    "mediana_no": 0.0048,
+    "dif": 0.0006,
+    "p": 0.3839282102447902,
+    "asociado": false
+   },
+   "acm1": {
+    "mediana_disparan": 0.3967,
+    "mediana_no": 0.2867,
+    "dif": 0.1099,
+    "p": 5.940417124844977e-11,
+    "asociado": true
+   },
+   "inv": {
+    "mediana_disparan": -0.7473,
+    "mediana_no": -1.5432,
+    "dif": 0.7959,
+    "p": 6.281263121633529e-07,
+    "asociado": true
+   },
+   "bt_ctrl": {
+    "mediana_disparan": 278.5549,
+    "mediana_no": 278.2758,
+    "dif": 0.2791,
+    "p": 0.6423752219993568,
+    "asociado": false
+   }
+  },
+  "B2_tajadas": {
+   "2025": [
+    0,
+    0,
+    0,
+    0,
+    21,
+    12,
+    32,
+    6,
+    6,
+    1,
+    0,
+    0
+   ],
+   "2026": [
+    0,
+    0,
+    0,
+    0,
+    4,
+    5,
+    3,
+    0,
+    0,
+    0,
+    0,
+    0
+   ]
+  },
+  "B3": {
+   "2025": {
+    "p5": -0.3227,
+    "p25": -0.1554,
+    "p50": -0.0985,
+    "n": 1754,
+    "frac_pasan_compuerta": 0.6496
+   },
+   "2026": {
+    "p5": -0.2963,
+    "p25": -0.2062,
+    "p50": -0.1396,
+    "n": 858,
+    "frac_pasan_compuerta": 0.393
+   }
+  }
+ }
+}

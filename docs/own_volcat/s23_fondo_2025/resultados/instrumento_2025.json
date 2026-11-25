@@ -1,0 +1,16 @@
+{
+ "cuadros": 8928,
+ "l1b_presentes": 8911,
+ "cobertura_l1b": 0.9980958781362007,
+ "acm_presentes": 8803,
+ "cobertura_acm": 0.9859991039426523,
+ "scan_distinto_descartados": 0,
+ "congelados": 0,
+ "bt11_en_rango": 1.0,
+ "planck_dif_rel_max_c14": 0.0,
+ "planck_dif_rel_max_c15": 0.0,
+ "I4_noches_2025": 1255,
+ "I4_noches_2026": 679,
+ "I4_correlacion": 0.9851495623816026,
+ "falla": []
+}

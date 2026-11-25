@@ -20,7 +20,69 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S22, 2026-11-24 (PR 121 a 124 en main: detector propio por tajadas, sin nubes y con altura; ninguno llega; los controles de sep-nov 2026 tenían pluma)
+## 0. S23, 2026-11-25 (fondo sin pluma de oct-nov 2025: S23a PARCIAL, un día; la candidata S23b llega a 25 de 54 cuadros de VOLCAT, post hoc, con criterio congelado para confirmarla)
+
+> Sesión S23 (worktree `s23-fondo-2025-68f1e1`, lanzada por S22). Nicolás autorizó el 25-11 fusionar sin preguntar en
+> esta sesión; PR de S23 fusionado por mí con `--match-head-commit`. Informe completo:
+> `docs/own_volcat/s23_fondo_2025/INFORME.md`.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Fondo sin pluma oct-nov 2025 (C14, C15, ACMF, 21-09 a 21-11-2025) | **Completo**: L1B 8.911 de 8.928, ACMF 8.803 (lo demás no existe en NOAA). La primera corrida de S22 murió a las 18:35 del 24-11 en 816 de 1.488 h; relanzada, y el ACMF en paralelo con el sí de Nicolás | `D:\goes_notas\s22\s22d_2025\` (logs `bajar_*.log`) |
+| S23a: regla de S22b con base, costumbre y umbral de 2025 | **PARCIAL** por la regla: 8 de 30 P (p25 8e-5), todos del 08-11; sin ese día 0 de 17. Instrumento pasa (I4 0,985, Planck idéntico), seco 0,043, poder 0,01 / 0,585 | criterio `1594187` antes de abrir 2025; `resultados/s23a_resultado.json` |
+| Por qué se pierde el 28-10 | 70 de 100 P sin evaluar por pocas tajadas: la costumbre de 2025 borra como "nube nueva" la nieve de 2026 (29 a 50 % del anillo contra 4 a 47 %) | `resultados/diagnostico_posthoc.json` |
+| S23b candidata (post hoc): costumbre de cada año, base y umbral de 2025 | 25 de 54 P (28-10 10/17, 29-10 3/3, 08-11 9/13, 11-11 3/3, 14-11 0/15), esperado 2,6; N de 2026 cercanos 3 de 234; disparos al SE. **No probado**: criterio congelado, se mide una vez con 20 P en 2 días nuevos | `criterio_S23b_2026-11-25.md` (`97bdec1`, `af46f12`); `scripts/s23b_confirmar.py` |
+| Respaldo VOLCAT Chile_Central_2_km (pedido por Nicolás) | **Hecho**: todo lo que SSEC publicaba (25-10 23:50 al 25-11 05:30 UTC); 2.460 PNG nuevos más los 1.555 ya guardados. Lo anterior al 25-10 ya lo borró SSEC | `D:\goes_notas\s23\volcat_png\Chile_Central_2_km\frames\` (1,1 GB) |
+| Videos lado a lado | `C:\Users\nmend\Downloads\s23a_lado_a_lado_*` (regla) y `s23b_lado_a_lado_*` (candidata: 28-10, 29-10 de noche, 05, 08, 11, 14-11) | `scripts/s23_lado_a_lado.py [--costumbre2026]` |
+| Disco D: | **5,6 GB libres, bajo el piso de 6 GB**: la bajada de días nuevos de S23b se corta sola. Lo de S23 ocupa ~1,4 GB; el resto lo comparte `D:\vrp-trabajo\` (sesiones de VRP) | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Liberar espacio en D: (bajo 6 GB) | Revisar `D:\vrp-trabajo\temporales\` (VRP) o el paquete de Fuego de SSEC (16 GB, S21 decisión 6); no lo borré porque no es de S23 |
+| 2 | Comprobar con cámaras la dirección de la pluma del 28-10, 29-10 (00 a 02 UTC) y 11-11 de tarde | Sí: son los días que la candidata S23b alcanza y S23a no |
+| 3 | Disparo externo de los workflows de 10 min; sector de mesoescala; correo a Pavolonis | Siguen de S21 y S22 |
+
+### c. Lo aprendido
+
+- **El nublado de costumbre no se traslada entre años** (método, proyecto). Lo que la máscara de NOAA marca como nube
+  de costumbre de día es nieve, y cambia de un año a otro. Lo que resta o compara (base, umbral) se trae del año sin
+  pluma; lo que sólo decide qué píxel borrar se mide en el año que se mira.
+- **Un azar por hora estimado en 0 hace la cola degenerada** (método): con pocos cuadros de control por hora, comparar
+  con Fisher contra el pozo de controles cercanos, no con Poisson binomial por hora.
+- **Una bajada larga lanzada desde otra sesión puede morir sin aviso**: vigilar con un bucle en segundo plano que salga
+  si el conteo de archivos no cambia en 25 min.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** el fondo de 2025 es comparable (misma grilla, misma calibración).
+- **SOSPECHA (post hoc):** con la costumbre de cada año el detector llega a casi la mitad de lo que VOLCAT mostró.
+- **SIN EXPLICAR:** 2026 dispara menos que 2025 de noche (0,5 % contra 4 %).
+- **SIN DATO:** el 14-11 (pluma pegada al cráter) no se alcanza en ninguna versión; el anillo parte en 4 km.
+
+### e. Prompt para la próxima sesión (S24)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Sesión S24; titúlala "Goes S24: ..." y numera su
+traspaso como S24. Usa /retomar.
+1. Verifica: git fetch; gh pr list; main en el remoto; espacio en D: (S23 lo dejó en 5,6 GB, bajo el piso de 6).
+2. Lee STATUS.md "## 0." (S23) y docs/own_volcat/s23_fondo_2025/INFORME.md.
+3. Trabajo: confirmar S23b en días nuevos. Corre `python -I s23b_confirmar.py contar <hoy>` (sólo clasifica
+   VOLCAT; no gasta la prueba). Cuando diga LISTO PARA MEDIR (20 P en 2 días desde el 25-11): `bajar <hora>` y
+   `medir`, UNA vez, y videos con s23_lado_a_lado.py --costumbre2026. Antes, que D: tenga 6 GB libres.
+4. Si queda tiempo: el 14-11 (pluma pegada al cráter) y por qué 2026 dispara menos que 2025 de noche.
+5. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS;
+   la carpeta principal no se toca; docs/auditoria_2026-11 no se sube; nada de SSEC al repo; criterio antes de
+   medir; ningún día de jul-nov 2026 es "sin actividad"; fusionar sólo con el sí de Nicolás y --match-head-commit.
+```
+
+---
+
+## 0-prev18. S22, 2026-11-24 (PR 121 a 124 en main: detector propio por tajadas, sin nubes y con altura; ninguno llega; los controles de sep-nov 2026 tenían pluma)
 
 > Sesión S22 (worktree `s22-5a2702`, lanzada por S21). S22a la hizo esta sesión; S22b y S22c, dos subagentes en
 > paralelo en sus worktrees (`agent-a717009ec169a622a`, `agent-a574eb91fb7c2f8fe`). Con el sí de Nicolás se fusionaron

@@ -20,7 +20,64 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S23, 2026-11-25 (fondo sin pluma de oct-nov 2025: S23a PARCIAL, un día; la candidata S23b llega a 25 de 54 cuadros de VOLCAT, post hoc, con criterio congelado para confirmarla)
+## 0. S24, 2026-11-25 (la noche de 2026 dispara más que una noche común de 2025; el 14-11 quedó INVÁLIDA por el control; la regla de rumbo S24c se abandona en la calibración; S23b sigue esperando días nuevos)
+
+> Sesión S24 (worktree `s24-confirmar-s23b-11fe53`, lanzada por S23). Informe: `docs/own_volcat/s24_dia14_noche/INFORME.md`.
+> Rama `claude/s24-confirmar-s23b-11fe53`, sin fusionar al escribir este bloque.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Confirmación S23b en días nuevos | **Esperando**: 0 cuadros P de VOLCAT el 25-11 hasta 10:30 UTC (49 N, 15 otro). La medida exige 20 P en 2 días | `docs/own_volcat/s23_fondo_2025/resultados/volcat_clases_desde_25nov.csv` |
+| Disco D: | **16 GB libres** (S23 lo dejó en 5,6): ya no corta la bajada | `df` |
+| Bajada adelantada de GOES de días nuevos | El clasificador de permisos la bloqueó: el encargo dice bajar sólo cuando `contar` diga LISTO PARA MEDIR. Se baja entonces | |
+| Noche 2026 contra 2025 | **Era artefacto**: 5 noches de 2025 ponen el 85 % de los disparos nocturnos; en noches comunes 2025 dispara 0,14 % y 2026 1,4 % (p 0,0003), en 29-10, 05-11 y 11-11. Las noches que disparan en 2025 tienen capa baja o inversión (ACM "probablemente despejado", anillo menos frío) | criterio `5c83319`, resultado `6024f12` |
+| 14-11 (firma en la huella de VOLCAT) | **INVÁLIDA**: el control del 08-11 promedió el anillo entero y diluyó su firma de 15 a 40 km. Post hoc: huella de VOLCAT de 4 a 31 píxeles, la mitad dentro de 4 km; nuestra tajada mínima se queda al SE de 17:20 a 19:00 rozando el umbral | `docs/own_volcat/s24_dia14_noche/resultados/s24_resultado.json` |
+| S24c, persistencia de rumbo | **Abandonada** por su criterio: en 2025 ningún percentil cumple la falsa alarma (0,056 a 0,165). El fondo también tiene rumbo propio | criterio `d11eab8`, `979216c` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Fusionar el PR de S24 (sólo documentos y scripts de investigación) | Sí |
+| 2 | Comprobar con cámaras la dirección de la pluma del 14-11 de 17:00 a 19:00 UTC (¿hacia el SE?) | Sí: el detector apunta al SE once cuadros seguidos y VOLCAT salta de rumbo |
+| 3 | Las de S23 (cámaras 28-10, 29-10, 11-11; disparo externo de workflows; mesoescala; correo a Pavolonis) | Siguen |
+
+### c. Lo aprendido
+
+- **El control positivo se mide donde está la señal conocida** (método): promediar la huella entera del 08-11 diluyó su
+  firma lejana con píxeles cercanos sin firma, y eso invalidó la pregunta del 14-11.
+- **Una tasa de falsa alarma de un año tranquilo puede ser de pocas noches** (método, proyecto): antes de comparar
+  tasas entre años, mirar cuánto ponen las noches con más disparos.
+- **El fondo también sostiene rumbo** (proyecto): la persistencia de dirección sola no separa pluma de suelo y cielo.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** el 4 % nocturno de 2025 son siete noches; 2026 dispara más que una noche común de 2025.
+- **SOSPECHA:** los disparos nocturnos de 2026 (29-10, 05-11, 11-11) son pluma diaria.
+- **SIN DATO:** la zona de 0 a 4 km del cráter (donde vive la huella del 14-11) no la mira ningún detector.
+
+### e. Prompt para la próxima sesión (S25)
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Sesión S25; titúlala "Goes S25: ..." y numera su
+traspaso como S25. Usa /retomar.
+1. Verifica: git fetch; gh pr list (PR de S24 abierto o fusionado); main en el remoto; espacio en D: (16 GB el 25-11).
+2. Lee STATUS.md "## 0." (S24) y docs/own_volcat/s24_dia14_noche/INFORME.md.
+3. Confirmar S23b: `python -I docs/own_volcat/s23_fondo_2025/scripts/s23b_confirmar.py contar <hoy>`. Cuando diga
+   LISTO PARA MEDIR: `bajar <hora>`, `medir` UNA vez, videos con s23_lado_a_lado.py --costumbre2026, informe, PR.
+4. Si queda tiempo, con criterio empujado antes de medir: la zona de 0 a 4 km del cráter (calor encima) o un rumbo
+   contra el rumbo preferido del fondo a esa hora. No reabrir S24c ni la pregunta "2026 dispara menos de noche".
+5. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS;
+   la carpeta principal no se toca; docs/auditoria_2026-11 no se sube; nada de SSEC al repo; criterio antes de
+   medir; ningún día de jul-nov 2026 es "sin actividad"; fusionar sólo con el sí de Nicolás y --match-head-commit.
+```
+
+---
+
+## 0-prev19. S23, 2026-11-25 (fondo sin pluma de oct-nov 2025: S23a PARCIAL, un día; la candidata S23b llega a 25 de 54 cuadros de VOLCAT, post hoc, con criterio congelado para confirmarla)
 
 > Sesión S23 (worktree `s23-fondo-2025-68f1e1`, lanzada por S22). Nicolás autorizó el 25-11 fusionar sin preguntar en
 > esta sesión; PR de S23 fusionado por mí con `--match-head-commit`. Informe completo:

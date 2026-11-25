@@ -1,0 +1,22 @@
+{
+ "criterio": "criterio_S24c_2026-11-25.md (d11eab8)",
+ "seco_por_PB": {
+  "10": {
+   "fa_media_por_dia": 0.0562
+  },
+  "15": {
+   "fa_media_por_dia": 0.0764
+  },
+  "20": {
+   "fa_media_por_dia": 0.1087
+  },
+  "25": {
+   "fa_media_por_dia": 0.1385
+  },
+  "30": {
+   "fa_media_por_dia": 0.1649
+  }
+ },
+ "P_B": null,
+ "abandonada": true
+}

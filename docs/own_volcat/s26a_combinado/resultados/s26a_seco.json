@@ -1,0 +1,109 @@
+{
+ "criterio": "criterio_2026-11-25.md (28f963b)",
+ "reproduccion_pct5": {
+  "anillo_seco_media_dia": 0.04279096445833097,
+  "zona_seco_global": 0.032005819239861795,
+  "anillo_P": [
+   25,
+   54
+  ],
+  "zona_P": [
+   44,
+   93
+  ]
+ },
+ "p_estrella": 4.75,
+ "veredicto_seco": "pasa",
+ "por_percentil": [
+  {
+   "pct": 5.0,
+   "union": {
+    "global": 0.051463902527732315,
+    "media_por_dia": 0.045689061794181446,
+    "disparos": 283,
+    "evaluados": 5499,
+    "noche_03_09": [
+     102,
+     1453
+    ],
+    "dia_12_24": [
+     113,
+     2704
+    ]
+   },
+   "anillo": {
+    "global": 0.03898582333696837,
+    "media_por_dia": 0.04279096445833097,
+    "disparos": 143,
+    "evaluados": 3668,
+    "noche_03_09": [
+     54,
+     1179
+    ],
+    "dia_12_24": [
+     55,
+     1473
+    ]
+   },
+   "zona": {
+    "global": 0.032005819239861795,
+    "media_por_dia": 0.02586297119535018,
+    "disparos": 176,
+    "evaluados": 5499,
+    "noche_03_09": [
+     63,
+     1453
+    ],
+    "dia_12_24": [
+     76,
+     2704
+    ]
+   }
+  },
+  {
+   "pct": 4.75,
+   "union": {
+    "global": 0.048917985088197856,
+    "media_por_dia": 0.04308484803833128,
+    "disparos": 269,
+    "evaluados": 5499,
+    "noche_03_09": [
+     98,
+     1453
+    ],
+    "dia_12_24": [
+     105,
+     2704
+    ]
+   },
+   "anillo": {
+    "global": 0.0376226826608506,
+    "media_por_dia": 0.03998573325864734,
+    "disparos": 138,
+    "evaluados": 3668,
+    "noche_03_09": [
+     52,
+     1179
+    ],
+    "dia_12_24": [
+     52,
+     1473
+    ]
+   },
+   "zona": {
+    "global": 0.0298236042916894,
+    "media_por_dia": 0.024033804806685856,
+    "disparos": 164,
+    "evaluados": 5499,
+    "noche_03_09": [
+     60,
+     1453
+    ],
+    "dia_12_24": [
+     69,
+     2704
+    ]
+   }
+  }
+ ]
+}

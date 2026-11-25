@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-25 (sesión S27b, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-25 (sesión S27a, bloque "## 0." abajo; S27b queda como 0-prev24). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,60 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S27b, 2026-11-25 (altura por la rapidez del pulso del cráter al anillo: NO DECIDIBLE; la rapidez separa capa baja de alta, pero el detector no ve pulsos sino pluma continua)
+## 0. S27a, 2026-11-25 (qué dispara de noche: depósito NO, nieve NO DECIDIBLE, pluma SIN PODER por un umbral mío inalcanzable; leído después, los disparos no siguen al viento y caen siempre en la cumbre aparente)
+
+> Sesión S27a (worktree `s27a-noche-viento-9d839d`, lanzada por la sesión que corre S27a y S27b en paralelo). Informe:
+> `docs/own_volcat/s27a_noche_causa/INFORME.md`. S27b (altura por rapidez) sigue abajo como `0-prev24`, S26b como
+> `0-prev23`; S25b (fondo 2024) corre aparte. Ningún día posterior al 24-11: las confirmaciones siguen intactas.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Criterio | Empujado antes de cruzar un disparo con el viento; enmienda 1 (GFS 1° cada 3 h, la red estaba saturada por S25b) también antes | `2c7af2b`, `85856a4` |
+| Comprobación de código | Seco de la unión 269 de 5.499; disparos y píxeles de 2026 iguales a `tabla_2026.csv`; la zona generalizada reproduce la de S25a | `resultados/s27a_resultado.json` |
+| Disparos nocturnos 2026 fuera de VOLCAT | 179 cuadros: 175 de la zona, 4 del anillo. Zona de noche 18,2 % (175/961) contra 4,1 % en 2025 | idem |
+| P, pluma (¿siguen al viento GFS de 3 a 6 km?) | C = −0,43 (96 cuadros, 21 noches), nulo por corrimiento de días mediana −0,52, p = 0,34. Pluma ideal C = 0,77, p = 0,0164 = el piso con 60 corrimientos | **SIN PODER** por la regla (pedí p ≤ 0,01, inalcanzable: error mío). Con 0,05, post hoc: sería PLUMA NO |
+| N, nieve (misma regla en Antuco y Longaví) | Antuco 4,2 % a 1,2 % (R 0,30); Longaví 3,8 % a 6,4 % (R 1,7, p 0,002); Chillán R 4,4 | **NO DECIDIBLE** (ninguna vecina repite el salto de Chillán) |
+| D, depósito (fijo, toda la noche, también de día) | Mediana por noche 7 %; rachas de 20 min (máx. 3 h 20); A de tarde −0,20 K, de noche −0,24 K; los píxeles dominantes cambian entre mitades | **DEPÓSITO NO** |
+| Post hoc | Mismos píxeles (43,46) y (43,47), la cumbre aparente a 3 a 5 km por paralaje, con viento hacia 342°, 99° o 125°; en sep y comienzos de oct, (41,46) al N del cráter con 14 a 23 m/s hacia el SE. Con nube dinámica del 20 al 50 % la zona dispara 27 %; con anillo despejado 16 % | `D:\goes_notas\s27\s27a\cuadros_noche_2026.csv` |
+| Videos de noche con flecha de viento y cumbre aparente | `C:\Users\nmend\Downloads\s27a_noche_detector_y_viento_chillan_<día>_0300-0850UTC_10min.mp4` para 27-09, 08-11 y 12-11 | `scripts/s27a_lado_a_lado.py` |
+| Disco D: | ~11 GB libres; S27a usa ~10 MB en `D:\goes_notas\s27\s27a\` (641 horas de GFS 1°) | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Cámaras nocturnas del OVDAS, hora de Chile: 07 a 08-11 de 00:00 a 05:50, 11 a 12-11 de 01:40 a 04:30, 13 a 14-11 de 00:00 a 05:50 (¿pluma o pulsos sobre el cráter aunque no se alejen?) y 26 a 27-09 de 00:00 a 04:40, 04 a 05-10 de 00:00 a 03:40 (¿pluma o nube sobre la cumbre?) | Sí: GOES no separa por posición una pluma que no se aleja de la superficie de la cumbre; las cámaras sí |
+| 2 | Las de S27b, S26b, S26a y S25a (bocanada aislada de tarde, videos de la unión, correo a Pavolonis) | Siguen |
+
+### c. Lo aprendido
+
+- **Un nulo por permutación tiene piso** (método, vale para todo el workspace): con n permutaciones el p más chico es
+  1/(n+1). Antes de fijar un umbral, contar cuántos nulos hay; con 60 corrimientos, p ≤ 0,01 es imposible.
+- **Con píxeles de 2 km, una pluma que no se aleja y la cumbre ocupan los mismos píxeles** (física): el paralaje pone
+  la cumbre y lo que flota sobre el cráter a 3 a 5 km en el mismo lugar aparente, sin importar el viento. La dirección
+  sólo ayuda cuando la pluma deriva más de un píxel con firma.
+- **El fondo de 2025 también sigue al viento algo** (proyecto): C = +0,23 (p 0,052): las noches de capa baja de S24
+  son nube orográfica.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** lo que dispara de noche en 2026 no es un depósito (no dura la noche, no se ve de día) ni un salto
+  regional (Antuco baja, Longaví sube poco).
+- **SOSPECHA:** en noviembre, pluma o pulsos que no se alejan del cráter (cumbre aparente); en septiembre, nube sobre
+  la cumbre o superficie al norte. Post hoc, sin criterio.
+- **SIN PROBAR:** la prueba de viento con un nulo de más resolución y umbral alcanzable (criterio propio).
+
+### e. Prompt para la próxima sesión
+
+El de S26a (`0-prev22` §e) sigue vigente (confirmaciones en días nuevos), con las lecturas de S26b, S27b y S27a. Sobre la
+noche: no repetir depósito ni nieve; si se rehace la prueba de viento, nulo con más resolución y umbral alcanzable,
+escrito antes. Lo que más decide ahora son las cámaras del OVDAS en las noches de §b.
+
+---
+
+## 0-prev24. S27b, 2026-11-25 (altura por la rapidez del pulso del cráter al anillo: NO DECIDIBLE; la rapidez separa capa baja de alta, pero el detector no ve pulsos sino pluma continua)
 
 > Sesión S27b (worktree `s27b-altura-desfase-04d8dd`, lanzada por la sesión que corre S27a y S27b en paralelo). Informe:
 > `docs/own_volcat/s27b_altura_desfase/INFORME.md`. El bloque de S26b sigue abajo como `0-prev23`; S27a (causa de

@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-25 (sesión S26a, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-25 (sesión S26b, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,58 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S26a, 2026-11-25 (un solo detector, zona del cráter O anillo: 63 de 93 cuadros de VOLCAT con 4,9 % de falsa alarma en 2025, como DESARROLLO; criterio único de confirmación en días nuevos)
+## 0. S26b, 2026-11-25 (el calor del cráter NO explica los disparos nocturnos de la zona: sin calor se dispara más que con calor; la física dice que el material incandescente sólo sube la BTD)
+
+> Sesión S26b (worktree `s26b-noche-crater-d9afef`, lanzada por la sesión que corre S26a y S26b en paralelo). Informe:
+> `docs/own_volcat/s26b_noche_crater/INFORME.md`. El bloque de S26a (detector unión, confirmación en días nuevos) sigue
+> abajo como `0-prev22` y su prompt para S27 sigue vigente; S25b (fondo 2024) corre aparte.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Física (antes de mirar datos) | Material incandescente subpíxel (1 a 80 MW, 600 a 1.200 K): la BTD 11 menos 12 µm **sólo sube**, +0,001 a +0,36 K. Única vía térmica que la baja: suelo tibio extenso con ε11 < ε12, y para llegar al umbral nocturno pide BT11 +19 K o más | criterio `2643ab0`, `resultados/s26b_fisica.json` |
+| Serie de calor nocturno de Chillán 14-09 a 24-11 (regla validada tal cual) | 1.583 cuadros, 5 sin gránulo; igual a la validación en 41 de 42 noches (20-11 difiere por referencia, sin cuadros de la zona) | `D:\goes_notas\s26\s26b\` |
+| Reproducción de S25a | Ensayo en seco 2025 176 de 5.499; disparos 2026 idénticos a `tabla_2026.csv` | `resultados/s26b_resultado.json` |
+| Tasa nocturna de disparo | Noches sin calor sobre 10 MW (11): **34 %** (107/310). Encendidas (23): **21 %** (228/1.092). Época 21-09 a 11-10: 39 %. 2025: 3,7 % (94/2.562). Con cielo despejado E1: 22 %, 22 %, 3,7 % | idem, E1 y E3 |
+| Dentro de la noche | Cuadros sobre 10 MW contra bajo 10 MW, 19 noches: OR 0,71, p = 0,51 | idem, E2 |
+| Huella de suelo tibio | BT11 de los píxeles que disparan de noche, contra sí mismos en 2025: mediana **+0,6 K** (igual que sin disparo), 6 % sobre +3 K | idem, E5 |
+| **Veredicto** | **EL CALOR NO EXPLICA** | `INFORME.md` §2 |
+| Disco D: | 13 GB libres; S26b usa 0,2 MB en `D:\goes_notas\s26\s26b\` | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Cámaras del OVDAS en noches que disparan mucho **sin calor** (27-09: 42 de 55 cuadros; 26-09; 07-10; 05-10) y **con calor** (08-11: 49 de 62; 27-10; 14-11): ¿hay pluma sobre el cráter? | Sí: con el calor descartado, separa pluma de depósito o nieve |
+| 2 | Las de S26a, S25a, S24 y S23 (videos de la unión, 14-11 y 10-11 de tarde, correo a Pavolonis) | Siguen |
+
+### c. Lo aprendido
+
+- **Una fuente caliente subpíxel sólo sube la BTD de ventana** (física, vale para todo detector de ceniza por BTD):
+  la curvatura de Planck hace subir más la BT a 11 que a 12 µm. El calor sólo baja la BTD si amplifica un contraste
+  de emisividad de un suelo tibio extenso, y eso calienta el píxel a 11 µm decenas de kelvin.
+- **Antes de culpar a un cambio de estado, mirar la época sin él** (método): la zona ya disparaba en septiembre, con
+  0 MW. Comparar "sin el cambio" contra el año tranquilo resolvió la pregunta sin depender de la asociación.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (por su regla):** el calor del cráter no está detrás de los disparos nocturnos de la zona; el píxel
+  caliente no fabrica disparos (física) ni se asocia a ellos (E1, E2, E5).
+- **SOSPECHA:** los disparos nocturnos de 2026 son pluma diaria, depósito de ceniza o distinta nieve; las tres dejan
+  la BT11 casi igual que en 2025. Post hoc: con calor disparan los píxeles 1,8 a 2,3 km al S de la cumbre aparente,
+  sin calor el del cráter real; puede ser época, no calor.
+- **SIN PROBAR:** una firma que separe depósito (fijo, toda la noche) de pluma (se mueve). Necesita criterio propio.
+
+### e. Prompt para la próxima sesión (S27)
+
+El de S26a (`0-prev22` §e) sigue vigente: confirmación de S23b, S25a y la unión S26a en días nuevos. Agregar al paso 2
+la lectura de `docs/own_volcat/s26b_noche_crater/INFORME.md`, y como pista sin criterio todavía: depósito contra
+pluma en las noches que la zona dispara (persistencia del píxel durante la noche y entre noches).
+
+---
+
+## 0-prev22. S26a, 2026-11-25 (un solo detector, zona del cráter O anillo: 63 de 93 cuadros de VOLCAT con 4,9 % de falsa alarma en 2025, como DESARROLLO; criterio único de confirmación en días nuevos)
 
 > Sesión S26a (worktree `s26a-combinado-cceab0`, lanzada por la sesión que corre S26a y S26b en paralelo). Informe:
 > `docs/own_volcat/s26a_combinado/INFORME.md`. S25b (fondo 2024 con GOES-16) y S26b (disparo nocturno del cráter

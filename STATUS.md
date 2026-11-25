@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-25 (sesión S26b, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-25 (sesión S27b, bloque "## 0." abajo). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,57 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S26b, 2026-11-25 (el calor del cráter NO explica los disparos nocturnos de la zona: sin calor se dispara más que con calor; la física dice que el material incandescente sólo sube la BTD)
+## 0. S27b, 2026-11-25 (altura por la rapidez del pulso del cráter al anillo: NO DECIDIBLE; la rapidez separa capa baja de alta, pero el detector no ve pulsos sino pluma continua)
+
+> Sesión S27b (worktree `s27b-altura-desfase-04d8dd`, lanzada por la sesión que corre S27a y S27b en paralelo). Informe:
+> `docs/own_volcat/s27b_altura_desfase/INFORME.md`. El bloque de S26b sigue abajo como `0-prev23`; S27a (causa de
+> los disparos nocturnos) y S25b (fondo 2024) corren aparte. Es desarrollo: días ya mirados, ninguno después del 24-11.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Criterio | Empujado antes de bajar viento y de calcular una altura con datos de pluma | `adace39` (17:26 UTC) |
+| Resolución esperable (plumas sintéticas, sólo perfiles GFS ya publicados) | Rapidez sola: bandas de 4 a 5,5 km en la capa baja, separa capa baja de alta; con rumbo restringe (1,7 a 2,3 km) sólo en tarde con viento firme; en calma 4 a 5 km. Corrigió la regla de rumbo de S22c (excluía las capas en calma, y la sombra estaba en una) | `resultados/s27b_resolucion.json` |
+| Pares pulso de cráter y llegada al anillo (6 días) | 5 llegadas: 1 par único (28-10 19:20, pulso 18:10), 1 ambiguo (08-11 17:30, pulsos 15:50 o 17:00), 3 sin pulso | `resultados/s27b_pares.json` |
+| **Sombra 08-11 (4,7 km, decide)** | Los dos pulsos dan banda casi igual (3,2 a 7,6 y 3,3 a 7,5 km): ambigua sin resolver | **NO DECIDIBLE** |
+| Avance dentro del anillo | 08-11 17:30: 1,3 m/s en 6 cuadros; 28-10 20:00: 2,2 m/s. Es pluma continua, no pulso | `resultados/s27b_resultado.json` |
+| 28-10 19:20 (informativo) | Banda 4,1 a 4,2 km (VOLCAT 3,5): restringe por la regla, pero es el borde de la calma del GFS, que sopla al N mientras la pluma va al S | idem |
+| Videos lado a lado con la altura anotada | `C:\Users\nmend\Downloads\s27b_lado_a_lado_altura_por_rapidez_chillan_2026-10-28_1730-2030UTC_10min.mp4` y `C:\Users\nmend\Downloads\s27b_lado_a_lado_altura_por_rapidez_chillan_2026-11-08_1530-1830UTC_10min.mp4` | `scripts/s27b_lado_a_lado.py` |
+| Disco D: | 11 GB libres; S27b usa 3 MB en `D:\goes_notas\s27\s27b\` y 2 horas GFS más en `D:\goes_notas\s22\s22c\gfs\` | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Hay en oct-nov 2026 alguna tarde con viento firme en que Chillán haya hecho una bocanada aislada tras una pausa (cámaras)? | Sí, si existe: es el único caso en que seguir el frente da altura |
+| 2 | Las de S26b, S26a y S25a (cámaras en noches que disparan, videos de la unión, correo a Pavolonis) | Siguen |
+
+### c. Lo aprendido
+
+- **La rapidez rompe la ambigüedad del rumbo, pero sólo entre capas** (física): con viento casi uniforme de la cumbre a
+  8 km, 10 min y 2,8 km por píxel no dan más que "bajo 8 km" o "sobre 8 km".
+- **Probar la regla con plumas sintéticas antes de medir** (método): la regla de rumbo heredada excluía la verdad por
+  construcción en calma; sólo se vio poniendo una pluma sintética a la altura de la sombra.
+- **Emparejar disparos no es seguir una pluma** (método): una pluma continua hace "llegar" al anillo algo que no
+  viajó; el avance de los píxeles dentro del anillo lo delata.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (dos casos):** las llegadas al anillo del 08-11 y del 28-10 son pluma continua (avanzan 1 a 2 m/s).
+- **SOSPECHA:** la pluma del 08-11 de tarde va bajo 8 km (las dos bandas lo dicen; es post hoc y es lo que ya decían
+  la sombra, el VAAC y VOLCAT).
+- **SIN PROBAR:** seguir el frente de la pluma entre cuadros (avance dentro del anillo) con criterio propio.
+
+### e. Prompt para la próxima sesión
+
+El de S26a (`0-prev22` §e) sigue vigente (confirmaciones en días nuevos), con la lectura de S26b (`0-prev23`). Para
+altura propia: no reintentar el emparejamiento de disparos; si Nicolás encuentra una bocanada aislada en tarde con
+viento firme, escribir criterio para seguir su frente dentro del anillo (`s27b_medir.avance_en_anillo` es el borrador).
+
+---
+
+## 0-prev23. S26b, 2026-11-25 (el calor del cráter NO explica los disparos nocturnos de la zona: sin calor se dispara más que con calor; la física dice que el material incandescente sólo sube la BTD)
 
 > Sesión S26b (worktree `s26b-noche-crater-d9afef`, lanzada por la sesión que corre S26a y S26b en paralelo). Informe:
 > `docs/own_volcat/s26b_noche_crater/INFORME.md`. El bloque de S26a (detector unión, confirmación en días nuevos) sigue

@@ -20,7 +20,83 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S27a, 2026-11-25 (qué dispara de noche: depósito NO, nieve NO DECIDIBLE, pluma SIN PODER por un umbral mío inalcanzable; leído después, los disparos no siguen al viento y caen siempre en la cumbre aparente)
+## 0. Cierre de la coordinación S23, 2026-11-25 (coordinó S24 a S27, PR 125 a 131 en main; S25b sigue corriendo; la coordinación pasa a S28, sesión de primer nivel)
+
+> Sesión `s23-fondo-2025-68f1e1` (S23, lanzada por S22). Hizo S23 y después, a pedido de Nicolás ("sigue con todo,
+> que más podemos hacer en paralelo"), lanzó y revisó S24, S25a, S25b, S26a, S26b, S27a y S27b, y fusionó con su
+> autorización ("puedes fusionar todo lo que necesites siempre podemos volver atrás..."). Al cerrar lanzó **S28**
+> (`local_36977cef-5c6d-46e6-b890-b4299891d5c8`, "Goes S28: coordinación en loop de sesiones paralelas") y la separó
+> al primer nivel: S28 revisa en ciclo las sesiones, los PR y la confirmación en días nuevos. **Estado fijado con
+> trabajo en curso**: S25b (fondo 2024 con GOES-16) seguía bajando ACMF y S28 recién partía; los dos pueden escribir
+> `STATUS.md` encima de este bloque.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| main | `93cbf57` en el remoto; ningún PR abierto al cerrar | `git ls-remote`, `gh pr list` |
+| S23 a S27 | Fusionados: 125 (S23), 126 (S24), 127 (S25a), 128 (S26a), 129 (S26b), 130 (S27b), 131 (S27a). Cada uno tiene su bloque abajo | `gh pr view` |
+| Mejor detector hasta hoy | Combinado S26a (zona del cráter S25a O anillo S23b, percentil 4,75): 63 de 93 P de VOLCAT, falsa alarma 4,9 % en 2025. **Desarrollo**: los días ya se habían mirado | bloque S26a |
+| Confirmación en días nuevos (S23b, S25a, S26a) | Esperando: se mide una vez con ≥20 P de VOLCAT en ≥2 días desde el 25-11. Al 25-11 11:30 UTC, 0 P | `s23b_confirmar.py contar <día>` |
+| S25b, fondo oct-nov 2024 (GOES-16), falsa alarma fuera de muestra | **CORRIENDO**: L1B 8.841 de 8.928 (lo que falta no existe en NOAA), ACMF bajando; criterio empujado antes de abrir datos; sin PR aún | sesión `local_3d1ecb8d-e1ee-48d4-bb01-14e7a5ce8616`, rama `claude/s25b-fondo-2024-73846a` |
+| S28, coordinadora | Lanzada y separada al primer nivel; no avisa a esta sesión | `detach_session` |
+| Disco D: | 14 GB libres (volvió a subir; el 25-11 temprano estuvo en 5,6) | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Cámaras del OVDAS: dirección de la pluma 28-10, 29-10 (00 a 02 UTC), 11-11 y 14-11 de tarde, y las noches que dejó S27a | Sí: es la única verdad que separa pluma, nieve o error en los disparos sin VOLCAT |
+| 2 | Archivar las sesiones terminadas S24, S25a, S26a, S26b, S27a, S27b | Sí, cuando S28 confirme que todo su trabajo está en main (`git cherry` 0) |
+| 3 | Integrar el detector combinado al dashboard como capa experimental | Todavía no: sólo después de la confirmación en días nuevos, con ficha SDA en el mismo commit |
+| 4 | Disparo externo de los workflows de 10 min; sector de mesoescala; correo a Pavolonis | Siguen de S21 y S22 |
+
+### c. Lo aprendido (ya enrutado a la memoria del proyecto)
+
+- **El nublado de costumbre no se traslada entre años** (método, proyecto): base y umbral del año limpio; la costumbre
+  de ACMF (nieve) del año que se mira. Memoria `feedback_costumbre_no_se_traslada`.
+- **El clasificador de permisos puede bloquear la fusión dentro de una sesión hija** aunque Nicolás la haya autorizado
+  (pasó en S25a): la coordinadora revisa y fusiona.
+- **Una bajada lanzada desde otra sesión muere si esa sesión se cierra** (24-11, 18:35): vigilar con un bucle que salga
+  si el conteo de archivos no cambia en 25 min. Leer de S3 en bloques de 64 KB multiplicó por 6 el ritmo (S25b).
+- **Mirar el detector en días nuevos antes de la medida única cuenta como vistazo** y la retrasa: por eso no se armó
+  un detector en tiempo casi real.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** el fondo de 2025 es comparable con 2026 (I4 0,985, Planck idéntico).
+- **CONFIRMADO:** el calor del cráter no explica los disparos nocturnos (S26b).
+- **SOSPECHA:** los disparos nocturnos de 2026 son pluma diaria (no siguen al viento, post hoc S27a; falta cámara).
+- **SIN DATO:** falsa alarma fuera de muestra (S25b, corriendo); confirmación en días nuevos (sin P de VOLCAT aún).
+
+### e. Cerrado, no rehacer
+
+S23a con costumbre de 2025 (PARCIAL, 8/30); S24c persistencia de rumbo (falsa alarma 0,056 a 0,165 en su
+calibración); altura por rumbo (S22c) y por desfase cráter-anillo (S27b, NO DECIDIBLE); depósito como causa nocturna
+(S27a, NO); calor del cráter como causa nocturna (S26b, no explica: 34 % sin calor contra 21 % con calor).
+
+### f. Prompt para la próxima sesión
+
+S28 ya está lanzada y coordina. Si S28 no sigue viva, la próxima coordinadora parte así:
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF) como COORDINADORA. Usa /retomar.
+1. Verifica: git fetch; gh pr list; main en el remoto; espacio en D: (piso 6 GB); sesiones de Goes vivas
+   (list_sessions) y si S25b (fondo 2024) y S28 dejaron PR o traspaso.
+2. Lee STATUS.md desde "## 0." hacia abajo hasta S23, y los INFORME.md de docs/own_volcat/s2*_*/.
+3. Trabajo en ciclo: revisa y fusiona (--match-head-commit, criterio empujado antes de la medida, nada de SSEC ni de
+   docs/auditoria_2026-11); corre una vez al día `python -I docs/own_volcat/s23_fondo_2025/scripts/s23b_confirmar.py
+   contar <hoy>` y, cuando diga LISTO PARA MEDIR, lanza la sesión que mide UNA vez S23b, S25a y S26a en el orden
+   de S26a; lanza nuevas sesiones independientes con criterio antes de medir.
+4. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS;
+   la carpeta principal no se toca; nada de SSEC al repo; ningún día de jul-nov 2026 es "sin actividad"; nadie mira
+   el detector en días posteriores al 24-11 antes de la medida; /cierre al llegar a la base + 250 mil tokens.
+```
+
+---
+
+## 0-prev25. S27a, 2026-11-25 (qué dispara de noche: depósito NO, nieve NO DECIDIBLE, pluma SIN PODER por un umbral mío inalcanzable; leído después, los disparos no siguen al viento y caen siempre en la cumbre aparente)
 
 > Sesión S27a (worktree `s27a-noche-viento-9d839d`, lanzada por la sesión que corre S27a y S27b en paralelo). Informe:
 > `docs/own_volcat/s27a_noche_causa/INFORME.md`. S27b (altura por rapidez) sigue abajo como `0-prev24`, S26b como

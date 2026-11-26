@@ -7,8 +7,8 @@ Por qué por días: los disparos de cada regla vienen en rachas dentro del día 
 Estadístico: R = P evaluados alcanzados / P evaluados de los días nuevos (misma `alcanzado`, misma compuerta, misma regla
 de cada confirmación).
 Nulo: las horas de TODOS los P de cada día nuevo con P (evaluados o no) se colocan, sin moverlas, sobre días distintos
-de un fondo (2025;
-2024 y 2026 sin VOLCAT como fondos aparte), una k-tupla ordenada de días distintos por colocación, y en cada colocación
+del conjunto {días del fondo} + {los k días nuevos con P} (2025 decide; 2024 y 2026 sin VOLCAT aparte), una k-tupla
+ordenada de días distintos por colocación (sin contar la observada, que es el "1 +"), y en cada colocación
 se mide R con los disparos de ese fondo. Sólo cuentan las colocaciones decidibles (al menos MIN_P_EVAL P evaluados y de
 al menos 2 días, el mismo mínimo del criterio). Con todas las horas P (y no sólo las evaluadas) el día observado es
 una colocación más del nulo: si los días son intercambiables, p_día es válido por construcción. p_día = (1 + colocaciones con R >= R observado) / (1 + colocaciones
@@ -52,17 +52,22 @@ def _tuplas(nd_pool, k, rng):
     return out
 
 
-def p_dia(e_obs, a_obs, e_fondo, a_fondo, pool):
-    """p_día de un caso. e_obs, a_obs: (k,) evaluados y alcanzados de cada día nuevo con P evaluado.
-    e_fondo, a_fondo: (k, nd) de tabla_fondo con las máscaras de esos mismos días. pool: índices de días del fondo que se
-    pueden usar. Devuelve (p, R_obs, colocaciones válidas, colocaciones con R >= R_obs, cuántas posibles)."""
+def p_dia(e_obs, a_obs, e_fondo, a_fondo, pool, obs=None):
+    """p_día de un caso. e_obs, a_obs: (k,) evaluados y alcanzados de cada día nuevo con P.
+    e_fondo, a_fondo: (k, nd) de tabla_fondo con las máscaras de esos mismos días, sobre un conjunto de días que INCLUYE
+    los k días observados (prueba de permutación exacta: enmienda §2.2). pool: índices de días que se pueden usar.
+    obs: los k índices de la colocación observada (cada día nuevo sobre sí mismo); esa colocación no se cuenta en el
+    nulo porque ya es el "1 +" de la fórmula.
+    Devuelve (p, R_obs, colocaciones válidas, colocaciones con R >= R_obs, cuántas posibles)."""
     e_obs = np.asarray(e_obs)
     a_obs = np.asarray(a_obs)
     k = len(e_obs)
     R = a_obs.sum() / e_obs.sum()
     pool = np.asarray(pool)
     rng = np.random.default_rng(SEMILLA)
-    T = pool[_tuplas(len(pool), k, rng)]                     # (n, k) días del fondo
+    T = pool[_tuplas(len(pool), k, rng)]                     # (n, k) días
+    if obs is not None:
+        T = T[~(T == np.asarray(obs)[None, :]).all(1)]
     E = e_fondo[np.arange(k)[None, :], T]                    # (n, k)
     A = a_fondo[np.arange(k)[None, :], T]
     Et, At = E.sum(1), A.sum(1)
@@ -150,6 +155,9 @@ def pruebas():
     a_f[1, 3] = 6
     p, R, nv, ng, n = p_dia(e_obs, a_obs, e_f, a_f, np.arange(5))
     assert ng == 1 and abs(p - 2 / 21) < 1e-12        # (2, 3) es la única colocación con R = 1
+    # obs: la colocación observada no se cuenta (k = 2 sobre 5 días: 20 tuplas, 19 sin la observada)
+    p, R, nv, ng, n = p_dia(e_obs, a_obs, e_f, a_f, np.arange(5), obs=(2, 3))
+    assert n == 19 and ng == 0 and abs(p - 1 / 20) < 1e-12, (p, n, ng)
     # decidibilidad: 12 P de un solo día no decide
     assert not decidible([12, 0]) and decidible([5, 5]) and not decidible([4, 5])
     e_f[0, :] = 0

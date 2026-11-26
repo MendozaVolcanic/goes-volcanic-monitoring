@@ -13,10 +13,15 @@ colocación más entre las del nulo y, con días intercambiables, p_día es vál
 exploratoria con la máscara "P evaluados del día observado" rompía esa simetría y daba 1,7 % de CONFIRMA falso a alfa
 0,01 en el anillo: descartada, log en D:\goes_notas\s30\s30a\calibrar_exploratorio_v201_PLANTILLA_EVALUADA_DESCARTADO.log.)
 
+Conjunto de referencia: los días del fondo MÁS los dos días observados (prueba de permutación exacta). Una segunda
+corrida que los sacaba del conjunto (lo que proponía S28b §4a.2) dio en el anillo CONFIRMA falso de 3,5 % a alfa 0,01 y
+1,9 % a 0,002: si un solo día placebo está "encendido" a esas horas y no está en la referencia, ninguna colocación lo
+iguala y el p cae al piso. Log: D:\goes_notas\s30\s30a\calibrar_v2_SIN_DIAS_OBSERVADOS_EN_LA_REFERENCIA_DESCARTADO.log.
+
 Variantes que se miden (las dos con el mismo alfa y el mismo R mínimo de cada criterio):
   A  sólo el nulo de 2025 decide (la recomendación de S28b §4a).
-  B  deciden el nulo de 2025 Y el de 2026 sin VOLCAT (días de 21-09 a 24-11-2026 sin P; en el placebo de 2026, sin los
-     dos días del placebo). Por qué se mide: la zona dispara en 2026 fuera de VOLCAT 4 a 5 veces más que en 2025
+  B  deciden el nulo de 2025 Y el de 2026 sin VOLCAT (días de 21-09 a 24-11-2026 sin P; en el placebo de 2026 los dos
+     días del placebo van una sola vez, como días observados). Por qué se mide: la zona dispara en 2026 fuera de VOLCAT 4 a 5 veces más que en 2025
      (V201: 23,1 % contra 5,1 %); un nulo sólo de 2025 premiaría "2026 no es 2025", que es justo lo que pN quería
      atajar y que la enmienda deja informativo.
 El nulo de 2024 se calcula siempre y es informativo.
@@ -25,7 +30,8 @@ Poder: sobre los mismos casos placebo (2025 y 2026 sin P), se fuerza que en cada
 quede alcanzada (los alcanzados del placebo se conservan) y se cuenta la fracción de casos decidibles que la regla
 escribe CONFIRMA.
 
-Uso: python -I -B -u s30a_calibrar.py [npz]   (por omisión D:\goes_notas\s30\s30a\disparos_s30a.npz)
+Uso: python -I -B -u s30a_calibrar.py [npz|-] [a|z|u]   (por omisión D:\goes_notas\s30\s30a\disparos_s30a.npz y las
+     tres reglas; con a, z o u, una sola regla y salida resultados/s30a_calibracion_<parte>.json)
 Salida: resultados/s30a_calibracion.json (cifras) y D:\goes_notas\s30\s30a\calibrar.log
 """
 import json
@@ -41,7 +47,8 @@ RES = os.path.join(os.path.dirname(AQUI), "resultados")
 sys.path.insert(0, AQUI)
 import s30a_nulo as N  # noqa: E402
 
-NPZ = sys.argv[1] if len(sys.argv) > 1 else r"D:\goes_notas\s30\s30a\disparos_s30a.npz"
+NPZ = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] != "-" else r"D:\goes_notas\s30\s30a\disparos_s30a.npz"
+SOLO = sys.argv[2] if len(sys.argv) > 2 else None        # "a", "z" o "u": una sola regla (para correr en paralelo)
 REGLAS = {"S23b anillo": ("a", 5.0, 0.40), "S25a zona": ("z", 5.0, 0.25), "S26a unión": ("u", 4.75, 0.40)}
 ALFAS = [0.0005, 0.001, 0.002, 0.0025, 0.005, 0.0075, 0.01, 0.02, 0.05]
 QS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
@@ -71,27 +78,20 @@ class Fondo:
         self.nd = len(EV)
 
 
-def null_counts(Mi, Mj, fondo, excl):
-    """Para cada caso (i, j) con máscaras Mi (n, 144) y Mj (n, 144): colocaciones válidas y e, a por día del fondo.
-    Devuelve E1 (n, nd), A1, E2, A2 y la máscara de días permitidos por caso (n, nd)."""
-    E1 = Mi.astype(float) @ fondo.EV.T.astype(float)
-    A1 = Mi.astype(float) @ fondo.EA.T
-    E2 = Mj.astype(float) @ fondo.EV.T.astype(float)
-    A2 = Mj.astype(float) @ fondo.EA.T
-    return E1, A1, E2, A2
-
-
-def p_vectorizado(eo, ao, E1, A1, E2, A2, permitido, R_umbral=None):
+def p_vectorizado(eo, ao, E1, A1, E2, A2, permitido):
     """p_día de n casos de k = 2 a la vez (la misma cuenta que s30a_nulo.p_dia, comprobada en comprobar()).
-    eo, ao: (n, 2). permitido: (n, nd) bool, días del fondo que se pueden usar en cada caso.
+    E1, A1, E2, A2: (n, nd + 2), las dos últimas columnas son los dos días observados (prueba de permutación exacta:
+    el conjunto de referencia incluye los días observados). permitido: (n, nd + 2). La colocación observada
+    (columna nd - 2 para la plantilla 1, nd - 1 para la 2) no se cuenta: es el "1 +".
     Devuelve p (n,), válidas (n,)."""
     n, nd = E1.shape
-    R = ao.sum(1) / np.maximum(eo.sum(1), 1) if R_umbral is None else R_umbral
+    R = ao.sum(1) / np.maximum(eo.sum(1), 1)
     Et = E1[:, :, None] + E2[:, None, :]                      # (n, nd, nd)
     At = A1[:, :, None] + A2[:, None, :]
     ok = (Et >= N.MIN_P_EVAL) & (E1[:, :, None] > 0) & (E2[:, None, :] > 0)
     ok &= ~np.eye(nd, dtype=bool)[None]
     ok &= permitido[:, :, None] & permitido[:, None, :]
+    ok[:, nd - 2, nd - 1] = False
     ge = ok & (At >= R[:, None, None] * Et - 1e-12)
     nv = ok.sum((1, 2))
     ng = ge.sum((1, 2))
@@ -114,8 +114,30 @@ def casos(T, pares, EVp, ALp):
     return c, Mi, Mj, eo, ao
 
 
-def evaluar(c, Mi, Mj, eo, ao, fondos, excl_de, bloque=400, q=None):
-    """p y válidas de cada fondo para todos los casos. excl_de[nombre](c) -> (n, nd) permitido."""
+def aumentado(Mi, Mj, eo, ao, c, EVp, ALp, fo, mismo):
+    """Cuentas del fondo más los dos días observados como columnas finales. ao trae los alcanzados (con inyección si la
+    hay) de cada plantilla sobre su propio día; la plantilla sobre el OTRO día observado usa sus alcanzados reales (la
+    inyección es pluma en las horas P de ese día, no en las de la otra plantilla)."""
+    Mi_f, Mj_f = Mi.astype(float), Mj.astype(float)
+    E1, A1 = Mi_f @ fo.EV.T.astype(float), Mi_f @ fo.EA.T
+    E2, A2 = Mj_f @ fo.EV.T.astype(float), Mj_f @ fo.EA.T
+    EVi, EVj = EVp[c[:, 0]], EVp[c[:, 1]]
+    ALi, ALj = ALp[c[:, 0]], ALp[c[:, 1]]
+    e1j, a1j = (Mi & EVj).sum(1), (Mi & EVj & ALj).sum(1)
+    e2i, a2i = (Mj & EVi).sum(1), (Mj & EVi & ALi).sum(1)
+    E1 = np.column_stack([E1, eo[:, 0], e1j])
+    A1 = np.column_stack([A1, ao[:, 0], a1j])
+    E2 = np.column_stack([E2, e2i, eo[:, 1]])
+    A2 = np.column_stack([A2, a2i, ao[:, 1]])
+    perm = np.ones(E1.shape, bool)
+    if mismo:                                   # el placebo sale del mismo fondo: sus días no van dos veces
+        perm[np.arange(len(c)), c[:, 0]] = False
+        perm[np.arange(len(c)), c[:, 1]] = False
+    return E1, A1, E2, A2, perm
+
+
+def evaluar(c, Mi, Mj, eo, ao, fondos, pl, EVp, ALp, bloque=300, q=None):
+    """p y válidas de cada fondo para todos los casos del placebo pl."""
     n = len(c)
     out = {}
     if q is not None:
@@ -125,8 +147,7 @@ def evaluar(c, Mi, Mj, eo, ao, fondos, excl_de, bloque=400, q=None):
         nv = np.zeros(n, int)
         for b0 in range(0, n, bloque):
             sl = slice(b0, min(n, b0 + bloque))
-            E1, A1, E2, A2 = null_counts(Mi[sl], Mj[sl], fo, None)
-            perm = excl_de[nom](c[sl])
+            E1, A1, E2, A2, perm = aumentado(Mi[sl], Mj[sl], eo[sl], ao[sl], c[sl], EVp, ALp, fo, nom == pl)
             p[sl], nv[sl] = p_vectorizado(eo[sl], ao[sl], E1, A1, E2, A2, perm)
         out[nom] = (p, nv)
     return out, ao
@@ -165,17 +186,21 @@ def ic_por_dias(c, dec, rech, nd):
     return [float(np.percentile(bs, 2.5)), float(np.percentile(bs, 97.5))] if bs else [None, None]
 
 
-def comprobar(c, Mi, Mj, eo, ao, fondos, excl_de, pv):
+def comprobar(c, Mi, Mj, eo, ao, fondos, pl, EVp, ALp, pv):
     """La cuenta vectorizada tiene que dar lo mismo que s30a_nulo.p_dia (la que usa la medida) en 300 casos al azar."""
     idx = rng.choice(len(c), min(300, len(c)), replace=False)
     malos = 0
     for x in idx:
+        if not N.decidible(eo[x]):
+            continue
+        i, j = c[x, 0], c[x, 1]
         for nom, fo in fondos.items():
-            perm = excl_de[nom](c[x:x + 1])[0]
-            if not N.decidible(eo[x]):
-                continue
-            ef, af = N.tabla_fondo(np.stack([Mi[x], Mj[x]]), fo.EV, fo.AL)
-            p, R, nv, ng, ntot = N.p_dia(eo[x], ao[x], ef, af, np.flatnonzero(perm))
+            EV = np.concatenate([fo.EV, EVp[[i, j]]])
+            AL = np.concatenate([fo.AL, ALp[[i, j]]])
+            ef, af = N.tabla_fondo(np.stack([Mi[x], Mj[x]]), EV, AL)
+            nd = fo.nd
+            pool = [d for d in range(nd) if not (nom == pl and d in (i, j))] + [nd, nd + 1]
+            p, R, nv, ng, ntot = N.p_dia(eo[x], ao[x], ef, af, pool, obs=(nd, nd + 1))
             if abs(p - pv[nom][0][x]) > 1e-12 or nv != pv[nom][1][x]:
                 malos += 1
     assert malos == 0, f"vectorizado y s30a_nulo.p_dia difieren en {malos} casos"
@@ -201,6 +226,8 @@ def main():
               "pares_ordenados_de_plantillas": len(pares), "dias_2026_sin_P": [dias26[d] for d in sinP],
               "alfas": ALFAS, "reglas": {}}
     for nom, (k, pct, rmin) in REGLAS.items():
+        if SOLO and k != SOLO:
+            continue
         F25, E25 = Zf[f"F25_{k}_{pct}"], Zf[f"E25_{k}_{pct}"]
         F26, E26 = Zf[f"F26_{k}_{pct}"], Zf[f"E26_{k}_{pct}"]
         A25, A26 = alc(F25, E25), alc(F26, E26)
@@ -219,23 +246,8 @@ def main():
             c, Mi, Mj, eo, ao = casos(T, pares, EVp, ALp)
             nd_pl = len(EVp)
 
-            def excl_de_factory(pl=pl, fondos=fondos):
-                def mk(nomf):
-                    nd = fondos[nomf].nd
-                    if nomf == pl:                      # mismo fondo que el placebo: sin los dos días del placebo
-                        def f(cc):
-                            perm = np.ones((len(cc), nd), bool)
-                            perm[np.arange(len(cc)), cc[:, 0]] = False
-                            perm[np.arange(len(cc)), cc[:, 1]] = False
-                            return perm
-                    else:
-                        def f(cc):
-                            return np.ones((len(cc), nd), bool)
-                    return f
-                return {nomf: mk(nomf) for nomf in fondos}
-            excl_de = excl_de_factory()
-            pv, _ = evaluar(c, Mi, Mj, eo, ao, fondos, excl_de)
-            ncomp = comprobar(c, Mi, Mj, eo, ao, fondos, excl_de, pv)
+            pv, _ = evaluar(c, Mi, Mj, eo, ao, fondos, pl, EVp, ALp)
+            ncomp = comprobar(c, Mi, Mj, eo, ao, fondos, pl, EVp, ALp, pv)
             dec = (eo.sum(1) >= N.MIN_P_EVAL) & ((eo > 0).sum(1) >= N.MIN_DIAS)
             nd_ = int(dec.sum())
             bloque = {"dias_placebo": nd_pl, "casos": len(c), "decidibles": nd_,
@@ -264,7 +276,7 @@ def main():
             if pl in ("2025", "2026 sin VOLCAT"):
                 pod = {}
                 for q in QS:
-                    pvq, aoq = evaluar(c, Mi, Mj, eo, ao, fondos, excl_de, q=q)
+                    pvq, aoq = evaluar(c, Mi, Mj, eo, ao, fondos, pl, EVp, ALp, q=q)
                     for var in ("A", "B"):
                         for alfa in (0.005, 0.01):
                             d, r, conf, parc = rotulos(eo, aoq, pvq, alfa, rmin, var)
@@ -281,7 +293,7 @@ def main():
                 print("      poder (B, 0,005):", {q: round(bloque['poder'][f'B|0.005|q={q}'], 3) for q in QS})
                 print("      poder (A, 0,005):", {q: round(bloque['poder'][f'A|0.005|q={q}'], 3) for q in QS})
     os.makedirs(RES, exist_ok=True)
-    destino = os.path.join(RES, "s30a_calibracion.json")
+    destino = os.path.join(RES, f"s30a_calibracion{'_' + SOLO if SOLO else ''}.json")
     json.dump(salida, open(destino, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     print("escrito", destino, f"{time.time() - t0:.0f} s")
 

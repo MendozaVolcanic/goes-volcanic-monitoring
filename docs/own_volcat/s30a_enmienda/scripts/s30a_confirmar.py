@@ -336,9 +336,14 @@ def medida_enmienda(nombre, res, CL, nuevos, fondo, sinP, alfa, regla):
             out["nulos"][nomf] = None
             continue
         ALf = np.array([N.alcanzado_dia(Ff[d], E[d]) for d in range(len(E))])
-        ef, af = N.tabla_fondo(masc, E, ALf)
-        pool = np.arange(len(E)) if pool is None else np.asarray(pool)
-        pv, R, nv, ng, ntot = N.p_dia(e_obs, a_obs, ef, af, pool)
+        # conjunto de referencia = días del fondo + los k días nuevos con P (prueba de permutación exacta, §2.2)
+        nd = len(E)
+        EVr = np.concatenate([np.asarray(E, bool), EV[con_P]])
+        ALr = np.concatenate([ALf, AL[con_P]])
+        ef, af = N.tabla_fondo(masc, EVr, ALr)
+        pool = list(range(nd)) if pool is None else list(pool)
+        obs = [nd + i for i in range(len(con_P))]
+        pv, R, nv, ng, ntot = N.p_dia(e_obs, a_obs, ef, af, pool + obs, obs=obs)
         out["nulos"][nomf] = {"p_dia": pv, "colocaciones_validas": nv, "con_R_mayor_o_igual": ng,
                               "colocaciones_posibles": ntot, "piso": 1 / (1 + nv),
                               "decide": nomf in regla["deciden"]}

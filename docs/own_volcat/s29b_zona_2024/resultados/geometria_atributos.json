@@ -1,0 +1,30 @@
+{
+ "goes16_2024": {
+  "archivo": "OR_ABI-L1b-RadF-M6C14_G16_s20242890600205_e20242890609513_c20242890609571.nc",
+  "longitude_of_projection_origin": -75.0,
+  "perspective_point_height": 35786023.0,
+  "semi_major_axis": 6378137.0,
+  "semi_minor_axis": 6356752.31414,
+  "nominal_satellite_subpoint_lon": -75.19999694824219,
+  "nominal_satellite_subpoint_lat": 0.0,
+  "nominal_satellite_height": 35786.0234375,
+  "x_scale_factor": 5.6000000768108293e-05,
+  "x_add_offset": -0.15184399485588074,
+  "y_scale_factor": -5.6000000768108293e-05,
+  "y_add_offset": 0.15184399485588074
+ },
+ "goes19_2025": {
+  "archivo": "OR_ABI-L1b-RadF-M6C14_G19_s20252880600206_e20252880609514_c20252880609586.nc",
+  "longitude_of_projection_origin": -75.0,
+  "perspective_point_height": 35786023.0,
+  "semi_major_axis": 6378137.0,
+  "semi_minor_axis": 6356752.31414,
+  "nominal_satellite_subpoint_lon": -75.19999694824219,
+  "nominal_satellite_subpoint_lat": 0.0,
+  "nominal_satellite_height": 35786.0234375,
+  "x_scale_factor": 5.6000000768108293e-05,
+  "x_add_offset": -0.15184399485588074,
+  "y_scale_factor": -5.6000000768108293e-05,
+  "y_add_offset": 0.15184399485588074
+ }
+}

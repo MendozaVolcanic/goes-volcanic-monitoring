@@ -8,7 +8,8 @@ días que S23b; 307: el gatillo cuenta P no evaluables), no se niega a medir dos
 tamaño (201). El envoltorio:
   1. lee las clases de VOLCAT de UNA sola carpeta en D: (983);
   2. antes de medir comprueba la cobertura de L1b C14 y C15 (mismo scan) y ACMF de cada cuadro, día por día (301, 306);
-  3. cuenta para el gatillo los P evaluables, no los P (307);
+  3. cuenta para el gatillo los P evaluables, no los P (307), con la regla de la enmienda v2 (S31b): 20 o más en total
+     y al menos 2 días con 5 o más cada uno; la medida termina en el primer día en que se cumple (D*);
   4. se niega si ya existe un resultado, un vistazo o un registro de medida iniciada (303);
   5. congela una copia del CSV y un manifiesto sha256 de todas las entradas, y lo compara después de S23b y de S25a
      (302, 305): si algo cambió entre las tres, la medida se detiene por aserción;
@@ -55,7 +56,8 @@ REGLAS = {                                    # parte, percentil, R mínimo, fon
     "S26a": {"parte": "u", "pct": 4.75, "r_min": 0.40, "deciden": ["2025"]},
 }
 COB_MIN = 0.95                                # cobertura por día de L1b (mismo scan) y de ACMF
-MIN_P_GATILLO, MIN_DIAS_GATILLO = 20, 2       # P evaluables, días con P evaluables
+MIN_P_GATILLO, MIN_DIAS_GATILLO = 20, 2       # P evaluables en total; días con al menos MIN_P_POR_DIA_GATILLO
+MIN_P_POR_DIA_GATILLO = 5                     # enmienda v2 (S31b) §2: P evaluables por día para contar ese día
 FONDO_NPZ = r"D:\goes_notas\s30\s30a\disparos_s30a.npz"
 SHA_FONDO = "62b5fba795234f40a11c44f22dcbf6c79298d2d3de18d2a95282098615511cd1"   # enmienda §2.5
 CANON = r"D:\goes_notas\s30\confirmacion"     # la única carpeta de trabajo de la medida real
@@ -186,11 +188,14 @@ def _scan_ok(f, dt):
 
 def cobertura(cfg, CL, dias):
     """Por día: fracción de cuadros con L1b C14 y C15 del mismo scan y con ACMF; P evaluables (L1b, ACMF y compuerta de
-    nubes abierta con la costumbre de 2026 congelada). No lee una sola radiancia: sólo claves de scan y la ACMF."""
+    nubes abierta con la costumbre de 2026 congelada). No lee una sola radiancia: sólo claves de scan y la ACMF.
+    Gatillo (enmienda v2, S31b, §2): acumulando desde el primer día nuevo, 20 P evaluables o más en total y al menos 2
+    días con 5 P evaluables o más cada uno; dia_gatillo = el primer día en que se cumple (D*)."""
     import s26a_medir as U
     B, M = U.B, U.M
     est26 = np.load(U.ESTAT26)
-    out = {"dias": [], "falla": [], "P_evaluables": 0, "dias_con_P_evaluables": 0}
+    out = {"dias": [], "falla": [], "P_evaluables": 0, "dias_con_P_evaluables": 0,
+           "dias_con_5_P_evaluables": 0, "dia_gatillo": None}
     for d, dia in enumerate(dias):
         n_l1b = n_acm = 0
         pe = 0
@@ -214,7 +219,11 @@ def cobertura(cfg, CL, dias):
             out["falla"].append(fila["dia"])
         out["P_evaluables"] += pe
         out["dias_con_P_evaluables"] += pe > 0
-    out["gatillo"] = out["P_evaluables"] >= MIN_P_GATILLO and out["dias_con_P_evaluables"] >= MIN_DIAS_GATILLO
+        out["dias_con_5_P_evaluables"] += pe >= MIN_P_POR_DIA_GATILLO
+        if (out["dia_gatillo"] is None and out["P_evaluables"] >= MIN_P_GATILLO
+                and out["dias_con_5_P_evaluables"] >= MIN_DIAS_GATILLO):
+            out["dia_gatillo"] = fila["dia"]
+    out["gatillo"] = out["dia_gatillo"] is not None
     return out
 
 
@@ -225,8 +234,10 @@ def cmd_cobertura():
     for f in c["dias"]:
         print(f)
     print("días que no pasan la comprobación previa:", c["falla"] or "ninguno")
-    print(f"P evaluables {c['P_evaluables']} en {c['dias_con_P_evaluables']} días;",
-          "GATILLO CUMPLIDO" if c["gatillo"] else "todavía no")
+    print(f"P evaluables {c['P_evaluables']} en {c['dias_con_P_evaluables']} días, "
+          f"{c['dias_con_5_P_evaluables']} días con {MIN_P_POR_DIA_GATILLO} o más;",
+          f"GATILLO CUMPLIDO el {c['dia_gatillo']}: medir con --hasta {c['dia_gatillo']}" if c["gatillo"]
+          else "todavía no")
 
 
 # ---------- 3. negativa ----------
@@ -376,10 +387,14 @@ def medir(cfg, hasta=None, entre_pasos=None, memo=None):
     negativa(cfg, SB, U, S, CL, dias)
     # comprobación previa (301, 306) y gatillo de P evaluables (307)
     cob = cobertura(cfg, CL, dias)
+    # enmienda v2 §2.5: la medida termina en D*, el primer día en que se cumple el gatillo; días posteriores no entran
+    assert cob["dia_gatillo"] is None or cob["dia_gatillo"] == f"{dias[-1]:%Y-%m-%d}",         (f"gatillo: se cumplió el {cob['dia_gatillo']}, antes del último día de la medida ({dias[-1]:%Y-%m-%d}); "
+         f"medir con --hasta {cob['dia_gatillo']} (enmienda v2 §2.5)")
     assert not cob["falla"], (f"comprobación previa: los días {cob['falla']} no tienen L1b y ACMF >= {COB_MIN}; "
                               "bajar de nuevo o medir con --hasta el día anterior (enmienda §6)")
-    assert cob["gatillo"], (f"gatillo: {cob['P_evaluables']} P evaluables en {cob['dias_con_P_evaluables']} días; "
-                            f"hacen falta {MIN_P_GATILLO} en {MIN_DIAS_GATILLO}")
+    assert cob["gatillo"], (f"gatillo: {cob['P_evaluables']} P evaluables, {cob['dias_con_5_P_evaluables']} días con "
+                            f"{MIN_P_POR_DIA_GATILLO} o más; hacen falta {MIN_P_GATILLO} en total y "
+                            f"{MIN_DIAS_GATILLO} días con {MIN_P_POR_DIA_GATILLO} o más (enmienda v2 §2)")
     assert sha_archivo(FONDO_NPZ) == SHA_FONDO, "el fondo del nulo no es el congelado"
     # copia congelada del CSV: los tres scripts leen ESTE archivo (302)
     os.makedirs(cfg.medida, exist_ok=True)

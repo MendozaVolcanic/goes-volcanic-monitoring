@@ -16,6 +16,10 @@ Escenarios (cuenta como atrapada sólo una mutación que falla por AssertionErro
   gatillo       clases sólo del 14-11: 33 P de un solo día (307 y gatillo)          -> "gatillo"
   csv_cambia    el CSV de la medida cambia entre S23b y S25a (302)                   -> "manifiesto distinto después de S23b"
   acm_cambia    un byte de una ACMF del 08-11 cambia entre S23b y S25a (305)        -> "manifiesto distinto después de S23b"
+  gatillo_dispar  (enmienda v2, S31b) el 14-11 entero más sólo 2 P del 08-11: el gatillo de S30a pasaría (más de 20 P
+                evaluables en 2 días), el v2 no (un solo día con 5 o más)          -> "gatillo"
+  pasado        (enmienda v2, S31b) clases del 08, 10 y 14-11 medidas hasta el 14-11: si el gatillo v2 se cumple antes
+                del 14-11, la medida pasa de D*                                      -> "gatillo: se cumplió"
 
 Uso: python -I -B -u s30a_confirmar.py ensayo [escenario ...]   (sin argumentos: todos)
 Salida: D:\goes_notas\s30\s30a\ensayo\resumen.json
@@ -64,6 +68,28 @@ def clases(destino, dias):
         for r in filas:
             w.writerow([r["dt"][:16], r["clase"]])
     return len(filas)
+
+
+def clases_dispar(destino, dia_entero, dia_pocos, n_pocos):
+    """Clases de dia_entero completas y, de dia_pocos, todas las filas que no son P más sólo sus n_pocos primeros P."""
+    with open(os.path.join(OV, "calor_rayos", "resultados", "frames_calor.csv"), encoding="utf-8") as f:
+        filas = [r for r in csv.DictReader(f) if r["dt"][:10] in (dia_entero, dia_pocos)]
+    filas.sort(key=lambda r: r["dt"])
+    n = 0
+    with open(destino, "w", encoding="utf-8", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["dt", "clase"])
+        for r in filas:
+            if r["dt"][:10] == dia_pocos and r["clase"] == "P":
+                n += 1
+                if n > n_pocos:
+                    continue
+            w.writerow([r["dt"][:16], r["clase"]])
+
+
+def cob_de(cfg):
+    CL, dias = C.matriz_clases(C.leer_clases(cfg.clases), cfg.arranque)
+    return C.cobertura(cfg, CL, dias)
 
 
 def memo(SB, U, S):
@@ -140,7 +166,7 @@ def correr(nombre, fn, espera):
 def main(pedidos):
     os.makedirs(ENS, exist_ok=True)
     todos = ["control", "repetida", "resultado", "vistazo", "sin_acmf", "sin_goes_fin", "gatillo", "csv_cambia",
-             "acm_cambia"]
+             "acm_cambia", "gatillo_dispar", "pasado"]
     pedidos = pedidos or todos
     trab0 = base_trab("base")
     dias_ok = {"2026-11-08", "2026-11-14"}
@@ -204,6 +230,33 @@ def main(pedidos):
                 open(f, "wb").write(bytes(b))
         res.append(correr("acm_cambia", lambda: C.medir(cfg, entre_pasos=mutar_acm, memo=memo),
                           "manifiesto distinto después de S23b"))
+    if "gatillo_dispar" in pedidos:
+        cfg = cfg_de("gatillo_dispar", trab0, set())
+        clases_dispar(cfg.clases, "2026-11-14", "2026-11-08", 2)
+        cob = cob_de(cfg)
+        pe = {f["dia"]: f["P_evaluables"] for f in cob["dias"]}
+        viejo = cob["P_evaluables"] >= C.MIN_P_GATILLO and cob["dias_con_P_evaluables"] >= 2
+        print("gatillo_dispar, P evaluables por día:", pe, "| gatillo de S30a:", viejo, "| v2:", cob["gatillo"],
+              flush=True)
+        if viejo and pe.get("2026-11-08") == 2:
+            r = correr("gatillo_dispar", lambda: C.medir(cfg, memo=memo), "gatillo")
+        else:
+            r = {"escenario": "gatillo_dispar", "resultado": "NO APLICA: el gatillo de S30a tampoco pasaría",
+                 "espera": "gatillo"}
+        r["P_evaluables_por_dia"] = pe
+        res.append(r)
+    if "pasado" in pedidos:
+        cfg = cfg_de("pasado", trab0, {"2026-11-08", "2026-11-10", "2026-11-14"})
+        cob = cob_de(cfg)
+        pe = {f["dia"]: f["P_evaluables"] for f in cob["dias"]}
+        print("pasado, P evaluables por día:", pe, "| D*:", cob["dia_gatillo"], flush=True)
+        if cob["dia_gatillo"] is not None and cob["dia_gatillo"] < "2026-11-14":
+            r = correr("pasado", lambda: C.medir(cfg, memo=memo), "gatillo: se cumplió")
+        else:
+            r = {"escenario": "pasado", "resultado": f"NO APLICA: D* = {cob['dia_gatillo']}",
+                 "espera": "gatillo: se cumplió"}
+        r["P_evaluables_por_dia"], r["dia_gatillo"] = pe, cob["dia_gatillo"]
+        res.append(r)
     print("\n===== RESUMEN")
     for r in res:
         print(f"{r['escenario']:14s} {r['resultado']}")

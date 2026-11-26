@@ -1,0 +1,242 @@
+{
+ "rotulo": "POST HOC: huella = toda la ceniza a <= 40 km; no decide",
+ "toda_la_ceniza_40km": {
+  "u": {
+   "detector": {
+    "n": 64,
+    "T": 55,
+    "frac": 0.859375,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.0016,
+     "esperado": 44.966096609660966,
+     "frac_esperada": 0.7025952595259526,
+     "configuraciones": 2985984,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.1243,
+     "esperado": 42.90709070907091,
+     "frac_esperada": 0.6704232923292329,
+     "configuraciones_dia": 46656,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto_si_fuera_criterio": "NO DECIDIBLE (el oráculo no separa contra el nulo R)"
+   },
+   "oraculo": {
+    "n": 91,
+    "T": 86,
+    "frac": 0.945054945054945,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.02,
+     "esperado": 80.63876387638764,
+     "frac_esperada": 0.8861402623778862,
+     "configuraciones": 2985984,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.0623,
+     "esperado": 68.23842384238424,
+     "frac_esperada": 0.7498727894767498,
+     "configuraciones_dia": 46656,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   }
+  },
+  "a": {
+   "detector": {
+    "n": 23,
+    "T": 16,
+    "frac": 0.6956521739130435,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-11"
+    ],
+    "R": {
+     "p": 0.0012,
+     "esperado": 4.777177717771777,
+     "frac_esperada": 0.20770337903355554,
+     "configuraciones": 20736,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.3339,
+     "esperado": 12.684368436843684,
+     "frac_esperada": 0.5514942798627689,
+     "configuraciones_dia": 1296,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto_si_fuera_criterio": "MISMO RUMBO HABITUAL"
+   },
+   "oraculo": {
+    "n": 87,
+    "T": 77,
+    "frac": 0.8850574712643678,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.0001,
+     "esperado": 25.465746574657466,
+     "frac_esperada": 0.2927097307431893,
+     "configuraciones": 2985984,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.0002,
+     "esperado": 44.4998499849985,
+     "frac_esperada": 0.5114925285632012,
+     "configuraciones_dia": 46656,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   }
+  },
+  "z": {
+   "detector": {
+    "n": 43,
+    "T": 41,
+    "frac": 0.9534883720930233,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-10",
+     "2026-11-14"
+    ],
+    "D": {
+     "p": 0.148,
+     "esperado": 31.283128312831284,
+     "frac_esperada": 0.727514611926309,
+     "configuraciones_dia": 1296,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto_si_fuera_criterio": "NO DECIDIBLE (el oráculo no separa contra el nulo D)"
+   },
+   "oraculo": {
+    "n": 82,
+    "T": 77,
+    "frac": 0.9390243902439024,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "D": {
+     "p": 0.1016,
+     "esperado": 59.797679767976796,
+     "frac_esperada": 0.7292399971704487,
+     "configuraciones_dia": 46656,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   }
+  }
+ },
+ "distancias_anclada": [
+  {
+   "dia": "2026-10-28",
+   "hora": "19:50",
+   "km_disparo_mediana": 29.7,
+   "km_huella_anillo_max": 9.7
+  },
+  {
+   "dia": "2026-10-28",
+   "hora": "20:00",
+   "km_disparo_mediana": 29.7,
+   "km_huella_anillo_max": 9.4
+  },
+  {
+   "dia": "2026-10-28",
+   "hora": "20:10",
+   "km_disparo_mediana": 30.2,
+   "km_huella_anillo_max": 9.7
+  },
+  {
+   "dia": "2026-10-28",
+   "hora": "20:20",
+   "km_disparo_mediana": 31.1,
+   "km_huella_anillo_max": 11.2
+  },
+  {
+   "dia": "2026-10-28",
+   "hora": "20:30",
+   "km_disparo_mediana": 32.3,
+   "km_huella_anillo_max": 12.1
+  },
+  {
+   "dia": "2026-10-29",
+   "hora": "01:10",
+   "km_disparo_mediana": 31.0,
+   "km_huella_anillo_max": 12.1
+  },
+  {
+   "dia": "2026-10-29",
+   "hora": "01:20",
+   "km_disparo_mediana": 31.0,
+   "km_huella_anillo_max": 11.2
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "19:10",
+   "km_disparo_mediana": 27.2,
+   "km_huella_anillo_max": 12.1
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "20:10",
+   "km_disparo_mediana": 27.9,
+   "km_huella_anillo_max": 9.7
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "20:20",
+   "km_disparo_mediana": 25.6,
+   "km_huella_anillo_max": 9.4
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "20:30",
+   "km_disparo_mediana": 26.1,
+   "km_huella_anillo_max": 14.7
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "20:40",
+   "km_disparo_mediana": 26.6,
+   "km_huella_anillo_max": 11.2
+  }
+ ]
+}

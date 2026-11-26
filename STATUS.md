@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-25 (sesión S27a, bloque "## 0." abajo; S27b queda como 0-prev24). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-25 (sesión S25b, bloque "## 0." abajo; S28a queda como 0-prev27 y el cierre de la coordinación S23 como 0-prev26). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,197 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S27a, 2026-11-25 (qué dispara de noche: depósito NO, nieve NO DECIDIBLE, pluma SIN PODER por un umbral mío inalcanzable; leído después, los disparos no siguen al viento y caen siempre en la cumbre aparente)
+## 0. S25b, 2026-11-25 (el umbral de 2025 aguanta otro año: en oct-nov 2024, con GOES-16, S23a y S23b disparan 1,5 a 1,6 % contra 4,3 % de 2025; umbral de cada año INTERMEDIO)
+
+> Sesión S25b (worktree `s25b-fondo-2024-73846a`, lanzada por S23). Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s25b_fondo_2024\INFORME.md`. Criterio `b07cb58`,
+> empujado antes de armar el cubo de 2024. Fusionada por mí con `--match-head-commit` (autorización de Nicolás del 25-11).
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Chillán en sep-nov 2024 | **Alerta verde**, sin actividad superficial reportada: el único REAV de la ventana (15-11-2024 00:30) es un sismo VT de ML 3,0. Los RAV de Ñuble de 2024 no se pudieron recuperar | `criterio_2026-11-25.md` §2; memoria `reference_rnvv_reportes_viejos` |
+| Bajada GOES-16 (C14, C15, ACMF, 21-09 a 21-11-2024) | **Completa**: L1B 8.841 de 8.928, ACMF 8.775 (lo demás no existe en NOAA). 0,7 GB | `D:\goes_notas\s25\s25b_2024\` |
+| (a) Misma grilla | **COMPARABLE**: I4 0,987, proyección idéntica (−75,0°), Planck de cada satélite | `resultados/instrumento_2024.json` |
+| (b) Falsa alarma fuera de muestra | **AGUANTA** S23a (1,6 %) y S23b (1,5 %), etiqueta MÁS ESTRICTO (2025 dentro de su muestra: 4,3 %). Franja máxima 09-11 UTC ~5 %; noches comunes 0 de 917. 68 % de los disparos de S23b en 16 a 18-11-2024 | `resultados/s25b_resultado.json` |
+| (c) Umbral 2024 contra 2025 | **INTERMEDIO**: mediana 0,098 K, máximo 0,255 K (23:20 UTC); del orden del ruido del propio umbral (pares contra impares de 2025: 0,093), pero con patrón por hora (2024 menos exigente de noche, más de madrugada) | idem |
+| Post hoc | Con el azar de 2024, los 54 P de VOLCAT de S23b esperan 1,2 alcances (no 2,6): el p25 de S23b era conservador. 14 de 41 falsas alarmas de 2024 caen al SE (120° a 150°), el rumbo de la pluma de 2026 | `resultados/posthoc_azar_2024.json` |
+| Bajada más rápida | Bloque de lectura S3 de 64 KB: un tercio de los bytes, ritmo x6, valores iguales bit a bit. Vigía `s25b_vigia.py` relanza si una carpeta no crece en 10 min (el ACMF se colgó 3 h 45 min) | `scripts/s25b_bajar_2024.py`, `scripts/s25b_vigia.py` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Confirmar con el OVDAS que Chillán no tuvo pulsos ni pluma visible del 21-09 al 21-11-2024 (en especial 16 a 18-11, donde se juntan las falsas alarmas, y el 05-10) | Sí: es lo único que falta para leer 2024 como fondo limpio |
+| 2 | Aplicar a 2024 la zona del cráter (S25a) y el combinado S26a, el mejor detector de hoy, con criterio antes de medir | Sí: el cubo de 2024 ya está en D:, es barato y es la misma pregunta para el detector que se va a confirmar |
+| 3 | Las de S28a y la coordinación (cámaras, archivar sesiones, capa experimental, workflows, Pavolonis) | Siguen |
+
+### c. Lo aprendido
+
+- **Fuera de su año el umbral se volvió más exigente, no más permisivo** (proyecto): el ensayo en seco dentro de la muestra
+  (cada día sin sí mismo) sobreestima la falsa alarma de otro año tranquilo; el azar por hora de 2025 es conservador.
+- **Leer de S3 en bloques de 64 KB** (método, workspace): una ventana chica de un NetCDF full disk trae 1,5 MB con bloques de
+  256 KB y 0,5 MB con 64 KB; con conexión lenta el ritmo sube 6 veces. Comprobar bit a bit contra un cuadro viejo.
+- **Un vigía por carpeta, no por suma** (método): sumar dos bajadas escondió que una estaba colgada.
+- **Los reportes viejos de RNVV viven en `reportes_LB` vía Wayback** (referencia): el sitio nuevo ya no los lista.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** el umbral de 2025 no infla falsas alarmas en otro año tranquilo con otro satélite.
+- **SOSPECHA:** los racimos de 16 a 18-11-2024 son tiempo (capa baja o inversión, como las noches de 2025 en S24); sin mirar.
+- **SIN DATO:** si el combinado S26a (con la zona del cráter) también aguanta fuera de muestra.
+
+### e. Prompt para la próxima sesión
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Usa /retomar.
+1. Verifica: git fetch; gh pr list; main en el remoto; espacio en D: (piso 6 GB).
+2. Lee STATUS.md "## 0." (S25b) y "## 0-prev27." (S28a), y docs/own_volcat/s25b_fondo_2024/INFORME.md.
+3. Si Nicolás lo aprueba: aplicar a oct-nov 2024 la zona del cráter (S25a) y el combinado S26a, con base y umbral de
+   2025 y criterio empujado antes de medir. El cubo de 2024 está en D:\goes_notas\s25\s25b_2024\cubo (r24_acm, r24_m1,
+   r24_bt11); s25b_medir.aplicar y _detector_2024 sirven de molde.
+4. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS;
+   la carpeta principal no se toca; nada de SSEC al repo; criterio antes de medir; ningún día de jul-nov 2026 es
+   "sin actividad"; fusionar con --match-head-commit.
+```
+
+---
+
+## 0-prev27. S28a, 2026-11-25 (falsa alarma de S26a en Antuco y Longaví, 2026 contra 2025: de noche NO CONCLUYENTE; de día MIXTO, Antuco sin pluma sube tanto como Chillán)
+
+> Sesión S28a (worktree `s28a-vecinas-falsa-alarma-7791f2`, lanzada por la coordinadora S28
+> `local_36977cef-5c6d-46e6-b890-b4299891d5c8`). Informe: `docs/own_volcat/s28a_vecinas/INFORME.md`. El cierre de la
+> coordinación S23 sigue abajo como `0-prev26` y S27a como `0-prev25`. Ningún día posterior al 24-11: las
+> confirmaciones siguen intactas. PR abierto contra `main`; lo revisa y fusiona S28.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Criterio | Empujado antes de calcular un disparo del anillo o de la unión en las vecinas; dice que la zona de las vecinas ya estaba publicada por S27a | `39da17b` |
+| Pluma de Chillán | Fuera del anillo de cada vecina las tajadas con algún píxel a < 45 km de Chillán (Antuco 0, 1, 10, 11; Longaví 5, 6, 7), mínimo de tajadas al 75 %; los dos anillos caben en la ventana | `resultados/s28a_resultado.json` (`geometria`) |
+| Comprobación de código | Anillo generalizado = el de Chillán (S, tajadas, seco 269 de 5.499, 0 diferencias con `tabla_2026.csv`); M1 igual al caché en 3 días; zona = conteos de S27a | idem (`comprobacion`) |
+| Noche, unión | Antuco 6,2 % a 3,3 % (R 0,53; 0,09 a 2,13); Longaví 5,9 % a 6,7 % (R 1,14; 0,42 a 3,16); Chillán 6,7 % a 18,6 % (R 2,76) | **NO CONCLUYENTE** (el límite superior de Longaví pasa el R de Chillán) |
+| Día, unión | Antuco 4,0 % a 10,6 % (R 2,64; 1,05 a 8,98; lo pone la zona, R 3,66); Longaví 4,0 % a 3,2 % (R 0,80); Chillán 3,9 % a 10,4 % (R 2,67; sin cuadros P 7,7 %) | **MIXTO (sube Antuco)** |
+| Viento | Sin los cuadros con viento desde Chillán hacia Antuco, Antuco de día sube igual (R 3,10): no es la pluma de Chillán | idem (`viento`) |
+| Post hoc | El 10-11 disparan de tarde las tres cumbres (Chillán con VOLCAT, Antuco 33, Longaví 24) y el 14-11 Antuco dispara con VOLCAT de Chillán: los dos días fuertes de la zona en S26a. Como placebo, la unión en Antuco alcanza 20 de 88 P de Chillán y en Longaví 5 de 93 (Chillán 63 de 93) | `resultados/s28a_posthoc.json` |
+| Disco D: | S28a usa ~120 MB en `D:\goes_notas\s28\s28a\` (M1 de las vecinas y cuadros) | `du` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Agregar a la confirmación en días nuevos la unión en Antuco y Longaví como placebo informativo (con criterio escrito antes de la medida)? | Sí: el 10-11 mostró que la zona de una cumbre sin pluma reacciona a la misma tarde que la de Chillán |
+| 2 | ¿Mirar una imagen óptica de la cumbre de Antuco el 10-11 o el 04-10-2026 contra 2025 (nieve, roca descubierta, nube baja)? | Sí: dice si el aumento diurno de Antuco es superficie o atmósfera |
+| 3 | Las de `0-prev26` (cámaras del OVDAS, archivar sesiones, capa experimental, disparo externo, correo a Pavolonis) | Siguen |
+
+### c. Lo aprendido
+
+- **La falsa alarma de 2025 no se traslada a 2026 de día** (proyecto): una cumbre sin pluma de la misma imagen
+  (Antuco) pasa de 4,0 % a 10,6 % de día; el exceso diurno de Chillán cabe entero en esa subida. De noche no hay señal
+  de subida en las vecinas, sin intervalo que lo respalde.
+- **Los disparos de 2025 se juntan en pocos días** (método): el remuestreo por días da intervalos de R de ×4 a ×10 de
+  ancho con dos meses por año. Un Fisher por cuadros los habría dado angostos y falsos.
+- **El código de Chillán trae constantes de Chillán escondidas** (código): `Detector.base` fija el largo del anillo
+  (`M.NA`). Al generalizar a otra cumbre, reproducir Chillán primero no basta: hay que correr también la geometría
+  nueva antes de leer.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** de día, en 2026, una cumbre sin pluma (Antuco) dispara tanto como Chillán; no es la pluma de Chillán
+  llevada por el viento.
+- **SOSPECHA:** el aumento diurno de Antuco es superficie al sol (menos nieve, roca descubierta) o nube baja de tarde;
+  sin probar.
+- **SOSPECHA (post hoc):** parte de los aciertos de la zona de Chillán el 10-11 y el 14-11 es regional.
+- **SIN DATO:** si la noche de 2026 sube en las vecinas (intervalos muy anchos).
+
+### e. Prompt para la próxima sesión
+
+El de `0-prev26` §f sigue vigente (coordinación, confirmación en días nuevos). Sumar: antes de la medida única de
+confirmación, decidir por escrito si se corre la unión en Antuco y Longaví como placebo informativo con los mismos
+días (`docs/own_volcat/s28a_vecinas/scripts/s28a_medir.py` tiene la geometría y el anillo generalizados).
+
+---
+
+## 0-prev26. Cierre de la coordinación S23, 2026-11-25 (coordinó S24 a S27, PR 125 a 131 en main; S25b sigue corriendo; la coordinación pasa a S28, sesión de primer nivel)
+
+> Sesión `s23-fondo-2025-68f1e1` (S23, lanzada por S22). Hizo S23 y después, a pedido de Nicolás ("sigue con todo,
+> que más podemos hacer en paralelo"), lanzó y revisó S24, S25a, S25b, S26a, S26b, S27a y S27b, y fusionó con su
+> autorización ("puedes fusionar todo lo que necesites siempre podemos volver atrás..."). Al cerrar lanzó **S28**
+> (`local_36977cef-5c6d-46e6-b890-b4299891d5c8`, "Goes S28: coordinación en loop de sesiones paralelas") y la separó
+> al primer nivel: S28 revisa en ciclo las sesiones, los PR y la confirmación en días nuevos. **Estado fijado con
+> trabajo en curso**: S25b (fondo 2024 con GOES-16) seguía bajando ACMF y S28 recién partía; los dos pueden escribir
+> `STATUS.md` encima de este bloque.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| main | `93cbf57` en el remoto; ningún PR abierto al cerrar | `git ls-remote`, `gh pr list` |
+| S23 a S27 | Fusionados: 125 (S23), 126 (S24), 127 (S25a), 128 (S26a), 129 (S26b), 130 (S27b), 131 (S27a). Cada uno tiene su bloque abajo | `gh pr view` |
+| Mejor detector hasta hoy | Combinado S26a (zona del cráter S25a O anillo S23b, percentil 4,75): 63 de 93 P de VOLCAT, falsa alarma 4,9 % en 2025. **Desarrollo**: los días ya se habían mirado | bloque S26a |
+| Confirmación en días nuevos (S23b, S25a, S26a) | Esperando: se mide una vez con ≥20 P de VOLCAT en ≥2 días desde el 25-11. Al 25-11 11:30 UTC, 0 P | `s23b_confirmar.py contar <día>` |
+| S25b, fondo oct-nov 2024 (GOES-16), falsa alarma fuera de muestra | **CORRIENDO**: L1B 8.841 de 8.928 (lo que falta no existe en NOAA), ACMF bajando; criterio empujado antes de abrir datos; sin PR aún | sesión `local_3d1ecb8d-e1ee-48d4-bb01-14e7a5ce8616`, rama `claude/s25b-fondo-2024-73846a` |
+| S28, coordinadora | Lanzada y separada al primer nivel; no avisa a esta sesión | `detach_session` |
+| Disco D: | 14 GB libres (volvió a subir; el 25-11 temprano estuvo en 5,6) | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Cámaras del OVDAS: dirección de la pluma 28-10, 29-10 (00 a 02 UTC), 11-11 y 14-11 de tarde, y las noches que dejó S27a | Sí: es la única verdad que separa pluma, nieve o error en los disparos sin VOLCAT |
+| 2 | Archivar las sesiones terminadas S24, S25a, S26a, S26b, S27a, S27b | Sí, cuando S28 confirme que todo su trabajo está en main (`git cherry` 0) |
+| 3 | Integrar el detector combinado al dashboard como capa experimental | Todavía no: sólo después de la confirmación en días nuevos, con ficha SDA en el mismo commit |
+| 4 | Disparo externo de los workflows de 10 min; sector de mesoescala; correo a Pavolonis | Siguen de S21 y S22 |
+
+### c. Lo aprendido (ya enrutado a la memoria del proyecto)
+
+- **El nublado de costumbre no se traslada entre años** (método, proyecto): base y umbral del año limpio; la costumbre
+  de ACMF (nieve) del año que se mira. Memoria `feedback_costumbre_no_se_traslada`.
+- **El clasificador de permisos puede bloquear la fusión dentro de una sesión hija** aunque Nicolás la haya autorizado
+  (pasó en S25a): la coordinadora revisa y fusiona.
+- **Una bajada lanzada desde otra sesión muere si esa sesión se cierra** (24-11, 18:35): vigilar con un bucle que salga
+  si el conteo de archivos no cambia en 25 min. Leer de S3 en bloques de 64 KB multiplicó por 6 el ritmo (S25b).
+- **Mirar el detector en días nuevos antes de la medida única cuenta como vistazo** y la retrasa: por eso no se armó
+  un detector en tiempo casi real.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** el fondo de 2025 es comparable con 2026 (I4 0,985, Planck idéntico).
+- **CONFIRMADO:** el calor del cráter no explica los disparos nocturnos (S26b).
+- **SOSPECHA:** los disparos nocturnos de 2026 son pluma diaria (no siguen al viento, post hoc S27a; falta cámara).
+- **SIN DATO:** falsa alarma fuera de muestra (S25b, corriendo); confirmación en días nuevos (sin P de VOLCAT aún).
+
+### e. Cerrado, no rehacer
+
+S23a con costumbre de 2025 (PARCIAL, 8/30); S24c persistencia de rumbo (falsa alarma 0,056 a 0,165 en su
+calibración); altura por rumbo (S22c) y por desfase cráter-anillo (S27b, NO DECIDIBLE); depósito como causa nocturna
+(S27a, NO); calor del cráter como causa nocturna (S26b, no explica: 34 % sin calor contra 21 % con calor).
+
+### f. Prompt para la próxima sesión
+
+S28 ya está lanzada y coordina. Si S28 no sigue viva, la próxima coordinadora parte así:
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF) como COORDINADORA. Usa /retomar.
+1. Verifica: git fetch; gh pr list; main en el remoto; espacio en D: (piso 6 GB); sesiones de Goes vivas
+   (list_sessions) y si S25b (fondo 2024) y S28 dejaron PR o traspaso.
+2. Lee STATUS.md desde "## 0." hacia abajo hasta S23, y los INFORME.md de docs/own_volcat/s2*_*/.
+3. Trabajo en ciclo: revisa y fusiona (--match-head-commit, criterio empujado antes de la medida, nada de SSEC ni de
+   docs/auditoria_2026-11); corre una vez al día `python -I docs/own_volcat/s23_fondo_2025/scripts/s23b_confirmar.py
+   contar <hoy>` y, cuando diga LISTO PARA MEDIR, lanza la sesión que mide UNA vez S23b, S25a y S26a en el orden
+   de S26a; lanza nuevas sesiones independientes con criterio antes de medir.
+4. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS;
+   la carpeta principal no se toca; nada de SSEC al repo; ningún día de jul-nov 2026 es "sin actividad"; nadie mira
+   el detector en días posteriores al 24-11 antes de la medida; /cierre al llegar a la base + 250 mil tokens.
+```
+
+---
+
+## 0-prev25. S27a, 2026-11-25 (qué dispara de noche: depósito NO, nieve NO DECIDIBLE, pluma SIN PODER por un umbral mío inalcanzable; leído después, los disparos no siguen al viento y caen siempre en la cumbre aparente)
 
 > Sesión S27a (worktree `s27a-noche-viento-9d839d`, lanzada por la sesión que corre S27a y S27b en paralelo). Informe:
 > `docs/own_volcat/s27a_noche_causa/INFORME.md`. S27b (altura por rapidez) sigue abajo como `0-prev24`, S26b como

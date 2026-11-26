@@ -1,0 +1,1183 @@
+{
+ "criterio": "criterio_2026-11-25.md",
+ "instrumento": {
+  "cobertura_l1b": 0.990255376344086,
+  "cobertura_acm": 0.9828629032258065,
+  "I4_correlacion": 0.9871159413738898,
+  "I5_iguales": true,
+  "planck_dif_rel_g16_g19_c14": [
+   0.0011281333127313165,
+   0.00038108402931325003,
+   0.06959290333527357,
+   -5.0045831602729685e-05
+  ],
+  "planck_dif_rel_g16_g19_c15": [
+   -0.005368681517370355,
+   -0.0017870155448433955,
+   -0.03323235044174433,
+   3.0007242304508353e-05
+  ]
+ },
+ "veredicto_a": "COMPARABLE",
+ "a_calibracion_informativa": {
+  "noches_despejadas_2024": 890,
+  "noches_despejadas_2025": 1255,
+  "bt11_dif_mediana_2024_menos_2025": -0.5497,
+  "btd_dif_mediana_2024_menos_2025": 0.1027,
+  "btd_media_2024": 0.5498,
+  "btd_media_2025": 0.4386,
+  "m1_anillo_dif_mediana": 0.0147,
+  "m1_anillo_correlacion": 0.6912
+ },
+ "b": {
+  "S23a": {
+   "FA24_media_por_dia": 0.0161,
+   "FA25_seco": 0.0428,
+   "tasa_por_cuadro": 0.0156,
+   "evaluados": 1667,
+   "frac_pasan_compuerta": 0.4645,
+   "nube_dinamica_mediana": 0.5818,
+   "por_franja_2024": {
+    "00-02 UTC": {
+     "n": 306,
+     "tasa": 0.0163
+    },
+    "03-05 UTC": {
+     "n": 337,
+     "tasa": 0.0
+    },
+    "06-08 UTC": {
+     "n": 313,
+     "tasa": 0.0032
+    },
+    "09-11 UTC": {
+     "n": 291,
+     "tasa": 0.0515
+    },
+    "12-14 UTC": {
+     "n": 106,
+     "tasa": 0.0189
+    },
+    "15-17 UTC": {
+     "n": 65,
+     "tasa": 0.0154
+    },
+    "18-20 UTC": {
+     "n": 86,
+     "tasa": 0.0233
+    },
+    "21-23 UTC": {
+     "n": 163,
+     "tasa": 0.0
+    }
+   },
+   "por_franja_2025": {
+    "00-02 UTC": {
+     "n": 575,
+     "fa": 0.0417
+    },
+    "03-05 UTC": {
+     "n": 575,
+     "fa": 0.0417
+    },
+    "06-08 UTC": {
+     "n": 604,
+     "fa": 0.0497
+    },
+    "09-11 UTC": {
+     "n": 441,
+     "fa": 0.0227
+    },
+    "12-14 UTC": {
+     "n": 363,
+     "fa": 0.0248
+    },
+    "15-17 UTC": {
+     "n": 355,
+     "fa": 0.0423
+    },
+    "18-20 UTC": {
+     "n": 365,
+     "fa": 0.0192
+    },
+    "21-23 UTC": {
+     "n": 390,
+     "fa": 0.0615
+    }
+   },
+   "noche": {
+    "evaluados": 956,
+    "disparos": 6,
+    "tasa": 0.0063,
+    "frac_top5": 1.0,
+    "top_noches": [
+     {
+      "dia": "2024-11-18",
+      "disparos": 5,
+      "evaluados": 51
+     },
+     {
+      "dia": "2024-11-16",
+      "disparos": 1,
+      "evaluados": 27
+     },
+     {
+      "dia": "2024-09-24",
+      "disparos": 0,
+      "evaluados": 34
+     },
+     {
+      "dia": "2024-09-25",
+      "disparos": 0,
+      "evaluados": 2
+     },
+     {
+      "dia": "2024-09-26",
+      "disparos": 0,
+      "evaluados": 45
+     },
+     {
+      "dia": "2024-09-27",
+      "disparos": 0,
+      "evaluados": 2
+     },
+     {
+      "dia": "2024-10-02",
+      "disparos": 0,
+      "evaluados": 10
+     },
+     {
+      "dia": "2024-10-03",
+      "disparos": 0,
+      "evaluados": 11
+     }
+    ],
+    "noches_comunes": 29,
+    "evaluados_comunes": 905,
+    "disparos_comunes": 1,
+    "tasa_comunes": 0.0011,
+    "tasa_comunes_2025": 0.0014,
+    "p_fisher_vs_2025": 1.0
+   },
+   "tajadas_disparos": [
+    6,
+    1,
+    0,
+    0,
+    1,
+    2,
+    14,
+    0,
+    0,
+    0,
+    0,
+    2
+   ],
+   "veredicto": "AGUANTA",
+   "mas_estricto_fuera_de_muestra": true,
+   "por_dia": [
+    {
+     "dia": "2024-09-21",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-22",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-23",
+     "evaluados": 24,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-24",
+     "evaluados": 66,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-25",
+     "evaluados": 23,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-26",
+     "evaluados": 46,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-27",
+     "evaluados": 3,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-28",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-29",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-30",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-01",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-02",
+     "evaluados": 29,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-03",
+     "evaluados": 16,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-04",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-05",
+     "evaluados": 20,
+     "disparos": 7
+    },
+    {
+     "dia": "2024-10-06",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-07",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-08",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-09",
+     "evaluados": 18,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-10",
+     "evaluados": 6,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-11",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-12",
+     "evaluados": 57,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-13",
+     "evaluados": 8,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-14",
+     "evaluados": 63,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-15",
+     "evaluados": 51,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-16",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-17",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-18",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-19",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-20",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-21",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-22",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-23",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-24",
+     "evaluados": 10,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-25",
+     "evaluados": 21,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-26",
+     "evaluados": 70,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-27",
+     "evaluados": 65,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-28",
+     "evaluados": 72,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-29",
+     "evaluados": 66,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-30",
+     "evaluados": 57,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-31",
+     "evaluados": 17,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-01",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-02",
+     "evaluados": 17,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-03",
+     "evaluados": 8,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-04",
+     "evaluados": 13,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-05",
+     "evaluados": 68,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-06",
+     "evaluados": 19,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-07",
+     "evaluados": 28,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-08",
+     "evaluados": 38,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-09",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-10",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-11",
+     "evaluados": 54,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-12",
+     "evaluados": 36,
+     "disparos": 3
+    },
+    {
+     "dia": "2024-11-13",
+     "evaluados": 86,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-14",
+     "evaluados": 46,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-15",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-16",
+     "evaluados": 54,
+     "disparos": 1
+    },
+    {
+     "dia": "2024-11-17",
+     "evaluados": 77,
+     "disparos": 8
+    },
+    {
+     "dia": "2024-11-18",
+     "evaluados": 95,
+     "disparos": 7
+    },
+    {
+     "dia": "2024-11-19",
+     "evaluados": 67,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-20",
+     "evaluados": 60,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-21",
+     "evaluados": 93,
+     "disparos": 0
+    }
+   ]
+  },
+  "S23b": {
+   "FA24_media_por_dia": 0.0147,
+   "FA25_seco": 0.0428,
+   "tasa_por_cuadro": 0.0167,
+   "evaluados": 2448,
+   "frac_pasan_compuerta": 0.5058,
+   "nube_dinamica_mediana": 0.4886,
+   "por_franja_2024": {
+    "00-02 UTC": {
+     "n": 329,
+     "tasa": 0.0182
+    },
+    "03-05 UTC": {
+     "n": 343,
+     "tasa": 0.0
+    },
+    "06-08 UTC": {
+     "n": 325,
+     "tasa": 0.0215
+    },
+    "09-11 UTC": {
+     "n": 344,
+     "tasa": 0.0494
+    },
+    "12-14 UTC": {
+     "n": 332,
+     "tasa": 0.0211
+    },
+    "15-17 UTC": {
+     "n": 299,
+     "tasa": 0.0
+    },
+    "18-20 UTC": {
+     "n": 240,
+     "tasa": 0.0167
+    },
+    "21-23 UTC": {
+     "n": 236,
+     "tasa": 0.0
+    }
+   },
+   "por_franja_2025": {
+    "00-02 UTC": {
+     "n": 575,
+     "fa": 0.0417
+    },
+    "03-05 UTC": {
+     "n": 575,
+     "fa": 0.0417
+    },
+    "06-08 UTC": {
+     "n": 604,
+     "fa": 0.0497
+    },
+    "09-11 UTC": {
+     "n": 441,
+     "fa": 0.0227
+    },
+    "12-14 UTC": {
+     "n": 363,
+     "fa": 0.0248
+    },
+    "15-17 UTC": {
+     "n": 355,
+     "fa": 0.0423
+    },
+    "18-20 UTC": {
+     "n": 365,
+     "fa": 0.0192
+    },
+    "21-23 UTC": {
+     "n": 390,
+     "fa": 0.0615
+    }
+   },
+   "noche": {
+    "evaluados": 997,
+    "disparos": 13,
+    "tasa": 0.013,
+    "frac_top5": 1.0,
+    "top_noches": [
+     {
+      "dia": "2024-11-16",
+      "disparos": 7,
+      "evaluados": 29
+     },
+     {
+      "dia": "2024-11-18",
+      "disparos": 6,
+      "evaluados": 51
+     },
+     {
+      "dia": "2024-09-24",
+      "disparos": 0,
+      "evaluados": 36
+     },
+     {
+      "dia": "2024-09-25",
+      "disparos": 0,
+      "evaluados": 3
+     },
+     {
+      "dia": "2024-09-26",
+      "disparos": 0,
+      "evaluados": 47
+     },
+     {
+      "dia": "2024-09-27",
+      "disparos": 0,
+      "evaluados": 3
+     },
+     {
+      "dia": "2024-10-02",
+      "disparos": 0,
+      "evaluados": 15
+     },
+     {
+      "dia": "2024-10-03",
+      "disparos": 0,
+      "evaluados": 21
+     }
+    ],
+    "noches_comunes": 31,
+    "evaluados_comunes": 917,
+    "disparos_comunes": 0,
+    "tasa_comunes": 0.0,
+    "tasa_comunes_2025": 0.0014,
+    "p_fisher_vs_2025": 0.5221653306705868
+   },
+   "tajadas_disparos": [
+    9,
+    1,
+    0,
+    0,
+    14,
+    0,
+    15,
+    0,
+    0,
+    0,
+    0,
+    2
+   ],
+   "veredicto": "AGUANTA",
+   "mas_estricto_fuera_de_muestra": true,
+   "por_dia": [
+    {
+     "dia": "2024-09-21",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-22",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-23",
+     "evaluados": 26,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-24",
+     "evaluados": 68,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-25",
+     "evaluados": 27,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-26",
+     "evaluados": 48,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-27",
+     "evaluados": 5,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-28",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-29",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-09-30",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-01",
+     "evaluados": 4,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-02",
+     "evaluados": 40,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-03",
+     "evaluados": 28,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-04",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-05",
+     "evaluados": 24,
+     "disparos": 7
+    },
+    {
+     "dia": "2024-10-06",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-07",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-08",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-09",
+     "evaluados": 24,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-10",
+     "evaluados": 11,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-11",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-12",
+     "evaluados": 60,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-13",
+     "evaluados": 10,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-14",
+     "evaluados": 68,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-15",
+     "evaluados": 51,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-16",
+     "evaluados": 3,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-17",
+     "evaluados": 10,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-18",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-19",
+     "evaluados": 29,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-20",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-21",
+     "evaluados": 26,
+     "disparos": 1
+    },
+    {
+     "dia": "2024-10-22",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-23",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-24",
+     "evaluados": 24,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-25",
+     "evaluados": 27,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-26",
+     "evaluados": 107,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-27",
+     "evaluados": 114,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-28",
+     "evaluados": 113,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-29",
+     "evaluados": 117,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-30",
+     "evaluados": 108,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-10-31",
+     "evaluados": 57,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-01",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-02",
+     "evaluados": 52,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-03",
+     "evaluados": 8,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-04",
+     "evaluados": 13,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-05",
+     "evaluados": 110,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-06",
+     "evaluados": 46,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-07",
+     "evaluados": 30,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-08",
+     "evaluados": 51,
+     "disparos": 1
+    },
+    {
+     "dia": "2024-11-09",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-10",
+     "evaluados": 0,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-11",
+     "evaluados": 79,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-12",
+     "evaluados": 68,
+     "disparos": 1
+    },
+    {
+     "dia": "2024-11-13",
+     "evaluados": 105,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-14",
+     "evaluados": 74,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-15",
+     "evaluados": 2,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-16",
+     "evaluados": 98,
+     "disparos": 8
+    },
+    {
+     "dia": "2024-11-17",
+     "evaluados": 101,
+     "disparos": 8
+    },
+    {
+     "dia": "2024-11-18",
+     "evaluados": 128,
+     "disparos": 12
+    },
+    {
+     "dia": "2024-11-19",
+     "evaluados": 88,
+     "disparos": 0
+    },
+    {
+     "dia": "2024-11-20",
+     "evaluados": 70,
+     "disparos": 3
+    },
+    {
+     "dia": "2024-11-21",
+     "evaluados": 96,
+     "disparos": 0
+    }
+   ]
+  }
+ },
+ "c_informativo_p5_S24_con_base_2025": {
+  "00": {
+   "p5_S24_base2025": -0.1819,
+   "U25": -0.3354,
+   "n": 226
+  },
+  "01": {
+   "p5_S24_base2025": -0.192,
+   "U25": -0.2695,
+   "n": 235
+  },
+  "02": {
+   "p5_S24_base2025": -0.2207,
+   "U25": -0.2504,
+   "n": 236
+  },
+  "03": {
+   "p5_S24_base2025": -0.2129,
+   "U25": -0.2583,
+   "n": 250
+  },
+  "04": {
+   "p5_S24_base2025": -0.2087,
+   "U25": -0.3104,
+   "n": 251
+  },
+  "05": {
+   "p5_S24_base2025": -0.211,
+   "U25": -0.3637,
+   "n": 239
+  },
+  "06": {
+   "p5_S24_base2025": -0.224,
+   "U25": -0.3877,
+   "n": 235
+  },
+  "07": {
+   "p5_S24_base2025": -0.2305,
+   "U25": -0.3637,
+   "n": 229
+  },
+  "08": {
+   "p5_S24_base2025": -0.3255,
+   "U25": -0.3355,
+   "n": 237
+  },
+  "09": {
+   "p5_S24_base2025": -0.3463,
+   "U25": -0.3069,
+   "n": 239
+  },
+  "10": {
+   "p5_S24_base2025": -0.4379,
+   "U25": -0.2851,
+   "n": 250
+  },
+  "11": {
+   "p5_S24_base2025": -0.41,
+   "U25": -0.2809,
+   "n": 255
+  },
+  "12": {
+   "p5_S24_base2025": -0.4129,
+   "U25": -0.3696,
+   "n": 244
+  },
+  "13": {
+   "p5_S24_base2025": -0.4216,
+   "U25": -0.4516,
+   "n": 239
+  },
+  "14": {
+   "p5_S24_base2025": -0.4461,
+   "U25": -0.4781,
+   "n": 242
+  },
+  "15": {
+   "p5_S24_base2025": -0.4974,
+   "U25": -0.5381,
+   "n": 229
+  },
+  "16": {
+   "p5_S24_base2025": -0.5244,
+   "U25": -0.6606,
+   "n": 224
+  },
+  "17": {
+   "p5_S24_base2025": -0.5693,
+   "U25": -0.5969,
+   "n": 209
+  },
+  "18": {
+   "p5_S24_base2025": -0.5972,
+   "U25": -0.5544,
+   "n": 191
+  },
+  "19": {
+   "p5_S24_base2025": -0.5856,
+   "U25": -0.5022,
+   "n": 176
+  },
+  "20": {
+   "p5_S24_base2025": -0.4612,
+   "U25": -0.471,
+   "n": 165
+  },
+  "21": {
+   "p5_S24_base2025": -0.4047,
+   "U25": -0.505,
+   "n": 153
+  },
+  "22": {
+   "p5_S24_base2025": -0.3051,
+   "U25": -0.5129,
+   "n": 154
+  },
+  "23": {
+   "p5_S24_base2025": -0.2481,
+   "U25": -0.4692,
+   "n": 194
+  }
+ },
+ "c": {
+  "mediana_abs_dif": 0.0975,
+  "max_abs_dif": 0.2546,
+  "slot_max": "23:20",
+  "slots_comparados": 144,
+  "mediana_dif_con_signo_U24_menos_U25": 0.081,
+  "veredicto": "INTERMEDIO",
+  "ruido_pares_vs_impares_2025": {
+   "mediana_abs": 0.0927,
+   "max_abs": 0.3135
+  },
+  "U_por_hora": {
+   "00:00": {
+    "U24": -0.1637,
+    "U25": -0.3354
+   },
+   "01:00": {
+    "U24": -0.153,
+    "U25": -0.2695
+   },
+   "02:00": {
+    "U24": -0.1948,
+    "U25": -0.2504
+   },
+   "03:00": {
+    "U24": -0.1745,
+    "U25": -0.2583
+   },
+   "04:00": {
+    "U24": -0.1715,
+    "U25": -0.3104
+   },
+   "05:00": {
+    "U24": -0.1781,
+    "U25": -0.3637
+   },
+   "06:00": {
+    "U24": -0.2088,
+    "U25": -0.3877
+   },
+   "07:00": {
+    "U24": -0.2258,
+    "U25": -0.3637
+   },
+   "08:00": {
+    "U24": -0.3293,
+    "U25": -0.3355
+   },
+   "09:00": {
+    "U24": -0.3723,
+    "U25": -0.3069
+   },
+   "10:00": {
+    "U24": -0.4517,
+    "U25": -0.2851
+   },
+   "11:00": {
+    "U24": -0.3972,
+    "U25": -0.2809
+   },
+   "12:00": {
+    "U24": -0.3548,
+    "U25": -0.3696
+   },
+   "13:00": {
+    "U24": -0.3932,
+    "U25": -0.4516
+   },
+   "14:00": {
+    "U24": -0.4384,
+    "U25": -0.4781
+   },
+   "15:00": {
+    "U24": -0.4844,
+    "U25": -0.5381
+   },
+   "16:00": {
+    "U24": -0.4906,
+    "U25": -0.6606
+   },
+   "17:00": {
+    "U24": -0.516,
+    "U25": -0.5969
+   },
+   "18:00": {
+    "U24": -0.5571,
+    "U25": -0.5544
+   },
+   "19:00": {
+    "U24": -0.5205,
+    "U25": -0.5022
+   },
+   "20:00": {
+    "U24": -0.4407,
+    "U25": -0.471
+   },
+   "21:00": {
+    "U24": -0.3525,
+    "U25": -0.505
+   },
+   "22:00": {
+    "U24": -0.3115,
+    "U25": -0.5129
+   },
+   "23:00": {
+    "U24": -0.2541,
+    "U25": -0.4692
+   }
+  }
+ },
+ "segundos": 422
+}

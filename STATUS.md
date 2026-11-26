@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-25 (sesión S25b, bloque "## 0." abajo; S28a queda como 0-prev27 y el cierre de la coordinación S23 como 0-prev26). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-26 (sesión S29a, bloque "## 0." abajo; S25b queda como 0-prev28, S28a como 0-prev27 y el cierre de la coordinación S23 como 0-prev26). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,73 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S25b, 2026-11-25 (el umbral de 2025 aguanta otro año: en oct-nov 2024, con GOES-16, S23a y S23b disparan 1,5 a 1,6 % contra 4,3 % de 2025; umbral de cada año INTERMEDIO)
+## 0. S29a, 2026-11-26 (parte 1: la cumbre de Antuco tiene MÁS nieve en 2026, ninguna de las tres explicaciones se sostiene; parte 2: compuerta regional NO CONCLUYENTE, post hoc anula el 61 % de las falsas alarmas diurnas de 2025 contra el 17 % de los aciertos)
+
+> Sesión S29a (worktree `youthful-ishizaka-95c424`, rama `claude/s29a-compuerta-regional`, lanzada por la coordinadora
+> S28 `local_36977cef-5c6d-46e6-b890-b4299891d5c8`). Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s29a_compuerta_regional\INFORME.md`.
+> Expectativas de la parte 1 `c42190c` y criterio de la parte 2 `d5510a5`, empujados antes de mirar. Ningún día
+> posterior al 24-11: las confirmaciones congeladas siguen intactas. PR abierto contra `main`; lo revisa S28.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Parte 1, nieve | Antuco 2026 con más nieve que 2025 en 45 de 50 pares por fecha (mediana +0,33; nov-2025 21 a 35 %, nov-2026 68 a 71 %); Longaví +0,17; Chillán +0,02. Nieve oscurecida algo menor en 2026 | `resultados/s29a_optico_lectura.json`, 244 escenas S2 y L8/9 |
+| Parte 1, nube | 1 de 4 días de disparo de Antuco 2026 con paso a < 1 h tiene nube en la zona: 10-11 (cúmulos, 18 %; Longaví rodeado de nube baja). 11-11 y 08-11 limpios con la zona disparando | `figuras/*.jpg` |
+| Parte 1, veredicto | **NINGUNA SE SOSTIENE** (menos nieve: refutada, va al revés; ceniza: no; nube: sólo el 10-11). La base de 2025 de Antuco salió de una cumbre a medio descubrir | INFORME §1 |
+| Parte 2, sincronía | Antuco y Longaví disparan juntas de día en 2026 en 23 cuadros contra 2,9 con días corridos (p 0,015, mínimo de 64 réplicas) | `resultados/s29a_resultado.json` |
+| Parte 2, S26a+G | 52 de 93 P (antes 63), ALCANZA (desarrollo); pierde 14-11 (7), 28-10 (3), 08-11 (1). f_FA26 0,219 contra f_P 0,175; d +0,04 (−0,23 a +0,34) | idem |
+| Parte 2, veredicto | **NO CONCLUYENTE**; no hay criterio de confirmación (§6 lo pide sólo si es CANDIDATA) | idem |
+| Post hoc | En 2025 la compuerta abre en 10 % de los cuadros diurnos y anula 64 de 105 falsas alarmas diurnas de Chillán (nulo 6,5; p 0,016); seco global 4,9 % a 3,7 %, de día 3,9 % a 1,5 %; d25 +0,43 (0,08 a 0,65). El 10-11 anula los disparos de Chillán de 15:40 a 19:40 (regionales) y conserva los de 21:30 en adelante (VOLCAT) | `resultados/s29a_posthoc.json` |
+| Disco D: | ~0,45 GB en `D:\goes_notas\s29\s29a\` (ventanas ópticas, figuras PNG, Chillán por cuadro); D: con ~22 GB libres | `du` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿S26a+G entra a la confirmación en días nuevos como cuarta medida informativa (después de S23b, S25a, S26a, sin tocarlas), con criterio escrito antes y f_FA25 más el nulo de corrimiento como medida? | Sí, como informativa: lo que sí separa (2025) se vio después de fijar la regla, así que necesita datos que nadie miró |
+| 2 | ¿Medir antes S26a+G fuera de muestra en oct-nov 2024 (cubo de S25b en D:, con vecinas de 2024)? | Sí, si es barato: es la prueba limpia de la falsa alarma con compuerta |
+| 3 | ¿Pedir una cámara (OVDAS o DGA) hacia Antuco o Longaví la tarde del 10-11-2026? | Sí: los pasos de media mañana no ven la tarde |
+| 4 | Las de `0-prev28` (S25b), `0-prev27` (S28a) y `0-prev26` | Siguen |
+
+### c. Lo aprendido
+
+- **La nieve de 2026 va cuatro semanas atrasada en Antuco y Longaví** (proyecto): una zona de cumbre con base de 2025
+  compara contra otra superficie. En Chillán la nieve es parecida los dos años.
+- **La mayor parte de la falsa alarma diurna de Chillán en 2025 es regional** (proyecto, post hoc): 61 % coincide a
+  ±10 min con un disparo de Antuco o Longaví, contra 6 % por azar.
+- **Una compuerta medida con una vecina tranquila mide poco** (método): Longaví casi no dispara, así que como compuerta
+  de Antuco no toca su exceso; el placebo de 2026 quedó débil por construcción. Elegir la medida decisiva mirando
+  cuánto dispara cada vecina antes de fijarla.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** las cumbres sin pluma disparan juntas de día más que por azar (2026).
+- **REFUTADO:** que Antuco dispare más en 2026 por menos nieve o ceniza en la cumbre.
+- **SOSPECHA:** el exceso diurno de Antuco viene de nubes de tarde (10-11) más una base de 2025 armada con otra
+  superficie; sin probar.
+- **SOSPECHA (post hoc):** S26a+G bajaría la falsa alarma diurna de Chillán a la mitad por un sexto de los aciertos;
+  falta medirlo en datos que nadie miró.
+
+### e. Prompt para la próxima sesión
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Usa /retomar.
+1. Verifica: git fetch; gh pr list; main en el remoto; espacio en D: (piso 6 GB).
+2. Lee STATUS.md "## 0." (S29a) y docs/own_volcat/s29a_compuerta_regional/INFORME.md.
+3. Si Nicolás o la coordinadora lo aprueban: medir S26a+G fuera de muestra en oct-nov 2024 (cubo de S25b en
+   D:\goes_notas\s25\s25b_2024\cubo) con las vecinas de 2024, criterio empujado antes de medir; o escribir el criterio
+   de S26a+G como cuarta medida informativa de la confirmación, después de S23b, S25a y S26a.
+4. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS;
+   la carpeta principal no se toca; nada de SSEC al repo; criterio antes de medir; ningún día de jul-nov 2026 es
+   "sin actividad"; ningún día posterior al 24-11 con el detector.
+```
+
+---
+
+## 0-prev28. S25b, 2026-11-25 (el umbral de 2025 aguanta otro año: en oct-nov 2024, con GOES-16, S23a y S23b disparan 1,5 a 1,6 % contra 4,3 % de 2025; umbral de cada año INTERMEDIO)
 
 > Sesión S25b (worktree `s25b-fondo-2024-73846a`, lanzada por S23). Informe:
 > `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s25b_fondo_2024\INFORME.md`. Criterio `b07cb58`,

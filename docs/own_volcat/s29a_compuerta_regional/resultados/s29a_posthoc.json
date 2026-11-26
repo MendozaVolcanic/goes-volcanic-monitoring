@@ -1,0 +1,57 @@
+{
+ "rotulo": "POST HOC: no estaba en el criterio; describe, no decide",
+ "compuerta_abierta": {
+  "2025_dia_evaluados": 0.101,
+  "2026_dia_evaluados": 0.1703,
+  "2026_dia_P_evaluados": 0.2841
+ },
+ "f_FA25_nulo": {
+  "anulados": 64,
+  "disparos_dia": 105,
+  "f_FA25": 0.6095,
+  "replicas": 61,
+  "p_minimo": 0.0161,
+  "p": 0.0161,
+  "replicas_media": 6.52,
+  "replicas_max": 29
+ },
+ "d25": {
+  "f_FA25": 0.6095,
+  "f_P": 0.1746,
+  "d": 0.4349,
+  "IC95": [
+   0.0785,
+   0.647
+  ]
+ },
+ "anulados_2025_por_dia": {
+  "2025-10-27": [
+   10,
+   10
+  ],
+  "2025-11-02": [
+   1,
+   1
+  ],
+  "2025-11-05": [
+   1,
+   2
+  ],
+  "2025-11-13": [
+   8,
+   11
+  ],
+  "2025-11-14": [
+   29,
+   38
+  ],
+  "2025-11-17": [
+   1,
+   4
+  ],
+  "2025-11-18": [
+   14,
+   18
+  ]
+ }
+}

@@ -1,0 +1,504 @@
+{
+ "criterio": "criterio_2026-11-25.md (d5510a5)",
+ "percentil": 4.75,
+ "regla": "S26a+G: disparo diurno de Chillán anulado si Antuco o Longaví disparan a ±1 cuadro",
+ "dias": {
+  "2025": "21-09 a 21-11-2025 (62, seco)",
+  "2026": "21-09 a 24-11-2026 (65)"
+ },
+ "comprobacion": {
+  "vecinas": {
+   "antuco_noche": {
+    "mio": {
+     "2025": [
+      92,
+      1476
+     ],
+     "2026": [
+      37,
+      1128
+     ]
+    },
+    "s28a": [
+     [
+      92,
+      1476
+     ],
+     [
+      37,
+      1128
+     ]
+    ],
+    "igual": true
+   },
+   "antuco_dia": {
+    "mio": {
+     "2025": [
+      97,
+      2410
+     ],
+     "2026": [
+      156,
+      1467
+     ]
+    },
+    "s28a": [
+     [
+      97,
+      2410
+     ],
+     [
+      156,
+      1467
+     ]
+    ],
+    "igual": true
+   },
+   "longavi_noche": {
+    "mio": {
+     "2025": [
+      90,
+      1518
+     ],
+     "2026": [
+      66,
+      979
+     ]
+    },
+    "s28a": [
+     [
+      90,
+      1518
+     ],
+     [
+      66,
+      979
+     ]
+    ],
+    "igual": true
+   },
+   "longavi_dia": {
+    "mio": {
+     "2025": [
+      117,
+      2889
+     ],
+     "2026": [
+      54,
+      1665
+     ]
+    },
+    "s28a": [
+     [
+      117,
+      2889
+     ],
+     [
+      54,
+      1665
+     ]
+    ],
+    "igual": true
+   }
+  },
+  "chillan": {
+   "seco_2025": [
+    269,
+    5499
+   ],
+   "diferencias_tabla_2026": 0
+  }
+ },
+ "S26a_sin_compuerta": {
+  "M1_seco_2025": {
+   "global": 0.048917985088197856,
+   "media_por_dia": 0.04308484803833128,
+   "disparos": 269,
+   "evaluados": 5499,
+   "noche_03_09": [
+    98,
+    1453
+   ],
+   "dia_12_24": [
+    105,
+    2704
+   ],
+   "dia_disparos_antes": 105,
+   "dia_anulados": 0,
+   "f_FA25": 0.0
+  },
+  "M2_alcance_2026": {
+   "P_evaluados": 93,
+   "P_alcanzados": 63,
+   "R": 0.6774193548387096,
+   "E25": 5.869409985981778,
+   "p25": 6.158293552019926e-53,
+   "N_cerca": 649,
+   "N_cerca_alcanzados": 113,
+   "pN": 1.7670733427881738e-22,
+   "dias_P_evaluado": 9,
+   "dias_P_alcanzado": 6
+  },
+  "rotulo": "ALCANZA (desarrollo)",
+  "P_alcanzados_antes": 63,
+  "P_perdidos": 0,
+  "f_P": 0.0,
+  "perdidos_por_dia": {},
+  "N_2026_dia": {
+   "n": 594,
+   "con_disparo_antes": 32,
+   "con_disparo_despues": 32
+  },
+  "por_dia_P": {
+   "2026-10-28": {
+    "alcanzados_antes": 20,
+    "perdidos": 0
+   },
+   "2026-10-29": {
+    "alcanzados_antes": 3,
+    "perdidos": 0
+   },
+   "2026-11-08": {
+    "alcanzados_antes": 9,
+    "perdidos": 0
+   },
+   "2026-11-10": {
+    "alcanzados_antes": 8,
+    "perdidos": 0
+   },
+   "2026-11-11": {
+    "alcanzados_antes": 3,
+    "perdidos": 0
+   },
+   "2026-11-14": {
+    "alcanzados_antes": 20,
+    "perdidos": 0
+   }
+  }
+ },
+ "S26a_G": {
+  "M1_seco_2025": {
+   "global": 0.03727950536461175,
+   "media_por_dia": 0.032993405257740624,
+   "disparos": 205,
+   "evaluados": 5499,
+   "noche_03_09": [
+    98,
+    1453
+   ],
+   "dia_12_24": [
+    41,
+    2704
+   ],
+   "dia_disparos_antes": 105,
+   "dia_anulados": 64,
+   "f_FA25": 0.6095238095238096
+  },
+  "M2_alcance_2026": {
+   "P_evaluados": 93,
+   "P_alcanzados": 52,
+   "R": 0.5591397849462365,
+   "E25": 4.2769531298077075,
+   "p25": 5.995144061837242e-45,
+   "N_cerca": 649,
+   "N_cerca_alcanzados": 85,
+   "pN": 1.129676159284771e-18,
+   "dias_P_evaluado": 9,
+   "dias_P_alcanzado": 6
+  },
+  "rotulo": "ALCANZA (desarrollo)",
+  "P_alcanzados_antes": 63,
+  "P_perdidos": 11,
+  "f_P": 0.1746031746031746,
+  "perdidos_por_dia": {
+   "2026-10-28": 3,
+   "2026-11-08": 1,
+   "2026-11-14": 7
+  },
+  "N_2026_dia": {
+   "n": 594,
+   "con_disparo_antes": 32,
+   "con_disparo_despues": 14
+  },
+  "por_dia_P": {
+   "2026-10-28": {
+    "alcanzados_antes": 20,
+    "perdidos": 3
+   },
+   "2026-10-29": {
+    "alcanzados_antes": 3,
+    "perdidos": 0
+   },
+   "2026-11-08": {
+    "alcanzados_antes": 9,
+    "perdidos": 1
+   },
+   "2026-11-10": {
+    "alcanzados_antes": 8,
+    "perdidos": 0
+   },
+   "2026-11-11": {
+    "alcanzados_antes": 3,
+    "perdidos": 0
+   },
+   "2026-11-14": {
+    "alcanzados_antes": 20,
+    "perdidos": 7
+   }
+  }
+ },
+ "M3_placebo_vecinas": {
+  "antuco": {
+   "antes": {
+    "2025": [
+     97,
+     2410
+    ],
+    "2026": [
+     156,
+     1467
+    ],
+    "tasa_2025": 0.04025,
+    "tasa_2026": 0.10634,
+    "R": 2.64204,
+    "IC95": [
+     1.04952,
+     8.98006
+    ],
+    "replicas_validas": 2000
+   },
+   "con_compuerta": {
+    "2025": [
+     81,
+     2410
+    ],
+    "2026": [
+     133,
+     1467
+    ],
+    "tasa_2025": 0.03361,
+    "tasa_2026": 0.09066,
+    "R": 2.69745,
+    "IC95": [
+     1.05314,
+     11.54832
+    ],
+    "replicas_validas": 2000
+   }
+  },
+  "longavi": {
+   "antes": {
+    "2025": [
+     117,
+     2889
+    ],
+    "2026": [
+     54,
+     1665
+    ],
+    "tasa_2025": 0.0405,
+    "tasa_2026": 0.03243,
+    "R": 0.80083,
+    "IC95": [
+     0.22039,
+     2.17911
+    ],
+    "replicas_validas": 2000
+   },
+   "con_compuerta": {
+    "2025": [
+     96,
+     2889
+    ],
+    "2026": [
+     31,
+     1665
+    ],
+    "tasa_2025": 0.03323,
+    "tasa_2026": 0.01862,
+    "R": 0.5603,
+    "IC95": [
+     0.20569,
+     1.38939
+    ],
+    "replicas_validas": 2000
+   }
+  }
+ },
+ "M3_f_FA26": {
+  "f": 0.21905,
+  "anulados": 46,
+  "disparos_dia": 210
+ },
+ "M3_f_FA25_vecinas_informativo": {
+  "f": 0.1729,
+  "anulados": 37,
+  "disparos_dia": 214
+ },
+ "M4_nulo_corrimiento": {
+  "2025": {
+   "observado": 16,
+   "replicas": 61,
+   "p_minimo": 0.01613,
+   "p": 0.06452,
+   "replicas_media": 4.19672,
+   "replicas_max": 22
+  },
+  "2026": {
+   "observado": 23,
+   "replicas": 64,
+   "p_minimo": 0.01538,
+   "p": 0.01538,
+   "replicas_media": 2.875,
+   "replicas_max": 11
+  },
+  "P_perdidos_chillan": {
+   "observado": 11,
+   "replicas": 64,
+   "p_mas_perdidos": 0.07692,
+   "replicas_media": 2.98438,
+   "replicas_min": 0,
+   "replicas_max": 24
+  }
+ },
+ "M5_selectividad": {
+  "f_FA26": 0.21905,
+  "f_P": 0.1746,
+  "d": 0.04444,
+  "IC95": [
+   -0.23231,
+   0.33663
+  ],
+  "replicas_validas": 2000,
+  "dias_vecinas": 65,
+  "dias_chillan_con_alcance": 6
+ },
+ "veredicto": "NO CONCLUYENTE",
+ "sensibilidades": {
+  "ventana_0": {
+   "rotulo": "ALCANZA (desarrollo)",
+   "R": 0.66667,
+   "P": [
+    62,
+    93
+   ],
+   "p25": 1.8270519711049957e-56,
+   "pN": 2.7278452535217166e-26,
+   "f_P": 0.01587,
+   "f_FA26_vecinas": 0.18095,
+   "seco_2025_global": 0.04019,
+   "seco_2025_dia": [
+    57,
+    2704
+   ],
+   "perdidos_por_dia": {
+    "2026-11-14": 1
+   }
+  },
+  "ventana_3": {
+   "rotulo": "ALCANZA (desarrollo)",
+   "R": 0.43011,
+   "P": [
+    40,
+    93
+   ],
+   "p25": 1.95505283873156e-34,
+   "pN": 2.8973296293950234e-11,
+   "f_P": 0.36508,
+   "f_FA26_vecinas": 0.27619,
+   "seco_2025_global": 0.03473,
+   "seco_2025_dia": [
+    27,
+    2704
+   ],
+   "perdidos_por_dia": {
+    "2026-10-28": 6,
+    "2026-11-08": 3,
+    "2026-11-14": 14
+   }
+  },
+  "las_dos": {
+   "rotulo": "ALCANZA (desarrollo)",
+   "R": 0.67742,
+   "P": [
+    63,
+    93
+   ],
+   "p25": 1.499235223689119e-53,
+   "pN": 5.814590589624577e-26,
+   "f_P": 0.0,
+   "f_FA26_vecinas": null,
+   "seco_2025_global": 0.04674,
+   "seco_2025_dia": [
+    93,
+    2704
+   ],
+   "perdidos_por_dia": {}
+  },
+  "todo_el_dia": {
+   "rotulo": "ALCANZA (desarrollo)",
+   "R": 0.55914,
+   "P": [
+    52,
+    93
+   ],
+   "p25": 2.68406557990052e-46,
+   "pN": 1.129676159284771e-18,
+   "f_P": 0.1746,
+   "f_FA26_vecinas": 0.15094,
+   "seco_2025_global": 0.0231,
+   "seco_2025_dia": [
+    41,
+    2704
+   ],
+   "perdidos_por_dia": {
+    "2026-10-28": 3,
+    "2026-11-08": 1,
+    "2026-11-14": 7
+   }
+  },
+  "solo_antuco": {
+   "rotulo": "ALCANZA (desarrollo)",
+   "R": 0.58065,
+   "P": [
+    54,
+    93
+   ],
+   "p25": 8.25545954988267e-46,
+   "pN": 1.1763027286107687e-19,
+   "f_P": 0.14286,
+   "f_FA26_vecinas": 0.21905,
+   "seco_2025_global": 0.03928,
+   "seco_2025_dia": [
+    52,
+    2704
+   ],
+   "perdidos_por_dia": {
+    "2026-10-28": 3,
+    "2026-11-08": 1,
+    "2026-11-14": 5
+   }
+  },
+  "solo_longavi": {
+   "rotulo": "ALCANZA (desarrollo)",
+   "R": 0.65591,
+   "P": [
+    61,
+    93
+   ],
+   "p25": 3.875429219718526e-52,
+   "pN": 8.416311903459408e-25,
+   "f_P": 0.03175,
+   "f_FA26_vecinas": 0.21905,
+   "seco_2025_global": 0.04474,
+   "seco_2025_dia": [
+    82,
+    2704
+   ],
+   "perdidos_por_dia": {
+    "2026-11-14": 2
+   }
+  }
+ },
+ "segundos": 530
+}

@@ -1,0 +1,313 @@
+{
+ "n": {
+  "2025_evaluados": 1754,
+  "2025_disparos": 78,
+  "2026_evaluados": 858,
+  "2026_disparos": 12
+ },
+ "acm1": {
+  "mediana_2025_disparan": 0.3967,
+  "mediana_2025_no": 0.2867,
+  "mediana_2026_disparan": 0.5687,
+  "mediana_2026_no": 0.4988,
+  "p_MW_2025_disparan_vs_no": 5.940417124844977e-11,
+  "p_MW_2026_disparan_vs_no": 0.19228219655095335,
+  "p_MW_2026_disparan_vs_2025_disparan": 4.4383492031995325e-05,
+  "p_MW_2026_disparan_vs_2025_no": 5.248267821513422e-07
+ },
+ "inv": {
+  "mediana_2025_disparan": -0.7473,
+  "mediana_2025_no": -1.5432,
+  "mediana_2026_disparan": -2.5716,
+  "mediana_2026_no": -1.752,
+  "p_MW_2025_disparan_vs_no": 6.281263121633529e-07,
+  "p_MW_2026_disparan_vs_no": 0.019729830859144884,
+  "p_MW_2026_disparan_vs_2025_disparan": 0.00036139286695663255,
+  "p_MW_2026_disparan_vs_2025_no": 0.021897446316429273
+ },
+ "noches_2026_con_disparo": {
+  "2026-10-15": {
+   "evaluados": 16,
+   "disparos": 1,
+   "horas_disparo_UTC": [
+    "08:30"
+   ],
+   "clase_VOLCAT_en_disparos": [
+    ""
+   ],
+   "clases_VOLCAT_de_la_noche": {
+    "": 16
+   },
+   "tajadas": [
+    6
+   ],
+   "acm1_mediana_disparos": 0.5257,
+   "inv_mediana_disparos": -2.3324,
+   "acm1_mediana_noche": 0.5006,
+   "inv_mediana_noche": -2.1246
+  },
+  "2026-10-17": {
+   "evaluados": 25,
+   "disparos": 1,
+   "horas_disparo_UTC": [
+    "03:30"
+   ],
+   "clase_VOLCAT_en_disparos": [
+    ""
+   ],
+   "clases_VOLCAT_de_la_noche": {
+    "": 25
+   },
+   "tajadas": [
+    5
+   ],
+   "acm1_mediana_disparos": 0.5926,
+   "inv_mediana_disparos": -0.7057,
+   "acm1_mediana_noche": 0.5663,
+   "inv_mediana_noche": -1.1195
+  },
+  "2026-10-29": {
+   "evaluados": 49,
+   "disparos": 6,
+   "horas_disparo_UTC": [
+    "01:10",
+    "01:20",
+    "01:30",
+    "01:40",
+    "01:50",
+    "02:00"
+   ],
+   "clase_VOLCAT_en_disparos": [
+    "P",
+    "P",
+    "otro",
+    "otro",
+    "otro",
+    "otro"
+   ],
+   "clases_VOLCAT_de_la_noche": {
+    "N": 37,
+    "P": 3,
+    "otro": 9
+   },
+   "tajadas": [
+    4,
+    4,
+    5,
+    5,
+    5,
+    5
+   ],
+   "acm1_mediana_disparos": 0.5777,
+   "inv_mediana_disparos": -2.7857,
+   "acm1_mediana_noche": 0.4564,
+   "inv_mediana_noche": -2.2839
+  },
+  "2026-11-05": {
+   "evaluados": 53,
+   "disparos": 2,
+   "horas_disparo_UTC": [
+    "02:40",
+    "02:50"
+   ],
+   "clase_VOLCAT_en_disparos": [
+    "N",
+    "N"
+   ],
+   "clases_VOLCAT_de_la_noche": {
+    "": 2,
+    "N": 51
+   },
+   "tajadas": [
+    4,
+    4
+   ],
+   "acm1_mediana_disparos": 0.4516,
+   "inv_mediana_disparos": -0.2139,
+   "acm1_mediana_noche": 0.3919,
+   "inv_mediana_noche": -1.4228
+  },
+  "2026-11-11": {
+   "evaluados": 31,
+   "disparos": 2,
+   "horas_disparo_UTC": [
+    "03:50",
+    "04:00"
+   ],
+   "clase_VOLCAT_en_disparos": [
+    "N",
+    "N"
+   ],
+   "clases_VOLCAT_de_la_noche": {
+    "": 2,
+    "N": 29
+   },
+   "tajadas": [
+    6,
+    6
+   ],
+   "acm1_mediana_disparos": 0.3889,
+   "inv_mediana_disparos": -2.7994,
+   "acm1_mediana_noche": 0.4337,
+   "inv_mediana_noche": -1.7545
+  }
+ },
+ "noches_2025_con_disparo": {
+  "2025-09-30": {
+   "evaluados": 54,
+   "disparos": 3,
+   "horas_disparo_UTC": [
+    "02:40",
+    "02:50",
+    "03:00"
+   ],
+   "acm1_mediana_disparos": 0.2903,
+   "inv_mediana_disparos": -2.6336
+  },
+  "2025-10-03": {
+   "evaluados": 35,
+   "disparos": 7,
+   "horas_disparo_UTC": [
+    "07:00",
+    "07:10",
+    "07:20",
+    "07:50",
+    "08:00",
+    "08:10",
+    "08:20"
+   ],
+   "acm1_mediana_disparos": 0.2557,
+   "inv_mediana_disparos": 1.4856
+  },
+  "2025-10-19": {
+   "evaluados": 34,
+   "disparos": 1,
+   "horas_disparo_UTC": [
+    "03:20"
+   ],
+   "acm1_mediana_disparos": 0.4217,
+   "inv_mediana_disparos": 0.8359
+  },
+  "2025-10-25": {
+   "evaluados": 49,
+   "disparos": 1,
+   "horas_disparo_UTC": [
+    "04:10"
+   ],
+   "acm1_mediana_disparos": 0.3381,
+   "inv_mediana_disparos": -2.2953
+  },
+  "2025-10-28": {
+   "evaluados": 53,
+   "disparos": 12,
+   "horas_disparo_UTC": [
+    "00:00",
+    "00:10",
+    "00:20",
+    "00:30",
+    "00:40",
+    "00:50",
+    "01:00",
+    "01:10",
+    "01:20",
+    "01:30",
+    "01:40",
+    "01:50"
+   ],
+   "acm1_mediana_disparos": 0.4092,
+   "inv_mediana_disparos": -1.9827
+  },
+  "2025-11-06": {
+   "evaluados": 54,
+   "disparos": 16,
+   "horas_disparo_UTC": [
+    "04:30",
+    "04:40",
+    "04:50",
+    "05:00",
+    "05:10",
+    "05:20",
+    "05:30",
+    "05:40",
+    "05:50",
+    "06:00",
+    "06:10",
+    "06:20",
+    "06:30",
+    "06:40",
+    "06:50",
+    "07:00"
+   ],
+   "acm1_mediana_disparos": 0.3626,
+   "inv_mediana_disparos": -0.9279
+  },
+  "2025-11-15": {
+   "evaluados": 54,
+   "disparos": 8,
+   "horas_disparo_UTC": [
+    "00:10",
+    "00:20",
+    "00:30",
+    "00:40",
+    "00:50",
+    "01:00",
+    "01:10",
+    "01:20"
+   ],
+   "acm1_mediana_disparos": 0.4444,
+   "inv_mediana_disparos": -2.7061
+  },
+  "2025-11-17": {
+   "evaluados": 47,
+   "disparos": 19,
+   "horas_disparo_UTC": [
+    "02:20",
+    "04:00",
+    "04:10",
+    "04:50",
+    "05:00",
+    "05:30",
+    "05:40",
+    "06:10",
+    "06:20",
+    "07:20",
+    "07:30",
+    "07:40",
+    "07:50",
+    "08:00",
+    "08:10",
+    "08:20",
+    "08:30",
+    "08:40",
+    "08:50"
+   ],
+   "acm1_mediana_disparos": 0.4743,
+   "inv_mediana_disparos": 1.2408
+  },
+  "2025-11-18": {
+   "evaluados": 48,
+   "disparos": 11,
+   "horas_disparo_UTC": [
+    "00:00",
+    "03:00",
+    "03:10",
+    "03:20",
+    "05:30",
+    "05:40",
+    "05:50",
+    "06:00",
+    "06:10",
+    "06:20",
+    "06:30"
+   ],
+   "acm1_mediana_disparos": 0.2879,
+   "inv_mediana_disparos": 0.5122
+  }
+ },
+ "clases_VOLCAT_noche_2026_evaluados": {
+  "": 212,
+  "N": 621,
+  "P": 3,
+  "otro": 22
+ }
+}

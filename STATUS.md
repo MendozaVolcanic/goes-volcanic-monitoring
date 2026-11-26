@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-26 (S31d, bloque "## 0." abajo; S31c queda como 0-prev37, S31b como 0-prev36, S31a como 0-prev35, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-26 (S31e, bloque "## 0." abajo; S31d queda como 0-prev38, S31c como 0-prev37, S31b como 0-prev36, S31a como 0-prev35, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,76 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S31d, 2026-11-26 (origen del sesgo SE del anillo en 2025, sin pluma: RUIDO FIJO POR PÍXEL; los píxeles altos de la cordillera al SE, a 23 a 33 km del cráter, tienen por sí solos colas bajas de BTD y eso basta para el 63 % de disparos al SE; el método solo no da nada y el viento quedó SIN PODER)
+## 0. S31e, 2026-11-26 (anillo con cada píxel medido contra su propia temporada de 2025: REDUCE EL SESGO Y EL TRAMO QUEDA NO DECIDIBLE; la cordillera del SE deja de ganar con la misma falsa alarma, pero el anillo dispara la mitad a la hora de VOLCAT, sigue mirando lejos y no marca ni el tramo de 4 a 15 km ni el rumbo)
+
+> Sesión S31e (worktree `s31e-anillo-por-pixel-7f171b`, rama `claude/s31e-anillo-por-pixel-7f171b`), lanzada por la
+> coordinadora S31 para la decisión 1 de S31d (aprobada por Nicolás el 26-11). Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s31e_anillo_pixel\INFORME.md`.
+> Criterio `bc8bde2` (15:58 UTC) y script `5de8cf6`, los dos empujados antes de calcular un solo disparo del anillo nuevo.
+> Detector de DESARROLLO al lado del congelado: no lo reemplaza ni toca las confirmaciones. Ningún día posterior al
+> 24-11; nada de `s23b_confirmar.py`, `s30a_confirmar.py` ni del CSV de días nuevos. Huellas de VOLCAT y tablas sólo en
+> `D:\goes_notas\s31\s31e\`. PR contra `main` sin fusionar: lo revisa S31.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Corrección (T1) | Cada residuo pasado a su percentil en su propio pozo de 2025 (misma hora ±90 min, sin el día evaluado) y a cuantil normal; el resto del anillo igual. Sensibilidad T2: z robusto | `criterio_2026-11-26.md` §2 |
+| Comprobación de código | Con z = r reproduce el congelado entero: 138 disparos 2025, 38 en 2024, tabla de S26a sin una fila distinta, 23 de 54 P, E₁ de S31d y el tramo de S31c con los mismos p | `resultados/s31e_resultado.json` |
+| Umbral a igual falsa alarma (2025) | T1 percentil 5,00: 3,2 % por día contra 4,0 % del congelado | idem |
+| Falsa alarma 2024 | 2,5 % contra 1,4 % (IC de la diferencia −1,1 a 3,5 puntos): IGUAL | idem |
+| Sesgo SE 2025 | 64,5 % pasa a 31 % (método solo 19 %); exceso 0,44 pasa a 0,13 (IC −0,07 a 0,29): MEJORA PARCIAL. 2024: 19 % contra 23 % del método, MEJORA | idem |
+| Alcance en P de VOLCAT 2026 | 11 de 54 contra 23 de 54 (IC −0,39 a 0,00): IGUAL, en el borde | idem |
+| Tramo 4 a 15 km (método de S31c) | 11 P en 3 días: `px_cerca` 1 de 11 (p_G 0,84), `rumbo_lejos` 2 de 11 (p_R 0,41): NO DECIDIBLE; el oráculo pasa G (41 de 87, p 0,0001) | idem |
+| Poder sintético (0,97 K) | 0,34 contra 0,575; hacia el SE 0,15 contra 0,40 | idem |
+| T2 (sensibilidad) | Sesgo 35 % (MEJORA PARCIAL), pero alcance 1 de 54 (PEOR) | idem |
+| Post hoc | En 2026 dispara 7,2 % de los cuadros N (congelado 0,7 %), 72 de 94 al W y NW, casi todo de noche el 05 y 08-11. En 2025, sin pluma, la cola del anillo cae a menos de 15 km la mitad de lo que daría un píxel cualquiera de la tajada (congelado 4,3 % contra 10,3 %; T1 1,0 % contra 9,5 %) | `resultados/s31e_posthoc.json` |
+| Veredicto | **REDUCE EL SESGO Y EL TRAMO QUEDA NO DECIDIBLE** | `INFORME.md` |
+
+### b. Decisiones que esperan a Nicolás (vía S31)
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Descartar T1 como detector y quedarse con él sólo como diagnóstico? | Sí: pierde la mitad del alcance y el poder hacia el SE, y en 2026 se enciende sobre el valle |
+| 2 | ¿Leer la coincidencia del anillo congelado con VOLCAT como hora y rumbo puestos en buena parte por la cordillera, también si la unión da CONFIRMA en días nuevos? | Sí: sin la cordillera, el alcance cae de 23 a 11 y el rumbo se pierde |
+| 3 | ¿Probar, como desarrollo con criterio nuevo, una corona cercana al cráter (4 a 15 km) con regla propia, en vez de seguir ajustando el anillo de 40 km? | Sí, si se quiere seguir con el anillo: la cola de 8 esquiva el vértice de cada tajada aun sin pluma |
+
+### c. Lo aprendido
+
+- **Corregir la escala de cada píxel puede trasladar el sesgo en vez de quitarlo** (método, workspace): calibrado contra
+  un solo año, el percentil propio vuelve "raros" a los píxeles más tranquilos (el valle) apenas cambian algo de un año a
+  otro.
+- **Un nulo de permutación dentro de la tajada tiene que mirar qué hace el estadístico sin señal** (método, proyecto): la
+  cola de 8 del anillo cae cerca del cráter la mitad de lo que daría el azar dentro de la tajada en 2025, sin pluma; la
+  expectativa al azar de S31c (0,38) era optimista, aunque su rótulo no cambia.
+- **Una comprobación de código que reproduce los p publicados al cuarto decimal deja leer la variante como el único
+  cambio** (método, workspace).
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (desarrollo, por su regla):** la preferencia SE del anillo en 2025 y 2024 se va al medir cada píxel contra
+  su propia temporada, a igual falsa alarma.
+- **NO DECIDIBLE:** si el anillo, sin la cordillera, ve el tramo de 4 a 15 km (11 cuadros en 3 días).
+- **SOSPECHA (post hoc):** parte de lo que el congelado alcanzaba en 2026 era la cordillera encendida a la hora de la
+  pluma (alcance 23 pasa a 11, con IC que toca cero).
+- **SIN DATO:** qué mueve los píxeles del valle las noches del 05 y 08-11-2026; si una referencia de dos años (2024 más
+  2025) evitaría el traslado del sesgo.
+
+### e. Prompt para la próxima sesión
+
+```
+Retoma Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes). Lee STATUS.md "## 0." (S31e) y
+docs/own_volcat/s31e_anillo_pixel/INFORME.md. Si Nicolás aprueba la decisión 3 de S31e: corona de 4 a 15 km del cráter
+con regla propia (base y umbral por píxel de 2025, 2024 fuera de muestra), criterio empujado antes de medir, como
+desarrollo sobre días hasta el 24-11, y contra la huella de VOLCAT con los nulos de S31c corregidos por lo que la cola
+hace sin pluma (§3 del informe de S31e). Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con
+Python); rutas absolutas; no VIIRS; nada de SSEC al repo; nadie mira el detector en días posteriores al 24-11; no tocar
+la confirmación congelada; python -I -B.
+```
+
+---
+
+## 0-prev38. S31d, 2026-11-26 (origen del sesgo SE del anillo en 2025, sin pluma: RUIDO FIJO POR PÍXEL; los píxeles altos de la cordillera al SE, a 23 a 33 km del cráter, tienen por sí solos colas bajas de BTD y eso basta para el 63 % de disparos al SE; el método solo no da nada y el viento quedó SIN PODER)
 
 > Sesión S31d (worktree `s31d-sesgo-se-anillo-8b4a65`, rama `claude/s31d-sesgo-se-anillo-8b4a65`), lanzada por la
 > coordinadora S31 para la sospecha de S28 §d. Informe:

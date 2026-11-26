@@ -1,0 +1,120 @@
+{
+ "rotulo": "POST HOC: escrito después de ver s31e_resultado.json; no decide",
+ "parte1_T1_2026": {
+  "disparos": 94,
+  "por_clase": {
+   "sin_clase": 8,
+   "N": 73,
+   "otro": 7,
+   "P": 6
+  },
+  "evaluados_por_clase": {
+   "sin_clase": 332,
+   "N": 1010,
+   "otro": 208,
+   "P": 54
+  },
+  "congelado_por_clase": {
+   "sin_clase": 13,
+   "otro": 16,
+   "P": 16,
+   "N": 7
+  },
+  "tajadas": [
+   2,
+   3,
+   1,
+   0,
+   8,
+   8,
+   0,
+   17,
+   1,
+   14,
+   26,
+   14
+  ],
+  "dias_con_disparo": 14,
+  "por_dia": {
+   "2026-09-27": {
+    "sin_clase": 3,
+    "dia": 3
+   },
+   "2026-10-10": {
+    "sin_clase": 1,
+    "noche": 1
+   },
+   "2026-10-16": {
+    "sin_clase": 2,
+    "noche": 2
+   },
+   "2026-10-25": {
+    "N": 1,
+    "noche": 1,
+    "otro": 1,
+    "dia": 1
+   },
+   "2026-10-29": {
+    "P": 1,
+    "noche": 1
+   },
+   "2026-10-30": {
+    "N": 4,
+    "noche": 4
+   },
+   "2026-11-05": {
+    "N": 30,
+    "noche": 30
+   },
+   "2026-11-06": {
+    "N": 4,
+    "noche": 4
+   },
+   "2026-11-07": {
+    "N": 10,
+    "dia": 12,
+    "sin_clase": 2
+   },
+   "2026-11-08": {
+    "N": 18,
+    "noche": 18,
+    "otro": 4,
+    "dia": 7,
+    "P": 3
+   },
+   "2026-11-09": {
+    "N": 1,
+    "dia": 1
+   },
+   "2026-11-11": {
+    "otro": 2,
+    "dia": 4,
+    "P": 2
+   },
+   "2026-11-12": {
+    "N": 1,
+    "dia": 1
+   },
+   "2026-11-23": {
+    "N": 4,
+    "noche": 4
+   }
+  },
+  "W_NW_210a360": {
+   "n": 72,
+   "dias": 7,
+   "noche": 57
+  }
+ },
+ "parte2_cola_cercana_2025": {
+  "ID": {
+   "disparos": 138,
+   "frac_cerca_esperada_pixel_cualquiera": 0.1031,
+   "frac_cerca_cola_observada": 0.0426
+  },
+  "T1": {
+   "disparos": 134,
+   "frac_cerca_esperada_pixel_cualquiera": 0.0949
+  }
+ }
+}

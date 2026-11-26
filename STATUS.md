@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-26 (S31b, bloque "## 0." abajo; S31a queda como 0-prev35, la coordinadora S28 como 0-prev34, S30a como 0-prev33). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-26 (S31c, bloque "## 0." abajo; S31b queda como 0-prev36, S31a como 0-prev35, la coordinadora S28 como 0-prev34, S30a como 0-prev33). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,64 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S31b, 2026-11-26 (enmienda v2 del gatillo de la confirmación, escrita antes del dato: 20 P evaluables con al menos 2 días de 5 o más; en placebo el CONFIRMA falso queda en 0,58 % o menos y el poder de la unión sube de 0,42 a 0,81 si alcanza 7 de cada 10 cuadros de VOLCAT; se recomienda adoptarla)
+## 0. S31c, 2026-11-26 (el anillo en dos coronas: SÓLO LEJOS; el detector marca el lado de la pluma de VOLCAT a 22 a 33 km del cráter y en el tramo de 4 a 15 km, donde VOLCAT la dibuja, cae menos que un píxel cualquiera de la misma tajada; coincide con VOLCAT en hora y rumbo, no en posición)
+
+> Sesión S31c (worktree `s31c-anillo-dos-coronas-03c34e`, rama `claude/s31c-anillo-dos-coronas-03c34e`), lanzada por la
+> coordinadora S31 para la decisión 1 de S30b (aprobada por Nicolás el 26-11). Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s31c_dos_coronas\INFORME.md`.
+> Criterio `d3c9461` (15:13 UTC) y anexo §8 `eab5486`, los dos empujados antes de calcular un disparo por corona.
+> Desarrollo sobre días ya vistos (hasta el 24-11); nada de `s23b_confirmar.py`, `s30a_confirmar.py` ni del CSV de días
+> nuevos. Huellas de VOLCAT (SSEC) sólo en `D:\goes_notas\s31\s31c\`. PR contra `main` sin fusionar: lo revisa S31.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Nulo nuevo G | Permutación por día de los píxeles del disparo dentro de su tajada: conserva el rumbo, desordena la distancia. El giro de S30b, con la huella anclada pegada al cráter, sólo volvía a medir el rumbo | `criterio_2026-11-26.md` §3 |
+| Tramo cercano (4 a 15 km), titular | 6 de 23 P con píxel del detector dentro de la huella anclada; al azar en la tajada 0,38 (p_G 0,94); girada 0,03 (p_R 0,0012); otro día 0,16 (p_D 0,22) | `docs/own_volcat/s31c_dos_coronas/resultados/s31c_resultado.json` |
+| Rumbo en la corona lejana (15 a 40 km) | 12 de 23; girada 0,16 (p_R 0,0068, exacto con 20.736 combinaciones); otro día 0,32 (p_D 0,14) | idem |
+| Control positivo (VOLCAT un cuadro antes) | 41 de 87 en el tramo cercano contra 0,16 al azar en la tajada (p_G 0,0001): la prueba tenía poder | idem |
+| Descriptivo | Píxeles del detector a < 15 km: 7,8 % en cuadros P, 12,5 % en N, 17 % sin clase, geometría 12,8 %. Mediana por cuadro P 27,9 km; huella anclada hasta 9,7 km | `resultados/s31c_por_cuadro.csv` |
+| Toda la ceniza a 40 km (secundaria) | Píxel lejano 10 de 23 contra 0,45 al azar (p_G 0,82), pero el oráculo tampoco pasa G ahí (0,93): no se puede decir si ve los pedazos desprendidos | `s31c_resultado.json` |
+| Veredicto | **SÓLO LEJOS** (todo y día); noche NO DECIDIBLE (3 P, 1 día) | `INFORME.md` §2 |
+| S30b, de paso | Su p_R del anillo (0,0037) era Monte Carlo, no exacto como dice su informe; el exacto es 0,0041. No cambia su rótulo | `INFORME.md` §4 |
+
+### b. Decisiones que esperan a Nicolás (vía S31)
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Mirar en las cámaras del OVDAS (28-10 y 08-11 por la tarde) si la pluma llega a 25 a 30 km al SE cuando el anillo dispara, con criterio antes? | Sí: es la forma directa de saber si lo que el detector ve lejos es la pluma diluida o algo que no es pluma |
+| 2 | ¿Corregir en el informe de S30b el rótulo "exacto" del p_R del anillo (0,0037 de Monte Carlo; exacto 0,0041)? | Sí, una línea; no cambia ningún veredicto |
+
+### c. Lo aprendido
+
+- **Un nulo de giro con una huella pegada al cráter sólo mide rumbo** (método, proyecto): para preguntar por distancia
+  hay que desordenar la posición conservando el lado (permutación dentro de la tajada).
+- **El detector aparta sus píxeles del cráter cuando hay pluma** (proyecto): con VOLCAT marca más lejos que la geometría
+  y que sus propios disparos sin VOLCAT. Hipótesis física, sin medir: junto al cráter la pluma es opaca y la firma 11
+  menos 12 µm aparece recién donde se diluye.
+- **Una comprobación de código con un número publicado atrapa también errores del informe publicado** (método,
+  workspace): el "exacto" de S30b era Monte Carlo.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (desarrollo):** el anillo no marca el tramo que VOLCAT dibuja; marca su rumbo, lejos.
+- **SIN DATO:** si lo que marca lejos es la pluma diluida o algo fijo del SE (S30b: en 2025, sin pluma, ya prefería el SE).
+- **SIN PODER:** si el detector ve los pedazos de ceniza que VOLCAT dibuja desprendidos lejos (el oráculo no separa ahí).
+
+### e. Prompt para la próxima sesión
+
+```
+Retoma Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes). Lee STATUS.md "## 0." (S31c) y
+docs/own_volcat/s31c_dos_coronas/INFORME.md. Si Nicolás aprueba la decisión 1 de S31c: con las cámaras del OVDAS de
+28-10 y 08-11 (tardes, hasta el 24-11), criterio empujado antes de mirar los disparos: ¿la pluma llega a 25 a 30 km al
+SE a la hora en que el anillo dispara? Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python);
+rutas absolutas; no VIIRS; nada de SSEC al repo; nadie mira el detector en días posteriores al 24-11; python -I -B.
+```
+
+---
+
+## 0-prev36. S31b, 2026-11-26 (enmienda v2 del gatillo de la confirmación, escrita antes del dato: 20 P evaluables con al menos 2 días de 5 o más; en placebo el CONFIRMA falso queda en 0,58 % o menos y el poder de la unión sube de 0,42 a 0,81 si alcanza 7 de cada 10 cuadros de VOLCAT; se recomienda adoptarla)
 
 > Sesión S31b (worktree `s31b-enmienda-gatillo-842062`, rama `claude/s31b-enmienda-gatillo-842062`), lanzada por la
 > coordinadora S31 para la decisión 2 de S28 (decisión 3 de S30a), aprobada por Nicolás con la condición de escribirla

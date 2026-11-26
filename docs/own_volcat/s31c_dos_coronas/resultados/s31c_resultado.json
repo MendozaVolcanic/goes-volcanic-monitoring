@@ -1,0 +1,1281 @@
+{
+ "criterio": "criterio_2026-11-26.md (d3c9461 + anexo §8)",
+ "comprobacion_S26a": {
+  "a": [
+   23,
+   54
+  ],
+  "z": [
+   42,
+   93
+  ],
+  "u": [
+   63,
+   93
+  ]
+ },
+ "geometria": {
+  "px_anillo": 837,
+  "px_cerca": 107,
+  "frac_cerca": 0.12783751493428913
+ },
+ "huellas": {
+  "anclada": {
+   "todo": {
+    "detector": {
+     "n": 23,
+     "dias": [
+      "2026-10-28",
+      "2026-10-29",
+      "2026-11-08",
+      "2026-11-11"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 6,
+       "frac": 0.2608695652173913,
+       "R": {
+        "p": 0.0011574074074074073,
+        "frac_esperada": 0.02898550724637681,
+        "configuraciones": 20736,
+        "decide": true,
+        "metodo": "exacto (20736 combinaciones)"
+       },
+       "G": {
+        "p": 0.9397,
+        "frac_esperada": 0.3820903829513386,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.2173,
+        "frac_esperada": 0.1564069450423303,
+        "configuraciones_dia": 1296,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 2,
+       "frac": 0.08695652173913043,
+       "R": {
+        "p": 0.08333333333333333,
+        "frac_esperada": 0.007246376811594202,
+        "configuraciones": 20736,
+        "decide": true,
+        "metodo": "exacto (20736 combinaciones)"
+       },
+       "G": {
+        "p": 0.2584,
+        "frac_esperada": 0.045065376102827674,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.4396,
+        "frac_esperada": 0.07445092335320488,
+        "configuraciones_dia": 1296,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 9,
+       "frac": 0.391304347826087,
+       "R": {
+        "p": 0.010416666666666666,
+        "frac_esperada": 0.11956521739130435,
+        "configuraciones": 20736,
+        "decide": true,
+        "metodo": "exacto (20736 combinaciones)"
+       },
+       "D": {
+        "p": 0.1217,
+        "frac_esperada": 0.2147258204081278,
+        "configuraciones_dia": 1296,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 12,
+       "frac": 0.5217391304347826,
+       "R": {
+        "p": 0.006751543209876543,
+        "frac_esperada": 0.15579710144927536,
+        "configuraciones": 20736,
+        "decide": true,
+        "metodo": "exacto (20736 combinaciones)"
+       },
+       "D": {
+        "p": 0.1403,
+        "frac_esperada": 0.3215365014762346,
+        "configuraciones_dia": 1296,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     },
+     "veredicto": "SÓLO LEJOS"
+    },
+    "oraculo": {
+     "n": 87,
+     "dias": [
+      "2026-10-28",
+      "2026-10-29",
+      "2026-11-08",
+      "2026-11-10",
+      "2026-11-11",
+      "2026-11-14"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 41,
+       "frac": 0.47126436781609193,
+       "R": {
+        "p": 0.0007,
+        "frac_esperada": 0.15314519957742903,
+        "configuraciones": 2985984,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "G": {
+        "p": 0.0001,
+        "frac_esperada": 0.16339220128909443,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0174,
+        "frac_esperada": 0.24521647567055557,
+        "configuraciones_dia": 46656,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 1,
+       "frac": 0.011494252873563218,
+       "R": {
+        "p": 0.0775,
+        "frac_esperada": 0.0008897441468284758,
+        "configuraciones": 2985984,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "G": {
+        "p": 0.9516,
+        "frac_esperada": 0.050761397978878346,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.3896,
+        "frac_esperada": 0.005570672009729709,
+        "configuraciones_dia": 46656,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 42,
+       "frac": 0.4827586206896552,
+       "R": {
+        "p": 0.0011,
+        "frac_esperada": 0.16172421839885137,
+        "configuraciones": 2985984,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.014,
+        "frac_esperada": 0.24808572811304117,
+        "configuraciones_dia": 46656,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 3,
+       "frac": 0.034482758620689655,
+       "R": {
+        "p": 0.1675,
+        "frac_esperada": 0.012950720359392261,
+        "configuraciones": 2985984,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.4692,
+        "frac_esperada": 0.02847296223875261,
+        "configuraciones_dia": 46656,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     }
+    },
+    "oraculo_tajada_S30b_pR": 0.0001
+   },
+   "dia": {
+    "detector": {
+     "n": 20,
+     "dias": [
+      "2026-10-28",
+      "2026-11-08",
+      "2026-11-11"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 5,
+       "frac": 0.25,
+       "R": {
+        "p": 0.006944444444444444,
+        "frac_esperada": 0.025,
+        "configuraciones": 1728,
+        "decide": true,
+        "metodo": "exacto (1728 combinaciones)"
+       },
+       "G": {
+        "p": 0.9684,
+        "frac_esperada": 0.40993599359935995,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.1918,
+        "frac_esperada": 0.12685268526852683,
+        "configuraciones_dia": 216,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 2,
+       "frac": 0.1,
+       "R": {
+        "p": 0.08333333333333333,
+        "frac_esperada": 0.008333333333333333,
+        "configuraciones": 1728,
+        "decide": true,
+        "metodo": "exacto (1728 combinaciones)"
+       },
+       "G": {
+        "p": 0.2617,
+        "frac_esperada": 0.05209020902090209,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.4249,
+        "frac_esperada": 0.08308830883088308,
+        "configuraciones_dia": 216,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 8,
+       "frac": 0.4,
+       "R": {
+        "p": 0.013888888888888888,
+        "frac_esperada": 0.1125,
+        "configuraciones": 1728,
+        "decide": true,
+        "metodo": "exacto (1728 combinaciones)"
+       },
+       "D": {
+        "p": 0.0832,
+        "frac_esperada": 0.1838033803380338,
+        "configuraciones_dia": 216,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 11,
+       "frac": 0.55,
+       "R": {
+        "p": 0.009259259259259259,
+        "frac_esperada": 0.15416666666666667,
+        "configuraciones": 1728,
+        "decide": true,
+        "metodo": "exacto (1728 combinaciones)"
+       },
+       "D": {
+        "p": 0.1085,
+        "frac_esperada": 0.3054705470547055,
+        "configuraciones_dia": 216,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     },
+     "veredicto": "SÓLO LEJOS"
+    },
+    "oraculo": {
+     "n": 82,
+     "dias": [
+      "2026-10-28",
+      "2026-11-08",
+      "2026-11-10",
+      "2026-11-11",
+      "2026-11-14"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 41,
+       "frac": 0.5,
+       "R": {
+        "p": 0.0005,
+        "frac_esperada": 0.15337021507028753,
+        "configuraciones": 248832,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "G": {
+        "p": 0.0001,
+        "frac_esperada": 0.17441622211001587,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.011,
+        "frac_esperada": 0.24363777841198753,
+        "configuraciones_dia": 7776,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 1,
+       "frac": 0.012195121951219513,
+       "R": {
+        "p": 0.0834,
+        "frac_esperada": 0.0010159552540619915,
+        "configuraciones": 248832,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "G": {
+        "p": 0.9558,
+        "frac_esperada": 0.05341631724148024,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.1706,
+        "frac_esperada": 0.00247829661014882,
+        "configuraciones_dia": 7776,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 42,
+       "frac": 0.5121951219512195,
+       "R": {
+        "p": 0.0007,
+        "frac_esperada": 0.16243697540485755,
+        "configuraciones": 248832,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0091,
+        "frac_esperada": 0.24651855429445382,
+        "configuraciones_dia": 7776,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 3,
+       "frac": 0.036585365853658534,
+       "R": {
+        "p": 0.1662,
+        "frac_esperada": 0.010079056686156421,
+        "configuraciones": 248832,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.2804,
+        "frac_esperada": 0.019899550930702826,
+        "configuraciones_dia": 7776,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     }
+    },
+    "oraculo_tajada_S30b_pR": 0.0002
+   },
+   "noche": {
+    "detector": {
+     "n": 3,
+     "dias": [
+      "2026-10-29"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 1,
+       "frac": 0.3333333333333333,
+       "R": {
+        "p": 0.16666666666666666,
+        "frac_esperada": 0.05555555555555555,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "G": {
+        "p": 0.6009,
+        "frac_esperada": 0.20028669533620028,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.5789,
+        "frac_esperada": 0.33990065673233993,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 0,
+       "frac": 0.0,
+       "R": {
+        "p": 1.0,
+        "frac_esperada": 0.0,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "G": {
+        "p": 1.0,
+        "frac_esperada": 0.0,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 1.0,
+        "frac_esperada": 0.0,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 1,
+       "frac": 0.3333333333333333,
+       "R": {
+        "p": 0.25,
+        "frac_esperada": 0.16666666666666666,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "D": {
+        "p": 0.6192,
+        "frac_esperada": 0.4067073374004067,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 1,
+       "frac": 0.3333333333333333,
+       "R": {
+        "p": 0.25,
+        "frac_esperada": 0.16666666666666666,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "D": {
+        "p": 0.6192,
+        "frac_esperada": 0.4067073374004067,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     },
+     "veredicto": "NO DECIDIBLE (pocos cuadros o días)"
+    },
+    "oraculo": {
+     "n": 5,
+     "dias": [
+      "2026-10-29"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 0,
+       "frac": 0.0,
+       "R": {
+        "p": 1.0,
+        "frac_esperada": 0.16666666666666669,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "G": {
+        "p": 1.0,
+        "frac_esperada": 0.0,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 1.0,
+        "frac_esperada": 0.20764076407640766,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 0,
+       "frac": 0.0,
+       "R": {
+        "p": 1.0,
+        "frac_esperada": 0.0,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "G": {
+        "p": 1.0,
+        "frac_esperada": 0.0,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 1.0,
+        "frac_esperada": 0.05562556255625563,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 0,
+       "frac": 0.0,
+       "R": {
+        "p": 1.0,
+        "frac_esperada": 0.16666666666666669,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "D": {
+        "p": 1.0,
+        "frac_esperada": 0.20938093809380937,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 0,
+       "frac": 0.0,
+       "R": {
+        "p": 1.0,
+        "frac_esperada": 0.06666666666666667,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "D": {
+        "p": 1.0,
+        "frac_esperada": 0.16223622362236223,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     }
+    },
+    "oraculo_tajada_S30b_pR": 0.16666666666666666
+   }
+  },
+  "ceniza_40km": {
+   "todo": {
+    "detector": {
+     "n": 23,
+     "dias": [
+      "2026-10-28",
+      "2026-10-29",
+      "2026-11-08",
+      "2026-11-11"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 10,
+       "frac": 0.43478260869565216,
+       "R": {
+        "p": 0.0005787037037037037,
+        "frac_esperada": 0.050724637681159424,
+        "configuraciones": 20736,
+        "decide": true,
+        "metodo": "exacto (20736 combinaciones)"
+       },
+       "G": {
+        "p": 0.7943,
+        "frac_esperada": 0.48762702357192245,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0652,
+        "frac_esperada": 0.21872187218721872,
+        "configuraciones_dia": 1296,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 10,
+       "frac": 0.43478260869565216,
+       "R": {
+        "p": 0.006944444444444444,
+        "frac_esperada": 0.03985507246376811,
+        "configuraciones": 20736,
+        "decide": true,
+        "metodo": "exacto (20736 combinaciones)"
+       },
+       "G": {
+        "p": 0.819,
+        "frac_esperada": 0.4535410062745405,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.1182,
+        "frac_esperada": 0.23605404018662737,
+        "configuraciones_dia": 1296,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 14,
+       "frac": 0.6086956521739131,
+       "R": {
+        "p": 0.0023148148148148147,
+        "frac_esperada": 0.11956521739130435,
+        "configuraciones": 20736,
+        "decide": true,
+        "metodo": "exacto (20736 combinaciones)"
+       },
+       "D": {
+        "p": 0.0053,
+        "frac_esperada": 0.2736534523017519,
+        "configuraciones_dia": 1296,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 17,
+       "frac": 0.7391304347826086,
+       "R": {
+        "p": 0.0019290123456790122,
+        "frac_esperada": 0.15579710144927536,
+        "configuraciones": 20736,
+        "decide": true,
+        "metodo": "exacto (20736 combinaciones)"
+       },
+       "D": {
+        "p": 0.0374,
+        "frac_esperada": 0.41321088630602193,
+        "configuraciones_dia": 1296,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     },
+     "veredicto": "SÓLO LEJOS",
+     "px_lejos_en_ceniza_desprendida": false
+    },
+    "oraculo": {
+     "n": 87,
+     "dias": [
+      "2026-10-28",
+      "2026-10-29",
+      "2026-11-08",
+      "2026-11-10",
+      "2026-11-11",
+      "2026-11-14"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 51,
+       "frac": 0.5862068965517241,
+       "R": {
+        "p": 0.0001,
+        "frac_esperada": 0.138696628283518,
+        "configuraciones": 2985984,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "G": {
+        "p": 0.0001,
+        "frac_esperada": 0.29648826951660684,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0065,
+        "frac_esperada": 0.3249819234797043,
+        "configuraciones_dia": 46656,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 22,
+       "frac": 0.25287356321839083,
+       "R": {
+        "p": 0.0001,
+        "frac_esperada": 0.025943973707715597,
+        "configuraciones": 2985984,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "G": {
+        "p": 0.9252,
+        "frac_esperada": 0.30620073501603035,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0012,
+        "frac_esperada": 0.08878244146253707,
+        "configuraciones_dia": 46656,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 53,
+       "frac": 0.6091954022988506,
+       "R": {
+        "p": 0.0001,
+        "frac_esperada": 0.15503159511353434,
+        "configuraciones": 2985984,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0057,
+        "frac_esperada": 0.33799701809261384,
+        "configuraciones_dia": 46656,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 32,
+       "frac": 0.367816091954023,
+       "R": {
+        "p": 0.0002,
+        "frac_esperada": 0.07259921394438294,
+        "configuraciones": 2985984,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0042,
+        "frac_esperada": 0.18968448568994833,
+        "configuraciones_dia": 46656,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     }
+    },
+    "oraculo_tajada_S30b_pR": 0.0001
+   },
+   "dia": {
+    "detector": {
+     "n": 20,
+     "dias": [
+      "2026-10-28",
+      "2026-11-08",
+      "2026-11-11"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 8,
+       "frac": 0.4,
+       "R": {
+        "p": 0.006944444444444444,
+        "frac_esperada": 0.04583333333333333,
+        "configuraciones": 1728,
+        "decide": true,
+        "metodo": "exacto (1728 combinaciones)"
+       },
+       "G": {
+        "p": 0.8799,
+        "frac_esperada": 0.5012201220122012,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0755,
+        "frac_esperada": 0.18580358035803582,
+        "configuraciones_dia": 216,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 10,
+       "frac": 0.5,
+       "R": {
+        "p": 0.006944444444444444,
+        "frac_esperada": 0.04583333333333333,
+        "configuraciones": 1728,
+        "decide": true,
+        "metodo": "exacto (1728 combinaciones)"
+       },
+       "G": {
+        "p": 0.4429,
+        "frac_esperada": 0.4625712571257126,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.1002,
+        "frac_esperada": 0.2574307430743074,
+        "configuraciones_dia": 216,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 12,
+       "frac": 0.6,
+       "R": {
+        "p": 0.013888888888888888,
+        "frac_esperada": 0.1125,
+        "configuraciones": 1728,
+        "decide": true,
+        "metodo": "exacto (1728 combinaciones)"
+       },
+       "D": {
+        "p": 0.0029,
+        "frac_esperada": 0.24338433843384338,
+        "configuraciones_dia": 216,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 15,
+       "frac": 0.75,
+       "R": {
+        "p": 0.008101851851851851,
+        "frac_esperada": 0.15416666666666667,
+        "configuraciones": 1728,
+        "decide": true,
+        "metodo": "exacto (1728 combinaciones)"
+       },
+       "D": {
+        "p": 0.0431,
+        "frac_esperada": 0.4038203820382038,
+        "configuraciones_dia": 216,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     },
+     "veredicto": "SÓLO LEJOS",
+     "px_lejos_en_ceniza_desprendida": false
+    },
+    "oraculo": {
+     "n": 82,
+     "dias": [
+      "2026-10-28",
+      "2026-11-08",
+      "2026-11-10",
+      "2026-11-11",
+      "2026-11-14"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 48,
+       "frac": 0.5853658536585366,
+       "R": {
+        "p": 0.0002,
+        "frac_esperada": 0.1391065935861879,
+        "configuraciones": 248832,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "G": {
+        "p": 0.0001,
+        "frac_esperada": 0.28260630941142895,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0113,
+        "frac_esperada": 0.32328842640361594,
+        "configuraciones_dia": 7776,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 19,
+       "frac": 0.23170731707317074,
+       "R": {
+        "p": 0.0004,
+        "frac_esperada": 0.02173144143682661,
+        "configuraciones": 248832,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "G": {
+        "p": 0.9335,
+        "frac_esperada": 0.2902558548537781,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0021,
+        "frac_esperada": 0.07829197553901732,
+        "configuraciones_dia": 7776,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 50,
+       "frac": 0.6097560975609756,
+       "R": {
+        "p": 0.0002,
+        "frac_esperada": 0.15654980132159557,
+        "configuraciones": 248832,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0092,
+        "frac_esperada": 0.33572747518654306,
+        "configuraciones_dia": 7776,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 28,
+       "frac": 0.34146341463414637,
+       "R": {
+        "p": 0.0009,
+        "frac_esperada": 0.06737015164931127,
+        "configuraciones": 248832,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.0052,
+        "frac_esperada": 0.17250139648111154,
+        "configuraciones_dia": 7776,
+        "decide": true,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     }
+    },
+    "oraculo_tajada_S30b_pR": 0.0002
+   },
+   "noche": {
+    "detector": {
+     "n": 3,
+     "dias": [
+      "2026-10-29"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 2,
+       "frac": 0.6666666666666666,
+       "R": {
+        "p": 0.08333333333333333,
+        "frac_esperada": 0.08333333333333333,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "G": {
+        "p": 0.5293,
+        "frac_esperada": 0.4062406240624062,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.4578,
+        "frac_esperada": 0.4231423142314232,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 0,
+       "frac": 0.0,
+       "R": {
+        "p": 1.0,
+        "frac_esperada": 0.0,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "G": {
+        "p": 1.0,
+        "frac_esperada": 0.39613961396139613,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 1.0,
+        "frac_esperada": 0.09134246758009135,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 2,
+       "frac": 0.6666666666666666,
+       "R": {
+        "p": 0.16666666666666666,
+        "frac_esperada": 0.16666666666666666,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "D": {
+        "p": 0.512,
+        "frac_esperada": 0.4667466746674667,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 2,
+       "frac": 0.6666666666666666,
+       "R": {
+        "p": 0.16666666666666666,
+        "frac_esperada": 0.16666666666666666,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "D": {
+        "p": 0.512,
+        "frac_esperada": 0.4667466746674667,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     },
+     "veredicto": "NO DECIDIBLE (pocos cuadros o días)",
+     "px_lejos_en_ceniza_desprendida": false
+    },
+    "oraculo": {
+     "n": 5,
+     "dias": [
+      "2026-10-29"
+     ],
+     "medidas": {
+      "px_cerca": {
+       "T": 3,
+       "frac": 0.6,
+       "R": {
+        "p": 0.16666666666666666,
+        "frac_esperada": 0.13333333333333333,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "G": {
+        "p": 0.5527,
+        "frac_esperada": 0.5368936893689369,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.4142,
+        "frac_esperada": 0.36243624362436244,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "px_lejos": {
+       "T": 3,
+       "frac": 0.6,
+       "R": {
+        "p": 0.16666666666666666,
+        "frac_esperada": 0.1,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "G": {
+        "p": 0.7004,
+        "frac_esperada": 0.5605960596059606,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       },
+       "D": {
+        "p": 0.2647,
+        "frac_esperada": 0.26664666466646664,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_cerca": {
+       "T": 3,
+       "frac": 0.6,
+       "R": {
+        "p": 0.16666666666666666,
+        "frac_esperada": 0.13333333333333333,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "D": {
+        "p": 0.4475,
+        "frac_esperada": 0.3797379737973797,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      },
+      "rumbo_lejos": {
+       "T": 4,
+       "frac": 0.8,
+       "R": {
+        "p": 0.16666666666666666,
+        "frac_esperada": 0.16666666666666669,
+        "configuraciones": 12,
+        "decide": false,
+        "metodo": "exacto (12 combinaciones)"
+       },
+       "D": {
+        "p": 0.3768,
+        "frac_esperada": 0.47354735473547355,
+        "configuraciones_dia": 6,
+        "decide": false,
+        "metodo": "Monte Carlo B=9999"
+       }
+      }
+     }
+    },
+    "oraculo_tajada_S30b_pR": 0.16666666666666666
+   }
+  }
+ },
+ "comprobacion_S30b": {
+  "a": 12,
+  "a_px": 7,
+  "a_rumbo": 12,
+  "n": 23,
+  "pR_a": 0.0041
+ },
+ "oraculo_tajada_S30b": {
+  "todo": {
+   "n": 87,
+   "T": 63,
+   "frac": 0.7241379310344828,
+   "dias": [
+    "2026-10-28",
+    "2026-10-29",
+    "2026-11-08",
+    "2026-11-10",
+    "2026-11-11",
+    "2026-11-14"
+   ],
+   "R": {
+    "p": 0.0001,
+    "esperado": 23.243324332433243,
+    "frac_esperada": 0.2671646474992327,
+    "configuraciones": 2985984,
+    "decide": true,
+    "metodo": "Monte Carlo B=9999"
+   }
+  },
+  "dia": {
+   "n": 82,
+   "T": 60,
+   "frac": 0.7317073170731707,
+   "dias": [
+    "2026-10-28",
+    "2026-11-08",
+    "2026-11-10",
+    "2026-11-11",
+    "2026-11-14"
+   ],
+   "R": {
+    "p": 0.0002,
+    "esperado": 22.133713371337134,
+    "frac_esperada": 0.26992333379679434,
+    "configuraciones": 248832,
+    "decide": true,
+    "metodo": "Monte Carlo B=9999"
+   }
+  },
+  "noche": {
+   "n": 5,
+   "T": 3,
+   "frac": 0.6,
+   "dias": [
+    "2026-10-29"
+   ],
+   "R": {
+    "p": 0.16666666666666666,
+    "esperado": 1.25,
+    "frac_esperada": 0.25,
+    "configuraciones": 12,
+    "decide": false,
+    "metodo": "exacto (12 combinaciones)"
+   }
+  }
+ },
+ "descriptivo": {
+  "geometria": 0.12783751493428913,
+  "P_evaluados": {
+   "px": 283,
+   "cerca": 27,
+   "frac_cerca": 0.09540636042402827
+  },
+  "disparos_2026_por_clase": {
+   "N": {
+    "cuadros": 7,
+    "px": 56,
+    "cerca": 7,
+    "frac_cerca": 0.125
+   },
+   "P": {
+    "cuadros": 16,
+    "px": 128,
+    "cerca": 10,
+    "frac_cerca": 0.078125
+   },
+   "sin_clase": {
+    "cuadros": 29,
+    "px": 232,
+    "cerca": 40,
+    "frac_cerca": 0.1724137931034483
+   }
+  }
+ }
+}

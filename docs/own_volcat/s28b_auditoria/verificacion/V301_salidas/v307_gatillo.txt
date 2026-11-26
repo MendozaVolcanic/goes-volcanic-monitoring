@@ -1,0 +1,26 @@
+día        P  eval_anillo  eval_zona  eval_unión
+2026-10-22   1      0          0          0
+2026-10-24   1      0          1          1
+2026-10-25   4      0          4          4
+2026-10-28  26     17         26         26
+2026-10-29   6      3          6          6
+2026-11-07   1      1          1          1
+2026-11-08  13     13         13         13
+2026-11-10  12      2          8          8
+2026-11-11   3      3          3          3
+2026-11-14  33     15         31         31
+total      {'P': 100, 'anillo': 54, 'zona': 93, 'union': 93} fracción evaluada: {'anillo': 0.54, 'zona': 0.93, 'union': 0.93}
+
+primer día nuevo -> día en que se cumple el gatillo; P del gatillo; P evaluados (días) por regla; veredicto forzado
+2026-10-22 -> 2026-10-28 ; 32 P en 4 días; anillo 17 (1 d) NO DECIDIBLE; zona 31 (3 d); union 31 (3 d)
+2026-10-24 -> 2026-10-28 ; 31 P en 3 días; anillo 17 (1 d) NO DECIDIBLE; zona 31 (3 d); union 31 (3 d)
+2026-10-25 -> 2026-10-28 ; 30 P en 2 días; anillo 17 (1 d) NO DECIDIBLE; zona 30 (2 d); union 30 (2 d)
+2026-10-28 -> 2026-10-29 ; 32 P en 2 días; anillo 20 (2 d); zona 32 (2 d); union 32 (2 d)
+2026-10-29 -> 2026-11-08 ; 20 P en 3 días; anillo 17 (3 d); zona 20 (3 d); union 20 (3 d)
+2026-11-07 -> 2026-11-10 ; 26 P en 3 días; anillo 16 (3 d); zona 22 (3 d); union 22 (3 d)
+2026-11-08 -> 2026-11-10 ; 25 P en 2 días; anillo 15 (2 d); zona 21 (2 d); union 21 (2 d)
+2026-11-10 -> 2026-11-14 ; 48 P en 3 días; anillo 20 (3 d); zona 42 (3 d); union 42 (3 d)
+2026-11-11 -> 2026-11-14 ; 36 P en 2 días; anillo 18 (2 d); zona 34 (2 d); union 34 (2 d)
+2026-11-14 -> el gatillo no se cumple con los días que quedan
+
+arranques en que el gatillo se cumple: 9; NO DECIDIBLE forzado: {'anillo': 3, 'zona': 0, 'union': 0}

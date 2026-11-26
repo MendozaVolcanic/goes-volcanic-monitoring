@@ -1,0 +1,120 @@
+referencia 2025 lista en 307 s; costumbre por hora: mín 558, máx 693 cuadros
+blanco 2026 listo en 314 s
+anillo listo en 314 s
+zona lista en 365 s
+{
+ "veredicto": "PARCIAL",
+ "regla": "S25a, zona sola a percentil 5",
+ "percentil": 5.0,
+ "instrumento": {
+  "cuadros_hasta_el_ultimo": 720,
+  "presentes": 720,
+  "cobertura": 1.0,
+  "scan_distinto": 0,
+  "congelados": 0,
+  "bt11_en_rango": 1.0,
+  "falla": []
+ },
+ "P_total": 28,
+ "dias_con_P": 3,
+ "medida": {
+  "P_evaluados": 24,
+  "P_alcanzados": 8,
+  "R": 0.3333333333333333,
+  "E25": 1.0175775930168212,
+  "p25": 4.069364279396035e-06,
+  "N_cerca": 56,
+  "N_cerca_alcanzados": 28,
+  "pN": 0.9483143189295247,
+  "dias_P_evaluado": 3,
+  "dias_P_alcanzado": 1
+ },
+ "tasa_disparo_N_nuevos": {
+  "dia": {
+   "n": 70,
+   "fraccion": 0.3
+  },
+  "noche": {
+   "n": 107,
+   "fraccion": 0.34579439252336447
+  }
+ },
+ "por_dia": [
+  {
+   "dia": "2026-11-08",
+   "P": 13,
+   "a": {
+    "P_evaluados": 13,
+    "P_alcanzados": 9,
+    "disparos": 18
+   },
+   "z": {
+    "P_evaluados": 13,
+    "P_alcanzados": 0,
+    "disparos": 52
+   },
+   "u": {
+    "P_evaluados": 13,
+    "P_alcanzados": 9,
+    "disparos": 70
+   }
+  },
+  {
+   "dia": "2026-11-09",
+   "P": 0,
+   "a": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "z": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 4
+   },
+   "u": {
+    "P_evaluados": 0,
+    "P_alcanzados": 0,
+    "disparos": 4
+   }
+  },
+  {
+   "dia": "2026-11-10",
+   "P": 12,
+   "a": {
+    "P_evaluados": 2,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "z": {
+    "P_evaluados": 8,
+    "P_alcanzados": 8,
+    "disparos": 35
+   },
+   "u": {
+    "P_evaluados": 8,
+    "P_alcanzados": 8,
+    "disparos": 35
+   }
+  },
+  {
+   "dia": "2026-11-11",
+   "P": 3,
+   "a": {
+    "P_evaluados": 3,
+    "P_alcanzados": 3,
+    "disparos": 4
+   },
+   "z": {
+    "P_evaluados": 3,
+    "P_alcanzados": 0,
+    "disparos": 19
+   },
+   "u": {
+    "P_evaluados": 3,
+    "P_alcanzados": 3,
+    "disparos": 22
+   }
+  }
+ ]
+}

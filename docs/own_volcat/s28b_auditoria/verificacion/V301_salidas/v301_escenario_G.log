@@ -1,0 +1,4 @@
+[G s23b] NO DECIDIBLE | P_total 28 | evaluados 5 en 2 d | alcanzados 3 | inst {'cuadros_hasta_el_ultimo': 720, 'presentes': 684, 'cobertura': 0.95, 'ultimo': '2026-11-11 23:50', 'scan_distinto': 0, 'congelados': 0, 'bt11_en_rango': 1.0, 'acm_presentes': 720, 'falla': []} | 
+[G s25a] PARCIAL | P_total 28 | evaluados 11 en 2 d | alcanzados 8 | inst {'cuadros_hasta_el_ultimo': 720, 'presentes': 684, 'cobertura': 0.95, 'scan_distinto': 0, 'congelados': 0, 'bt11_en_rango': 1.0, 'falla': []} | 
+[G s26a] CONFIRMA | P_total 28 | evaluados 11 en 2 d | alcanzados 11 | inst {'cuadros_hasta_el_ultimo': 720, 'presentes': 684, 'cobertura': 0.95, 'scan_distinto': 0, 'congelados': 0, 'bt11_en_rango': 1.0, 'falla': []} | 
+--- escenario G listo a los 750 s

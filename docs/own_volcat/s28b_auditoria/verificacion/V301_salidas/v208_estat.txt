@@ -1,0 +1,6 @@
+clases: de ['2026-09-21', '2026-11-24', 65] con clase 34 días; sin clase 31 días
+días con clase: 2026-10-20 a 2026-11-24
+días sin clase: 2026-09-21 a 2026-11-21 (no contiguos: ['2026-11-20', '2026-11-21'] )
+rehecho == congelado: True e0f093eb6e441cc4 e0f093eb6e441cc4
+días de referencia (con clase, dentro de 21-09 a 21-11): 31 ; aportan cuadros: [20, '2026-10-25', '2026-11-14'] ; cuadros N despejados: 1059 ; por hora mín/máx: [53, 239] ; píxeles-hora: 81205
+alternativa con los 62 días: {'cuadros': 2090, 'dias': 39, 'pixeles_hora_de_costumbre': 79661, 'pixeles_hora_que_cambian': 20396, 'de': 1123488, 'en_el_anillo_cambian': 3073, 'anillo_pixeles_hora': 120528, 'congelado_en_anillo': 10378, 'alternativa_en_anillo': 10685}

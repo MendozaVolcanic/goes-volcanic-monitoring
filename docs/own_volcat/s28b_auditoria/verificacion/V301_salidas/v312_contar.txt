@@ -1,0 +1,16 @@
+== 1. contar hasta 2026-11-11 y después hasta 2026-11-10
+P en días nuevos: 15 en 2 días; la medida exige 20 en 2 días: todavía no
+CSV: (278, 15, ['2026-11-10', '2026-11-11'])
+P en días nuevos: 12 en 1 días; la medida exige 20 en 2 días: todavía no
+CSV: (140, 12, ['2026-11-10'])
+== 2. contar con las carpetas de PNG ausentes
+P en días nuevos: 0 en 0 días; la medida exige 20 en 2 días: todavía no
+CSV: (0, 0, [])
+== 3. clase con los PNG disponibles hasta la hora t, contra la clase final (día 2026-11-10)
+t = 10-11 15:00  P con lo disponible 1, P finales hasta t 1, cambios de clase {}
+t = 10-11 16:00  P con lo disponible 2, P finales hasta t 2, cambios de clase {}
+t = 10-11 18:00  P con lo disponible 2, P finales hasta t 2, cambios de clase {}
+t = 10-11 20:00  P con lo disponible 2, P finales hasta t 2, cambios de clase {}
+t = 10-11 22:00  P con lo disponible 5, P finales hasta t 5, cambios de clase {}
+t = 10-11 23:00  P con lo disponible 11, P finales hasta t 11, cambios de clase {}
+288 cortes de 10 min (10-11 y 11-11): cortes con algún cambio de clase 18; cortes en que el conteo de P difiere del final 0; pares (corte, cuadro) por tipo de cambio {('N', 'otro'): 63}

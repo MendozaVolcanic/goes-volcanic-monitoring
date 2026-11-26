@@ -55,6 +55,9 @@ sólo de cuatro resultados clave.
   nueva `motivo` por lectura, que agrega el código actual de `src` (commit 6d876d3, posterior a la medición). El
   archivo commiteado no se tocó.
 
+> **26-11-2026 (S28, liberar D:):** se borraron, con el sí de Nicolás, `D:\goes_cache\volcat_test_mauna_loa\ext\` (2,9 GB) y `l2_data\` más `diag_data\` de `D:\goes_notas\s16\modo_dia\fuego\...\reference_data\` (10,5 GB). Ningún código de S22 en adelante los leía. Quedan `paquete.tar.gz` y `npz\` de Mauna Loa (para C2b, PR 76 y PR 77 hay que volver a extraer `ext\` desde el paquete, con `tar -xzf`) y, de Fuego, `npz\`, `events\`, `logs\`, `history\`, `l1_data\`, `rtm_data\` y `time_series\`. Para rehacer `fu_extraer.py` (H18) o H16 sobre Fuego hay que volver a bajar el paquete de SSEC (versión r20260709, mientras se publique).
+eference_data\` (10,5 GB). Ningún código de S22 en adelante los leía. Quedan `paquete.tar.gz` y `npz\` de Mauna Loa (para C2b, PR 76 y PR 77 hay que volver a extraer `ext\` desde el paquete, con `tar -xzf`) y, de Fuego, `npz\`, `events\`, `logs\`, `history\`, `l1_data\`, `rtm_data\` y `time_series\`. Para rehacer `fu_extraer.py` (H18) o H16 sobre Fuego hay que volver a bajar el paquete de SSEC (versión r20260709, mientras se publique).
+
 **Worktrees que se van a limpiar** (busqueda-volcat, c1-eventos, c2-rt-mauna-loa, c3-h15-lut, continuacion-17 y
 -20, distracted-hawking, fix-fuga-gfs, pr39, volcat-capa-deteccion): revisados con
 `git status --porcelain --ignored` y `git rev-list origin/main..HEAD`. **Ninguno tiene commits fuera de main ni

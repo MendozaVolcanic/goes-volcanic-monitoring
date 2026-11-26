@@ -1,0 +1,925 @@
+{
+ "criterio": "criterio_2026-11-26.md (eef0b0f)",
+ "comprobacion_codigo": {
+  "a": [
+   23,
+   54
+  ],
+  "z": [
+   42,
+   93
+  ],
+  "u": [
+   63,
+   93
+  ]
+ },
+ "huellas_P": {
+  "sin PNG": 6,
+  "ok": 94
+ },
+ "P_con_huella": 94,
+ "resultados": {
+  "todo": {
+   "u": {
+    "n": 64,
+    "T": 51,
+    "frac": 0.796875,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.0066,
+     "esperado": 44.477847784778476,
+     "frac_esperada": 0.6949663716371637,
+     "configuraciones": 2985984,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.1813,
+     "esperado": 40.852685268526855,
+     "frac_esperada": 0.6383232073207321,
+     "configuraciones_dia": 46656,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto": "NO DECIDIBLE (el oráculo no separa contra el nulo R)"
+   },
+   "a": {
+    "n": 23,
+    "T": 12,
+    "frac": 0.5217391304347826,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-11"
+    ],
+    "R": {
+     "p": 0.0037,
+     "esperado": 4.278027802780278,
+     "frac_esperada": 0.18600120881653381,
+     "configuraciones": 20736,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.4143,
+     "esperado": 10.438243824382438,
+     "frac_esperada": 0.45383668801662774,
+     "configuraciones_dia": 1296,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto": "MISMO RUMBO, NO SEPARABLE"
+   },
+   "z": {
+    "n": 43,
+    "T": 41,
+    "frac": 0.9534883720930233,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-10",
+     "2026-11-14"
+    ],
+    "D": {
+     "p": 0.148,
+     "esperado": 31.283128312831284,
+     "frac_esperada": 0.727514611926309,
+     "configuraciones_dia": 1296,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto": "NO DECIDIBLE (el oráculo no separa contra el nulo D)"
+   },
+   "u_px": {
+    "n": 64,
+    "T": 47,
+    "frac": 0.734375,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.0027,
+     "esperado": 41.83808380838084,
+     "frac_esperada": 0.6537200595059506,
+     "configuraciones": 2985984,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.1485,
+     "esperado": 37.17801780178018,
+     "frac_esperada": 0.5809065281528153,
+     "configuraciones_dia": 46656,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "a_px": {
+    "n": 23,
+    "T": 7,
+    "frac": 0.30434782608695654,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-11"
+    ],
+    "R": {
+     "p": 0.0013,
+     "esperado": 1.0919091909190919,
+     "frac_esperada": 0.04747431264865617,
+     "configuraciones": 20736,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.3975,
+     "esperado": 5.678967896789679,
+     "frac_esperada": 0.24691164768650778,
+     "configuraciones_dia": 1296,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "z_px": {
+    "n": 43,
+    "T": 42,
+    "frac": 0.9767441860465116,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-10",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.4976,
+     "esperado": 41.06520652065206,
+     "frac_esperada": 0.9550048028058619,
+     "configuraciones": 20736,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.0834,
+     "esperado": 32.195919591959196,
+     "frac_esperada": 0.7487423160920743,
+     "configuraciones_dia": 1296,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "a_rumbo": {
+    "n": 23,
+    "T": 12,
+    "frac": 0.5217391304347826,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-11"
+    ],
+    "R": {
+     "p": 0.0064,
+     "esperado": 3.5714571457145716,
+     "frac_esperada": 0.15528074546585094,
+     "configuraciones": 20736,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.1345,
+     "esperado": 7.351735173517352,
+     "frac_esperada": 0.31964065971814576,
+     "configuraciones_dia": 1296,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   }
+  },
+  "dia": {
+   "u": {
+    "n": 61,
+    "T": 49,
+    "frac": 0.8032786885245902,
+    "dias": [
+     "2026-10-28",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.0077,
+     "esperado": 42.95159515951595,
+     "frac_esperada": 0.704124510811737,
+     "configuraciones": 248832,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.1946,
+     "esperado": 39.073007300730076,
+     "frac_esperada": 0.6405411032906569,
+     "configuraciones_dia": 7776,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto": "NO DECIDIBLE (el oráculo no separa contra el nulo R)"
+   },
+   "a": {
+    "n": 20,
+    "T": 10,
+    "frac": 0.5,
+    "dias": [
+     "2026-10-28",
+     "2026-11-08",
+     "2026-11-11"
+    ],
+    "R": {
+     "p": 0.008680555555555556,
+     "esperado": 3.3333333333333335,
+     "frac_esperada": 0.16666666666666669,
+     "configuraciones": 1728,
+     "decide": true,
+     "metodo": "exacto (1728 combinaciones)"
+    },
+    "D": {
+     "p": 0.4608,
+     "esperado": 9.024402440244025,
+     "frac_esperada": 0.45122012201220124,
+     "configuraciones_dia": 216,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto": "MISMO RUMBO, NO SEPARABLE"
+   },
+   "z": {
+    "n": 42,
+    "T": 40,
+    "frac": 0.9523809523809523,
+    "dias": [
+     "2026-10-28",
+     "2026-11-10",
+     "2026-11-14"
+    ],
+    "D": {
+     "p": 0.1528,
+     "esperado": 30.418241824182417,
+     "frac_esperada": 0.7242438529567242,
+     "configuraciones_dia": 216,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto": "NO DECIDIBLE (el oráculo no separa contra el nulo D)"
+   },
+   "u_px": {
+    "n": 61,
+    "T": 45,
+    "frac": 0.7377049180327869,
+    "dias": [
+     "2026-10-28",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.0083,
+     "esperado": 40.85678567856786,
+     "frac_esperada": 0.669783371779801,
+     "configuraciones": 248832,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.1691,
+     "esperado": 35.632863286328636,
+     "frac_esperada": 0.5841452997758793,
+     "configuraciones_dia": 7776,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "a_px": {
+    "n": 20,
+    "T": 5,
+    "frac": 0.25,
+    "dias": [
+     "2026-10-28",
+     "2026-11-08",
+     "2026-11-11"
+    ],
+    "R": {
+     "p": 0.006944444444444444,
+     "esperado": 0.6666666666666666,
+     "frac_esperada": 0.03333333333333333,
+     "configuraciones": 1728,
+     "decide": true,
+     "metodo": "exacto (1728 combinaciones)"
+    },
+    "D": {
+     "p": 0.4812,
+     "esperado": 4.496349634963496,
+     "frac_esperada": 0.2248174817481748,
+     "configuraciones_dia": 216,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "z_px": {
+    "n": 42,
+    "T": 41,
+    "frac": 0.9761904761904762,
+    "dias": [
+     "2026-10-28",
+     "2026-11-10",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.5954861111111112,
+     "esperado": 40.333333333333336,
+     "frac_esperada": 0.9603174603174603,
+     "configuraciones": 1728,
+     "decide": true,
+     "metodo": "exacto (1728 combinaciones)"
+    },
+    "D": {
+     "p": 0.105,
+     "esperado": 31.385838583858387,
+     "frac_esperada": 0.7472818710442473,
+     "configuraciones_dia": 216,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "a_rumbo": {
+    "n": 20,
+    "T": 11,
+    "frac": 0.55,
+    "dias": [
+     "2026-10-28",
+     "2026-11-08",
+     "2026-11-11"
+    ],
+    "R": {
+     "p": 0.009259259259259259,
+     "esperado": 3.0833333333333335,
+     "frac_esperada": 0.15416666666666667,
+     "configuraciones": 1728,
+     "decide": true,
+     "metodo": "exacto (1728 combinaciones)"
+    },
+    "D": {
+     "p": 0.1122,
+     "esperado": 6.148514851485149,
+     "frac_esperada": 0.3074257425742574,
+     "configuraciones_dia": 216,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    }
+   }
+  },
+  "noche": {
+   "u": {
+    "n": 3,
+    "T": 2,
+    "frac": 0.6666666666666666,
+    "dias": [
+     "2026-10-29"
+    ],
+    "R": {
+     "p": 0.4166666666666667,
+     "esperado": 1.5,
+     "frac_esperada": 0.5,
+     "configuraciones": 12,
+     "decide": false,
+     "metodo": "exacto (12 combinaciones)"
+    },
+    "D": {
+     "p": 0.6136,
+     "esperado": 1.82998299829983,
+     "frac_esperada": 0.60999433276661,
+     "configuraciones_dia": 6,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto": "NO DECIDIBLE (pocos cuadros o días)"
+   },
+   "a": {
+    "n": 3,
+    "T": 2,
+    "frac": 0.6666666666666666,
+    "dias": [
+     "2026-10-29"
+    ],
+    "R": {
+     "p": 0.25,
+     "esperado": 0.9166666666666666,
+     "frac_esperada": 0.3055555555555555,
+     "configuraciones": 12,
+     "decide": false,
+     "metodo": "exacto (12 combinaciones)"
+    },
+    "D": {
+     "p": 0.5576,
+     "esperado": 1.517051705170517,
+     "frac_esperada": 0.5056839017235056,
+     "configuraciones_dia": 6,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto": "NO DECIDIBLE (pocos cuadros o días)"
+   },
+   "z": {
+    "n": 1,
+    "T": 1,
+    "frac": 1.0,
+    "dias": [
+     "2026-10-29"
+    ],
+    "D": {
+     "p": 0.7793,
+     "esperado": 0.7792779277927793,
+     "frac_esperada": 0.7792779277927793,
+     "configuraciones_dia": 6,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "veredicto": "NO DECIDIBLE (pocos cuadros o días)"
+   },
+   "u_px": {
+    "n": 3,
+    "T": 2,
+    "frac": 0.6666666666666666,
+    "dias": [
+     "2026-10-29"
+    ],
+    "R": {
+     "p": 0.16666666666666666,
+     "esperado": 1.0,
+     "frac_esperada": 0.3333333333333333,
+     "configuraciones": 12,
+     "decide": false,
+     "metodo": "exacto (12 combinaciones)"
+    },
+    "D": {
+     "p": 0.5003,
+     "esperado": 1.5134513451345135,
+     "frac_esperada": 0.5044837817115045,
+     "configuraciones_dia": 6,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "a_px": {
+    "n": 3,
+    "T": 2,
+    "frac": 0.6666666666666666,
+    "dias": [
+     "2026-10-29"
+    ],
+    "R": {
+     "p": 0.08333333333333333,
+     "esperado": 0.4166666666666667,
+     "frac_esperada": 0.1388888888888889,
+     "configuraciones": 12,
+     "decide": false,
+     "metodo": "exacto (12 combinaciones)"
+    },
+    "D": {
+     "p": 0.3923,
+     "esperado": 1.1196119611961197,
+     "frac_esperada": 0.3732039870653732,
+     "configuraciones_dia": 6,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "z_px": {
+    "n": 1,
+    "T": 1,
+    "frac": 1.0,
+    "dias": [
+     "2026-10-29"
+    ],
+    "R": {
+     "p": 0.75,
+     "esperado": 0.75,
+     "frac_esperada": 0.75,
+     "configuraciones": 12,
+     "decide": false,
+     "metodo": "exacto (12 combinaciones)"
+    },
+    "D": {
+     "p": 0.6779,
+     "esperado": 0.6778677867786779,
+     "frac_esperada": 0.6778677867786779,
+     "configuraciones_dia": 6,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "a_rumbo": {
+    "n": 3,
+    "T": 1,
+    "frac": 0.3333333333333333,
+    "dias": [
+     "2026-10-29"
+    ],
+    "R": {
+     "p": 0.25,
+     "esperado": 0.5,
+     "frac_esperada": 0.16666666666666666,
+     "configuraciones": 12,
+     "decide": false,
+     "metodo": "exacto (12 combinaciones)"
+    },
+    "D": {
+     "p": 0.6259,
+     "esperado": 1.2272227222722272,
+     "frac_esperada": 0.40907424075740906,
+     "configuraciones_dia": 6,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    }
+   }
+  }
+ },
+ "oraculo": {
+  "todo": {
+   "u": {
+    "n": 91,
+    "T": 82,
+    "frac": 0.9010989010989011,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.1178,
+     "esperado": 79.57125712571258,
+     "frac_esperada": 0.8744094189638745,
+     "configuraciones": 2985984,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.1428,
+     "esperado": 65.83678367836784,
+     "frac_esperada": 0.7234811393227235,
+     "configuraciones_dia": 46656,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "a": {
+    "n": 87,
+    "T": 63,
+    "frac": 0.7241379310344828,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.0001,
+     "esperado": 23.4004400440044,
+     "frac_esperada": 0.2689705752184414,
+     "configuraciones": 2985984,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.0118,
+     "esperado": 35.22902290229023,
+     "frac_esperada": 0.40493129772747394,
+     "configuraciones_dia": 46656,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "z": {
+    "n": 82,
+    "T": 77,
+    "frac": 0.9390243902439024,
+    "dias": [
+     "2026-10-28",
+     "2026-10-29",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "D": {
+     "p": 0.1016,
+     "esperado": 59.797679767976796,
+     "frac_esperada": 0.7292399971704487,
+     "configuraciones_dia": 46656,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   }
+  },
+  "dia": {
+   "u": {
+    "n": 86,
+    "T": 78,
+    "frac": 0.9069767441860465,
+    "dias": [
+     "2026-10-28",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.2117,
+     "esperado": 76.26472647264727,
+     "frac_esperada": 0.8867991450307822,
+     "configuraciones": 248832,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.1551,
+     "esperado": 62.24822482248225,
+     "frac_esperada": 0.723816567703282,
+     "configuraciones_dia": 7776,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "a": {
+    "n": 82,
+    "T": 60,
+    "frac": 0.7317073170731707,
+    "dias": [
+     "2026-10-28",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "R": {
+     "p": 0.0001,
+     "esperado": 22.140114011401142,
+     "frac_esperada": 0.27000139038294074,
+     "configuraciones": 248832,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    },
+    "D": {
+     "p": 0.0178,
+     "esperado": 33.66016601660166,
+     "frac_esperada": 0.4104898294707519,
+     "configuraciones_dia": 7776,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "z": {
+    "n": 78,
+    "T": 74,
+    "frac": 0.9487179487179487,
+    "dias": [
+     "2026-10-28",
+     "2026-11-08",
+     "2026-11-10",
+     "2026-11-11",
+     "2026-11-14"
+    ],
+    "D": {
+     "p": 0.0991,
+     "esperado": 57.16201620162016,
+     "frac_esperada": 0.7328463615592329,
+     "configuraciones_dia": 7776,
+     "decide": true,
+     "metodo": "Monte Carlo B=9999"
+    }
+   }
+  },
+  "noche": {
+   "u": {
+    "n": 5,
+    "T": 4,
+    "frac": 0.8,
+    "dias": [
+     "2026-10-29"
+    ],
+    "R": {
+     "p": 0.3333333333333333,
+     "esperado": 3.3333333333333335,
+     "frac_esperada": 0.6666666666666667,
+     "configuraciones": 12,
+     "decide": false,
+     "metodo": "exacto (12 combinaciones)"
+    },
+    "D": {
+     "p": 0.7657,
+     "esperado": 3.6495649564956496,
+     "frac_esperada": 0.7299129912991299,
+     "configuraciones_dia": 6,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "a": {
+    "n": 5,
+    "T": 3,
+    "frac": 0.6,
+    "dias": [
+     "2026-10-29"
+    ],
+    "R": {
+     "p": 0.16666666666666666,
+     "esperado": 1.25,
+     "frac_esperada": 0.25,
+     "configuraciones": 12,
+     "decide": false,
+     "metodo": "exacto (12 combinaciones)"
+    },
+    "D": {
+     "p": 0.2759,
+     "esperado": 1.5491549154915492,
+     "frac_esperada": 0.3098309830983098,
+     "configuraciones_dia": 6,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    }
+   },
+   "z": {
+    "n": 4,
+    "T": 3,
+    "frac": 0.75,
+    "dias": [
+     "2026-10-29"
+    ],
+    "D": {
+     "p": 0.7838,
+     "esperado": 3.092009200920092,
+     "frac_esperada": 0.773002300230023,
+     "configuraciones_dia": 6,
+     "decide": false,
+     "metodo": "Monte Carlo B=9999"
+    }
+   }
+  }
+ },
+ "control_negativo": {
+  "a": {
+   "N_con_disparo": 2,
+   "coinciden": 0,
+   "frac_N": 0.0,
+   "frac_P": 0.5217391304347826,
+   "lectura": "sigue al cuadro (N claramente menor)",
+   "por_dia": {
+    "2026-10-28": [
+     0,
+     0
+    ],
+    "2026-10-29": [
+     0,
+     0
+    ],
+    "2026-11-08": [
+     0,
+     0
+    ],
+    "2026-11-11": [
+     0,
+     2
+    ]
+   }
+  },
+  "z": {
+   "N_con_disparo": 43,
+   "coinciden": 43,
+   "frac_N": 1.0,
+   "frac_P": 0.9534883720930233,
+   "lectura": "rumbo del día (parecida)",
+   "por_dia": {
+    "2026-10-28": [
+     0,
+     0
+    ],
+    "2026-10-29": [
+     0,
+     0
+    ],
+    "2026-11-10": [
+     18,
+     18
+    ],
+    "2026-11-14": [
+     25,
+     25
+    ]
+   }
+  },
+  "u": {
+   "N_con_disparo": 111,
+   "coinciden": 109,
+   "frac_N": 0.9819819819819819,
+   "frac_P": 0.796875,
+   "lectura": "N mayor que P",
+   "por_dia": {
+    "2026-10-28": [
+     0,
+     0
+    ],
+    "2026-10-29": [
+     0,
+     0
+    ],
+    "2026-11-08": [
+     52,
+     52
+    ],
+    "2026-11-10": [
+     18,
+     18
+    ],
+    "2026-11-11": [
+     14,
+     16
+    ],
+    "2026-11-14": [
+     25,
+     25
+    ]
+   }
+  }
+ },
+ "por_dia": {
+  "2026-10-28": {
+   "P_con_huella": 26,
+   "u_eval": 20,
+   "u_coincide": 17,
+   "a_eval": 8,
+   "a_coincide": 5,
+   "z_eval": 13,
+   "z_coincide": 13
+  },
+  "2026-10-29": {
+   "P_con_huella": 6,
+   "u_eval": 3,
+   "u_coincide": 2,
+   "a_eval": 3,
+   "a_coincide": 2,
+   "z_eval": 1,
+   "z_coincide": 1
+  },
+  "2026-11-07": {
+   "P_con_huella": 1
+  },
+  "2026-11-08": {
+   "P_con_huella": 13,
+   "u_eval": 9,
+   "u_coincide": 5,
+   "a_eval": 9,
+   "a_coincide": 5
+  },
+  "2026-11-10": {
+   "P_con_huella": 12,
+   "u_eval": 9,
+   "u_coincide": 8,
+   "z_eval": 9,
+   "z_coincide": 8
+  },
+  "2026-11-11": {
+   "P_con_huella": 3,
+   "u_eval": 3,
+   "u_coincide": 0,
+   "a_eval": 3,
+   "a_coincide": 0
+  },
+  "2026-11-14": {
+   "P_con_huella": 33,
+   "u_eval": 20,
+   "u_coincide": 19,
+   "z_eval": 20,
+   "z_coincide": 19
+  }
+ }
+}

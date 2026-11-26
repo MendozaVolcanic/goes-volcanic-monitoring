@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-26 (sesión S28b, auditoría de S23 a S28a, bloque "## 0." abajo; S29a queda como 0-prev29, S25b como 0-prev28 y S28a como 0-prev27). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-26 (sesión S30a, enmienda de las tres confirmaciones, bloque "## 0." abajo; S28b queda como 0-prev30). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,61 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S28b, 2026-11-26 (auditoría de S23 a S28a: el pre-registro está sano y ningún rótulo publicado cae por su regla; el p25 por cuadro de las tres confirmaciones congeladas rechaza 12 a 18 % en placebo contra 1 % nominal, y cuatro defectos de ejecución pueden torcer la medida única)
+## 0. S30a, 2026-11-26 (enmienda de las tres confirmaciones: nulo por días calibrado con placebo, alfa 0,001, CONFIRMA falso de 0,62 % o menos; envoltorio de ejecución probado con días ya vistos; la medida sigue retenida hasta que la coordinadora fusione)
+
+> Sesión S30a (worktree `s30a-enmienda-confirmaciones-53a412`, lanzada por la coordinadora S28
+> `local_36977cef-5c6d-46e6-b890-b4299891d5c8` tras la auditoría S28b y las cuatro decisiones que Nicolás aprobó el 26-11).
+> Enmienda:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s30a_enmienda\enmienda_2026-11-26.md`
+> (v0 `0538161` con la regla de elección de alfa antes de calibrar; v1 con el umbral). Ningún cuadro GOES posterior al
+> 24-11-2026 abierto; `s23b_confirmar.py medir` no se corrió. Lo pesado en `D:\goes_notas\s30\s30a\` (0,4 GB). PR
+> contra `main` sin fusionar: lo revisa S28. El computador se apagó por batería a las 08:35 (hora de Chile) y la
+> calibración se relanzó.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Prueba que decide | p25 por cuadro reemplazado por un **nulo por días**: las horas de todos los P de cada día nuevo se colocan sobre k-tuplas de días; referencia = 62 días de 2025 **más los días nuevos** (prueba de permutación exacta), condicionado a decidibilidad. Las reglas congeladas se siguen calculando y se informan al lado, rotuladas | enmienda §2 y §3 |
+| Calibración (2024, 2025, 2026 sin VOLCAT) | Regla de elección de v0 aplicada tal cual: las tres en variante A (decide 2025), **alfa 0,001**. CONFIRMA falso (2025 / 2026 sin VOLCAT / 2024): unión 0,06 / 0,15 / 0 %; zona 0,06 / 0,62 / 0,02 %; anillo 0,02 / 0 / 0 % | `docs/own_volcat/s30a_enmienda/resultados/s30a_calibracion_{a,z,u}.json`, enmienda §5.3 |
+| Poder | Unión: 0,30 con 60 % de P alcanzados por día, 0,42 con 70 % (0,56 y 0,79 con 5 P evaluados o más en cada día); un solo día no confirma. Anillo: casi nulo (sin resolución a 0,001) | idem |
+| Dos fallas de diseño atrapadas por la calibración | (1) colocar sólo las horas evaluadas rompe la simetría (1,7 % falso); (2) sacar los días observados de la referencia, como proponía S28b §4a.2, da 3,5 % falso a 0,01 y casi plano con alfa. Ambas corregidas antes de fijar alfa | enmienda §5.4 |
+| Envoltorio `s30a_confirmar.py` | Una sola carpeta de clases en D:, comprobación previa de L1b y ACMF por día, gatillo de **P evaluables**, negativa, manifiesto SHA-256 comparado tras S23b y S25a, y la regla nueva con lo que calculan los congelados (sin tocarlos) | `docs/own_volcat/s30a_enmienda/scripts/s30a_confirmar.py` |
+| Ensayo (08-11 y 14-11 como "nuevos") | Control: termina y reproduce el desarrollo día por día (anillo 9/13 y 0/15, zona 0/13 y 20/31, unión 9/13 y 20/31); unión CONFIRMA (p 4,2e-4), zona NO CONFIRMA, anillo NO DECIDIBLE (congeladas: CONFIRMA, PARCIAL, PARCIAL). **8 de 8 mutaciones atrapadas por aserción** (repetida, resultado previo, vistazo, sin ACMF, sin GOES al final, gatillo de un día, CSV cambiado y ACMF cambiada entre S23b y S25a) | `docs/own_volcat/s30a_enmienda/resultados/s30a_ensayo_resumen.json` |
+| Lecturas corregidas (decisión 3) | Marcadas al inicio, con texto viejo: titular de S24 (0-prev20), MIXTO de S28a (0-prev27), ALCANZA y 14-11 de S25a (0-prev21); memoria de S25a | commit `f6de563` |
+
+### b. Decisiones que esperan a Nicolás (vía S28)
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Fusionar el PR de S30a y levantar la retención de la medida, que se corre con `s30a_confirmar.py medir` (nunca con `s23b_confirmar.py medir` suelto)? | Sí, después de que S28 revise la enmienda |
+| 2 | La regla de elección escrita en v0 bajó alfa a 0,001 (la zona en variante B cumplía hasta 0,01 y daba algo más de poder a la unión con plumas débiles). ¿Se mantiene? | Mantener: cambiarla ahora sería elegir con el resultado de la calibración |
+| 3 | ¿Esperar más días antes de medir para subir el poder (con 2 días y P desparejos la unión no pasa de ~0,54 aunque acierte todo)? | Opcional: un gatillo de 20 P evaluables en 2 días con al menos 5 en cada uno subiría el poder sin tocar el tamaño; requiere enmienda antes del dato |
+
+### c. Lo aprendido
+
+- **Un nulo de permutación incluye lo observado en la referencia** (método): sacarlo deja sin comparación a un día
+  "encendido" y el p cae al piso; la calibración lo mostró como un falso CONFIRMA casi plano en alfa.
+- **Calibrar antes de fijar el umbral atrapa errores de diseño, no sólo de nivel** (método): dos de las tres corridas
+  previas cambiaron la regla, no el alfa.
+- **Una regla de elección escrita antes decide aunque el resultado no guste** (método): aquí bajó alfa a 0,001.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (placebo):** la regla nueva da CONFIRMA falso de 0,62 % o menos en 2024, 2025 y 2026 sin VOLCAT.
+- **CONFIRMADO:** S23b casi no puede confirmar (resolución); su veredicto se lee "sin poder".
+- **SIN DATO:** el tamaño con los días nuevos de verdad (VOLCAT elige días con otro cielo).
+
+### e. Prompt para la próxima sesión
+
+La medida única la corre la coordinadora S28 o una sesión que ella lance, después de fusionar este PR:
+`python -I C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s30a_enmienda\scripts\s30a_confirmar.py contar <hoy>`,
+luego `bajar <hora>`, `cobertura` (hasta GATILLO CUMPLIDO) y `medir` UNA vez. Reglas: español de Chile sin voseo ni
+guiones largos ni medios; rutas absolutas; no VIIRS; nada de SSEC al repo; `docs/auditoria_2026-11` no se sube.
+
+---
+
+## 0-prev30. S28b, 2026-11-26 (auditoría de S23 a S28a: el pre-registro está sano y ningún rótulo publicado cae por su regla; el p25 por cuadro de las tres confirmaciones congeladas rechaza 12 a 18 % en placebo contra 1 % nominal, y cuatro defectos de ejecución pueden torcer la medida única)
 
 > Sesión S28b (worktree `s28b-auditoria-s23-s28a-c1cff8`, lanzada por la coordinadora S28
 > `local_36977cef-5c6d-46e6-b890-b4299891d5c8`, pedido de Nicolás del 26-11: "audita todo lo que hemos hecho

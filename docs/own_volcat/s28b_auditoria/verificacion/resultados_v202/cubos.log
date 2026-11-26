@@ -1,0 +1,70 @@
+referencia 2025 lista en 426 s; costumbre por hora: mín 558, máx 693 cuadros
+blanco 2026 listo en 436 s
+anillo listo en 436 s
+zona lista en 498 s
+referencia 2025 lista en 342 s; costumbre por hora: mín 558, máx 693 cuadros
+blanco 2026 listo en 349 s
+{
+ "S25a_zona_pct5": {
+  "P_evaluados": 93,
+  "P_alcanzados": 44,
+  "R": 0.4731182795698925,
+  "E25": 4.124081455917316,
+  "p25": 1.774890562653734e-34,
+  "N_cerca": 649,
+  "N_cerca_alcanzados": 116,
+  "pN": 2.28158151287431e-09,
+  "dias_P_evaluado": 9,
+  "dias_P_alcanzado": 4
+ },
+ "S26a_union_pstar": {
+  "P_evaluados": 93,
+  "P_alcanzados": 63,
+  "R": 0.6774193548387096,
+  "E25": 5.869409985981778,
+  "p25": 6.158293552019926e-53,
+  "N_cerca": 649,
+  "N_cerca_alcanzados": 113,
+  "pN": 1.7670733427881738e-22,
+  "dias_P_evaluado": 9,
+  "dias_P_alcanzado": 6
+ },
+ "S26a_anillo_pstar": {
+  "P_evaluados": 54,
+  "P_alcanzados": 23,
+  "R": 0.42592592592592593,
+  "E25": 2.328840673055053,
+  "p25": 4.741489621455894e-18,
+  "N_cerca": 234,
+  "N_cerca_alcanzados": 3,
+  "pN": 3.416822194831208e-16,
+  "dias_P_evaluado": 7,
+  "dias_P_alcanzado": 4
+ },
+ "S26a_zona_pstar": {
+  "P_evaluados": 93,
+  "P_alcanzados": 42,
+  "R": 0.45161290322580644,
+  "E25": 3.7435890274292585,
+  "p25": 1.124960348853824e-33,
+  "N_cerca": 649,
+  "N_cerca_alcanzados": 110,
+  "pN": 5.9432115905203186e-09,
+  "dias_P_evaluado": 9,
+  "dias_P_alcanzado": 4
+ },
+ "S23a_anillo_pct5_estat2025": {
+  "P_evaluados": 30,
+  "P_alcanzados": 8,
+  "R": 0.26666666666666666,
+  "E25": 1.5077340915089066,
+  "p25": 7.912088368884083e-05,
+  "N_cerca": 156,
+  "N_cerca_alcanzados": 0,
+  "pN": 1.9189532664178332e-07,
+  "dias_P_evaluado": 5,
+  "dias_P_alcanzado": 1
+ }
+}
+REPRODUCE los conteos publicados (44/93, 63/93, 8/30): SÍ
+exit 0

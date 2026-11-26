@@ -1,0 +1,9 @@
+0. original: (144, 7802) bool suma 81205
+   sha256 del archivo : 8e0768bfbe6d310a652dd624281c5692fc6137a65639e12fe24c12a0e9fe8233
+   sha256 de tobytes(): e0f093eb6e441cc4c043325c0d7b5ce84e5c9e45acd92c36c5de1781e5c72120
+   declarado (16 hex) : e0f093eb6e441cc4 | coincide con archivo: False | con tobytes: True
+1. un elemento cambiado: guarda pasa = False
+2. mismos bytes como uint8: guarda pasa = True | dtype uint8 | sha del archivo eeef7340156272e8
+   nube dinámica, borde y fracción del anillo con uint8 contra bool: 4 de 4 cuadros iguales
+3. mismos bytes con forma (7802, 144) : guarda pasa = True
+   el código falla después con ruido: ValueError('operands could not be broadcast together with shapes (7802,) (144,) ')

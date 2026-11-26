@@ -1,0 +1,27 @@
+{
+ "regla escrita: 2025 comunes vs 2026 entero": {
+  "noches_a": 37,
+  "noches_b": 25,
+  "tasa_a": 0.0014194464158978,
+  "tasa_b": 0.013986013986013986,
+  "dif_obs": 0.012566567570116186,
+  "p_perm_bilateral": 0.01160988390116099
+ },
+ "simétrica: 2025 comunes vs 2026 comunes": {
+  "noches_a": 37,
+  "noches_b": 24,
+  "tasa_a": 0.0014194464158978,
+  "tasa_b": 0.007416563658838072,
+  "dif_obs": 0.005997117242940272,
+  "p_perm_bilateral": 0.05134948650513495
+ },
+ "sin selección: 2025 entero vs 2026 entero": {
+  "noches_a": 44,
+  "noches_b": 25,
+  "tasa_a": 0.04446978335233751,
+  "tasa_b": 0.013986013986013986,
+  "dif_obs": -0.030483769366323528,
+  "p_perm_bilateral": 0.21968780312196878
+ },
+ "nota": "La permutación de la 'regla escrita' NO corrige la selección por resultado de 2025; sólo corrige la dependencia entre cuadros de una noche. n_perm=100000, semilla=0"
+}

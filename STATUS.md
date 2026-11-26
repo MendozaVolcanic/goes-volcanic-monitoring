@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-26 (S31c, bloque "## 0." abajo; S31b queda como 0-prev36, S31a como 0-prev35, la coordinadora S28 como 0-prev34, S30a como 0-prev33). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-26 (S31d, bloque "## 0." abajo; S31c queda como 0-prev37, S31b como 0-prev36, S31a como 0-prev35, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,69 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S31c, 2026-11-26 (el anillo en dos coronas: SÓLO LEJOS; el detector marca el lado de la pluma de VOLCAT a 22 a 33 km del cráter y en el tramo de 4 a 15 km, donde VOLCAT la dibuja, cae menos que un píxel cualquiera de la misma tajada; coincide con VOLCAT en hora y rumbo, no en posición)
+## 0. S31d, 2026-11-26 (origen del sesgo SE del anillo en 2025, sin pluma: RUIDO FIJO POR PÍXEL; los píxeles altos de la cordillera al SE, a 23 a 33 km del cráter, tienen por sí solos colas bajas de BTD y eso basta para el 63 % de disparos al SE; el método solo no da nada y el viento quedó SIN PODER)
+
+> Sesión S31d (worktree `s31d-sesgo-se-anillo-8b4a65`, rama `claude/s31d-sesgo-se-anillo-8b4a65`), lanzada por la
+> coordinadora S31 para la sospecha de S28 §d. Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s31d_sesgo_se\INFORME.md`.
+> Criterio `8872a7a`, empujado antes de cruzar un disparo con una covariable. Sólo oct-nov 2025 (2024 como réplica);
+> ningún día de 2026. Viento GFS y registros en `D:\goes_notas\s31\s31d\` (1 MB). PR contra `main` sin fusionar: lo
+> revisa S31.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Reproducción | 138 disparos de 2025 en 15 días, tajadas idénticas a S30b; cuota SE 0,645 | `resultados/s31d_resultado.json` |
+| M1, método (máscara real, ruido igual) | 0,21: NO EXPLICA (la tajada de 120° a 150° es la que más seguido queda a medias) | idem |
+| M2, cada píxel de sus propios residuos, sin coherencia | 0,63: EXPLICA (exceso 0,01, IC por días −0,28 a 0,28) | idem |
+| M3, viento 700 hPa | 5 días sotavento SE, 3 fuera, 7 débiles; piso 0,018: SIN PODER. Descriptivo: sotavento fuera sigue 34 de 44 al SE | idem |
+| Réplica 2024 | 38 disparos: método 0,22, píxel por píxel 0,71, observado 0,74 | idem |
+| Post hoc | Pozo despejado 0,63; sotavento SE 0,68 contra fuera 0,66; cola a 23 a 33 km (mediana 27,6), el tramo que S31c encontró en 2026 | `resultados/s31d_posthoc.json` |
+| Veredicto | **RUIDO FIJO POR PÍXEL (terreno o pareo)**; la cola va con la cota (Spearman −0,54), no con pocos controles | `INFORME.md` |
+
+### b. Decisiones que esperan a Nicolás (vía S31)
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Probar, como desarrollo con criterio nuevo en 2025 y 2024, el anillo con cada píxel dividido por su propia dispersión a esa hora antes de buscar la cola? | Sí: es lo que M2 señala; sin tocar la regla congelada de la confirmación |
+| 2 | ¿Leer desde ya los disparos del anillo al SE lejano (22 a 33 km) de 2026 como sospechosos de terreno, aunque coincidan con la hora de VOLCAT? | Sí: es el mismo lugar que el anillo marca en 2025 sin pluma |
+
+### c. Lo aprendido
+
+- **Descomponer un sesgo en escalera** (método, workspace): ruido igual con la máscara real, luego cada píxel sorteado de
+  su propia distribución, y recién lo que sobre se prueba contra el tiempo. Separa "propiedad del método", "propiedad de
+  cada píxel" y "fenómeno coherente" sin mirar el cielo para los dos primeros.
+- **Una línea base que resta el promedio no iguala la escala** (proyecto): el anillo compara colas de píxeles de
+  dispersión distinta, y la cordillera alta gana sola.
+- **Una propiedad "fija por píxel" incluye todo lo que el píxel vive en la temporada** (método): para descartar un
+  fenómeno frecuente hay que partir el pozo por esa covariable.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (por su regla):** el sesgo SE del anillo en 2025 lo lleva la distribución propia de los píxeles altos del
+  SE; el método solo no lo produce. Repite en 2024.
+- **SIN DATO:** si el viento modula una parte (700 hPa sin poder; a 500 hPa, sensibilidad, Δ +0,45 con p 0,13).
+- **SOSPECHA:** qué del terreno lo hace; la noche dispara más al SE (79 %) que el día (40 %), compatible con superficie
+  fría en la cordillera, sin prueba por días (sólo 2 días con las dos mitades).
+- **SOSPECHA (post hoc):** lo que el anillo marca en 2026 a 22 a 33 km al SE (S31c) es esta propiedad del terreno
+  encendida a la hora de la pluma.
+
+### e. Prompt para la próxima sesión
+
+```
+Retoma Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes). Lee STATUS.md "## 0." (S31d) y
+docs/own_volcat/s31d_sesgo_se/INFORME.md. Si Nicolás aprueba la decisión 1 de S31d: anillo con residuo normalizado por
+la dispersión robusta de cada píxel a esa hora (referencia 2025), criterio empujado antes de medir, desarrollo en 2025
+(falsa alarma por días y cuota SE, con M1 y M2 de scripts/s31d_medir.py) y 2024 como réplica; sólo después, días de
+2026 hasta el 24-11 contra VOLCAT con los nulos de S30b y S31c. Reglas: español de Chile sin voseo ni guiones largos ni
+medios; rutas absolutas; no VIIRS; nada de SSEC al repo; nadie mira el detector en días posteriores al 24-11; no tocar
+la confirmación congelada; python -I -B.
+```
+
+---
+
+## 0-prev37. S31c, 2026-11-26 (el anillo en dos coronas: SÓLO LEJOS; el detector marca el lado de la pluma de VOLCAT a 22 a 33 km del cráter y en el tramo de 4 a 15 km, donde VOLCAT la dibuja, cae menos que un píxel cualquiera de la misma tajada; coincide con VOLCAT en hora y rumbo, no en posición)
 
 > Sesión S31c (worktree `s31c-anillo-dos-coronas-03c34e`, rama `claude/s31c-anillo-dos-coronas-03c34e`), lanzada por la
 > coordinadora S31 para la decisión 1 de S30b (aprobada por Nicolás el 26-11). Informe:

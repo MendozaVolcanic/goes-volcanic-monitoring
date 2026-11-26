@@ -1,0 +1,2175 @@
+{
+ "A_s23b": {
+  "salida_impresa": "referencia 2025 lista en 310 s; costumbre por hora: mín 558, máx 693 cuadros",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 720,
+   "cobertura": 1.0,
+   "ultimo": "2026-11-11 23:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 720,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 18,
+  "P_alcanzados": 12,
+  "dias_P_evaluado": 3,
+  "R": 0.6666666666666666,
+  "p25": 2.269331451061645e-12,
+  "pN": 0.1473684210526316,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 13,
+    "P_alcanzados": 9
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "P_evaluados": 2,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "P_evaluados": 3,
+    "P_alcanzados": 3
+   }
+  ]
+ },
+ "A_s25a": {
+  "salida_impresa": "referencia 2025 lista en 315 s; costumbre por hora: mín 558, máx 693 cuadros",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 720,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 24,
+  "P_alcanzados": 8,
+  "dias_P_evaluado": 3,
+  "R": 0.3333333333333333,
+  "p25": 4.069364279396035e-06,
+  "pN": 0.9483143189295247,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ },
+ "A_s26a": {
+  "salida_impresa": "{",
+  "veredicto": "CONFIRMA",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 720,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 24,
+  "P_alcanzados": 20,
+  "dias_P_evaluado": 3,
+  "R": 0.8333333333333334,
+  "p25": 8.589512375831115e-21,
+  "pN": 0.0011912745033781343,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ },
+ "B_s23b": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 576,
+   "presentes": 576,
+   "cobertura": 1.0,
+   "ultimo": "2026-11-10 23:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 576,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 15,
+  "P_alcanzados": 9,
+  "dias_P_evaluado": 2,
+  "R": 0.6,
+  "p25": 3.4551646409054624e-09,
+  "pN": 0.4375,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 13,
+    "P_alcanzados": 9
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "P_evaluados": 2,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   }
+  ]
+ },
+ "B_s25a": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 576,
+   "presentes": 576,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 21,
+  "P_alcanzados": 8,
+  "dias_P_evaluado": 2,
+  "R": 0.38095238095238093,
+  "p25": 1.0169897033992994e-06,
+  "pN": 0.9963524866178912,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    }
+   }
+  ]
+ },
+ "B_s26a": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 576,
+   "presentes": 576,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 21,
+  "P_alcanzados": 17,
+  "dias_P_evaluado": 2,
+  "R": 0.8095238095238095,
+  "p25": 1.482383716280013e-17,
+  "pN": 0.11633253338869845,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    }
+   }
+  ]
+ },
+ "B2_s23b": {
+  "salida_impresa": "{",
+  "veredicto": "NO DECIDIBLE",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 432,
+   "presentes": 432,
+   "cobertura": 1.0,
+   "ultimo": "2026-11-09 23:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 432,
+   "falla": []
+  },
+  "P_total": 25,
+  "dias_con_P": 2,
+  "P_evaluados": 13,
+  "P_alcanzados": 9,
+  "dias_P_evaluado": 1,
+  "R": 0.6923076923076923,
+  "p25": 1.7746101657483698e-10,
+  "pN": null,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 13,
+    "P_alcanzados": 9
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   }
+  ]
+ },
+ "B2_s25a": {
+  "salida_impresa": "{",
+  "veredicto": "NO DECIDIBLE",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 432,
+   "presentes": 432,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 25,
+  "dias_con_P": 2,
+  "P_evaluados": 13,
+  "P_alcanzados": 0,
+  "dias_P_evaluado": 1,
+  "R": 0.0,
+  "p25": 1.0000000000000002,
+  "pN": null,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    }
+   }
+  ]
+ },
+ "B2_s26a": {
+  "salida_impresa": "{",
+  "veredicto": "NO DECIDIBLE",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 432,
+   "presentes": 432,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 25,
+  "dias_con_P": 2,
+  "P_evaluados": 13,
+  "P_alcanzados": 9,
+  "dias_P_evaluado": 1,
+  "R": 0.6923076923076923,
+  "p25": 4.774557805327739e-09,
+  "pN": null,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    }
+   }
+  ]
+ },
+ "B3_s23b": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 648,
+   "presentes": 648,
+   "cobertura": 1.0,
+   "ultimo": "2026-11-11 11:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 648,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 15,
+  "P_alcanzados": 9,
+  "dias_P_evaluado": 2,
+  "R": 0.6,
+  "p25": 3.4551646409054624e-09,
+  "pN": 0.4375,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 13,
+    "P_alcanzados": 9
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "P_evaluados": 2,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   }
+  ]
+ },
+ "B3_s25a": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 648,
+   "presentes": 648,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 21,
+  "P_alcanzados": 8,
+  "dias_P_evaluado": 2,
+  "R": 0.38095238095238093,
+  "p25": 1.0169897033992994e-06,
+  "pN": 0.9963524866178912,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 2
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 10
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 12
+    }
+   }
+  ]
+ },
+ "B3_s26a": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 648,
+   "presentes": 648,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 21,
+  "P_alcanzados": 17,
+  "dias_P_evaluado": 2,
+  "R": 0.8095238095238095,
+  "p25": 1.482383716280013e-17,
+  "pN": 0.11633253338869845,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 2
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 10
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 12
+    }
+   }
+  ]
+ },
+ "C_s23b": {
+  "salida_impresa": "{",
+  "veredicto": "INVÁLIDA",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 576,
+   "cobertura": 0.8,
+   "ultimo": "2026-11-11 23:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 576,
+   "falla": [
+    "I1"
+   ]
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 18,
+  "P_alcanzados": 12,
+  "dias_P_evaluado": 3,
+  "R": 0.6666666666666666,
+  "p25": 2.269331451061645e-12,
+  "pN": 0.1473684210526316,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 13,
+    "P_alcanzados": 9
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "P_evaluados": 2,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "P_evaluados": 3,
+    "P_alcanzados": 3
+   }
+  ]
+ },
+ "C_s25a": {
+  "salida_impresa": "{",
+  "veredicto": "INVÁLIDA",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 576,
+   "cobertura": 0.8,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": [
+    "I1"
+   ]
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 24,
+  "P_alcanzados": 8,
+  "dias_P_evaluado": 3,
+  "R": 0.3333333333333333,
+  "p25": 4.069364279396035e-06,
+  "pN": 0.937547085469913,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 34
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 34
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ },
+ "C_s26a": {
+  "salida_impresa": "{",
+  "veredicto": "INVÁLIDA",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 576,
+   "cobertura": 0.8,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": [
+    "I1"
+   ]
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 24,
+  "P_alcanzados": 20,
+  "dias_P_evaluado": 3,
+  "R": 0.8333333333333334,
+  "p25": 8.589512375831115e-21,
+  "pN": 0.0009406008520858044,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 32
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 32
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ },
+ "D_s23b": {
+  "salida_impresa": "{",
+  "veredicto": "NO DECIDIBLE",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 720,
+   "cobertura": 1.0,
+   "ultimo": "2026-11-11 23:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 576,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 5,
+  "P_alcanzados": 3,
+  "dias_P_evaluado": 2,
+  "R": 0.6,
+  "p25": 0.0033486978469214274,
+  "pN": null,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "P_evaluados": 2,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "P_evaluados": 3,
+    "P_alcanzados": 3
+   }
+  ]
+ },
+ "D_s25a": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 720,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 11,
+  "P_alcanzados": 8,
+  "dias_P_evaluado": 2,
+  "R": 0.7272727272727273,
+  "p25": 9.751787154410942e-10,
+  "pN": 0.25074793367476284,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ },
+ "D_s26a": {
+  "salida_impresa": "{",
+  "veredicto": "CONFIRMA",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 720,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 11,
+  "P_alcanzados": 11,
+  "dias_P_evaluado": 2,
+  "R": 1.0,
+  "p25": 1.6774475905933613e-13,
+  "pN": 0.0050166737756407774,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ },
+ "E_s23b": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 576,
+   "presentes": 576,
+   "cobertura": 1.0,
+   "ultimo": "2026-11-10 23:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 576,
+   "falla": []
+  },
+  "P_total": 25,
+  "dias_con_P": 2,
+  "P_evaluados": 15,
+  "P_alcanzados": 9,
+  "dias_P_evaluado": 2,
+  "R": 0.6,
+  "p25": 3.4551646409054624e-09,
+  "pN": 0.4375,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 13,
+    "P_alcanzados": 9
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "P_evaluados": 2,
+    "P_alcanzados": 0
+   }
+  ]
+ },
+ "E_s25a": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 720,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 24,
+  "P_alcanzados": 8,
+  "dias_P_evaluado": 3,
+  "R": 0.3333333333333333,
+  "p25": 4.069364279396035e-06,
+  "pN": 0.9483143189295247,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ },
+ "E_s26a": {
+  "salida_impresa": "{",
+  "veredicto": "CONFIRMA",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 720,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 24,
+  "P_alcanzados": 20,
+  "dias_P_evaluado": 3,
+  "R": 0.8333333333333334,
+  "p25": 8.589512375831115e-21,
+  "pN": 0.0011912745033781343,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ },
+ "F1_sin_gatillo_s23b": {
+  "salida_impresa": "criterio §6: 13 P en 1 días nuevos; hacen falta 20 en 2. No se mide.",
+  "veredicto": "(no escribió resultado)"
+ },
+ "F2_s23b_vistazo": {
+  "salida_impresa": "{",
+  "veredicto": "VISTAZO (no decide): NO DECIDIBLE",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 432,
+   "presentes": 432,
+   "cobertura": 1.0,
+   "ultimo": "2026-11-09 23:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 432,
+   "falla": []
+  },
+  "P_total": 13,
+  "dias_con_P": 1,
+  "P_evaluados": 13,
+  "P_alcanzados": 9,
+  "dias_P_evaluado": 1,
+  "R": 0.6923076923076923,
+  "p25": 1.7746101657483698e-10,
+  "pN": null,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 13,
+    "P_alcanzados": 9
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   }
+  ]
+ },
+ "F3_medir_tras_vistazo_s23b": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 576,
+   "presentes": 576,
+   "cobertura": 1.0,
+   "ultimo": "2026-11-10 23:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 576,
+   "falla": []
+  },
+  "P_total": 25,
+  "dias_con_P": 2,
+  "P_evaluados": 15,
+  "P_alcanzados": 9,
+  "dias_P_evaluado": 2,
+  "R": 0.6,
+  "p25": 3.4551646409054624e-09,
+  "pN": 0.4375,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 13,
+    "P_alcanzados": 9
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "P_evaluados": 2,
+    "P_alcanzados": 0
+   }
+  ]
+ },
+ "F4_medir_otra_vez_s23b": {
+  "salida_impresa": "{",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 720,
+   "cobertura": 1.0,
+   "ultimo": "2026-11-11 23:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 720,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 18,
+  "P_alcanzados": 12,
+  "dias_P_evaluado": 3,
+  "R": 0.6666666666666666,
+  "p25": 2.269331451061645e-12,
+  "pN": 0.1473684210526316,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 13,
+    "P_alcanzados": 9
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "P_evaluados": 2,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "P_evaluados": 3,
+    "P_alcanzados": 3
+   }
+  ]
+ },
+ "F_reescritura": {
+  "mtime_primera": 1795667142.6198978,
+  "mtime_segunda": 1795667171.9567914,
+  "reescrito_sin_aviso": true,
+  "vistazo_sigue_en_disco": true
+ },
+ "F5_s26a_sin_previos_s26a": {
+  "veredicto": "sys.exit: criterio §5: el orden es S23b, S25a, S26a; falta D:\\goes_notas\\s28\\s28b\\v301\\repo\\docs\\own_volcat\\s23_fondo_2025\\resultados\\s23b_resultado.json"
+ },
+ "F6_s26a_sin_previos_s26a_vistazo": {
+  "salida_impresa": "{",
+  "veredicto": "VISTAZO (no decide): CONFIRMA",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 720,
+   "cobertura": 1.0,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 24,
+  "P_alcanzados": 20,
+  "dias_P_evaluado": 3,
+  "R": 0.8333333333333334,
+  "p25": 8.589512375831115e-21,
+  "pN": 0.0011912745033781343,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 18
+    },
+    "z": {
+     "P_evaluados": 13,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 13,
+     "P_alcanzados": 9,
+     "disparos": 70
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ },
+ "G_s23b": {
+  "salida_impresa": "referencia 2025 lista en 303 s; costumbre por hora: mín 558, máx 693 cuadros",
+  "veredicto": "NO DECIDIBLE",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 684,
+   "cobertura": 0.95,
+   "ultimo": "2026-11-11 23:50",
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "acm_presentes": 720,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 5,
+  "P_alcanzados": 3,
+  "dias_P_evaluado": 2,
+  "R": 0.6,
+  "p25": 0.0033486978469214274,
+  "pN": null,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "P_evaluados": 0,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "P_evaluados": 2,
+    "P_alcanzados": 0
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "P_evaluados": 3,
+    "P_alcanzados": 3
+   }
+  ]
+ },
+ "G_s25a": {
+  "salida_impresa": "referencia 2025 lista en 303 s; costumbre por hora: mín 558, máx 693 cuadros",
+  "veredicto": "PARCIAL",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 684,
+   "cobertura": 0.95,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 11,
+  "P_alcanzados": 8,
+  "dias_P_evaluado": 2,
+  "R": 0.7272727272727273,
+  "p25": 9.751787154410942e-10,
+  "pN": 0.1590560338012663,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 52
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 35
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ },
+ "G_s26a": {
+  "salida_impresa": "{",
+  "veredicto": "CONFIRMA",
+  "instrumento": {
+   "cuadros_hasta_el_ultimo": 720,
+   "presentes": 684,
+   "cobertura": 0.95,
+   "scan_distinto": 0,
+   "congelados": 0,
+   "bt11_en_rango": 1.0,
+   "falla": []
+  },
+  "P_total": 28,
+  "dias_con_P": 3,
+  "P_evaluados": 11,
+  "P_alcanzados": 11,
+  "dias_P_evaluado": 2,
+  "R": 1.0,
+  "p25": 1.6774475905933613e-13,
+  "pN": 0.0017778584140961385,
+  "por_dia": [
+   {
+    "dia": "2026-11-08",
+    "P": 13,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 52
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 52
+    }
+   },
+   {
+    "dia": "2026-11-09",
+    "P": 0,
+    "a": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    },
+    "u": {
+     "P_evaluados": 0,
+     "P_alcanzados": 0,
+     "disparos": 4
+    }
+   },
+   {
+    "dia": "2026-11-10",
+    "P": 12,
+    "a": {
+     "P_evaluados": 2,
+     "P_alcanzados": 0,
+     "disparos": 0
+    },
+    "z": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    },
+    "u": {
+     "P_evaluados": 8,
+     "P_alcanzados": 8,
+     "disparos": 33
+    }
+   },
+   {
+    "dia": "2026-11-11",
+    "P": 3,
+    "a": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 4
+    },
+    "z": {
+     "P_evaluados": 3,
+     "P_alcanzados": 0,
+     "disparos": 19
+    },
+    "u": {
+     "P_evaluados": 3,
+     "P_alcanzados": 3,
+     "disparos": 22
+    }
+   }
+  ]
+ }
+}

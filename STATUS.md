@@ -211,6 +211,14 @@ MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Usa /retomar.
 
 ## 0-prev27. S28a, 2026-11-25 (falsa alarma de S26a en Antuco y Longaví, 2026 contra 2025: de noche NO CONCLUYENTE; de día MIXTO, Antuco sin pluma sube tanto como Chillán)
 
+> **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b (hallazgos 206, 921, 101, 104 y 114; `docs/own_volcat/s28b_auditoria/INFORME.md` §1c).]** El rótulo MIXTO de día
+> es el de la regla escrita con la semilla 0, pero cuelga de la semilla y de un día: con 1.000 semillas, 8,4 % daría NO
+> CONCLUYENTE, y sin el 10-11 Antuco da R 2,16 (0,87 a 6,92), NO CONCLUYENTE. Además el criterio define MIXTO como un
+> cambio local de una cumbre; leerlo como "Antuco sin pluma sube tanto como Chillán" le da la consecuencia que el
+> criterio reservó a NO SE SOSTIENE. El 10-11 las tres cumbres disparan juntas de 15:40 a 19:40 UTC en cuadros N; en los
+> 8 aciertos de Chillán (21:30 a 23:20) ninguna vecina dispara. El título y el texto de abajo se conservan como se
+> escribieron.
+
 > Sesión S28a (worktree `s28a-vecinas-falsa-alarma-7791f2`, lanzada por la coordinadora S28
 > `local_36977cef-5c6d-46e6-b890-b4299891d5c8`). Informe: `docs/own_volcat/s28a_vecinas/INFORME.md`. El cierre de la
 > coordinación S23 sigue abajo como `0-prev26` y S27a como `0-prev25`. Ningún día posterior al 24-11: las
@@ -224,7 +232,7 @@ MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Usa /retomar.
 | Pluma de Chillán | Fuera del anillo de cada vecina las tajadas con algún píxel a < 45 km de Chillán (Antuco 0, 1, 10, 11; Longaví 5, 6, 7), mínimo de tajadas al 75 %; los dos anillos caben en la ventana | `resultados/s28a_resultado.json` (`geometria`) |
 | Comprobación de código | Anillo generalizado = el de Chillán (S, tajadas, seco 269 de 5.499, 0 diferencias con `tabla_2026.csv`); M1 igual al caché en 3 días; zona = conteos de S27a | idem (`comprobacion`) |
 | Noche, unión | Antuco 6,2 % a 3,3 % (R 0,53; 0,09 a 2,13); Longaví 5,9 % a 6,7 % (R 1,14; 0,42 a 3,16); Chillán 6,7 % a 18,6 % (R 2,76) | **NO CONCLUYENTE** (el límite superior de Longaví pasa el R de Chillán) |
-| Día, unión | Antuco 4,0 % a 10,6 % (R 2,64; 1,05 a 8,98; lo pone la zona, R 3,66); Longaví 4,0 % a 3,2 % (R 0,80); Chillán 3,9 % a 10,4 % (R 2,67; sin cuadros P 7,7 %) | **MIXTO (sube Antuco)** |
+| Día, unión | **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b 206: MIXTO por la semilla 0 y por el 10-11; sin el 10-11, NO CONCLUYENTE. Texto viejo:]** Antuco 4,0 % a 10,6 % (R 2,64; 1,05 a 8,98; lo pone la zona, R 3,66); Longaví 4,0 % a 3,2 % (R 0,80); Chillán 3,9 % a 10,4 % (R 2,67; sin cuadros P 7,7 %) | **MIXTO (sube Antuco)** |
 | Viento | Sin los cuadros con viento desde Chillán hacia Antuco, Antuco de día sube igual (R 3,10): no es la pluma de Chillán | idem (`viento`) |
 | Post hoc | El 10-11 disparan de tarde las tres cumbres (Chillán con VOLCAT, Antuco 33, Longaví 24) y el 14-11 Antuco dispara con VOLCAT de Chillán: los dos días fuertes de la zona en S26a. Como placebo, la unión en Antuco alcanza 20 de 88 P de Chillán y en Longaví 5 de 93 (Chillán 63 de 93) | `resultados/s28a_posthoc.json` |
 | Disco D: | S28a usa ~120 MB en `D:\goes_notas\s28\s28a\` (M1 de las vecinas y cuadros) | `du` |
@@ -239,7 +247,7 @@ MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Usa /retomar.
 
 ### c. Lo aprendido
 
-- **La falsa alarma de 2025 no se traslada a 2026 de día** (proyecto): una cumbre sin pluma de la misma imagen
+- **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b 101 y 206: la subida de Antuco depende del 10-11, y en los aciertos de Chillán las vecinas no disparan. Texto viejo:]** **La falsa alarma de 2025 no se traslada a 2026 de día** (proyecto): una cumbre sin pluma de la misma imagen
   (Antuco) pasa de 4,0 % a 10,6 % de día; el exceso diurno de Chillán cabe entero en esa subida. De noche no hay señal
   de subida en las vecinas, sin intervalo que lo respalde.
 - **Los disparos de 2025 se juntan en pocos días** (método): el remuestreo por días da intervalos de R de ×4 a ×10 de
@@ -250,7 +258,7 @@ MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Usa /retomar.
 
 ### d. Problemas abiertos e hipótesis
 
-- **CONFIRMADO:** de día, en 2026, una cumbre sin pluma (Antuco) dispara tanto como Chillán; no es la pluma de Chillán
+- **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b 101, 104 y 206: rebajado a SOSPECHA; depende del 10-11 y de la semilla. Texto viejo:]** **CONFIRMADO:** de día, en 2026, una cumbre sin pluma (Antuco) dispara tanto como Chillán; no es la pluma de Chillán
   llevada por el viento.
 - **SOSPECHA:** el aumento diurno de Antuco es superficie al sol (menos nieve, roca descubierta) o nube baja de tarde;
   sin probar.
@@ -559,6 +567,15 @@ traspaso como S27. Usa /retomar.
 
 ## 0-prev21. S25a, 2026-11-25 (la zona de 0 a 4 km del cráter ALCANZA por su regla: 44 de 93 cuadros de VOLCAT y el 14-11, 20 de 31; en 2026 la zona dispara de más de noche; S23b sigue esperando días nuevos)
 
+> **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b (hallazgos 204, 943, 202 y 941; `docs/own_volcat/s28b_auditoria/INFORME.md` §1c).]** ALCANZA es el rótulo de la
+> regla escrita, pero mide sobre todo "día encendido": estratificada por día, la zona tiene razón de odds 0,96 (0,59 a
+> 1,56), no separa P de N dentro del mismo día (el 14-11 alcanza 44 de 60 N; el 10-11, 24 de 25 N desde cinco horas antes
+> del primer P; el 28-10 sí separa, 15 de 26 P contra 0 de 75 N). Con pN por día quedaría en PARCIAL. Límite: P y N casi
+> nunca conviven a la misma hora, así que "dentro del día" compara tarde con noche. Del 14-11: los 20 alcanzados son 3
+> rachas de un solo episodio; por día el p queda entre 0,016 y 0,04, sobre el 0,01, así que con el día como unidad la
+> prueba no podía pasar: la lectura justa es "no decidible por día", no "alcanzado". La zona (11 píxeles de 1,2 a 5,2 km)
+> no es exactamente "0 a 4 km" (hallazgo 401). El título y el texto de abajo se conservan como se escribieron.
+
 > Sesión S25a (worktree `s25a-crater-s23b-92d67e`, lanzada por la sesión que corre S25a y S25b en paralelo). Informe:
 > `docs/own_volcat/s25a_crater/INFORME.md`. S25b (fondo 2024 con GOES-16) corre aparte en `docs/own_volcat/s25b_*`.
 
@@ -567,8 +584,8 @@ traspaso como S27. Usa /retomar.
 | Qué | Estado | Evidencia |
 |---|---|---|
 | Confirmación S23b en días nuevos | **Esperando**: 0 cuadros P de VOLCAT el 25-11 hasta 11:30 UTC (55 N, 15 otro). La medida exige 20 P en 2 días | `docs/own_volcat/s23_fondo_2025/resultados/volcat_clases_desde_25nov.csv` |
-| Zona de 0 a 4 km del cráter (11 píxeles que ningún anillo mira) | **ALCANZA** por su regla: cada píxel contra sí mismo en 2025, corrección regional por cota, dos píxeles más bajos. Seco 2025 0,032; R 44 de 93 (esperado 4,1); pN 2e-9 | criterio `1306fb5`, resultado `08ba80a` |
-| 14-11 (pluma pegada al cráter, 0 en todas las versiones anteriores) | **ALCANZADO**: 20 de 31 cuadros | `resultados/s25a_resultado.json` |
+| Zona de 0 a 4 km del cráter (11 píxeles que ningún anillo mira) | **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b 204: por día no separa P de N (OR 0,96); con pN por día, PARCIAL. Texto viejo:]** **ALCANZA** por su regla: cada píxel contra sí mismo en 2025, corrección regional por cota, dos píxeles más bajos. Seco 2025 0,032; R 44 de 93 (esperado 4,1); pN 2e-9 | criterio `1306fb5`, resultado `08ba80a` |
+| 14-11 (pluma pegada al cráter, 0 en todas las versiones anteriores) | **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b 202: 3 rachas de un episodio; por día p 0,016 a 0,04: no decidible por día. Texto viejo:]** **ALCANZADO**: 20 de 31 cuadros | `resultados/s25a_resultado.json` |
 | Complemento con el anillo (post hoc) | Zona: 14-11, 10-11, 28-10; anillo S23b: 08-11, 29-10, 11-11, 28-10. Donde uno no llega, llega el otro | `INFORME.md` §3 |
 | Noche de 2026 | La zona dispara en el 24 % de los cuadros de noche de 2026 (4 % en 2025) y 8,6 % de día (3 %), desde el 21-09. **Sin explicar**: pluma diaria, depósito de ceniza o nieve | `resultados/s25a_posthoc.json` |
 | Videos lado a lado (estilo VOLCAT, píxeles llenos, ±0,7°, anillos 10/25/50 km) | `C:\Users\nmend\Downloads\s25a_lado_a_lado_volcat_vs_zona_crater_chillan_<día>_10min.mp4`: 14-11, 28-10, 10-11, 08-11 | `scripts/s25a_lado_a_lado.py` |
@@ -591,7 +608,7 @@ traspaso como S27. Usa /retomar.
 
 ### d. Problemas abiertos e hipótesis
 
-- **CONFIRMADO (por la regla, en días ya mirados):** la zona del cráter alcanza los cuadros de VOLCAT con pluma sobre
+- **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b 204: dentro del día no los separa (OR 0,96); vale "la zona dispara los días con pluma", no "donde VOLCAT dibuja". Texto viejo:]** **CONFIRMADO (por la regla, en días ya mirados):** la zona del cráter alcanza los cuadros de VOLCAT con pluma sobre
   el cráter y los separa de los otros cuadros de 2026 de día.
 - **SOSPECHA:** los disparos nocturnos de 2026 son pluma diaria (o depósito); sin dato que lo decida.
 - **SIN PROBAR:** confirmación en días nuevos (`criterio_confirmacion_2026-11-25.md`, mismo gatillo que S23b) y el
@@ -619,6 +636,13 @@ traspaso como S26. Usa /retomar.
 
 ## 0-prev20. S24, 2026-11-25 (la noche de 2026 dispara más que una noche común de 2025; el 14-11 quedó INVÁLIDA por el control; la regla de rumbo S24c se abandona en la calibración; S23b sigue esperando días nuevos)
 
+> **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b (hallazgo 102, verificado; `docs/own_volcat/s28b_auditoria/INFORME.md` §1b).]** El titular "la noche de 2026
+> dispara más que una noche común de 2025" (0,14 % contra 1,4 %, unas 10 veces) sale de una selección asimétrica: la
+> regla B1 saca de 2025 sus noches con 3 o más disparos y deja 2026 entero. Con la misma selección en los dos años: 2 de
+> 1.409 contra 6 de 809, razón 5,2, Fisher 0,057, y depende de una sola noche (29-10-2026, que parece detección real, con
+> VOLCAT P a las 01:10 y 01:20). **No prueba un exceso.** El rótulo publicado (NO EPISÓDICO) es el de la regla escrita;
+> con la regla simétrica sería EPISÓDICO, frágil. El título y el texto de abajo se conservan como se escribieron.
+
 > Sesión S24 (worktree `s24-confirmar-s23b-11fe53`, lanzada por S23). Informe: `docs/own_volcat/s24_dia14_noche/INFORME.md`.
 > Rama `claude/s24-confirmar-s23b-11fe53`, sin fusionar al escribir este bloque.
 
@@ -629,7 +653,7 @@ traspaso como S26. Usa /retomar.
 | Confirmación S23b en días nuevos | **Esperando**: 0 cuadros P de VOLCAT el 25-11 hasta 10:30 UTC (49 N, 15 otro). La medida exige 20 P en 2 días | `docs/own_volcat/s23_fondo_2025/resultados/volcat_clases_desde_25nov.csv` |
 | Disco D: | **16 GB libres** (S23 lo dejó en 5,6): ya no corta la bajada | `df` |
 | Bajada adelantada de GOES de días nuevos | El clasificador de permisos la bloqueó: el encargo dice bajar sólo cuando `contar` diga LISTO PARA MEDIR. Se baja entonces | |
-| Noche 2026 contra 2025 | **Era artefacto**: 5 noches de 2025 ponen el 85 % de los disparos nocturnos; en noches comunes 2025 dispara 0,14 % y 2026 1,4 % (p 0,0003), en 29-10, 05-11 y 11-11. Las noches que disparan en 2025 tienen capa baja o inversión (ACM "probablemente despejado", anillo menos frío) | criterio `5c83319`, resultado `6024f12` |
+| Noche 2026 contra 2025 | **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b 102: el "0,14 % contra 1,4 %" compara 2025 sin sus noches con disparos contra 2026 entero; con la misma selección, razón 5,2, Fisher 0,057: no prueba un exceso. Texto viejo:]** **Era artefacto**: 5 noches de 2025 ponen el 85 % de los disparos nocturnos; en noches comunes 2025 dispara 0,14 % y 2026 1,4 % (p 0,0003), en 29-10, 05-11 y 11-11. Las noches que disparan en 2025 tienen capa baja o inversión (ACM "probablemente despejado", anillo menos frío) | criterio `5c83319`, resultado `6024f12` |
 | 14-11 (firma en la huella de VOLCAT) | **INVÁLIDA**: el control del 08-11 promedió el anillo entero y diluyó su firma de 15 a 40 km. Post hoc: huella de VOLCAT de 4 a 31 píxeles, la mitad dentro de 4 km; nuestra tajada mínima se queda al SE de 17:20 a 19:00 rozando el umbral | `docs/own_volcat/s24_dia14_noche/resultados/s24_resultado.json` |
 | S24c, persistencia de rumbo | **Abandonada** por su criterio: en 2025 ningún percentil cumple la falsa alarma (0,056 a 0,165). El fondo también tiene rumbo propio | criterio `d11eab8`, `979216c` |
 
@@ -651,7 +675,7 @@ traspaso como S26. Usa /retomar.
 
 ### d. Problemas abiertos e hipótesis
 
-- **CONFIRMADO:** el 4 % nocturno de 2025 son siete noches; 2026 dispara más que una noche común de 2025.
+- **[Lectura corregida en S30a, 26-11-2026, por la auditoría S28b 102: queda CONFIRMADO sólo que el 4 % nocturno de 2025 son siete noches; "2026 dispara más que una noche común de 2025" pasa a NO PROBADO (selección asimétrica). Texto viejo:]** **CONFIRMADO:** el 4 % nocturno de 2025 son siete noches; 2026 dispara más que una noche común de 2025.
 - **SOSPECHA:** los disparos nocturnos de 2026 (29-10, 05-11, 11-11) son pluma diaria.
 - **SIN DATO:** la zona de 0 a 4 km del cráter (donde vive la huella del 14-11) no la mira ningún detector.
 

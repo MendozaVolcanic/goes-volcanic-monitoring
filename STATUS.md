@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-26 (coordinadora S28, bloque "## 0." abajo; S30a queda como 0-prev33, S30b como 0-prev32, S29b como 0-prev31). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-26 (S31a, bloque "## 0." abajo; la coordinadora S28 queda como 0-prev34, S30a como 0-prev33, S30b como 0-prev32). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,59 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S28 (coordinadora), 2026-11-26 (siete PR de medida y una auditoría en main; la auditoría encontró que la prueba de las tres confirmaciones no tenía tamaño nominal y S30a la enmendó antes del dato; el detector todavía no muestra que siga la pluma de cada momento y no sólo su rumbo de siempre)
+## 0. S31a, 2026-11-26 (¿el anillo sigue la pluma cuando el viento la lleva fuera del SE? SIN PODER: VOLCAT casi nunca dibuja una pluma fuera del SE que dure, y la única que gira de verdad, el 10-11, cae en un día sin disparos del anillo; no se cruzó ningún disparo)
+
+> Sesión S31a (worktree `s31a-pluma-fuera-se-e168ae`, rama `claude/s31a-pluma-fuera-se-e168ae`), lanzada por la
+> coordinadora S31 para la decisión 1 de S28 (aprobada). Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s31a_pluma_fuera_se\INFORME.md`.
+> Criterio y decisión previa `a3fa424`, empujado antes de cualquier cruce; no se abrió la tabla de disparos. Ningún día
+> posterior al 24-11. Huellas derivadas de SSEC sólo en `D:\goes_notas\s31\s31a\`. PR contra `main` sin fusionar: lo
+> revisa S31.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Inventario sólo de VOLCAT (20-10 a 24-11) | 100 P, 90 con rumbo; 30 fuera de 90° a 180° en 7 días, casi todos pedazos de 1 a 4 píxeles a 4 a 8 km que duran un cuadro; un píxel fijo a 325° y 4,8 km en tres cuadros | `docs/own_volcat/s31a_pluma_fuera_se/resultados/s31a_inventario_volcat.csv` |
+| Pluma girada que dura | Sólo el 10-11 22:20 a 23:20 UTC (6 cuadros, NE a E); además un cuadro al W el 07-11. En ninguno de los dos días el anillo tuvo un P evaluado (S30b) | idem, `INFORME.md` §1 |
+| Piso del p por días | Días posibles para el anillo n <= 4; contra el SE habitual 2^n: piso 0,0625 (hacen falta 7 días para 0,01) | `resultados/s31a_poder.json` |
+| Control positivo en el estrato | Oráculo de S30b 13 de 27; no pasa ningún nulo a 0,01 (girada 0,038, otro día 0,16, contra SE 0,75) | idem |
+| Veredicto | **SIN PODER**; no se escribió umbral ni se midió | `criterio_2026-11-26.md` §4 |
+
+### b. Decisiones que esperan a Nicolás (vía S31)
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Usar las cámaras del OVDAS para juntar días con la pluma fuera del SE (por ejemplo el 05-11, pluma al E todo el día que VOLCAT no marcó) y repetir esta pregunta con verdad propia, criterio antes? | Sí: es la única vía con datos que ya existen |
+| 2 | ¿Fijar ya qué es una pluma de VOLCAT fuera del SE que dure (3 cuadros seguidos o más, 3 píxeles o más en el anillo) para los días nuevos, antes del dato? | Sí, si se quiere la vía VOLCAT; al ritmo de oct-nov (1 día así en 34 días con clase) tomaría muchos meses |
+
+### c. Lo aprendido
+
+- **Contar el poder con el control positivo antes de mirar el detector** (método, workspace): el oráculo se puede correr
+  sólo con la referencia, y aquí bastó para cerrar la pregunta sin gastar un cruce.
+- **Un rumbo "fuera del SE" de VOLCAT casi nunca es la pluma girada** (proyecto): son pedazos de 1 a 4 píxeles junto al
+  cráter; filtrar por persistencia (cuadros seguidos) y alcance antes de usarlos como dirección.
+
+### d. Problemas abiertos e hipótesis
+
+- **SIN DATO:** si el anillo sigue la pluma de cada momento o apunta al SE siempre (sigue igual que en S30b).
+- **SOSPECHA:** el píxel a 325° y 4,8 km que aparece solo en tres cuadros es un borde del dibujo o de la georreferencia
+  de VOLCAT, no ceniza. Sin medir.
+
+### e. Prompt para la próxima sesión
+
+```
+Retoma Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes). Lee STATUS.md "## 0." (S31a) y
+docs/own_volcat/s31a_pluma_fuera_se/INFORME.md. Si Nicolás aprueba la decisión 1 de S31a: lista de días con dirección
+de pluma en cámaras del OVDAS (hasta el 24-11), criterio empujado antes de cruzar con el detector, nulos por día, y
+contar el piso (2^n contra el SE habitual) y el oráculo antes de fijar umbral. Reglas: español de Chile sin voseo ni
+guiones largos ni medios; rutas absolutas; no VIIRS; nada de SSEC al repo; nadie mira el detector en días posteriores
+al 24-11; python -I -B.
+```
+
+---
+
+## 0-prev34. S28 (coordinadora), 2026-11-26 (siete PR de medida y una auditoría en main; la auditoría encontró que la prueba de las tres confirmaciones no tenía tamaño nominal y S30a la enmendó antes del dato; el detector todavía no muestra que siga la pluma de cada momento y no sólo su rumbo de siempre)
 
 > Sesión S28, coordinadora (worktree `s28-coordinacion-9362d1`, rama `claude/s28-coordinacion-9362d1`), lanzada por S23
 > para revisar en ciclo las sesiones paralelas, fusionar y decidir cómo seguir. Lanzó S28a, S28b, S29a, S29b, S30a y S30b;

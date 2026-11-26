@@ -1,0 +1,300 @@
+{
+ "clases_desde": "2026-10-20",
+ "clases_hasta": "2026-11-24",
+ "dias_con_clase": 34,
+ "conteo_clases": {
+  "N": 3863,
+  "otro": 531,
+  "P": 100
+ },
+ "por_dia_P": {
+  "2026-10-22": {
+   "P": 1,
+   "con_png": 0,
+   "con_rumbo": 0,
+   "fuera_SE": 0,
+   "fuera_SE_todo40": 0,
+   "rumbos": [],
+   "rumbo_medio_dia": null
+  },
+  "2026-10-24": {
+   "P": 1,
+   "con_png": 0,
+   "con_rumbo": 0,
+   "fuera_SE": 0,
+   "fuera_SE_todo40": 0,
+   "rumbos": [],
+   "rumbo_medio_dia": null
+  },
+  "2026-10-25": {
+   "P": 4,
+   "con_png": 0,
+   "con_rumbo": 0,
+   "fuera_SE": 0,
+   "fuera_SE_todo40": 0,
+   "rumbos": [],
+   "rumbo_medio_dia": null
+  },
+  "2026-10-28": {
+   "P": 26,
+   "con_png": 26,
+   "con_rumbo": 26,
+   "fuera_SE": 6,
+   "fuera_SE_todo40": 4,
+   "rumbos": [
+    189.8,
+    317.1,
+    52.4,
+    140.7,
+    5.0,
+    329.2,
+    121.5,
+    130.0,
+    125.1,
+    120.4,
+    121.9,
+    125.8,
+    122.5,
+    122.8,
+    140.4,
+    108.5,
+    130.7,
+    119.4,
+    129.5,
+    98.1,
+    127.7,
+    120.8,
+    124.9,
+    120.0,
+    101.7,
+    348.1
+   ],
+   "rumbo_medio_dia": 115.1
+  },
+  "2026-10-29": {
+   "P": 6,
+   "con_png": 6,
+   "con_rumbo": 6,
+   "fuera_SE": 2,
+   "fuera_SE_todo40": 0,
+   "rumbos": [
+    2.3,
+    167.9,
+    77.2,
+    99.9,
+    128.7,
+    93.3
+   ],
+   "rumbo_medio_dia": 98.7
+  },
+  "2026-11-07": {
+   "P": 1,
+   "con_png": 1,
+   "con_rumbo": 1,
+   "fuera_SE": 1,
+   "fuera_SE_todo40": 1,
+   "rumbos": [
+    267.8
+   ],
+   "rumbo_medio_dia": 267.8
+  },
+  "2026-11-08": {
+   "P": 13,
+   "con_png": 13,
+   "con_rumbo": 13,
+   "fuera_SE": 4,
+   "fuera_SE_todo40": 2,
+   "rumbos": [
+    115.5,
+    325.0,
+    136.0,
+    352.8,
+    325.0,
+    135.0,
+    109.5,
+    113.0,
+    123.9,
+    129.9,
+    80.2,
+    142.8,
+    129.2
+   ],
+   "rumbo_medio_dia": 109.4
+  },
+  "2026-11-10": {
+   "P": 12,
+   "con_png": 12,
+   "con_rumbo": 12,
+   "fuera_SE": 6,
+   "fuera_SE_todo40": 6,
+   "rumbos": [
+    139.8,
+    124.8,
+    147.6,
+    127.7,
+    108.9,
+    124.1,
+    57.4,
+    81.6,
+    47.1,
+    39.9,
+    89.3,
+    48.5
+   ],
+   "rumbo_medio_dia": 95.2
+  },
+  "2026-11-11": {
+   "P": 3,
+   "con_png": 3,
+   "con_rumbo": 1,
+   "fuera_SE": 1,
+   "fuera_SE_todo40": 1,
+   "rumbos": [
+    325.0
+   ],
+   "rumbo_medio_dia": 325.0
+  },
+  "2026-11-14": {
+   "P": 33,
+   "con_png": 33,
+   "con_rumbo": 31,
+   "fuera_SE": 10,
+   "fuera_SE_todo40": 5,
+   "rumbos": [
+    142.0,
+    141.0,
+    141.0,
+    352.8,
+    131.6,
+    64.1,
+    23.1,
+    125.2,
+    120.3,
+    20.5,
+    145.7,
+    137.6,
+    105.9,
+    46.5,
+    150.5,
+    20.5,
+    123.5,
+    123.3,
+    146.7,
+    138.2,
+    359.4,
+    135.7,
+    307.4,
+    130.4,
+    115.5,
+    92.2,
+    70.5,
+    128.7,
+    318.5,
+    167.9,
+    120.6
+   ],
+   "rumbo_medio_dia": 108.7
+  }
+ },
+ "otro_por_dia": {
+  "2026-10-27": {
+   "otro": 52,
+   "con_rumbo_anclado": 2,
+   "fuera_SE_anclado": 2
+  },
+  "2026-10-28": {
+   "otro": 39,
+   "con_rumbo_anclado": 6,
+   "fuera_SE_anclado": 5
+  },
+  "2026-10-29": {
+   "otro": 21,
+   "con_rumbo_anclado": 4,
+   "fuera_SE_anclado": 1
+  },
+  "2026-11-07": {
+   "otro": 33,
+   "con_rumbo_anclado": 0,
+   "fuera_SE_anclado": 0
+  },
+  "2026-11-08": {
+   "otro": 47,
+   "con_rumbo_anclado": 13,
+   "fuera_SE_anclado": 3
+  },
+  "2026-11-10": {
+   "otro": 22,
+   "con_rumbo_anclado": 2,
+   "fuera_SE_anclado": 2
+  },
+  "2026-11-11": {
+   "otro": 19,
+   "con_rumbo_anclado": 0,
+   "fuera_SE_anclado": 0
+  },
+  "2026-11-12": {
+   "otro": 12,
+   "con_rumbo_anclado": 0,
+   "fuera_SE_anclado": 0
+  },
+  "2026-11-13": {
+   "otro": 21,
+   "con_rumbo_anclado": 9,
+   "fuera_SE_anclado": 0
+  },
+  "2026-11-14": {
+   "otro": 31,
+   "con_rumbo_anclado": 2,
+   "fuera_SE_anclado": 1
+  },
+  "2026-11-15": {
+   "otro": 2,
+   "con_rumbo_anclado": 0,
+   "fuera_SE_anclado": 0
+  },
+  "2026-11-16": {
+   "otro": 69,
+   "con_rumbo_anclado": 22,
+   "fuera_SE_anclado": 13
+  },
+  "2026-11-18": {
+   "otro": 12,
+   "con_rumbo_anclado": 0,
+   "fuera_SE_anclado": 0
+  },
+  "2026-11-22": {
+   "otro": 30,
+   "con_rumbo_anclado": 1,
+   "fuera_SE_anclado": 0
+  },
+  "2026-11-24": {
+   "otro": 11,
+   "con_rumbo_anclado": 0,
+   "fuera_SE_anclado": 0
+  }
+ },
+ "totales_P": {
+  "P": 100,
+  "con_png": 94,
+  "con_rumbo": 90,
+  "fuera_SE": 30,
+  "dias_con_P": 10,
+  "dias_con_algun_P_fuera_SE": [
+   "2026-10-28",
+   "2026-10-29",
+   "2026-11-07",
+   "2026-11-08",
+   "2026-11-10",
+   "2026-11-11",
+   "2026-11-14"
+  ],
+  "dias_con_algun_P_fuera_SE_todo40": [
+   "2026-10-28",
+   "2026-11-07",
+   "2026-11-08",
+   "2026-11-10",
+   "2026-11-11",
+   "2026-11-14"
+  ]
+ }
+}

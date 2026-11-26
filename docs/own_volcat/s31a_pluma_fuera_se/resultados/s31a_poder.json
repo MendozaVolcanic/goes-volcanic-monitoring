@@ -1,0 +1,411 @@
+{
+ "estrato": "P con huella anclada fuera de 90° a 180° (S30b)",
+ "cuadros": 30,
+ "dias": [
+  "2026-10-28",
+  "2026-10-29",
+  "2026-11-07",
+  "2026-11-08",
+  "2026-11-10",
+  "2026-11-11",
+  "2026-11-14"
+ ],
+ "dias_con_anillo_evaluado_en_S30b": [
+  "2026-10-28",
+  "2026-10-29",
+  "2026-11-08",
+  "2026-11-11"
+ ],
+ "n_dias_max_para_el_anillo": 4,
+ "pisos_por_n": {
+  "1": {
+   "sign_flip_contra_SE": 0.5,
+   "giro_12^n": 0.08333333333333333,
+   "otro_dia_fuera_SE_(D-1)^n": 0.16666666666666666
+  },
+  "2": {
+   "sign_flip_contra_SE": 0.25,
+   "giro_12^n": 0.006944444444444444,
+   "otro_dia_fuera_SE_(D-1)^n": 0.027777777777777776
+  },
+  "3": {
+   "sign_flip_contra_SE": 0.125,
+   "giro_12^n": 0.0005787037037037037,
+   "otro_dia_fuera_SE_(D-1)^n": 0.004629629629629629
+  },
+  "4": {
+   "sign_flip_contra_SE": 0.0625,
+   "giro_12^n": 4.8225308641975306e-05,
+   "otro_dia_fuera_SE_(D-1)^n": 0.0007716049382716049
+  }
+ },
+ "persistencia": [
+  {
+   "dia": "2026-10-28",
+   "hora": "18:30",
+   "rumbo": 189.8,
+   "px_anillo": 3,
+   "dist_max_km": 10.5,
+   "vecinos_rumbo": [],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-10-28",
+   "hora": "19:00",
+   "rumbo": 317.1,
+   "px_anillo": 2,
+   "dist_max_km": 6.2,
+   "vecinos_rumbo": [
+    158.5,
+    20.5
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-10-28",
+   "hora": "19:20",
+   "rumbo": 52.4,
+   "px_anillo": 2,
+   "dist_max_km": 6.1,
+   "vecinos_rumbo": [
+    20.5,
+    140.7
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-10-28",
+   "hora": "19:40",
+   "rumbo": 5.0,
+   "px_anillo": 3,
+   "dist_max_km": 7.6,
+   "vecinos_rumbo": [
+    140.7,
+    329.2
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-10-28",
+   "hora": "19:50",
+   "rumbo": 329.2,
+   "px_anillo": 6,
+   "dist_max_km": 9.7,
+   "vecinos_rumbo": [
+    5.0,
+    121.5
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-10-28",
+   "hora": "23:20",
+   "rumbo": 348.1,
+   "px_anillo": 6,
+   "dist_max_km": 6.9,
+   "vecinos_rumbo": [
+    101.7,
+    50.3
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-10-29",
+   "hora": "00:10",
+   "rumbo": 2.3,
+   "px_anillo": 2,
+   "dist_max_km": 6.9,
+   "vecinos_rumbo": [
+    135.1,
+    131.9
+   ],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-10-29",
+   "hora": "01:00",
+   "rumbo": 77.2,
+   "px_anillo": 6,
+   "dist_max_km": 8.6,
+   "vecinos_rumbo": [
+    80.2,
+    99.9
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-07",
+   "hora": "19:50",
+   "rumbo": 267.8,
+   "px_anillo": 4,
+   "dist_max_km": 8.9,
+   "vecinos_rumbo": [],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "18:10",
+   "rumbo": 325.0,
+   "px_anillo": 1,
+   "dist_max_km": 4.8,
+   "vecinos_rumbo": [
+    133.8
+   ],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "19:20",
+   "rumbo": 352.8,
+   "px_anillo": 2,
+   "dist_max_km": 4.8,
+   "vecinos_rumbo": [
+    136.0,
+    325.0
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "19:30",
+   "rumbo": 325.0,
+   "px_anillo": 1,
+   "dist_max_km": 4.8,
+   "vecinos_rumbo": [
+    352.8,
+    140.3
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-08",
+   "hora": "21:10",
+   "rumbo": 80.2,
+   "px_anillo": 2,
+   "dist_max_km": 6.1,
+   "vecinos_rumbo": [
+    129.9,
+    142.8
+   ],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-10",
+   "hora": "22:20",
+   "rumbo": 57.4,
+   "px_anillo": 5,
+   "dist_max_km": 6.8,
+   "vecinos_rumbo": [
+    124.1,
+    81.6
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-10",
+   "hora": "22:30",
+   "rumbo": 81.6,
+   "px_anillo": 10,
+   "dist_max_km": 8.6,
+   "vecinos_rumbo": [
+    57.4,
+    47.1
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-10",
+   "hora": "22:40",
+   "rumbo": 47.1,
+   "px_anillo": 3,
+   "dist_max_km": 7.5,
+   "vecinos_rumbo": [
+    81.6,
+    39.9
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-10",
+   "hora": "22:50",
+   "rumbo": 39.9,
+   "px_anillo": 5,
+   "dist_max_km": 9.4,
+   "vecinos_rumbo": [
+    47.1,
+    89.3
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-10",
+   "hora": "23:00",
+   "rumbo": 89.3,
+   "px_anillo": 6,
+   "dist_max_km": 9.4,
+   "vecinos_rumbo": [
+    39.9,
+    19.1
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-10",
+   "hora": "23:20",
+   "rumbo": 48.5,
+   "px_anillo": 5,
+   "dist_max_km": 9.4,
+   "vecinos_rumbo": [
+    19.1,
+    49.2
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-11",
+   "hora": "18:00",
+   "rumbo": 325.0,
+   "px_anillo": 1,
+   "dist_max_km": 4.8,
+   "vecinos_rumbo": [],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "17:40",
+   "rumbo": 352.8,
+   "px_anillo": 2,
+   "dist_max_km": 4.8,
+   "vecinos_rumbo": [
+    141.0,
+    131.6
+   ],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "18:00",
+   "rumbo": 64.1,
+   "px_anillo": 4,
+   "dist_max_km": 7.6,
+   "vecinos_rumbo": [
+    131.6,
+    23.1
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "18:10",
+   "rumbo": 23.1,
+   "px_anillo": 3,
+   "dist_max_km": 6.1,
+   "vecinos_rumbo": [
+    64.1,
+    125.2
+   ],
+   "vecino_fuera_SE": true
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "18:50",
+   "rumbo": 20.5,
+   "px_anillo": 1,
+   "dist_max_km": 4.2,
+   "vecinos_rumbo": [
+    120.3,
+    145.7
+   ],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "19:30",
+   "rumbo": 46.5,
+   "px_anillo": 4,
+   "dist_max_km": 6.2,
+   "vecinos_rumbo": [
+    105.9,
+    150.5
+   ],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "19:50",
+   "rumbo": 20.5,
+   "px_anillo": 1,
+   "dist_max_km": 4.2,
+   "vecinos_rumbo": [
+    150.5,
+    123.5
+   ],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "20:50",
+   "rumbo": 359.4,
+   "px_anillo": 3,
+   "dist_max_km": 6.9,
+   "vecinos_rumbo": [
+    138.2,
+    135.7
+   ],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "21:10",
+   "rumbo": 307.4,
+   "px_anillo": 4,
+   "dist_max_km": 4.9,
+   "vecinos_rumbo": [
+    135.7,
+    130.4
+   ],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "22:00",
+   "rumbo": 70.5,
+   "px_anillo": 3,
+   "dist_max_km": 6.2,
+   "vecinos_rumbo": [
+    92.2,
+    128.7
+   ],
+   "vecino_fuera_SE": false
+  },
+  {
+   "dia": "2026-11-14",
+   "hora": "22:20",
+   "rumbo": 318.5,
+   "px_anillo": 3,
+   "dist_max_km": 6.4,
+   "vecinos_rumbo": [
+    128.7,
+    167.9
+   ],
+   "vecino_fuera_SE": false
+  }
+ ],
+ "persistentes": 16,
+ "oraculo": {
+  "cuadros": 27,
+  "dias": [
+   "2026-10-28",
+   "2026-10-29",
+   "2026-11-08",
+   "2026-11-10",
+   "2026-11-14"
+  ],
+  "coincide": 13,
+  "en_SE_habitual": 16,
+  "p_giro_exacto": 0.03768004115226337,
+  "p_otro_dia_fuera_SE": 0.1592,
+  "p_contra_SE_sign_flip": 0.75,
+  "piso_sign_flip": 0.03125
+ }
+}

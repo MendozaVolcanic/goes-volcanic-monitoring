@@ -48,16 +48,16 @@ sys.path.insert(0, os.path.join(OV, "s26a_combinado", "scripts"))
 import s30a_nulo as N  # noqa: E402
 
 # ---------- parámetros de la enmienda (enmienda_2026-11-26.md §3 y §5; fijados tras la calibración) ----------
-ALFA = None                                   # se escribe tras la calibración (enmienda §5)
+ALFA = 0.001                                  # enmienda §5.3: regla de elección de §5.2 sobre la calibración
 REGLAS = {                                    # parte, percentil, R mínimo, fondos que deciden
-    "S23b": {"parte": "a", "pct": 5.0, "r_min": 0.40, "deciden": None},
-    "S25a": {"parte": "z", "pct": 5.0, "r_min": 0.25, "deciden": None},
-    "S26a": {"parte": "u", "pct": 4.75, "r_min": 0.40, "deciden": None},
+    "S23b": {"parte": "a", "pct": 5.0, "r_min": 0.40, "deciden": ["2025"]},
+    "S25a": {"parte": "z", "pct": 5.0, "r_min": 0.25, "deciden": ["2025"]},
+    "S26a": {"parte": "u", "pct": 4.75, "r_min": 0.40, "deciden": ["2025"]},
 }
 COB_MIN = 0.95                                # cobertura por día de L1b (mismo scan) y de ACMF
 MIN_P_GATILLO, MIN_DIAS_GATILLO = 20, 2       # P evaluables, días con P evaluables
 FONDO_NPZ = r"D:\goes_notas\s30\s30a\disparos_s30a.npz"
-SHA_FONDO = None                              # sha256 del fondo congelado (enmienda §5)
+SHA_FONDO = "62b5fba795234f40a11c44f22dcbf6c79298d2d3de18d2a95282098615511cd1"   # enmienda §2.5
 CANON = r"D:\goes_notas\s30\confirmacion"     # la única carpeta de trabajo de la medida real
 CLASES_CANON = os.path.join(CANON, "volcat_clases_desde_25nov.csv")
 ULTIMO_VISTO = datetime(2026, 11, 24)         # el modo ensayo no puede pasar de aquí

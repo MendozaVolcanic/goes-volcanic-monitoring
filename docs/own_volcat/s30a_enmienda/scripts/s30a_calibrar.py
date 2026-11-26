@@ -51,6 +51,7 @@ NPZ = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] != "-" else r"D:\goes_not
 SOLO = sys.argv[2] if len(sys.argv) > 2 else None        # "a", "z" o "u": una sola regla (para correr en paralelo)
 REGLAS = {"S23b anillo": ("a", 5.0, 0.40), "S25a zona": ("z", 5.0, 0.25), "S26a unión": ("u", 4.75, 0.40)}
 ALFAS = [0.0005, 0.001, 0.002, 0.0025, 0.005, 0.0075, 0.01, 0.02, 0.05]
+ALFAS_DETALLE = (0.001, 0.005, 0.01)
 QS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
 MIN_P_GATILLO = 20
 N_BOOT = 2000
@@ -266,22 +267,29 @@ def main():
             bloque["p_menor_igual_0_01_por_fondo"] = {f: float(((pv[f][0] <= 0.01) & dec).sum() / nd_) for f in pv}
             bloque["mediana_colocaciones_validas"] = {f: float(np.median(pv[f][1][dec])) for f in pv}
             bloque["tabla"] = tabla
-            # intervalos por días al alfa 0,01 y al 0,005, variantes A y B
+            # intervalos por días a los alfas candidatos, variantes A y B
             bloque["IC95_confirma_por_dias"] = {}
             for var in ("A", "B"):
-                for alfa in (0.005, 0.01):
+                for alfa in ALFAS_DETALLE:
                     d, r, conf, parc = rotulos(eo, ao, pv, alfa, rmin, var)
                     bloque["IC95_confirma_por_dias"][f"{var}|{alfa}"] = ic_por_dias(c, dec, conf, nd_pl)
             # poder: fracción q de P evaluados alcanzados por día
             if pl in ("2025", "2026 sin VOLCAT"):
-                pod = {}
+                pod, pod_bal = {}, {}
+                menor = eo.min(1)                        # P evaluados del día con menos P evaluados
                 for q in QS:
                     pvq, aoq = evaluar(c, Mi, Mj, eo, ao, fondos, pl, EVp, ALp, q=q)
                     for var in ("A", "B"):
-                        for alfa in (0.005, 0.01):
+                        for alfa in ALFAS_DETALLE:
                             d, r, conf, parc = rotulos(eo, aoq, pvq, alfa, rmin, var)
                             pod[f"{var}|{alfa}|q={q}"] = float(conf.sum() / nd_)
+                            for m in (1, 5, 10):
+                                sel = dec & (menor >= m)
+                                if sel.sum():
+                                    pod_bal[f"{var}|{alfa}|q={q}|menor>={m}"] = [float(conf[sel].sum() / sel.sum()),
+                                                                                int(sel.sum())]
                 bloque["poder"] = pod
+                bloque["poder_por_dia_menor"] = pod_bal
             salida["reglas"][nom]["placebos"][pl] = bloque
             lin = ", ".join(f"{a}: A {tabla[f'A|{a}']['confirma']:.4f} B {tabla[f'B|{a}']['confirma']:.4f}"
                             for a in (0.002, 0.005, 0.01, 0.05))
@@ -290,8 +298,10 @@ def main():
                   f"{bloque['IC95_confirma_por_dias']['A|0.01']}, (B, 0,01) {bloque['IC95_confirma_por_dias']['B|0.01']}"
                   f"; {time.time() - t0:.0f} s", flush=True)
             if "poder" in bloque:
-                print("      poder (B, 0,005):", {q: round(bloque['poder'][f'B|0.005|q={q}'], 3) for q in QS})
-                print("      poder (A, 0,005):", {q: round(bloque['poder'][f'A|0.005|q={q}'], 3) for q in QS})
+                for v_ in ("A", "B"):
+                    print(f"      poder ({v_}, 0,001):", {q: round(bloque['poder'][f'{v_}|0.001|q={q}'], 3) for q in QS})
+                print("      poder (A, 0,001) con el día menor >= 5 P evaluados:",
+                      {q: bloque['poder_por_dia_menor'].get(f'A|0.001|q={q}|menor>=5') for q in QS})
     os.makedirs(RES, exist_ok=True)
     destino = os.path.join(RES, f"s30a_calibracion{'_' + SOLO if SOLO else ''}.json")
     json.dump(salida, open(destino, "w", encoding="utf-8"), ensure_ascii=False, indent=1)

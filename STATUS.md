@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-26 (sesión S30a, enmienda de las tres confirmaciones, bloque "## 0." abajo; S30b queda como 0-prev32, S29b como 0-prev31 y S28b como 0-prev30). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-26 (coordinadora S28, bloque "## 0." abajo; S30a queda como 0-prev33, S30b como 0-prev32, S29b como 0-prev31). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,117 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S30a, 2026-11-26 (enmienda de las tres confirmaciones: nulo por días calibrado con placebo, alfa 0,001, CONFIRMA falso de 0,62 % o menos; envoltorio de ejecución probado con días ya vistos; la medida sigue retenida hasta que la coordinadora fusione)
+## 0. S28 (coordinadora), 2026-11-26 (siete PR de medida y una auditoría en main; la auditoría encontró que la prueba de las tres confirmaciones no tenía tamaño nominal y S30a la enmendó antes del dato; el detector todavía no muestra que siga la pluma de cada momento y no sólo su rumbo de siempre)
+
+> Sesión S28, coordinadora (worktree `s28-coordinacion-9362d1`, rama `claude/s28-coordinacion-9362d1`), lanzada por S23
+> para revisar en ciclo las sesiones paralelas, fusionar y decidir cómo seguir. Lanzó S28a, S28b, S29a, S29b, S30a y S30b;
+> revisó y fusionó los PR 133 y 135 a 140 (el 134 de S25b lo fusionó su propia sesión). Cerró por contexto (base + 250 mil).
+> Los bloques de cada sesión hija siguen abajo: S30a `0-prev33`, S30b `0-prev32`, S29b `0-prev31`, S28b `0-prev30`,
+> S29a `0-prev29`, S25b `0-prev28`, S28a `0-prev27`.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| `main` | `aa1a727` (PR 140) más este cierre; sin PR abiertos, árbol limpio, ninguna sesión de Goes corriendo al cerrar | `gh pr list`, `git ls-remote` |
+| S28a, falsa alarma en Antuco y Longaví 2026 | De noche NO CONCLUYENTE; de día MIXTO (Antuco sin pluma sube como Chillán). Lectura corregida por S28b: depende del 10-11 y de la semilla | PR 133, `docs/own_volcat/s28a_vecinas/` |
+| S25b, fondo 2024 (GOES-16) | El anillo aguanta fuera de muestra (1,5 a 1,6 % contra 4,3 %) | PR 134 |
+| S29a, compuerta regional | Óptica: Antuco tiene MÁS nieve en 2026, no menos; ninguna de las tres explicaciones se sostiene. Compuerta: NO CONCLUYENTE (52 de 93 P) | PR 136 |
+| S28b, auditoría de S23 a S28a | Pre-registro sano (11 de 11), ningún rótulo publicado cae; el p25 por cuadro de las confirmaciones daba CONFIRMA falso 2 a 8 % por las rachas por día; 4 fallas de ejecución; lecturas de S24, S25a y S28a rebajadas | PR 137, `docs/own_volcat/s28b_auditoria/INFORME.md` |
+| S29b, zona y unión en 2024 | AGUANTAN (zona 2,3 %, unión 3,0 %); post hoc, las cumbres vecinas disparan de día 7 a 8 % en 2024: varían de año en año solas | PR 138 |
+| S30b, disparos contra la huella de VOLCAT | Anillo MISMO RUMBO, NO SEPARABLE (12 de 23; girada 19 %, otro día 45 %); zona y unión NO DECIDIBLE (86 de 94 huellas tocan el cráter). El anillo ya prefería el SE en 2025 (64 % de sus disparos) | PR 139 |
+| S30a, enmienda de las confirmaciones | Nulo por días, alfa 0,001, CONFIRMA falso <= 0,62 % en placebos 2024, 2025 y 2026 sin VOLCAT; envoltorio `s30a_confirmar.py` (8 de 8 mutaciones atrapadas); gatillo = 20 P EVALUABLES en 2 días nuevos | PR 140, `docs/own_volcat/s30a_enmienda/enmienda_2026-11-26.md` |
+| Confirmación en días nuevos | NO medida. Conteo al 26-11 (día parcial): 8 P el 25-11, 0 P el 26-11. CSV único en `D:\goes_notas\s30\confirmacion\` | `s30a_confirmar.py contar 2026-11-26` |
+| Disco D: | 21 GB libres. Se borraron con el sí de Nicolás `ext\` de Mauna Loa y `l2_data\` más `diag_data\` de Fuego (13,4 GB), tras comprobar que ningún código vivo ni S29/S30 los leía | PR 135, `docs/own_volcat/INVENTARIO_REPRODUCIBILIDAD.md` |
+| Apagón del 26-11 ~08:35 | Detuvo S30a y S30b a medias; nada subido se perdió; las dos retomaron con un mensaje | ramas en el remoto |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Lanzar la prueba en días (sep a 24-11) en que VOLCAT dibujó la pluma fuera del SE, para separar "el anillo sigue la pluma" de "el anillo apunta al SE siempre"? Se la pregunté al cerrar y no hubo respuesta | Sí: es lo que decide si el detector ve la pluma; criterio antes de medir, sin tocar la confirmación |
+| 2 | S30a, decisión 3: ¿exigir al menos 5 P evaluables en cada uno de los 2 días del gatillo para subir el poder (con P desparejos la unión no pasa de ~0,54 aunque acierte todo)? | Sí, si se decide antes de que haya P nuevos suficientes; requiere enmienda fechada antes del dato |
+| 3 | Comprobar con las cámaras del OVDAS: noches de S27a (07 a 08-11, 11 a 12-11, 13 a 14-11, 26 a 27-09, 04 a 05-10) y dirección de la pluma 28-10, 29-10 (00 a 02 UTC), 11-11 y 14-11 de tarde | Sí: es la única verdad propia para lo que GOES no separa |
+| 4 | Archivar las sesiones terminadas S24 a S30b | Sí, todas tienen su PR en main |
+| 5 | Siguen de antes: disparo externo de los workflows de 10 min, sector de mesoescala, correo a Pavolonis | Sin cambio |
+
+### c. Lo aprendido
+
+- **Series de 10 minutos: la unidad es el día, no el cuadro** (método, vale para todo el workspace). Disparos, detecciones y
+  fondos meteorológicos vienen en rachas de horas (correlación 0,87 a 0,90 entre cuadros vecinos, varianza diaria 16 a 33
+  veces la binomial). Un p que trate cada cuadro como independiente rechaza 12 a 18 % al 1 %. Nulos por días o por bloques,
+  calibrados con placebo. Memoria `feedback_unidad_dia_no_cuadro.md`.
+- **Una sesión que espera el aviso de un trabajo en segundo plano se queda callada si ese trabajo muere** (coordinación,
+  workspace). S29b estuvo 7 h quieta; tras el apagón S30a y S30b no retomaron solas. La coordinadora mira `isRunning`,
+  `lastActivityAt`, commits en el remoto y procesos de Python, y reactiva con un mensaje. Memoria
+  `feedback_coordinar_sesiones_paradas.md`.
+- **Con Remote Control las tarjetas de propuesta no se ven, y el clasificador puede bloquear `start_session` sin un pedido
+  explícito**: se pregunta en texto y se lanza con `user_asked` sólo con el sí escrito de Nicolás (coordinación, workspace).
+- **Antes de borrar en D:, buscar la ruta en el código vivo de todos los worktrees y en las sesiones que corren** (método,
+  workspace); anotar lo borrado y cómo recuperarlo en el inventario.
+- **Heredoc de Python con rutas de Windows: cadena cruda (`r"..."`)**; `\v`, `\f` y `\r` se comieron las rutas una vez
+  (método, workspace).
+- **El anillo tiene un rumbo preferido propio (SE) desde 2025** y la pluma de Chillán va al SE casi siempre: coincidir en
+  rumbo no prueba seguir la pluma (proyecto).
+- **La cumbre de un volcán sin pluma cambia de un año a otro de día por sí sola** (Antuco y Longaví 7 a 8 % en 2024, 4 % en
+  2025): un fondo de un solo año tranquilo no basta para la zona del cráter (proyecto).
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** el detector S26a dispara a la misma hora que VOLCAT (63 de 93, desarrollo) y aguanta su falsa alarma en
+  2024 y 2025; el anillo apunta al rumbo de la pluma (p 0,004 contra huella girada) pero no más que al rumbo de otro día
+  (p 0,41). La zona del cráter, dentro del día, no separa P de N.
+- **CONFIRMADO:** la prueba que decide la confirmación es ahora la de S30a; la vieja (p25 por cuadro) se informa al lado,
+  rotulada, y no decide.
+- **SOSPECHA:** lo que hace disparar la cumbre de Antuco de día no es menos nieve ni ceniza sobre la nieve (S29a lo
+  descartó con óptica); puede ser nube baja sin máscara o el contraste nieve-roca al sol. Sin medir.
+- **SOSPECHA:** el rumbo SE preferido del anillo en 2025 es terreno o nube de sotavento. Sin medir.
+- **SIN DATO:** si el detector sigue la pluma cuando ésta no va al SE (decisión 1).
+
+### e. Lo que ya está cerrado y no hay que rehacer
+
+- Antuco más nevado en 2026 (45 de 50 pares, mediana +0,33): "menos nieve" como causa de sus disparos diurnos está descartado (S29a).
+- La compuerta regional por sincronía de cumbres: NO CONCLUYENTE con su criterio (d +0,04, IC toca 0); no reintentar igual (S29a).
+- Zona y unión aguantan en 2024 (2,3 % y 3,0 %): la falsa alarma fuera de muestra ya está medida (S29b, S25b).
+- La coincidencia por cuadro P con la huella ya está medida (S30b); lo que falta es sólo el estrato de pluma fuera del SE.
+- El titular de S24 "la noche de 2026 dispara 10 veces más" no prueba exceso (S28b 102: razón 5,2, Fisher 0,057, una noche).
+- La prueba de viento nocturno de S27a: con umbral alcanzable da PLUMA NO (21/61 = 0,344); no repetir (S28b 203).
+- Siguen cerrados: S24c (rumbo), S22c (altura por rumbo), S27b (altura por desfase), nacimientos de VOLCAT como validación.
+
+### f. Prompt para la próxima coordinadora
+
+```
+Retoma Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo MendozaVolcanic/goes-volcanic-monitoring)
+como coordinadora S31. Usa /retomar y verifica antes de creer:
+- git fetch; main en el remoto (al cierre de S28: el commit del cierre S28 sobre aa1a727); gh pr list (al cierre: ninguno);
+- mcp__ccd_session_mgmt__list_sessions {"linked": true} y get_session de cada una: isRunning, lastActivityAt, y si una
+  dice que espera un cálculo, comprueba con Get-CimInstance Win32_Process que el proceso exista. Si murió, reactívala con
+  SendMessage. Tras un apagón ninguna retoma sola.
+- D: libre (piso 6 GB).
+Lee STATUS.md: el bloque "## 0. S28" y los de S30a (0-prev33) y S30b (0-prev32).
+
+Trabajo, en este orden:
+1. Conteo diario de VOLCAT, SÓLO con el envoltorio: python -I docs/own_volcat/s30a_enmienda/scripts/s30a_confirmar.py
+   contar <día UTC> (CSV único en D:\goes_notas\s30\confirmacion\). Contar no usa el detector ni gasta la prueba. Cuando
+   los P se acerquen a 20 en 2 días nuevos: bajar <díaTHH>, luego cobertura (gatillo de P EVALUABLES). Recién con
+   GATILLO CUMPLIDO lanza una sesión propia que corra medir siguiendo enmienda_2026-11-26.md §6 y §7. NUNCA
+   s23b_confirmar.py medir suelto. Nadie mira el detector en días posteriores al 24-11 antes de esa medida.
+2. Decisiones de Nicolás en STATUS.md §0.b; la 1 (prueba en días con pluma fuera del SE) y la 2 (5 P por día en el
+   gatillo, sólo antes del dato) son las que más deciden.
+3. Revisa y fusiona con --match-head-commit los PR de las sesiones que lances: criterio empujado antes de la medida
+   (fechas de commit), nada de SSEC ni de docs/auditoria_2026-11, sin guiones largos en lo agregado, CI verde.
+
+Reglas: español de Chile sin voseo, sin guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS; la
+carpeta principal (rama audit/2026-11-previa-local) no se toca; criterio antes de medir; la unidad de un nulo es el día;
+ningún día de jul-nov 2026 es "sin actividad"; un detector no se valida contra nacimientos de VOLCAT; lo grande a D:;
+cambio de lógica del dashboard = ficha SDA en el mismo commit y el sí de Nicolás. Con Remote Control pregunta en texto
+antes de lanzar sesiones. Cierra con /cierre al llegar a la base + 250 mil tokens, dejando el prompt de la siguiente
+coordinadora.
+```
+
+---
+
+## 0-prev33. S30a, 2026-11-26 (enmienda de las tres confirmaciones: nulo por días calibrado con placebo, alfa 0,001, CONFIRMA falso de 0,62 % o menos; envoltorio de ejecución probado con días ya vistos; la medida sigue retenida hasta que la coordinadora fusione)
 
 > Sesión S30a (worktree `s30a-enmienda-confirmaciones-53a412`, lanzada por la coordinadora S28
 > `local_36977cef-5c6d-46e6-b890-b4299891d5c8` tras la auditoría S28b y las cuatro decisiones que Nicolás aprobó el 26-11).

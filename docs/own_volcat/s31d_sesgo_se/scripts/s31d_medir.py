@@ -322,6 +322,11 @@ def escalera(disp, residuo, pozo_de, etiqueta):
     return out
 
 
+def _json(o):
+    """Escritura: enteros y flotantes de numpy a tipos de Python (la corrida 1 se cayó aquí, después de M3)."""
+    return o.item() if hasattr(o, "item") else str(o)
+
+
 def _r(x):
     return None if (x is None or not np.isfinite(x)) else round(float(x), 4)
 
@@ -477,7 +482,7 @@ def medir():
     print(f"2025: {len(disp)} disparos, reproduce {res['reproduce']} ({time.time() - t:.0f} s)", flush=True)
     if not res["reproduce"]:
         res["veredicto"] = "INVÁLIDA"
-        json.dump(res, open(os.path.join(RES, "s31d_resultado.json"), "w", encoding="utf-8"), ensure_ascii=False,
+        json.dump(res, open(os.path.join(RES, "s31d_resultado.json"), "w", encoding="utf-8"), ensure_ascii=False, default=_json,
                   indent=1)
         return
     # M1 y M2
@@ -515,7 +520,7 @@ def medir():
     else:
         ver = "NO DECIDIBLE"
     res["veredicto"] = ver
-    json.dump(res, open(os.path.join(RES, "s31d_resultado.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    json.dump(res, open(os.path.join(RES, "s31d_resultado.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1, default=_json)
     print("VEREDICTO:", ver, flush=True)
     # réplica 2024 (sólo M1 y M2)
     import s25b_medir as X24
@@ -538,7 +543,7 @@ def medir():
     esc24["tajadas_2024"] = {int(a): int(b) for a, b in zip(*np.unique([k for *_, k in disp24], return_counts=True))}
     res["replica_2024"] = esc24
     print(json.dumps({k: v for k, v in esc24.items() if k != "por_cuadro"}, ensure_ascii=False), flush=True)
-    json.dump(res, open(os.path.join(RES, "s31d_resultado.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    json.dump(res, open(os.path.join(RES, "s31d_resultado.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1, default=_json)
     print(f"listo en {time.time() - t:.0f} s", flush=True)
 
 

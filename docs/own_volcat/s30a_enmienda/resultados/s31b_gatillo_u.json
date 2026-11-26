@@ -1,0 +1,390 @@
+{
+ "enmienda": "s30a_enmienda/enmienda_v2_2026-11-26.md §3",
+ "regla": "S26a unión",
+ "percentil": 4.75,
+ "R_min": 0.4,
+ "alfa": 0.001,
+ "variante": "A",
+ "npz": "D:\\goes_notas\\s30\\s30a\\disparos_s30a.npz",
+ "sha_npz": "62b5fba795234f40a11c44f22dcbf6c79298d2d3de18d2a95282098615511cd1",
+ "evaluables_placebo": "P de la plantilla evaluados por la unión (E_u a p* 4,75) en el día placebo",
+ "placebos": {
+  "2025": {
+   "casos": 68076,
+   "comprobados_contra_p_dia": 300,
+   "confirma_falso": {
+    "todos los decidibles (S30a)": {
+     "fraccion": 0.0005829544129649062,
+     "casos": 34308,
+     "confirma": 20,
+     "IC95_por_dias": [
+      0.0,
+      0.0016608108973959542
+     ]
+    },
+    "gatillo S30a en evaluables (suma >= 20, los 2 días >= 1)": {
+     "fraccion": 0.0005261865506717648,
+     "casos": 28507,
+     "confirma": 15,
+     "IC95_por_dias": [
+      0.0,
+      0.001804655047919231
+     ]
+    },
+    "GATILLO v2 (suma >= 20, los 2 días >= 5)": {
+     "fraccion": 0.0005973269618457403,
+     "casos": 13393,
+     "confirma": 8,
+     "IC95_por_dias": [
+      0.0,
+      0.0019564178980588944
+     ]
+    },
+    "contraste: evaluados de la regla, los 2 días >= 5 (menor>=5 de S30a)": {
+     "fraccion": 0.000548885077186964,
+     "casos": 14575,
+     "confirma": 8,
+     "IC95_por_dias": [
+      0.0,
+      0.0017942028408364473
+     ]
+    },
+    "contraste: evaluados de la regla, suma >= 20 y los 2 días >= 5": {
+     "fraccion": 0.0005973269618457403,
+     "casos": 13393,
+     "confirma": 8,
+     "IC95_por_dias": [
+      0.0,
+      0.001945817444271466
+     ]
+    }
+   },
+   "poder": {
+    "q=0.1": {
+     "gatillo_v2": [
+      0.0005973269618457403,
+      13393
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.000548885077186964,
+      14575
+     ],
+     "todos_los_decidibles_S30a": 0.0011950565465780577
+    },
+    "q=0.2": {
+     "gatillo_v2": [
+      0.0005973269618457403,
+      13393
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.0008919382504288165,
+      14575
+     ],
+     "todos_los_decidibles_S30a": 0.0013699428704675295
+    },
+    "q=0.3": {
+     "gatillo_v2": [
+      0.001119988053460763,
+      13393
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.0018524871355060034,
+      14575
+     ],
+     "todos_los_decidibles_S30a": 0.0028856243441762854
+    },
+    "q=0.4": {
+     "gatillo_v2": [
+      0.0042559546031509,
+      13393
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.00555746140651801,
+      14575
+     ],
+     "todos_los_decidibles_S30a": 0.005771248688352571
+    },
+    "q=0.5": {
+     "gatillo_v2": [
+      0.15679832748450684,
+      13393
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.150188679245283,
+      14575
+     ],
+     "todos_los_decidibles_S30a": 0.0797773114142474
+    },
+    "q=0.6": {
+     "gatillo_v2": [
+      0.5909056970058986,
+      13393
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.5639794168096055,
+      14575
+     ],
+     "todos_los_decidibles_S30a": 0.30202868135711786
+    },
+    "q=0.7": {
+     "gatillo_v2": [
+      0.810199357873516,
+      13393
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.7936192109777015,
+      14575
+     ],
+     "todos_los_decidibles_S30a": 0.42045587035093857
+    },
+    "q=0.8": {
+     "gatillo_v2": [
+      0.8139326513850519,
+      13393
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.8006861063464837,
+      14575
+     ],
+     "todos_los_decidibles_S30a": 0.45659904395476275
+    },
+    "q=0.9": {
+     "gatillo_v2": [
+      1.0,
+      13393
+     ],
+     "menor>=5_S30a_reproducido": [
+      1.0,
+      14575
+     ],
+     "todos_los_decidibles_S30a": 0.5439256150169057
+    },
+    "q=1.0": {
+     "gatillo_v2": [
+      1.0,
+      13393
+     ],
+     "menor>=5_S30a_reproducido": [
+      1.0,
+      14575
+     ],
+     "todos_los_decidibles_S30a": 0.5439256150169057
+    }
+   }
+  },
+  "2026 sin VOLCAT": {
+   "casos": 53460,
+   "comprobados_contra_p_dia": 300,
+   "confirma_falso": {
+    "todos los decidibles (S30a)": {
+     "fraccion": 0.0014858841010401188,
+     "casos": 4038,
+     "confirma": 6,
+     "IC95_por_dias": [
+      0.0,
+      0.0063910356026501275
+     ]
+    },
+    "gatillo S30a en evaluables (suma >= 20, los 2 días >= 1)": {
+     "fraccion": 0.0,
+     "casos": 2644,
+     "confirma": 0,
+     "IC95_por_dias": [
+      0.0,
+      0.0
+     ]
+    },
+    "GATILLO v2 (suma >= 20, los 2 días >= 5)": {
+     "fraccion": 0.0,
+     "casos": 1039,
+     "confirma": 0,
+     "IC95_por_dias": [
+      0.0,
+      0.0
+     ]
+    },
+    "contraste: evaluados de la regla, los 2 días >= 5 (menor>=5 de S30a)": {
+     "fraccion": 0.0029455081001472753,
+     "casos": 1358,
+     "confirma": 4,
+     "IC95_por_dias": [
+      0.0,
+      0.01570783691305602
+     ]
+    },
+    "contraste: evaluados de la regla, suma >= 20 y los 2 días >= 5": {
+     "fraccion": 0.0,
+     "casos": 1039,
+     "confirma": 0,
+     "IC95_por_dias": [
+      0.0,
+      0.0
+     ]
+    }
+   },
+   "poder": {
+    "q=0.1": {
+     "gatillo_v2": [
+      0.0,
+      1039
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.0029455081001472753,
+      1358
+     ],
+     "todos_los_decidibles_S30a": 0.00396235760277365
+    },
+    "q=0.2": {
+     "gatillo_v2": [
+      0.0,
+      1039
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.003681885125184094,
+      1358
+     ],
+     "todos_los_decidibles_S30a": 0.004210004952947003
+    },
+    "q=0.3": {
+     "gatillo_v2": [
+      0.0,
+      1039
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.004418262150220913,
+      1358
+     ],
+     "todos_los_decidibles_S30a": 0.004457652303120356
+    },
+    "q=0.4": {
+     "gatillo_v2": [
+      0.0,
+      1039
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.010309278350515464,
+      1358
+     ],
+     "todos_los_decidibles_S30a": 0.00866765725606736
+    },
+    "q=0.5": {
+     "gatillo_v2": [
+      0.15014436958614052,
+      1039
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.15316642120765833,
+      1358
+     ],
+     "todos_los_decidibles_S30a": 0.09955423476968796
+    },
+    "q=0.6": {
+     "gatillo_v2": [
+      0.6458132820019249,
+      1039
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.5905743740795287,
+      1358
+     ],
+     "todos_los_decidibles_S30a": 0.4437840515106488
+    },
+    "q=0.7": {
+     "gatillo_v2": [
+      0.7988450433108758,
+      1039
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.7636229749631811,
+      1358
+     ],
+     "todos_los_decidibles_S30a": 0.5718177315502724
+    },
+    "q=0.8": {
+     "gatillo_v2": [
+      0.8026948989412896,
+      1039
+     ],
+     "menor>=5_S30a_reproducido": [
+      0.7695139911634757,
+      1358
+     ],
+     "todos_los_decidibles_S30a": 0.6208519068845963
+    },
+    "q=0.9": {
+     "gatillo_v2": [
+      1.0,
+      1039
+     ],
+     "menor>=5_S30a_reproducido": [
+      1.0,
+      1358
+     ],
+     "todos_los_decidibles_S30a": 0.6983655274888558
+    },
+    "q=1.0": {
+     "gatillo_v2": [
+      1.0,
+      1039
+     ],
+     "menor>=5_S30a_reproducido": [
+      1.0,
+      1358
+     ],
+     "todos_los_decidibles_S30a": 0.6983655274888558
+    }
+   }
+  },
+  "2024": {
+   "casos": 68076,
+   "comprobados_contra_p_dia": 300,
+   "confirma_falso": {
+    "todos los decidibles (S30a)": {
+     "fraccion": 0.0,
+     "casos": 21890,
+     "confirma": 0,
+     "IC95_por_dias": [
+      0.0,
+      0.0
+     ]
+    },
+    "gatillo S30a en evaluables (suma >= 20, los 2 días >= 1)": {
+     "fraccion": 0.0,
+     "casos": 17803,
+     "confirma": 0,
+     "IC95_por_dias": [
+      0.0,
+      0.0
+     ]
+    },
+    "GATILLO v2 (suma >= 20, los 2 días >= 5)": {
+     "fraccion": 0.0,
+     "casos": 7376,
+     "confirma": 0,
+     "IC95_por_dias": [
+      0.0,
+      0.0
+     ]
+    },
+    "contraste: evaluados de la regla, los 2 días >= 5 (menor>=5 de S30a)": {
+     "fraccion": 0.0,
+     "casos": 8147,
+     "confirma": 0,
+     "IC95_por_dias": [
+      0.0,
+      0.0
+     ]
+    },
+    "contraste: evaluados de la regla, suma >= 20 y los 2 días >= 5": {
+     "fraccion": 0.0,
+     "casos": 7376,
+     "confirma": 0,
+     "IC95_por_dias": [
+      0.0,
+      0.0
+     ]
+    }
+   }
+  }
+ }
+}

@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-26 (S31a, bloque "## 0." abajo; la coordinadora S28 queda como 0-prev34, S30a como 0-prev33, S30b como 0-prev32). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-26 (S31b, bloque "## 0." abajo; S31a queda como 0-prev35, la coordinadora S28 como 0-prev34, S30a como 0-prev33). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,62 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S31a, 2026-11-26 (¿el anillo sigue la pluma cuando el viento la lleva fuera del SE? SIN PODER: VOLCAT casi nunca dibuja una pluma fuera del SE que dure, y la única que gira de verdad, el 10-11, cae en un día sin disparos del anillo; no se cruzó ningún disparo)
+## 0. S31b, 2026-11-26 (enmienda v2 del gatillo de la confirmación, escrita antes del dato: 20 P evaluables con al menos 2 días de 5 o más; en placebo el CONFIRMA falso queda en 0,58 % o menos y el poder de la unión sube de 0,42 a 0,81 si alcanza 7 de cada 10 cuadros de VOLCAT; se recomienda adoptarla)
+
+> Sesión S31b (worktree `s31b-enmienda-gatillo-842062`, rama `claude/s31b-enmienda-gatillo-842062`), lanzada por la
+> coordinadora S31 para la decisión 2 de S28 (decisión 3 de S30a), aprobada por Nicolás con la condición de escribirla
+> antes del dato. Enmienda:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s30a_enmienda\enmienda_v2_2026-11-26.md`
+> (§0 a §4, regla y plan de medida, empujados en `f31eff6` a las 13:54 UTC del 26-11, con 8 P el 25-11 y 0 P el 26-11;
+> §5, resultado, después). Ningún cuadro GOES posterior al 24-11 abierto; no se corrió `medir`, `contar`, `bajar` ni
+> `cobertura` sobre días nuevos (sólo se leyó el CSV de clases). Lo pesado en `D:\goes_notas\s31\s31b\`. PR contra `main`
+> sin fusionar: lo revisa S31.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Regla nueva del gatillo | Acumulando desde el 25-11: 20 P evaluables o más en total **y** al menos 2 días con 5 P evaluables o más cada uno. La medida usa todos los días del 25-11 al **primer** día en que se cumple (D\*), incluidos los de menos de 5 P; los posteriores no entran. Nada más cambia (alfa 0,001, variante A, nulo sin condicionar al gatillo) | enmienda v2 §2 |
+| CONFIRMA falso en placebo, con el gatillo v2 | Unión 0,06 / 0 / 0 % (2025 / 2026 sin VOLCAT / 2024); zona 0,07 / **0,58** / 0 %; anillo 0,01 / 0 / 0 %. Todos bajo 1 %: lectura fijada antes, **adoptar** | `docs/own_volcat/s30a_enmienda/resultados/s31b_gatillo_{a,z,u}.json`, enmienda v2 §5.1 |
+| Poder de la unión (alfa 0,001) | Con 7 de cada 10 P alcanzados por día: 0,81 (2025) y 0,80 (2026 sin VOLCAT), contra 0,42 y 0,57 de S30a; con todos alcanzados, 1,00 contra 0,54 y 0,70. Zona: 0,97 con 6 de cada 10. Anillo: sigue sin poder (0,16 con todo) | enmienda v2 §5.2 |
+| Reproducción de S30a | El script reproduce por aserción el CONFIRMA falso y el poder `menor>=5` de S30a; la cuenta vectorizada coincide con `s30a_nulo.p_dia` en 300 casos por regla y placebo | `s31b_gatillo.py` |
+| Envoltorio | `cobertura` aplica la regla v2 y calcula D\*; `medir` se detiene si no se cumple o si la medida pasa de D\* (dice "medir con --hasta D\*") | `docs/own_volcat/s30a_enmienda/scripts/s30a_confirmar.py` |
+| Ensayo (07 a 14-11, días ya vistos) | Control termina y reproduce el desarrollo; **10 de 10 mutaciones atrapadas** (las 8 de S30a, `gatillo_dispar`: 31 + 2 P evaluables pasa con S30a y no con v2; `pasado`: con 08, 10 y 14-11 el gatillo se cumple el 10-11) | `docs/own_volcat/s30a_enmienda/resultados/s31b_ensayo_resumen.json` |
+
+### b. Decisiones que esperan a Nicolás (vía S31)
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Adoptar la enmienda v2 (fusionar este PR) antes de que los días nuevos lleguen a 20 P evaluables? | Sí: el tamaño no se mueve y la unión pasa de un techo de 0,54 a 1,00 de poder. Fusionar antes del dato; si el conteo llega a 20 antes de fusionar, la enmienda ya no vale |
+| 2 | El precio es esperar: de los pares de días reales que ya cumplían el gatillo de S30a, el v2 deja pasar más o menos la mitad | Aceptarlo: un CONFIRMA con un solo día lleno no se puede leer como "el detector ve la pluma" |
+
+### c. Lo aprendido
+
+- **Una prueba por días necesita que más de un día aporte** (método): con P desparejos el día lleno se compara consigo
+  mismo y el p no baja; exigir un mínimo por día es lo que da poder, no más días en total.
+- **Condicionar los casos a un gatillo sin condicionar el nulo no infló el tamaño aquí** (medido en placebo, no supuesto):
+  0,58 % contra 0,62 % de S30a en el peor placebo.
+- **Ensayar la regla de corte (D\*) con días reales mostró algo útil**: el 10-11 tiene 12 P pero sólo 8 evaluables, y
+  con el 08-11 ya habría cumplido el gatillo; en los días nuevos el corte puede llegar antes de lo que dice el conteo de P.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (placebo):** el gatillo v2 mantiene el CONFIRMA falso bajo 1 % en las tres reglas y los tres placebos.
+- **SIN DATO:** el tamaño con los días nuevos de verdad (lo mismo que en S30a).
+- **SOSPECHA:** el sustituto de "P evaluable" en placebo (evaluados de la unión) es el del gatillo real; coincide en el
+  ensayo (14-11: 31 y 31), pero no se comprobó día por día en todo el fondo.
+
+### e. Prompt para la próxima sesión
+
+La medida única la sigue corriendo la coordinadora (o una sesión que ella lance), ahora con el gatillo v2 si se fusiona
+este PR: `python -I C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s30a_enmienda\scripts\s30a_confirmar.py contar <día>`,
+`bajar <hora>`, `cobertura` hasta que diga "GATILLO CUMPLIDO el D\*", y `medir --hasta D*` UNA vez. Reglas de siempre:
+español de Chile sin voseo ni guiones largos ni medios; rutas absolutas; no VIIRS; nada de SSEC al repo;
+`docs/auditoria_2026-11` no se sube.
+
+---
+
+## 0-prev35. S31a, 2026-11-26 (¿el anillo sigue la pluma cuando el viento la lleva fuera del SE? SIN PODER: VOLCAT casi nunca dibuja una pluma fuera del SE que dure, y la única que gira de verdad, el 10-11, cae en un día sin disparos del anillo; no se cruzó ningún disparo)
 
 > Sesión S31a (worktree `s31a-pluma-fuera-se-e168ae`, rama `claude/s31a-pluma-fuera-se-e168ae`), lanzada por la
 > coordinadora S31 para la decisión 1 de S28 (aprobada). Informe:

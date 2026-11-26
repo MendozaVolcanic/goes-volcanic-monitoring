@@ -1,0 +1,169 @@
+[
+ {
+  "escenario": "control",
+  "resultado": "TERMINA",
+  "salida": {
+   "por_dia_vs_desarrollo": [
+    {
+     "dia": "2026-11-08",
+     "S23b": [
+      13,
+      9
+     ],
+     "S25a": [
+      13,
+      0
+     ],
+     "S26a": [
+      13,
+      9
+     ],
+     "pub_zona": [
+      13,
+      0
+     ],
+     "pub_union": [
+      13,
+      9
+     ]
+    },
+    {
+     "dia": "2026-11-14",
+     "S23b": [
+      15,
+      0
+     ],
+     "S25a": [
+      31,
+      20
+     ],
+     "S26a": [
+      31,
+      20
+     ],
+     "pub_zona": [
+      31,
+      20
+     ],
+     "pub_union": [
+      31,
+      20
+     ]
+    }
+   ],
+   "veredictos": {
+    "S23b": [
+     "NO DECIDIBLE (el nulo no tiene resolución)",
+     "PARCIAL",
+     0.32142857142857145,
+     {
+      "2025": 0.07616974972796518,
+      "2026 sin VOLCAT": 0.21212121212121213,
+      "2024": 0.06304728546409807
+     }
+    ],
+    "S25a": [
+     "NO CONFIRMA",
+     "PARCIAL",
+     0.45454545454545453,
+     {
+      "2025": 0.023539302227826818,
+      "2026 sin VOLCAT": 0.08732394366197183,
+      "2024": 0.02752842609216038
+     }
+    ],
+    "S26a": [
+     "CONFIRMA",
+     "CONFIRMA",
+     0.6590909090909091,
+     {
+      "2025": 0.0004203446826397646,
+      "2026 sin VOLCAT": 0.0028169014084507044,
+      "2024": 0.0005984440454817474
+     }
+    ]
+   }
+  }
+ },
+ {
+  "escenario": "repetida",
+  "resultado": "ATRAPADA POR ASERCIÓN",
+  "mensaje": "ya hay una medida iniciada: D:\\goes_notas\\s30\\s30a\\ensayo\\control\\MEDIDA_INICIADA.json",
+  "espera": "ya hay una medida iniciada"
+ },
+ {
+  "escenario": "resultado",
+  "resultado": "ATRAPADA POR ASERCIÓN",
+  "mensaje": "ya existe un resultado: D:\\goes_notas\\s30\\s30a\\ensayo\\resultado\\res_s23\\s23b_resultado.json",
+  "espera": "ya existe un resultado"
+ },
+ {
+  "escenario": "vistazo",
+  "resultado": "ATRAPADA POR ASERCIÓN",
+  "mensaje": "hubo un vistazo (D:\\goes_notas\\s30\\s30a\\ensayo\\vistazo\\res_s23\\s23b_vistazo.json, hasta 2026-11-14); el criterio S23b §6 pide 2 días nuevos con P después de él y hay 0",
+  "espera": "hubo un vistazo"
+ },
+ {
+  "escenario": "sin_acmf",
+  "resultado": "ATRAPADA POR ASERCIÓN",
+  "mensaje": "comprobación previa: los días ['2026-11-08'] no tienen L1b y ACMF >= 0.95; bajar de nuevo o medir con --hasta el día anterior (enmienda §6)",
+  "espera": "comprobación previa"
+ },
+ {
+  "escenario": "sin_goes_fin",
+  "resultado": "ATRAPADA POR ASERCIÓN",
+  "mensaje": "comprobación previa: los días ['2026-11-14'] no tienen L1b y ACMF >= 0.95; bajar de nuevo o medir con --hasta el día anterior (enmienda §6)",
+  "espera": "comprobación previa"
+ },
+ {
+  "escenario": "gatillo",
+  "resultado": "ATRAPADA POR ASERCIÓN",
+  "mensaje": "gatillo: 31 P evaluables, 1 días con 5 o más; hacen falta 20 en total y 2 días con 5 o más (enmienda v2 §2)",
+  "espera": "gatillo"
+ },
+ {
+  "escenario": "csv_cambia",
+  "resultado": "ATRAPADA POR ASERCIÓN",
+  "mensaje": "manifiesto distinto después de S23b: ['csv_medida']",
+  "espera": "manifiesto distinto después de S23b"
+ },
+ {
+  "escenario": "acm_cambia",
+  "resultado": "ATRAPADA POR ASERCIÓN",
+  "mensaje": "manifiesto distinto después de S23b: ['cubo_por_cuadro']",
+  "espera": "manifiesto distinto después de S23b"
+ },
+ {
+  "escenario": "gatillo_dispar",
+  "resultado": "ATRAPADA POR ASERCIÓN",
+  "mensaje": "gatillo: 33 P evaluables, 1 días con 5 o más; hacen falta 20 en total y 2 días con 5 o más (enmienda v2 §2)",
+  "espera": "gatillo",
+  "P_evaluables_por_dia": {
+   "2026-11-07": 0,
+   "2026-11-08": 2,
+   "2026-11-09": 0,
+   "2026-11-10": 0,
+   "2026-11-11": 0,
+   "2026-11-12": 0,
+   "2026-11-13": 0,
+   "2026-11-14": 31
+  }
+ },
+ {
+  "escenario": "pasado",
+  "resultado": "ATRAPADA POR ASERCIÓN",
+  "mensaje": "gatillo: se cumplió el 2026-11-10, antes del último día de la medida (2026-11-14); medir con --hasta 2026-11-10 (enmienda v2 §2.5)",
+  "espera": "gatillo: se cumplió",
+  "P_evaluables_por_dia": {
+   "2026-11-07": 0,
+   "2026-11-08": 13,
+   "2026-11-09": 0,
+   "2026-11-10": 8,
+   "2026-11-11": 0,
+   "2026-11-12": 0,
+   "2026-11-13": 0,
+   "2026-11-14": 31
+  },
+  "dia_gatillo": "2026-11-10"
+ }
+]

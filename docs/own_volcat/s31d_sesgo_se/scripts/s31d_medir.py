@@ -485,7 +485,12 @@ def medir():
         disp, lambda d, s: D.mmR[d, s] - D.base(d)[s],
         lambda d, s: residuos_pozo(D.mmR, D.GATER, D.base(d), D.DIASR, d, s), "2025")
     print(json.dumps({k: v for k, v in res["M1_M2_2025"].items() if k != "por_cuadro"}, ensure_ascii=False), flush=True)
-    # M3
+    # M3 (espera a que termine la bajada de viento, hasta 2 h; lo que falte queda "sin_gfs")
+    t_esp = time.time()
+    while any(ruta_gfs(h) is None for h in horas_2025()) and time.time() - t_esp < 7200:
+        print(f"  esperando viento: faltan {sum(ruta_gfs(h) is None for h in horas_2025())} horas", flush=True)
+        time.sleep(60)
+    res["horas_gfs_faltantes"] = [f"{h:%Y-%m-%d %H}" for h in horas_2025() if ruta_gfs(h) is None]
     rng = np.random.default_rng(SEMILLA)
     res["M3_700"] = prueba_viento(disp, NIVEL, rng)
     res["M3_500_sensibilidad"] = prueba_viento(disp, NIVEL_SENS, np.random.default_rng(SEMILLA))

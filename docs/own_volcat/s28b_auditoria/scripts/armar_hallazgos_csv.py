@@ -1,0 +1,206 @@
+"""S28b: arma hallazgos.csv con el módulo csv (no a mano: un CSV a mano corrió columnas en VRP S160).
+
+Una fila por hallazgo final (IDs provisionales de cada frente conservados como finales; las fusiones van en
+la columna `fusion`). La gravedad es la del verificador cuando lo hubo; si no, la del que lo encontró.
+`archivo_linea` apunta a la sección del informe del frente o del verificador que trae el archivo:línea del objeto.
+"""
+import csv
+import os
+
+AQUI = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+F1 = "f1_cierres/INFORME_F1.md"
+F2 = "f2_estadistica/INFORME_F2.md"
+F3 = "f3_congelamiento/INFORME_F3.md"
+F4 = "f4_magnitudes/INFORME_F4.md"
+V101, V102, V201, V202, V301 = ("verificacion/V101_104.md", "verificacion/V102.md", "verificacion/V201_203_206.md",
+                                "verificacion/V202_204_205.md", "verificacion/V301_312.md")
+S1, S2, S3, S4, SV = ("f1_cierres/scripts/", "f2_estadistica/scripts/", "f3_congelamiento/scripts/",
+                      "f4_magnitudes/scripts/", "verificacion/scripts/")
+OP, AU, VE = "Opus 5.5", "auditor", "verificador"
+
+# id, titulo, archivo_linea, confianza, gravedad, eje, comando, salida, verificacion, cambia_veredicto, fusion
+H = [
+    # ---- F2 y su verificación (estadística) ----
+    ("201", "El p25 por cuadro de las confirmaciones congeladas rechaza mucho más que el 1 % nominal en placebo",
+     F2 + ":41", "CONFIRMADO", 4, "estadistica", "python -I -B " + SV + "v201_placebo.py", "D:\\goes_notas\\s28\\s28b\\v201\\",
+     "CONFIRMADO EN PARTE (" + V201 + "): zona y unión 12 a 18 %, anillo 12 % en 2025", "SIN DATO: confirmaciones S23b, S25a, S26a", "con 961 y 962"),
+    ("961", "El p25 del anillo (S23b) tampoco tiene tamaño nominal: 12 % en placebo de 2025", V201, "CONFIRMADO", 4,
+     "estadistica", "python -I -B " + SV + "v201_placebo.py", "D:\\goes_notas\\s28\\s28b\\v201\\",
+     "hallazgo del verificador; corrobora 201 con un placebo propio", "SIN DATO: confirmación S23b", ""),
+    ("962", "pN (Fisher por cuadro) no protege: la regla entera da CONFIRMA falso en 2 a 8 % de los placebos", V201,
+     "CONFIRMADO", 4, "estadistica", "python -I -B " + SV + "v201_placebo.py", "D:\\goes_notas\\s28\\s28b\\v201\\",
+     "hallazgo del verificador", "SIN DATO: confirmaciones S23b, S25a, S26a", ""),
+    ("204", "La zona (S25a) no separa P de N dentro del mismo día: su ALCANZA mide sobre todo día encendido",
+     F2 + ":94", "CONFIRMADO", 4, "estadistica", "python -I -B " + SV + "v202_analisis.py", "verificacion/resultados_v202/",
+     "CONFIRMADO EN PARTE (" + V202 + "): OR 0,96 en zona; unión 2,8 por el anillo; no vale para el 28-10",
+     "no por regla; en lectura S25a ALCANZA pasaría a PARCIAL con pN por día", ""),
+    ("205", "Los p por cuadro sobrestiman la evidencia en órdenes de magnitud; con el día como unidad S23a queda en el umbral",
+     F2 + ":113", "CONFIRMADO", 4, "estadistica", "python -I -B " + SV + "v202_analisis.py", "verificacion/resultados_v202/",
+     "CONFIRMADO EN PARTE (" + V202 + "): S23a 0,04 a 0,12 por día; pN de S25a 0,001 a 0,04",
+     "no por regla; lectura: S23a no decidible por día", "con 942"),
+    ("943", "La zona está encendida todo el día en sus mejores días; su pN por día descansa en el 28-10 y el 14-11",
+     V202, "CONFIRMADO", 4, "estadistica", "python -I -B " + SV + "v202_extra.py", "verificacion/resultados_v202/",
+     "hallazgo del verificador", "no por regla; cambia la lectura de S25a ALCANZA", ""),
+    ("963", "El PARCIAL de S23a descansa en un p25 de 7,9e-5 con los 8 aciertos en un solo día; en placebo 5 a 12 % lo igualan",
+     V201, "SOSPECHA", 4, "estadistica", "python -I -B " + SV + "v201_placebo.py", "D:\\goes_notas\\s28\\s28b\\v201\\",
+     "hallazgo del verificador, sin segunda verificación", "SIN DATO: S23a PARCIAL podría ser SIN PODER", ""),
+    ("202", "'14-11 ALCANZADO' (S25a) sólo existe con cuadros independientes; por día no se puede decidir",
+     F2 + ":62", "CONFIRMADO", 3, "estadistica", "python -I -B " + SV + "v202_analisis.py", "verificacion/resultados_v202/",
+     "CONFIRMADO EN PARTE (" + V202 + "): p por día 0,016 a 0,04; 49 días evaluables, no 60; 'no decidible', no 'no alcanzado'",
+     "no por regla (rótulo por cuadros); cambia la lectura", "con 941"),
+    ("203", "Prueba P de S27a: umbral de poder p ≤ 0,01 con 60 corrimientos (piso 1/61); con uno alcanzable da PLUMA NO",
+     F2 + ":78", "CONFIRMADO", 3, "estadistica", "python -I -B " + SV + "v203_piso.py", "D:\\goes_notas\\s28\\s28b\\v201\\",
+     "CONFIRMADO (" + V201 + "); ya declarado por S27a (INFORME l. 77 a 81)", "sí con el número corregido: SIN PODER a PLUMA NO", "línea base roja F2"),
+    ("206", "S28a MIXTO de día: el límite inferior que lo decide cae bajo 1 con 8 a 11 % de las semillas",
+     F2 + ":140", "CONFIRMADO", 3, "estadistica", "python -I -B " + SV + "v206_semilla.py", "D:\\goes_notas\\s28\\s28b\\v201\\",
+     "CONFIRMADO (" + V201 + " y, aparte, " + V101 + " hallazgo 921)", "no por regla (semilla 0 escrita); cambia la lectura", "con 921"),
+    ("921", "El MIXTO de día de S28a cuelga del 10-11-2026: sin ese día, Antuco da NO CONCLUYENTE", V101, "CONFIRMADO", 3,
+     "estadistica", "python -I -B " + SV + "v101_rotulo.py", "D:\\goes_notas\\s28\\s28b\\v101\\", "hallazgo del verificador",
+     "no por regla; cambia la lectura", ""),
+    ("941", "El piso del nulo por día es más alto que 1/61: buena parte de 2025 no se evalúa a las horas de los P", V202,
+     "CONFIRMADO", 3, "estadistica", "python -I -B " + SV + "v202_analisis.py", "verificacion/resultados_v202/",
+     "hallazgo del verificador", "no", ""),
+    ("942", "S23a por día o por episodio no queda establecido bajo 0,05 (0,04 a 0,12; 0,092 por episodio)", V202, "CONFIRMADO", 3,
+     "estadistica", "python -I -B " + SV + "v202_analisis.py", "verificacion/resultados_v202/", "hallazgo del verificador",
+     "no por regla; lectura: S23a PARCIAL no decidible por día", ""),
+    ("944", "El pN de las confirmaciones de S25a y S26a compara sobre todo días, no cuadros", V202, "CONFIRMADO", 3,
+     "estadistica", "python -I -B " + SV + "v202_analisis.py", "verificacion/resultados_v202/", "hallazgo del verificador",
+     "no; cambia qué prueba un CONFIRMA", ""),
+    ("901", "El p de B1 (S24) trata como independientes cuadros que vienen en rachas; por noche p 0,012 a 0,107", V102,
+     "CONFIRMADO", 3, "estadistica", "python -I -B " + SV + "v102_permutacion_noches.py", "verificacion/V102_salidas/",
+     "hallazgo del verificador", "no", ""),
+    ("208", "Las clases de VOLCAT cubren 20-10 a 19-11 y 22 a 24-11, no 21-09 a 24-11; el estat congelado sale de 31 días (20 aportan)",
+     F2 + ":169", "CONFIRMADO", 3, "estadistica", "python -I -B " + SV + "v208_estat.py", "verificacion/V301_salidas/v208_estat.txt",
+     "CONFIRMADO (" + V301 + "); el estat rehecho da idéntico", "no", ""),
+    ("210", "2026 se evalúa la mitad que 2025, y en 2026 los cuadros con algo de nube disparan más que los despejados",
+     F2 + ":198", "CONFIRMADO", 3, "estadistica", "python -I -B " + S2 + "f2_cobertura.py", "D:\\goes_notas\\s28\\s28b\\f2\\",
+     "sin verificar (gravedad 3)", "no", ""),
+    ("211", "El poder se declara pero ningún veredicto de confirmación lo usa; el de la unión a p* no se midió",
+     F2 + ":214", "CONFIRMADO", 3, "estadistica", "python -I -B " + SV + "v211_poder.py", "verificacion/V301_salidas/v211_poder.txt",
+     "CONFIRMADO (" + V301 + "): partes a p 4,75 medidas; unión sin definir", "no; cambia la lectura", ""),
+    ("207", "S23a: SEPARA VOLCAT salió de un pN exactamente 0 (azar estimado 0 en las horas de los P)", F2 + ":156",
+     "CONFIRMADO", 2, "estadistica", "python -I -B " + S2 + "f2_pisos.py", "D:\\goes_notas\\s28\\s28b\\f2\\",
+     "sin verificar; ya rotulado en S23b §4", "no", "línea base roja F2"),
+    ("209", "El criterio S23a define P como 'ceniza a 50 km en ±60 min'; la regla H9 que se usa es 'objeto anclado en ese cuadro'",
+     F2 + ":186", "CONFIRMADO", 2, "estadistica", "lectura de criterio_2026-11-24.md §4 y s22b_volcat_clases.py", "",
+     "sin verificar", "no", ""),
+    ("212", "Fuga del día evaluado al nublado de costumbre del ensayo en seco: mueve un disparo, p* no cambia", F2 + ":224",
+     "CONFIRMADO", 1, "estadistica", "python -I -B " + S2 + "f2_fuga_costumbre.py", "D:\\goes_notas\\s28\\s28b\\f2\\", "sin verificar", "no", ""),
+    ("213", "Fuga de segunda mano por la base de los otros días (zona): 1 a 3 disparos", F2 + ":237", "CONFIRMADO", 1,
+     "estadistica", "python -I -B " + S2 + "f2_fuga_base_zona.py", "D:\\goes_notas\\s28\\s28b\\f2\\", "sin verificar", "no", ""),
+    ("214", "S28a: el remuestreo descarta las réplicas sin disparos en 2025", F2 + ":249", "CONFIRMADO", 1, "estadistica",
+     "lectura de s28a_medir.py", "", "sin verificar", "no", ""),
+    ("215", "S25b, versión S23a: la falsa alarma de 2024 habla casi sólo de la noche", F2 + ":258", "CONFIRMADO", 1,
+     "estadistica", "python -I -B " + S2 + "f2_s25b_dias.py", "D:\\goes_notas\\s28\\s28b\\f2\\", "sin verificar", "no", ""),
+    # ---- F3 y su verificación (congelamiento) ----
+    ("301", "El gatillo cuenta P de días sin GOES y la cobertura I1 sólo llega al último cuadro bajado", F3 + ":43",
+     "CONFIRMADO", 5, "congelamiento", "python -I -B " + SV + "v301_escenarios.py", "verificacion/V301_salidas/v301_escenarios.log",
+     "CONFIRMADO (" + V301 + "): sin el último día, S26a pasa de CONFIRMA a PARCIAL", "SIN DATO: confirmaciones S23b, S25a, S26a", "con 309"),
+    ("302", "'Misma ocasión y mismos datos' (S26a §5) no está implementado: S25a y S26a pueden medir otros días que S23b",
+     F3 + ":68", "CONFIRMADO", 4, "congelamiento", "python -I -B " + SV + "v301_escenarios.py", "verificacion/V301_salidas/v301_escenarios.log",
+     "CONFIRMADO (" + V301 + "): S23b con P_total 25, S25a y S26a con 28", "SIN DATO: confirmaciones S25a, S26a", ""),
+    ("306", "La cobertura de ACMF de los días nuevos no se comprueba", F3 + ":131", "CONFIRMADO", 4, "congelamiento",
+     "python -I -B " + SV + "v301_escenarios.py", "verificacion/V301_salidas/v301_escenarios.log",
+     "CONFIRMADO (" + V301 + "): sin ACMF un día, S23b pasa de PARCIAL a NO DECIDIBLE sin aviso", "SIN DATO: confirmaciones", ""),
+    ("307", "El gatillo cuenta P, no P evaluables: puede gastar la medida en días nublados", F3 + ":141", "CONFIRMADO", 4,
+     "congelamiento", "python -I -B " + SV + "v307_gatillo.py", "verificacion/V301_salidas/v307_gatillo.txt",
+     "CONFIRMADO (" + V301 + "): S23b NO DECIDIBLE en 3 de 9 arranques", "SIN DATO: confirmación S23b", ""),
+    ("981", "S23b casi no puede llegar a CONFIRMA: con 2 cuadros N cerca de los P el pN mínimo es 0,147", V301, "CONFIRMADO", 4,
+     "congelamiento", "python -I -B " + SV + "v301_escenarios.py", "verificacion/V301_salidas/v301_N_pozo_pN.json",
+     "hallazgo del verificador", "SIN DATO: confirmación S23b (PARCIAL casi seguro con buen recuerdo)", ""),
+    ("303", "'Una sola vez' y la regla del vistazo no tienen guarda: medir reescribe el resultado sin rastro", F3 + ":84",
+     "CONFIRMADO", 3, "congelamiento", "python -I -B " + SV + "v301_escenarios.py", "verificacion/V301_salidas/v301_escenarios.log",
+     "CONFIRMADO (" + V301 + ")", "no cambia un rótulo; permite reemplazar la medida", ""),
+    ("305", "Sólo estat_2026.npy tiene hash: cachés de 2025, r25, latlon.npz y dem_ventana.npz se leen de D: sin guarda",
+     F3 + ":113", "CONFIRMADO", 3, "congelamiento", "python -I -B " + S3 + "f3_hashes_entradas.py", "f3_congelamiento/INFORME_F3.md anexo A",
+     "CONFIRMADO EN PARTE (" + V301 + "): p* sí está en git (s26a_seco.json)", "SIN DATO", "con 402 de F4"),
+    ("309", "La bajada de S23b del 25-11 no bajó nada y su log lo informa como 'sin dato'", F3 + ":165", "CONFIRMADO", 3,
+     "congelamiento", "type D:\\goes_notas\\s23\\s23b\\bajar.log", "D:\\goes_notas\\s23\\s23b\\bajar.log",
+     "CONFIRMADO (" + V301 + ", hallazgo 982); la causa 'disco' es inferencia", "es la vía por la que aparece 301", "con 982"),
+    ("304", "El rótulo 'sin corregir por tres pruebas' falta en S23b y se aplica también a PARCIAL", F3 + ":100", "CONFIRMADO", 2,
+     "congelamiento", "lectura de s23b_confirmar.py, s25a y s26a", "", "CONFIRMADO (" + V301 + ")", "no", ""),
+    ("308", "El criterio dice 'SHA-256 de los bytes' pero el hash es el de estat.tobytes(); se comparan 16 hexadecimales",
+     F3 + ":151", "CONFIRMADO", 2, "congelamiento", "python -I -B " + SV + "v308_hash.py", "verificacion/V301_salidas/v308_hash.txt",
+     "CONFIRMADO (" + V301 + "); la guarda sí detecta un elemento cambiado", "no", ""),
+    ("310", "El código que generó estat_2026.npy no está en el repo (al rehacerlo da idéntico)", F3 + ":179", "CONFIRMADO", 2,
+     "congelamiento", "python -I -B " + SV + "v208_estat.py", "verificacion/V301_salidas/v208_estat.txt", "sin verificar aparte; 208 lo rehízo idéntico", "no", ""),
+    ("311", "Cuatro lectores de estat_2026.npy sin guarda de hash", F3 + ":191", "CONFIRMADO", 2, "congelamiento",
+     "python -I -B " + S3 + "f3_barrido_fechas.py", "D:\\goes_notas\\s28\\s28b\\f3\\", "sin verificar", "no", ""),
+    ("312", "contar reescribe el CSV entero: con una fecha anterior lo trunca", F3 + ":198", "CONFIRMADO", 2, "congelamiento",
+     "python -I -B " + SV + "v312_contar.py", "verificacion/V301_salidas/v312_contar.txt",
+     "CONFIRMADO EN PARTE (" + V301 + "): con uso normal el conteo de P no baja", "no", ""),
+    ("983", "Cada carpeta de trabajo tiene su propio CSV de clases: el de main tiene 0 P el 25-11, el de la coordinadora 8", V301,
+     "CONFIRMADO", 2, "congelamiento", "comparar volcat_clases_desde_25nov.csv entre worktrees", "", "hallazgo del verificador", "no por sí solo", ""),
+    # ---- F1 y su verificación (cierres y pre-registro) ----
+    ("102", "S24 B1: la selección de noches comunes se aplica sólo a 2025; el titular '10 veces más' no prueba un exceso",
+     F1 + ":140", "CONFIRMADO", 3, "cierres", "python -I -B " + SV + "v102_b1_simetrica.py", "verificacion/V102_salidas/",
+     "CONFIRMADO EN PARTE (" + V102 + "): asimétrica por diseño escrito; la regla aplicada a 2025 contra sí mismo da razón 31",
+     "sí con la regla corregida: B1 NO EPISÓDICO a EPISÓDICO (depende de la noche del 29-10)", ""),
+    ("101", "S28a: el MIXTO de día se lee con la consecuencia que el criterio reserva a NO SE SOSTIENE", F1 + ":116",
+     "CONFIRMADO", 3, "cierres", "python -I -B " + SV + "v101_rotulo.py", "D:\\goes_notas\\s28\\s28b\\v101\\",
+     "CONFIRMADO EN PARTE (" + V101 + "): el CONFIRMADO de STATUS cubre otra frase", "no; cambia la lectura", ""),
+    ("104", "S28a post hoc: el 10-11 las vecinas no disparan a la hora de los aciertos de Chillán con VOLCAT", F1 + ":184",
+     "CONFIRMADO", 3, "cierres", "python -I -B " + SV + "v104_horas.py", "D:\\goes_notas\\s28\\s28b\\v101\\",
+     "CONFIRMADO EN PARTE (" + V101 + "): sí disparan juntas 15:40 a 19:40 UTC, en cuadros N", "no; cambia la decisión 1 propuesta a Nicolás", ""),
+    ("103", "S25a: ALCANZA va sin rótulo de desarrollo, con la zona elegida donde VOLCAT dibujó el 14-11", F1 + ":166",
+     "CONFIRMADO", 3, "cierres", "lectura de s25a_crater/criterio e INFORME", "", "sin verificar (gravedad 3)", "no", ""),
+    ("105", "S24: 'once cuadros seguidos' con S 'entre -0,49 y -0,68 K'; el JSON da 10 cuadros, -0,26 a -0,68 K", F1 + ":205",
+     "CONFIRMADO", 3, "cierres", "python -I -B " + S1 + "f1_s24_reglas.py", "D:\\goes_notas\\s28\\s28b\\f1\\", "sin verificar", "no", ""),
+    ("106", "S23: 'todos los disparos al SE' son 34 de 38; '4 de 5 días' son 7 días", F1 + ":220", "CONFIRMADO", 3, "cierres",
+     "python -I -B " + S1 + "f1_reglas_censo.py", "D:\\goes_notas\\s28\\s28b\\f1\\", "sin verificar", "no", ""),
+    ("107", "S25b: 'ninguna franja pasa del 5 %' (S23a 09-11 UTC da 0,0515) y mezcla métricas", F1 + ":236", "CONFIRMADO", 2,
+     "cierres", "python -I -B " + S1 + "f1_reglas_censo.py", "D:\\goes_notas\\s28\\s28b\\f1\\", "sin verificar", "no", ""),
+    ("108", "S25a: '24 % de noche contra 4 %' compara ventanas distintas (misma ventana: 18,2 % contra 4,1 %)", F1 + ":250",
+     "CONFIRMADO", 2, "cierres", "python -I -B " + S1 + "f1_reglas_censo.py", "D:\\goes_notas\\s28\\s28b\\f1\\", "sin verificar", "no", ""),
+    ("109", "S23 diagnóstico: tres cifras que no salen del JSON (entre ellas 110 cuadros de 100)", F1 + ":266", "CONFIRMADO", 2,
+     "cierres", "python -I -B " + S1 + "f1_reglas_censo.py", "D:\\goes_notas\\s28\\s28b\\f1\\", "sin verificar", "no", ""),
+    ("112", "S25a: 'R va de 0,39 a 0,53' sacando cada día; el JSON dice 0,55", F1 + ":281", "CONFIRMADO", 2, "cierres",
+     "python -I -B " + S1 + "f1_reglas_censo.py", "D:\\goes_notas\\s28\\s28b\\f1\\", "sin verificar", "no", ""),
+    ("113", "S27b: el JSON rotula ACIERTA una llegada del 28-10 contra la sombra del 08-11", F1 + ":289", "CONFIRMADO", 2,
+     "cierres", "lectura de s27b_altura_desfase/resultados/s27b_resultado.json", "", "sin verificar", "no", ""),
+    ("114", "S28a STATUS: una sensibilidad que el criterio dice que no decide queda como CONFIRMADO", F1 + ":300", "CONFIRMADO", 2,
+     "cierres", "lectura de criterio s28a l. 122 y STATUS 0-prev27", "", "CONFIRMADO por " + V101 + " (hallazgo 923)", "no", "con 923"),
+    ("116", "S25b STATUS: una lección general sacada de un solo año fuera de muestra", F1 + ":311", "CONFIRMADO", 2, "cierres",
+     "lectura de STATUS bloque S25b", "", "sin verificar", "no", ""),
+    ("902", "S24: 'las otras 55 noches' son 37 con dato; 2026 tiene 25 noches con dato, no 'unas 60'", V102, "CONFIRMADO", 2,
+     "cierres", "python -I -B " + SV + "v102_noches_2026.py", "verificacion/V102_salidas/", "hallazgo del verificador", "no", ""),
+    ("903", "STATUS 0-prev20 se lee como comparación pareja; el 1,4 % es 2026 entero", V102, "CONFIRMADO", 2, "cierres",
+     "lectura de STATUS", "", "hallazgo del verificador", "no", ""),
+    ("922", "S28a: '10-11 y 14-11, justo los dos días' de aciertos de la zona omite el 28-10 (13 de 26)", V101, "CONFIRMADO", 2,
+     "cierres", "python -I -B " + SV + "v104_clases_del_dia.py", "D:\\goes_notas\\s28\\s28b\\v101\\", "hallazgo del verificador", "no", ""),
+    # ---- F4 (magnitudes y geometría) ----
+    ("401", "La 'zona de 0 a 4 km' va de 1,2 a 5,2 km del cráter y no está centrada donde GOES ve la cumbre (2,99 km al SSE)",
+     F4 + ":63", "CONFIRMADO", 3, "magnitudes", "python -I -B " + S4 + "f4_zona_paralaje.py", "D:\\goes_notas\\s28\\s28b\\f4\\",
+     "sin verificar (gravedad 3); F1 lo encontró aparte (117)", "no; cambia el nombre de la zona", "con 117 de F1"),
+    ("403", "S24: rumbos y distancias en geometría aparente, leídos como físicos", F4 + ":111", "CONFIRMADO", 2, "magnitudes",
+     "python -I -B " + S4 + "f4_zona_paralaje.py", "D:\\goes_notas\\s28\\s28b\\f4\\", "sin verificar", "no", ""),
+    ("404", "La zona de las vecinas no es 'como Chillán': 9 y 10 píxeles, otro centrado, medio km más baja", F4 + ":130",
+     "CONFIRMADO", 2, "magnitudes", "python -I -B " + S4 + "f4_controles_cota.py", "D:\\goes_notas\\s28\\s28b\\f4\\", "sin verificar", "no", ""),
+    ("405", "El nublado de costumbre de las vecinas sale de Chillán (cambia 92 a 116 cuadros de compuerta en 2026)", F4 + ":148",
+     "CONFIRMADO", 2, "magnitudes", "python -I -B " + S4 + "f4_costumbre_vecinas.py", "D:\\goes_notas\\s28\\s28b\\f4\\", "sin verificar", "no", ""),
+    ("406", "La frontera de 45 km (controles y exclusión de tajadas de S28a) es distancia aparente", F4 + ":168", "CONFIRMADO", 2,
+     "magnitudes", "python -I -B " + S4 + "f4_zona_paralaje.py", "D:\\goes_notas\\s28\\s28b\\f4\\", "sin verificar", "no", ""),
+    ("407", "despejada corre el centro del anillo de E1 con el paralaje de Chillán (constante 0,93)", F4 + ":180", "CONFIRMADO", 1,
+     "magnitudes", "lectura de s22b_medir.py", "", "sin verificar", "no", ""),
+    ("408", "El poder por inyección traza la pluma recta desde el cráter verdadero", F4 + ":191", "SOSPECHA", 1, "magnitudes",
+     "lectura de s23_medir.py", "", "sin verificar", "no", ""),
+]
+
+COLS = ["id", "titulo", "archivo_linea", "confianza", "gravedad", "eje", "comando_reproduccion", "salida_cruda",
+        "verificacion", "cambia_veredicto", "fusion"]
+
+if __name__ == "__main__":
+    ids = [h[0] for h in H]
+    assert len(ids) == len(set(ids)), "ID repetido"
+    for h in H:
+        assert len(h) == len(COLS), h[0]
+        assert "\u2014" not in "".join(map(str, h)) and "\u2013" not in "".join(map(str, h)), h[0]
+    H.sort(key=lambda h: (-h[4], h[0]))
+    out = os.path.join(AQUI, "hallazgos.csv")
+    with open(out, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(COLS)
+        w.writerows(H)
+    from collections import Counter
+    print(len(H), "hallazgos;", dict(sorted(Counter(h[4] for h in H).items(), reverse=True)))
+    print("eje:", dict(Counter(h[5] for h in H)))

@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-26 (sesión S29b, la zona del cráter y la unión S26a en oct-nov 2024, bloque "## 0." abajo; S28b queda como 0-prev30, S29a como 0-prev29, S25b como 0-prev28 y S28a como 0-prev27). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-26 (sesión S30b, huella de VOLCAT contra el detector S26a, bloque "## 0." abajo; S29b queda como 0-prev31, S28b como 0-prev30, S29a como 0-prev29). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,67 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S29b, 2026-11-26 (la zona del cráter y la unión S26a AGUANTAN fuera de muestra en oct-nov 2024, de noche y de día; post hoc, las cumbres de Antuco y Longaví sin pluma triplican de día su tasa de 2025 en 2024: el día de cada cumbre cambia de un año a otro)
+## 0. S30b, 2026-11-26 (¿el detector S26a marca donde VOLCAT dibuja la pluma? El anillo apunta al lado de la pluma, pero no más que al lado de la pluma de cualquier otro día: MISMO RUMBO, NO SEPARABLE; la zona y la unión NO DECIDIBLE porque casi toda huella toca el cráter)
+
+> Sesión S30b (worktree `s30b-huella-volcat-54c983`, rama `claude/s30b-huella-volcat-54c983`, lanzada por la
+> coordinadora S28 `local_36977cef-5c6d-46e6-b890-b4299891d5c8`, pregunta de Nicolás del 26-11: "¿vemos lo mismo o
+> sólo el mismo momento?"). Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s30b_huella_volcat\INFORME.md`.
+> Criterio `eef0b0f`, empujado antes de cruzar un disparo con una huella. Ningún día posterior al 24-11 y ninguna
+> corrida de `s23b_confirmar.py`. Figuras con la huella de VOLCAT (SSEC) sólo en `D:\goes_notas\s30\s30b\`. PR
+> abierto contra `main`; lo revisa S28.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Anillo (4 a 40 km), titular de lo que se puede decir | 12 de 23 P coinciden en tajada (0,52); huella girada 0,19 (p 0,004); huella de otro día 0,45 (p 0,41); oráculo pasa R, queda en p_D 0,012: **MISMO RUMBO, NO SEPARABLE** | `resultados/s30b_resultado.json` |
+| Zona (11 píxeles del cráter) | 41 de 43 coinciden, pero 86 de 94 huellas tocan la zona; oráculo no separa (p_D 0,10): **NO DECIDIBLE** | idem |
+| Unión (titular por el criterio) | 51 de 64 (0,80) contra 0,70 girada y 0,64 de otro día; la zona no gira y el oráculo falla R: **NO DECIDIBLE** | idem |
+| Día / noche | Día igual que el total; noche 3 P de un día: NO DECIDIBLE por construcción | idem |
+| Distancia (post hoc) | En los cuadros que coinciden, el anillo marca a 26 a 32 km y la huella anclada llega a 9 a 15 km; sólo el 08-11, con la ceniza desprendida, coinciden píxel a píxel a 25 a 40 km | `resultados/s30b_posthoc2.json` |
+| Sesgo de rumbo del anillo (post hoc) | En 2025, sin pluma, 89 de 138 disparos (64 %) ya caían entre 120° y 210°; en 2026, 50 de 52 (96 %), con y sin VOLCAT | `resultados/s30b_posthoc.json` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Partir el anillo en dos coronas (4 a 15 y 15 a 40 km) para medir si el detector ve el tramo que VOLCAT dibuja, con criterio nuevo y sólo en días hasta el 24-11? | Sí, como desarrollo; no toca las confirmaciones congeladas |
+| 2 | ¿Repetir esta prueba, con su criterio congelado, en los P de días nuevos cuyo rumbo caiga fuera de 90° a 180°, cuando se mida la confirmación? | Sí: es lo único que separa "esta pluma" de "el rumbo de siempre" |
+
+### c. Lo aprendido
+
+- **Llegar a la hora no es ver la pluma** (método, proyecto): una prueba de posición necesita un nulo que conserve el
+  rumbo habitual (huella de otro día), no sólo uno que lo destruya (huella girada). Con plumas que van siempre al mismo
+  lado, el giro da p chico por la climatología del viento.
+- **Un control positivo dice si el nulo tiene poder** (método, workspace): el oráculo "VOLCAT un cuadro antes" apenas
+  separa contra la huella de otro día; sin él, el p_D alto del detector se habría leído como "no ve la pluma".
+- **La zona del cráter no se valida contra VOLCAT por posición**: VOLCAT ancla toda pluma al cráter.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (desarrollo):** el anillo apunta al lado de la pluma de VOLCAT más que al azar (p_R 0,004).
+- **SIN DATO:** si sigue a la pluma del cuadro o al rumbo habitual (faltan días con viento de otro lado).
+- **CONFIRMADO (post hoc):** el anillo prefiere el SE por sí mismo (64 % de sus disparos de 2025 en un cuarto del
+  círculo); parte de la coincidencia de rumbo es ese sesgo cruzado con el viento habitual.
+- **SOSPECHA:** el anillo ve el tramo lejano (25 a 35 km) que VOLCAT casi nunca dibuja anclado; no se sabe si VOLCAT
+  no lo ve o si el detector marca otra cosa al SE.
+
+### e. Prompt para la próxima sesión
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes). Usa /retomar.
+1. Lee STATUS.md "## 0." (S30b) y docs/own_volcat/s30b_huella_volcat/INFORME.md.
+2. Si Nicolás aprueba la decisión 1 de S30b: criterio nuevo empujado antes de mirar, anillo en dos coronas (4 a 15 y
+   15 a 40 km) contra la huella de VOLCAT (toda la ceniza a 40 km y la anclada), días hasta el 24-11, mismos nulos por
+   día y oráculo de S30b (scripts/s30b_medir.py).
+3. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS; nada
+   de SSEC al repo; nadie mira el detector en días posteriores al 24-11 antes de la medida; python -I -B.
+```
+
+---
+
+## 0-prev31. S29b, 2026-11-26 (la zona del cráter y la unión S26a AGUANTAN fuera de muestra en oct-nov 2024, de noche y de día; post hoc, las cumbres de Antuco y Longaví sin pluma triplican de día su tasa de 2025 en 2024: el día de cada cumbre cambia de un año a otro)
 
 > Sesión S29b (worktree `s29b-zona-2024-63ac55`, lanzada por la coordinadora S28
 > `local_36977cef-5c6d-46e6-b890-b4299891d5c8`). Informe:

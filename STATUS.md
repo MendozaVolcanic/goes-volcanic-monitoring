@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-26 (sesión S30b, huella de VOLCAT contra el detector S26a, bloque "## 0." abajo; S28b queda como 0-prev30). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-26 (sesión S30b, huella de VOLCAT contra el detector S26a, bloque "## 0." abajo; S29b queda como 0-prev31, S28b como 0-prev30, S29a como 0-prev29). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -76,6 +76,71 @@ Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\
    día y oráculo de S30b (scripts/s30b_medir.py).
 3. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS; nada
    de SSEC al repo; nadie mira el detector en días posteriores al 24-11 antes de la medida; python -I -B.
+```
+
+---
+
+## 0-prev31. S29b, 2026-11-26 (la zona del cráter y la unión S26a AGUANTAN fuera de muestra en oct-nov 2024, de noche y de día; post hoc, las cumbres de Antuco y Longaví sin pluma triplican de día su tasa de 2025 en 2024: el día de cada cumbre cambia de un año a otro)
+
+> Sesión S29b (worktree `s29b-zona-2024-63ac55`, lanzada por la coordinadora S28
+> `local_36977cef-5c6d-46e6-b890-b4299891d5c8`). Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s29b_zona_2024\INFORME.md`. Criterio
+> `afd2923`, empujado antes de calcular un disparo de la zona o de la unión en 2024. Ningún día de 2026 en la medida y
+> ninguno posterior al 24-11. Ningún veredicto se apoya en un p por cuadro (tasas e intervalos por remuestreo de días).
+> PR abierto contra `main`; lo revisa S28.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| (a) Geometría GOES-16 (2024) contra GOES-19 (2025) en la zona | **COMPARABLE**: atributos iguales (subpunto 75,2° O, misma grilla), correlación 0,997 a < 15 km, corrimiento 0,05 y 0,10 píxel, mismo píxel más frío | `resultados/s29b_resultado.json` (`a_geometria`) |
+| Comprobación de código | El camino fuera de muestra reproduce el S de 2025 exacto; seco de 2025: zona a 5 176 de 5.499, unión a 4,75 269 de 5.499 (noche 98 de 1.453, día 105 de 2.704) | `scripts/s29b_medir.py pruebas` |
+| (b) Falsa alarma total en 2024 | **AGUANTA** las dos: zona S25a 2,3 % (3,8 % por día) contra 3,2 % en 2025; unión S26a 3,0 % (3,9 % por día) contra 4,9 %. Franja más alta de la unión: 09 a 11 UTC, 9,1 % (amanecer) | idem, `b_c_d` |
+| (c) Noche (03 a 09 UTC) | **AGUANTA** las dos: unión 3,4 % contra 6,7 % (R 0,51; 0,08 a 2,17), zona 3,0 % contra 4,3 % | idem |
+| (c) Día (12 a 24 UTC) | Unión **MÁS ESTRICTO**: 1,1 % contra 3,9 % (R 0,28; 0,09 a 0,94); zona AGUANTA (0,8 % contra 2,8 %) | idem |
+| (d) Día de 2024 contra la subida de Antuco de S28a | Por la regla: **LA SUBIDA DIURNA ES DE 2026** (unión y zona). El post hoc la debilita (fila siguiente) | idem, `d_contra_antuco` |
+| Post hoc: zona en Antuco y Longaví en 2024 | De día **7,7 y 7,3 %** contra 2,6 y 2,5 % en 2025 (R 3,0 y 2,9, límite inferior > 1); Antuco 2026 9,4 %. 2025 fue el año bajo de las vecinas; Chillán bajó en 2024. De noche, las tres AGUANTA | `resultados/s29b_posthoc.json` |
+| Disparos de 2024 en Chillán | 58 % en 5 días; 23-09 y 25-10 son rachas de 5 h de madrugada (tiempo); el racimo del anillo del 16 a 18-11 no toca la zona | `INFORME.md` §2 |
+| Cubo de BTD de 2024 | `D:\goes_notas\s29\s29b\r24_btd.npy` (0,35 GB con el ACM) | `scripts/s29b_cubo.py` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | Leer el MIXTO diurno de S28a como "las cumbres cambian de día entre años" y no como "algo regional de 2026" | Sí: Antuco y Longaví en 2024 ya disparaban de día como Antuco en 2026; marcarlo junto con las rebajas de S28b (su decisión 3) |
+| 2 | ¿Medir la compuerta regional S26a+G de S29a fuera de muestra con 2024 (su decisión 2)? | Sí, con criterio previo: el cubo de 2024 está listo y las vecinas en 2024 disparan de día mucho sin pluma, justo lo que la compuerta usa |
+| 3 | ¿Una base de la zona con 2024 y 2025 juntos (dos años tranquilos) para el día? | Sólo si la confirmación en días nuevos lo pide; se decide antes del dato, nunca después |
+| 4 | Confirmación del OVDAS de que Chillán no tuvo pulsos del 21-09 al 21-11-2024 (decisión 1 de S25b) | Sigue: es lo único que falta para leer 2024 como fondo limpio |
+
+### c. Lo aprendido
+
+- **La zona del cráter se traslada de satélite y de año** (proyecto): GOES-16 y GOES-19 en la misma posición dan la
+  misma cumbre al décimo de píxel, y la corrección regional se come el cambio de BTD entre años (+0,22 K en la zona,
+  +0,23 K en los controles de su cota).
+- **Una cumbre vecina no es un control de un año para otro** (método, proyecto): de día su tasa se triplica de un año a
+  otro sin pluma. Comparar años en un volcán sin pluma necesita más de dos años, o compararlo consigo mismo en varios.
+- **La hora débil fuera de muestra es el amanecer** (proyecto): rachas de horas de madrugada, como las noches de capa
+  baja de S24.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO:** la zona y la unión no inflan su falsa alarma en otro año tranquilo con otro satélite.
+- **CONFIRMADO (post hoc):** de día, la tasa de la zona de una cumbre sin pluma cambia ×3 de un año a otro.
+- **SOSPECHA:** las rachas de madrugada de 2024 (23-09, 25-10) son capa baja o inversión; sin mirar.
+- **SIN DATO:** cuánto dispararía Chillán de día en 2026 sin pluma.
+
+### e. Prompt para la próxima sesión
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Usa /retomar.
+1. Lee STATUS.md "## 0." (S29b), "## 0-prev30." (S28b) y docs/own_volcat/s29b_zona_2024/INFORME.md.
+2. Si Nicolás lo aprueba (decisión 2 de S29b y S29a): medir la compuerta regional S26a+G en oct-nov 2024 con criterio
+   empujado antes; cubos en D:\goes_notas\s29\s29b\ (r24_btd, r24_acm) y D:\goes_notas\s25\s25b_2024\cubo (r24_m1);
+   s29b_medir.aplicar_zona, s25b_medir.aplicar y s27a_medir.Zona sirven de molde.
+3. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS; la
+   carpeta principal no se toca; nada de SSEC al repo; criterio antes de medir; nadie mira el detector en días
+   posteriores al 24-11 antes de la medida; ningún p por cuadro como evidencia; python -I -B.
 ```
 
 ---

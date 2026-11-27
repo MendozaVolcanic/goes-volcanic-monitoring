@@ -1,0 +1,64 @@
+{
+ "componente_principal": {
+  "area_km2": 1.352,
+  "largo_km_p2_p98": 1.71,
+  "ancho_km_p2_p98": 1.02,
+  "azimut_eje_grados_0_180": 90.7,
+  "azimut_centroide_desde_crater": 0.5,
+  "dist_centroide_km": 0.7,
+  "dist_max_km": 1.36,
+  "dist_min_km": 0.28
+ },
+ "celdas": 1502,
+ "nubes_scl_0_15km_ge_20_celdas": [
+  {
+   "celdas_30m": 3258,
+   "km2": 2.932,
+   "dist_min_km": 0.01,
+   "azimut_centroide": 357.3
+  },
+  {
+   "celdas_30m": 258,
+   "km2": 0.232,
+   "dist_min_km": 3.75,
+   "azimut_centroide": 263.7
+  },
+  {
+   "celdas_30m": 107,
+   "km2": 0.096,
+   "dist_min_km": 3.79,
+   "azimut_centroide": 306.1
+  },
+  {
+   "celdas_30m": 87,
+   "km2": 0.078,
+   "dist_min_km": 4.27,
+   "azimut_centroide": 250.1
+  },
+  {
+   "celdas_30m": 239,
+   "km2": 0.215,
+   "dist_min_km": 4.35,
+   "azimut_centroide": 324.1
+  },
+  {
+   "celdas_30m": 64,
+   "km2": 0.058,
+   "dist_min_km": 4.58,
+   "azimut_centroide": 245.6
+  },
+  {
+   "celdas_30m": 1066,
+   "km2": 0.959,
+   "dist_min_km": 4.78,
+   "azimut_centroide": 10.4
+  },
+  {
+   "celdas_30m": 92,
+   "km2": 0.083,
+   "dist_min_km": 6.93,
+   "azimut_centroide": 342.0
+  }
+ ],
+ "scl_nube_0_15km_km2": 4.702
+}

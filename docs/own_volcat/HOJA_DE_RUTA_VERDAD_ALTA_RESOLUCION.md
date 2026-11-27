@@ -71,3 +71,20 @@ archivos públicos (Element 84 y Planetary Computer), como hace `s20b_preparar.p
   Landsat-v1).
 - Las imágenes de cámara del OVDAS en los minutos de las pasadas (lista en TER-06 de S19i): amarrarían cámara,
   satélite fino y GOES en el mismo minuto.
+
+## 6. Registro de pasadas finas con pluma o nube volcánica en Chillán (verdad para el futuro)
+
+Agregado por S31g el 27-11-2026. Cada fila es una pasada fina despejada sobre la cumbre en que se ve algo que nace en
+el cráter. Es verdad de presencia a esa hora (y de dirección y altura cuando se puede); **no se cruza aquí con ningún
+detector GOES**. Una pasada nueva se agrega con su criterio y su informe.
+
+| Fecha y hora UTC | Sensor | Qué se ve | Dirección | Altura | Fuente |
+|---|---|---|---|---|---|
+| 25-10-2026 14:34:31 | Landsat 8 (OLI y TIRS) | pluma sobre nieve hasta 15 km, máscara 1,6 km²; ventana partida a 100 m −1,54 K (firma de ceniza) | OSO (centroide 253°) | VAAC FL140 (4,3 km) | S20b, S20d, S21a1 |
+| 29-10-2026 14:53 | Sentinel-2C | bocanada chica pegada al cráter, 0,3 km² sobre nieve | ESE | sin sombra; VAAC 4,3 km | S21a2 |
+| 08-11-2026 14:53:02 | Sentinel-2C | bocanada compacta de unos 2,5 km pegada al cráter | S (centroide 207°) | sombra 4,7 km | S20b |
+| 13-11-2026 14:53 | Sentinel-2B (27 % de nube) | nube a 2 a 5 km del cráter, 0,8 km² sobre nieve | NE | piloto FL130 a 140 | S21a2 |
+| 25-11-2026 14:43:10 | Sentinel-2C (0,24 % de nube) | nube sobre el cráter de 1,7 por 1,0 km (1,35 km² en la máscara, 2,9 km² en la SCL) con hebras grises al O; otra nube de 1,0 km² a 4,8 km al N | N, poco definida | sombra 3,2 km | S31g |
+
+Pendientes: Landsat 8 del 26-11 (no publicada por USGS al 27-11 04:14 UTC; demora de 5 a 14 días en el path 233) y
+Landsat 9 del 04-12, las dos con la regla de S21a1 sin cambios.

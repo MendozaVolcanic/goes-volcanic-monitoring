@@ -410,7 +410,11 @@ def medir():
         x = np.abs(a - b)
         dif = max(dif, float(np.nanmax(x)) if np.isfinite(x).any() else 0.0)
     rep["2_corona_dif_max"], rep["2_corona_mismas_posiciones"] = dif, mismas
-    # 3: indicador de calor contra la validación
+    # 3: indicador de calor contra la validación. Guarda operativa: no se lee el calor hasta que la bajada termine.
+    log = os.path.join(os.environ["VN_DIR"], "bajar.log")
+    while "FIN" not in open(log, encoding="utf-8", errors="replace").read():
+        time.sleep(60)
+    rep["3_bajada"] = [x for x in open(log, encoding="utf-8").read().splitlines() if x.startswith(("FIN", "falta"))]
     dfc, no = calor_noches()
     no.to_csv(os.path.join(TRAB, "noches_chillan.csv"), index=False)
     dfc.to_csv(os.path.join(TRAB, "cuadros_calor_chillan.csv"), index=False)

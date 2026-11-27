@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-27 (S31i, bloque "## 0." abajo; S31f queda como 0-prev42, S31h como 0-prev41, S31g como 0-prev40, S31e como 0-prev39, S31d como 0-prev38, S31c como 0-prev37, S31b como 0-prev36, S31a como 0-prev35, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-27 (coordinadora S31, bloque "## 0." abajo; S31i queda como 0-prev43 y las demás hijas de S31 de 0-prev35 a 0-prev42, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,124 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S31i, 2026-11-27 (la cumbre de Antuco de día: NI NUBE NI CONTROLES; cuando dispara es un día común. Post hoc, lo que cambia de un año a otro es la nieve: en 2024 y 2026 la cumbre tiene más nieve que en 2025, el año de la base, su BTD de día queda corrida hacia abajo todo el día, más al mediodía, y el umbral de 2025 se cruza solo; las cinco parejas cumbre y año lo siguen)
+## 0. S31 (coordinadora), 2026-11-27 (nueve PR de desarrollo en main: el anillo del detector coincide con VOLCAT en hora y rumbo pero marca la cordillera alta, no la pluma junto al cráter; ni el infrarrojo de 2 km ni la luz reflejada ven el tramo de 0 a 15 km; lo que decide en VOLCAT es su vía pluma/bocanada, que S31j imita y sigue corriendo; la confirmación en días nuevos sigue sin medirse)
+
+> Sesión S31, coordinadora dueña del ciclo (worktree `s31-coordinacion-8a45a6`, rama `claude/s31-coordinacion-8a45a6`),
+> lanzada por la coordinadora S28 el 26-11. Lanzó S31a a S31j; revisó y fusionó los PR 142 a 150 con
+> `--match-head-commit`. El PC se reinició el 27-11 a las 09:34 (hora de Chile) y cortó S31f, S31h y S31i; las tres
+> se reactivaron por mensaje y terminaron con la corrida cortada declarada en su informe. Cerró por contexto
+> (base + 250 mil). **Estado fijado con trabajo en curso: S31j sigue midiendo (ver §a).** Los bloques de cada sesión
+> hija siguen abajo: S31i `0-prev43`, S31f `0-prev42`, S31h `0-prev41`, S31g `0-prev40`, S31e `0-prev39`, S31d
+> `0-prev38`, S31c `0-prev37`, S31b `0-prev36`, S31a `0-prev35`.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| `main` | `00ddae1` (PR 150) más este cierre; sin PR abiertos al cerrar | `git ls-remote`, `gh pr list` |
+| S31a, anillo con pluma fuera del SE | SIN PODER: VOLCAT casi nunca dibuja la pluma fuera del SE de forma que dure; a lo más 4 días, piso p 0,0625 | PR 142 |
+| S31b, gatillo v2 de la confirmación | ADOPTADO: 20 P evaluables con 2 días de 5 o más, la medida termina en D*; CONFIRMA falso <= 0,58 % en placebo; poder de la unión 0,81 a q=0,7 | PR 143, `enmienda_v2_2026-11-26.md` |
+| S31c, anillo en dos coronas | SÓLO LEJOS: marca a 22 a 33 km; en 4 a 15 km cae menos que al azar (6 de 23, p_G 0,94); el oráculo sí lo ve (p_G 0,0001) | PR 144 |
+| S31d, origen del sesgo SE | RUIDO FIJO POR PÍXEL: los píxeles altos de cordillera reproducen 63 % al SE (observado 64,5 %); método solo 21 %; viento SIN PODER | PR 145 |
+| S31e, anillo corregido por píxel | REDUCE EL SESGO (64 % a 31 %), igual falsa alarma, pero alcance 11 de 54 (congelado 23) y tramo NO DECIDIBLE | PR 146 |
+| S31g, Landsat 8 del 26-11 | PENDIENTE: USGS no la publica (L8 demora 5 a 14 días; esperable 01 a 10-12); parámetros fijados; Sentinel-2C del 25-11 con bocanada sobre el cráter al registro de verdad fina | PR 147 |
+| S31h, corona 4 a 15 km con regla propia | NO DECIDIBLE (3 de 52 P, todos 08-11); falsa alarma 2024 NO AGUANTA; con píxel de 2 km la posición dentro de 15 km no se puede probar (oráculo p 0,013) | PR 148 |
+| S31f, luz reflejada C02/C05 junto al cráter | SIN PODER; la huella muestra más nieve que en 2025, no ceniza; en 2026 casi toda tarde despejada en la cumbre es tarde con VOLCAT | PR 149 |
+| S31i, cumbre de Antuco de día | Ni nube ni controles; post hoc, más nieve que en 2025 (año de la base) corre la BTD de día y cruza el umbral | PR 150 |
+| **S31j, espejo de la vía pluma de VOLCAT** | **CORRIENDO al cerrar** (2 procesos de Python vivos). Criterio `e29dd33`, enmienda y script `d82e697`, guarda `e93e928`, todo empujado antes de medir. Sin PR | rama `claude/s31j-espejo-via-pluma-382c61`, sesión `local_9d70020e-381e-492b-ae73-e1f87b6c0b75` |
+| Confirmación en días nuevos | NO medida. Conteo con el envoltorio: 25-11 = 8 P, 26-11 = 1 P (9 P, sólo 1 día con 5 o más). 27-11 sin contar todavía | `D:\goes_notas\s30\confirmacion\volcat_clases_desde_25nov.csv` |
+| Correo v6 a Pavolonis | Redactado, sin enviar | `C:\Users\nmend\AppData\Local\Claude-Data\claude_pzs8sxrjxfjjc\side-session-notes\local_36977cef-5c6d-46e6-b890-b4299891d5c8\Correo_VOLCAT_Pavolonis_v6.md` (y `.docx`) |
+| Disco D: | 17 GB libres | `df` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Enviar el correo v6 a Pavolonis (completar cargo, correo, teléfono; confirmar que siguen las alertas de Villarrica 04-09 y Chillán 15-06, copiadas de la v5 sin verificar)? | Sí: la regla de nacimiento ASHPLUMEPUFF/VCB no es pública y es lo que decide en Chillán; es la vía más corta |
+| 2 | ¿Leer la coincidencia del anillo congelado con VOLCAT como hora y rumbo puestos en buena parte por la cordillera, también si la unión da CONFIRMA en días nuevos? | Sí (S31c, S31d y S31e lo sostienen) |
+| 3 | ¿Descartar el anillo T1 (S31e) y la corona S31h como detectores y dejarlos como diagnóstico? | Sí: pierden alcance y no aguantan fuera de muestra |
+| 4 | Cámaras del OVDAS: noches de S27a, dirección de pluma 28-10, 29-10 (00 a 02 UTC), 11-11 y 14-11 de tarde, y días con pluma fuera del SE (el 05-11 viste una pluma al E todo el día) | Sí: es la única verdad de dirección y posición que no depende de VOLCAT |
+| 5 | Archivar las sesiones terminadas S24 a S31i (todas con PR en main) | Sí, con tu sí |
+| 6 | Siguen: disparo externo de los workflows de 10 min, sector de mesoescala | Sin cambio |
+
+### c. Lo aprendido
+
+- **Un fondo de un solo año traslada a la prueba lo que ese año tuvo de raro** (método, workspace): 2025 tuvo poca nieve
+  en Antuco y Longaví, y eso solo hace disparar sus cumbres en 2024 y 2026 (S31i); corregir la escala de cada píxel con
+  un solo año pasa el sesgo de la cordillera al valle (S31e). Fondo de varios años, o medir la covariable del año que
+  se mira.
+- **En oct-nov 2026 los días sin VOLCAT son sobre todo días con la cumbre nublada** (proyecto): 6 % de cuadros diurnos
+  despejados contra 86 % en días con VOLCAT (S31f). Un control "2026 sin VOLCAT" compara cielos, no plumas.
+- **Con píxel IR de 2 km, dentro de 15 km del cráter sólo el rumbo es medible, no la posición** (proyecto): ni el
+  oráculo (VOLCAT un cuadro antes) pasa el nulo de posición (S31h). No proponer más pruebas de posición junto al
+  cráter con IR de 2 km.
+- **Lo que VOLCAT decide en Chillán no es la firma del píxel sino su vía pluma/bocanada** (proyecto): lo público ya
+  está reproducido y no ve la pluma; la respuesta a "¿no será un código más simple?" es S31j y el correo, no otro
+  detector espectral.
+- **Tras un reinicio del PC, revisar procesos y reactivar con un mensaje que diga qué murió y desde qué commit**
+  (coordinación, workspace; ya en `feedback_coordinar_sesiones_paradas.md`). Funcionó con las tres sesiones el 27-11.
+- **"Hasta el 24-11" se leyó como "el 24-11"** (comunicación): al dar un corte de fechas, nombrar los días que entran.
+
+### d. Problemas abiertos e hipótesis
+
+- **CONFIRMADO (desarrollo):** el anillo coincide con VOLCAT en hora y rumbo, marca a 22 a 33 km, y ese lugar dispara
+  solo sin pluma por la dispersión de los píxeles altos de cordillera (PR 144, 145).
+- **CONFIRMADO (desarrollo):** ni el IR de 2 km (S31c, S31e, S31h) ni la luz reflejada (S31f) separan la pluma junto al
+  cráter con lo que hay.
+- **SIN DATO:** si un espejo de la vía pluma (calor + objeto débil anclado + seguimiento H28) reproduce los cuadros de
+  VOLCAT (S31j corriendo).
+- **SOSPECHA:** VOLCAT abre la pluma de Chillán por cercanía al volcán más calor y la arrastra por seguimiento, sin
+  firma espectral; sólo el autor lo confirma.
+- **SOSPECHA:** lo que el anillo marca lejos al SE a la hora de la pluma puede ser pluma diluida o terreno encendido;
+  no separado.
+- **SIN DATO:** la firma de ceniza a 100 m en una pasada independiente (Landsat 8 del 26-11, pendiente de USGS).
+
+### e. Lo que ya está cerrado y no hay que rehacer
+
+- Pruebas de rumbo del anillo contra VOLCAT: S30b (MISMO RUMBO, NO SEPARABLE), S31a (SIN PODER fuera del SE). No repetir.
+- Posición dentro de 15 km con IR de 2 km: S31c (6 de 23 contra 38 %), S31h (oráculo p 0,013). No repetir.
+- Sesgo SE del anillo: es la cordillera, no el método (21 %) ni el viento (S31d). Corrección por píxel (S31e): quita
+  el sesgo y pierde la pluma.
+- Luz reflejada con fondo por píxel junto al cráter: S31f SIN PODER (3 de 200 réplicas evaluables).
+- Antuco de día: no es nube, no son los controles, no es término regional (S31i, las tres NO SE SOSTIENE).
+- Gatillo de la confirmación: v2 ya adoptado (S31b); no se vuelve a tocar antes de medir.
+
+### f. Prompt para la próxima coordinadora
+
+```
+Retoma Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo MendozaVolcanic/goes-volcanic-monitoring)
+como coordinadora S32. Usa /retomar y verifica antes de creer:
+- git fetch; main en el remoto (al cierre de S31: el commit del cierre S31 sobre 00ddae1); gh pr list (al cierre: ninguno).
+- S31j (local_9d70020e-381e-492b-ae73-e1f87b6c0b75, rama claude/s31j-espejo-via-pluma-382c61) quedó midiendo:
+  get_session (isRunning, lastActivityAt) y Get-CimInstance Win32_Process con 's31j' en la línea de comando. Si murió,
+  reactívala con SendMessage diciendo qué murió y desde qué commit seguir (criterio e29dd33, script d82e697, guarda
+  e93e928). Revisa y fusiona su PR con --match-head-commit cuando lo abra.
+- D: libre (piso 6 GB; al cierre 17 GB).
+Lee STATUS.md: el bloque "## 0. S31" y los de S31i, S31f y S31h; la memoria project_estado_2026-11-27_s31.md y
+project_s31_anillo_terreno.md.
+
+Trabajo, en este orden:
+1. Conteo diario de VOLCAT, SÓLO con el envoltorio: python -I docs/own_volcat/s30a_enmienda/scripts/s30a_confirmar.py
+   contar <día UTC completo> (falta el 27-11 y siguientes). Gatillo v2: 20 P EVALUABLES con 2 días de 5 o más (lo da
+   cobertura, no contar). Con GATILLO CUMPLIDO, sesión propia que corra medir --hasta D* según la enmienda §6, §7 y v2.
+   Nadie mira el detector en días posteriores al 24-11 antes.
+2. Revisar S31j y contarle a Nicolás el veredicto como geólogo.
+3. Landsat 8 del 26-11: cuando USGS la publique (esperable 01 a 10-12), medir con los parámetros fijados por S31g §1.1.
+4. Recordar a Nicolás lo suyo: correo v6 a Pavolonis (en la carpeta de notas de S28/S31), cámaras del OVDAS, archivar
+   sesiones S24 a S31i, workflows de 10 min, mesoescala.
+
+Reglas: español de Chile sin voseo, sin guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS; la
+carpeta principal (rama audit/2026-11-previa-local) no se toca; docs/auditoria_2026-11 no se sube; nada de SSEC al
+repo; criterio antes de medir; la unidad de un nulo es el día; ningún día de jul-nov 2026 es "sin actividad"; un
+detector no se valida contra nacimientos de VOLCAT; no más pruebas de rumbo ni de posición junto al cráter con IR de
+2 km; lo grande a D:; cambio de lógica del dashboard = ficha SDA en el mismo commit y el sí de Nicolás. Con Remote
+Control pregunta en texto y lanza sesiones sólo en un turno que abrió Nicolás. Si la sesión no alcanza, cierra con
+/cierre al llegar a la base + 250 mil tokens, dejando el prompt de S33.
+```
+
+---
+
+## 0-prev43. S31i, 2026-11-27 (la cumbre de Antuco de día: NI NUBE NI CONTROLES; cuando dispara es un día común. Post hoc, lo que cambia de un año a otro es la nieve: en 2024 y 2026 la cumbre tiene más nieve que en 2025, el año de la base, su BTD de día queda corrida hacia abajo todo el día, más al mediodía, y el umbral de 2025 se cruza solo; las cinco parejas cumbre y año lo siguen)
 
 > Sesión S31i (worktree `s31i-antuco-dia-dbaaf8`, rama `claude/s31i-antuco-dia-dbaaf8`), lanzada por la coordinadora S31.
 > Informe: `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s31i_antuco_dia\INFORME.md`.

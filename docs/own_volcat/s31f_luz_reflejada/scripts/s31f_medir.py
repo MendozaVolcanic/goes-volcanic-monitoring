@@ -465,8 +465,10 @@ def medir():
     def poder(f):
         rp = np.random.default_rng(SEM_POD)
         okU, okZ, pRs, pNs = 0, 0, [], []
+        evU, evZ, okU_ev, okZ_ev = 0, 0, 0, 0     # corrección después de medir (INFORME §6): réplicas evaluables
         for rep in range(N_POD):
             Vr, Vn, Vz, Vzn = [], [], [], []
+            nU_rep, dU_rep, nZ_rep, dZ_rep = 0, 0, 0, 0
             for d in diasU:
                 ds = diasN[rp.integers(0, len(diasN))]
                 vals = np.full((len(idx_dia[d]), 12), np.nan)
@@ -486,6 +488,10 @@ def medir():
                     for j in range(12):
                         vals[a, j] = valor_U(S, p["dil"][j])
                     zs.append(valor_Z(S))
+                nU_rep += int(np.isfinite(vals[:, 0]).sum())
+                dU_rep += int(np.isfinite(vals[:, 0]).any())
+                nZ_rep += int(np.isfinite(zs).sum()) if len(zs) else 0
+                dZ_rep += int(len(zs) > 0 and np.isfinite(zs).any())
                 Vr.append(np.nanmean(vals, 0) if np.isfinite(vals).any() else np.full(12, np.nan))
                 Vn.append(VN[d][np.array([n != ds for n in diasN])] if d in VN else np.array([np.nan]))
                 if d in ZN:
@@ -496,12 +502,25 @@ def medir():
             pN = pval(Ts, mc_mean(Vn, rp, B_POD))[0]
             pRs.append(pR)
             pNs.append(pN)
-            okU += (pR <= P_MAX) and (pN <= P_MAX)
+            # Corrección después de medir (INFORME §6): con Ts = NaN (ningún día sorteado evaluable) pval daba p_R = 1
+            # y p_N = 1/(n+1). Una réplica sin dato no rechaza; la evaluable pide la regla 1 de §7 (10 P, 3 días).
+            rechaza = bool(np.isfinite(Ts) and (pR <= P_MAX) and (pN <= P_MAX))
+            okU += rechaza
+            if np.isfinite(Ts) and nU_rep >= MIN_P and dU_rep >= MIN_DIAS:
+                evU += 1
+                okU_ev += rechaza
             if Vz:
                 Tz = np.nanmean(Vz)
-                okZ += pval(Tz, mc_mean(Vzn, rp, B_POD))[0] <= P_MAX
+                rz = bool(np.isfinite(Tz) and pval(Tz, mc_mean(Vzn, rp, B_POD))[0] <= P_MAX)
+                okZ += rz
+                if np.isfinite(Tz) and nZ_rep >= MIN_P and dZ_rep >= MIN_DIAS:
+                    evZ += 1
+                    okZ_ev += rz
         return dict(f=f, poder_huella=okU / N_POD, poder_zona=okZ / N_POD,
-                    pR_med=float(np.median(pRs)), pN_med=float(np.median(pNs)))
+                    replicas_evaluables_huella=evU, poder_huella_evaluables=(okU_ev / evU if evU else None),
+                    replicas_evaluables_zona=evZ, poder_zona_evaluables=(okZ_ev / evZ if evZ else None),
+                    pR_med=float(np.median(pRs)),
+                    pN_med=float(np.median(pNs)))
 
     pod = poder(F_POD)
     print("poder f=0,25:", pod, flush=True)
@@ -558,7 +577,7 @@ def medir():
     # veredictos
     if nU < MIN_P or len(diasU) < MIN_DIAS:
         ver = "NO DECIDIBLE (pocos)"
-    elif pod["poder_huella"] < POD_MIN:
+    elif (pod["poder_huella_evaluables"] or 0) < POD_MIN:   # sobre réplicas evaluables (INFORME §6)
         ver = "SIN PODER"
     elif T_U > 0 and res["p_R"] <= P_MAX and res["p_N"] <= P_MAX:
         ver = "VE LA PLUMA" + (", y sigue a esta pluma" if res["p_D"] <= P_MAX else ", sin separar esta pluma de la de otro día") \
@@ -569,7 +588,7 @@ def medir():
         ver = "NO DECIDIBLE"
     if nZ < MIN_P or len(diasZ) < MIN_DIAS:
         verz = "NO DECIDIBLE (pocos)"
-    elif pod["poder_zona"] < POD_MIN:
+    elif (pod["poder_zona_evaluables"] or 0) < POD_MIN:     # sobre réplicas evaluables (INFORME §6)
         verz = "SIN PODER"
     elif zres["p_25"] <= P_MAX and zres["p_N"] <= P_MAX:
         verz = "SE APARTA EN LOS P"

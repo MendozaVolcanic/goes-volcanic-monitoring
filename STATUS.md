@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-27 (S31h, bloque "## 0." abajo; S31g queda como 0-prev40, S31e como 0-prev39, S31d como 0-prev38, S31c como 0-prev37, S31b como 0-prev36, S31a como 0-prev35, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-27 (S31f, bloque "## 0." abajo; S31h queda como 0-prev41, S31g como 0-prev40, S31e como 0-prev39, S31d como 0-prev38, S31c como 0-prev37, S31b como 0-prev36, S31a como 0-prev35, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,76 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S31h, 2026-11-27 (corona cercana de 4 a 15 km con regla propia: NO DECIDIBLE por pocos cuadros, falsa alarma 2024 NO AGUANTA, sesgo 2025 SIN SESGO SE; a la hora de VOLCAT casi no dispara, 3 de 52 cuadros y todos el 08-11, y de noche se enciende hacia el flanco SE también en 2024, con el volcán tranquilo; con píxeles de 2 km la posición dentro de 15 km no se puede probar: ni VOLCAT un cuadro antes pasa el nulo)
+## 0. S31f, 2026-11-27 (la pluma de Chillán en luz reflejada junto al cráter, C02 y C05 contra cada píxel en 2025: SIN PODER en la huella de VOLCAT y en la zona de 0 a 15 km; la huella no se aparta hacia la ceniza, y su flanco SE tiene más nieve que en 2025 con o sin VOLCAT; en oct-nov 2026 casi toda tarde despejada en la cumbre es tarde con VOLCAT, así que no hay días sin VOLCAT con qué comparar)
+
+> Sesión S31f (worktree `s31f-luz-reflejada-crater-8ed79c`, rama `claude/s31f-luz-reflejada-crater-8ed79c`), lanzada por
+> la coordinadora S31 con el "lo que recomiendes" de Nicolás del 27-11. Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s31f_luz_reflejada\INFORME.md`.
+> Criterio `741acb4` y anexo `c6df303`, script `6e2a940`, todo empujado antes de calcular una reflectancia; corrección del
+> poder `57d1c4c`, después de medir. Desarrollo sobre días hasta el 24-11; nada de `s23b_confirmar.py`,
+> `s30a_confirmar.py` ni del CSV de días nuevos. Huellas de VOLCAT, ventanas de L1b y matrices sólo en
+> `D:\goes_notas\s31\s31f\` (172 MB). PR contra `main` sin fusionar: lo revisa S31.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Datos | Ventana de 29 × 29 píxeles de 2 km en el cráter (C02 116 × 116, C05 58 × 58, C14), leída por sub-bloque desde S3: 2024 (GOES-16), 2025 y 2026, 4.249 cuadros, 172 MB; faltan 24 en el bucket | `scripts/s31f_bajar.py`, `D:\goes_notas\s31\s31f\bajar.log` |
+| Método | ρ / cos(cenit solar); base de cada píxel en 2025, misma fecha ±7 días y hora ±20 min; nubes por C05 y BT11; u con el signo que daría la ceniza (modelo de S21b) | `criterio_2026-11-27.md` |
+| P evaluados | Huella anclada dilatada: 39 de 63 en 5 días; zona: 54 en 5 días | `resultados/s31f_resultado.json` |
+| Huella | T_U −0,06; p_R 0,84, p_N 0,49, p_D 0,47, p_Y 0,073 | idem |
+| Zona 0 a 15 km | T_Z 3,19; p_25 0,067, p_N 0,48, p_Y 0,46 | idem |
+| Poder (f 0,25 y 0,10) | 3 réplicas evaluables de 200, 0 rechazos; conservador 0 (huella) y 0,13 (zona): **SIN PODER** | idem; INFORME §3 |
+| Control 08-11 | U −0,49, el más bajo de 4; sólo 3 días N despejados (piso 0,25): NO PASA, no podía | idem |
+| Días sin VOLCAT despejados | 41 de 640 cuadros diurnos (6 %) con la zona despejada; nubes reales (BT11 10 a 55 K bajo lo normal); días con VOLCAT 54 de 63 | INFORME §1 |
+| Post hoc por banda | C02 +0,97 y C05 −1,09 en la huella, iguales a los días sin VOLCAT (p_N 0,45 y 0,42): rojo más claro y 1,6 µm más oscuro, la firma de más nieve, no de ceniza | `resultados/s31f_posthoc.json` |
+| Post hoc zona | 2026 casi igual a 2025 en la zona entera (C02 +0,005, C05 −0,004); 2024 distinto (+0,032, −0,018) | idem |
+| Corridas | 1 cortada por el reinicio (imprimió T_U y T_Z); 2 igual y con poder defectuoso (NaN); 3 con la corrección, mismos valores reales | INFORME §6 |
+| Veredicto | **SIN PODER (huella y zona)** | `INFORME.md` |
+
+### b. Decisiones que esperan a Nicolás (vía S31)
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Dejar la luz reflejada con fondo de otro año para la temporada de verano (ene-mar), cuando hay tardes despejadas sin VOLCAT y nieve más estable? | Sí: en oct-nov 2026 la nieve del flanco cambió más que lo que haría la pluma y no hay controles despejados |
+| 2 | ¿Exigir en todo criterio con controles N de oct-nov 2026 contar antes cuántos están despejados en la cumbre a la hora de los P? | Sí: "día sin VOLCAT" es casi siempre "día nublado"; vale para IR y reflejado |
+| 3 | ¿Probar reflejado con fondo del mismo día (cuadros despejados de la misma tarde o del día anterior), como desarrollo con criterio nuevo? | Sólo si se quiere seguir con reflejado ahora: saca la nieve, pero no separa una pluma que dura toda la tarde |
+
+### c. Lo aprendido
+
+- **En oct-nov 2026, en Chillán, la tarde despejada y la tarde con VOLCAT son casi la misma cosa** (proyecto): de 20 días
+  sin VOLCAT sólo 4 tienen ratos despejados en la cumbre a la hora de la pluma. Un control "sin VOLCAT" es un control
+  nublado.
+- **Contar el dato del poder antes de escribirlo** (método, workspace): un poder que toma fondos de un grupo de control
+  sólo existe si ese grupo tiene datos evaluables; aquí 197 de 200 réplicas quedaron vacías. Va junto con el piso del p.
+- **Un p con un estadístico vacío tiene que ser "no evaluable", no un número** (código, workspace): con NaN, la fórmula
+  (1 + cuenta) / (n + 1) dio 1 contra un nulo vacío y 1/(n+1) contra uno lleno.
+- **En luz reflejada sobre una cumbre nevada, otro año es otra nieve** (método, proyecto): la base de 2025 sirve para el
+  relieve y el sol, no para la superficie; rojo más claro con 1,6 µm más oscuro es nieve.
+
+### d. Problemas abiertos e hipótesis
+
+- **SIN PODER:** si la pluma de la huella de VOLCAT cambia C02 o C05 junto al cráter.
+- **SOSPECHA (post hoc):** el flanco SE pegado al cráter tiene más nieve, o más fresca, en nov-2026 que en nov-2025, con o
+  sin VOLCAT. No comprobado con Sentinel-2.
+- **SIN DATO:** si un fondo del mismo día separa la pluma en reflejado; cuánto del cambio de 2024 es nieve y cuánto es la
+  calibración de GOES-16.
+
+### e. Prompt para la próxima sesión
+
+```
+Retoma Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes). Lee STATUS.md "## 0." (S31f) y
+docs/own_volcat/s31f_luz_reflejada/INFORME.md. Si Nicolás aprueba la decisión 3 de S31f: luz reflejada (C02, C05) con
+fondo del mismo día (cuadros despejados de la misma tarde y del día anterior), criterio empujado antes de medir, contando
+antes cuántos cuadros despejados hay, como desarrollo sobre días hasta el 24-11; ventanas ya bajadas en
+D:\goes_notas\s31\s31f\l1b\. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas
+absolutas; no VIIRS; nada de SSEC al repo; nadie mira detectores en días posteriores al 24-11; no tocar la confirmación
+congelada; python -I -B.
+```
+
+---
+
+## 0-prev41. S31h, 2026-11-27 (corona cercana de 4 a 15 km con regla propia: NO DECIDIBLE por pocos cuadros, falsa alarma 2024 NO AGUANTA, sesgo 2025 SIN SESGO SE; a la hora de VOLCAT casi no dispara, 3 de 52 cuadros y todos el 08-11, y de noche se enciende hacia el flanco SE también en 2024, con el volcán tranquilo; con píxeles de 2 km la posición dentro de 15 km no se puede probar: ni VOLCAT un cuadro antes pasa el nulo)
 
 > Sesión S31h (worktree `s31h-corona-cercana-5641c5`, rama `claude/s31h-corona-cercana-5641c5`), lanzada por la
 > coordinadora S31 para la decisión 3 de S31e. Informe:

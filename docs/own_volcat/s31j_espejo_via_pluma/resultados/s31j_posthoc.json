@@ -1,0 +1,280 @@
+{
+ "rotulo": "POST HOC: después de la medida; no decide",
+ "curva_c": [
+  {
+   "c": -1.0,
+   "Sens_P": 93,
+   "P_nac": 80,
+   "FA_N_media_dia": 0.9040850191550933,
+   "FA_N_global": 0.9596142254370102,
+   "p_D": 0.0001,
+   "Tstar_media": 23.53775377537754,
+   "FA25_sin_compuerta_media_dia": 0.8322273955379704
+  },
+  {
+   "c": -1.25,
+   "Sens_P": 93,
+   "P_nac": 73,
+   "FA_N_media_dia": 0.8628647371882924,
+   "FA_N_global": 0.9517781796262809,
+   "p_D": 0.0001,
+   "Tstar_media": 23.41074107410741,
+   "FA25_sin_compuerta_media_dia": 0.746641016696719
+  },
+  {
+   "c": -1.5,
+   "Sens_P": 93,
+   "P_nac": 64,
+   "FA_N_media_dia": 0.8190635316242414,
+   "FA_N_global": 0.9065702230259193,
+   "p_D": 0.0001,
+   "Tstar_media": 23.118611861186118,
+   "FA25_sin_compuerta_media_dia": 0.5883914673935904
+  },
+  {
+   "c": -1.75,
+   "Sens_P": 93,
+   "P_nac": 47,
+   "FA_N_media_dia": 0.720599357285522,
+   "FA_N_global": 0.811332127787824,
+   "p_D": 0.0001,
+   "Tstar_media": 22.335433543354334,
+   "FA25_sin_compuerta_media_dia": 0.44848713050228933
+  },
+  {
+   "c": -2.0,
+   "Sens_P": 91,
+   "P_nac": 34,
+   "FA_N_media_dia": 0.5854901691651687,
+   "FA_N_global": 0.6383363471971067,
+   "p_D": 0.0001,
+   "Tstar_media": 18.059405940594058,
+   "FA25_sin_compuerta_media_dia": 0.3107334617709645
+  },
+  {
+   "c": -2.25,
+   "Sens_P": 84,
+   "P_nac": 22,
+   "FA_N_media_dia": 0.43347907926801016,
+   "FA_N_global": 0.45449065702230257,
+   "p_D": 0.0001,
+   "Tstar_media": 14.492549254925493,
+   "FA25_sin_compuerta_media_dia": 0.21458058666626884
+  },
+  {
+   "c": -2.5,
+   "Sens_P": 69,
+   "P_nac": 16,
+   "FA_N_media_dia": 0.26989226821970225,
+   "FA_N_global": 0.23508137432188064,
+   "p_D": 0.0001,
+   "Tstar_media": 7.455845584558456,
+   "FA25_sin_compuerta_media_dia": 0.14668941249739217
+  },
+  {
+   "c": -2.75,
+   "Sens_P": 33,
+   "P_nac": 10,
+   "FA_N_media_dia": 0.1377414493024734,
+   "FA_N_global": 0.12176009644364075,
+   "p_D": 0.0053,
+   "Tstar_media": 3.128012801280128,
+   "FA25_sin_compuerta_media_dia": 0.09037392123075468
+  },
+  {
+   "c": -3.0,
+   "Sens_P": 15,
+   "P_nac": 7,
+   "FA_N_media_dia": 0.053169838398919186,
+   "FA_N_global": 0.06570223025919228,
+   "p_D": 0.0816,
+   "Tstar_media": 2.7547754775477546,
+   "FA25_sin_compuerta_media_dia": 0.04615151160267835
+  },
+  {
+   "c": -3.25,
+   "Sens_P": 0,
+   "P_nac": 0,
+   "FA_N_media_dia": 0.0,
+   "FA_N_global": 0.0,
+   "p_D": 1.0,
+   "Tstar_media": 0.1632163216321632,
+   "FA25_sin_compuerta_media_dia": 0.00011770244821092278
+  }
+ ],
+ "curva_c_tarde_evaluables": [
+  {
+   "c": -1.0,
+   "P_tarde_eval": 87,
+   "P_tarde_pub": 87,
+   "N_tarde_media_dia": 0.9675886164060827,
+   "N_tarde_dias": 16,
+   "N_tarde_global": 0.9656084656084656,
+   "a2025_tarde_media_dia": 0.8639046864008278,
+   "a2025_tarde_dias": 49
+  },
+  {
+   "c": -1.25,
+   "P_tarde_eval": 87,
+   "P_tarde_pub": 87,
+   "N_tarde_media_dia": 0.9650886164060827,
+   "N_tarde_dias": 16,
+   "N_tarde_global": 0.9629629629629629,
+   "a2025_tarde_media_dia": 0.8320673063637392,
+   "a2025_tarde_dias": 49
+  },
+  {
+   "c": -1.5,
+   "P_tarde_eval": 87,
+   "P_tarde_pub": 87,
+   "N_tarde_media_dia": 0.9492190511886913,
+   "N_tarde_dias": 16,
+   "N_tarde_global": 0.9338624338624338,
+   "a2025_tarde_media_dia": 0.7053625802725971,
+   "a2025_tarde_dias": 49
+  },
+  {
+   "c": -1.75,
+   "P_tarde_eval": 87,
+   "P_tarde_pub": 87,
+   "N_tarde_media_dia": 0.9290404797601199,
+   "N_tarde_dias": 16,
+   "N_tarde_global": 0.917989417989418,
+   "a2025_tarde_media_dia": 0.5565406569724971,
+   "a2025_tarde_dias": 49
+  },
+  {
+   "c": -2.0,
+   "P_tarde_eval": 87,
+   "P_tarde_pub": 86,
+   "N_tarde_media_dia": 0.797645346181951,
+   "N_tarde_dias": 16,
+   "N_tarde_global": 0.7857142857142857,
+   "a2025_tarde_media_dia": 0.39244845640099646,
+   "a2025_tarde_dias": 49
+  },
+  {
+   "c": -2.25,
+   "P_tarde_eval": 87,
+   "P_tarde_pub": 79,
+   "N_tarde_media_dia": 0.6052622743250223,
+   "N_tarde_dias": 16,
+   "N_tarde_global": 0.6640211640211641,
+   "a2025_tarde_media_dia": 0.2652753359527521,
+   "a2025_tarde_dias": 49
+  },
+  {
+   "c": -2.5,
+   "P_tarde_eval": 87,
+   "P_tarde_pub": 68,
+   "N_tarde_media_dia": 0.2977195019975468,
+   "N_tarde_dias": 16,
+   "N_tarde_global": 0.2804232804232804,
+   "a2025_tarde_media_dia": 0.19094773273597357,
+   "a2025_tarde_dias": 49
+  },
+  {
+   "c": -2.75,
+   "P_tarde_eval": 87,
+   "P_tarde_pub": 32,
+   "N_tarde_media_dia": 0.15983579719513225,
+   "N_tarde_dias": 16,
+   "N_tarde_global": 0.1164021164021164,
+   "a2025_tarde_media_dia": 0.1145090940216684,
+   "a2025_tarde_dias": 49
+  },
+  {
+   "c": -3.0,
+   "P_tarde_eval": 87,
+   "P_tarde_pub": 15,
+   "N_tarde_media_dia": 0.051527149321266966,
+   "N_tarde_dias": 16,
+   "N_tarde_global": 0.031746031746031744,
+   "a2025_tarde_media_dia": 0.05700197222325733,
+   "a2025_tarde_dias": 49
+  },
+  {
+   "c": -3.25,
+   "P_tarde_eval": 87,
+   "P_tarde_pub": 0,
+   "N_tarde_media_dia": 0.0,
+   "N_tarde_dias": 16,
+   "N_tarde_global": 0.0,
+   "a2025_tarde_media_dia": 0.00037792894935752074,
+   "a2025_tarde_dias": 49
+  }
+ ],
+ "zmin_10km": {
+  "P": {
+   "n": 90,
+   "mediana": -1.7616223096847534,
+   "p10": -2.7774565935134885,
+   "frac_bajo_-3": 0.07777777777777778
+  },
+  "N": {
+   "n": 1604,
+   "mediana": -1.5379371643066406,
+   "p10": -2.4577226877212524,
+   "frac_bajo_-3": 0.02119700748129676
+  },
+  "otro": {
+   "n": 342,
+   "mediana": -1.7149654030799866,
+   "p10": -2.627452516555786,
+   "frac_bajo_-3": 0.02046783625730994
+  },
+  "2025_horas_P": {
+   "n": 1477,
+   "mediana": -1.244384527206421,
+   "p10": -2.4327388286590574,
+   "frac_bajo_-3": 0.01963439404197698
+  }
+ },
+ "auc_P_mas_bajo_que_N_horas_P": {
+  "auc": 0.6278135048231511,
+  "nP": 90,
+  "nN": 311,
+  "ic95_dias": [
+   0.4937775009966611,
+   0.7514938019066288
+  ]
+ },
+ "zmin_P_por_dia": {
+  "2026-10-24": [
+   -1.77,
+   1
+  ],
+  "2026-10-25": [
+   -2.31,
+   4
+  ],
+  "2026-10-28": [
+   -1.53,
+   25
+  ],
+  "2026-10-29": [
+   -2.16,
+   5
+  ],
+  "2026-11-07": [
+   -2.34,
+   1
+  ],
+  "2026-11-08": [
+   -1.66,
+   13
+  ],
+  "2026-11-10": [
+   -2.76,
+   7
+  ],
+  "2026-11-11": [
+   -1.37,
+   3
+  ],
+  "2026-11-14": [
+   -2.01,
+   31
+  ]
+ }
+}

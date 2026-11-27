@@ -1,0 +1,91 @@
+  referencia {'id': 'S2B_19HBV_20261123_0_L2A', 'fecha': '2026-11-23T14:53:08.312000Z', 'celdas_aportadas': 706102}
+  referencia {'id': 'LC09_L2SP_233085_20261118_02_T1', 'fecha': '2026-11-18T14:34:36.616774Z', 'celdas_aportadas': 165066}
+{
+ "objetivo": "S2C_19HBV_20261125_0_L2A",
+ "hora_utc": "2026-11-25T14:43:10.494000Z",
+ "nube_catalogo": 0.24466,
+ "sol_azimut": 64.4,
+ "sol_elevacion": 61.2,
+ "frac_nieve_ref_15km": 0.05,
+ "frac_nieve_ref_0_5km": 0.243,
+ "scl_nube_0_15km": 0.0066,
+ "scl_nube_0_5km": 0.048,
+ "celdas_mascara": 1893,
+ "area_mascara_km2": 1.704,
+ "area_mascara_0_6km_km2": 1.571,
+ "forma": {
+  "area_km2": 1.704,
+  "largo_km_p2_p98": 6.59,
+  "ancho_km_p2_p98": 2.05,
+  "azimut_eje_grados_0_180": 169.5,
+  "azimut_centroide_desde_crater": 357.0,
+  "dist_centroide_km": 1.59,
+  "dist_max_km": 10.39,
+  "dist_min_km": 0.28
+ },
+ "altura_sombra": {
+  "valida": true,
+  "d_m": 300.0,
+  "mediana_rojo_rel": 0.471,
+  "angulo_eje_sombra": 74.9,
+  "h_sobre_terreno_m": 546,
+  "cota_sombra_m": 2618,
+  "H_m": 3163,
+  "azimut_sombra": 244.4
+ },
+ "componentes": 17,
+ "componentes_mas_cercanos": [
+  {
+   "celdas": 1502,
+   "dist_min_km": 0.28,
+   "azimut_centroide": 0.5
+  },
+  {
+   "celdas": 16,
+   "dist_min_km": 0.9,
+   "azimut_centroide": 287.8
+  },
+  {
+   "celdas": 21,
+   "dist_min_km": 1.41,
+   "azimut_centroide": 274.8
+  },
+  {
+   "celdas": 5,
+   "dist_min_km": 1.46,
+   "azimut_centroide": 239.7
+  },
+  {
+   "celdas": 5,
+   "dist_min_km": 4.09,
+   "azimut_centroide": 312.2
+  },
+  {
+   "celdas": 10,
+   "dist_min_km": 4.58,
+   "azimut_centroide": 3.7
+  },
+  {
+   "celdas": 11,
+   "dist_min_km": 5.39,
+   "azimut_centroide": 3.6
+  },
+  {
+   "celdas": 148,
+   "dist_min_km": 5.42,
+   "azimut_centroide": 357.7
+  },
+  {
+   "celdas": 14,
+   "dist_min_km": 5.61,
+   "azimut_centroide": 4.3
+  },
+  {
+   "celdas": 8,
+   "dist_min_km": 5.74,
+   "azimut_centroide": 354.2
+  }
+ ]
+}
+referencia {'id': 'S2B_19HBV_20261123_0_L2A', 'fecha': '2026-11-23T14:53:08.312000Z', 'celdas_aportadas': 706102}
+referencia {'id': 'LC09_L2SP_233085_20261118_02_T1', 'fecha': '2026-11-18T14:34:36.616774Z', 'celdas_aportadas': 165066}

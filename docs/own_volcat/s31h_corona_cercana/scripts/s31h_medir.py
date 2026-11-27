@@ -432,9 +432,9 @@ def tramo(T, pesos, etiqueta, rng_semilla=SEMILLA):
         r = renombrar(prueba(its, donantes, rng, MIEMBROS_C, pesos, uniforme_extra=True))
         o = renombrar(prueba(ois, donantes, rng, MIEMBROS_C, pesos, uniforme_extra=True))
         out[per] = {"detector": r, "oraculo": o}
-        fmt = {m: (v["T"], v["G"]["p"], v.get("Gu", {}).get("p"), v["R"]["p"], v["D"]["p"])
+        fmt = {m: (v["T"], v.get("G", {}).get("p"), v.get("Gu", {}).get("p"), v["R"]["p"], v["D"]["p"])
                for m, v in r.get("medidas", {}).items()}
-        fmo = {m: (v["T"], v["G"]["p"], v["R"]["p"]) for m, v in o.get("medidas", {}).items()}
+        fmo = {m: (v["T"], v.get("G", {}).get("p"), v["R"]["p"]) for m, v in o.get("medidas", {}).items()}
         print(f"  tramo {etiqueta} {per}: n {r['n']} días {r.get('dias')} | (T, pGc, pG, pR, pD) {fmt}", flush=True)
         print(f"     oráculo n {o['n']}: {fmo} ({time.time() - t:.0f} s)", flush=True)
     out["P_con_huella"] = sum(len(v) for v in donantes.values())

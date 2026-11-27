@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-27 (S31f, bloque "## 0." abajo; S31h queda como 0-prev41, S31g como 0-prev40, S31e como 0-prev39, S31d como 0-prev38, S31c como 0-prev37, S31b como 0-prev36, S31a como 0-prev35, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-27 (S31i, bloque "## 0." abajo; S31f queda como 0-prev42, S31h como 0-prev41, S31g como 0-prev40, S31e como 0-prev39, S31d como 0-prev38, S31c como 0-prev37, S31b como 0-prev36, S31a como 0-prev35, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,69 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S31f, 2026-11-27 (la pluma de Chillán en luz reflejada junto al cráter, C02 y C05 contra cada píxel en 2025: SIN PODER en la huella de VOLCAT y en la zona de 0 a 15 km; la huella no se aparta hacia la ceniza, y su flanco SE tiene más nieve que en 2025 con o sin VOLCAT; en oct-nov 2026 casi toda tarde despejada en la cumbre es tarde con VOLCAT, así que no hay días sin VOLCAT con qué comparar)
+## 0. S31i, 2026-11-27 (la cumbre de Antuco de día: NI NUBE NI CONTROLES; cuando dispara es un día común. Post hoc, lo que cambia de un año a otro es la nieve: en 2024 y 2026 la cumbre tiene más nieve que en 2025, el año de la base, su BTD de día queda corrida hacia abajo todo el día, más al mediodía, y el umbral de 2025 se cruza solo; las cinco parejas cumbre y año lo siguen)
+
+> Sesión S31i (worktree `s31i-antuco-dia-dbaaf8`, rama `claude/s31i-antuco-dia-dbaaf8`), lanzada por la coordinadora S31.
+> Informe: `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s31i_antuco_dia\INFORME.md`.
+> Criterio `097b10d` (27-11 04:24 UTC), empujado antes de cruzar disparos con covariables; medida única `ed3e511`. Días
+> 21-09 a 21-11 de 2024, 2025 y 2026; ninguno posterior al 24-11-2026; detector y confirmaciones sin tocar. La primera
+> corrida se cortó (bajada caída a las 04:51 UTC, reinicio del PC a las 12:34 UTC) sin dar ninguna cifra; se relanzó y
+> corrió una vez completa. PR abierto contra `main`; lo revisa la coordinadora.
+
+### a. Todo en una pantalla
+
+| Qué | Estado | Evidencia |
+|---|---|---|
+| Comprobación de código | Reproduce exacto los conteos de día de la zona de Antuco: 2026 138 de 1.467 (S28a), 2024 176 de 2.273 y 2025 62 de 2.410 (S29b) | `resultados/s31i_resultado.json` |
+| Luz reflejada propia | C03 (0,86 µm) y C05 (1,6 µm) a 1 km, franja Longaví a Antuco, cada 20 min de día: 6.094 cuadros, 0,2 GB | `D:\goes_notas\s31\s31i\l1b\` |
+| (a) nube baja | **NO SE SOSTIENE**: los cuadros que disparan no brillan a 1,6 µm más que la misma hora de otros días (T1 +0,064 contra nulo +0,036, p 0,11 con piso 0,0005); 10 de 38 días nublados, 23 despejados | M1, M2 |
+| (b) nieve-roca, por disparo | **NO SE SOSTIENE**: tampoco son más despejados que un día común | M1 |
+| (c) término regional | **NO SE SOSTIENE**: la cumbre pone 85 % de la caída (share 0,15; IC 0,04 a 0,41) | M3 |
+| Nieve de la cumbre (lectura) | Antuco 0,81 en 2024 y 2026 contra 0,63 en 2025 (GOES mismo, igual que S29a con Sentinel) | M4 |
+| Post hoc, cinco parejas cumbre y año | Más nieve que 2025 = S de día más bajo todo el año = más disparos: Antuco 26 (+0,18; −0,10 K; ×3,9), Antuco 24 (+0,18; −0,27 K; ×3,0), Longaví 24 (+0,17; −0,23 K; ×2,9), Longaví 26 (+0,13; −0,06 K; ×1,4), Chillán 24 (+0,03; 0,00 K; ×0,26). El corrimiento es máximo de 15 a 19 UTC | `resultados/s31i_posthoc.json` |
+
+### b. Decisiones que esperan a Nicolás
+
+| # | Pregunta | Recomendación |
+|---|---|---|
+| 1 | ¿Dejar de usar Antuco y Longaví como placebo diurno de la zona del cráter cuando su nieve difiere de la de 2025? | Sí: su exceso diurno es nieve contra la base, no dice nada de Chillán |
+| 2 | ¿Probar con criterio previo que la nieve corre la BTD de día de la cumbre (otras cumbres con nieve variable, u otro año que nadie miró)? | Sólo si la zona diurna va a usarse en otra cumbre; para Chillán la cumbre está 91 a 95 % nevada los tres años y no se corre |
+| 3 | Si algún detector mira de día el flanco SE de Chillán (S31f: más nieve que en 2025), ¿corregir la base por nieve antes de medir? | Sí, decidido antes del dato |
+
+### c. Lo aprendido
+
+- **Una base de un solo año en una cumbre con nieve variable no es estable de día** (proyecto, método): la roca al sol
+  sube la BTD por contraste térmico; más nieve la baja todo el día, más al mediodía. El umbral del percentil 4,75 de ese
+  año se cruza solo otro año. De noche las tres cumbres aguantan (S29b); por qué, no lo medí.
+- **Los días que disparan pueden ser días comunes** (método): antes de buscar un evento por cuadro, mirar si el año
+  entero está corrido contra la base (mediana diaria de S por año).
+- **La máscara ACM marca la cumbre nevada como nube casi siempre** (ya visto en S20b): no sirve para decidir nube en una
+  cumbre.
+
+### d. Problemas abiertos e hipótesis
+
+- **REFUTADO:** que la falsa alarma diurna de Antuco sea nube baja o niebla sin máscara (S28a, S29a la dejaban abierta).
+- **REFUTADO:** que la pongan los controles lejanos de la corrección regional.
+- **SOSPECHA (post hoc, cinco puntos):** la nieve de la cumbre contra la del año de la base decide la tasa diurna de la
+  zona en cumbres sin pluma; Chillán no lo sufre porque está siempre nevada.
+
+### e. Prompt para la próxima sesión
+
+```
+Retoma el proyecto Goes (C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes, repo
+MendozaVolcanic/goes-volcanic-monitoring, deploy sólo HF). Usa /retomar.
+1. Lee STATUS.md "## 0." (S31i) y docs/own_volcat/s31i_antuco_dia/INFORME.md.
+2. Si Nicolás lo pide (decisión 2): criterio previo para probar que la nieve de la cumbre corre la BTD de día, con
+   cumbres de nieve variable o un año que nadie miró; luz reflejada con s31i_bajar.py (cambiar WIN2 y PERIODOS) y la
+   tabla de s31i_medir.optica.
+3. Reglas: español de Chile sin voseo ni guiones largos ni medios (contar con Python); rutas absolutas; no VIIRS; la
+   carpeta principal no se toca; nada de SSEC al repo; criterio antes de medir; ningún día posterior al 24-11 con el
+   detector; el día es la unidad; python -I -B.
+```
+
+---
+
+## 0-prev42. S31f, 2026-11-27 (la pluma de Chillán en luz reflejada junto al cráter, C02 y C05 contra cada píxel en 2025: SIN PODER en la huella de VOLCAT y en la zona de 0 a 15 km; la huella no se aparta hacia la ceniza, y su flanco SE tiene más nieve que en 2025 con o sin VOLCAT; en oct-nov 2026 casi toda tarde despejada en la cumbre es tarde con VOLCAT, así que no hay días sin VOLCAT con qué comparar)
 
 > Sesión S31f (worktree `s31f-luz-reflejada-crater-8ed79c`, rama `claude/s31f-luz-reflejada-crater-8ed79c`), lanzada por
 > la coordinadora S31 con el "lo que recomiendes" de Nicolás del 27-11. Informe:

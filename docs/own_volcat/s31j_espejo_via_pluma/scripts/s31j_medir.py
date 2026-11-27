@@ -366,7 +366,7 @@ def medir():
     libre = shutil.disk_usage("D:\\").free / 1e9
     assert libre > MIN_LIBRE_GB + 1, f"D: con {libre:.1f} GB"
     pruebas()
-    res = {"criterio": "criterio_2026-11-27.md (e29dd33) y enmienda_1_antes_de_medir_2026-11-27.md",
+    res = {"criterio": "criterio_2026-11-27.md (e29dd33) y enmienda_1 y enmienda_2_antes_de_medir_2026-11-27.md",
            "rotulo_desarrollo": "DESARROLLO: días de 2024, 2025 y 2026 (hasta el 24-11) ya vistos; nada de esto confirma"}
     est26 = np.load(A26.ESTAT26)
     assert hashlib.sha256(est26.tobytes()).hexdigest()[:16] == A26.SHA_ESTAT26, "estat_2026 no es el congelado"
@@ -403,13 +403,33 @@ def medir():
     print(f"z de los tres años lista ({time.time() - t0:.0f} s)", flush=True)
     CI = np.flatnonzero(AD < 15.0)
     ref = np.load(CORONA_S31H)
-    dif, mismas = 0.0, True
+    # enmienda 2: tamaño del pozo propio de cada celda de la corona (2025 sin el día evaluado; 2026 y 2024, 62 días)
+    FP = E31.filas_pozo(D.GATER, D.DIASR)
+    R0c = (D.mmR - B0[None])[:, :, CI]
+    npozo_tot = np.zeros((144, len(CI)), int)
+    npozo_dia = np.zeros((len(D.DIASR), 144, len(CI)), int)
+    for s in range(144):
+        f = FP[s]
+        npozo_tot[s] = np.isfinite(R0c[f[:, 0], f[:, 1]]).sum(0)
+    for d in D.DIASR:                                  # en 2025 el pozo usa la base sin el día (anio_2025)
+        Rd = (D.mmR - D.base(d)[None])[:, :, CI]
+        for s in range(144):
+            f = FP[s]
+            f = f[f[:, 0] != d]
+            npozo_dia[d, s] = np.isfinite(Rd[f[:, 0], f[:, 1]]).sum(0)
+    dif, mismas, mal_b = 0.0, True, 0
     for nom, Zx in (("Z25", Z25), ("Z26", Z26), ("Z24", Z24)):
         a, b = Zx[:, :, CI], ref[nom]
         mismas &= bool(np.array_equal(np.isfinite(a), np.isfinite(b)))
+        npz = npozo_dia if nom == "Z25" else np.broadcast_to(npozo_tot[None], a.shape)
         x = np.abs(a - b)
-        dif = max(dif, float(np.nanmax(x)) if np.isfinite(x).any() else 0.0)
-    rep["2_corona_dif_max"], rep["2_corona_mismas_posiciones"] = dif, mismas
+        propio = npz >= E31.MIN_POZO_PIX
+        xa = np.where(propio, x, np.nan)
+        dif = max(dif, float(np.nanmax(xa)) if np.isfinite(xa).any() else 0.0)
+        mal_b += int((np.isfinite(x) & (x > 1e-6) & propio).sum())
+        rep[f"2_{nom}_celdas_distintas"] = int((np.isfinite(x) & (x > 1e-6)).sum())
+    rep["2_corona_dif_max_pozo_propio"], rep["2_corona_mismas_posiciones"] = dif, mismas
+    rep["2b_distintas_con_pozo_propio"] = mal_b
     # 3: indicador de calor contra la validación. Guarda operativa: no se lee el calor hasta que la bajada termine.
     log = os.path.join(os.environ["VN_DIR"], "bajar.log")
     while "FIN" not in open(log, encoding="utf-8", errors="replace").read():
@@ -429,7 +449,7 @@ def medir():
             enc_ok += (val[n]["enc"] == "True") == bool(mio[n].enc)
             n10_ok += int(val[n]["n10"]) == int(mio[n].n10)
     rep["3_noches_comparadas"], rep["3_enc_iguales"], rep["3_n10_iguales"] = n_cmp, enc_ok, n10_ok
-    ok = (m1 == 0 and dif <= 1e-6 and mismas and n_cmp == len(comp) and enc_ok == n_cmp
+    ok = (m1 == 0 and dif <= 1e-6 and mismas and mal_b == 0 and n_cmp == len(comp) and enc_ok == n_cmp
           and n10_ok >= 0.9 * n_cmp)
     rep["4_sinteticas"] = "OK"
     print("comprobación de código:", json.dumps(rep, ensure_ascii=False), "OK" if ok else "NO REPRODUCE", flush=True)

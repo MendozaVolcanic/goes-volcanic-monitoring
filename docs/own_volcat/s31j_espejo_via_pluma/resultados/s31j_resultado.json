@@ -1,0 +1,579 @@
+{
+ "criterio": "criterio_2026-11-27.md (e29dd33) y enmienda_1 y enmienda_2_antes_de_medir_2026-11-27.md",
+ "rotulo_desarrollo": "DESARROLLO: días de 2024, 2025 y 2026 (hasta el 24-11) ya vistos; nada de esto confirma",
+ "comprobacion": {
+  "1_S_congelado_distintos": 0,
+  "2_Z25_celdas_distintas": 34,
+  "2_Z26_celdas_distintas": 550,
+  "2_Z24_celdas_distintas": 588,
+  "2_corona_dif_max_pozo_propio": 0.0,
+  "2_corona_mismas_posiciones": true,
+  "2b_distintas_con_pozo_propio": 0,
+  "3_bajada": [
+   "falta 20260930_0230 [(7, None), (14, None)]",
+   "falta 20261006_0030 [(7, None)]",
+   "falta 20261102_2330 [(7, None)]",
+   "FIN 3408 2109s"
+  ],
+  "3_noches_comparadas": 15,
+  "3_enc_iguales": 15,
+  "3_n10_iguales": 15,
+  "4_sinteticas": "OK"
+ },
+ "calor": {
+  "noches_2025": 84,
+  "con_dato_2025": 52,
+  "encendidas_2025": 0,
+  "noches_2026": 58,
+  "con_dato_2026": 35,
+  "encendidas_2026": 23,
+  "encendidas_lista_2026": [
+   "2026-10-12",
+   "2026-10-15",
+   "2026-10-16",
+   "2026-10-17",
+   "2026-10-18",
+   "2026-10-25",
+   "2026-10-26",
+   "2026-10-27",
+   "2026-10-28",
+   "2026-10-29",
+   "2026-10-30",
+   "2026-10-31",
+   "2026-11-07",
+   "2026-11-08",
+   "2026-11-09",
+   "2026-11-10",
+   "2026-11-11",
+   "2026-11-12",
+   "2026-11-13",
+   "2026-11-14",
+   "2026-11-22",
+   "2026-11-23",
+   "2026-11-24"
+  ],
+  "encendidas_lista_2025": [],
+  "compuerta_abierta_frac_2025": 0.0,
+  "compuerta_abierta_frac_2026_con_clase": 1.0,
+  "P_con_compuerta_cerrada": 0
+ },
+ "calibracion": {
+  "c_62_dias": -3.25,
+  "c_por_dia": [
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25,
+   -3.25
+  ],
+  "tabla_sin_compuerta_2025": {
+   "-1.00": {
+    "media_dia": 0.8322273955379704,
+    "global": 0.9005454545454545
+   },
+   "-1.25": {
+    "media_dia": 0.746641016696719,
+    "global": 0.8190909090909091
+   },
+   "-1.50": {
+    "media_dia": 0.5883914673935904,
+    "global": 0.6376363636363637
+   },
+   "-1.75": {
+    "media_dia": 0.44848713050228933,
+    "global": 0.49672727272727274
+   },
+   "-2.00": {
+    "media_dia": 0.3107334617709645,
+    "global": 0.34454545454545454
+   },
+   "-2.25": {
+    "media_dia": 0.21458058666626884,
+    "global": 0.24745454545454545
+   },
+   "-2.50": {
+    "media_dia": 0.14668941249739217,
+    "global": 0.1750909090909091
+   },
+   "-2.75": {
+    "media_dia": 0.09037392123075468,
+    "global": 0.11181818181818182
+   },
+   "-3.00": {
+    "media_dia": 0.04615151160267835,
+    "global": 0.05763636363636364
+   },
+   "-3.25": {
+    "media_dia": 0.00011770244821092278,
+    "global": 0.0001818181818181818
+   }
+  }
+ },
+ "fa_2025_con_compuerta": {
+  "media_dia": 0.0,
+  "global": 0.0,
+  "dias": 59,
+  "dias_con_publicado": 0,
+  "publicados": 0,
+  "evaluables": 5500,
+  "media_dia_ic95": [
+   0.0,
+   0.0
+  ]
+ },
+ "fa_2025_sin_compuerta": {
+  "media_dia": 0.00011770244821092278,
+  "global": 0.0001818181818181818,
+  "dias": 59,
+  "dias_con_publicado": 1,
+  "publicados": 1,
+  "evaluables": 5500,
+  "media_dia_ic95": [
+   0.0,
+   0.00035310734463276836
+  ]
+ },
+ "fa_2024_sin_compuerta": {
+  "media_dia": 0.002437703141928494,
+  "global": 0.0020422055820285907,
+  "dias": 52,
+  "dias_con_publicado": 1,
+  "publicados": 9,
+  "evaluables": 4407,
+  "media_dia_ic95": [
+   0.0,
+   0.007313109425785482
+  ]
+ },
+ "principal": {
+  "P_total": 100,
+  "P_evaluables": 93,
+  "P_dias_evaluables": 9,
+  "P_publicados": 0,
+  "Sens_P": 0.0,
+  "Sens_P_evaluables": 0.0,
+  "Sens_P_por_dia": {
+   "2026-10-22": [
+    0,
+    1,
+    0
+   ],
+   "2026-10-24": [
+    0,
+    1,
+    1
+   ],
+   "2026-10-25": [
+    0,
+    4,
+    4
+   ],
+   "2026-10-28": [
+    0,
+    26,
+    26
+   ],
+   "2026-10-29": [
+    0,
+    6,
+    6
+   ],
+   "2026-11-07": [
+    0,
+    1,
+    1
+   ],
+   "2026-11-08": [
+    0,
+    13,
+    13
+   ],
+   "2026-11-10": [
+    0,
+    12,
+    8
+   ],
+   "2026-11-11": [
+    0,
+    3,
+    3
+   ],
+   "2026-11-14": [
+    0,
+    33,
+    31
+   ]
+  },
+  "FA_N": {
+   "media_dia": 0.0,
+   "media_dia_ic95": [
+    0.0,
+    0.0
+   ],
+   "global": 0.0,
+   "dias": 29,
+   "publicados": 0,
+   "evaluables": 1659
+  },
+  "FA_otro": {
+   "media_dia": 0.0031746031746031746,
+   "media_dia_ic95": [
+    0.0,
+    0.009523809523809523
+   ],
+   "global": 0.0028169014084507044,
+   "dias": 15,
+   "publicados": 1,
+   "evaluables": 355
+  },
+  "sin_clase_publicados": 0,
+  "P_nacimiento": 0,
+  "P_solo_arrastre": 0,
+  "N_nacimiento": 0,
+  "N_solo_arrastre": 0,
+  "nulo_D": {
+   "T": 0,
+   "n_P": 100,
+   "dias_P": 10,
+   "donantes": 24,
+   "configuraciones": 63403380965376.0,
+   "p": 1.0,
+   "Tstar_media": 0.1632163216321632,
+   "Tstar_p95": 1.0
+  },
+  "solape": {
+   "n": 0,
+   "H": 0,
+   "decide": false
+  }
+ },
+ "veredicto": "NO REPRODUCE (Sens_P < 0,50 y p_D > 0,01)",
+ "sin_compuerta_2026": {
+  "P_total": 100,
+  "P_evaluables": 93,
+  "P_dias_evaluables": 9,
+  "P_publicados": 0,
+  "Sens_P": 0.0,
+  "Sens_P_evaluables": 0.0,
+  "Sens_P_por_dia": {
+   "2026-10-22": [
+    0,
+    1,
+    0
+   ],
+   "2026-10-24": [
+    0,
+    1,
+    1
+   ],
+   "2026-10-25": [
+    0,
+    4,
+    4
+   ],
+   "2026-10-28": [
+    0,
+    26,
+    26
+   ],
+   "2026-10-29": [
+    0,
+    6,
+    6
+   ],
+   "2026-11-07": [
+    0,
+    1,
+    1
+   ],
+   "2026-11-08": [
+    0,
+    13,
+    13
+   ],
+   "2026-11-10": [
+    0,
+    12,
+    8
+   ],
+   "2026-11-11": [
+    0,
+    3,
+    3
+   ],
+   "2026-11-14": [
+    0,
+    33,
+    31
+   ]
+  },
+  "FA_N": {
+   "media_dia": 0.0,
+   "media_dia_ic95": [
+    0.0,
+    0.0
+   ],
+   "global": 0.0,
+   "dias": 29,
+   "publicados": 0,
+   "evaluables": 1659
+  },
+  "FA_otro": {
+   "media_dia": 0.0031746031746031746,
+   "media_dia_ic95": [
+    0.0,
+    0.009523809523809523
+   ],
+   "global": 0.0028169014084507044,
+   "dias": 15,
+   "publicados": 1,
+   "evaluables": 355
+  },
+  "sin_clase_publicados": 0,
+  "P_nacimiento": 0,
+  "P_solo_arrastre": 0,
+  "N_nacimiento": 0,
+  "N_solo_arrastre": 0,
+  "nulo_D": {
+   "T": 0,
+   "n_P": 100,
+   "dias_P": 10,
+   "donantes": 24,
+   "configuraciones": 63403380965376.0,
+   "p": 1.0,
+   "Tstar_media": 0.1632163216321632,
+   "Tstar_p95": 1.0
+  },
+  "solape": {
+   "n": 0,
+   "H": 0,
+   "decide": false
+  }
+ },
+ "S1": {
+  "P_total": 100,
+  "P_evaluables": 93,
+  "P_dias_evaluables": 9,
+  "P_publicados": 0,
+  "Sens_P": 0.0,
+  "Sens_P_evaluables": 0.0,
+  "Sens_P_por_dia": {
+   "2026-10-22": [
+    0,
+    1,
+    0
+   ],
+   "2026-10-24": [
+    0,
+    1,
+    1
+   ],
+   "2026-10-25": [
+    0,
+    4,
+    4
+   ],
+   "2026-10-28": [
+    0,
+    26,
+    26
+   ],
+   "2026-10-29": [
+    0,
+    6,
+    6
+   ],
+   "2026-11-07": [
+    0,
+    1,
+    1
+   ],
+   "2026-11-08": [
+    0,
+    13,
+    13
+   ],
+   "2026-11-10": [
+    0,
+    12,
+    8
+   ],
+   "2026-11-11": [
+    0,
+    3,
+    3
+   ],
+   "2026-11-14": [
+    0,
+    33,
+    31
+   ]
+  },
+  "FA_N": {
+   "media_dia": 0.041745036572622775,
+   "media_dia_ic95": [
+    0.0,
+    0.11739811912225705
+   ],
+   "global": 0.04159132007233273,
+   "dias": 29,
+   "publicados": 69,
+   "evaluables": 1659
+  },
+  "FA_otro": {
+   "media_dia": 0.04126984126984127,
+   "media_dia_ic95": [
+    0.0,
+    0.12380952380952381
+   ],
+   "global": 0.036619718309859155,
+   "dias": 15,
+   "publicados": 13,
+   "evaluables": 355
+  },
+  "sin_clase_publicados": 3,
+  "P_nacimiento": 0,
+  "P_solo_arrastre": 0,
+  "N_nacimiento": 0,
+  "N_solo_arrastre": 69,
+  "nulo_D": {
+   "T": 0,
+   "n_P": 100,
+   "dias_P": 10,
+   "donantes": 24,
+   "configuraciones": 63403380965376.0,
+   "p": 1.0,
+   "Tstar_media": 2.3766376637663766,
+   "Tstar_p95": 16.0
+  },
+  "solape": {
+   "n": 0,
+   "H": 0,
+   "decide": false
+  },
+  "fa_2025_sin_compuerta": {
+   "media_dia": 0.012620811569484419,
+   "global": 0.009818181818181818,
+   "dias": 59,
+   "dias_con_publicado": 2,
+   "publicados": 54,
+   "evaluables": 5500
+  },
+  "fa_2024_sin_compuerta": {
+   "media_dia": 0.0029794149512459367,
+   "global": 0.002496029044701611,
+   "dias": 52,
+   "dias_con_publicado": 1,
+   "publicados": 11,
+   "evaluables": 4407
+  }
+ },
+ "descriptivos": {
+  "P_publicados_dia_noche": [
+   0,
+   0
+  ],
+  "N_publicados_dia_noche": [
+   0,
+   0
+  ],
+  "dist_nacimiento_km_2026": [
+   6.225131004838659
+  ],
+  "dist_nacimiento_km_2025_sin_compuerta": [
+   6.225131004838659
+  ],
+  "nacimientos_volcat": {
+   "2026-11-13 19:00": {
+    "clase": "otro",
+    "evaluable": true,
+    "calor": true,
+    "publicado": false,
+    "tipo": 0,
+    "z_min_10km": -2.396415948867798
+   },
+   "2026-11-14 12:40": {
+    "clase": "otro",
+    "evaluable": false,
+    "calor": true,
+    "publicado": false,
+    "tipo": 0,
+    "z_min_10km": null
+   },
+   "2026-11-14 16:30": {
+    "clase": "otro",
+    "evaluable": true,
+    "calor": true,
+    "publicado": false,
+    "tipo": 0,
+    "z_min_10km": -2.983577013015747
+   },
+   "2026-11-18 10:10": {
+    "clase": "otro",
+    "evaluable": false,
+    "calor": true,
+    "publicado": false,
+    "tipo": 0,
+    "z_min_10km": null
+   }
+  }
+ },
+ "segundos": 784
+}

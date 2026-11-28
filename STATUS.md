@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-27 (coordinadora S31, bloque "## 0." abajo; S31i queda como 0-prev43 y las demás hijas de S31 de 0-prev35 a 0-prev42, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-27 (S31j, bloque "## 0." abajo; la coordinadora S31 queda como 0-prev44, S31i como 0-prev43 y las demás hijas de S31 de 0-prev35 a 0-prev42, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,33 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S31 (coordinadora), 2026-11-27 (nueve PR de desarrollo en main: el anillo del detector coincide con VOLCAT en hora y rumbo pero marca la cordillera alta, no la pluma junto al cráter; ni el infrarrojo de 2 km ni la luz reflejada ven el tramo de 0 a 15 km; lo que decide en VOLCAT es su vía pluma/bocanada, que S31j imita y sigue corriendo; la confirmación en días nuevos sigue sin medirse)
+## 0. S31j, 2026-11-27 (espejo de la vía pluma/bocanada de VOLCAT: NO REPRODUCE; con calor en el cráter, objeto de un píxel anclado a 10 km y el seguimiento de VOLCAT, a la falsa alarma del detector congelado no publica ninguno de los 100 cuadros en que VOLCAT dibujó la pluma de Chillán; el calor estuvo encendido en todos ellos y el seguimiento no tuvo qué seguir: falta el nacimiento, que no es público ni sale del IR de 2 km)
+
+> Sesión S31j (worktree `s31j-espejo-via-pluma-382c61`, rama `claude/s31j-espejo-via-pluma-382c61`), lanzada por la
+> coordinadora S31 tras la pregunta de Nicolás del 27-11 ("¿no son códigos más simples?"). Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s31j_espejo_via_pluma\INFORME.md`.
+> Criterio `e29dd33`, enmiendas `d82e697` y `9d0383b`, todas empujadas antes de calcular un solo cuadro del espejo. Dos
+> corridas: la 1 paró en la comprobación de código (pozo de respaldo distinto entre S31e y S31h, 6 a 8 píxeles de tarde),
+> la 2 completa. DESARROLLO: ningún día GOES posterior al 24-11; nada de confirmación.
+
+| Qué | Resultado |
+|---|---|
+| Lectura nueva | La cabecera de los registros `geocatASHOBJ` de SSEC trae los umbrales de la vía pluma: objeto mínimo **1 píxel** (5 en la básica), emisividad mediana máxima **0,5** (sólo objetos tenues), calor en la historia **15 días**; el nacimiento aceptado de Kirishima tenía BTD más alta que su entorno (no entra por firma) |
+| Compuerta de calor (VRP nocturno validado) | 2026: 23 noches encendidas desde el 12-10, abierta en el 100 % de los cuadros con clase y en los 100 P. 2025: 0 de 52 noches con dato |
+| Umbral del píxel por la falsa alarma de 2025 | c = −3,25 (más raro que todo 2025 a esa hora); −3,00 daba 0,046 por día, sobre el 0,040 permitido |
+| Parecido con VOLCAT en 2026 | 0 de 100 P (93 evaluables), 0 N; un solo cuadro publicado en todo 2026 (13-11 19:50, dentro del VCB de VOLCAT). p_D 1,0 |
+| Falsa alarma 2025 y 2024 | 2025 con compuerta 0; sin compuerta 0,0001 por día; 2024 sin compuerta 0,0024 |
+| Sensibilidad S1 (seguimiento laxo) | 0 P; el único nacimiento se arrastra 14 h de noche (69 N); FA_N 0,042 |
+| Post hoc (no decide) | Con c más laxo sí publica más en P que en N: entre tardes despejadas, a −2,5 78 % de P contra 30 % de N y 19 % de 2025; la z mínima anclada separa poco (AUC 0,63, IC 0,49 a 0,75). La grilla de c cruzó la saturación de T1 (defecto declarado; con −3,00 tampoco reproduce: 15 P, p_D 0,08) |
+
+**Para Nicolás.** No es un código más simple con las piezas que conocemos: el calor y el seguimiento de VOLCAT ya están en
+el espejo y no alcanzan, porque nuestro IR de 2 km no tiene con qué abrir la pluma junto al cráter sin abrir también una
+de cada cinco tardes tranquilas. Lo que VOLCAT usa para abrirla (pruebas de color "RGB1/RGB2", "time trend", lista de
+volcanes activos) no es público. **Recomendación:** sumar al correo v6 a Pavolonis esas tres preguntas y si Chillán está
+en `active_volcano_list.txt`; no insistir con nacimientos por BTD a 2 km; un VOLCAT propio para Chillán necesitaría el
+nacimiento desde otra medida (cámaras del OVDAS o REAV) y podría usar el seguimiento H28 para llevarlo.
+
+## 0-prev44. S31 (coordinadora), 2026-11-27 (nueve PR de desarrollo en main: el anillo del detector coincide con VOLCAT en hora y rumbo pero marca la cordillera alta, no la pluma junto al cráter; ni el infrarrojo de 2 km ni la luz reflejada ven el tramo de 0 a 15 km; lo que decide en VOLCAT es su vía pluma/bocanada, que S31j imita y sigue corriendo; la confirmación en días nuevos sigue sin medirse)
 
 > Sesión S31, coordinadora dueña del ciclo (worktree `s31-coordinacion-8a45a6`, rama `claude/s31-coordinacion-8a45a6`),
 > lanzada por la coordinadora S28 el 26-11. Lanzó S31a a S31j; revisó y fusionó los PR 142 a 150 con

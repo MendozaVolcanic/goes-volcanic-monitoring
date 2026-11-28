@@ -1,0 +1,255 @@
+{
+ "enmienda": "s30a_enmienda/enmienda_2026-11-26.md",
+ "alfa": 0.001,
+ "dias": [
+  "2026-11-24",
+  "2026-11-25",
+  "2026-11-26",
+  "2026-11-27"
+ ],
+ "arranque_sin_contar": "2026-11-24",
+ "cobertura": {
+  "dias": [
+   {
+    "dia": "2026-11-24",
+    "l1b": 1.0,
+    "acmf": 1.0,
+    "P": 0,
+    "P_evaluables": 0
+   },
+   {
+    "dia": "2026-11-25",
+    "l1b": 1.0,
+    "acmf": 1.0,
+    "P": 8,
+    "P_evaluables": 8
+   },
+   {
+    "dia": "2026-11-26",
+    "l1b": 1.0,
+    "acmf": 1.0,
+    "P": 1,
+    "P_evaluables": 1
+   },
+   {
+    "dia": "2026-11-27",
+    "l1b": 1.0,
+    "acmf": 1.0,
+    "P": 11,
+    "P_evaluables": 11
+   }
+  ],
+  "falla": [],
+  "P_evaluables": 20,
+  "dias_con_P_evaluables": 3,
+  "dias_con_5_P_evaluables": 2,
+  "dia_gatillo": "2026-11-27",
+  "gatillo": true
+ },
+ "manifiesto_sha_csv": "0c0c286553f76c9ffc90ea26d1d18b19f74646d02e0b15a91a951da93dfb55b3",
+ "reglas": {
+  "S23b": {
+   "P": 20,
+   "P_evaluados": 20,
+   "P_alcanzados": 10,
+   "R": 0.5,
+   "dias_con_P": 3,
+   "dias_con_P_evaluado": 3,
+   "nulos": {
+    "2025": {
+     "p_dia": 0.05520431765612953,
+     "colocaciones_validas": 58364,
+     "con_R_mayor_o_igual": 3221,
+     "colocaciones_posibles": 262079,
+     "piso": 1.7133556069562236e-05,
+     "decide": true
+    },
+    "2026 sin VOLCAT": {
+     "p_dia": 0.23300970873786409,
+     "colocaciones_validas": 3295,
+     "con_R_mayor_o_igual": 767,
+     "colocaciones_posibles": 185135,
+     "piso": 0.00030339805825242716,
+     "decide": false
+    },
+    "2024": {
+     "p_dia": 0.07464150343255493,
+     "colocaciones_validas": 37726,
+     "con_R_mayor_o_igual": 2815,
+     "colocaciones_posibles": 262079,
+     "piso": 2.6506215707583428e-05,
+     "decide": false
+    }
+   },
+   "veredicto_enmienda": "NO CONFIRMA",
+   "pN_estratificado_informativo": {
+    "razon_odds_MH": 0.0,
+    "p_unilateral": 0.7854023497798254,
+    "estratos": 2
+   },
+   "por_dia": [
+    {
+     "P": 8,
+     "P_evaluados": 8,
+     "P_alcanzados": 0,
+     "disparos": 0,
+     "dia": "2026-11-25"
+    },
+    {
+     "P": 1,
+     "P_evaluados": 1,
+     "P_alcanzados": 0,
+     "disparos": 13,
+     "dia": "2026-11-26"
+    },
+    {
+     "P": 11,
+     "P_evaluados": 11,
+     "P_alcanzados": 10,
+     "disparos": 44,
+     "dia": "2026-11-27"
+    }
+   ],
+   "regla_congelada_ROTULADA": {
+    "veredicto": "CONFIRMA",
+    "nota": "regla congelada de 25-11 (p25 por cuadro): sin tamaño nominal (S28b 201, 961, 962); se informa, no decide"
+   }
+  },
+  "S25a": {
+   "P": 20,
+   "P_evaluados": 20,
+   "P_alcanzados": 14,
+   "R": 0.7,
+   "dias_con_P": 3,
+   "dias_con_P_evaluado": 3,
+   "nulos": {
+    "2025": {
+     "p_dia": 0.014997249145876775,
+     "colocaciones_validas": 147226,
+     "con_R_mayor_o_igual": 2207,
+     "colocaciones_posibles": 262079,
+     "piso": 6.792232403023902e-06,
+     "decide": true
+    },
+    "2026 sin VOLCAT": {
+     "p_dia": 0.11256988504303034,
+     "colocaciones_validas": 15918,
+     "con_R_mayor_o_igual": 1791,
+     "colocaciones_posibles": 185135,
+     "piso": 6.281801620704818e-05,
+     "decide": false
+    },
+    "2024": {
+     "p_dia": 0.024430909523971554,
+     "colocaciones_validas": 117555,
+     "con_R_mayor_o_igual": 2871,
+     "colocaciones_posibles": 262079,
+     "piso": 8.506584096090374e-06,
+     "decide": false
+    }
+   },
+   "veredicto_enmienda": "NO CONFIRMA",
+   "pN_estratificado_informativo": {
+    "razon_odds_MH": 0.7478632478632478,
+    "p_unilateral": 0.6002979627506684,
+    "estratos": 2
+   },
+   "por_dia": [
+    {
+     "P": 8,
+     "P_evaluados": 8,
+     "P_alcanzados": 6,
+     "disparos": 65,
+     "dia": "2026-11-25"
+    },
+    {
+     "P": 1,
+     "P_evaluados": 1,
+     "P_alcanzados": 1,
+     "disparos": 112,
+     "dia": "2026-11-26"
+    },
+    {
+     "P": 11,
+     "P_evaluados": 11,
+     "P_alcanzados": 7,
+     "disparos": 108,
+     "dia": "2026-11-27"
+    }
+   ],
+   "regla_congelada_ROTULADA": {
+    "veredicto": "PARCIAL",
+    "nota": "regla congelada de 25-11 (p25 por cuadro): sin tamaño nominal (S28b 201, 961, 962); se informa, no decide"
+   }
+  },
+  "S26a": {
+   "P": 20,
+   "P_evaluados": 20,
+   "P_alcanzados": 17,
+   "R": 0.85,
+   "dias_con_P": 3,
+   "dias_con_P_evaluado": 3,
+   "nulos": {
+    "2025": {
+     "p_dia": 0.010426076738641689,
+     "colocaciones_validas": 147226,
+     "con_R_mayor_o_igual": 1534,
+     "colocaciones_posibles": 262079,
+     "piso": 6.792232403023902e-06,
+     "decide": true
+    },
+    "2026 sin VOLCAT": {
+     "p_dia": 0.06256674414222,
+     "colocaciones_validas": 15918,
+     "con_R_mayor_o_igual": 995,
+     "colocaciones_posibles": 185135,
+     "piso": 6.281801620704818e-05,
+     "decide": false
+    },
+    "2024": {
+     "p_dia": 0.011781618973085169,
+     "colocaciones_validas": 117555,
+     "con_R_mayor_o_igual": 1384,
+     "colocaciones_posibles": 262079,
+     "piso": 8.506584096090374e-06,
+     "decide": false
+    }
+   },
+   "veredicto_enmienda": "NO CONFIRMA",
+   "pN_estratificado_informativo": {
+    "razon_odds_MH": 0.7478632478632478,
+    "p_unilateral": 0.6002979627506684,
+    "estratos": 2
+   },
+   "por_dia": [
+    {
+     "P": 8,
+     "P_evaluados": 8,
+     "P_alcanzados": 6,
+     "disparos": 58,
+     "dia": "2026-11-25"
+    },
+    {
+     "P": 1,
+     "P_evaluados": 1,
+     "P_alcanzados": 1,
+     "disparos": 111,
+     "dia": "2026-11-26"
+    },
+    {
+     "P": 11,
+     "P_evaluados": 11,
+     "P_alcanzados": 10,
+     "disparos": 122,
+     "dia": "2026-11-27"
+    }
+   ],
+   "regla_congelada_ROTULADA": {
+    "veredicto": "PARCIAL",
+    "nota": "regla congelada de 25-11 (p25 por cuadro): sin tamaño nominal (S28b 201, 961, 962); se informa, no decide"
+   }
+  }
+ },
+ "titular": "S26a (unión): NO CONFIRMA",
+ "segundos": 827
+}

@@ -1,6 +1,6 @@
 # STATUS — Goes Dashboard
 
-**Última actualización:** 2026-11-27 (S31j, bloque "## 0." abajo; la coordinadora S31 queda como 0-prev44, S31i como 0-prev43 y las demás hijas de S31 de 0-prev35 a 0-prev42, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
+**Última actualización:** 2026-11-28 (S32a, bloque "## 0." abajo; S31j queda como 0-prev45, la coordinadora S31 como 0-prev44, S31i como 0-prev43 y las demás hijas de S31 de 0-prev35 a 0-prev42, la coordinadora S28 como 0-prev34). Roadmap curado: 2026-08-30 (auditoría adversarial)
 **Repo:** https://github.com/MendozaVolcanic/goes-volcanic-monitoring
 **Deploy en producción:** 🤗 Hugging Face Spaces —
 https://mendozavolcanic-goes-volcanic-monitoring.hf.space
@@ -20,7 +20,31 @@ https://mendozavolcanic-goes-volcanic-monitoring.hf.space
 
 ---
 
-## 0. S31j, 2026-11-27 (espejo de la vía pluma/bocanada de VOLCAT: NO REPRODUCE; con calor en el cráter, objeto de un píxel anclado a 10 km y el seguimiento de VOLCAT, a la falsa alarma del detector congelado no publica ninguno de los 100 cuadros en que VOLCAT dibujó la pluma de Chillán; el calor estuvo encendido en todos ellos y el seguimiento no tuvo qué seguir: falta el nacimiento, que no es público ni sale del IR de 2 km)
+## 0. S32a, 2026-11-28 (medida única de las tres confirmaciones congeladas en los días nuevos 25 a 27-11: NINGUNA CONFIRMA; con la regla de la enmienda las tres dan NO CONFIRMA, el anillo porque vio una sola tarde y la zona y la unión porque están encendidas casi todo el día, también donde VOLCAT no dibuja; las tres reglas quedan cerradas)
+
+> Sesión S32a (worktree `vigorous-ritchie-aee8c1`, rama `claude/s32a-medida-confirmacion`), lanzada por la coordinadora
+> S32 tras "lanza la medida" de Nicolás (28-11). Informe:
+> `C:\Users\nmend\OneDrive\Escritorio\claude\Volcanologia\Goes\docs\own_volcat\s32a_confirmacion\INFORME.md`.
+> Una sola corrida de `s30a_confirmar.py medir --hasta 2026-11-27` (28-11 06:36 UTC, 827 s, sin aserciones), con
+> `cobertura` repetida antes e idéntica a la de la coordinadora. Nada ajustado después de ver el resultado.
+
+20 cuadros P de VOLCAT (8, 1 y 11), todos evaluados, todos de tarde (13:50 a 18:00 Chile (UTC-3)).
+
+| Detector | Alcanzados (R) | Por día 25, 26, 27-11 | Enmienda: p_día contra 2025 (alfa 0,001) | **Rótulo que decide** | Congelado (p25; pN) | Rótulo congelado (informa) |
+|---|---|---|---|---|---|---|
+| S23b anillo | 10/20 (0,50) | 0/8, 0/1, 10/11 | 0,055 | **NO CONFIRMA** | 3,8e-9; 0,0014 | CONFIRMA |
+| S25a zona | 14/20 (0,70) | 6/8, 1/1, 7/11 | 0,015 | **NO CONFIRMA** | 1,9e-14; 0,83 | PARCIAL |
+| S26a unión (titular) | 17/20 (0,85) | 6/8, 1/1, 10/11 | 0,010 | **NO CONFIRMA** | 3,9e-18; 0,48 | PARCIAL |
+
+**Para Nicolás.** El anillo acertó 10 de 11 cuadros el 27-11 y ninguno el 25-11 (ese día no disparó nunca): una sola
+tarde, y una tarde encendida por el tiempo da lo mismo en el 5,5 % de los días de 2025. La zona y la unión alcanzaron casi
+todo, pero dispararon en 58 a 122 de los 144 cuadros de cada día y en el 59 a 81 % de los cuadros sin VOLCAT: acertar
+les sale barato. Los rótulos congelados (CONFIRMA y PARCIAL) cuentan cada cuadro como tirada suelta y no deciden (S28b).
+Por la enmienda §7, NO CONFIRMA cierra las tres reglas: no se vuelven a medir. **Recomendación:** no armar una cuarta
+regla con estos días; seguir con el correo v6 a Pavolonis y, si se intenta otro detector, el nacimiento desde otra
+medida (cámaras del OVDAS, REAV), como dejó S31j.
+
+## 0-prev45. S31j, 2026-11-27 (espejo de la vía pluma/bocanada de VOLCAT: NO REPRODUCE; con calor en el cráter, objeto de un píxel anclado a 10 km y el seguimiento de VOLCAT, a la falsa alarma del detector congelado no publica ninguno de los 100 cuadros en que VOLCAT dibujó la pluma de Chillán; el calor estuvo encendido en todos ellos y el seguimiento no tuvo qué seguir: falta el nacimiento, que no es público ni sale del IR de 2 km)
 
 > Sesión S31j (worktree `s31j-espejo-via-pluma-382c61`, rama `claude/s31j-espejo-via-pluma-382c61`), lanzada por la
 > coordinadora S31 tras la pregunta de Nicolás del 27-11 ("¿no son códigos más simples?"). Informe:

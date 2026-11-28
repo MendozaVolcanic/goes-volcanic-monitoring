@@ -1,0 +1,97 @@
+{
+ "veredicto": "PARCIAL",
+ "regla": "S25a, zona sola a percentil 5",
+ "percentil": 5.0,
+ "instrumento": {
+  "cuadros_hasta_el_ultimo": 576,
+  "presentes": 576,
+  "cobertura": 1.0,
+  "scan_distinto": 0,
+  "congelados": 0,
+  "bt11_en_rango": 1.0,
+  "falla": []
+ },
+ "P_total": 20,
+ "dias_con_P": 3,
+ "medida": {
+  "P_evaluados": 20,
+  "P_alcanzados": 14,
+  "R": 0.7,
+  "E25": 1.0099270005342618,
+  "p25": 1.932336605442239e-14,
+  "N_cerca": 14,
+  "N_cerca_alcanzados": 11,
+  "pN": 0.8286817002056156,
+  "dias_P_evaluado": 3,
+  "dias_P_alcanzado": 3
+ },
+ "tasa_disparo_N_nuevos": {
+  "dia": {
+   "n": 51,
+   "fraccion": 0.6078431372549019
+  },
+  "noche": {
+   "n": 90,
+   "fraccion": 0.8111111111111111
+  }
+ },
+ "por_dia": [
+  {
+   "dia": "2026-11-25",
+   "P": 8,
+   "a": {
+    "P_evaluados": 8,
+    "P_alcanzados": 0,
+    "disparos": 0
+   },
+   "z": {
+    "P_evaluados": 8,
+    "P_alcanzados": 6,
+    "disparos": 65
+   },
+   "u": {
+    "P_evaluados": 8,
+    "P_alcanzados": 6,
+    "disparos": 65
+   }
+  },
+  {
+   "dia": "2026-11-26",
+   "P": 1,
+   "a": {
+    "P_evaluados": 1,
+    "P_alcanzados": 0,
+    "disparos": 13
+   },
+   "z": {
+    "P_evaluados": 1,
+    "P_alcanzados": 1,
+    "disparos": 112
+   },
+   "u": {
+    "P_evaluados": 1,
+    "P_alcanzados": 1,
+    "disparos": 118
+   }
+  },
+  {
+   "dia": "2026-11-27",
+   "P": 11,
+   "a": {
+    "P_evaluados": 11,
+    "P_alcanzados": 10,
+    "disparos": 44
+   },
+   "z": {
+    "P_evaluados": 11,
+    "P_alcanzados": 7,
+    "disparos": 108
+   },
+   "u": {
+    "P_evaluados": 11,
+    "P_alcanzados": 10,
+    "disparos": 124
+   }
+  }
+ ]
+}
